@@ -3,16 +3,28 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.5.1",
+    "@material-ui/icons": "^4.5.1",
     "@types/jest": "24.0.19",
     "@types/node": "12.11.1",
     "@types/react": "16.9.9",
     "@types/react-dom": "16.9.2",
+    "@types/react-redux": "^7.1.5",
+    "@types/twilio-video": "^2.0.9",
+    "body-parser": "^1.19.0",
+    "concurrently": "^5.0.0",
+    "express": "^4.17.1",
     "husky": "^3.0.9",
     "lint-staged": "^9.4.2",
     "prettier": "^1.18.2",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
+    "react-redux": "^7.1.1",
     "react-scripts": "3.2.0",
+    "redux": "^4.0.4",
+    "redux-thunk": "^2.3.0",
+    "twilio": "^3.36.0",
+    "twilio-video": "2.0.0-beta15",
     "typescript": "3.6.4"
   },
   "lint-staged": {
@@ -22,11 +34,13 @@
     ]
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently npm:server npm:dev",
+    "dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint src/**/*.{ts,tsx}"
+    "lint": "eslint src/**/*.{ts,tsx}",
+    "server": "node server.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -47,5 +61,6 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
-  }
+  },
+  "proxy": "http://localhost:4000/"
 }
