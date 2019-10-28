@@ -26,6 +26,7 @@ export default function NetworkQualityLevel({
     <Container>
       {[0, 1, 2, 3, 4, 5].map(level => (
         <div
+          key={level}
           style={{
             height: `${STEP * (level + 1)}px`,
             background: qualityLevel >= level ? '#0c0' : '#040',

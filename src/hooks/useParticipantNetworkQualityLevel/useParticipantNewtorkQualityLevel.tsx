@@ -15,7 +15,6 @@ export default function useParticipantNetworkQualityLevel(
       'networkQualityLevelChanged',
       handleNewtorkQualityLevelChange
     );
-    participant.on('networkQualityLevelChanged', console.log);
     return () => {
       participant.on(
         'networkQualityLevelChanged',

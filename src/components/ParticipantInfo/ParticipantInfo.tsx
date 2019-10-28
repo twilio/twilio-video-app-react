@@ -37,12 +37,8 @@ export default function ParticipantInfo({
   return (
     <Container>
       <InfoContainer>
-        <Identity>
-          {participant.identity} {networkQualityLevel}
-        </Identity>
-        <NetworkQualityLevel
-          qualityLevel={networkQualityLevel}
-        ></NetworkQualityLevel>
+        <Identity>{participant.identity}</Identity>
+        <NetworkQualityLevel qualityLevel={networkQualityLevel} />
       </InfoContainer>
       {children}
     </Container>
