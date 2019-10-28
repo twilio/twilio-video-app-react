@@ -11,12 +11,13 @@ export default function useRoom(
   const [isConnecting, setIsConnecting] = useState(false);
 
   useEffect(() => {
-    const handleBeforeunload = () => room.disconnect();
+    let handleBeforeunload: () => void;
 
     if (token && room.state !== 'connected') {
       setIsConnecting(true);
       Video.connect(token, { tracks: localTracks, ...options }).then(room => {
         setRoom(room);
+        handleBeforeunload = () => room.disconnect();
         // @ts-ignore
         window.room = room;
         setIsConnecting(false);
