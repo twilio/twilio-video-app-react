@@ -11,7 +11,7 @@ jest.mock('./useLocalTracks', () => jest.fn(() => ['mockTrack']));
 
 describe('the useVideoContext hook', () => {
   it('should correct return the Video Context object', () => {
-    const wrapper = ({ children }) => (
+    const wrapper: React.FC = ({ children }) => (
       <VideoProvider token="mockToken" options={{ dominantSpeaker: true }}>
         {children}
       </VideoProvider>
