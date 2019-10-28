@@ -1,9 +1,11 @@
 import React from 'react';
 import useTrack from '../../hooks/useTrack/useTrack';
 import VideoTrack from '../VideoTrack/VideoTrack';
+import AudioTrack from '../AudioTrack/AudioTrack';
 import {
   Participant,
   VideoTrack as IVideoTrack,
+  AudioTrack as IAudioTrack,
   LocalTrackPublication,
   RemoteTrackPublication,
 } from 'twilio-video';
@@ -19,8 +21,15 @@ export default function Publication({
   isLocal,
 }: PublicationProps) {
   const track = useTrack(publication);
+
   if (track === null) return null;
-  return track.name === 'camera' ? (
-    <VideoTrack track={track as IVideoTrack} isLocal={isLocal} />
-  ) : null;
+
+  switch (track.name) {
+    case 'camera':
+      return <VideoTrack track={track as IVideoTrack} isLocal={isLocal} />;
+    case 'microphone':
+      return <AudioTrack track={track as IAudioTrack} />;
+    default:
+      return null;
+  }
 }
