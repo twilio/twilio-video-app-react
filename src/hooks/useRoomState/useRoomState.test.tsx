@@ -20,20 +20,19 @@ describe('the useRoomState hook', () => {
     }));
   });
 
-  it('should work', () => {
+  it('should return "disconnected" by default', () => {
     const { result } = renderHook(useRoomState);
     expect(result.current).toBe('disconnected');
   });
 
-  it('should work2', () => {
+  it('should return "connected" if the room state is connected', () => {
     mockRoom.state = 'connected';
     const { result } = renderHook(useRoomState);
     expect(result.current).toBe('connected');
   });
 
-  it('should work3', () => {
+  it('should should respond to the rooms "reconnecting" event', () => {
     const { result } = renderHook(useRoomState);
-    expect(result.current).toBe('disconnected');
     act(() => {
       mockRoom.state = 'reconnecting';
       mockRoom.emit('reconnecting');
@@ -41,7 +40,27 @@ describe('the useRoomState hook', () => {
     expect(result.current).toBe('reconnecting');
   });
 
-  it('should work4', () => {
+  it('should should respond to the rooms "reconnected" event', () => {
+    const { result } = renderHook(useRoomState);
+    act(() => {
+      mockRoom.state = 'connected';
+      mockRoom.emit('reconnected');
+    });
+    expect(result.current).toBe('connected');
+  });
+
+  it('should should respond to the rooms "disconnected" event', () => {
+    mockRoom.state = 'connected';
+    const { result } = renderHook(useRoomState);
+    expect(result.current).toBe('connected');
+    act(() => {
+      mockRoom.state = 'disconnected';
+      mockRoom.emit('disconnected');
+    });
+    expect(result.current).toBe('disconnected');
+  });
+
+  it('should update when a new room object is provided', () => {
     const { result, rerender } = renderHook(useRoomState);
     expect(result.current).toBe('disconnected');
 
@@ -58,5 +77,28 @@ describe('the useRoomState hook', () => {
     rerender();
 
     expect(result.current).toBe('connected');
+  });
+
+  it('tear down old listeners when receiving a new room', () => {
+    const originalMockRoom = mockRoom;
+    const { rerender } = renderHook(useRoomState);
+    expect(originalMockRoom.listenerCount('disconnected')).toBe(1);
+    expect(originalMockRoom.listenerCount('reconnected')).toBe(1);
+    expect(originalMockRoom.listenerCount('reconnecting')).toBe(1);
+
+    act(() => {
+      mockRoom = new EventEmitter() as Room;
+      mockedVideoContext.mockImplementation(() => ({
+        room: mockRoom,
+        isConnecting: false,
+        localTracks: [],
+      }));
+    });
+
+    rerender();
+
+    expect(originalMockRoom.listenerCount('disconnected')).toBe(0);
+    expect(originalMockRoom.listenerCount('reconnected')).toBe(0);
+    expect(originalMockRoom.listenerCount('reconnecting')).toBe(0);
   });
 });
