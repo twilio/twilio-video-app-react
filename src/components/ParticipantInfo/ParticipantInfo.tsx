@@ -14,6 +14,7 @@ const InfoContainer = styled('div')({
   display: 'flex',
   justifyContent: 'space-between',
   padding: '0.3em',
+  width: '100%',
 });
 
 const Identity = styled('h4')({
