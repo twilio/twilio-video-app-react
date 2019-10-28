@@ -2,6 +2,7 @@ import React from 'react';
 import { useVideoContext } from '../../hooks/context';
 import useParticipants from '../../hooks/useParticipants/useParticipants';
 import Participant from '../Participant/Participant';
+import ParticipantInfo from '../ParticipantInfo/ParticipantInfo';
 import { styled } from '@material-ui/core/styles';
 
 const Container = styled('aside')({
@@ -19,9 +20,13 @@ export default function ParticipantStrip() {
 
   return (
     <Container>
-      <Participant participant={room.localParticipant} isLocal />
+      <ParticipantInfo participant={room.localParticipant}>
+        <Participant participant={room.localParticipant} isLocal />
+      </ParticipantInfo>
       {participants.map(participant => (
-        <Participant key={participant.sid} participant={participant} />
+        <ParticipantInfo key={participant.sid} participant={participant}>
+          <Participant participant={participant} />
+        </ParticipantInfo>
       ))}
     </Container>
   );

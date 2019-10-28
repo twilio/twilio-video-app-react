@@ -17,6 +17,8 @@ export default function useRoom(
       setIsConnecting(true);
       Video.connect(token, { tracks: localTracks, ...options }).then(room => {
         setRoom(room);
+        // @ts-ignore
+        window.room = room;
         setIsConnecting(false);
         window.addEventListener('beforeunload', handleBeforeunload);
       });

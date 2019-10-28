@@ -18,6 +18,7 @@ const VideoProviderWithToken = () => {
       token={token}
       options={{
         dominantSpeaker: true,
+        networkQuality: true,
       }}
     >
       <App />
