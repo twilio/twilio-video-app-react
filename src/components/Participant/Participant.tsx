@@ -5,9 +5,13 @@ import { LocalParticipant, RemoteParticipant } from 'twilio-video';
 
 interface ParticipantProps {
   participant: LocalParticipant | RemoteParticipant;
+  isLocal?: boolean;
 }
 
-export default function Participant({ participant }: ParticipantProps) {
+export default function Participant({
+  participant,
+  isLocal,
+}: ParticipantProps) {
   const publications = usePublications(participant);
   return (
     <>
@@ -16,6 +20,7 @@ export default function Participant({ participant }: ParticipantProps) {
           key={publication.trackSid}
           publication={publication}
           participant={participant}
+          isLocal={isLocal}
         />
       ))}
     </>

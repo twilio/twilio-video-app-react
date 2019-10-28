@@ -11,12 +11,16 @@ import {
 interface PublicationProps {
   publication: LocalTrackPublication | RemoteTrackPublication;
   participant: Participant;
+  isLocal?: boolean;
 }
 
-export default function Publication({ publication }: PublicationProps) {
+export default function Publication({
+  publication,
+  isLocal,
+}: PublicationProps) {
   const track = useTrack(publication);
   if (track === null) return null;
   return track.name === 'camera' ? (
-    <VideoTrack track={track as IVideoTrack} />
+    <VideoTrack track={track as IVideoTrack} isLocal={isLocal} />
   ) : null;
 }
