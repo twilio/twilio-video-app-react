@@ -1,8 +1,8 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import useParticipantNetworkQualityLevel from './useParticipantNewtorkQualityLevel';
+import useParticipantNetworkQualityLevel from './useParticipantNetworkQualityLevel';
 import EventEmitter from 'events';
 
-describe('the useParticipantNewtorkQualityLevel hook', () => {
+describe('the useParticipantNetworkQualityLevel hook', () => {
   let mockParticipant: any;
 
   beforeEach(() => {

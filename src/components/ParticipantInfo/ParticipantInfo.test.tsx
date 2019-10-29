@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import ParticipantInfo from './ParticipantInfo';
 
 jest.mock(
-  '../../hooks/useParticipantNetworkQualityLevel/useParticipantNewtorkQualityLevel',
+  '../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel',
   () => () => 4
 );
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { styled } from '@material-ui/core/styles';
 import { LocalParticipant, RemoteParticipant } from 'twilio-video';
-import useParticipantNetworkQualityLevel from '../../hooks/useParticipantNetworkQualityLevel/useParticipantNewtorkQualityLevel';
+import useParticipantNetworkQualityLevel from '../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel';
 import NetworkQualityLevel from '../NewtorkQualityLevel/NetworkQualityLevel';
 
 const Container = styled('div')({
