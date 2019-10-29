@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
-import useRoomState from './useRoomState';
+import { act, renderHook } from '@testing-library/react-hooks';
 import EventEmitter from 'events';
-import { useVideoContext, IVideoContext } from '../context';
 import { Room } from 'twilio-video';
+import useRoomState from './useRoomState';
+import { useVideoContext, IVideoContext } from '../context';
 
 jest.mock('../context');
 

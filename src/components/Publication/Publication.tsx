@@ -1,13 +1,13 @@
 import React from 'react';
 import useTrack from '../../hooks/useTrack/useTrack';
-import VideoTrack from '../VideoTrack/VideoTrack';
 import AudioTrack from '../AudioTrack/AudioTrack';
+import VideoTrack from '../VideoTrack/VideoTrack';
 import {
-  Participant,
-  VideoTrack as IVideoTrack,
   AudioTrack as IAudioTrack,
   LocalTrackPublication,
+  Participant,
   RemoteTrackPublication,
+  VideoTrack as IVideoTrack,
 } from 'twilio-video';
 
 interface PublicationProps {

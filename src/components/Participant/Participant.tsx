@@ -1,7 +1,7 @@
 import React from 'react';
+import { LocalParticipant, RemoteParticipant } from 'twilio-video';
 import Publication from '../Publication/Publication';
 import usePublications from '../../hooks/usePublications/usePublications';
-import { LocalParticipant, RemoteParticipant } from 'twilio-video';
 import { useVideoContext } from '../../hooks/context';
 
 interface ParticipantProps {

@@ -17,8 +17,6 @@ export default function useRoom(
       Video.connect(token, { tracks: localTracks, ...options }).then(room => {
         setRoom(room);
         disconnectHandlerRef.current = () => room.disconnect();
-        // @ts-ignore
-        window.room = room;
         setIsConnecting(false);
         window.addEventListener('beforeunload', disconnectHandlerRef.current);
       });

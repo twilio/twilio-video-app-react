@@ -1,6 +1,6 @@
 import React from 'react';
-import { shallow } from 'enzyme';
 import ParticipantInfo from './ParticipantInfo';
+import { shallow } from 'enzyme';
 
 jest.mock(
   '../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel',

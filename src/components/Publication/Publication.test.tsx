@@ -1,7 +1,7 @@
 import React from 'react';
 import Publication from './Publication';
-import useTrack from '../../hooks/useTrack/useTrack';
 import { shallow } from 'enzyme';
+import useTrack from '../../hooks/useTrack/useTrack';
 
 jest.mock('../../hooks/useTrack/useTrack');
 const mockUseTrack = useTrack as jest.Mock<any>;

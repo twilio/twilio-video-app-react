@@ -1,9 +1,9 @@
 import React from 'react';
-import { useVideoContext } from '../../hooks/context';
-import useParticipants from '../../hooks/useParticipants/useParticipants';
 import Participant from '../Participant/Participant';
 import ParticipantInfo from '../ParticipantInfo/ParticipantInfo';
 import { styled } from '@material-ui/core/styles';
+import useParticipants from '../../hooks/useParticipants/useParticipants';
+import { useVideoContext } from '../../hooks/context';
 
 const Container = styled('aside')({
   position: 'absolute',

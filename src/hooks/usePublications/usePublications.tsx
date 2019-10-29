@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
-  Participant,
   LocalTrackPublication,
+  Participant,
   RemoteTrackPublication,
 } from 'twilio-video';
 

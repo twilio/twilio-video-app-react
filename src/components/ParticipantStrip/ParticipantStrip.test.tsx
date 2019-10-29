@@ -1,7 +1,7 @@
+import EventEmitter from 'events';
 import React from 'react';
-import { shallow } from 'enzyme';
 import ParticipantStrip from './ParticipantStrip';
-import { EventEmitter } from 'events';
+import { shallow } from 'enzyme';
 import { useVideoContext } from '../../hooks/context';
 
 jest.mock('../../hooks/context');

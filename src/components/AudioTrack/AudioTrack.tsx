@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { AudioTrack as IAudioTrack } from 'twilio-video';
 
 interface AudioTrackProps {
