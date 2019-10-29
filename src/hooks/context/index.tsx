@@ -1,13 +1,18 @@
-import React, { createContext, ReactNode, useContext } from 'react';
 import EventEmitter from 'events';
+import React, { createContext, ReactNode, useContext } from 'react';
 import { ConnectOptions, LocalTrack, Room } from 'twilio-video';
-
-import useRoom from './useRoom';
 import useLocalTracks from './useLocalTracks';
+import useRoom from './useRoom';
 
-const VideoContext = createContext({
+export interface IVideoContext {
+  room: Room;
+  localTracks: LocalTrack[];
+  isConnecting: boolean;
+}
+
+export const VideoContext = createContext<IVideoContext>({
   room: new EventEmitter() as Room,
-  localTracks: [] as LocalTrack[],
+  localTracks: [],
   isConnecting: false,
 });
 

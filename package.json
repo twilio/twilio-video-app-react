@@ -5,6 +5,8 @@
   "dependencies": {
     "@material-ui/core": "^4.5.1",
     "@material-ui/icons": "^4.5.1",
+    "@testing-library/react": "^9.3.0",
+    "@testing-library/react-hooks": "^3.1.1",
     "@types/jest": "24.0.19",
     "@types/node": "12.11.1",
     "@types/react": "16.9.9",
@@ -21,8 +23,10 @@
     "react-dom": "^16.10.2",
     "react-redux": "^7.1.1",
     "react-scripts": "3.2.0",
+    "react-test-renderer": "^16.11.0",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
+    "ts-jest": "^24.1.0",
     "twilio": "^3.36.0",
     "twilio-video": "2.0.0-beta15",
     "typescript": "3.6.4"
@@ -37,7 +41,7 @@
     "start": "concurrently npm:server npm:dev",
     "dev": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest",
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.{ts,tsx}",
     "server": "node server.js"
