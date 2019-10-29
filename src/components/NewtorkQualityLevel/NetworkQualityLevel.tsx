@@ -24,12 +24,12 @@ export default function NetworkQualityLevel({
   if (qualityLevel === null) return null;
   return (
     <Container>
-      {[0, 1, 2, 3, 4, 5].map(level => (
+      {[0, 1, 2, 3, 4].map(level => (
         <div
           key={level}
           style={{
             height: `${STEP * (level + 1)}px`,
-            background: qualityLevel >= level ? '#0c0' : '#040',
+            background: qualityLevel > level ? '#0c0' : '#040',
           }}
         />
       ))}
