@@ -16,7 +16,7 @@ export default function useParticipantNetworkQualityLevel(
       handleNewtorkQualityLevelChange
     );
     return () => {
-      participant.on(
+      participant.off(
         'networkQualityLevelChanged',
         handleNewtorkQualityLevelChange
       );
