@@ -5,9 +5,11 @@ class MockRoom extends EventEmitter {
   disconnect = jest.fn();
 }
 
-class mockTwilioVideo {
+class MockTwilioVideo {
   connect = jest.fn(() => Promise.resolve(new MockRoom()));
   createLocalTracks = jest.fn(() => Promise.resolve(['mockTrack']));
 }
 
-module.exports = new mockTwilioVideo();
+const twilioVideo = new MockTwilioVideo();
+
+export default twilioVideo;
