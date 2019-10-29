@@ -13,7 +13,7 @@ export default function useRoom(
   useEffect(() => {
     let handleBeforeunload: () => void;
 
-    if (token && room.state !== 'connected') {
+    if (token && room.state !== 'connected' && !isConnecting) {
       setIsConnecting(true);
       Video.connect(token, { tracks: localTracks, ...options }).then(room => {
         setRoom(room);
@@ -26,12 +26,12 @@ export default function useRoom(
     }
 
     return () => {
-      if (room.state === 'connected') {
+      if (room.state === 'connected' && !isConnecting) {
         room.disconnect();
         window.removeEventListener('beforeunload', handleBeforeunload);
       }
     };
-  }, [token, options, room, localTracks, setIsConnecting]);
+  }, [token, options, room, localTracks, setIsConnecting, isConnecting]);
 
   return { room, isConnecting };
 }
