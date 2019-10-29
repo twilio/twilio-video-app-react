@@ -7,7 +7,7 @@ jest.mock('../context');
 
 const mockedVideoContext = useVideoContext as jest.Mock<any>;
 
-describe('the useRoomState hook', () => {
+describe('the useParticipants hook', () => {
   let mockRoom: any;
 
   beforeEach(() => {
@@ -18,7 +18,7 @@ describe('the useRoomState hook', () => {
     }));
   });
 
-  it('should return mockParticipant.tracks by default', () => {
+  it('should return an array of mockParticipant.tracks by default', () => {
     const { result } = renderHook(useParticipants);
     expect(result.current).toEqual(['participant1', 'participant2']);
   });

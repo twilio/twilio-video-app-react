@@ -10,7 +10,7 @@ describe('the usePublications hook', () => {
     mockParticipant.tracks = new Map([[0, 'track1'], [1, 'track2']]);
   });
 
-  it('should return mockParticipant.tracks by default', () => {
+  it('should return an array of mockParticipant.tracks by default', () => {
     const { result } = renderHook(() => usePublications(mockParticipant));
     expect(result.current).toEqual(['track1', 'track2']);
   });
