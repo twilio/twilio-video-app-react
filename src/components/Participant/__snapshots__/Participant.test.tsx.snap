@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`the Participant component should render an array of publications 1`] = `
+<Fragment>
+  <Publication
+    key="0"
+    participant="mockParticipant"
+    publication={
+      Object {
+        "trackSid": 0,
+      }
+    }
+  />
+  <Publication
+    key="1"
+    participant="mockParticipant"
+    publication={
+      Object {
+        "trackSid": 1,
+      }
+    }
+  />
+</Fragment>
+`;
