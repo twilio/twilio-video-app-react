@@ -3,6 +3,7 @@
 exports[`the Participant component should render an array of publications 1`] = `
 <Fragment>
   <Publication
+    isLocal={false}
     key="0"
     participant="mockParticipant"
     publication={
@@ -12,6 +13,7 @@ exports[`the Participant component should render an array of publications 1`] = 
     }
   />
   <Publication
+    isLocal={false}
     key="1"
     participant="mockParticipant"
     publication={

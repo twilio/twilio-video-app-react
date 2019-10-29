@@ -21,7 +21,7 @@ export default function ParticipantStrip() {
   return (
     <Container>
       <ParticipantInfo participant={room.localParticipant}>
-        <Participant participant={room.localParticipant} isLocal />
+        <Participant participant={room.localParticipant} />
       </ParticipantInfo>
       {participants.map(participant => (
         <ParticipantInfo key={participant.sid} participant={participant}>

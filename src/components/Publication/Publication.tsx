@@ -13,7 +13,7 @@ import {
 interface PublicationProps {
   publication: LocalTrackPublication | RemoteTrackPublication;
   participant: Participant;
-  isLocal?: boolean;
+  isLocal: boolean;
 }
 
 export default function Publication({

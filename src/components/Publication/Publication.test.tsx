@@ -11,6 +11,7 @@ describe('the Publication component', () => {
     mockUseTrack.mockImplementation(() => ({ name: 'camera' }));
     const wrapper = shallow(
       <Publication
+        isLocal
         publication={'mockPublication' as any}
         participant={'mockParticipant' as any}
       />
@@ -23,6 +24,7 @@ describe('the Publication component', () => {
     mockUseTrack.mockImplementation(() => ({ name: 'microphone' }));
     const wrapper = shallow(
       <Publication
+        isLocal
         publication={'mockPublication' as any}
         participant={'mockParticipant' as any}
       />
@@ -35,6 +37,7 @@ describe('the Publication component', () => {
     mockUseTrack.mockImplementation(() => null);
     const wrapper = shallow(
       <Publication
+        isLocal
         publication={'mockPublication' as any}
         participant={'mockParticipant' as any}
       />

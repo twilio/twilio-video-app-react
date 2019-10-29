@@ -2,17 +2,17 @@ import React from 'react';
 import Publication from '../Publication/Publication';
 import usePublications from '../../hooks/usePublications/usePublications';
 import { LocalParticipant, RemoteParticipant } from 'twilio-video';
+import { useVideoContext } from '../../hooks/context';
 
 interface ParticipantProps {
   participant: LocalParticipant | RemoteParticipant;
-  isLocal?: boolean;
 }
 
-export default function Participant({
-  participant,
-  isLocal,
-}: ParticipantProps) {
+export default function Participant({ participant }: ParticipantProps) {
+  const { room } = useVideoContext();
   const publications = usePublications(participant);
+  const isLocal = participant === room.localParticipant;
+
   return (
     <>
       {publications.map(publication => (

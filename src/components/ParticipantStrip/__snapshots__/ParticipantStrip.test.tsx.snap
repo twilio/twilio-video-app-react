@@ -6,7 +6,6 @@ exports[`the ParticipantStrip component should correctly render ParticipantInfo 
     participant="localParticipant"
   >
     <Participant
-      isLocal={true}
       participant="localParticipant"
     />
   </ParticipantInfo>
