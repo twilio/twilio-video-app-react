@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`the ParticipantInfo component should render correctly 1`] = `
+<Styled(div)>
+  <Styled(div)>
+    <Styled(h4)>
+      mockIdentity
+    </Styled(h4)>
+    <NetworkQualityLevel
+      qualityLevel={4}
+    />
+  </Styled(div)>
+  mock children
+</Styled(div)>
+`;
