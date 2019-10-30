@@ -4,6 +4,7 @@ import { styled } from '@material-ui/core/styles';
 import LocalVideoPreview from './components/LocalVideoPreview/LocalVideoPreview';
 import Menu from './components/Menu/Menu';
 import Room from './components/Room/Room';
+import Controls from './components/Controls/Controls';
 
 import useRoomState from './hooks/useRoomState/useRoomState';
 
@@ -15,6 +16,7 @@ const Container = styled('div')({
 
 const Main = styled('main')({
   height: '100%',
+  position: 'relative',
 });
 
 export default function App() {
@@ -25,6 +27,7 @@ export default function App() {
       <Menu />
       <Main>
         {roomState === 'disconnected' ? <LocalVideoPreview /> : <Room />}
+        <Controls />
       </Main>
     </Container>
   );
