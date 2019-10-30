@@ -14,11 +14,13 @@ interface PublicationProps {
   publication: LocalTrackPublication | RemoteTrackPublication;
   participant: Participant;
   isLocal: boolean;
+  disableAudio?: boolean;
 }
 
 export default function Publication({
   publication,
   isLocal,
+  disableAudio,
 }: PublicationProps) {
   const track = useTrack(publication);
 
@@ -28,7 +30,7 @@ export default function Publication({
     case 'camera':
       return <VideoTrack track={track as IVideoTrack} isLocal={isLocal} />;
     case 'microphone':
-      return <AudioTrack track={track as IAudioTrack} />;
+      return disableAudio ? null : <AudioTrack track={track as IAudioTrack} />;
     default:
       return null;
   }
