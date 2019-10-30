@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`the ParticipantStrip component should correctly render ParticipantInfo components 1`] = `
+<Styled(aside)>
+  <Participant
+    participant="localParticipant"
+  />
+  <Participant
+    key="0"
+    participant={
+      Object {
+        "sid": 0,
+      }
+    }
+  />
+  <Participant
+    key="1"
+    participant={
+      Object {
+        "sid": 1,
+      }
+    }
+  />
+</Styled(aside)>
+`;

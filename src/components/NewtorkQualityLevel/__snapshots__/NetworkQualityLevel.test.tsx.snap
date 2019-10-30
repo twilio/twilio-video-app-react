@@ -1,0 +1,142 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`the NetworkQualityLevel component should render correctly for level 0 1`] = `
+<div
+  className="div-root-1"
+>
+  <div
+    style={
+      Object {
+        "background": "#040",
+        "height": "3px",
+      }
+    }
+  />
+  <div
+    style={
+      Object {
+        "background": "#040",
+        "height": "6px",
+      }
+    }
+  />
+  <div
+    style={
+      Object {
+        "background": "#040",
+        "height": "9px",
+      }
+    }
+  />
+  <div
+    style={
+      Object {
+        "background": "#040",
+        "height": "12px",
+      }
+    }
+  />
+  <div
+    style={
+      Object {
+        "background": "#040",
+        "height": "15px",
+      }
+    }
+  />
+</div>
+`;
+
+exports[`the NetworkQualityLevel component should render correctly for level 3 1`] = `
+<div
+  className="div-root-1"
+>
+  <div
+    style={
+      Object {
+        "background": "#0c0",
+        "height": "3px",
+      }
+    }
+  />
+  <div
+    style={
+      Object {
+        "background": "#0c0",
+        "height": "6px",
+      }
+    }
+  />
+  <div
+    style={
+      Object {
+        "background": "#0c0",
+        "height": "9px",
+      }
+    }
+  />
+  <div
+    style={
+      Object {
+        "background": "#040",
+        "height": "12px",
+      }
+    }
+  />
+  <div
+    style={
+      Object {
+        "background": "#040",
+        "height": "15px",
+      }
+    }
+  />
+</div>
+`;
+
+exports[`the NetworkQualityLevel component should render correctly for level 5 1`] = `
+<div
+  className="div-root-1"
+>
+  <div
+    style={
+      Object {
+        "background": "#0c0",
+        "height": "3px",
+      }
+    }
+  />
+  <div
+    style={
+      Object {
+        "background": "#0c0",
+        "height": "6px",
+      }
+    }
+  />
+  <div
+    style={
+      Object {
+        "background": "#0c0",
+        "height": "9px",
+      }
+    }
+  />
+  <div
+    style={
+      Object {
+        "background": "#0c0",
+        "height": "12px",
+      }
+    }
+  />
+  <div
+    style={
+      Object {
+        "background": "#0c0",
+        "height": "15px",
+      }
+    }
+  />
+</div>
+`;

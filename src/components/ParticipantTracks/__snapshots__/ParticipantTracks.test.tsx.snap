@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`the ParticipantTracks component should render an array of publications 1`] = `
+<Fragment>
+  <Publication
+    isLocal={false}
+    key="0"
+    participant="mockParticipant"
+    publication={
+      Object {
+        "trackSid": 0,
+      }
+    }
+  />
+  <Publication
+    isLocal={false}
+    key="1"
+    participant="mockParticipant"
+    publication={
+      Object {
+        "trackSid": 1,
+      }
+    }
+  />
+</Fragment>
+`;

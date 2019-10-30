@@ -1,5 +1,5 @@
 import EventEmitter from 'events';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Video, { ConnectOptions, LocalTrack, Room } from 'twilio-video';
 
 export default function useRoom(
@@ -9,23 +9,26 @@ export default function useRoom(
 ) {
   const [room, setRoom] = useState<Room>(new EventEmitter() as Room);
   const [isConnecting, setIsConnecting] = useState(false);
+  const disconnectHandlerRef = useRef<() => void>(() => {});
 
   useEffect(() => {
-    const disconnect = () => room.disconnect();
-
     if (token && room.state !== 'connected' && !isConnecting) {
       setIsConnecting(true);
       Video.connect(token, { tracks: localTracks, ...options }).then(room => {
         setRoom(room);
+        disconnectHandlerRef.current = () => room.disconnect();
         setIsConnecting(false);
-        window.addEventListener('beforeunload', disconnect);
+        window.addEventListener('beforeunload', disconnectHandlerRef.current);
       });
     }
 
     return () => {
       if (room.state === 'connected' && !isConnecting) {
         room.disconnect();
-        window.removeEventListener('beforeunload', disconnect);
+        window.removeEventListener(
+          'beforeunload',
+          disconnectHandlerRef.current
+        );
       }
     };
   }, [token, options, room, localTracks, setIsConnecting, isConnecting]);

@@ -3,9 +3,9 @@ import { styled } from '@material-ui/core/styles';
 
 import LocalVideoPreview from './components/LocalVideoPreview/LocalVideoPreview';
 import Menu from './components/Menu/Menu';
+import Room from './components/Room/Room';
 
 import useRoomState from './hooks/useRoomState/useRoomState';
-import { useVideoContext } from './hooks/context';
 
 const Container = styled('div')({
   display: 'flex',
@@ -17,19 +17,14 @@ const Main = styled('main')({
   height: '100%',
 });
 
-export default function Room() {
+export default function App() {
   const roomState = useRoomState();
-  const { room } = useVideoContext();
 
   return (
     <Container>
       <Menu />
       <Main>
-        {roomState === 'disconnected' ? (
-          <LocalVideoPreview />
-        ) : (
-          <p>You have joined room {room.name}</p>
-        )}
+        {roomState === 'disconnected' ? <LocalVideoPreview /> : <Room />}
       </Main>
     </Container>
   );
