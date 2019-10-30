@@ -23,7 +23,7 @@ const Identity = styled('h4')({
   margin: 0,
 });
 
-interface ParticipantProps {
+interface ParticipantInfoProps {
   participant: LocalParticipant | RemoteParticipant;
   children: React.ReactNode;
 }
@@ -31,7 +31,7 @@ interface ParticipantProps {
 export default function ParticipantInfo({
   participant,
   children,
-}: ParticipantProps) {
+}: ParticipantInfoProps) {
   const networkQualityLevel = useParticipantNetworkQualityLevel(participant);
 
   return (
