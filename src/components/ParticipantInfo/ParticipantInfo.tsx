@@ -20,6 +20,8 @@ const InfoContainer = styled('div')({
   height: '100%',
   padding: '0.4em',
   width: '100%',
+  background: ({ hideVideo }: { hideVideo?: boolean }) =>
+    hideVideo ? 'black' : 'transparent',
 });
 
 const Identity = styled('h4')({
@@ -47,10 +49,13 @@ export default function ParticipantInfo({
   const audioIsEnabled = usePublicationIsTrackEnabled(
     publications.find(p => p.trackName === 'microphone')
   );
+  const videoIsEnabled = usePublicationIsTrackEnabled(
+    publications.find(p => p.trackName === 'camera')
+  );
 
   return (
     <Container>
-      <InfoContainer>
+      <InfoContainer hideVideo={!videoIsEnabled}>
         <InfoRow>
           <Identity>{participant.identity}</Identity>
           <NetworkQualityLevel qualityLevel={networkQualityLevel} />

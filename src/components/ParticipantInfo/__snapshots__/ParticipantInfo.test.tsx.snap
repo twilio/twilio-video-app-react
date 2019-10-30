@@ -2,7 +2,9 @@
 
 exports[`the ParticipantInfo component should render correctly 1`] = `
 <Styled(div)>
-  <Styled(div)>
+  <Styled(div)
+    hideVideo={true}
+  >
     <Styled(div)>
       <Styled(h4)>
         mockIdentity

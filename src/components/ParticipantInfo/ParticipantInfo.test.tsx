@@ -22,6 +22,18 @@ describe('the ParticipantInfo component', () => {
     expect(wrapper).toMatchSnapshot();
   });
 
+  it('should display MicOff icon when microphone is disabled', () => {
+    mockUsePublications.mockImplementation(() => [
+      { trackName: 'microphone', isTrackEnabled: false },
+    ]);
+    const wrapper = shallow(
+      <ParticipantInfo participant={{ identity: 'mockIdentity' } as any}>
+        mock children
+      </ParticipantInfo>
+    );
+    expect(wrapper.find('MicOffIcon').exists()).toEqual(true);
+  });
+
   it('should not display MicOff icon when microphone is enabled', () => {
     mockUsePublications.mockImplementation(() => [
       { trackName: 'microphone', isTrackEnabled: true },
@@ -31,6 +43,40 @@ describe('the ParticipantInfo component', () => {
         mock children
       </ParticipantInfo>
     );
-    expect(wrapper.find('MicOffIcon').length).toEqual(0);
+    expect(wrapper.find('MicOffIcon').exists()).toEqual(false);
+  });
+
+  it('should add hideVideoProp to InfoContainer component when video is disabled', () => {
+    mockUsePublications.mockImplementation(() => [
+      { trackName: 'camera', isTrackEnabled: false },
+    ]);
+    const wrapper = shallow(
+      <ParticipantInfo participant={{ identity: 'mockIdentity' } as any}>
+        mock children
+      </ParticipantInfo>
+    );
+    expect(
+      wrapper
+        .find('Styled(div)')
+        .at(1)
+        .prop('hideVideo')
+    ).toEqual(true);
+  });
+
+  it('should not add hideVideoProp to InfoContainer component when video is enabled', () => {
+    mockUsePublications.mockImplementation(() => [
+      { trackName: 'camera', isTrackEnabled: true },
+    ]);
+    const wrapper = shallow(
+      <ParticipantInfo participant={{ identity: 'mockIdentity' } as any}>
+        mock children
+      </ParticipantInfo>
+    );
+    expect(
+      wrapper
+        .find('Styled(div)')
+        .at(1)
+        .prop('hideVideo')
+    ).toEqual(false);
   });
 });
