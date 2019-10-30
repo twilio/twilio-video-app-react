@@ -1,7 +1,10 @@
-import React from 'react';
+import React from './node_modules/react';
 import ParticipantInfo from '../ParticipantInfo/ParticipantInfo';
 import ParticipantTracks from '../ParticipantTracks/ParticipantTracks';
-import { LocalParticipant, RemoteParticipant } from 'twilio-video';
+import {
+  LocalParticipant,
+  RemoteParticipant,
+} from './node_modules/twilio-video';
 
 interface ParticipantProps {
   participant: LocalParticipant | RemoteParticipant;

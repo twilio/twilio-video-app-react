@@ -2,44 +2,24 @@
 
 exports[`the ParticipantStrip component should correctly render ParticipantInfo components 1`] = `
 <Styled(aside)>
-  <ParticipantInfo
+  <Participant
     participant="localParticipant"
-  >
-    <Participant
-      participant="localParticipant"
-    />
-  </ParticipantInfo>
-  <ParticipantInfo
+  />
+  <Participant
     key="0"
     participant={
       Object {
         "sid": 0,
       }
     }
-  >
-    <Participant
-      participant={
-        Object {
-          "sid": 0,
-        }
-      }
-    />
-  </ParticipantInfo>
-  <ParticipantInfo
+  />
+  <Participant
     key="1"
     participant={
       Object {
         "sid": 1,
       }
     }
-  >
-    <Participant
-      participant={
-        Object {
-          "sid": 1,
-        }
-      }
-    />
-  </ParticipantInfo>
+  />
 </Styled(aside)>
 `;
