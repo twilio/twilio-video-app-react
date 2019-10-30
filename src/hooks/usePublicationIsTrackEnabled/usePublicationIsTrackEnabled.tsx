@@ -1,9 +1,5 @@
 import { useState, useEffect } from 'react';
-import {
-  LocalTrackPublication,
-  RemoteTrackPublication,
-  TrackPublication,
-} from 'twilio-video';
+import { LocalTrackPublication, RemoteTrackPublication } from 'twilio-video';
 
 type PublicationType = LocalTrackPublication | RemoteTrackPublication;
 

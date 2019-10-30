@@ -18,7 +18,7 @@ const InfoContainer = styled('div')({
   flexDirection: 'column',
   justifyContent: 'space-between',
   height: '100%',
-  padding: '0.3em',
+  padding: '0.4em',
   width: '100%',
 });
 
