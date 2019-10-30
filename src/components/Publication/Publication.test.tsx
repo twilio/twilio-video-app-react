@@ -33,7 +33,7 @@ describe('the Publication component', () => {
     expect(wrapper.find('AudioTrack').length).toBe(1);
   });
 
-  it('should render an null when the track has name "microphone" and disableAudio is true', () => {
+  it('should render null when the track has name "microphone" and disableAudio is true', () => {
     mockUseTrack.mockImplementation(() => ({ name: 'microphone' }));
     const wrapper = shallow(
       <Publication
