@@ -3,7 +3,6 @@ import ParticipantStrip from '../ParticipantStrip/ParticipantStrip';
 import { styled } from '@material-ui/core/styles';
 import useMainSpeaker from '../../hooks/useMainSpeaker/useMainSpeaker';
 import Participant from '../Participant/Participant';
-import { Theme } from 'pretty-format/build/types';
 
 const Container = styled('div')({
   position: 'relative',
@@ -27,7 +26,7 @@ export default function Room() {
     <Container>
       <ParticipantStrip />
       <MainParticipantContainer>
-        <Participant participant={mainParticipant} />
+        <Participant participant={mainParticipant} disableAudio />
       </MainParticipantContainer>
     </Container>
   );

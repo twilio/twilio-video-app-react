@@ -10,7 +10,7 @@ export default function useDominantSpeaker() {
     return () => {
       room.off('dominantSpeakerChanged', setDominantSpeaker);
     };
-  }, []);
+  }, [room]);
 
   return dominantSpeaker;
 }
