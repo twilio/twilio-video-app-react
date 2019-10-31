@@ -1,8 +1,8 @@
 import React from 'react';
+import Participant from '../Participant/Participant';
 import ParticipantStrip from '../ParticipantStrip/ParticipantStrip';
 import { styled } from '@material-ui/core/styles';
 import useMainSpeaker from '../../hooks/useMainSpeaker/useMainSpeaker';
-import Participant from '../Participant/Participant';
 
 const Container = styled('div')({
   position: 'relative',
