@@ -6,10 +6,12 @@ import { useVideoContext } from '../../hooks/context';
 
 interface ParticipantTracksProps {
   participant: LocalParticipant | RemoteParticipant;
+  disableAudio?: boolean;
 }
 
 export default function ParticipantTracks({
   participant,
+  disableAudio,
 }: ParticipantTracksProps) {
   const { room } = useVideoContext();
   const publications = usePublications(participant);
@@ -23,6 +25,7 @@ export default function ParticipantTracks({
           publication={publication}
           participant={participant}
           isLocal={isLocal}
+          disableAudio={disableAudio}
         />
       ))}
     </>

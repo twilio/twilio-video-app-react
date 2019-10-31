@@ -5,12 +5,19 @@ import { LocalParticipant, RemoteParticipant } from 'twilio-video';
 
 interface ParticipantProps {
   participant: LocalParticipant | RemoteParticipant;
+  disableAudio?: boolean;
 }
 
-export default function Participant({ participant }: ParticipantProps) {
+export default function Participant({
+  participant,
+  disableAudio,
+}: ParticipantProps) {
   return (
     <ParticipantInfo participant={participant}>
-      <ParticipantTracks participant={participant} />
+      <ParticipantTracks
+        participant={participant}
+        disableAudio={disableAudio}
+      />
     </ParticipantInfo>
   );
 }
