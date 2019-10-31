@@ -9,6 +9,6 @@ jobs:
     
       - run: npm ci
 
-      - run: npm test
+      - run: npm test -- --runInBand
 
       - run: npm run build
