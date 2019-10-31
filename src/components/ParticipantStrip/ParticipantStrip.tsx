@@ -4,14 +4,14 @@ import { styled } from '@material-ui/core/styles';
 import useParticipants from '../../hooks/useParticipants/useParticipants';
 import { useVideoContext } from '../../hooks/context';
 
-const Container = styled('aside')({
+const Container = styled('aside')(({ theme }) => ({
   position: 'absolute',
   top: 0,
   bottom: 0,
-  right: '85%',
+  right: `calc(100% - ${theme.sidebarPosition})`,
   left: 0,
   padding: '0.5em',
-});
+}));
 
 export default function ParticipantStrip() {
   const { room } = useVideoContext();
