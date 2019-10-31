@@ -14,6 +14,7 @@ export default function usePublicationIsTrackEnabled(
     if (publication) {
       const setEnabled = () => setIsEnabled(true);
       const setDisabled = () => setIsEnabled(false);
+      setIsEnabled(publication.isTrackEnabled);
       publication.on('trackEnabled', setEnabled);
       publication.on('trackDisabled', setDisabled);
       return () => {
