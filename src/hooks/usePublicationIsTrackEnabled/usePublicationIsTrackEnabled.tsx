@@ -3,7 +3,9 @@ import { LocalTrackPublication, RemoteTrackPublication } from 'twilio-video';
 
 type PublicationType = LocalTrackPublication | RemoteTrackPublication;
 
-export default function useTrackIsEnabled(publication?: PublicationType) {
+export default function usePublicationIsTrackEnabled(
+  publication?: PublicationType
+) {
   const [isEnabled, setIsEnabled] = useState(
     publication ? publication.isTrackEnabled : false
   );

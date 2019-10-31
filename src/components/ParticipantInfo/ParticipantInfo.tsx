@@ -46,21 +46,21 @@ export default function ParticipantInfo({
 }: ParticipantInfoProps) {
   const networkQualityLevel = useParticipantNetworkQualityLevel(participant);
   const publications = usePublications(participant);
-  const audioIsEnabled = usePublicationIsTrackEnabled(
+  const isAudioEnabled = usePublicationIsTrackEnabled(
     publications.find(p => p.trackName === 'microphone')
   );
-  const videoIsEnabled = usePublicationIsTrackEnabled(
+  const isVideoEnabled = usePublicationIsTrackEnabled(
     publications.find(p => p.trackName === 'camera')
   );
 
   return (
     <Container>
-      <InfoContainer hideVideo={!videoIsEnabled}>
+      <InfoContainer hideVideo={!isVideoEnabled}>
         <InfoRow>
           <Identity>{participant.identity}</Identity>
           <NetworkQualityLevel qualityLevel={networkQualityLevel} />
         </InfoRow>
-        {!audioIsEnabled && <MicOff />}
+        {!isAudioEnabled && <MicOff />}
       </InfoContainer>
       {children}
     </Container>

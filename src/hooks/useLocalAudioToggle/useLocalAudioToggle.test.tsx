@@ -1,14 +1,14 @@
 import { renderHook } from '@testing-library/react-hooks';
-import useAudioMute from './useAudioMute';
+import useLocalAudioToggle from './useLocalAudioToggle';
 import { useVideoContext } from '../context';
 
 jest.mock('../context');
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 
-jest.mock('../useTrackIsEnabled/useTrackIsEnabled', () => () => true);
+jest.mock('../useIsTrackEnabled/useIsTrackEnabled', () => () => true);
 
-describe('the useAudioMute hook', () => {
-  it('should return the value from the useTrackIsEnabled hook', () => {
+describe('the useLocalAudioToggle hook', () => {
+  it('should return the value from the useIsTrackEnabled hook', () => {
     const mockLocalTrack = {
       name: 'microphone',
       isEnabled: true,
@@ -20,7 +20,7 @@ describe('the useAudioMute hook', () => {
       localTracks: [mockLocalTrack],
     }));
 
-    const { result } = renderHook(() => useAudioMute());
+    const { result } = renderHook(useLocalAudioToggle);
     expect(result.current).toEqual([true, expect.any(Function)]);
   });
 
@@ -37,7 +37,7 @@ describe('the useAudioMute hook', () => {
         localTracks: [mockLocalTrack],
       }));
 
-      const { result } = renderHook(() => useAudioMute());
+      const { result } = renderHook(useLocalAudioToggle);
       result.current[1]();
       expect(mockLocalTrack.disable).toHaveBeenCalled();
       expect(mockLocalTrack.enable).not.toHaveBeenCalled();
@@ -55,7 +55,7 @@ describe('the useAudioMute hook', () => {
         localTracks: [mockLocalTrack],
       }));
 
-      const { result } = renderHook(() => useAudioMute());
+      const { result } = renderHook(useLocalAudioToggle);
       result.current[1]();
       expect(mockLocalTrack.disable).not.toHaveBeenCalled();
       expect(mockLocalTrack.enable).toHaveBeenCalled();

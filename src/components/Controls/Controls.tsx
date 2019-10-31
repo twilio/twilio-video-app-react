@@ -9,8 +9,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Videocam from '@material-ui/icons/Videocam';
 import VideocamOff from '@material-ui/icons/VideocamOff';
 
-import useAudioMute from '../../hooks/useAudioMute/useAudioMute';
-import useVideoMute from '../../hooks/useVideoMute/useVideoMute';
+import useLocalAudioToggle from '../../hooks/useLocalAudioToggle/useLocalAudioToggle';
+import useLocalVideoToggle from '../../hooks/useLocalVideoToggle/useLocalVideoToggle';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 
 import { useDispatch } from 'react-redux';
@@ -37,8 +37,8 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function Controls() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [isAudioEnabled, toggleAudioEnabled] = useAudioMute();
-  const [isVideoEnabled, toggleVideoEnabled] = useVideoMute();
+  const [isAudioEnabled, toggleAudioEnabled] = useLocalAudioToggle();
+  const [isVideoEnabled, toggleVideoEnabled] = useLocalVideoToggle();
   const roomState = useRoomState();
 
   return (

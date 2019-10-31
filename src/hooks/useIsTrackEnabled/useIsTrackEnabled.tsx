@@ -13,7 +13,7 @@ type TrackType =
   | RemoteVideoTrack
   | undefined;
 
-export default function useTrackIsEnabled(track: TrackType) {
+export default function useIsTrackEnabled(track: TrackType) {
   const [isEnabled, setIsEnabled] = useState(track ? track.isEnabled : true);
 
   useEffect(() => {

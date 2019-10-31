@@ -1,14 +1,14 @@
 import { useCallback } from 'react';
 import { useVideoContext } from '../context';
 import { LocalVideoTrack } from 'twilio-video';
-import useTrackIsEnabled from '../useTrackIsEnabled/useTrackIsEnabled';
+import useIsTrackEnabled from '../useIsTrackEnabled/useIsTrackEnabled';
 
-export default function useVideoMute() {
+export default function useLocalVideoToggle() {
   const { localTracks } = useVideoContext();
   const videoTrack = localTracks.find(
     track => track.name === 'camera'
   ) as LocalVideoTrack;
-  const isEnabled = useTrackIsEnabled(videoTrack);
+  const isEnabled = useIsTrackEnabled(videoTrack);
 
   const toggleVideoEnabled = useCallback(() => {
     videoTrack.isEnabled ? videoTrack.disable() : videoTrack.enable();
