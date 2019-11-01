@@ -26,10 +26,12 @@ export default function Publication({
 
   if (track === null) return null;
 
-  switch (track.name) {
-    case 'camera':
+  switch (true) {
+    case track.name === 'screen':
+      return <VideoTrack track={track as IVideoTrack} />;
+    case track.name === 'camera':
       return <VideoTrack track={track as IVideoTrack} isLocal={isLocal} />;
-    case 'microphone':
+    case track.name === 'microphone':
       return disableAudio ? null : <AudioTrack track={track as IAudioTrack} />;
     default:
       return null;
