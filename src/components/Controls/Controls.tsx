@@ -6,6 +6,8 @@ import Fab from '@material-ui/core/Fab';
 import Mic from '@material-ui/icons/Mic';
 import MicOff from '@material-ui/icons/MicOff';
 import Tooltip from '@material-ui/core/Tooltip';
+import ScreenShare from '@material-ui/icons/ScreenShare';
+import StopScreenShare from '@material-ui/icons/StopScreenShare';
 import Videocam from '@material-ui/icons/Videocam';
 import VideocamOff from '@material-ui/icons/VideocamOff';
 
@@ -15,6 +17,7 @@ import useRoomState from '../../hooks/useRoomState/useRoomState';
 
 import { useDispatch } from 'react-redux';
 import { receiveToken } from '../../store/main/main';
+import useScreenShare from '../../hooks/useScreenShare/useScreenShare';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -39,6 +42,7 @@ export default function Controls() {
   const dispatch = useDispatch();
   const [isAudioEnabled, toggleAudioEnabled] = useLocalAudioToggle();
   const [isVideoEnabled, toggleVideoEnabled] = useLocalVideoToggle();
+  const [isScreenShared, toggleScreenShare] = useScreenShare();
   const roomState = useRoomState();
 
   return (
@@ -62,16 +66,27 @@ export default function Controls() {
         </Fab>
       </Tooltip>
       {roomState === 'connected' && (
-        <Tooltip
-          title={'End Call'}
-          onClick={() => dispatch(receiveToken(''))}
-          placement="top"
-          PopperProps={{ disablePortal: true }}
-        >
-          <Fab className={classes.fab} color="primary">
-            <CallEnd />
-          </Fab>
-        </Tooltip>
+        <>
+          <Tooltip
+            title={'End Call'}
+            onClick={() => dispatch(receiveToken(''))}
+            placement="top"
+            PopperProps={{ disablePortal: true }}
+          >
+            <Fab className={classes.fab} color="primary">
+              <CallEnd />
+            </Fab>
+          </Tooltip>
+          <Tooltip
+            title={isScreenShared ? 'Stop Screen Sharing' : 'Share Screen'}
+            placement="top"
+            PopperProps={{ disablePortal: true }}
+          >
+            <Fab className={classes.fab} onClick={toggleScreenShare}>
+              {isScreenShared ? <StopScreenShare /> : <ScreenShare />}
+            </Fab>
+          </Tooltip>
+        </>
       )}
     </div>
   );
