@@ -20,6 +20,8 @@ export default function useIsTrackEnabled(track: TrackType) {
     if (track) {
       const setEnabled = () => setIsEnabled(true);
       const setDisabled = () => setIsEnabled(false);
+
+      setIsEnabled(track.isEnabled);
       track.on('enabled', setEnabled);
       track.on('disabled', setDisabled);
       return () => {
