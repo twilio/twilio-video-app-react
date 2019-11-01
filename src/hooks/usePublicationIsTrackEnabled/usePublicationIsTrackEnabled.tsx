@@ -11,11 +11,11 @@ export default function usePublicationIsTrackEnabled(
   );
 
   useEffect(() => {
+    setIsEnabled(publication ? publication.isTrackEnabled : false);
+
     if (publication) {
       const setEnabled = () => setIsEnabled(true);
       const setDisabled = () => setIsEnabled(false);
-
-      setIsEnabled(publication.isTrackEnabled);
       publication.on('trackEnabled', setEnabled);
       publication.on('trackDisabled', setDisabled);
       return () => {
