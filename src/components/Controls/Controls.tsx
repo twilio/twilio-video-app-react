@@ -18,6 +18,8 @@ import useRoomState from '../../hooks/useRoomState/useRoomState';
 import { useDispatch } from 'react-redux';
 import { receiveToken } from '../../store/main/main';
 import useScreenShare from '../../hooks/useScreenShare/useScreenShare';
+import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
+import { useVideoContext } from '../../hooks/context';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -44,6 +46,11 @@ export default function Controls() {
   const [isVideoEnabled, toggleVideoEnabled] = useLocalVideoToggle();
   const [isScreenShared, toggleScreenShare] = useScreenShare();
   const roomState = useRoomState();
+  const screenShareParticipant = useScreenShareParticipant();
+  const { room } = useVideoContext();
+  const disableScreenShareButton =
+    !!screenShareParticipant &&
+    screenShareParticipant !== room.localParticipant;
 
   return (
     <div className={classes.container}>
@@ -82,7 +89,11 @@ export default function Controls() {
             placement="top"
             PopperProps={{ disablePortal: true }}
           >
-            <Fab className={classes.fab} onClick={toggleScreenShare}>
+            <Fab
+              className={classes.fab}
+              onClick={toggleScreenShare}
+              disabled={disableScreenShareButton}
+            >
               {isScreenShared ? <StopScreenShare /> : <ScreenShare />}
             </Fab>
           </Tooltip>
