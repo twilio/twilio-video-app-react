@@ -10,6 +10,8 @@ import ScreenShare from '@material-ui/icons/ScreenShare';
 
 const Container = styled('div')({
   position: 'relative',
+  display: 'flex',
+  alignItems: 'center',
 });
 
 const InfoContainer = styled('div')({
