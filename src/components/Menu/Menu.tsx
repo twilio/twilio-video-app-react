@@ -11,6 +11,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import { getToken } from '../../store/main/main';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import { useVideoContext } from '../../hooks/context';
+import ToggleFullscreenButton from '../ToggleFullScreenButton/ToggleFullScreenButton';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -75,7 +76,13 @@ export default function Menu() {
               onChange={handleRoomNameChange}
               margin="dense"
             />
-            <Button type="submit" color="primary" variant="contained" disabled={isConnecting || !name || !roomName}>
+            <Button
+              type="submit"
+              aria-label="Join Room"
+              color="primary"
+              variant="contained"
+              disabled={isConnecting || !name || !roomName}
+            >
               Join Room
             </Button>
             {isConnecting && <CircularProgress className={classes.loadingSpinner} />}
@@ -83,6 +90,7 @@ export default function Menu() {
         ) : (
           <h3>{roomName}</h3>
         )}
+        <ToggleFullscreenButton />
       </Toolbar>
     </AppBar>
   );
