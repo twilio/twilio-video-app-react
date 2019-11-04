@@ -21,22 +21,37 @@ export default function useScreenShareParticipant() {
   const [screenShareParticipant, setScreenShareParticipant] = useState();
 
   useEffect(() => {
-    const updateScreenShareParticipant = () => {
-      setScreenShareParticipant(
-        Array.from<RemoteParticipant | LocalParticipant>(
-          room.participants.values()
-        )
-          .concat(room.localParticipant)
-          .find(findScreenShareTrackPublication)
+    if (room.state === 'connected') {
+      const updateScreenShareParticipant = () => {
+        setScreenShareParticipant(
+          Array.from<RemoteParticipant | LocalParticipant>(
+            room.participants.values()
+          )
+            .concat(room.localParticipant)
+            .find(findScreenShareTrackPublication)
+        );
+      };
+      updateScreenShareParticipant();
+      room.on('trackPublished', updateScreenShareParticipant);
+      room.on('trackUnpublished', updateScreenShareParticipant);
+      room.localParticipant.on('trackPublished', updateScreenShareParticipant);
+      room.localParticipant.on(
+        'trackUnpublished',
+        updateScreenShareParticipant
       );
-    };
-    updateScreenShareParticipant();
-    room.on('trackPublished', updateScreenShareParticipant);
-    room.on('trackUnpublished', updateScreenShareParticipant);
-    return () => {
-      room.off('trackPublished', updateScreenShareParticipant);
-      room.off('trackUnpublished', updateScreenShareParticipant);
-    };
+      return () => {
+        room.off('trackPublished', updateScreenShareParticipant);
+        room.off('trackUnpublished', updateScreenShareParticipant);
+        room.localParticipant.off(
+          'trackPublished',
+          updateScreenShareParticipant
+        );
+        room.localParticipant.off(
+          'trackUnpublished',
+          updateScreenShareParticipant
+        );
+      };
+    }
   }, [room]);
 
   return screenShareParticipant;
