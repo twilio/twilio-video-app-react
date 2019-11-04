@@ -1,11 +1,19 @@
 import { useState, useCallback, useRef } from 'react';
 import { useVideoContext } from '../context';
+import { LocalTrackPublication, LogLevels, Track } from 'twilio-video';
 
 declare global {
   interface MediaDevices {
     getDisplayMedia(): Promise<MediaStream>;
   }
 }
+
+interface MediaStreamTrackPublishOptions {
+  name?: string;
+  priority: Track.Priority;
+  logLevel: LogLevels;
+}
+
 export default function useScreenShare() {
   const { room } = useVideoContext();
   const [isSharing, setIsSharing] = useState();
@@ -18,8 +26,8 @@ export default function useScreenShare() {
       room.localParticipant
         .publishTrack(track, {
           name: 'screen',
-          logLevel: 'warn',
-        })
+          priority: 'high',
+        } as MediaStreamTrackPublishOptions)
         .then(trackPublication => {
           setIsSharing(true);
           stopScreenShareRef.current = () => {
