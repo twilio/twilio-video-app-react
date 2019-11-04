@@ -75,16 +75,6 @@ export default function Controls() {
       {roomState === 'connected' && (
         <>
           <Tooltip
-            title={'End Call'}
-            onClick={() => dispatch(receiveToken(''))}
-            placement="top"
-            PopperProps={{ disablePortal: true }}
-          >
-            <Fab className={classes.fab} color="primary">
-              <CallEnd />
-            </Fab>
-          </Tooltip>
-          <Tooltip
             title={isScreenShared ? 'Stop Screen Sharing' : 'Share Screen'}
             placement="top"
             PopperProps={{ disablePortal: true }}
@@ -95,6 +85,16 @@ export default function Controls() {
               disabled={disableScreenShareButton}
             >
               {isScreenShared ? <StopScreenShare /> : <ScreenShare />}
+            </Fab>
+          </Tooltip>
+          <Tooltip
+            title={'End Call'}
+            onClick={() => dispatch(receiveToken(''))}
+            placement="top"
+            PopperProps={{ disablePortal: true }}
+          >
+            <Fab className={classes.fab} color="primary">
+              <CallEnd />
             </Fab>
           </Tooltip>
         </>
