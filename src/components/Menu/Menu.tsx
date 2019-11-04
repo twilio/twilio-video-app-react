@@ -5,12 +5,16 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import FullscreenIcon from '@material-ui/icons/Fullscreen';
+import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
+import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Toolbar from '@material-ui/core/Toolbar';
 
 import { getToken, receiveToken } from '../../store/main/main';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import { useVideoContext } from '../../hooks/context';
+import useFullScreenToggler from '../../hooks/useFullScreenToggler/useFullScreenToggler';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,12 +30,16 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: theme.spacing(1),
       width: 200,
     },
+    toggleFullScreenBtn: {
+      marginLeft: 'auto',
+    },
   })
 );
 
 export default function Menu() {
   const [name, setName] = useState<string>('');
   const [roomName, setRoomName] = useState<string>('');
+  const [isFullScreen, toggleFullScreen] = useFullScreenToggler();
   const roomState = useRoomState();
   const dispatch = useDispatch();
   const { isConnecting } = useVideoContext();
@@ -72,14 +80,26 @@ export default function Menu() {
               onChange={handleRoomNameChange}
               margin="dense"
             />
-            <Button type="submit" color="primary" variant="contained" disabled={isConnecting || !name || !roomName}>
+            <Button type="submit" color="primary" variant="contained" data-testid="join-room-button" disabled={isConnecting || !name || !roomName}>
               Join Room
             </Button>
             {isConnecting && <CircularProgress></CircularProgress>}
           </form>
         ) : (
-          <Button onClick={() => dispatch(receiveToken(''))}>Leave Room</Button>
+          <Button data-testid="leave-room-button" onClick={() => dispatch(receiveToken(''))}>Leave Room</Button>
         )}
+        <IconButton
+          className={classes.toggleFullScreenBtn}
+          data-testid="toggle-full-screen"
+          aria-label={`full screen`}
+          onClick={() => toggleFullScreen()}
+        >
+          {isFullScreen ? (
+            <FullscreenExitIcon data-testid="exit-fullscreen-icon" />
+          ) : (
+            <FullscreenIcon data-testid="full-screen-icon" />
+          )}
+        </IconButton>
       </Toolbar>
     </AppBar>
   );
