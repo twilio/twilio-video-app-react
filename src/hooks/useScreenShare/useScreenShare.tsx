@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef } from 'react';
 import { useVideoContext } from '../context';
-import { LocalTrackPublication, LogLevels, Track } from 'twilio-video';
+import { LogLevels, Track } from 'twilio-video';
 
 declare global {
   interface MediaDevices {
