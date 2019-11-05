@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import useScreenShare from './useScreenShare';
+import useScreenShareToggle from './useScreenShareToggle';
 import { useVideoContext } from '../context';
 import { EventEmitter } from 'events';
 jest.mock('../context');
@@ -28,20 +28,20 @@ const mockMediaDevices = {
 
 Object.defineProperty(navigator, 'mediaDevices', mockMediaDevices);
 
-describe('the useScreenShare hook', () => {
+describe('the useScreenShareToggle hook', () => {
   beforeEach(() => {
     delete mockTrack.onended;
     jest.clearAllMocks();
   });
 
   it('should return a default value of false', () => {
-    const { result } = renderHook(useScreenShare);
+    const { result } = renderHook(useScreenShareToggle);
     expect(result.current).toEqual([false, expect.any(Function)]);
   });
 
   describe('toggle function', () => {
     it('should call localParticipant.publishTrack with the correct arguments when isSharing is false', async () => {
-      const { result, waitForNextUpdate } = renderHook(useScreenShare);
+      const { result, waitForNextUpdate } = renderHook(useScreenShareToggle);
       result.current[1]();
       await waitForNextUpdate();
       expect(navigator.mediaDevices.getDisplayMedia).toHaveBeenCalled();
@@ -51,7 +51,7 @@ describe('the useScreenShare hook', () => {
 
     it('should correctly stop screen sharing when isSharing is true', async () => {
       const localParticipantSpy = jest.spyOn(mockLocalParticipant, 'emit');
-      const { result, waitForNextUpdate } = renderHook(useScreenShare);
+      const { result, waitForNextUpdate } = renderHook(useScreenShareToggle);
       expect(mockTrack.onended).toBeUndefined();
       result.current[1]();
       await waitForNextUpdate();
@@ -68,7 +68,7 @@ describe('the useScreenShare hook', () => {
     describe('onended function', () => {
       it('should correctly stop screen sharing when called', async () => {
         const localParticipantSpy = jest.spyOn(mockLocalParticipant, 'emit');
-        const { result, waitForNextUpdate } = renderHook(useScreenShare);
+        const { result, waitForNextUpdate } = renderHook(useScreenShareToggle);
         expect(mockTrack.onended).toBeUndefined();
         result.current[1]();
         await waitForNextUpdate();
