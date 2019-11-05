@@ -11,6 +11,8 @@ export default function useParticipantNetworkQualityLevel(
   useEffect(() => {
     const handleNewtorkQualityLevelChange = (networkQualityLevel: number) =>
       setNetworkQualityLevel(networkQualityLevel);
+
+    setNetworkQualityLevel(participant.networkQualityLevel);
     participant.on(
       'networkQualityLevelChanged',
       handleNewtorkQualityLevelChange
@@ -21,7 +23,7 @@ export default function useParticipantNetworkQualityLevel(
         handleNewtorkQualityLevelChange
       );
     };
-  }, [participant, setNetworkQualityLevel]);
+  }, [participant]);
 
   return networkQualityLevel;
 }

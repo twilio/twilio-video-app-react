@@ -11,7 +11,9 @@ export default function useLocalVideoToggle() {
   const isEnabled = useIsTrackEnabled(videoTrack);
 
   const toggleVideoEnabled = useCallback(() => {
-    videoTrack.isEnabled ? videoTrack.disable() : videoTrack.enable();
+    if (videoTrack) {
+      videoTrack.isEnabled ? videoTrack.disable() : videoTrack.enable();
+    }
   }, [videoTrack]);
 
   return [isEnabled, toggleVideoEnabled] as const;

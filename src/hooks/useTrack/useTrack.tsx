@@ -8,6 +8,8 @@ export default function useTrack(
 
   useEffect(() => {
     const removeTrack = () => setTrack(null);
+
+    setTrack(publication.track);
     publication.on('subscribed', setTrack);
     publication.on('unsubscribed', removeTrack);
     return () => {
