@@ -22,10 +22,10 @@ export default function usePublications(participant: Participant) {
       participant.tracks.values()
     ) as TrackPublication[]);
     participant.on('trackPublished', publicationAdded);
-    participant.on('trackRemoved', publicationRemoved);
+    participant.on('trackUnpublished', publicationRemoved);
     return () => {
       participant.off('trackPublished', publicationAdded);
-      participant.off('trackRemoved', publicationRemoved);
+      participant.off('trackUnpublished', publicationRemoved);
     };
   }, [participant]);
 

@@ -23,10 +23,10 @@ describe('the usePublications hook', () => {
     expect(result.current).toEqual(['track1', 'track2', 'newMockTrack']);
   });
 
-  it('should return respond to "trackRemoved" events', async () => {
+  it('should return respond to "trackUnpublished" events', async () => {
     const { result } = renderHook(() => usePublications(mockParticipant));
     act(() => {
-      mockParticipant.emit('trackRemoved', 'track1');
+      mockParticipant.emit('trackUnpublished', 'track1');
     });
     expect(result.current).toEqual(['track2']);
   });
