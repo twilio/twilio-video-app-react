@@ -16,36 +16,28 @@ const mockedUseVideoContext = useVideoContext as jest.Mock<IVideoContext>;
 describe('the Menu component', () => {
   it('should hide inputs when connected to a room', () => {
     mockedUseRoomState.mockImplementation(() => 'connected');
-    mockedUseVideoContext.mockImplementation(
-      () => ({ isConnecting: false } as any)
-    );
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false } as any));
     const { container } = render(<Menu />);
     expect(container.querySelector('input')).toEqual(null);
   });
 
   it('should display inputs when disconnected from a room', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
-    mockedUseVideoContext.mockImplementation(
-      () => ({ isConnecting: false } as any)
-    );
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false } as any));
     const { container } = render(<Menu />);
     expect(container.querySelectorAll('input').length).toEqual(2);
   });
 
   it('should display a loading spinner when connecting to a room', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
-    mockedUseVideoContext.mockImplementation(
-      () => ({ isConnecting: true } as any)
-    );
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: true } as any));
     const { container } = render(<Menu />);
     expect(container.querySelector('svg')).not.toBeNull();
   });
 
   it('should disable the Join Room button when the Name input or Room input are empty', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
-    mockedUseVideoContext.mockImplementation(
-      () => ({ isConnecting: false } as any)
-    );
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false } as any));
     const { getByLabelText, getByRole } = render(<Menu />);
     expect(getByRole('button').getAttribute('disabled')).toEqual('');
     fireEvent.change(getByLabelText('Name'), { target: { value: 'Foo' } });
@@ -57,9 +49,7 @@ describe('the Menu component', () => {
 
   it('should enable the Join Room button when the Name input and Room input are not empty', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
-    mockedUseVideoContext.mockImplementation(
-      () => ({ isConnecting: false } as any)
-    );
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false } as any));
     const { getByLabelText, getByRole } = render(<Menu />);
     fireEvent.change(getByLabelText('Name'), { target: { value: 'Foo' } });
     fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo' } });
@@ -68,9 +58,7 @@ describe('the Menu component', () => {
 
   it('should disable the Join Room button when connecting to a room', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
-    mockedUseVideoContext.mockImplementation(
-      () => ({ isConnecting: true } as any)
-    );
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: true } as any));
     const { getByLabelText, getByRole } = render(<Menu />);
     fireEvent.change(getByLabelText('Name'), { target: { value: 'Foo' } });
     fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo' } });
@@ -79,9 +67,7 @@ describe('the Menu component', () => {
 
   it('should dispatch a redux action when the Join Room button is clicked', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
-    mockedUseVideoContext.mockImplementation(
-      () => ({ isConnecting: false } as any)
-    );
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false } as any));
     const { getByLabelText, getByRole } = render(<Menu />);
     fireEvent.change(getByLabelText('Name'), { target: { value: 'Username' } });
     fireEvent.change(getByLabelText('Room'), { target: { value: 'Roomname' } });
@@ -91,9 +77,7 @@ describe('the Menu component', () => {
 
   it('should dispatch a redux action when the Leave Room button is clicked', () => {
     mockedUseRoomState.mockImplementation(() => 'connected');
-    mockedUseVideoContext.mockImplementation(
-      () => ({ isConnecting: false } as any)
-    );
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false } as any));
     const { getByRole } = render(<Menu />);
     fireEvent.click(getByRole('button'));
     expect(receiveToken).toHaveBeenCalledWith('');

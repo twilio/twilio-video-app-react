@@ -4,9 +4,7 @@ import useLocalTracks from './useLocalTracks';
 import useRoom from './useRoom';
 import { VideoProvider, useVideoContext } from './index';
 
-jest.mock('./useRoom', () =>
-  jest.fn(() => ({ room: 'mockRoom', isConnecting: false }))
-);
+jest.mock('./useRoom', () => jest.fn(() => ({ room: 'mockRoom', isConnecting: false })));
 jest.mock('./useLocalTracks', () => jest.fn(() => ['mockTrack']));
 
 describe('the useVideoContext hook', () => {

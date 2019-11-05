@@ -72,12 +72,7 @@ export default function Menu() {
               onChange={handleRoomNameChange}
               margin="dense"
             />
-            <Button
-              type="submit"
-              color="primary"
-              variant="contained"
-              disabled={isConnecting || !name || !roomName}
-            >
+            <Button type="submit" color="primary" variant="contained" disabled={isConnecting || !name || !roomName}>
               Join Room
             </Button>
             {isConnecting && <CircularProgress></CircularProgress>}

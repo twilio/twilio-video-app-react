@@ -12,9 +12,7 @@ describe('the useRoom hook', () => {
   });
 
   it('should set isConnecting to true while connecting to the room ', async () => {
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useRoom([], 'token', {})
-    );
+    const { result, waitForNextUpdate } = renderHook(() => useRoom([], 'token', {}));
     expect(result.current.isConnecting).toBe(true);
     expect(Video.connect).toHaveBeenCalledTimes(1);
     await waitForNextUpdate();
@@ -23,9 +21,7 @@ describe('the useRoom hook', () => {
   });
 
   it('should return a room when a token is provided', async () => {
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useRoom([], 'token', {})
-    );
+    const { result, waitForNextUpdate } = renderHook(() => useRoom([], 'token', {}));
     await waitForNextUpdate();
     expect(result.current.room.state).toEqual('connected');
   });
@@ -34,10 +30,7 @@ describe('the useRoom hook', () => {
     jest.spyOn(window, 'addEventListener');
     const { waitForNextUpdate } = renderHook(() => useRoom([], 'token', {}));
     await waitForNextUpdate();
-    expect(window.addEventListener).toHaveBeenCalledWith(
-      'beforeunload',
-      expect.any(Function)
-    );
+    expect(window.addEventListener).toHaveBeenCalledWith('beforeunload', expect.any(Function));
   });
 
   it('should remove the listener for the "beforeUnload" event when the component is unmounted', async () => {
@@ -59,16 +52,11 @@ describe('the useRoom hook', () => {
       options: {},
     });
     expect(result.current.room.disconnect).toHaveBeenCalled();
-    expect(window.removeEventListener).toHaveBeenCalledWith(
-      'beforeunload',
-      expect.any(Function)
-    );
+    expect(window.removeEventListener).toHaveBeenCalledWith('beforeunload', expect.any(Function));
   });
 
   it('should not call Video.connect if already connected to a room', async () => {
-    const { result, waitForNextUpdate, rerender } = renderHook(() =>
-      useRoom([], 'token', {})
-    );
+    const { result, waitForNextUpdate, rerender } = renderHook(() => useRoom([], 'token', {}));
     await waitForNextUpdate();
     expect(result.current.room.state).toBe('connected');
     rerender();

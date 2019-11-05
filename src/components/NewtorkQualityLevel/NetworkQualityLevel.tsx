@@ -16,11 +16,7 @@ const Container = styled('div')({
 
 const STEP = 3;
 
-export default function NetworkQualityLevel({
-  qualityLevel,
-}: {
-  qualityLevel: number | null;
-}) {
+export default function NetworkQualityLevel({ qualityLevel }: { qualityLevel: number | null }) {
   if (qualityLevel === null) return null;
   return (
     <Container>

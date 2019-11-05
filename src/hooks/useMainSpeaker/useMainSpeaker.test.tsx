@@ -20,10 +20,7 @@ describe('the useMainSpeaker hook', () => {
   it('should return the first remote participant if it exists', () => {
     const mockRoom: any = new EventEmitter();
     mockRoom.dominantSpeaker = null;
-    mockRoom.participants = new Map([
-      [0, 'participant'],
-      [1, 'secondParticipant'],
-    ]) as any;
+    mockRoom.participants = new Map([[0, 'participant'], [1, 'secondParticipant']]) as any;
     mockRoom.localParticipant = 'localParticipant';
     mockUseVideoContext.mockImplementation(() => ({ room: mockRoom }));
     const { result } = renderHook(useMainSpeaker);

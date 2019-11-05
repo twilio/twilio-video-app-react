@@ -11,17 +11,13 @@ describe('the useParticipantNetworkQualityLevel hook', () => {
 
   it('should return mockParticipant.networkQualityLevel by default', () => {
     mockParticipant.networkQualityLevel = 4;
-    const { result } = renderHook(() =>
-      useParticipantNetworkQualityLevel(mockParticipant)
-    );
+    const { result } = renderHook(() => useParticipantNetworkQualityLevel(mockParticipant));
     expect(result.current).toBe(4);
   });
 
   it('should return respond to "networkQualityLevelChanged" events', async () => {
     mockParticipant.networkQualityLevel = 4;
-    const { result } = renderHook(() =>
-      useParticipantNetworkQualityLevel(mockParticipant)
-    );
+    const { result } = renderHook(() => useParticipantNetworkQualityLevel(mockParticipant));
     act(() => {
       mockParticipant.emit('networkQualityLevelChanged', 3);
     });
@@ -30,9 +26,7 @@ describe('the useParticipantNetworkQualityLevel hook', () => {
 
   it('should clean up listeners on unmount', () => {
     mockParticipant.networkQualityLevel = 4;
-    const { unmount } = renderHook(() =>
-      useParticipantNetworkQualityLevel(mockParticipant)
-    );
+    const { unmount } = renderHook(() => useParticipantNetworkQualityLevel(mockParticipant));
     unmount();
     expect(mockParticipant.listenerCount('networkQualityLevelChanged')).toBe(0);
   });

@@ -5,9 +5,7 @@ import useIsTrackEnabled from '../useIsTrackEnabled/useIsTrackEnabled';
 
 export default function useLocalAudioToggle() {
   const { localTracks } = useVideoContext();
-  const audioTrack = localTracks.find(
-    track => track.name === 'microphone'
-  ) as LocalAudioTrack;
+  const audioTrack = localTracks.find(track => track.name === 'microphone') as LocalAudioTrack;
   const isEnabled = useIsTrackEnabled(audioTrack);
 
   const toggleAudioEnabled = useCallback(() => {
