@@ -16,35 +16,34 @@ interface MediaStreamTrackPublishOptions {
 
 export default function useScreenShare() {
   const { room } = useVideoContext();
-  const [isSharing, setIsSharing] = useState();
+  const [isSharing, setIsSharing] = useState(false);
   const stopScreenShareRef = useRef<() => void>(null!);
 
-  const shareScreen = useCallback(() => {
-    navigator.mediaDevices.getDisplayMedia().then(stream => {
-      const track = stream.getTracks()[0];
+  const shareScreen = useCallback(async () => {
+    const stream = await navigator.mediaDevices.getDisplayMedia();
+    const track = stream.getTracks()[0];
 
-      room.localParticipant
-        .publishTrack(track, {
-          name: 'screen',
-          priority: 'high',
-        } as MediaStreamTrackPublishOptions)
-        .then(trackPublication => {
-          setIsSharing(true);
-          stopScreenShareRef.current = () => {
-            room.localParticipant.unpublishTrack(track);
-            // TODO: remove this
-            room.localParticipant.emit('trackUnpublished', trackPublication);
-            track.stop();
-            setIsSharing(null);
-          };
-          track.onended = stopScreenShareRef.current;
-        });
-    });
+    const trackPublication = await room.localParticipant.publishTrack(track, {
+      name: 'screen',
+      priority: 'high',
+    } as MediaStreamTrackPublishOptions);
+
+    stopScreenShareRef.current = () => {
+      room.localParticipant.unpublishTrack(track);
+      // TODO: remove this
+      room.localParticipant.emit('trackUnpublished', trackPublication);
+      track.stop();
+      setIsSharing(false);
+    };
+
+    track.onended = stopScreenShareRef.current;
+
+    setIsSharing(true);
   }, [room]);
 
   const toggle = useCallback(() => {
     !isSharing ? shareScreen() : stopScreenShareRef.current();
   }, [isSharing, shareScreen, stopScreenShareRef]);
 
-  return [!!isSharing, toggle] as const;
+  return [isSharing, toggle] as const;
 }
