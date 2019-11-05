@@ -9,10 +9,7 @@ interface ParticipantTracksProps {
   disableAudio?: boolean;
 }
 
-export default function ParticipantTracks({
-  participant,
-  disableAudio,
-}: ParticipantTracksProps) {
+export default function ParticipantTracks({ participant, disableAudio }: ParticipantTracksProps) {
   const { room } = useVideoContext();
   const publications = usePublications(participant);
   const isLocal = participant === room.localParticipant;

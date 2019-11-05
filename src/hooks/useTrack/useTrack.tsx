@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LocalTrackPublication, RemoteTrackPublication } from 'twilio-video';
 
-export default function useTrack(
-  publication: LocalTrackPublication | RemoteTrackPublication
-) {
+export default function useTrack(publication: LocalTrackPublication | RemoteTrackPublication) {
   const [track, setTrack] = useState(publication.track);
 
   useEffect(() => {

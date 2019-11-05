@@ -32,10 +32,9 @@ describe('the usePublications hook', () => {
   });
 
   it('should return a new set of tracks if the participant changes', () => {
-    const { result, rerender } = renderHook(
-      ({ participant }) => usePublications(participant),
-      { initialProps: { participant: mockParticipant } }
-    );
+    const { result, rerender } = renderHook(({ participant }) => usePublications(participant), {
+      initialProps: { participant: mockParticipant },
+    });
     expect(result.current).toEqual(['track1', 'track2']);
     mockParticipant = new EventEmitter();
     mockParticipant.tracks = new Map([[0, 'track3'], [1, 'track4']]);

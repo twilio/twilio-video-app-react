@@ -22,19 +22,11 @@ interface VideoProviderProps {
   children: ReactNode;
 }
 
-export function VideoProvider({
-  token,
-  options,
-  children,
-}: VideoProviderProps) {
+export function VideoProvider({ token, options, children }: VideoProviderProps) {
   const localTracks = useLocalTracks();
   const { room, isConnecting } = useRoom(localTracks, token, options);
 
-  return (
-    <VideoContext.Provider value={{ room, localTracks, isConnecting }}>
-      {children}
-    </VideoContext.Provider>
-  );
+  return <VideoContext.Provider value={{ room, localTracks, isConnecting }}>{children}</VideoContext.Provider>;
 }
 
 export function useVideoContext() {
