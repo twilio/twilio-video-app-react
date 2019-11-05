@@ -30,7 +30,7 @@ export default function useScreenShare() {
 
     stopScreenShareRef.current = () => {
       room.localParticipant.unpublishTrack(track);
-      // TODO: remove this
+      // TODO: remove this if the SDK is updated to emit this event
       room.localParticipant.emit('trackUnpublished', trackPublication);
       track.stop();
       setIsSharing(false);
