@@ -8,16 +8,10 @@ interface ParticipantProps {
   disableAudio?: boolean;
 }
 
-export default function Participant({
-  participant,
-  disableAudio,
-}: ParticipantProps) {
+export default function Participant({ participant, disableAudio }: ParticipantProps) {
   return (
     <ParticipantInfo participant={participant}>
-      <ParticipantTracks
-        participant={participant}
-        disableAudio={disableAudio}
-      />
+      <ParticipantTracks participant={participant} disableAudio={disableAudio} />
     </ParticipantInfo>
   );
 }

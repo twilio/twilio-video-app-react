@@ -5,9 +5,7 @@ import useIsTrackEnabled from '../useIsTrackEnabled/useIsTrackEnabled';
 
 export default function useLocalVideoToggle() {
   const { localTracks } = useVideoContext();
-  const videoTrack = localTracks.find(
-    track => track.name === 'camera'
-  ) as LocalVideoTrack;
+  const videoTrack = localTracks.find(track => track.name === 'camera') as LocalVideoTrack;
   const isEnabled = useIsTrackEnabled(videoTrack);
 
   const toggleVideoEnabled = useCallback(() => {

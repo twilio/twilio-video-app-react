@@ -20,8 +20,7 @@ const InfoContainer = styled('div')({
   height: '100%',
   padding: '0.4em',
   width: '100%',
-  background: ({ hideVideo }: { hideVideo?: boolean }) =>
-    hideVideo ? 'black' : 'transparent',
+  background: ({ hideVideo }: { hideVideo?: boolean }) => (hideVideo ? 'black' : 'transparent'),
 });
 
 const Identity = styled('h4')({
@@ -40,18 +39,11 @@ interface ParticipantInfoProps {
   children: React.ReactNode;
 }
 
-export default function ParticipantInfo({
-  participant,
-  children,
-}: ParticipantInfoProps) {
+export default function ParticipantInfo({ participant, children }: ParticipantInfoProps) {
   const networkQualityLevel = useParticipantNetworkQualityLevel(participant);
   const publications = usePublications(participant);
-  const isAudioEnabled = usePublicationIsTrackEnabled(
-    publications.find(p => p.trackName === 'microphone')
-  );
-  const isVideoEnabled = usePublicationIsTrackEnabled(
-    publications.find(p => p.trackName === 'camera')
-  );
+  const isAudioEnabled = usePublicationIsTrackEnabled(publications.find(p => p.trackName === 'microphone'));
+  const isVideoEnabled = usePublicationIsTrackEnabled(publications.find(p => p.trackName === 'camera'));
 
   return (
     <Container>
