@@ -11,10 +11,5 @@ export default function useMainSpeaker() {
   const dominantSpeaker = useDominantSpeaker();
   const participants = useParticipants();
 
-  return (
-    screenShareParticipant ||
-    dominantSpeaker ||
-    participants[0] ||
-    localParticipant
-  );
+  return screenShareParticipant || dominantSpeaker || participants[0] || localParticipant;
 }

@@ -63,9 +63,7 @@ describe('the useScreenShareParticipant hook', () => {
     expect(result.current).toEqual(undefined);
 
     act(() => {
-      mockRoom.localParticipant.tracks = new Map([
-        [0, { trackName: 'screen' }],
-      ]);
+      mockRoom.localParticipant.tracks = new Map([[0, { trackName: 'screen' }]]);
       mockRoom.localParticipant.emit('trackPublished');
     });
 

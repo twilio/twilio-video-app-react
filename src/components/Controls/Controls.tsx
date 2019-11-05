@@ -48,9 +48,7 @@ export default function Controls() {
   const roomState = useRoomState();
   const screenShareParticipant = useScreenShareParticipant();
   const { room } = useVideoContext();
-  const disableScreenShareButton =
-    !!screenShareParticipant &&
-    screenShareParticipant !== room.localParticipant;
+  const disableScreenShareButton = !!screenShareParticipant && screenShareParticipant !== room.localParticipant;
 
   return (
     <div className={classes.container}>
@@ -79,11 +77,7 @@ export default function Controls() {
             placement="top"
             PopperProps={{ disablePortal: true }}
           >
-            <Fab
-              className={classes.fab}
-              onClick={toggleScreenShare}
-              disabled={disableScreenShareButton}
-            >
+            <Fab className={classes.fab} onClick={toggleScreenShare} disabled={disableScreenShareButton}>
               {isScreenShared ? <StopScreenShare /> : <ScreenShare />}
             </Fab>
           </Tooltip>

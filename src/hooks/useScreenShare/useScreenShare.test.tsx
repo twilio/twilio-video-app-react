@@ -7,9 +7,7 @@ jest.mock('../context');
 const mockedVideoContext = useVideoContext as jest.Mock<any>;
 
 const mockLocalParticipant = new EventEmitter() as any;
-mockLocalParticipant.publishTrack = jest.fn(() =>
-  Promise.resolve('mockPublication')
-);
+mockLocalParticipant.publishTrack = jest.fn(() => Promise.resolve('mockPublication'));
 mockLocalParticipant.unpublishTrack = jest.fn();
 
 mockedVideoContext.mockImplementation(() => ({
@@ -47,10 +45,7 @@ describe('the useScreenShare hook', () => {
       result.current[1]();
       await waitForNextUpdate();
       expect(navigator.mediaDevices.getDisplayMedia).toHaveBeenCalled();
-      expect(mockLocalParticipant.publishTrack).toHaveBeenCalledWith(
-        mockTrack,
-        { name: 'screen', priority: 'high' }
-      );
+      expect(mockLocalParticipant.publishTrack).toHaveBeenCalledWith(mockTrack, { name: 'screen', priority: 'high' });
       expect(result.current[0]).toEqual(true);
     });
 
@@ -64,13 +59,8 @@ describe('the useScreenShare hook', () => {
       act(() => {
         result.current[1]();
       });
-      expect(mockLocalParticipant.unpublishTrack).toHaveBeenCalledWith(
-        mockTrack
-      );
-      expect(localParticipantSpy).toHaveBeenCalledWith(
-        'trackUnpublished',
-        'mockPublication'
-      );
+      expect(mockLocalParticipant.unpublishTrack).toHaveBeenCalledWith(mockTrack);
+      expect(localParticipantSpy).toHaveBeenCalledWith('trackUnpublished', 'mockPublication');
       expect(mockTrack.stop).toHaveBeenCalled();
       expect(result.current[0]).toEqual(false);
     });
@@ -86,13 +76,8 @@ describe('the useScreenShare hook', () => {
         act(() => {
           mockTrack.onended();
         });
-        expect(mockLocalParticipant.unpublishTrack).toHaveBeenCalledWith(
-          mockTrack
-        );
-        expect(localParticipantSpy).toHaveBeenCalledWith(
-          'trackUnpublished',
-          'mockPublication'
-        );
+        expect(mockLocalParticipant.unpublishTrack).toHaveBeenCalledWith(mockTrack);
+        expect(localParticipantSpy).toHaveBeenCalledWith('trackUnpublished', 'mockPublication');
         expect(mockTrack.stop).toHaveBeenCalled();
         expect(result.current[0]).toEqual(false);
       });

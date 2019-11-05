@@ -9,18 +9,10 @@ interface ParticipantProps {
   enableScreenShare?: boolean;
 }
 
-export default function Participant({
-  participant,
-  disableAudio,
-  enableScreenShare,
-}: ParticipantProps) {
+export default function Participant({ participant, disableAudio, enableScreenShare }: ParticipantProps) {
   return (
     <ParticipantInfo participant={participant}>
-      <ParticipantTracks
-        participant={participant}
-        disableAudio={disableAudio}
-        enableScreenShare={enableScreenShare}
-      />
+      <ParticipantTracks participant={participant} disableAudio={disableAudio} enableScreenShare={enableScreenShare} />
     </ParticipantInfo>
   );
 }

@@ -10,11 +10,7 @@ interface ParticipantTracksProps {
   enableScreenShare?: boolean;
 }
 
-export default function ParticipantTracks({
-  participant,
-  disableAudio,
-  enableScreenShare,
-}: ParticipantTracksProps) {
+export default function ParticipantTracks({ participant, disableAudio, enableScreenShare }: ParticipantTracksProps) {
   const { room } = useVideoContext();
   const publications = usePublications(participant);
   const isLocal = participant === room.localParticipant;

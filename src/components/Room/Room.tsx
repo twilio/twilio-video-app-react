@@ -28,11 +28,7 @@ export default function Room() {
       <MainParticipantContainer>
         {/* audio is disabled for this participant component because this participant's audio 
             is already being rendered in the <ParticipantStrip /> component.  */}
-        <Participant
-          participant={mainParticipant}
-          disableAudio
-          enableScreenShare
-        />
+        <Participant participant={mainParticipant} disableAudio enableScreenShare />
       </MainParticipantContainer>
     </Container>
   );
