@@ -6,6 +6,7 @@ import usePublications from '../../hooks/usePublications/usePublications';
 jest.mock('../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel', () => () => 4);
 
 jest.mock('../../hooks/usePublications/usePublications');
+
 const mockUsePublications = usePublications as jest.Mock<any>;
 
 describe('the ParticipantInfo component', () => {
@@ -31,6 +32,22 @@ describe('the ParticipantInfo component', () => {
       <ParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</ParticipantInfo>
     );
     expect(wrapper.find('MicOffIcon').exists()).toEqual(false);
+  });
+
+  it('should display ScreenShare icon when participant has published a screen share track', () => {
+    mockUsePublications.mockImplementation(() => [{ trackName: 'screen', isTrackEnabled: true }]);
+    const wrapper = shallow(
+      <ParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</ParticipantInfo>
+    );
+    expect(wrapper.find('ScreenShareIcon').exists()).toEqual(true);
+  });
+
+  it('should not display ScreenShare icon when participant has not published a screen share track', () => {
+    mockUsePublications.mockImplementation(() => []);
+    const wrapper = shallow(
+      <ParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</ParticipantInfo>
+    );
+    expect(wrapper.find('ScreenShareIcon').exists()).toEqual(false);
   });
 
   it('should add hideVideoProp to InfoContainer component when video is disabled', () => {
