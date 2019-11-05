@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useVideoContext } from '../context';
 
 import {
-  RemoteParticipant,
   LocalParticipant,
   LocalTrackPublication,
+  RemoteParticipant,
   RemoteTrackPublication,
 } from 'twilio-video';
 
@@ -27,6 +27,7 @@ export default function useScreenShareParticipant() {
           Array.from<RemoteParticipant | LocalParticipant>(
             room.participants.values()
           )
+            // the screenshare particiipant could be the localParticipant
             .concat(room.localParticipant)
             .find(findScreenShareTrackPublication)
         );
@@ -34,6 +35,9 @@ export default function useScreenShareParticipant() {
       updateScreenShareParticipant();
       room.on('trackPublished', updateScreenShareParticipant);
       room.on('trackUnpublished', updateScreenShareParticipant);
+
+      // the room object does not emit 'trackPublished' events for the localPartipant,
+      // so we need to listen for them here.
       room.localParticipant.on('trackPublished', updateScreenShareParticipant);
       room.localParticipant.on(
         'trackUnpublished',
