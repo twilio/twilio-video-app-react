@@ -60,5 +60,14 @@ describe('the useLocalVideoToggle hook', () => {
       expect(mockLocalTrack.disable).not.toHaveBeenCalled();
       expect(mockLocalTrack.enable).toHaveBeenCalled();
     });
+
+    it('should not throw an error if track is undefined', () => {
+      mockUseVideoContext.mockImplementation(() => ({
+        localTracks: [],
+      }));
+
+      const { result } = renderHook(useLocalVideoToggle);
+      result.current[1]();
+    });
   });
 });
