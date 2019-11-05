@@ -21,9 +21,7 @@ describe('the LocalVideoPreview component', () => {
   it('should render null when there are no "camera" tracks', () => {
     mockedVideoContext.mockImplementation(() => {
       return {
-        localTracks: [
-          { name: 'microphone', attach: jest.fn(), detach: jest.fn() },
-        ],
+        localTracks: [{ name: 'microphone', attach: jest.fn(), detach: jest.fn() }],
       } as any;
     });
     const { container } = render(<LocalVideoPreview />);

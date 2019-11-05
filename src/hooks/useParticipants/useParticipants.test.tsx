@@ -28,11 +28,7 @@ describe('the useParticipants hook', () => {
     act(() => {
       mockRoom.emit('participantConnected', 'newParticipant');
     });
-    expect(result.current).toEqual([
-      'participant1',
-      'participant2',
-      'newParticipant',
-    ]);
+    expect(result.current).toEqual(['participant1', 'participant2', 'newParticipant']);
   });
 
   it('should return respond to "participantDisconnected" events', async () => {
