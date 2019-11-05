@@ -31,6 +31,18 @@ describe('the usePublications hook', () => {
     expect(result.current).toEqual(['track2']);
   });
 
+  it('should return a new set of tracks if the participant changes', () => {
+    const { result, rerender } = renderHook(
+      ({ participant }) => usePublications(participant),
+      { initialProps: { participant: mockParticipant } }
+    );
+    expect(result.current).toEqual(['track1', 'track2']);
+    mockParticipant = new EventEmitter();
+    mockParticipant.tracks = new Map([[0, 'track3'], [1, 'track4']]);
+    rerender({ participant: mockParticipant });
+    expect(result.current).toEqual(['track3', 'track4']);
+  });
+
   it('should clean up listeners on unmount', () => {
     const { unmount } = renderHook(() => usePublications(mockParticipant));
     unmount();
