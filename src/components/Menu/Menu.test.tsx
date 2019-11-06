@@ -102,7 +102,6 @@ describe('the Menu component', () => {
 
     it('should render exit-full-screen-icon when the page is in full screen mode', () => {
       const { getByTestId } = render(<Menu />);
-      fireEvent.click(getByTestId('toggle-full-screen'));
       expect(getByTestId('exit-fullscreen-icon')).toBeInTheDocument();
     });
 
@@ -110,7 +109,6 @@ describe('the Menu component', () => {
       mockedUseFullScreenToggler.mockImplementation(() => [false, toggleFullScreen]);
 
       const { getByTestId } = render(<Menu />);
-      fireEvent.click(getByTestId('toggle-full-screen'));
       expect(getByTestId('full-screen-icon')).toBeInTheDocument();
     });
   });
