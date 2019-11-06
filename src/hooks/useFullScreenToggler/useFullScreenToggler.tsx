@@ -8,9 +8,7 @@ export default function useFullScreenToggler() {
 
   useEffect(() => {
     const setIsFullscreen = () => _setIsFullScreen(_isFullScreen());
-    fscreen.addEventListener('fullscreenchange', () => {
-      setIsFullscreen();
-    });
+    fscreen.addEventListener('fullscreenchange', setIsFullscreen);
     return () => {
       fscreen.removeEventListener('fullscreenchange', setIsFullscreen);
     };
