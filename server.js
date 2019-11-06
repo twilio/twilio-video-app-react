@@ -26,4 +26,4 @@ app.post('/token', (req, res) => {
   console.log(`issued token for ${token.identity} in room ${req.body.room}`);
 });
 
-app.listen(4000, () => console.log('token server running on 4000'));
+app.listen(8080, () => console.log('token server running on 8080'));
