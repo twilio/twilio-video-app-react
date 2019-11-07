@@ -17,6 +17,7 @@
     "@types/twilio-video": "^2.0.9",
     "body-parser": "^1.19.0",
     "concurrently": "^5.0.0",
+    "cookie-parser": "^1.4.4",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
     "enzyme-to-json": "^3.4.3",
