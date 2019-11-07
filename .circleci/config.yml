@@ -3,6 +3,7 @@ jobs:
   build:
     docker:
       - image: circleci/node
+    working_directory: ~/twilio-video-react-app
 
     steps:
       - checkout
@@ -12,3 +13,49 @@ jobs:
       - run: npm test -- --runInBand
 
       - run: npm run build
+
+      - persist_to_workspace:
+          root: .
+          paths: 
+            - .
+
+  deploy:
+    docker:
+      - image: google/cloud-sdk
+    working_directory: ~/twilio-video-react-app
+
+    steps:
+      - attach_workspace:
+          at: ~/twilio-video-react-app
+     
+      - run: |
+          echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+          gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+
+      - run: |
+          echo ACCOUNT_SID=$TWILIO_ACCOUNT_SID >> .env
+          echo API_KEY=$TWILIO_API_KEY >> .env
+          echo API_SECRET=$TWILIO_API_SECRET >> .env
+          echo BASIC_AUTH_USERNAME=$BASIC_AUTH_USERNAME >> .env
+          echo BASIC_AUTH_PASSWORD=$BASIC_AUTH_PASSWORD >> .env
+
+      - run: echo $CIRCLE_TAG > build/version.txt
+
+      - run: gcloud app deploy -q
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /.*/
+      - deploy:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
