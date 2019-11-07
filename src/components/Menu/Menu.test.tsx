@@ -1,6 +1,5 @@
 import React from 'react';
 import Menu from './Menu';
-import { getToken, receiveToken } from '../../store/main/main';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import { IVideoContext, useVideoContext } from '../../hooks/context';
 import { fireEvent, render } from '@testing-library/react';

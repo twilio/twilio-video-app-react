@@ -8,7 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
 import Toolbar from '@material-ui/core/Toolbar';
 
-import { getToken, receiveToken } from '../../store/main/main';
+import { getToken } from '../../store/main/main';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import { useVideoContext } from '../../hooks/context';
 
