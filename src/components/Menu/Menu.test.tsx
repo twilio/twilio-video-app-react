@@ -64,22 +64,4 @@ describe('the Menu component', () => {
     fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo' } });
     expect(getByRole('button').getAttribute('disabled')).toEqual('');
   });
-
-  it('should dispatch a redux action when the Join Room button is clicked', () => {
-    mockedUseRoomState.mockImplementation(() => 'disconnected');
-    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false } as any));
-    const { getByLabelText, getByRole } = render(<Menu />);
-    fireEvent.change(getByLabelText('Name'), { target: { value: 'Username' } });
-    fireEvent.change(getByLabelText('Room'), { target: { value: 'Roomname' } });
-    fireEvent.click(getByRole('button'));
-    expect(getToken).toHaveBeenCalledWith('Username', 'Roomname');
-  });
-
-  it('should dispatch a redux action when the Leave Room button is clicked', () => {
-    mockedUseRoomState.mockImplementation(() => 'connected');
-    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false } as any));
-    const { getByRole } = render(<Menu />);
-    fireEvent.click(getByRole('button'));
-    expect(receiveToken).toHaveBeenCalledWith('');
-  });
 });

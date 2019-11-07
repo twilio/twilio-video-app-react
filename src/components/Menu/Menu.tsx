@@ -26,6 +26,9 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: theme.spacing(1),
       width: 200,
     },
+    loadingSpinner: {
+      marginLeft: '1em',
+    },
   })
 );
 
@@ -75,10 +78,10 @@ export default function Menu() {
             <Button type="submit" color="primary" variant="contained" disabled={isConnecting || !name || !roomName}>
               Join Room
             </Button>
-            {isConnecting && <CircularProgress></CircularProgress>}
+            {isConnecting && <CircularProgress className={classes.loadingSpinner} />}
           </form>
         ) : (
-          <Button onClick={() => dispatch(receiveToken(''))}>Leave Room</Button>
+          <h3>{roomName}</h3>
         )}
       </Toolbar>
     </AppBar>
