@@ -36,6 +36,8 @@ jobs:
           echo ACCOUNT_SID=$TWILIO_ACCOUNT_SID >> .env
           echo API_KEY=$TWILIO_API_KEY >> .env
           echo API_SECRET=$TWILIO_API_SECRET >> .env
+          echo BASIC_AUTH_USERNAME=$BASIC_AUTH_USERNAME >> .env
+          echo BASIC_AUTH_PASSWORD=$BASIC_AUTH_PASSWORD >> .env
 
       - run: echo $CIRCLE_TAG > build/version.txt
 
