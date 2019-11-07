@@ -14,7 +14,7 @@ interface MediaStreamTrackPublishOptions {
   logLevel: LogLevels;
 }
 
-export default function useScreenShare() {
+export default function useScreenShareToggle() {
   const { room } = useVideoContext();
   const [isSharing, setIsSharing] = useState(false);
   const stopScreenShareRef = useRef<() => void>(null!);

@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useVideoContext } from '../context';
 
-import { LocalParticipant, LocalTrackPublication, RemoteParticipant, RemoteTrackPublication } from 'twilio-video';
+import { Participant, TrackPublication } from 'twilio-video';
 
-function findScreenShareTrackPublication(participant: RemoteParticipant | LocalParticipant) {
-  return Array.from<LocalTrackPublication | RemoteTrackPublication>(participant.tracks.values()).find(
-    track => track.trackName === 'screen'
-  );
+function findParticipantWithScreenShareTrackPublication(participant: Participant) {
+  return Array.from<TrackPublication>(participant.tracks.values()).find(track => track.trackName === 'screen');
 }
-
 export default function useScreenShareParticipant() {
   const { room } = useVideoContext();
   const [screenShareParticipant, setScreenShareParticipant] = useState();
@@ -17,10 +14,10 @@ export default function useScreenShareParticipant() {
     if (room.state === 'connected') {
       const updateScreenShareParticipant = () => {
         setScreenShareParticipant(
-          Array.from<RemoteParticipant | LocalParticipant>(room.participants.values())
+          Array.from<Participant>(room.participants.values())
             // the screenshare particiipant could be the localParticipant
             .concat(room.localParticipant)
-            .find(findScreenShareTrackPublication)
+            .find(findParticipantWithScreenShareTrackPublication)
         );
       };
       updateScreenShareParticipant();
