@@ -48,7 +48,7 @@ export default function Controls() {
   const roomState = useRoomState();
   const screenShareParticipant = useScreenShareParticipant();
   const { room } = useVideoContext();
-  const disableScreenShareButton = !!screenShareParticipant && screenShareParticipant !== room.localParticipant;
+  const disableScreenShareButton = screenShareParticipant && screenShareParticipant !== room.localParticipant;
 
   return (
     <div className={classes.container}>
@@ -72,7 +72,7 @@ export default function Controls() {
       </Tooltip>
       {roomState === 'connected' && (
         <>
-          {navigator.mediaDevices.getDisplayMedia && (
+          {navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia && (
             <Tooltip
               title={isScreenShared ? 'Stop Screen Sharing' : 'Share Screen'}
               placement="top"
