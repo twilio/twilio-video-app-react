@@ -47,7 +47,6 @@ export default function ParticipantInfo({ participant, children }: ParticipantIn
   const publications = usePublications(participant);
   const isAudioEnabled = usePublicationIsTrackEnabled(publications.find(p => p.trackName === 'microphone'));
   const isVideoEnabled = usePublicationIsTrackEnabled(publications.find(p => p.trackName === 'camera'));
-
   const isScreenShareEnabled = usePublicationIsTrackEnabled(publications.find(p => p.trackName === 'screen'));
 
   return (
