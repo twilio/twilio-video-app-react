@@ -8,7 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
 import Toolbar from '@material-ui/core/Toolbar';
 
-import { getToken, receiveToken } from '../../store/main/main';
+import { getToken } from '../../store/main/main';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import { useVideoContext } from '../../hooks/context';
 
@@ -25,6 +25,9 @@ const useStyles = makeStyles((theme: Theme) =>
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
       width: 200,
+    },
+    loadingSpinner: {
+      marginLeft: '1em',
     },
   })
 );
@@ -75,10 +78,10 @@ export default function Menu() {
             <Button type="submit" color="primary" variant="contained" disabled={isConnecting || !name || !roomName}>
               Join Room
             </Button>
-            {isConnecting && <CircularProgress></CircularProgress>}
+            {isConnecting && <CircularProgress className={classes.loadingSpinner} />}
           </form>
         ) : (
-          <Button onClick={() => dispatch(receiveToken(''))}>Leave Room</Button>
+          <h3>{roomName}</h3>
         )}
       </Toolbar>
     </AppBar>

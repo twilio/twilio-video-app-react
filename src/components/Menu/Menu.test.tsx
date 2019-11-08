@@ -1,6 +1,5 @@
 import React from 'react';
 import Menu from './Menu';
-import { getToken, receiveToken } from '../../store/main/main';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import { IVideoContext, useVideoContext } from '../../hooks/context';
 import { fireEvent, render } from '@testing-library/react';
@@ -63,23 +62,5 @@ describe('the Menu component', () => {
     fireEvent.change(getByLabelText('Name'), { target: { value: 'Foo' } });
     fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo' } });
     expect(getByRole('button').getAttribute('disabled')).toEqual('');
-  });
-
-  it('should dispatch a redux action when the Join Room button is clicked', () => {
-    mockedUseRoomState.mockImplementation(() => 'disconnected');
-    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false } as any));
-    const { getByLabelText, getByRole } = render(<Menu />);
-    fireEvent.change(getByLabelText('Name'), { target: { value: 'Username' } });
-    fireEvent.change(getByLabelText('Room'), { target: { value: 'Roomname' } });
-    fireEvent.click(getByRole('button'));
-    expect(getToken).toHaveBeenCalledWith('Username', 'Roomname');
-  });
-
-  it('should dispatch a redux action when the Leave Room button is clicked', () => {
-    mockedUseRoomState.mockImplementation(() => 'connected');
-    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false } as any));
-    const { getByRole } = render(<Menu />);
-    fireEvent.click(getByRole('button'));
-    expect(receiveToken).toHaveBeenCalledWith('');
   });
 });
