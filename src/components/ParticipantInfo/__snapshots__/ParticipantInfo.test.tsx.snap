@@ -13,7 +13,9 @@ exports[`the ParticipantInfo component should render correctly 1`] = `
         qualityLevel={4}
       />
     </Styled(div)>
-    <MicOffIcon />
+    <div>
+      <MicOffIcon />
+    </div>
   </Styled(div)>
   mock children
 </Styled(div)>
