@@ -6,9 +6,12 @@ import useParticipantNetworkQualityLevel from '../../hooks/useParticipantNetwork
 import usePublications from '../../hooks/usePublications/usePublications';
 import usePublicationIsTrackEnabled from '../../hooks/usePublicationIsTrackEnabled/usePublicationIsTrackEnabled';
 import MicOff from '@material-ui/icons/MicOff';
+import ScreenShare from '@material-ui/icons/ScreenShare';
 
 const Container = styled('div')({
   position: 'relative',
+  display: 'flex',
+  alignItems: 'center',
 });
 
 const InfoContainer = styled('div')({
@@ -44,6 +47,7 @@ export default function ParticipantInfo({ participant, children }: ParticipantIn
   const publications = usePublications(participant);
   const isAudioEnabled = usePublicationIsTrackEnabled(publications.find(p => p.trackName === 'microphone'));
   const isVideoEnabled = usePublicationIsTrackEnabled(publications.find(p => p.trackName === 'camera'));
+  const isScreenShareEnabled = usePublicationIsTrackEnabled(publications.find(p => p.trackName === 'screen'));
 
   return (
     <Container>
@@ -52,7 +56,10 @@ export default function ParticipantInfo({ participant, children }: ParticipantIn
           <Identity>{participant.identity}</Identity>
           <NetworkQualityLevel qualityLevel={networkQualityLevel} />
         </InfoRow>
-        {!isAudioEnabled && <MicOff />}
+        <div>
+          {!isAudioEnabled && <MicOff />}
+          {isScreenShareEnabled && <ScreenShare />}
+        </div>
       </InfoContainer>
       {children}
     </Container>
