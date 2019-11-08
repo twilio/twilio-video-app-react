@@ -3,9 +3,6 @@ import { useVideoContext } from '../context';
 
 import { Participant, TrackPublication } from 'twilio-video';
 
-function findParticipantWithScreenShareTrackPublication(participant: Participant) {
-  return Array.from<TrackPublication>(participant.tracks.values()).find(track => track.trackName === 'screen');
-}
 export default function useScreenShareParticipant() {
   const { room } = useVideoContext();
   const [screenShareParticipant, setScreenShareParticipant] = useState();
@@ -17,7 +14,9 @@ export default function useScreenShareParticipant() {
           Array.from<Participant>(room.participants.values())
             // the screenshare particiipant could be the localParticipant
             .concat(room.localParticipant)
-            .find(findParticipantWithScreenShareTrackPublication)
+            .find((participant: Participant) =>
+              Array.from<TrackPublication>(participant.tracks.values()).find(track => track.trackName === 'screen')
+            )
         );
       };
       updateScreenShareParticipant();
