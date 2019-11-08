@@ -11,6 +11,7 @@ const Container = styled('aside')(({ theme }) => ({
   right: `calc(100% - ${theme.sidebarPosition})`,
   left: 0,
   padding: '0.5em',
+  overflowY: 'auto',
 }));
 
 export default function ParticipantStrip() {
