@@ -7,16 +7,25 @@ import { useVideoContext } from '../../hooks/context';
 interface ParticipantTracksProps {
   participant: LocalParticipant | RemoteParticipant;
   disableAudio?: boolean;
+  enableScreenShare?: boolean;
 }
 
-export default function ParticipantTracks({ participant, disableAudio }: ParticipantTracksProps) {
+export default function ParticipantTracks({ participant, disableAudio, enableScreenShare }: ParticipantTracksProps) {
   const { room } = useVideoContext();
   const publications = usePublications(participant);
   const isLocal = participant === room.localParticipant;
 
+  let filteredPublications;
+
+  if (enableScreenShare && publications.some(p => p.trackName === 'screen')) {
+    filteredPublications = publications.filter(p => p.trackName !== 'camera');
+  } else {
+    filteredPublications = publications.filter(p => p.trackName !== 'screen');
+  }
+
   return (
     <>
-      {publications.map(publication => (
+      {filteredPublications.map(publication => (
         <Publication
           key={publication.trackSid}
           publication={publication}

@@ -23,6 +23,8 @@ export default function Publication({ publication, isLocal, disableAudio }: Publ
   if (track === null) return null;
 
   switch (track.name) {
+    case 'screen':
+      return <VideoTrack track={track as IVideoTrack} />;
     case 'camera':
       return <VideoTrack track={track as IVideoTrack} isLocal={isLocal} />;
     case 'microphone':

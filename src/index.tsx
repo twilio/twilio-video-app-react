@@ -22,6 +22,11 @@ const VideoProviderWithToken = () => {
           local: 1,
           remote: 1,
         },
+        bandwidthProfile: {
+          video: {
+            mode: 'presentation',
+          },
+        },
       }}
     >
       <App />
