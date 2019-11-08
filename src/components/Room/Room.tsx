@@ -1,8 +1,7 @@
 import React from 'react';
-import Participant from '../Participant/Participant';
 import ParticipantStrip from '../ParticipantStrip/ParticipantStrip';
 import { styled } from '@material-ui/core/styles';
-import useMainSpeaker from '../../hooks/useMainSpeaker/useMainSpeaker';
+import MainParticipant from '../MainParticipant/MainParticipant';
 
 const Container = styled('div')({
   position: 'relative',
@@ -21,14 +20,11 @@ const MainParticipantContainer = styled('div')(({ theme }) => ({
 }));
 
 export default function Room() {
-  const mainParticipant = useMainSpeaker();
   return (
     <Container>
       <ParticipantStrip />
       <MainParticipantContainer>
-        {/* audio is disabled for this participant component because this participant's audio 
-            is already being rendered in the <ParticipantStrip /> component.  */}
-        <Participant participant={mainParticipant} disableAudio enableScreenShare />
+        <MainParticipant />
       </MainParticipantContainer>
     </Container>
   );
