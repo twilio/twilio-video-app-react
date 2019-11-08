@@ -80,13 +80,21 @@ export default function Menu() {
               onChange={handleRoomNameChange}
               margin="dense"
             />
-            <Button type="submit" color="primary" variant="contained" data-testid="join-room-button" disabled={isConnecting || !name || !roomName}>
+            <Button
+              type="submit"
+              color="primary"
+              variant="contained"
+              aria-label="Join Room"
+              disabled={isConnecting || !name || !roomName}
+            >
               Join Room
             </Button>
             {isConnecting && <CircularProgress></CircularProgress>}
           </form>
         ) : (
-          <Button data-testid="leave-room-button" onClick={() => dispatch(receiveToken(''))}>Leave Room</Button>
+          <Button aria-label="Leave Room" onClick={() => dispatch(receiveToken(''))}>
+            Leave Room
+          </Button>
         )}
         <IconButton
           className={classes.toggleFullScreenBtn}

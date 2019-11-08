@@ -4,7 +4,7 @@ import { getToken, receiveToken } from '../../store/main/main';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useFullScreenToggler from '../../hooks/useFullScreenToggler/useFullScreenToggler';
 import { IVideoContext, useVideoContext } from '../../hooks/context';
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, within } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 jest.mock('../../hooks/context');
@@ -17,6 +17,12 @@ const mockedUseRoomState = useRoomState as jest.Mock<string>;
 const mockedUseFullScreenToggler = useFullScreenToggler as jest.Mock;
 const mockedUseVideoContext = useVideoContext as jest.Mock<IVideoContext>;
 const toggleFullScreen = jest.fn();
+
+const getButton = (rootNode: HTMLElement, text: string) => {
+  const innerSpan = within(rootNode).getByText(text);
+  const button = innerSpan.closest('button');
+  return button || innerSpan;
+};
 
 describe('the Menu component', () => {
   mockedUseFullScreenToggler.mockImplementation(() => [true, toggleFullScreen]);
@@ -45,48 +51,53 @@ describe('the Menu component', () => {
   it('should disable the Join Room button when the Name input or Room input are empty', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
     mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false } as any));
-    const { getByLabelText, getByTestId } = render(<Menu />);
-    expect(getByTestId('join-room-button').getAttribute('disabled')).toEqual('');
+    const { getByLabelText, container } = render(<Menu />);
+    const joinRoomButton = getButton(container, 'Join Room');
+    expect(joinRoomButton).toBeDisabled();
     fireEvent.change(getByLabelText('Name'), { target: { value: 'Foo' } });
-    expect(getByTestId('join-room-button').getAttribute('disabled')).toEqual('');
+    expect(joinRoomButton).toBeDisabled();
     fireEvent.change(getByLabelText('Name'), { target: { value: '' } });
     fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo' } });
-    expect(getByTestId('join-room-button').getAttribute('disabled')).toEqual('');
+    expect(joinRoomButton).toBeDisabled();
   });
 
   it('should enable the Join Room button when the Name input and Room input are not empty', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
     mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false } as any));
-    const { getByLabelText, getByTestId } = render(<Menu />);
+    const { getByLabelText, container } = render(<Menu />);
+    const joinRoomButton = getButton(container, 'Join Room');
     fireEvent.change(getByLabelText('Name'), { target: { value: 'Foo' } });
     fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo' } });
-    expect(getByTestId('join-room-button').getAttribute('disabled')).toEqual(null);
+    expect(joinRoomButton).not.toBeDisabled();
   });
 
   it('should disable the Join Room button when connecting to a room', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
     mockedUseVideoContext.mockImplementation(() => ({ isConnecting: true } as any));
-    const { getByLabelText, getByTestId } = render(<Menu />);
+    const { getByLabelText, container } = render(<Menu />);
+    const joinRoomButton = getButton(container, 'Join Room');
     fireEvent.change(getByLabelText('Name'), { target: { value: 'Foo' } });
     fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo' } });
-    expect(getByTestId('join-room-button').getAttribute('disabled')).toEqual('');
+    expect(joinRoomButton).toBeDisabled();
   });
 
   it('should dispatch a redux action when the Join Room button is clicked', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
     mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false } as any));
-    const { getByLabelText, getByTestId } = render(<Menu />);
+    const { getByLabelText, container } = render(<Menu />);
+    const joinRoomButton = getButton(container, 'Join Room');
     fireEvent.change(getByLabelText('Name'), { target: { value: 'Username' } });
     fireEvent.change(getByLabelText('Room'), { target: { value: 'Roomname' } });
-    fireEvent.click(getByTestId('join-room-button'));
+    fireEvent.click(joinRoomButton);
     expect(getToken).toHaveBeenCalledWith('Username', 'Roomname');
   });
 
   it('should dispatch a redux action when the Leave Room button is clicked', () => {
     mockedUseRoomState.mockImplementation(() => 'connected');
     mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false } as any));
-    const { getByTestId } = render(<Menu />);
-    fireEvent.click(getByTestId('leave-room-button'));
+    const { container } = render(<Menu />);
+    const leaveRoomButton = getButton(container, 'Leave Room');
+    fireEvent.click(leaveRoomButton);
     expect(receiveToken).toHaveBeenCalledWith('');
   });
 
