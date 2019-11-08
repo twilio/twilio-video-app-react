@@ -10,25 +10,26 @@ import App from './App';
 import theme from './theme';
 import { VideoProvider } from './hooks/context';
 
+const connectionOptions = {
+  dominantSpeaker: true,
+  networkQuality: {
+    local: 1,
+    remote: 1,
+  },
+  bandwidthProfile: {
+    video: {
+      dominantSpeakerPriority: 'high',
+      mode: 'collaboration',
+    },
+  },
+  preferredVideoCodecs: [{ codec: 'VP8', simulcast: true }],
+} as any;
+
 const VideoProviderWithToken = () => {
   const token = useSelector(state => state.token);
 
   return (
-    <VideoProvider
-      token={token}
-      options={{
-        dominantSpeaker: true,
-        networkQuality: {
-          local: 1,
-          remote: 1,
-        },
-        bandwidthProfile: {
-          video: {
-            mode: 'presentation',
-          },
-        },
-      }}
-    >
+    <VideoProvider token={token} options={connectionOptions}>
       <App />
     </VideoProvider>
   );
