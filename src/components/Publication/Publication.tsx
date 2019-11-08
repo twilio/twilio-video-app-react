@@ -22,12 +22,12 @@ export default function Publication({ publication, isLocal, disableAudio }: Publ
 
   if (track === null) return null;
 
-  switch (true) {
-    case track.name === 'screen':
+  switch (track.name) {
+    case 'screen':
       return <VideoTrack track={track as IVideoTrack} />;
-    case track.name === 'camera':
+    case 'camera':
       return <VideoTrack track={track as IVideoTrack} isLocal={isLocal} />;
-    case track.name === 'microphone':
+    case 'microphone':
       return disableAudio ? null : <AudioTrack track={track as IAudioTrack} />;
     default:
       return null;
