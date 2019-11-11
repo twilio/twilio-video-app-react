@@ -27,10 +27,9 @@ const Identity = styled('h4')({
   margin: '1em',
   fontSize: '1.2em',
   display: 'inline-flex',
-});
-
-const VideocamOffIcon = styled(VideocamOff)({
-  marginLeft: '0.3em',
+  '& svg': {
+    marginLeft: '0.3em',
+  },
 });
 
 interface ParticipantInfoProps {
@@ -47,7 +46,7 @@ export default function ParticipantInfo({ participant, children }: ParticipantIn
       <InfoContainer hideVideo={!isVideoEnabled}>
         <Identity>
           {participant.identity}
-          {!isVideoEnabled && <VideocamOffIcon />}
+          {!isVideoEnabled && <VideocamOff />}
         </Identity>
       </InfoContainer>
       {children}
