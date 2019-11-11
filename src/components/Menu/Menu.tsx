@@ -11,6 +11,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import { getToken } from '../../store/main/main';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import { useVideoContext } from '../../hooks/context';
+import ToggleFullscreenButton from '../ToggleFullScreenButton/ToggleFullScreenButton';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -83,6 +84,7 @@ export default function Menu() {
         ) : (
           <h3>{roomName}</h3>
         )}
+        <ToggleFullscreenButton />
       </Toolbar>
     </AppBar>
   );
