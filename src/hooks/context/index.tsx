@@ -1,6 +1,11 @@
 import React, { createContext, ReactNode, useContext } from 'react';
-import { ConnectOptions, LocalTrack, Room } from 'twilio-video';
+import { ConnectOptions, LocalTrack, Room, TwilioError } from 'twilio-video';
+import { CallbackFunction, ErrorCallback } from '../../types';
 import { SelectedParticipantProvider } from './useSelectedParticipant/useSelectedParticipant';
+
+import useHandleRoomDisconnectionErrors from './useHandleRoomDisconnectionErrors/useHandleRoomDisconnectionErrors';
+import useHandleOnDisconnect from './useHandleOnDisconnect/useHandleOnDisconnect';
+import useHandleTrackPublicationFailed from './useHandleTrackPublicationFailed/useHandleTrackPublicationFailed';
 import useLocalTracks from './useLocalTracks/useLocalTracks';
 import useRoom from './useRoom/useRoom';
 
@@ -8,6 +13,8 @@ export interface IVideoContext {
   room: Room;
   localTracks: LocalTrack[];
   isConnecting: boolean;
+  onError: ErrorCallback;
+  onDisconnect: CallbackFunction;
 }
 
 export const VideoContext = createContext<IVideoContext>(null!);
@@ -15,15 +22,36 @@ export const VideoContext = createContext<IVideoContext>(null!);
 interface VideoProviderProps {
   token?: string;
   options?: ConnectOptions;
+  onError: ErrorCallback;
+  onDisconnect: CallbackFunction;
   children: ReactNode;
 }
 
-export function VideoProvider({ token, options, children }: VideoProviderProps) {
+const useRoomCallbacks = (room: Room, onError: CallbackFunction, onDisconnect: CallbackFunction) => {
+  useHandleRoomDisconnectionErrors(room, onError);
+  useHandleTrackPublicationFailed(room, onError);
+  useHandleOnDisconnect(room, onDisconnect);
+};
+
+export function VideoProvider({
+  token,
+  options,
+  children,
+  onError = () => {},
+  onDisconnect = () => {},
+}: VideoProviderProps) {
+  const onErrorCallback = (error: TwilioError) => {
+    console.log(`ERROR: ${error.message}`, error);
+    onError(error);
+  };
+
   const localTracks = useLocalTracks();
-  const { room, isConnecting } = useRoom(localTracks, token, options);
+  const { room, isConnecting } = useRoom(localTracks, onErrorCallback, token, options);
+
+  useRoomCallbacks(room, onErrorCallback, onDisconnect);
 
   return (
-    <VideoContext.Provider value={{ room, localTracks, isConnecting }}>
+    <VideoContext.Provider value={{ room, localTracks, isConnecting, onError: onErrorCallback, onDisconnect }}>
       <SelectedParticipantProvider room={room}>{children}</SelectedParticipantProvider>
     </VideoContext.Provider>
   );

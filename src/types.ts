@@ -1,4 +1,5 @@
 import 'twilio-video';
+import { TwilioError } from 'twilio-video';
 
 declare module 'twilio-video' {
   interface LocalParticipant {
@@ -24,3 +25,7 @@ declare global {
     getDisplayMedia(): Promise<MediaStream>;
   }
 }
+
+export type CallbackFunction = (...args: any[]) => void;
+
+export type ErrorCallback = (error: TwilioError) => void;
