@@ -44,30 +44,30 @@ describe('the Menu component', () => {
   it('should disable the Join Room button when the Name input or Room input are empty', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
     mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false } as any));
-    const { getByLabelText } = render(<Menu />);
-    expect(getByLabelText('Join Room')).toBeDisabled();
+    const { getByLabelText, getByText } = render(<Menu />);
+    expect(getByText('Join Room')).toBeDisabled();
     fireEvent.change(getByLabelText('Name'), { target: { value: 'Foo' } });
-    expect(getByLabelText('Join Room')).toBeDisabled();
+    expect(getByText('Join Room')).toBeDisabled();
     fireEvent.change(getByLabelText('Name'), { target: { value: '' } });
     fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo' } });
-    expect(getByLabelText('Join Room')).toBeDisabled();
+    expect(getByText('Join Room')).toBeDisabled();
   });
 
   it('should enable the Join Room button when the Name input and Room input are not empty', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
     mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false } as any));
-    const { getByLabelText } = render(<Menu />);
+    const { getByLabelText, getByText } = render(<Menu />);
     fireEvent.change(getByLabelText('Name'), { target: { value: 'Foo' } });
     fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo' } });
-    expect(getByLabelText('Join Room')).not.toBeDisabled();
+    expect(getByText('Join Room')).not.toBeDisabled();
   });
 
   it('should disable the Join Room button when connecting to a room', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
     mockedUseVideoContext.mockImplementation(() => ({ isConnecting: true } as any));
-    const { getByLabelText } = render(<Menu />);
+    const { getByLabelText, getByText } = render(<Menu />);
     fireEvent.change(getByLabelText('Name'), { target: { value: 'Foo' } });
     fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo' } });
-    expect(getByLabelText('Join Room')).toBeDisabled();
+    expect(getByText('Join Room')).toBeDisabled();
   });
 });

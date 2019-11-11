@@ -5,7 +5,7 @@ import useFullScreenToggler from '../../hooks/useFullScreenToggler/useFullScreen
 
 import ToggleFullscreenButton from './ToggleFullScreenButton';
 
-jest.mock('../../../hooks/useFullScreenToggler/useFullScreenToggler');
+jest.mock('../../hooks/useFullScreenToggler/useFullScreenToggler');
 const mockedUseFullScreenToggler = useFullScreenToggler as jest.Mock;
 
 describe('Full screen button', () => {
