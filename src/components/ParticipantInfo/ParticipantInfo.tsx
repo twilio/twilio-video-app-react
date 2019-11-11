@@ -1,17 +1,20 @@
 import React from 'react';
 import { styled } from '@material-ui/core/styles';
 import { LocalParticipant, RemoteParticipant } from 'twilio-video';
+import MicOff from '@material-ui/icons/MicOff';
 import NetworkQualityLevel from '../NewtorkQualityLevel/NetworkQualityLevel';
+import ScreenShare from '@material-ui/icons/ScreenShare';
+import VideocamOff from '@material-ui/icons/VideocamOff';
+
 import useParticipantNetworkQualityLevel from '../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel';
 import usePublications from '../../hooks/usePublications/usePublications';
 import usePublicationIsTrackEnabled from '../../hooks/usePublicationIsTrackEnabled/usePublicationIsTrackEnabled';
-import MicOff from '@material-ui/icons/MicOff';
-import ScreenShare from '@material-ui/icons/ScreenShare';
 
 const Container = styled('div')({
   position: 'relative',
   display: 'flex',
   alignItems: 'center',
+  minHeight: '5em',
 });
 
 const InfoContainer = styled('div')({
@@ -58,6 +61,7 @@ export default function ParticipantInfo({ participant, children }: ParticipantIn
         </InfoRow>
         <div>
           {!isAudioEnabled && <MicOff />}
+          {!isVideoEnabled && <VideocamOff />}
           {isScreenShareEnabled && <ScreenShare />}
         </div>
       </InfoContainer>
