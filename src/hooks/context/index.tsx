@@ -1,8 +1,9 @@
 import EventEmitter from 'events';
 import React, { createContext, ReactNode, useContext } from 'react';
 import { ConnectOptions, LocalTrack, Room } from 'twilio-video';
-import useLocalTracks from './useLocalTracks';
-import useRoom from './useRoom';
+import useAdaptiveBandwidthProfile from './useAdaptiveBandwidthProfile/useAdaptiveBandwidthProfile';
+import useLocalTracks from './useLocalTracks/useLocalTracks';
+import useRoom from './useRoom/useRoom';
 
 export interface IVideoContext {
   room: Room;
@@ -25,6 +26,7 @@ interface VideoProviderProps {
 export function VideoProvider({ token, options, children }: VideoProviderProps) {
   const localTracks = useLocalTracks();
   const { room, isConnecting } = useRoom(localTracks, token, options);
+  useAdaptiveBandwidthProfile();
 
   return <VideoContext.Provider value={{ room, localTracks, isConnecting }}>{children}</VideoContext.Provider>;
 }
