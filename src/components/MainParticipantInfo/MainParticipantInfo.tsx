@@ -12,7 +12,7 @@ const Container = styled('div')({
   alignItems: 'center',
 });
 
-const InfoContainer = styled(({ hideVideo, ...other }: { hideVideo?: boolean }) => <div {...other} />)({
+export const InfoContainer = styled(({ hideVideo, ...other }: { hideVideo?: boolean }) => <div {...other} />)({
   position: 'absolute',
   zIndex: 1,
   height: '100%',
