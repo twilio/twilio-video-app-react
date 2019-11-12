@@ -5,13 +5,14 @@ import { CssBaseline } from '@material-ui/core';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { Provider as ReduxProvider } from 'react-redux';
 import store, { useSelector } from './store';
-import './types';
 
 import App from './App';
+import { ConnectOptions } from 'twilio-video';
 import theme from './theme';
+import './types';
 import { VideoProvider } from './hooks/context';
 
-const connectionOptions = {
+const connectionOptions: ConnectOptions = {
   dominantSpeaker: true,
   networkQuality: {
     local: 1,
@@ -24,7 +25,7 @@ const connectionOptions = {
     },
   },
   preferredVideoCodecs: [{ codec: 'VP8', simulcast: true }],
-} as any;
+};
 
 const VideoProviderWithToken = () => {
   const token = useSelector(state => state.token);

@@ -14,10 +14,7 @@ export default function useRoom(localTracks: LocalTrack[], token?: string, optio
         setRoom(room);
 
         localTracks.forEach(track =>
-          room.localParticipant.publishTrack(
-            track as any,
-            { priority: track.name === 'camera' ? 'low' : 'high' } as any
-          )
+          room.localParticipant.publishTrack(track, { priority: track.name === 'camera' ? 'low' : 'high' })
         );
 
         disconnectHandlerRef.current = () => room.disconnect();
