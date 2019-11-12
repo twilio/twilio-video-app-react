@@ -35,6 +35,6 @@ describe('the useVideoContext hook', () => {
       </VideoProvider>
     );
     renderHook(useVideoContext, { wrapper });
-    expect(useAdaptiveBandwidthProfile).toHaveBeenCalled;
+    expect(useAdaptiveBandwidthProfile).toHaveBeenCalled();
   });
 });
