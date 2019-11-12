@@ -1,6 +1,8 @@
 import React from 'react';
 import { styled } from '@material-ui/core/styles';
 import { LocalParticipant, RemoteParticipant } from 'twilio-video';
+import VideocamOff from '@material-ui/icons/VideocamOff';
+
 import usePublications from '../../hooks/usePublications/usePublications';
 import usePublicationIsTrackEnabled from '../../hooks/usePublicationIsTrackEnabled/usePublicationIsTrackEnabled';
 
@@ -24,7 +26,10 @@ const Identity = styled('h4')({
   padding: '0.1em 0.3em',
   margin: '1em',
   fontSize: '1.2em',
-  display: 'inline-block',
+  display: 'inline-flex',
+  '& svg': {
+    marginLeft: '0.3em',
+  },
 });
 
 interface ParticipantInfoProps {
@@ -39,7 +44,10 @@ export default function ParticipantInfo({ participant, children }: ParticipantIn
   return (
     <Container>
       <InfoContainer hideVideo={!isVideoEnabled}>
-        <Identity>{participant.identity}</Identity>
+        <Identity>
+          {participant.identity}
+          {!isVideoEnabled && <VideocamOff />}
+        </Identity>
       </InfoContainer>
       {children}
     </Container>

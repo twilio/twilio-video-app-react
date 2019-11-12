@@ -4,20 +4,11 @@ import { shallow } from 'enzyme';
 import usePublications from '../../hooks/usePublications/usePublications';
 
 jest.mock('../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel', () => () => 4);
-
 jest.mock('../../hooks/usePublications/usePublications');
 
 const mockUsePublications = usePublications as jest.Mock<any>;
 
 describe('the ParticipantInfo component', () => {
-  it('should render correctly', () => {
-    mockUsePublications.mockImplementation(() => []);
-    const wrapper = shallow(
-      <ParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</ParticipantInfo>
-    );
-    expect(wrapper).toMatchSnapshot();
-  });
-
   it('should display MicOff icon when microphone is disabled', () => {
     mockUsePublications.mockImplementation(() => [{ trackName: 'microphone', isTrackEnabled: false }]);
     const wrapper = shallow(
@@ -74,5 +65,29 @@ describe('the ParticipantInfo component', () => {
         .at(1)
         .prop('hideVideo')
     ).toEqual(false);
+  });
+
+  it('should render a VideoCamOff icon when no camera tracks are present', () => {
+    mockUsePublications.mockImplementation(() => []);
+    const wrapper = shallow(
+      <ParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</ParticipantInfo>
+    );
+    expect(wrapper.find('VideocamOffIcon').exists()).toEqual(true);
+  });
+
+  it('should render a VideoCamOff icon when a camera track is present and disabled', () => {
+    mockUsePublications.mockImplementation(() => [{ trackName: 'camera', isTrackEnabled: false }]);
+    const wrapper = shallow(
+      <ParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</ParticipantInfo>
+    );
+    expect(wrapper.find('VideocamOffIcon').exists()).toEqual(true);
+  });
+
+  it('should render a VideoCamOff icon when a camera tracks is present and enabled', () => {
+    mockUsePublications.mockImplementation(() => [{ trackName: 'camera', isTrackEnabled: true }]);
+    const wrapper = shallow(
+      <ParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</ParticipantInfo>
+    );
+    expect(wrapper.find('VideocamOffIcon').exists()).toEqual(false);
   });
 });
