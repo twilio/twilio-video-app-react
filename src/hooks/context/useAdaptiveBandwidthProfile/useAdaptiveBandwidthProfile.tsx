@@ -9,20 +9,18 @@ export default function useAdaptiveBandwidthProfile() {
   } = useVideoContext();
 
   useEffect(() => {
-    if (screenShareParticipant) {
+    if (localParticipant) {
       localParticipant.setBandwidthProfile({
-        video: {
-          mode: 'presentation',
-          dominantSpeakerPriority: 'standard',
-        },
-      });
-    } else {
-      localParticipant.setBandwidthProfile({
-        video: {
-          mode: 'collaboration',
-          dominantSpeakerPriority: 'high',
-        },
+        video: screenShareParticipant
+          ? {
+              mode: 'presentation',
+              dominantSpeakerPriority: 'standard',
+            }
+          : {
+              mode: 'collaboration',
+              dominantSpeakerPriority: 'high',
+            },
       });
     }
-  }, [screenShareParticipant]);
+  }, [screenShareParticipant, localParticipant]);
 }
