@@ -6,6 +6,7 @@ import LocalVideoPreview from './components/LocalVideoPreview/LocalVideoPreview'
 import Menu from './components/Menu/Menu';
 import Room from './components/Room/Room';
 
+import useAdaptiveBandwidthProfile from './hooks/context/useAdaptiveBandwidthProfile/useAdaptiveBandwidthProfile';
 import useRoomState from './hooks/useRoomState/useRoomState';
 
 const Container = styled('div')({
@@ -20,6 +21,7 @@ const Main = styled('main')({
 });
 
 export default function App() {
+  useAdaptiveBandwidthProfile();
   const roomState = useRoomState();
 
   return (
