@@ -1,15 +1,21 @@
+import { EventEmitter } from 'events';
 import React from 'react';
 import { shallow } from 'enzyme';
 import useScreenShareParticipant from '../../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 import useScreenShareToggle from '../../../hooks/useScreenShareToggle/useScreenShareToggle';
+import { useVideoContext } from '../../../hooks/context';
 
 import ToggleScreenShareButton from './ToggleScreenShareButton';
 
 jest.mock('../../../hooks/useScreenShareToggle/useScreenShareToggle');
 jest.mock('../../../hooks/useScreenShareParticipant/useScreenShareParticipant');
+jest.mock('../../../hooks/context');
 
 const mockUseScreenShareToggle = useScreenShareToggle as jest.Mock<any>;
 const mockUseScreenShareParticipant = useScreenShareParticipant as jest.Mock<any>;
+const mockUseVideoContext = useVideoContext as jest.Mock<any>;
+
+mockUseVideoContext.mockImplementation(() => ({ room: new EventEmitter() }));
 
 Object.defineProperty(navigator, 'mediaDevices', {
   value: {
