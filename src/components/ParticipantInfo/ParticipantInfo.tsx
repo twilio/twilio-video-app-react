@@ -19,8 +19,9 @@ const Container = styled(({ isSwitchedOff, ...other }: { isSwitchedOff?: boolean
   display: 'flex',
   alignItems: 'center',
   minHeight: '5em',
+  overflow: 'hidden',
   '& video': {
-    filter: ({ isSwitchedOff }) => (isSwitchedOff ? 'blur(3px) grayscale(1) brightness(0.6)' : 'none'),
+    filter: ({ isSwitchedOff }) => (isSwitchedOff ? 'blur(4px) grayscale(1) brightness(0.5)' : 'none'),
   },
 });
 
