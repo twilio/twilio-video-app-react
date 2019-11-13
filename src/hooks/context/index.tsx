@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 import React, { createContext, ReactNode, useContext } from 'react';
 import { ConnectOptions, LocalTrack, Room } from 'twilio-video';
-import { SelectedParticipantProvider } from './useSelectedParticipant';
+import { SelectedParticipantProvider } from './useSelectedParticipant/useSelectedParticipant';
 import useLocalTracks from './useLocalTracks';
 import useRoom from './useRoom';
 

@@ -2,7 +2,7 @@ import { useVideoContext } from '../context';
 import useDominantSpeaker from '../useDominantSpeaker/useDominantSpeaker';
 import useParticipants from '../useParticipants/useParticipants';
 import useScreenShareParticipant from '../useScreenShareParticipant/useScreenShareParticipant';
-import useSelectedParticipant from '../context/useSelectedParticipant';
+import useSelectedParticipant from '../context/useSelectedParticipant/useSelectedParticipant';
 
 export default function useMainSpeaker() {
   const [selectedParticipant] = useSelectedParticipant();

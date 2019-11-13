@@ -3,7 +3,7 @@ import Participant from '../Participant/Participant';
 import { styled } from '@material-ui/core/styles';
 import useParticipants from '../../hooks/useParticipants/useParticipants';
 import { useVideoContext } from '../../hooks/context';
-import useSelectedParticipant from '../../hooks/context/useSelectedParticipant';
+import useSelectedParticipant from '../../hooks/context/useSelectedParticipant/useSelectedParticipant';
 
 const Container = styled('aside')(({ theme }) => ({
   position: 'absolute',
