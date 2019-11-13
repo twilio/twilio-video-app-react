@@ -12,14 +12,16 @@ const Container = styled('div')({
   alignItems: 'center',
 });
 
-export const InfoContainer = styled(({ hideVideo, ...other }: { hideVideo?: boolean }) => <div {...other} />)({
-  position: 'absolute',
-  zIndex: 1,
-  height: '100%',
-  padding: '0.4em',
-  width: '100%',
-  background: ({ hideVideo }) => (hideVideo ? 'black' : 'transparent'),
-});
+export const InfoContainer = styled(({ hideVideo, ...otherProps }: { hideVideo?: boolean }) => <div {...otherProps} />)(
+  {
+    position: 'absolute',
+    zIndex: 1,
+    height: '100%',
+    padding: '0.4em',
+    width: '100%',
+    background: ({ hideVideo }) => (hideVideo ? 'black' : 'transparent'),
+  }
+);
 
 const Identity = styled('h4')({
   background: 'rgba(0, 0, 0, 0.7)',

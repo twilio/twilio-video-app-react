@@ -14,7 +14,7 @@ import usePublicationIsTrackEnabled from '../../hooks/usePublicationIsTrackEnabl
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
 import useTrack from '../../hooks/useTrack/useTrack';
 
-const Container = styled(({ isSwitchedOff, ...other }: { isSwitchedOff?: boolean }) => <div {...other} />)({
+const Container = styled(({ isSwitchedOff, ...otherProps }: { isSwitchedOff?: boolean }) => <div {...otherProps} />)({
   position: 'relative',
   display: 'flex',
   alignItems: 'center',
@@ -25,17 +25,19 @@ const Container = styled(({ isSwitchedOff, ...other }: { isSwitchedOff?: boolean
   },
 });
 
-export const InfoContainer = styled(({ hideVideo, ...other }: { hideVideo?: boolean }) => <div {...other} />)({
-  position: 'absolute',
-  zIndex: 1,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-  height: '100%',
-  padding: '0.4em',
-  width: '100%',
-  background: ({ hideVideo }) => (hideVideo ? 'black' : 'transparent'),
-});
+export const InfoContainer = styled(({ hideVideo, ...otherProps }: { hideVideo?: boolean }) => <div {...otherProps} />)(
+  {
+    position: 'absolute',
+    zIndex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: '100%',
+    padding: '0.4em',
+    width: '100%',
+    background: ({ hideVideo }) => (hideVideo ? 'black' : 'transparent'),
+  }
+);
 
 const Identity = styled('h4')({
   background: 'rgba(0, 0, 0, 0.7)',
