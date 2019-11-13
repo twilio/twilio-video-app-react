@@ -20,7 +20,7 @@ interface PublicationProps {
 export default function Publication({ publication, isLocal, disableAudio }: PublicationProps) {
   const track = useTrack(publication);
 
-  if (track === null) return null;
+  if (!track) return null;
 
   switch (track.name) {
     case 'screen':
