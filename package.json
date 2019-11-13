@@ -55,7 +55,10 @@
     "server": "node server.js"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "rules": {
+      "no-shadow": "warn"
+    }
   },
   "browserslist": {
     "production": [

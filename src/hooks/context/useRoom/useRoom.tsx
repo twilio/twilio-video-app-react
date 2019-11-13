@@ -10,15 +10,14 @@ export default function useRoom(localTracks: LocalTrack[], token?: string, optio
   useEffect(() => {
     if (token && room.state !== 'connected' && !isConnecting) {
       setIsConnecting(true);
-      Video.connect(token, { ...options, tracks: [] }).then(room => {
-        setRoom(room);
-
+      Video.connect(token, { ...options, tracks: [] }).then(newRoom => {
+        setRoom(newRoom);
         localTracks.forEach(track =>
           // Publishing here so we can set the track priority
-          room.localParticipant.publishTrack(track, { priority: track.name === 'camera' ? 'low' : 'standard' })
+          newRoom.localParticipant.publishTrack(track, { priority: track.name === 'camera' ? 'low' : 'standard' })
         );
 
-        disconnectHandlerRef.current = () => room.disconnect();
+        disconnectHandlerRef.current = () => newRoom.disconnect();
         setIsConnecting(false);
         window.addEventListener('beforeunload', disconnectHandlerRef.current);
       });
