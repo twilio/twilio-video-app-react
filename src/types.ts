@@ -6,7 +6,7 @@ declare module 'twilio-video' {
   }
 
   interface RemoteVideoTrack {
-    isSwitchedOff?: boolean;
+    isSwitchedOff: boolean;
   }
 }
 
