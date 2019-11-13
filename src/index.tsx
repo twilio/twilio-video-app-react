@@ -5,6 +5,7 @@ import { CssBaseline } from '@material-ui/core';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { Provider as ReduxProvider } from 'react-redux';
 import store, { useSelector } from './store';
+import './types';
 
 import App from './App';
 import theme from './theme';

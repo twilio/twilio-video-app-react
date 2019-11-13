@@ -2,12 +2,6 @@ import { useState, useCallback, useRef } from 'react';
 import { useVideoContext } from '../context';
 import { LogLevels, Track } from 'twilio-video';
 
-declare global {
-  interface MediaDevices {
-    getDisplayMedia(): Promise<MediaStream>;
-  }
-}
-
 interface MediaStreamTrackPublishOptions {
   name?: string;
   priority: Track.Priority;

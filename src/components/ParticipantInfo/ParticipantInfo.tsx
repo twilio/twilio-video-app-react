@@ -1,6 +1,8 @@
 import React from 'react';
 import { styled } from '@material-ui/core/styles';
-import { LocalParticipant, RemoteParticipant } from 'twilio-video';
+import { LocalParticipant, RemoteParticipant, RemoteVideoTrack, LocalVideoTrack } from 'twilio-video';
+
+import BandwidthWarning from './BandwidthWarning/BandwidthWarning';
 import MicOff from '@material-ui/icons/MicOff';
 import NetworkQualityLevel from '../NewtorkQualityLevel/NetworkQualityLevel';
 import ScreenShare from '@material-ui/icons/ScreenShare';
@@ -9,28 +11,41 @@ import VideocamOff from '@material-ui/icons/VideocamOff';
 import useParticipantNetworkQualityLevel from '../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel';
 import usePublications from '../../hooks/usePublications/usePublications';
 import usePublicationIsTrackEnabled from '../../hooks/usePublicationIsTrackEnabled/usePublicationIsTrackEnabled';
+import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
+import useTrack from '../../hooks/useTrack/useTrack';
 
-const Container = styled(({ isSelected, ...otherProps }: { isSelected: boolean; onClick: () => void }) => (
-  <div {...otherProps}></div>
-))({
-  position: 'relative',
-  display: 'flex',
-  alignItems: 'center',
-  minHeight: '5em',
-  border: ({ isSelected }) => (isSelected ? '1px solid white' : '1px solid transparent'),
-});
+interface ContainerProps {
+  isSelected: boolean;
+  isSwitchedOff: boolean;
+  onClick: () => void;
+}
+const Container = styled(({ isSelected, isSwitchedOff, ...otherProps }: ContainerProps) => <div {...otherProps}></div>)(
+  {
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    minHeight: '5em',
+    border: ({ isSelected }) => (isSelected ? '1px solid white' : '1px solid transparent'),
+    overflow: 'hidden',
+    '& video': {
+      filter: ({ isSwitchedOff }) => (isSwitchedOff ? 'blur(4px) grayscale(1) brightness(0.5)' : 'none'),
+    },
+  }
+);
 
-const InfoContainer = styled('div')({
-  position: 'absolute',
-  zIndex: 1,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-  height: '100%',
-  padding: '0.4em',
-  width: '100%',
-  background: ({ hideVideo }: { hideVideo?: boolean }) => (hideVideo ? 'black' : 'transparent'),
-});
+export const InfoContainer = styled(({ hideVideo, ...otherProps }: { hideVideo?: boolean }) => <div {...otherProps} />)(
+  {
+    position: 'absolute',
+    zIndex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: '100%',
+    padding: '0.4em',
+    width: '100%',
+    background: ({ hideVideo }) => (hideVideo ? 'black' : 'transparent'),
+  }
+);
 
 const Identity = styled('h4')({
   background: 'rgba(0, 0, 0, 0.7)',
@@ -50,15 +65,23 @@ interface ParticipantInfoProps {
   isSelected: boolean;
 }
 
-export default function ParticipantInfo({ participant, children, onClick, isSelected }: ParticipantInfoProps) {
-  const networkQualityLevel = useParticipantNetworkQualityLevel(participant);
+export default function ParticipantInfo({ participant, onClick, isSelected, children }: ParticipantInfoProps) {
   const publications = usePublications(participant);
-  const isAudioEnabled = usePublicationIsTrackEnabled(publications.find(p => p.trackName === 'microphone'));
-  const isVideoEnabled = usePublicationIsTrackEnabled(publications.find(p => p.trackName === 'camera'));
-  const isScreenShareEnabled = usePublicationIsTrackEnabled(publications.find(p => p.trackName === 'screen'));
+
+  const audioPublication = publications.find(p => p.trackName === 'microphone');
+  const videoPublication = publications.find(p => p.trackName === 'camera');
+  const screenSharePublication = publications.find(p => p.trackName === 'screen');
+
+  const networkQualityLevel = useParticipantNetworkQualityLevel(participant);
+  const isAudioEnabled = usePublicationIsTrackEnabled(audioPublication);
+  const isVideoEnabled = usePublicationIsTrackEnabled(videoPublication);
+  const isScreenShareEnabled = usePublicationIsTrackEnabled(screenSharePublication);
+
+  const videoTrack = useTrack(videoPublication);
+  const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
 
   return (
-    <Container onClick={onClick} isSelected={isSelected}>
+    <Container onClick={onClick} isSelected={isSelected} isSwitchedOff={isVideoSwitchedOff}>
       <InfoContainer hideVideo={!isVideoEnabled}>
         <InfoRow>
           <Identity>{participant.identity}</Identity>
@@ -70,6 +93,7 @@ export default function ParticipantInfo({ participant, children, onClick, isSele
           {isScreenShareEnabled && <ScreenShare />}
         </div>
       </InfoContainer>
+      {isVideoSwitchedOff && <BandwidthWarning />}
       {children}
     </Container>
   );
