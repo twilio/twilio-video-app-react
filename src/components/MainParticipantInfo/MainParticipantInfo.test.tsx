@@ -3,8 +3,9 @@ import MainParticipantInfo from './MainParticipantInfo';
 import { shallow } from 'enzyme';
 import usePublications from '../../hooks/usePublications/usePublications';
 
-jest.mock('../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel', () => () => 4);
+import { InfoContainer } from './MainParticipantInfo';
 
+jest.mock('../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel', () => () => 4);
 jest.mock('../../hooks/usePublications/usePublications');
 
 const mockUsePublications = usePublications as jest.Mock<any>;
@@ -15,12 +16,7 @@ describe('the MainParticipantInfo component', () => {
     const wrapper = shallow(
       <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
     );
-    expect(
-      wrapper
-        .find('Styled(div)')
-        .at(1)
-        .prop('hideVideo')
-    ).toEqual(true);
+    expect(wrapper.find(InfoContainer).prop('hideVideo')).toEqual(true);
   });
 
   it('should not add hideVideoProp to InfoContainer component when video is enabled', () => {
@@ -28,12 +24,7 @@ describe('the MainParticipantInfo component', () => {
     const wrapper = shallow(
       <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
     );
-    expect(
-      wrapper
-        .find('Styled(div)')
-        .at(1)
-        .prop('hideVideo')
-    ).toEqual(false);
+    expect(wrapper.find(InfoContainer).prop('hideVideo')).toEqual(false);
   });
 
   it('should render a VideoCamOff icon when no camera tracks are present', () => {
