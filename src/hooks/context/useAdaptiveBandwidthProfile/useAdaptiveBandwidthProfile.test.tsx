@@ -27,7 +27,7 @@ describe('the useAdaptiveBandwidthProfile hook', () => {
     });
     rerender();
     expect(mockSetBandwidthProfile).toHaveBeenLastCalledWith({
-      video: { dominantSpeakerPriority: 'standard', mode: 'presentation' },
+      video: { dominantSpeakerPriority: 'low', mode: 'presentation' },
     });
   });
 });

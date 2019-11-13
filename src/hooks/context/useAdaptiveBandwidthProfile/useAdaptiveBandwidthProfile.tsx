@@ -14,7 +14,7 @@ export default function useAdaptiveBandwidthProfile() {
         video: screenShareParticipant
           ? {
               mode: 'presentation',
-              dominantSpeakerPriority: 'standard',
+              dominantSpeakerPriority: 'low',
             }
           : {
               mode: 'collaboration',
