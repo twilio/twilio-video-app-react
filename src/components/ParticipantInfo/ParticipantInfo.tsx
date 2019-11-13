@@ -10,11 +10,14 @@ import useParticipantNetworkQualityLevel from '../../hooks/useParticipantNetwork
 import usePublications from '../../hooks/usePublications/usePublications';
 import usePublicationIsTrackEnabled from '../../hooks/usePublicationIsTrackEnabled/usePublicationIsTrackEnabled';
 
-const Container = styled('div')({
+const Container = styled(({ isSelected, ...otherProps }: { isSelected: boolean; onClick: () => void }) => (
+  <div {...otherProps}></div>
+))({
   position: 'relative',
   display: 'flex',
   alignItems: 'center',
   minHeight: '5em',
+  border: ({ isSelected }) => (isSelected ? '1px solid white' : '1px solid transparent'),
 });
 
 const InfoContainer = styled('div')({
@@ -43,9 +46,11 @@ const InfoRow = styled('div')({
 interface ParticipantInfoProps {
   participant: LocalParticipant | RemoteParticipant;
   children: React.ReactNode;
+  onClick: () => void;
+  isSelected: boolean;
 }
 
-export default function ParticipantInfo({ participant, children }: ParticipantInfoProps) {
+export default function ParticipantInfo({ participant, children, onClick, isSelected }: ParticipantInfoProps) {
   const networkQualityLevel = useParticipantNetworkQualityLevel(participant);
   const publications = usePublications(participant);
   const isAudioEnabled = usePublicationIsTrackEnabled(publications.find(p => p.trackName === 'microphone'));
@@ -53,7 +58,7 @@ export default function ParticipantInfo({ participant, children }: ParticipantIn
   const isScreenShareEnabled = usePublicationIsTrackEnabled(publications.find(p => p.trackName === 'screen'));
 
   return (
-    <Container>
+    <Container onClick={onClick} isSelected={isSelected}>
       <InfoContainer hideVideo={!isVideoEnabled}>
         <InfoRow>
           <Identity>{participant.identity}</Identity>
