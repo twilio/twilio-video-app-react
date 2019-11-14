@@ -1,8 +1,8 @@
-import React from 'react';
-import useSelectedParticipant, { SelectedParticipantProvider } from './useSelectedParticipant';
-import { renderHook, act } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react-hooks';
 import { EventEmitter } from 'events';
+import React from 'react';
 import { Room } from 'twilio-video';
+import useSelectedParticipant, { SelectedParticipantProvider } from './useSelectedParticipant';
 
 describe('the useSelectedParticipant hook', () => {
   let mockRoom: Room;
