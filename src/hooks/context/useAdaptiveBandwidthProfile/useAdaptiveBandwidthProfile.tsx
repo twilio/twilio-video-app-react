@@ -10,8 +10,9 @@ export default function useAdaptiveBandwidthProfile() {
 
   useEffect(() => {
     if (localParticipant) {
+      const isRemoteParticipantScreenSharing = screenShareParticipant && screenShareParticipant !== localParticipant;
       localParticipant.setBandwidthProfile({
-        video: screenShareParticipant
+        video: isRemoteParticipantScreenSharing
           ? {
               mode: 'presentation',
               dominantSpeakerPriority: 'low',
