@@ -7,16 +7,16 @@ export default function useDominantSpeaker() {
   const [dominantSpeaker, setDominantSpeaker] = useState(room.dominantSpeaker);
 
   useEffect(() => {
-    const handleDominantSpeakerChanged = (dominantSpeaker: RemoteParticipant) => {
-      if (dominantSpeaker !== null) {
-        setDominantSpeaker(dominantSpeaker);
+    const handleDominantSpeakerChanged = (newDominantSpeaker: RemoteParticipant) => {
+      if (newDominantSpeaker !== null) {
+        setDominantSpeaker(newDominantSpeaker);
       }
     };
 
     const handleParticipantDisconnected = (participant: RemoteParticipant) => {
-      if (participant === dominantSpeaker) {
-        setDominantSpeaker(null);
-      }
+      setDominantSpeaker(prevDominantSpeaker => {
+        return prevDominantSpeaker === participant ? null : prevDominantSpeaker;
+      });
     };
 
     room.on('dominantSpeakerChanged', handleDominantSpeakerChanged);
