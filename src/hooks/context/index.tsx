@@ -29,7 +29,7 @@ export function VideoProvider({ token, options, children }: VideoProviderProps) 
 
   return (
     <VideoContext.Provider value={{ room, localTracks, isConnecting }}>
-      <SelectedParticipantProvider>{children}</SelectedParticipantProvider>
+      <SelectedParticipantProvider room={room}>{children}</SelectedParticipantProvider>
     </VideoContext.Provider>
   );
 }
