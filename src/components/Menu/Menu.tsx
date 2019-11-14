@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export function getRoomName() {
-  const match = window.location.pathname.match(/^\/room\/(.*)\/?/);
+  const match = window.location.pathname.match(/^\/room\/([^\/]*)/);
   return match ? window.decodeURI(match[1]) : '';
 }
 
@@ -57,7 +57,7 @@ export default function Menu() {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    window.history.replaceState(null, '', `/room/${roomName}`);
+    window.history.replaceState(null, '', window.encodeURI(`/room/${roomName}`));
     dispatch(getToken(name, roomName));
   };
 

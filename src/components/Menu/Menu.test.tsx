@@ -17,6 +17,8 @@ const mockedUseFullScreenToggler = useFullScreenToggler as jest.Mock;
 const mockedUseVideoContext = useVideoContext as jest.Mock<IVideoContext>;
 const toggleFullScreen = jest.fn();
 
+Object.defineProperty(window, 'location', { value: { pathname: '', configurable: true } });
+
 describe('the Menu component', () => {
   mockedUseFullScreenToggler.mockImplementation(() => [true, toggleFullScreen]);
 
@@ -77,11 +79,10 @@ describe('the Menu component', () => {
     mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false } as any));
     const { getByLabelText, getByText } = render(<Menu />);
     fireEvent.change(getByLabelText('Name'), { target: { value: 'Foo' } });
-    fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo' } });
+    fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo Test' } });
     fireEvent.click(getByText('Join Room').parentElement!);
-    expect(window.history.replaceState).toHaveBeenCalledWith(null, '', '/room/Foo');
+    expect(window.history.replaceState).toHaveBeenCalledWith(null, '', '/room/Foo%20Test');
   });
-  Object.defineProperty(window, 'location', { value: { pathname: '', configurable: true } });
 
   it('should populate the Room name from the URL', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
@@ -95,7 +96,7 @@ describe('the Menu component', () => {
     it('should extract the room name from the URL', () => {
       window.location.pathname = '/room/test';
       expect(getRoomName()).toEqual('test');
-      window.location.pathname = '/room/test';
+      window.location.pathname = '/room/test/';
       expect(getRoomName()).toEqual('test');
       window.location.pathname = '/room/test%20test';
       expect(getRoomName()).toEqual('test test');
