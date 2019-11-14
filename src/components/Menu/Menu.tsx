@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export function getRoomName() {
-  const match = window.location.pathname.match(/^\/room\/([^\/]*)/);
+  const match = window.location.pathname.match(/^\/room\/([^/]*)/);
   return match ? window.decodeURI(match[1]) : '';
 }
 
