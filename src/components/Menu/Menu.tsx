@@ -33,9 +33,14 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+export function getRoomName() {
+  const match = window.location.pathname.match(/^\/room\/([^/]*)/);
+  return match ? window.decodeURI(match[1]) : '';
+}
+
 export default function Menu() {
   const [name, setName] = useState<string>('');
-  const [roomName, setRoomName] = useState<string>('');
+  const [roomName, setRoomName] = useState<string>(getRoomName());
   const roomState = useRoomState();
   const dispatch = useDispatch();
   const { isConnecting } = useVideoContext();
@@ -52,6 +57,7 @@ export default function Menu() {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    window.history.replaceState(null, '', window.encodeURI(`/room/${roomName}`));
     dispatch(getToken(name, roomName));
   };
 
