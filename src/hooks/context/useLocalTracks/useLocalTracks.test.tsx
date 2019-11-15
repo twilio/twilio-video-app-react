@@ -15,7 +15,7 @@ describe('the useLocalTracks hook', () => {
     await waitForNextUpdate();
     expect(Video.createLocalTracks).toHaveBeenCalledWith({
       audio: { name: 'microphone' },
-      video: { name: 'camera' },
+      video: { name: 'camera', width: { ideal: 1280 }, height: { ideal: 720 } },
     });
   });
 });

@@ -36,7 +36,7 @@
     "redux-thunk": "^2.3.0",
     "ts-jest": "^24.1.0",
     "twilio": "^3.36.0",
-    "twilio-video": "2.0.0-beta15",
+    "twilio-video": "github:twilio/twilio-video.js#2.0.0-rc47",
     "typescript": "3.6.4"
   },
   "lint-staged": {
@@ -55,7 +55,10 @@
     "server": "node server.js"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "rules": {
+      "no-shadow": "warn"
+    }
   },
   "browserslist": {
     "production": [

@@ -104,6 +104,28 @@ describe('the useScreenShareParticipant hook', () => {
     expect(result.current).toEqual(undefined);
   });
 
+  it('should respond to "participantDisconnected" events emitted from the room', () => {
+    const mockRoom = MockRoom();
+    const mockParticipant = {
+      tracks: new Map([[0, { trackName: 'screen' }]]),
+    };
+    mockRoom.participants = new Map([[0, mockParticipant]]);
+
+    mockUseVideoContext.mockImplementation(() => ({
+      room: mockRoom,
+    }));
+
+    const { result } = renderHook(useScreenShareParticipant);
+    expect(result.current).toEqual(mockParticipant);
+
+    act(() => {
+      mockRoom.participants = new Map();
+      mockRoom.emit('participantDisconnected');
+    });
+
+    expect(result.current).toEqual(undefined);
+  });
+
   it('should clean up all listeners when unmounted', () => {
     const mockRoom = MockRoom();
 
@@ -115,6 +137,7 @@ describe('the useScreenShareParticipant hook', () => {
 
     expect(mockRoom.listenerCount('trackPublished')).toBe(1);
     expect(mockRoom.listenerCount('trackUnpublished')).toBe(1);
+    expect(mockRoom.listenerCount('participantDisconnected')).toBe(1);
     expect(mockRoom.localParticipant.listenerCount('trackPublished')).toBe(1);
     expect(mockRoom.localParticipant.listenerCount('trackUnpublished')).toBe(1);
 
@@ -122,6 +145,7 @@ describe('the useScreenShareParticipant hook', () => {
 
     expect(mockRoom.listenerCount('trackPublished')).toBe(0);
     expect(mockRoom.listenerCount('trackUnpublished')).toBe(0);
+    expect(mockRoom.listenerCount('participantDisconnected')).toBe(0);
     expect(mockRoom.localParticipant.listenerCount('trackPublished')).toBe(0);
     expect(mockRoom.localParticipant.listenerCount('trackUnpublished')).toBe(0);
   });

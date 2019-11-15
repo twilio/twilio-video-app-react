@@ -22,6 +22,7 @@ export default function useScreenShareParticipant() {
       updateScreenShareParticipant();
       room.on('trackPublished', updateScreenShareParticipant);
       room.on('trackUnpublished', updateScreenShareParticipant);
+      room.on('participantDisconnected', updateScreenShareParticipant);
 
       // the room object does not emit 'trackPublished' events for the localPartipant,
       // so we need to listen for them here.
@@ -30,6 +31,7 @@ export default function useScreenShareParticipant() {
       return () => {
         room.off('trackPublished', updateScreenShareParticipant);
         room.off('trackUnpublished', updateScreenShareParticipant);
+        room.off('participantDisconnected', updateScreenShareParticipant);
         room.localParticipant.off('trackPublished', updateScreenShareParticipant);
         room.localParticipant.off('trackUnpublished', updateScreenShareParticipant);
       };

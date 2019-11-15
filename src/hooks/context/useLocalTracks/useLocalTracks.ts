@@ -7,7 +7,7 @@ export default function useLocalTracks() {
   useEffect(() => {
     Video.createLocalTracks({
       audio: { name: 'microphone' },
-      video: { name: 'camera' },
+      video: { name: 'camera', width: { ideal: 1280 }, height: { ideal: 720 } },
     }).then(tracks => setTracks(tracks as LocalTrack[]));
   }, [setTracks]);
 
