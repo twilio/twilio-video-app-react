@@ -1,5 +1,5 @@
 import React from 'react';
-import Menu from './Menu';
+import Menu, { getRoomName } from './Menu';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useFullScreenToggler from '../../hooks/useFullScreenToggler/useFullScreenToggler';
 import { IVideoContext, useVideoContext } from '../../hooks/context';
@@ -16,6 +16,8 @@ const mockedUseRoomState = useRoomState as jest.Mock<string>;
 const mockedUseFullScreenToggler = useFullScreenToggler as jest.Mock;
 const mockedUseVideoContext = useVideoContext as jest.Mock<IVideoContext>;
 const toggleFullScreen = jest.fn();
+
+Object.defineProperty(window, 'location', { value: { pathname: '', configurable: true } });
 
 describe('the Menu component', () => {
   mockedUseFullScreenToggler.mockImplementation(() => [true, toggleFullScreen]);
@@ -69,5 +71,42 @@ describe('the Menu component', () => {
     fireEvent.change(getByLabelText('Name'), { target: { value: 'Foo' } });
     fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo' } });
     expect(getByText('Join Room')).toBeDisabled();
+  });
+
+  it('should update the URL to include the room name on submit', () => {
+    Object.defineProperty(window.history, 'replaceState', { value: jest.fn() });
+    mockedUseRoomState.mockImplementation(() => 'disconnected');
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false } as any));
+    const { getByLabelText, getByText } = render(<Menu />);
+    fireEvent.change(getByLabelText('Name'), { target: { value: 'Foo' } });
+    fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo Test' } });
+    fireEvent.click(getByText('Join Room').parentElement!);
+    expect(window.history.replaceState).toHaveBeenCalledWith(null, '', '/room/Foo%20Test');
+  });
+
+  it('should populate the Room name from the URL', () => {
+    mockedUseRoomState.mockImplementation(() => 'disconnected');
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false } as any));
+    window.location.pathname = '/room/test';
+    const { getByLabelText } = render(<Menu />);
+    expect(getByLabelText('Room').getAttribute('value')).toEqual('test');
+  });
+
+  describe('the getRoom function', () => {
+    it('should extract the room name from the URL', () => {
+      window.location.pathname = '/room/test';
+      expect(getRoomName()).toEqual('test');
+      window.location.pathname = '/room/test/';
+      expect(getRoomName()).toEqual('test');
+      window.location.pathname = '/room/test%20test';
+      expect(getRoomName()).toEqual('test test');
+    });
+
+    it('should return an empty string when there is no room name', () => {
+      window.location.pathname = '/';
+      expect(getRoomName()).toEqual('');
+      window.location.pathname = '/invalid/room/test';
+      expect(getRoomName()).toEqual('');
+    });
   });
 });

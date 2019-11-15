@@ -8,9 +8,9 @@ export default function useParticipants() {
 
   useEffect(() => {
     const participantConnected = (participant: RemoteParticipant) =>
-      setParticipants(participants => [...participants, participant]);
+      setParticipants(prevParticipants => [...prevParticipants, participant]);
     const participantDisconnected = (participant: RemoteParticipant) =>
-      setParticipants(participants => participants.filter(p => p !== participant));
+      setParticipants(prevParticipants => prevParticipants.filter(p => p !== participant));
     room.on('participantConnected', participantConnected);
     room.on('participantDisconnected', participantDisconnected);
     return () => {

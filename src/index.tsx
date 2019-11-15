@@ -8,28 +8,31 @@ import store, { useSelector } from './store';
 import './types';
 
 import App from './App';
+import { ConnectOptions } from 'twilio-video';
 import theme from './theme';
+import './types';
 import { VideoProvider } from './hooks/context';
+
+const connectionOptions: ConnectOptions = {
+  dominantSpeaker: true,
+  networkQuality: {
+    local: 1,
+    remote: 1,
+  },
+  bandwidthProfile: {
+    video: {
+      dominantSpeakerPriority: 'high',
+      mode: 'collaboration',
+    },
+  },
+  preferredVideoCodecs: [{ codec: 'VP8', simulcast: true }],
+};
 
 const VideoProviderWithToken = () => {
   const token = useSelector(state => state.token);
 
   return (
-    <VideoProvider
-      token={token}
-      options={{
-        dominantSpeaker: true,
-        networkQuality: {
-          local: 1,
-          remote: 1,
-        },
-        bandwidthProfile: {
-          video: {
-            mode: 'presentation',
-          },
-        },
-      }}
-    >
+    <VideoProvider token={token} options={connectionOptions}>
       <App />
     </VideoProvider>
   );
