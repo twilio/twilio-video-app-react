@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function ToggleVideoButton() {
+export default function ToggleVideoButton(props: { disabled?: boolean }) {
   const classes = useStyles();
   const [isVideoEnabled, toggleVideoEnabled] = useLocalVideoToggle();
 
@@ -26,7 +26,7 @@ export default function ToggleVideoButton() {
       placement="top"
       PopperProps={{ disablePortal: true }}
     >
-      <Fab className={classes.fab} onClick={toggleVideoEnabled}>
+      <Fab className={classes.fab} onClick={toggleVideoEnabled} disabled={props.disabled}>
         {isVideoEnabled ? <Videocam /> : <VideocamOff />}
       </Fab>
     </Tooltip>
