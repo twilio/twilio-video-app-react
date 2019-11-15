@@ -3,6 +3,7 @@ import Participant from '../Participant/Participant';
 import { styled } from '@material-ui/core/styles';
 import useParticipants from '../../hooks/useParticipants/useParticipants';
 import { useVideoContext } from '../../hooks/context';
+import useSelectedParticipant from '../../hooks/context/useSelectedParticipant/useSelectedParticipant';
 
 const Container = styled('aside')(({ theme }) => ({
   position: 'absolute',
@@ -15,14 +16,26 @@ const Container = styled('aside')(({ theme }) => ({
 }));
 
 export default function ParticipantStrip() {
-  const { room } = useVideoContext();
+  const {
+    room: { localParticipant },
+  } = useVideoContext();
   const participants = useParticipants();
+  const [selectedParticipant, setSelectedParticipant] = useSelectedParticipant();
 
   return (
     <Container>
-      <Participant participant={room.localParticipant} />
+      <Participant
+        participant={localParticipant}
+        isSelected={selectedParticipant === localParticipant}
+        onClick={() => setSelectedParticipant(localParticipant)}
+      />
       {participants.map(participant => (
-        <Participant key={participant.sid} participant={participant} />
+        <Participant
+          key={participant.sid}
+          participant={participant}
+          isSelected={selectedParticipant === participant}
+          onClick={() => setSelectedParticipant(participant)}
+        />
       ))}
     </Container>
   );

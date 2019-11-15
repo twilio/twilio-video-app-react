@@ -14,16 +14,24 @@ import usePublicationIsTrackEnabled from '../../hooks/usePublicationIsTrackEnabl
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
 import useTrack from '../../hooks/useTrack/useTrack';
 
-const Container = styled(({ isSwitchedOff, ...otherProps }: { isSwitchedOff?: boolean }) => <div {...otherProps} />)({
-  position: 'relative',
-  display: 'flex',
-  alignItems: 'center',
-  minHeight: '5em',
-  overflow: 'hidden',
-  '& video': {
-    filter: ({ isSwitchedOff }) => (isSwitchedOff ? 'blur(4px) grayscale(1) brightness(0.5)' : 'none'),
-  },
-});
+interface ContainerProps {
+  isSelected: boolean;
+  isSwitchedOff: boolean;
+  onClick: () => void;
+}
+const Container = styled(({ isSelected, isSwitchedOff, ...otherProps }: ContainerProps) => <div {...otherProps}></div>)(
+  {
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    minHeight: '5em',
+    border: ({ isSelected }) => (isSelected ? '1px solid white' : '1px solid transparent'),
+    overflow: 'hidden',
+    '& video': {
+      filter: ({ isSwitchedOff }) => (isSwitchedOff ? 'blur(4px) grayscale(1) brightness(0.5)' : 'none'),
+    },
+  }
+);
 
 export const InfoContainer = styled(({ hideVideo, ...otherProps }: { hideVideo?: boolean }) => <div {...otherProps} />)(
   {
@@ -53,9 +61,11 @@ const InfoRow = styled('div')({
 interface ParticipantInfoProps {
   participant: LocalParticipant | RemoteParticipant;
   children: React.ReactNode;
+  onClick: () => void;
+  isSelected: boolean;
 }
 
-export default function ParticipantInfo({ participant, children }: ParticipantInfoProps) {
+export default function ParticipantInfo({ participant, onClick, isSelected, children }: ParticipantInfoProps) {
   const publications = usePublications(participant);
 
   const audioPublication = publications.find(p => p.trackName === 'microphone');
@@ -71,7 +81,7 @@ export default function ParticipantInfo({ participant, children }: ParticipantIn
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
 
   return (
-    <Container isSwitchedOff={isVideoSwitchedOff}>
+    <Container onClick={onClick} isSelected={isSelected} isSwitchedOff={isVideoSwitchedOff}>
       <InfoContainer hideVideo={!isVideoEnabled}>
         <InfoRow>
           <Identity>{participant.identity}</Identity>

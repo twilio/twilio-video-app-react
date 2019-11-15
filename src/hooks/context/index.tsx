@@ -1,5 +1,6 @@
 import React, { createContext, ReactNode, useContext } from 'react';
 import { ConnectOptions, LocalTrack, Room } from 'twilio-video';
+import { SelectedParticipantProvider } from './useSelectedParticipant/useSelectedParticipant';
 import useLocalTracks from './useLocalTracks/useLocalTracks';
 import useRoom from './useRoom/useRoom';
 
@@ -21,7 +22,11 @@ export function VideoProvider({ token, options, children }: VideoProviderProps) 
   const localTracks = useLocalTracks();
   const { room, isConnecting } = useRoom(localTracks, token, options);
 
-  return <VideoContext.Provider value={{ room, localTracks, isConnecting }}>{children}</VideoContext.Provider>;
+  return (
+    <VideoContext.Provider value={{ room, localTracks, isConnecting }}>
+      <SelectedParticipantProvider room={room}>{children}</SelectedParticipantProvider>
+    </VideoContext.Provider>
+  );
 }
 
 export function useVideoContext() {

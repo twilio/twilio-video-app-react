@@ -1,12 +1,17 @@
-import useMainSpeaker from './useMainSpeaker';
-import { renderHook } from '@testing-library/react-hooks';
-import { useVideoContext } from '../context';
 import { EventEmitter } from 'events';
+import { renderHook } from '@testing-library/react-hooks';
+import useMainSpeaker from './useMainSpeaker';
+import useSelectedParticipant from '../context/useSelectedParticipant/useSelectedParticipant';
+import { useVideoContext } from '../context';
 
 jest.mock('../context');
+jest.mock('../context/useSelectedParticipant/useSelectedParticipant');
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
+const mockSelectedParticipant = useSelectedParticipant as jest.Mock<any>;
 
 describe('the useMainSpeaker hook', () => {
+  mockSelectedParticipant.mockImplementation(() => [null]);
+
   it('should return the dominant speaker if it exists', () => {
     const mockRoom: any = new EventEmitter();
     mockRoom.dominantSpeaker = 'dominantSpeaker';
@@ -35,5 +40,16 @@ describe('the useMainSpeaker hook', () => {
     mockUseVideoContext.mockImplementation(() => ({ room: mockRoom }));
     const { result } = renderHook(useMainSpeaker);
     expect(result.current).toBe('localParticipant');
+  });
+
+  it('should return the selected participant if it exists', () => {
+    const mockRoom: any = new EventEmitter();
+    mockRoom.dominantSpeaker = 'dominantSpeaker';
+    mockRoom.participants = new Map([[0, 'participant']]) as any;
+    mockRoom.localParticipant = 'localParticipant';
+    mockUseVideoContext.mockImplementation(() => ({ room: mockRoom }));
+    mockSelectedParticipant.mockImplementation(() => ['mockSelectedParticipant']);
+    const { result } = renderHook(useMainSpeaker);
+    expect(result.current).toBe('mockSelectedParticipant');
   });
 });

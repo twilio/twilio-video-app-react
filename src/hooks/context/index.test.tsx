@@ -1,10 +1,13 @@
+import { EventEmitter } from 'events';
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
+import { Room } from 'twilio-video';
+import { VideoProvider, useVideoContext } from './index';
 import useLocalTracks from './useLocalTracks/useLocalTracks';
 import useRoom from './useRoom/useRoom';
-import { VideoProvider, useVideoContext } from './index';
 
-jest.mock('./useRoom/useRoom', () => jest.fn(() => ({ room: 'mockRoom', isConnecting: false })));
+const mockRoom = new EventEmitter() as Room;
+jest.mock('./useRoom/useRoom', () => jest.fn(() => ({ room: mockRoom, isConnecting: false })));
 jest.mock('./useLocalTracks/useLocalTracks', () => jest.fn(() => ['mockTrack']));
 
 describe('the useVideoContext hook', () => {
@@ -18,7 +21,7 @@ describe('the useVideoContext hook', () => {
     expect(result.current).toEqual({
       isConnecting: false,
       localTracks: ['mockTrack'],
-      room: 'mockRoom',
+      room: mockRoom,
     });
     expect(useRoom).toHaveBeenCalledWith(['mockTrack'], 'mockToken', {
       dominantSpeaker: true,
