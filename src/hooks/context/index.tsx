@@ -1,8 +1,7 @@
-import EventEmitter from 'events';
 import React, { createContext, ReactNode, useContext } from 'react';
 import { ConnectOptions, LocalTrack, Room } from 'twilio-video';
-import useLocalTracks from './useLocalTracks';
-import useRoom from './useRoom';
+import useLocalTracks from './useLocalTracks/useLocalTracks';
+import useRoom from './useRoom/useRoom';
 
 export interface IVideoContext {
   room: Room;
@@ -10,11 +9,7 @@ export interface IVideoContext {
   isConnecting: boolean;
 }
 
-export const VideoContext = createContext<IVideoContext>({
-  room: new EventEmitter() as Room,
-  localTracks: [],
-  isConnecting: false,
-});
+export const VideoContext = createContext<IVideoContext>(null!);
 
 interface VideoProviderProps {
   token?: string;
@@ -31,5 +26,8 @@ export function VideoProvider({ token, options, children }: VideoProviderProps) 
 
 export function useVideoContext() {
   const context = useContext(VideoContext);
+  if (!context) {
+    throw new Error('useVideoContext must be used within a VideoProvider');
+  }
   return context;
 }
