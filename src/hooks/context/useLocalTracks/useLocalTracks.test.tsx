@@ -4,7 +4,7 @@ import Video from 'twilio-video';
 import { EventEmitter } from 'events';
 
 describe('the useLocalTracks hook', () => {
-  it('should return an array of tracks', async () => {
+  it('should return an array of tracks and a function', async () => {
     const { result, waitForNextUpdate } = renderHook(useLocalTracks);
     expect(result.current).toEqual([[], expect.any(Function)]);
     await waitForNextUpdate();
