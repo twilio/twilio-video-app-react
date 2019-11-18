@@ -1,9 +1,11 @@
 import React from 'react';
-import InfoIcon from '@material-ui/icons/Info';
 import { makeStyles } from '@material-ui/core/styles';
+
+import InfoIcon from '@material-ui/icons/Info';
 import Snackbar from '@material-ui/core/Snackbar';
-import useRoomState from '../../hooks/useRoomState/useRoomState';
 import { SnackbarContent } from '@material-ui/core';
+
+import useRoomState from '../../hooks/useRoomState/useRoomState';
 
 const useStyles = makeStyles({
   snackbar: {
