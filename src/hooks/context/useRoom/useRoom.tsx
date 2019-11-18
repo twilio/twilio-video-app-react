@@ -24,7 +24,7 @@ export default function useRoom(localTracks: LocalTrack[], token?: string, optio
     }
 
     return () => {
-      if (room.state === 'connected' && !isConnecting) {
+      if (!token && room.state === 'connected' && !isConnecting) {
         room.disconnect();
         window.removeEventListener('beforeunload', disconnectHandlerRef.current);
       }

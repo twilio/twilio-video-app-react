@@ -8,6 +8,7 @@ export interface IVideoContext {
   room: Room;
   localTracks: LocalTrack[];
   isConnecting: boolean;
+  getLocalVideoTrack: Function;
 }
 
 export const VideoContext = createContext<IVideoContext>(null!);
@@ -19,11 +20,11 @@ interface VideoProviderProps {
 }
 
 export function VideoProvider({ token, options, children }: VideoProviderProps) {
-  const localTracks = useLocalTracks();
+  const [localTracks, getLocalVideoTrack] = useLocalTracks();
   const { room, isConnecting } = useRoom(localTracks, token, options);
 
   return (
-    <VideoContext.Provider value={{ room, localTracks, isConnecting }}>
+    <VideoContext.Provider value={{ room, localTracks, isConnecting, getLocalVideoTrack }}>
       <SelectedParticipantProvider room={room}>{children}</SelectedParticipantProvider>
     </VideoContext.Provider>
   );
