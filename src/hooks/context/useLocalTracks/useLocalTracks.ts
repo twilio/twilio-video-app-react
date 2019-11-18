@@ -5,7 +5,7 @@ export function useLocalAudioTrack() {
   const [track, setTrack] = useState<LocalTrack>();
 
   useEffect(() => {
-    Video.createLocalAudioTrack({ name: 'microphone' }).then(track => setTrack(track));
+    Video.createLocalAudioTrack({ name: 'microphone' }).then(newTrack => setTrack(newTrack));
   }, [setTrack]);
 
   return track;
@@ -20,9 +20,9 @@ export function useLocalVideoTrack() {
         name: 'camera',
         width: { ideal: 1280 },
         height: { ideal: 720 },
-      }).then(track => {
-        setTrack(track);
-        return track;
+      }).then(newTrack => {
+        setTrack(newTrack);
+        return newTrack;
       }),
     []
   );
@@ -48,13 +48,7 @@ export default function useLocalTracks() {
   const audioTrack = useLocalAudioTrack();
   const [videoTrack, getLocalVideoTrack] = useLocalVideoTrack();
 
-  const result = [];
-  if (audioTrack) {
-    result.push(audioTrack);
-  }
-  if (videoTrack) {
-    result.push(videoTrack);
-  }
+  const tracks = [audioTrack, videoTrack].filter(track => track !== undefined) as LocalTrack[];
 
-  return [result, getLocalVideoTrack] as const;
+  return [tracks, getLocalVideoTrack] as const;
 }
