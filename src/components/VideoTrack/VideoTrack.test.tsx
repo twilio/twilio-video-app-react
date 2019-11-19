@@ -49,4 +49,10 @@ describe('the VideoTrack component', () => {
     unmount();
     expect(mockTrack.setPriority).toHaveBeenCalledWith('low');
   });
+
+  it('should not set the track priority on mount or unmount when no priority is specified', () => {
+    const { unmount } = render(<VideoTrack track={mockTrack} />);
+    unmount();
+    expect(mockTrack.setPriority).not.toHaveBeenCalled();
+  });
 });

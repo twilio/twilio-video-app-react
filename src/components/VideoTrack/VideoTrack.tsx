@@ -14,18 +14,18 @@ interface VideoTrackProps {
   priority?: Track.Priority;
 }
 
-export default function VideoTrack({ track, isLocal, priority = 'low' }: VideoTrackProps) {
+export default function VideoTrack({ track, isLocal, priority }: VideoTrackProps) {
   const ref = useRef<HTMLVideoElement>(null!);
 
   useEffect(() => {
     const el = ref.current;
-    if (track.setPriority) {
+    if (track.setPriority && priority) {
       track.setPriority(priority);
     }
     track.attach(el);
     return () => {
       track.detach(el);
-      if (track.setPriority) {
+      if (track.setPriority && priority) {
         track.setPriority('low');
       }
     };
