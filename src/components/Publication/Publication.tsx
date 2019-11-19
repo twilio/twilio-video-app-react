@@ -7,6 +7,7 @@ import {
   LocalTrackPublication,
   Participant,
   RemoteTrackPublication,
+  Track,
   VideoTrack as IVideoTrack,
 } from 'twilio-video';
 
@@ -15,18 +16,19 @@ interface PublicationProps {
   participant: Participant;
   isLocal: boolean;
   disableAudio?: boolean;
+  videoPriority?: Track.Priority;
 }
 
-export default function Publication({ publication, isLocal, disableAudio }: PublicationProps) {
+export default function Publication({ publication, isLocal, disableAudio, videoPriority }: PublicationProps) {
   const track = useTrack(publication);
 
   if (!track) return null;
 
   switch (track.name) {
     case 'screen':
-      return <VideoTrack track={track as IVideoTrack} />;
+      return <VideoTrack track={track as IVideoTrack} priority={videoPriority} />;
     case 'camera':
-      return <VideoTrack track={track as IVideoTrack} isLocal={isLocal} />;
+      return <VideoTrack track={track as IVideoTrack} isLocal={isLocal} priority={videoPriority} />;
     case 'microphone':
       return disableAudio ? null : <AudioTrack track={track as IAudioTrack} />;
     default:

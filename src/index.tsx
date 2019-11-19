@@ -21,7 +21,7 @@ const connectionOptions: ConnectOptions = {
   },
   bandwidthProfile: {
     video: {
-      dominantSpeakerPriority: 'high',
+      dominantSpeakerPriority: 'low',
       mode: 'collaboration',
     },
   },

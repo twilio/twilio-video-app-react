@@ -9,7 +9,7 @@ export default function MainParticipant() {
     /* audio is disabled for this participant component because this participant's audio 
        is already being rendered in the <ParticipantStrip /> component.  */
     <MainParticipantInfo participant={mainParticipant}>
-      <ParticipantTracks participant={mainParticipant} disableAudio enableScreenShare />
+      <ParticipantTracks participant={mainParticipant} disableAudio enableScreenShare videoPriority="high" />
     </MainParticipantInfo>
   );
 }

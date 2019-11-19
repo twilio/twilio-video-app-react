@@ -10,6 +10,10 @@ declare module 'twilio-video' {
     simulcast?: boolean;
   }
 
+  interface VideoTrack {
+    setPriority?: (priority: Track.Priority) => void;
+  }
+
   interface LocalVideoTrack {
     isSwitchedOff: undefined;
   }

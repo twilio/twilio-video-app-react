@@ -15,11 +15,9 @@ export default function useAdaptiveBandwidthProfile() {
         video: isRemoteParticipantScreenSharing
           ? {
               mode: 'presentation',
-              dominantSpeakerPriority: 'low',
             }
           : {
               mode: 'collaboration',
-              dominantSpeakerPriority: 'high',
             },
       });
     }
