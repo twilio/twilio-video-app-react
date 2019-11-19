@@ -32,11 +32,6 @@ export default function VideoTrack({ track, isLocal, priority = 'low' }: VideoTr
   }, [track, priority]);
 
   const style = isLocal ? { transform: 'rotateY(180deg)' } : {};
-  // @ts-ignore
-  return (
-    <>
-      {track.priority && track.priority}
-      <Video ref={ref} style={style} />
-    </>
-  );
+
+  return <Video ref={ref} style={style} />;
 }
