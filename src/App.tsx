@@ -4,6 +4,7 @@ import { styled } from '@material-ui/core/styles';
 import Controls from './components/Controls/Controls';
 import LocalVideoPreview from './components/LocalVideoPreview/LocalVideoPreview';
 import Menu from './components/Menu/Menu';
+import ReconnectingNotification from './components/ReconnectingNotification/ReconnectingNotification';
 import Room from './components/Room/Room';
 
 import useAdaptiveBandwidthProfile from './hooks/context/useAdaptiveBandwidthProfile/useAdaptiveBandwidthProfile';
@@ -31,6 +32,7 @@ export default function App() {
         {roomState === 'disconnected' ? <LocalVideoPreview /> : <Room />}
         <Controls />
       </Main>
+      <ReconnectingNotification />
     </Container>
   );
 }

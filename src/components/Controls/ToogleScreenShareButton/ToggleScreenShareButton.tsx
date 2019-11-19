@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function ToggleScreenShareButton() {
+export default function ToggleScreenShareButton(props: { disabled?: boolean }) {
   const classes = useStyles();
   const [isScreenShared, toggleScreenShare] = useScreenShareToggle();
   const screenShareParticipant = useScreenShareParticipant();
@@ -33,7 +33,7 @@ export default function ToggleScreenShareButton() {
         placement="top"
         PopperProps={{ disablePortal: true }}
       >
-        <Fab className={classes.fab} onClick={toggleScreenShare} disabled={disableScreenShareButton}>
+        <Fab className={classes.fab} onClick={toggleScreenShare} disabled={props.disabled || disableScreenShareButton}>
           {isScreenShared ? <StopScreenShare /> : <ScreenShare />}
         </Fab>
       </Tooltip>
