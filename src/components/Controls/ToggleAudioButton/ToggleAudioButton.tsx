@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function ToggleAudioButton() {
+export default function ToggleAudioButton(props: { disabled?: boolean }) {
   const classes = useStyles();
   const [isAudioEnabled, toggleAudioEnabled] = useLocalAudioToggle();
 
@@ -26,7 +26,7 @@ export default function ToggleAudioButton() {
       placement="top"
       PopperProps={{ disablePortal: true }}
     >
-      <Fab className={classes.fab} onClick={toggleAudioEnabled}>
+      <Fab className={classes.fab} onClick={toggleAudioEnabled} disabled={props.disabled}>
         {isAudioEnabled ? <Mic /> : <MicOff />}
       </Fab>
     </Tooltip>
