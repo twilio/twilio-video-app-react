@@ -34,20 +34,20 @@ describe('the VideoTrack component', () => {
     expect(mockTrack.setPriority).toHaveBeenCalledWith('high');
   });
 
-  it('should set the track priority to "low" when it is detached and set the priority of the new track', () => {
+  it('should set the track priority to "null" when it is detached and set the priority of the new track', () => {
     const mockTrack2 = { attach: jest.fn(), detach: jest.fn(), setPriority: jest.fn() } as any;
     const { rerender } = render(<VideoTrack track={mockTrack} priority="high" />);
     expect(mockTrack.setPriority).toHaveBeenCalledWith('high');
     rerender(<VideoTrack track={mockTrack2} priority="high" />);
-    expect(mockTrack.setPriority).toHaveBeenCalledWith('low');
+    expect(mockTrack.setPriority).toHaveBeenCalledWith(null);
     expect(mockTrack2.setPriority).toHaveBeenCalledWith('high');
   });
 
-  it('should set the track priority to "low" when it is unmounted', () => {
+  it('should set the track priority to "null" when it is unmounted', () => {
     const { unmount } = render(<VideoTrack track={mockTrack} priority="high" />);
     expect(mockTrack.setPriority).toHaveBeenCalledWith('high');
     unmount();
-    expect(mockTrack.setPriority).toHaveBeenCalledWith('low');
+    expect(mockTrack.setPriority).toHaveBeenCalledWith(null);
   });
 
   it('should not set the track priority on mount or unmount when no priority is specified', () => {

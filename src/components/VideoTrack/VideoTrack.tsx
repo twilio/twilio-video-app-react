@@ -26,7 +26,7 @@ export default function VideoTrack({ track, isLocal, priority }: VideoTrackProps
     return () => {
       track.detach(el);
       if (track.setPriority && priority) {
-        track.setPriority('low');
+        track.setPriority(null);
       }
     };
   }, [track, priority]);

@@ -11,7 +11,7 @@ declare module 'twilio-video' {
   }
 
   interface VideoTrack {
-    setPriority?: (priority: Track.Priority) => void;
+    setPriority?: (priority: Track.Priority | null) => void;
   }
 
   interface LocalVideoTrack {
