@@ -19,10 +19,10 @@ export default function VideoTrack({ track, isLocal, priority = 'low' }: VideoTr
 
   useEffect(() => {
     const el = ref.current;
-    track.attach(el);
     if (track.setPriority) {
       track.setPriority(priority);
     }
+    track.attach(el);
     return () => {
       track.detach(el);
       if (track.setPriority) {
