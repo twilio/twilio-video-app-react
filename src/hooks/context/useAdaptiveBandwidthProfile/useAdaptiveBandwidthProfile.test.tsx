@@ -21,7 +21,7 @@ describe('the useAdaptiveBandwidthProfile hook', () => {
     mockUseScreenShareParticipant.mockImplementation(() => ({}));
     renderHook(useAdaptiveBandwidthProfile);
     expect(mockSetBandwidthProfile).toHaveBeenCalledWith({
-      video: { dominantSpeakerPriority: 'low', mode: 'presentation' },
+      video: { mode: 'presentation' },
     });
   });
 
@@ -29,7 +29,7 @@ describe('the useAdaptiveBandwidthProfile hook', () => {
     mockUseScreenShareParticipant.mockImplementation(() => null);
     renderHook(useAdaptiveBandwidthProfile);
     expect(mockSetBandwidthProfile).toHaveBeenCalledWith({
-      video: { dominantSpeakerPriority: 'high', mode: 'collaboration' },
+      video: { mode: 'collaboration' },
     });
   });
 
@@ -37,7 +37,7 @@ describe('the useAdaptiveBandwidthProfile hook', () => {
     mockUseScreenShareParticipant.mockImplementation(() => mockLocalParticipant);
     renderHook(useAdaptiveBandwidthProfile);
     expect(mockSetBandwidthProfile).toHaveBeenCalledWith({
-      video: { dominantSpeakerPriority: 'high', mode: 'collaboration' },
+      video: { mode: 'collaboration' },
     });
   });
 
@@ -45,14 +45,14 @@ describe('the useAdaptiveBandwidthProfile hook', () => {
     mockUseScreenShareParticipant.mockImplementation(() => null);
     const { rerender } = renderHook(useAdaptiveBandwidthProfile);
     expect(mockSetBandwidthProfile).toHaveBeenCalledWith({
-      video: { dominantSpeakerPriority: 'high', mode: 'collaboration' },
+      video: { mode: 'collaboration' },
     });
     act(() => {
       mockUseScreenShareParticipant.mockImplementation(() => ({}));
     });
     rerender();
     expect(mockSetBandwidthProfile).toHaveBeenCalledWith({
-      video: { dominantSpeakerPriority: 'low', mode: 'presentation' },
+      video: { mode: 'presentation' },
     });
   });
 });

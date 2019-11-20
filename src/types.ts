@@ -1,4 +1,4 @@
-import 'twilio-video';
+import { LocalVideoTrack, RemoteVideoTrack } from 'twilio-video';
 
 declare module 'twilio-video' {
   interface LocalParticipant {
@@ -12,10 +12,12 @@ declare module 'twilio-video' {
 
   interface LocalVideoTrack {
     isSwitchedOff: undefined;
+    setPriority: undefined;
   }
 
   interface RemoteVideoTrack {
     isSwitchedOff: boolean;
+    setPriority: (priority: Track.Priority | null) => void;
   }
 }
 
@@ -24,3 +26,5 @@ declare global {
     getDisplayMedia(): Promise<MediaStream>;
   }
 }
+
+export type IVideoTrack = LocalVideoTrack | RemoteVideoTrack;
