@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
-import { VideoTrack as IVideoTrack } from 'twilio-video';
+import { IVideoTrack } from '../../types';
 import { styled } from '@material-ui/core/styles';
+import { Track } from 'twilio-video';
 
 const Video = styled('video')({
   width: '100%',
@@ -11,18 +12,25 @@ const Video = styled('video')({
 interface VideoTrackProps {
   track: IVideoTrack;
   isLocal?: boolean;
+  priority?: Track.Priority;
 }
 
-export default function VideoTrack({ track, isLocal }: VideoTrackProps) {
+export default function VideoTrack({ track, isLocal, priority }: VideoTrackProps) {
   const ref = useRef<HTMLVideoElement>(null!);
 
   useEffect(() => {
     const el = ref.current;
+    if (track.setPriority && priority) {
+      track.setPriority(priority);
+    }
     track.attach(el);
     return () => {
       track.detach(el);
+      if (track.setPriority && priority) {
+        track.setPriority(null);
+      }
     };
-  }, [track]);
+  }, [track, priority]);
 
   const style = isLocal ? { transform: 'rotateY(180deg)' } : {};
 
