@@ -24,7 +24,7 @@ export default function useScreenShareToggle() {
 
     stopScreenShareRef.current = () => {
       room.localParticipant.unpublishTrack(track);
-      // TODO: remove this if the SDK is updated to emit this event
+      // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
       room.localParticipant.emit('trackUnpublished', trackPublication);
       track.stop();
       setIsSharing(false);

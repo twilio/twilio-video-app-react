@@ -7,6 +7,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 import { receiveToken } from '../../../store/main/main';
 import { useDispatch } from 'react-redux';
+import { useVideoContext } from '../../../hooks/context';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -19,14 +20,15 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function EndCallButton() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { room } = useVideoContext();
+
+  const handleClick = () => {
+    room.disconnect();
+    dispatch(receiveToken(''));
+  };
 
   return (
-    <Tooltip
-      title={'End Call'}
-      onClick={() => dispatch(receiveToken(''))}
-      placement="top"
-      PopperProps={{ disablePortal: true }}
-    >
+    <Tooltip title={'End Call'} onClick={handleClick} placement="top" PopperProps={{ disablePortal: true }}>
       <Fab className={classes.fab} color="primary">
         <CallEnd />
       </Fab>

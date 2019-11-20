@@ -8,10 +8,10 @@ import useRoom from './useRoom/useRoom';
 
 const mockRoom = new EventEmitter() as Room;
 jest.mock('./useRoom/useRoom', () => jest.fn(() => ({ room: mockRoom, isConnecting: false })));
-jest.mock('./useLocalTracks/useLocalTracks', () => jest.fn(() => ['mockTrack']));
+jest.mock('./useLocalTracks/useLocalTracks', () => jest.fn(() => [['mockTrack'], jest.fn()]));
 
 describe('the useVideoContext hook', () => {
-  it('should correct return the Video Context object', () => {
+  it('should correctly return the Video Context object', () => {
     const wrapper: React.FC = ({ children }) => (
       <VideoProvider token="mockToken" options={{ dominantSpeaker: true }}>
         {children}
@@ -22,6 +22,7 @@ describe('the useVideoContext hook', () => {
       isConnecting: false,
       localTracks: ['mockTrack'],
       room: mockRoom,
+      getLocalVideoTrack: expect.any(Function),
     });
     expect(useRoom).toHaveBeenCalledWith(['mockTrack'], 'mockToken', {
       dominantSpeaker: true,

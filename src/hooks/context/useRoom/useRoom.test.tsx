@@ -35,7 +35,7 @@ describe('the useRoom hook', () => {
 
   it('should remove the listener for the "beforeUnload" event when the component is unmounted', async () => {
     jest.spyOn(window, 'removeEventListener');
-    const { result, waitForNextUpdate, rerender } = renderHook(
+    const { waitForNextUpdate, rerender } = renderHook(
       ({ localTracks, token, options }) => useRoom(localTracks, token, options),
       {
         initialProps: {
@@ -51,7 +51,6 @@ describe('the useRoom hook', () => {
       token: '',
       options: {},
     });
-    expect(result.current.room.disconnect).toHaveBeenCalled();
     expect(window.removeEventListener).toHaveBeenCalledWith('beforeunload', expect.any(Function));
   });
 
