@@ -16,9 +16,10 @@ jobs:
           environment:
             JEST_JUNIT_OUTPUT_DIR: "test-reports/jest"
             JEST_JUNIT_OUTPUT_NAME: "results.xml"
+            JEST_JUNIT_CLASSNAME: "{classname}"
+            JEST_JUNIT_TITLE: "{title}"
+
       - store_test_results:
-          path: test-reports
-      - store_artifacts:
           path: test-reports
 
       - run: npm run build
