@@ -25,6 +25,7 @@
     "express": "^4.17.1",
     "fscreen": "^1.0.2",
     "husky": "^3.0.9",
+    "jest-junit": "^9.0.0",
     "lint-staged": "^9.4.2",
     "prettier": "^1.18.2",
     "react": "^16.10.2",
@@ -52,7 +53,8 @@
     "test": "jest",
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.{ts,tsx}",
-    "server": "node server.js"
+    "server": "node server.js",
+    "test:ci": "jest --ci --runInBand --reporters=default --reporters=jest-junit --coverage"
   },
   "eslintConfig": {
     "extends": "react-app",
@@ -77,5 +79,8 @@
       "pre-commit": "lint-staged"
     }
   },
-  "proxy": "http://localhost:8080/"
+  "proxy": "http://localhost:8080/",
+  "jest": {
+    "snapshotSerializers": ["enzyme-to-json/serializer"]
+  }
 }

@@ -10,7 +10,19 @@ jobs:
     
       - run: npm ci
 
-      - run: npm test -- --runInBand
+      - run:
+          name: "Jest Unit Tests"
+          command: npm run test:ci
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: "test-reports/jest"
+            JEST_JUNIT_OUTPUT_NAME: "results.xml"
+            JEST_JUNIT_CLASSNAME: "{classname}"
+            JEST_JUNIT_TITLE: "{title}"
+
+      - store_test_results:
+          path: test-reports
+      - store_artifacts:
+          path: coverage
 
       - run: npm run build
 
