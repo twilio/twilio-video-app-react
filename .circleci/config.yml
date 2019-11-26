@@ -21,6 +21,8 @@ jobs:
 
       - store_test_results:
           path: test-reports
+      - store_articats:
+          path: coverage
 
       - run: npm run build
 

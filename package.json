@@ -54,7 +54,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.{ts,tsx}",
     "server": "node server.js",
-    "test:ci": "jest --ci --runInBand --reporters=default --reporters=jest-junit"
+    "test:ci": "jest --ci --runInBand --reporters=default --reporters=jest-junit --coverage"
   },
   "eslintConfig": {
     "extends": "react-app",
@@ -79,5 +79,8 @@
       "pre-commit": "lint-staged"
     }
   },
-  "proxy": "http://localhost:8080/"
+  "proxy": "http://localhost:8080/",
+  "jest": {
+    "snapshotSerializers": ["enzyme-to-json/serializer"]
+  }
 }
