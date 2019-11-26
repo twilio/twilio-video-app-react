@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="166" failures="0" time="6.031">
+  <testsuite name="the Menu component" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:11" time="1.387" tests="10">
+    <testcase classname="the Menu component should hide inputs when connected to a room" name="the Menu component should hide inputs when connected to a room" time="0.109">
+    </testcase>
+    <testcase classname="the Menu component should display inputs when disconnected from a room" name="the Menu component should display inputs when disconnected from a room" time="0.063">
+    </testcase>
+    <testcase classname="the Menu component should display a loading spinner when connecting to a room" name="the Menu component should display a loading spinner when connecting to a room" time="0.034">
+    </testcase>
+    <testcase classname="the Menu component should disable the Join Room button when the Name input or Room input are empty" name="the Menu component should disable the Join Room button when the Name input or Room input are empty" time="0.052">
+    </testcase>
+    <testcase classname="the Menu component should enable the Join Room button when the Name input and Room input are not empty" name="the Menu component should enable the Join Room button when the Name input and Room input are not empty" time="0.044">
+    </testcase>
+    <testcase classname="the Menu component should disable the Join Room button when connecting to a room" name="the Menu component should disable the Join Room button when connecting to a room" time="0.053">
+    </testcase>
+    <testcase classname="the Menu component should update the URL to include the room name on submit" name="the Menu component should update the URL to include the room name on submit" time="0.039">
+    </testcase>
+    <testcase classname="the Menu component should populate the Room name from the URL" name="the Menu component should populate the Room name from the URL" time="0.027">
+    </testcase>
+    <testcase classname="the Menu component the getRoom function should extract the room name from the URL" name="the Menu component the getRoom function should extract the room name from the URL" time="0">
+    </testcase>
+    <testcase classname="the Menu component the getRoom function should return an empty string when there is no room name" name="the Menu component the getRoom function should return an empty string when there is no room name" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="the ParticipantStrip component" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:12" time="0.35" tests="3">
+    <testcase classname="the ParticipantStrip component should correctly render ParticipantInfo components" name="the ParticipantStrip component should correctly render ParticipantInfo components" time="0.006">
+    </testcase>
+    <testcase classname="the ParticipantStrip component should add the isSelected prop to the local participant when it is selected" name="the ParticipantStrip component should add the isSelected prop to the local participant when it is selected" time="0.002">
+    </testcase>
+    <testcase classname="the ParticipantStrip component should add the isSelected prop to the first remote participant when it is selected" name="the ParticipantStrip component should add the isSelected prop to the first remote participant when it is selected" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="the ParticipantInfo component" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:13" time="0.094" tests="11">
+    <testcase classname="the ParticipantInfo component should display MicOff icon when microphone is disabled" name="the ParticipantInfo component should display MicOff icon when microphone is disabled" time="0.001">
+    </testcase>
+    <testcase classname="the ParticipantInfo component should not display MicOff icon when microphone is enabled" name="the ParticipantInfo component should not display MicOff icon when microphone is enabled" time="0.001">
+    </testcase>
+    <testcase classname="the ParticipantInfo component should display ScreenShare icon when participant has published a screen share track" name="the ParticipantInfo component should display ScreenShare icon when participant has published a screen share track" time="0.001">
+    </testcase>
+    <testcase classname="the ParticipantInfo component should not display ScreenShare icon when participant has not published a screen share track" name="the ParticipantInfo component should not display ScreenShare icon when participant has not published a screen share track" time="0.001">
+    </testcase>
+    <testcase classname="the ParticipantInfo component should add hideVideoProp to InfoContainer component when video is disabled" name="the ParticipantInfo component should add hideVideoProp to InfoContainer component when video is disabled" time="0.008">
+    </testcase>
+    <testcase classname="the ParticipantInfo component should not add hideVideoProp to InfoContainer component when video is enabled" name="the ParticipantInfo component should not add hideVideoProp to InfoContainer component when video is enabled" time="0.002">
+    </testcase>
+    <testcase classname="the ParticipantInfo component should render a VideoCamOff icon when no camera tracks are present" name="the ParticipantInfo component should render a VideoCamOff icon when no camera tracks are present" time="0.001">
+    </testcase>
+    <testcase classname="the ParticipantInfo component should render a VideoCamOff icon when a camera track is present and disabled" name="the ParticipantInfo component should render a VideoCamOff icon when a camera track is present and disabled" time="0.002">
+    </testcase>
+    <testcase classname="the ParticipantInfo component should render a VideoCamOff icon when a camera tracks is present and enabled" name="the ParticipantInfo component should render a VideoCamOff icon when a camera tracks is present and enabled" time="0.001">
+    </testcase>
+    <testcase classname="the ParticipantInfo component should add isSwitchedOff prop to Container component when video is switched off" name="the ParticipantInfo component should add isSwitchedOff prop to Container component when video is switched off" time="0">
+    </testcase>
+    <testcase classname="the ParticipantInfo component should not add isSwitchedOff prop to Container component when video is not switched off" name="the ParticipantInfo component should not add isSwitchedOff prop to Container component when video is not switched off" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="the Controls component" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:13" time="0.116" tests="3">
+    <testcase classname="the Controls component should not render the ToggleScreenShare and EndCall buttons when not connected to a room" name="the Controls component should not render the ToggleScreenShare and EndCall buttons when not connected to a room" time="0.004">
+    </testcase>
+    <testcase classname="the Controls component should render the ToggleScreenShare and EndCall buttons when connected to a room" name="the Controls component should render the ToggleScreenShare and EndCall buttons when connected to a room" time="0.001">
+    </testcase>
+    <testcase classname="the Controls component should disable the ToggleAudio, ToggleVideo, and ToggleScreenShare buttons when reconnecting to a room" name="the Controls component should disable the ToggleAudio, ToggleVideo, and ToggleScreenShare buttons when reconnecting to a room" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="Full screen button" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:13" time="0.101" tests="3">
+    <testcase classname="Full screen button should call toggleFullScreen when Toggle FullScreen button is clicked" name="Full screen button should call toggleFullScreen when Toggle FullScreen button is clicked" time="0.027">
+    </testcase>
+    <testcase classname="Full screen button should render FullscreenExitIcon when the page is in full screen mode" name="Full screen button should render FullscreenExitIcon when the page is in full screen mode" time="0.002">
+    </testcase>
+    <testcase classname="Full screen button should render FullscreenIcon when the page is not in full screen mode" name="Full screen button should render FullscreenIcon when the page is not in full screen mode" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="the ReconnectingNotification component" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:13" time="0.081" tests="2">
+    <testcase classname="the ReconnectingNotification component should not open Snackbar when room state is not &quot;reconnecting&quot;" name="the ReconnectingNotification component should not open Snackbar when room state is not &quot;reconnecting&quot;" time="0.006">
+    </testcase>
+    <testcase classname="the ReconnectingNotification component should open Snackbar when room state is &quot;reconnecting&quot;" name="the ReconnectingNotification component should open Snackbar when room state is &quot;reconnecting&quot;" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="the VideoTrack component" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:13" time="0.108" tests="8">
+    <testcase classname="the VideoTrack component should call the attach method when the component mounts" name="the VideoTrack component should call the attach method when the component mounts" time="0.005">
+    </testcase>
+    <testcase classname="the VideoTrack component it should call the detach method when the component unmounts" name="the VideoTrack component it should call the detach method when the component unmounts" time="0.003">
+    </testcase>
+    <testcase classname="the VideoTrack component should flip the video horizontally if the track is local" name="the VideoTrack component should flip the video horizontally if the track is local" time="0.002">
+    </testcase>
+    <testcase classname="the VideoTrack component should not flip the video horizontally if the track is not local" name="the VideoTrack component should not flip the video horizontally if the track is not local" time="0.005">
+    </testcase>
+    <testcase classname="the VideoTrack component should set the track priority when it is attached" name="the VideoTrack component should set the track priority when it is attached" time="0.002">
+    </testcase>
+    <testcase classname="the VideoTrack component should set the track priority to &quot;null&quot; when it is detached and set the priority of the new track" name="the VideoTrack component should set the track priority to &quot;null&quot; when it is detached and set the priority of the new track" time="0.004">
+    </testcase>
+    <testcase classname="the VideoTrack component should set the track priority to &quot;null&quot; when it is unmounted" name="the VideoTrack component should set the track priority to &quot;null&quot; when it is unmounted" time="0.003">
+    </testcase>
+    <testcase classname="the VideoTrack component should not set the track priority on mount or unmount when no priority is specified" name="the VideoTrack component should not set the track priority on mount or unmount when no priority is specified" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="the useRoomState hook" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:14" time="0.07" tests="7">
+    <testcase classname="the useRoomState hook should return &quot;disconnected&quot; by default" name="the useRoomState hook should return &quot;disconnected&quot; by default" time="0.009">
+    </testcase>
+    <testcase classname="the useRoomState hook should return &quot;connected&quot; if the room state is connected" name="the useRoomState hook should return &quot;connected&quot; if the room state is connected" time="0.002">
+    </testcase>
+    <testcase classname="the useRoomState hook should should respond to the rooms &quot;reconnecting&quot; event" name="the useRoomState hook should should respond to the rooms &quot;reconnecting&quot; event" time="0.001">
+    </testcase>
+    <testcase classname="the useRoomState hook should should respond to the rooms &quot;reconnected&quot; event" name="the useRoomState hook should should respond to the rooms &quot;reconnected&quot; event" time="0.002">
+    </testcase>
+    <testcase classname="the useRoomState hook should should respond to the rooms &quot;disconnected&quot; event" name="the useRoomState hook should should respond to the rooms &quot;disconnected&quot; event" time="0.001">
+    </testcase>
+    <testcase classname="the useRoomState hook should update when a new room object is provided" name="the useRoomState hook should update when a new room object is provided" time="0.002">
+    </testcase>
+    <testcase classname="the useRoomState hook tear down old listeners when receiving a new room" name="the useRoomState hook tear down old listeners when receiving a new room" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="the LocalVideoPreview component" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:14" time="0.056" tests="2">
+    <testcase classname="the LocalVideoPreview component it should render a VideoTrack component when there is a &quot;camera&quot; track" name="the LocalVideoPreview component it should render a VideoTrack component when there is a &quot;camera&quot; track" time="0.003">
+    </testcase>
+    <testcase classname="the LocalVideoPreview component should render null when there are no &quot;camera&quot; tracks" name="the LocalVideoPreview component should render null when there are no &quot;camera&quot; tracks" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="the Publication component" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:14" time="0.037" tests="4">
+    <testcase classname="the Publication component should render a VideoTrack when the track has name &quot;camera&quot;" name="the Publication component should render a VideoTrack when the track has name &quot;camera&quot;" time="0.001">
+    </testcase>
+    <testcase classname="the Publication component should render an AudioTrack when the track has name &quot;microphone&quot;" name="the Publication component should render an AudioTrack when the track has name &quot;microphone&quot;" time="0.001">
+    </testcase>
+    <testcase classname="the Publication component should render null when the track has name &quot;microphone&quot; and disableAudio is true" name="the Publication component should render null when the track has name &quot;microphone&quot; and disableAudio is true" time="0.001">
+    </testcase>
+    <testcase classname="the Publication component should render null when there is no track" name="the Publication component should render null when there is no track" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="the MainParticipantInfo component" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:14" time="0.048" tests="5">
+    <testcase classname="the MainParticipantInfo component should add hideVideoProp to InfoContainer component when video is disabled" name="the MainParticipantInfo component should add hideVideoProp to InfoContainer component when video is disabled" time="0.003">
+    </testcase>
+    <testcase classname="the MainParticipantInfo component should not add hideVideoProp to InfoContainer component when video is enabled" name="the MainParticipantInfo component should not add hideVideoProp to InfoContainer component when video is enabled" time="0.002">
+    </testcase>
+    <testcase classname="the MainParticipantInfo component should render a VideoCamOff icon when no camera tracks are present" name="the MainParticipantInfo component should render a VideoCamOff icon when no camera tracks are present" time="0.001">
+    </testcase>
+    <testcase classname="the MainParticipantInfo component should render a VideoCamOff icon when a camera track is present and disabled" name="the MainParticipantInfo component should render a VideoCamOff icon when a camera track is present and disabled" time="0.001">
+    </testcase>
+    <testcase classname="the MainParticipantInfo component should render a VideoCamOff icon when a camera tracks is present and enabled" name="the MainParticipantInfo component should render a VideoCamOff icon when a camera tracks is present and enabled" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="the ToggleScreenShareButton component" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:14" time="0.059" tests="5">
+    <testcase classname="the ToggleScreenShareButton component should render correctly when screenSharing is allowed" name="the ToggleScreenShareButton component should render correctly when screenSharing is allowed" time="0.002">
+    </testcase>
+    <testcase classname="the ToggleScreenShareButton component should render correctly when the user is sharing their screen" name="the ToggleScreenShareButton component should render correctly when the user is sharing their screen" time="0.001">
+    </testcase>
+    <testcase classname="the ToggleScreenShareButton component should render correctly when another user is sharing their screen" name="the ToggleScreenShareButton component should render correctly when another user is sharing their screen" time="0.002">
+    </testcase>
+    <testcase classname="the ToggleScreenShareButton component should call the correct toggle function when clicked" name="the ToggleScreenShareButton component should call the correct toggle function when clicked" time="0.001">
+    </testcase>
+    <testcase classname="the ToggleScreenShareButton component should not render the screenshare button if screensharing is not supported" name="the ToggleScreenShareButton component should not render the screenshare button if screensharing is not supported" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="the ToggleAudioButton component" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:14" time="0.051" tests="3">
+    <testcase classname="the ToggleAudioButton component should render correctly when audio is enabled" name="the ToggleAudioButton component should render correctly when audio is enabled" time="0.004">
+    </testcase>
+    <testcase classname="the ToggleAudioButton component should render correctly when audio is disabled" name="the ToggleAudioButton component should render correctly when audio is disabled" time="0.003">
+    </testcase>
+    <testcase classname="the ToggleAudioButton component should call the correct toggle function when clicked" name="the ToggleAudioButton component should call the correct toggle function when clicked" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="the useSelectedParticipant hook" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:14" time="0.041" tests="4">
+    <testcase classname="the useSelectedParticipant hook should return null as the default value" name="the useSelectedParticipant hook should return null as the default value" time="0.002">
+    </testcase>
+    <testcase classname="the useSelectedParticipant hook should set a selected participant" name="the useSelectedParticipant hook should set a selected participant" time="0.002">
+    </testcase>
+    <testcase classname="the useSelectedParticipant hook should set &quot;null&quot; as the selected participant when the user selects the currently selected participant" name="the useSelectedParticipant hook should set &quot;null&quot; as the selected participant when the user selects the currently selected participant" time="0.002">
+    </testcase>
+    <testcase classname="the useSelectedParticipant hook should set &quot;null&quot; as the selected participant on room disconnect" name="the useSelectedParticipant hook should set &quot;null&quot; as the selected participant on room disconnect" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="the ParticipantTracks component" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:14" time="0.058" tests="5">
+    <testcase classname="the ParticipantTracks component should render an array of publications" name="the ParticipantTracks component should render an array of publications" time="0.001">
+    </testcase>
+    <testcase classname="the ParticipantTracks component should render publications with &quot;isLocal&quot; set to true when the localParticipant is provided" name="the ParticipantTracks component should render publications with &quot;isLocal&quot; set to true when the localParticipant is provided" time="0.001">
+    </testcase>
+    <testcase classname="the ParticipantTracks component should filter out any screen share publications" name="the ParticipantTracks component should filter out any screen share publications" time="0.001">
+    </testcase>
+    <testcase classname="the ParticipantTracks component with enableScreenShare prop should filter out camera publications when a screen share publication is present" name="the ParticipantTracks component with enableScreenShare prop should filter out camera publications when a screen share publication is present" time="0.001">
+    </testcase>
+    <testcase classname="the ParticipantTracks component with enableScreenShare prop should render camera publications when a screen share publication is absent" name="the ParticipantTracks component with enableScreenShare prop should render camera publications when a screen share publication is absent" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="the ToggleVideoButton component" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:14" time="0.045" tests="3">
+    <testcase classname="the ToggleVideoButton component should render correctly when video is enabled" name="the ToggleVideoButton component should render correctly when video is enabled" time="0.004">
+    </testcase>
+    <testcase classname="the ToggleVideoButton component should render correctly when video is disabled" name="the ToggleVideoButton component should render correctly when video is disabled" time="0.002">
+    </testcase>
+    <testcase classname="the ToggleVideoButton component should call the correct toggle function when clicked" name="the ToggleVideoButton component should call the correct toggle function when clicked" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="the AudioTrack component" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:14" time="0.045" tests="2">
+    <testcase classname="the AudioTrack component should call the attach method when the component mounts" name="the AudioTrack component should call the attach method when the component mounts" time="0.003">
+    </testcase>
+    <testcase classname="the AudioTrack component it should call the detach method when the component unmounts" name="the AudioTrack component it should call the detach method when the component unmounts" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="the useRoom hook" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:15" time="0.044" tests="6">
+    <testcase classname="the useRoom hook should return an empty room when no token is provided" name="the useRoom hook should return an empty room when no token is provided" time="0.001">
+    </testcase>
+    <testcase classname="the useRoom hook should set isConnecting to true while connecting to the room " name="the useRoom hook should set isConnecting to true while connecting to the room " time="0.003">
+    </testcase>
+    <testcase classname="the useRoom hook should return a room when a token is provided" name="the useRoom hook should return a room when a token is provided" time="0.001">
+    </testcase>
+    <testcase classname="the useRoom hook should add a listener for the &quot;beforeUnload&quot; event when the component is mounted" name="the useRoom hook should add a listener for the &quot;beforeUnload&quot; event when the component is mounted" time="0.002">
+    </testcase>
+    <testcase classname="the useRoom hook should remove the listener for the &quot;beforeUnload&quot; event when the component is unmounted" name="the useRoom hook should remove the listener for the &quot;beforeUnload&quot; event when the component is unmounted" time="0.002">
+    </testcase>
+    <testcase classname="the useRoom hook should not call Video.connect if already connected to a room" name="the useRoom hook should not call Video.connect if already connected to a room" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="the useScreenShareParticipant hook" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:15" time="0.047" tests="7">
+    <testcase classname="the useScreenShareParticipant hook return undefined when there are no participants sharing their screen" name="the useScreenShareParticipant hook return undefined when there are no participants sharing their screen" time="0.002">
+    </testcase>
+    <testcase classname="the useScreenShareParticipant hook should return the localParticipant when they are sharing their screen" name="the useScreenShareParticipant hook should return the localParticipant when they are sharing their screen" time="0.001">
+    </testcase>
+    <testcase classname="the useScreenShareParticipant hook should return a remoteParticipant when they are sharing their screen" name="the useScreenShareParticipant hook should return a remoteParticipant when they are sharing their screen" time="0.001">
+    </testcase>
+    <testcase classname="the useScreenShareParticipant hook should respond to &quot;trackPublished&quot; and &quot;trackUnpublished&quot; events emitted from the localParticipant" name="the useScreenShareParticipant hook should respond to &quot;trackPublished&quot; and &quot;trackUnpublished&quot; events emitted from the localParticipant" time="0.001">
+    </testcase>
+    <testcase classname="the useScreenShareParticipant hook should respond to &quot;trackPublished&quot; and &quot;trackUnpublished&quot; events emitted from the room" name="the useScreenShareParticipant hook should respond to &quot;trackPublished&quot; and &quot;trackUnpublished&quot; events emitted from the room" time="0.002">
+    </testcase>
+    <testcase classname="the useScreenShareParticipant hook should respond to &quot;participantDisconnected&quot; events emitted from the room" name="the useScreenShareParticipant hook should respond to &quot;participantDisconnected&quot; events emitted from the room" time="0.001">
+    </testcase>
+    <testcase classname="the useScreenShareParticipant hook should clean up all listeners when unmounted" name="the useScreenShareParticipant hook should clean up all listeners when unmounted" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="the useVideoContext hook" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:15" time="0.03" tests="2">
+    <testcase classname="the useVideoContext hook should correctly return the Video Context object" name="the useVideoContext hook should correctly return the Video Context object" time="0.002">
+    </testcase>
+    <testcase classname="the useVideoContext hook should throw an error if used outside of the VideoProvider" name="the useVideoContext hook should throw an error if used outside of the VideoProvider" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="the useAdaptiveBandwidthProfile hook" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:15" time="0.041" tests="4">
+    <testcase classname="the useAdaptiveBandwidthProfile hook should should set the bandwidthProfile to &quot;presentation&quot; when there is a remoteParticipant sharing their screen" name="the useAdaptiveBandwidthProfile hook should should set the bandwidthProfile to &quot;presentation&quot; when there is a remoteParticipant sharing their screen" time="0.002">
+    </testcase>
+    <testcase classname="the useAdaptiveBandwidthProfile hook should should set the bandwidthProfile to &quot;collaboration&quot; when there is no remoteParticipant sharing their screen" name="the useAdaptiveBandwidthProfile hook should should set the bandwidthProfile to &quot;collaboration&quot; when there is no remoteParticipant sharing their screen" time="0.001">
+    </testcase>
+    <testcase classname="the useAdaptiveBandwidthProfile hook should should set the bandwidthProfile to &quot;collaboration&quot; when the localParticipant is sharing their screen" name="the useAdaptiveBandwidthProfile hook should should set the bandwidthProfile to &quot;collaboration&quot; when the localParticipant is sharing their screen" time="0.001">
+    </testcase>
+    <testcase classname="the useAdaptiveBandwidthProfile hook should update when screenShareParticipant changes" name="the useAdaptiveBandwidthProfile hook should update when screenShareParticipant changes" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="the useIsTrackSwitchedOff hook" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:15" time="0.039" tests="5">
+    <testcase classname="the useIsTrackSwitchedOff hook should return false when track is undefined" name="the useIsTrackSwitchedOff hook should return false when track is undefined" time="0.002">
+    </testcase>
+    <testcase classname="the useIsTrackSwitchedOff hook should return mockTrack.isSwitchedOff by default" name="the useIsTrackSwitchedOff hook should return mockTrack.isSwitchedOff by default" time="0.001">
+    </testcase>
+    <testcase classname="the useIsTrackSwitchedOff hook should return respond to &quot;switchedOff&quot; events" name="the useIsTrackSwitchedOff hook should return respond to &quot;switchedOff&quot; events" time="0.001">
+    </testcase>
+    <testcase classname="the useIsTrackSwitchedOff hook should return respond to &quot;switchedOn&quot; events" name="the useIsTrackSwitchedOff hook should return respond to &quot;switchedOn&quot; events" time="0.001">
+    </testcase>
+    <testcase classname="the useIsTrackSwitchedOff hook should clean up listeners on unmount" name="the useIsTrackSwitchedOff hook should clean up listeners on unmount" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="the useLocalVideoToggle hook" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:15" time="0.043" tests="6">
+    <testcase classname="the useLocalVideoToggle hook should return true when a localVideoTrack exists" name="the useLocalVideoToggle hook should return true when a localVideoTrack exists" time="0.001">
+    </testcase>
+    <testcase classname="the useLocalVideoToggle hook should return false when a localVideoTrack does not exist" name="the useLocalVideoToggle hook should return false when a localVideoTrack does not exist" time="0.001">
+    </testcase>
+    <testcase classname="the useLocalVideoToggle hook toggleAudioEnabled function should call track.stop when a localVideoTrack exists" name="the useLocalVideoToggle hook toggleAudioEnabled function should call track.stop when a localVideoTrack exists" time="0.001">
+    </testcase>
+    <testcase classname="the useLocalVideoToggle hook toggleAudioEnabled function should call localParticipant.unpublishTrack when a localVideoTrack and localParticipant exists" name="the useLocalVideoToggle hook toggleAudioEnabled function should call localParticipant.unpublishTrack when a localVideoTrack and localParticipant exists" time="0.001">
+    </testcase>
+    <testcase classname="the useLocalVideoToggle hook toggleAudioEnabled function should call getLocalVideoTrack when a localVideoTrack does not exist" name="the useLocalVideoToggle hook toggleAudioEnabled function should call getLocalVideoTrack when a localVideoTrack does not exist" time="0">
+    </testcase>
+    <testcase classname="the useLocalVideoToggle hook toggleAudioEnabled function should call mockLocalParticipant.publishTrack when a localVideoTrack does not exist and localParticipant does exist" name="the useLocalVideoToggle hook toggleAudioEnabled function should call mockLocalParticipant.publishTrack when a localVideoTrack does not exist and localParticipant does exist" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="the useMainSpeaker hook" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:15" time="0.043" tests="4">
+    <testcase classname="the useMainSpeaker hook should return the dominant speaker if it exists" name="the useMainSpeaker hook should return the dominant speaker if it exists" time="0.002">
+    </testcase>
+    <testcase classname="the useMainSpeaker hook should return the first remote participant if it exists" name="the useMainSpeaker hook should return the first remote participant if it exists" time="0.001">
+    </testcase>
+    <testcase classname="the useMainSpeaker hook should return the local participant if it exists" name="the useMainSpeaker hook should return the local participant if it exists" time="0.001">
+    </testcase>
+    <testcase classname="the useMainSpeaker hook should return the selected participant if it exists" name="the useMainSpeaker hook should return the selected participant if it exists" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="the NetworkQualityLevel component" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:15" time="0.041" tests="3">
+    <testcase classname="the NetworkQualityLevel component should render correctly for level 5" name="the NetworkQualityLevel component should render correctly for level 5" time="0.004">
+    </testcase>
+    <testcase classname="the NetworkQualityLevel component should render correctly for level 3" name="the NetworkQualityLevel component should render correctly for level 3" time="0.001">
+    </testcase>
+    <testcase classname="the NetworkQualityLevel component should render correctly for level 0" name="the NetworkQualityLevel component should render correctly for level 0" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="the useParticipants hook" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:15" time="0.033" tests="4">
+    <testcase classname="the useParticipants hook should return an array of mockParticipant.tracks by default" name="the useParticipants hook should return an array of mockParticipant.tracks by default" time="0.001">
+    </testcase>
+    <testcase classname="the useParticipants hook should return respond to &quot;participantConnected&quot; events" name="the useParticipants hook should return respond to &quot;participantConnected&quot; events" time="0.002">
+    </testcase>
+    <testcase classname="the useParticipants hook should return respond to &quot;participantDisconnected&quot; events" name="the useParticipants hook should return respond to &quot;participantDisconnected&quot; events" time="0.001">
+    </testcase>
+    <testcase classname="the useParticipants hook should clean up listeners on unmount" name="the useParticipants hook should clean up listeners on unmount" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="the usePublications hook" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:15" time="0.039" tests="5">
+    <testcase classname="the usePublications hook should return an array of mockParticipant.tracks by default" name="the usePublications hook should return an array of mockParticipant.tracks by default" time="0.002">
+    </testcase>
+    <testcase classname="the usePublications hook should return respond to &quot;trackPublished&quot; events" name="the usePublications hook should return respond to &quot;trackPublished&quot; events" time="0.001">
+    </testcase>
+    <testcase classname="the usePublications hook should return respond to &quot;trackUnpublished&quot; events" name="the usePublications hook should return respond to &quot;trackUnpublished&quot; events" time="0.002">
+    </testcase>
+    <testcase classname="the usePublications hook should return a new set of tracks if the participant changes" name="the usePublications hook should return a new set of tracks if the participant changes" time="0.001">
+    </testcase>
+    <testcase classname="the usePublications hook should clean up listeners on unmount" name="the usePublications hook should clean up listeners on unmount" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="the useIsTrackEnabled hook" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:15" time="0.037" tests="5">
+    <testcase classname="the useIsTrackEnabled hook should return true when track is undefined" name="the useIsTrackEnabled hook should return true when track is undefined" time="0.002">
+    </testcase>
+    <testcase classname="the useIsTrackEnabled hook should return mockTrack.isEnabled by default" name="the useIsTrackEnabled hook should return mockTrack.isEnabled by default" time="0.001">
+    </testcase>
+    <testcase classname="the useIsTrackEnabled hook should return respond to &quot;enabled&quot; events" name="the useIsTrackEnabled hook should return respond to &quot;enabled&quot; events" time="0.001">
+    </testcase>
+    <testcase classname="the useIsTrackEnabled hook should return respond to &quot;disabled&quot; events" name="the useIsTrackEnabled hook should return respond to &quot;disabled&quot; events" time="0.001">
+    </testcase>
+    <testcase classname="the useIsTrackEnabled hook should clean up listeners on unmount" name="the useIsTrackEnabled hook should clean up listeners on unmount" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="the useFullScreenToggler hook" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:15" time="0.04" tests="5">
+    <testcase classname="the useFullScreenToggler hook should return a binary array with a getter an the toggler" name="the useFullScreenToggler hook should return a binary array with a getter an the toggler" time="0.002">
+    </testcase>
+    <testcase classname="the useFullScreenToggler hook should request full screen when it gets toggled and it is not already in full screen" name="the useFullScreenToggler hook should request full screen when it gets toggled and it is not already in full screen" time="0.001">
+    </testcase>
+    <testcase classname="the useFullScreenToggler hook should exit full screen when it gets toggled and it is activated" name="the useFullScreenToggler hook should exit full screen when it gets toggled and it is activated" time="0.002">
+    </testcase>
+    <testcase classname="the useFullScreenToggler hook should react to fullscreenchange event and update isFullScreen accordingly" name="the useFullScreenToggler hook should react to fullscreenchange event and update isFullScreen accordingly" time="0.002">
+    </testcase>
+    <testcase classname="the useFullScreenToggler hook should remove listeners on unmount" name="the useFullScreenToggler hook should remove listeners on unmount" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="End Call button" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:16" time="0.043" tests="1">
+    <testcase classname="End Call button should delete the token from redux and disconnect from the room when clicked" name="End Call button should delete the token from redux and disconnect from the room when clicked" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="the useScreenShareToggle hook" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:16" time="0.042" tests="4">
+    <testcase classname="the useScreenShareToggle hook should return a default value of false" name="the useScreenShareToggle hook should return a default value of false" time="0.002">
+    </testcase>
+    <testcase classname="the useScreenShareToggle hook toggle function should call localParticipant.publishTrack with the correct arguments when isSharing is false" name="the useScreenShareToggle hook toggle function should call localParticipant.publishTrack with the correct arguments when isSharing is false" time="0.001">
+    </testcase>
+    <testcase classname="the useScreenShareToggle hook toggle function should correctly stop screen sharing when isSharing is true" name="the useScreenShareToggle hook toggle function should correctly stop screen sharing when isSharing is true" time="0.002">
+    </testcase>
+    <testcase classname="the useScreenShareToggle hook toggle function onended function should correctly stop screen sharing when called" name="the useScreenShareToggle hook toggle function onended function should correctly stop screen sharing when called" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="the useDominantSpeaker hook" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:16" time="0.036" tests="6">
+    <testcase classname="the useDominantSpeaker hook should return room.dominantSpeaker by default" name="the useDominantSpeaker hook should return room.dominantSpeaker by default" time="0.001">
+    </testcase>
+    <testcase classname="the useDominantSpeaker hook should respond to &quot;dominantSpeakerChanged&quot; events" name="the useDominantSpeaker hook should respond to &quot;dominantSpeakerChanged&quot; events" time="0.001">
+    </testcase>
+    <testcase classname="the useDominantSpeaker hook should not set &quot;null&quot; when there is no dominant speaker" name="the useDominantSpeaker hook should not set &quot;null&quot; when there is no dominant speaker" time="0.001">
+    </testcase>
+    <testcase classname="the useDominantSpeaker hook should set &quot;null&quot; as the dominant speaker when the dominant speaker disconnects" name="the useDominantSpeaker hook should set &quot;null&quot; as the dominant speaker when the dominant speaker disconnects" time="0.001">
+    </testcase>
+    <testcase classname="the useDominantSpeaker hook should not set &quot;null&quot; as the dominant speaker when a different participant disconnects" name="the useDominantSpeaker hook should not set &quot;null&quot; as the dominant speaker when a different participant disconnects" time="0.001">
+    </testcase>
+    <testcase classname="the useDominantSpeaker hook should clean up listeners on unmount" name="the useDominantSpeaker hook should clean up listeners on unmount" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="the useLocalTracks hook" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:16" time="0.036" tests="3">
+    <testcase classname="the useLocalTracks hook should return an array of tracks and a function" name="the useLocalTracks hook should return an array of tracks and a function" time="0.003">
+    </testcase>
+    <testcase classname="the useLocalTracks hook should be called with the correct arguments" name="the useLocalTracks hook should be called with the correct arguments" time="0.001">
+    </testcase>
+    <testcase classname="the useLocalTracks hook should respond to &quot;stopped&quot; events from the local video track" name="the useLocalTracks hook should respond to &quot;stopped&quot; events from the local video track" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="the useLocalAudioToggle hook" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:16" time="0.037" tests="4">
+    <testcase classname="the useLocalAudioToggle hook should return the value from the useIsTrackEnabled hook" name="the useLocalAudioToggle hook should return the value from the useIsTrackEnabled hook" time="0.005">
+    </testcase>
+    <testcase classname="the useLocalAudioToggle hook toggleAudioEnabled function should call track.disable when track is enabled" name="the useLocalAudioToggle hook toggleAudioEnabled function should call track.disable when track is enabled" time="0.001">
+    </testcase>
+    <testcase classname="the useLocalAudioToggle hook toggleAudioEnabled function should call track.enable when track is disabled" name="the useLocalAudioToggle hook toggleAudioEnabled function should call track.enable when track is disabled" time="0.001">
+    </testcase>
+    <testcase classname="the useLocalAudioToggle hook toggleAudioEnabled function should not throw an error if track is undefined" name="the useLocalAudioToggle hook toggleAudioEnabled function should not throw an error if track is undefined" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="the useTrack hook" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:16" time="0.041" tests="4">
+    <testcase classname="the useTrack hook should return mockPublication.track by default" name="the useTrack hook should return mockPublication.track by default" time="0.003">
+    </testcase>
+    <testcase classname="the useTrack hook should return respond to &quot;subscribed&quot; events" name="the useTrack hook should return respond to &quot;subscribed&quot; events" time="0.001">
+    </testcase>
+    <testcase classname="the useTrack hook should return respond to &quot;unsubscribed&quot; events" name="the useTrack hook should return respond to &quot;unsubscribed&quot; events" time="0.001">
+    </testcase>
+    <testcase classname="the useTrack hook should clean up listeners on unmount" name="the useTrack hook should clean up listeners on unmount" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="the usePublicationIsTrackEnabled hook" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:16" time="0.042" tests="5">
+    <testcase classname="the usePublicationIsTrackEnabled hook should return false when track is undefined" name="the usePublicationIsTrackEnabled hook should return false when track is undefined" time="0.001">
+    </testcase>
+    <testcase classname="the usePublicationIsTrackEnabled hook should return mockTrack.isTrackEnabled by default" name="the usePublicationIsTrackEnabled hook should return mockTrack.isTrackEnabled by default" time="0.001">
+    </testcase>
+    <testcase classname="the usePublicationIsTrackEnabled hook should return respond to &quot;subscribed&quot; events" name="the usePublicationIsTrackEnabled hook should return respond to &quot;subscribed&quot; events" time="0.001">
+    </testcase>
+    <testcase classname="the usePublicationIsTrackEnabled hook should return respond to &quot;unsubscribed&quot; events" name="the usePublicationIsTrackEnabled hook should return respond to &quot;unsubscribed&quot; events" time="0.001">
+    </testcase>
+    <testcase classname="the usePublicationIsTrackEnabled hook should clean up listeners on unmount" name="the usePublicationIsTrackEnabled hook should clean up listeners on unmount" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="the useParticipantNetworkQualityLevel hook" errors="0" failures="0" skipped="0" timestamp="2019-11-26T20:36:16" time="0.032" tests="3">
+    <testcase classname="the useParticipantNetworkQualityLevel hook should return mockParticipant.networkQualityLevel by default" name="the useParticipantNetworkQualityLevel hook should return mockParticipant.networkQualityLevel by default" time="0.002">
+    </testcase>
+    <testcase classname="the useParticipantNetworkQualityLevel hook should return respond to &quot;networkQualityLevelChanged&quot; events" name="the useParticipantNetworkQualityLevel hook should return respond to &quot;networkQualityLevelChanged&quot; events" time="0.001">
+    </testcase>
+    <testcase classname="the useParticipantNetworkQualityLevel hook should clean up listeners on unmount" name="the useParticipantNetworkQualityLevel hook should clean up listeners on unmount" time="0.001">
+    </testcase>
+  </testsuite>
+</testsuites>
