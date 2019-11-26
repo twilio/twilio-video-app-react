@@ -14,12 +14,10 @@ jobs:
           name: "Jest Unit Tests"
           command: npm run test:ci
           environment:
-            JEST_JUNIT_OUTPUT_DIR: "reports/jest"
+            JEST_JUNIT_OUTPUT_DIR: "test-reports/jest"
             JEST_JUNIT_OUTPUT_NAME: "results.xml"
       - store_test_results:
-          path: reports/junit
-      - store_artifacts:
-          path: reports/junit
+          path: test-reports
 
       - run: npm run build
 
