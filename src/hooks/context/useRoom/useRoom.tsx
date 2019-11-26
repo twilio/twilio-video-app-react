@@ -33,8 +33,7 @@ export default function useRoom(
     }
 
     return () => {
-      if (room.state === 'connected' && !isConnecting) {
-        room.disconnect();
+      if (room.state !== 'connected' && !isConnecting) {
         window.removeEventListener('beforeunload', disconnectHandlerRef.current);
       }
     };

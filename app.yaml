@@ -10,10 +10,16 @@ handlers:
   secure: always
   script: auto
 
-- url: /
+- url: /static
+  secure: always
+  static_dir: build/static
+
+- url: /(.*\.(json|ico|js|txt))$
+  secure: always
+  static_files: build/\1
+  upload: build/.*\.(json|ico|js|txt)$
+
+- url: .*
+  secure: always
   static_files: build/index.html
   upload: build/index.html
-
-- url: /(.*)
-  static_files: build/\1
-  upload: build/(.*)

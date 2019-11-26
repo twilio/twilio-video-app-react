@@ -23,14 +23,15 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function Controls() {
   const classes = useStyles();
   const roomState = useRoomState();
+  const isReconnecting = roomState === 'reconnecting';
 
   return (
     <div className={classes.container}>
-      <ToggleAudioButton />
-      <ToggleVideoButton />
-      {roomState === 'connected' && (
+      <ToggleAudioButton disabled={isReconnecting} />
+      <ToggleVideoButton disabled={isReconnecting} />
+      {roomState !== 'disconnected' && (
         <>
-          <ToggleScreenShareButton />
+          <ToggleScreenShareButton disabled={isReconnecting} />
           <EndCallButton />
         </>
       )}

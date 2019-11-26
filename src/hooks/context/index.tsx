@@ -15,6 +15,7 @@ export interface IVideoContext {
   isConnecting: boolean;
   onError: ErrorCallback;
   onDisconnect: CallbackFunction;
+  getLocalVideoTrack: Function;
 }
 
 export const VideoContext = createContext<IVideoContext>(null!);
@@ -45,13 +46,15 @@ export function VideoProvider({
     onError(error);
   };
 
-  const localTracks = useLocalTracks();
+  const [localTracks, getLocalVideoTrack] = useLocalTracks();
   const { room, isConnecting } = useRoom(localTracks, onErrorCallback, token, options);
 
   useRoomCallbacks(room, onErrorCallback, onDisconnect);
 
   return (
-    <VideoContext.Provider value={{ room, localTracks, isConnecting, onError: onErrorCallback, onDisconnect }}>
+    <VideoContext.Provider
+      value={{ room, localTracks, isConnecting, onError: onErrorCallback, onDisconnect, getLocalVideoTrack }}
+    >
       <SelectedParticipantProvider room={room}>{children}</SelectedParticipantProvider>
     </VideoContext.Provider>
   );
