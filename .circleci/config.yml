@@ -18,6 +18,8 @@ jobs:
             JEST_JUNIT_OUTPUT_NAME: "results.xml"
       - store_test_results:
           path: test-reports
+      - store_artifacts:
+          path: test-reports
 
       - run: npm run build
 
