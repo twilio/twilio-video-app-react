@@ -20,9 +20,9 @@ describe('the useHandleRoomDisconnectionErrors hook', () => {
     const mockOnError = jest.fn();
     renderHook(() => useHandleRoomDisconnectionErrors(mockRoom, mockOnError));
     act(() => {
-      mockRoom.emit('disconnected', 'disconnected', {} as TwilioError);
+      mockRoom.emit('disconnected', 'disconnected', 'mockError');
     });
-    expect(mockOnError).toHaveBeenCalled();
+    expect(mockOnError).toHaveBeenCalledWith('mockError');
   });
 
   it('should tear down old listeners when receiving a new room', () => {

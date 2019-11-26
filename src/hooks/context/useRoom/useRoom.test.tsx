@@ -3,6 +3,8 @@ import { renderHook } from '@testing-library/react-hooks';
 import useRoom from './useRoom';
 import Video from 'twilio-video';
 
+const mockVideoConnect = Video.connect as jest.Mock<any>;
+
 describe('the useRoom hook', () => {
   beforeEach(jest.clearAllMocks);
 
@@ -60,5 +62,15 @@ describe('the useRoom hook', () => {
     expect(result.current.room.state).toBe('connected');
     rerender();
     expect(Video.connect).toHaveBeenCalledTimes(1);
+  });
+
+  it('should call onError when there is an error', done => {
+    const mockOnError = jest.fn();
+    mockVideoConnect.mockImplementationOnce(() => Promise.reject('mockError'));
+    renderHook(() => useRoom([], mockOnError, 'token', {}));
+    setImmediate(() => {
+      expect(mockOnError).toHaveBeenCalledWith('mockError');
+      done();
+    });
   });
 });

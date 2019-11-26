@@ -18,9 +18,9 @@ describe('the useHandleTrackPublicationFailed hook', () => {
     const mockOnError = jest.fn();
     renderHook(() => useHandleTrackPublicationFailed(mockRoom, mockOnError));
     act(() => {
-      mockRoom.localParticipant.emit('trackPublicationFailed', 'trackPublicationFailed');
+      mockRoom.localParticipant.emit('trackPublicationFailed', 'mockTrack');
     });
-    expect(mockOnError).toHaveBeenCalled();
+    expect(mockOnError).toHaveBeenCalledWith('mockTrack');
   });
 
   it('should tear down old listeners when receiving a new room', () => {
@@ -41,6 +41,6 @@ describe('the useHandleTrackPublicationFailed hook', () => {
   it('should clean up listeners on unmount', () => {
     const { unmount } = renderHook(() => useHandleTrackPublicationFailed(mockRoom, () => {}));
     unmount();
-    expect(mockRoom.localParticipant.listenerCount(' trackPublicationFailed')).toBe(0);
+    expect(mockRoom.localParticipant.listenerCount('trackPublicationFailed')).toBe(0);
   });
 });
