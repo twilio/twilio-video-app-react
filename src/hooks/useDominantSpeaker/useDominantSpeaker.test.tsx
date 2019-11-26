@@ -39,7 +39,7 @@ describe('the useDominantSpeaker hook', () => {
     act(() => {
       mockRoom.emit('participantDisconnected', 'otherParticipant');
     });
-    expect(result.current).toBe('mockDominantSpeaker');
+    expect(result.current).toBe(null);
   });
 
   it('should not set "null" as the dominant speaker when a different participant disconnects', () => {
