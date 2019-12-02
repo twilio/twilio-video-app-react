@@ -19,7 +19,7 @@
     "@types/twilio-video": "^2.0.9",
     "body-parser": "^1.19.0",
     "concurrently": "^5.0.0",
-    "cypress": "^3.6.1",
+    "cypress": "^3.7.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
     "enzyme-to-json": "^3.4.3",
@@ -28,7 +28,9 @@
     "husky": "^3.0.9",
     "jest-junit": "^9.0.0",
     "lint-staged": "^9.4.2",
+    "pixelmatch": "^5.1.0",
     "prettier": "^1.18.2",
+    "puppeteer": "^2.0.0",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-redux": "^7.1.1",
@@ -38,7 +40,7 @@
     "redux-thunk": "^2.3.0",
     "ts-jest": "^24.1.0",
     "twilio": "^3.36.0",
-    "twilio-video": "github:twilio/twilio-video.js#2.0.0-rc48",
+    "twilio-video": "github:twilio/twilio-video.js#2.0.0-rc49",
     "typescript": "3.6.4"
   },
   "lint-staged": {
