@@ -4,14 +4,22 @@ const participants = {};
 const participantFunctions = {
   addParticipant: async ({ name, roomName, color }) => {
     const args = ['--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream'];
+
     if (color) {
       args.push(`--use-file-for-fake-video-capture=cypress/fixtures/${color}.y4m`);
     }
-    const browser = await puppeteer.launch({
+
+    const browserOptions = {
       headless: true,
-      executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
       args,
-    });
+    };
+
+    // Prevents annoying popups about permissions from appearing when running tests locally 
+    if (process.env.CI !== 'true') {
+      browserOptions.executablePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+    }
+
+    const browser = await puppeteer.launch(browserOptions);
     const page = (participants[name] = await browser.newPage()); // keep track of this participant for future use
     await page.goto('http://localhost:3000');
     await page.type('#menu-name', name);

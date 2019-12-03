@@ -57,7 +57,9 @@
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.{ts,tsx}",
     "server": "node server.js",
-    "test:ci": "jest --ci --runInBand --reporters=default --reporters=jest-junit --coverage"
+    "test:ci": "jest --ci --runInBand --reporters=default --reporters=jest-junit --coverage",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "eslintConfig": {
     "extends": "react-app",
