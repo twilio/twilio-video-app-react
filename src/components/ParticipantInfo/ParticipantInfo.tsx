@@ -81,7 +81,12 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
 
   return (
-    <Container onClick={onClick} isSelected={isSelected} isSwitchedOff={isVideoSwitchedOff}>
+    <Container
+      onClick={onClick}
+      isSelected={isSelected}
+      isSwitchedOff={isVideoSwitchedOff}
+      data-cy-participant={participant.identity}
+    >
       <InfoContainer hideVideo={!isVideoEnabled}>
         <InfoRow>
           <Identity>{participant.identity}</Identity>
