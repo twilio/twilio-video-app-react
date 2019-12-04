@@ -4,7 +4,7 @@
 const getRoomName = () =>
   Math.random()
     .toString(36)
-    .slice(2); 
+    .slice(2);
 
 context('A video app user', () => {
   describe('when entering an empty room that one participant will join', () => {
@@ -26,12 +26,14 @@ context('A video app user', () => {
 
     it('should be able to see the other participant', () => {
       cy.get('[data-cy-main-participant]').should('contain', 'test1');
-      cy.getParticipant('test1').shouldBeSameVideoAs('[data-cy-main-participant]')
+      cy.getParticipant('test1')
+        .should('contain', 'test1')
+        .shouldBeSameVideoAs('[data-cy-main-participant]');
     });
 
     it('should be able to hear the other participant', () => {
-      cy.getParticipant('test1').shouldBeMakingSound()
-    })
+      cy.getParticipant('test1').shouldBeMakingSound();
+    });
   });
 
   describe('when entering a room with one participant', () => {
@@ -48,12 +50,14 @@ context('A video app user', () => {
 
     it('should be able to see the other participant', () => {
       cy.get('[data-cy-main-participant]').should('contain', 'test1');
-      cy.getParticipant('test1').shouldBeSameVideoAs('[data-cy-main-participant]')
+      cy.getParticipant('test1')
+        .should('contain', 'test1')
+        .shouldBeSameVideoAs('[data-cy-main-participant]');
     });
 
     it('should be able to hear the other participant', () => {
-      cy.getParticipant('test1').shouldBeMakingSound()
-    })
+      cy.getParticipant('test1').shouldBeMakingSound();
+    });
   });
 
   describe('when entering an empty room that three participants will join', () => {
@@ -71,15 +75,21 @@ context('A video app user', () => {
     });
 
     it('should be able to see the other participants', () => {
-      cy.getParticipant('test1').shouldBeColor('red')
-      cy.getParticipant('test2').shouldBeColor('blue')
-      cy.getParticipant('test3').shouldBeColor('green')
+      cy.getParticipant('test1')
+        .should('contain', 'test1')
+        .shouldBeColor('red');
+      cy.getParticipant('test2')
+        .should('contain', 'test2')
+        .shouldBeColor('blue');
+      cy.getParticipant('test3')
+        .should('contain', 'test3')
+        .shouldBeColor('green');
     });
 
     it('should be able to hear the other participants', () => {
-      cy.getParticipant('test1').shouldBeMakingSound()
-      cy.getParticipant('test2').shouldBeMakingSound()
-      cy.getParticipant('test3').shouldBeMakingSound()
+      cy.getParticipant('test1').shouldBeMakingSound();
+      cy.getParticipant('test2').shouldBeMakingSound();
+      cy.getParticipant('test3').shouldBeMakingSound();
     });
   });
 
@@ -98,15 +108,21 @@ context('A video app user', () => {
     });
 
     it('should be able to see the other participants', () => {
-      cy.getParticipant('test1').shouldBeColor('red')
-      cy.getParticipant('test2').shouldBeColor('blue')
-      cy.getParticipant('test3').shouldBeColor('green')
+      cy.getParticipant('test1')
+        .should('contain', 'test1')
+        .shouldBeColor('red');
+      cy.getParticipant('test2')
+        .should('contain', 'test2')
+        .shouldBeColor('blue');
+      cy.getParticipant('test3')
+        .should('contain', 'test3')
+        .shouldBeColor('green');
     });
 
     it('should be able to hear the other participants', () => {
-      cy.getParticipant('test1').shouldBeMakingSound()
-      cy.getParticipant('test2').shouldBeMakingSound()
-      cy.getParticipant('test3').shouldBeMakingSound()
+      cy.getParticipant('test1').shouldBeMakingSound();
+      cy.getParticipant('test2').shouldBeMakingSound();
+      cy.getParticipant('test3').shouldBeMakingSound();
     });
   });
 });

@@ -1,4 +1,4 @@
-import getVolumeLevel from './getVolumeLevel';
+import detectSound from './detectSound';
 
 Cypress.Commands.add('joinRoom', (username, roomname) => {
   cy.visit('http://localhost:3000');
@@ -36,24 +36,20 @@ Cypress.Commands.add('shouldBeSameVideoAs', { prevSubject: 'element' }, (subject
 
 Cypress.Commands.add('getParticipant', name => cy.get(`[data-cy-participant="${name}"]`));
 
-Cypress.Commands.add('volumeLevel', { prevSubject: 'element' }, subject => {
-  const resolveValue = () =>
-    getVolumeLevel(subject[0]).then(value => {
+Cypress.Commands.add('shouldBeMakingSound', { prevSubject: 'element' }, subject => {
+  const resolveValue = $el =>
+    detectSound($el[0]).then(value => {
       return cy.verifyUpcomingAssertions(
         value,
         {},
         {
-          onRetry: resolveValue,
-          onFail: () => {throw new Error('expected volume level not found')}
+          onRetry: () => resolveValue($el),
         }
       );
     });
-  return resolveValue();
-});
 
-Cypress.Commands.add('shouldBeMakingSound', { prevSubject: 'element' }, subject => {
   cy.wrap(subject)
     .find('audio')
-    .volumeLevel()
-    .should('be.greaterThan', 0);
+    .then(resolveValue)
+    .should('equal', true);
 });
