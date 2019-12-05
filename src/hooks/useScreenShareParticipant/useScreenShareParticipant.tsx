@@ -12,7 +12,7 @@ export default function useScreenShareParticipant() {
       const updateScreenShareParticipant = () => {
         setScreenShareParticipant(
           Array.from<Participant>(room.participants.values())
-            // the screenshare particiipant could be the localParticipant
+            // the screenshare participant could be the localParticipant
             .concat(room.localParticipant)
             .find((participant: Participant) =>
               Array.from<TrackPublication>(participant.tracks.values()).find(track => track.trackName === 'screen')
@@ -20,11 +20,12 @@ export default function useScreenShareParticipant() {
         );
       };
       updateScreenShareParticipant();
+
       room.on('trackPublished', updateScreenShareParticipant);
       room.on('trackUnpublished', updateScreenShareParticipant);
       room.on('participantDisconnected', updateScreenShareParticipant);
 
-      // the room object does not emit 'trackPublished' events for the localPartipant,
+      // the room object does not emit 'trackPublished' events for the localParticipant,
       // so we need to listen for them here.
       room.localParticipant.on('trackPublished', updateScreenShareParticipant);
       room.localParticipant.on('trackUnpublished', updateScreenShareParticipant);
@@ -32,6 +33,7 @@ export default function useScreenShareParticipant() {
         room.off('trackPublished', updateScreenShareParticipant);
         room.off('trackUnpublished', updateScreenShareParticipant);
         room.off('participantDisconnected', updateScreenShareParticipant);
+
         room.localParticipant.off('trackPublished', updateScreenShareParticipant);
         room.localParticipant.off('trackUnpublished', updateScreenShareParticipant);
       };

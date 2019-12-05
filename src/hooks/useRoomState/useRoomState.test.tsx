@@ -17,6 +17,8 @@ describe('the useRoomState hook', () => {
       room: mockRoom,
       isConnecting: false,
       localTracks: [],
+      onError: () => {},
+      onDisconnect: () => {},
     }));
   });
 
@@ -31,7 +33,7 @@ describe('the useRoomState hook', () => {
     expect(result.current).toBe('connected');
   });
 
-  it('should should respond to the rooms "reconnecting" event', () => {
+  it('should respond to the rooms "reconnecting" event', () => {
     const { result } = renderHook(useRoomState);
     act(() => {
       mockRoom.state = 'reconnecting';
@@ -40,7 +42,7 @@ describe('the useRoomState hook', () => {
     expect(result.current).toBe('reconnecting');
   });
 
-  it('should should respond to the rooms "reconnected" event', () => {
+  it('should respond to the rooms "reconnected" event', () => {
     const { result } = renderHook(useRoomState);
     act(() => {
       mockRoom.state = 'connected';
@@ -49,7 +51,7 @@ describe('the useRoomState hook', () => {
     expect(result.current).toBe('connected');
   });
 
-  it('should should respond to the rooms "disconnected" event', () => {
+  it('should respond to the rooms "disconnected" event', () => {
     mockRoom.state = 'connected';
     const { result } = renderHook(useRoomState);
     expect(result.current).toBe('connected');
@@ -71,6 +73,8 @@ describe('the useRoomState hook', () => {
         room: mockRoom,
         isConnecting: false,
         localTracks: [],
+        onError: () => {},
+        onDisconnect: () => {},
       }));
     });
 
@@ -92,6 +96,8 @@ describe('the useRoomState hook', () => {
         room: mockRoom,
         isConnecting: false,
         localTracks: [],
+        onError: () => {},
+        onDisconnect: () => {},
       }));
     });
 

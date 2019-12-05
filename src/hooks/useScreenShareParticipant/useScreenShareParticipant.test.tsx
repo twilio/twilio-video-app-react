@@ -20,6 +20,7 @@ function MockRoom() {
 
 mockUseVideoContext.mockImplementation(() => ({
   room: MockRoom(),
+  onError: () => {},
 }));
 
 describe('the useScreenShareParticipant hook', () => {
@@ -33,6 +34,7 @@ describe('the useScreenShareParticipant hook', () => {
     mockRoom.localParticipant.tracks = new Map([[0, { trackName: 'screen' }]]);
     mockUseVideoContext.mockImplementation(() => ({
       room: mockRoom,
+      onError: () => {},
     }));
 
     const { result } = renderHook(useScreenShareParticipant);
@@ -47,6 +49,7 @@ describe('the useScreenShareParticipant hook', () => {
     mockRoom.participants = new Map([[0, mockParticipant]]);
     mockUseVideoContext.mockImplementation(() => ({
       room: mockRoom,
+      onError: () => {},
     }));
 
     const { result } = renderHook(useScreenShareParticipant);
@@ -57,6 +60,7 @@ describe('the useScreenShareParticipant hook', () => {
     const mockRoom = MockRoom();
     mockUseVideoContext.mockImplementation(() => ({
       room: mockRoom,
+      onError: () => {},
     }));
 
     const { result } = renderHook(useScreenShareParticipant);
@@ -84,6 +88,7 @@ describe('the useScreenShareParticipant hook', () => {
     };
     mockUseVideoContext.mockImplementation(() => ({
       room: mockRoom,
+      onError: () => {},
     }));
 
     const { result } = renderHook(useScreenShareParticipant);
@@ -131,6 +136,7 @@ describe('the useScreenShareParticipant hook', () => {
 
     mockUseVideoContext.mockImplementation(() => ({
       room: mockRoom,
+      onError: () => {},
     }));
 
     const { unmount } = renderHook(useScreenShareParticipant);
