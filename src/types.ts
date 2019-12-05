@@ -27,7 +27,7 @@ declare global {
   }
 }
 
-export type CallbackFunction = (...args: any[]) => void;
+export type Callback = (...args: any[]) => void;
 
 export type ErrorCallback = (error: TwilioError) => void;
 

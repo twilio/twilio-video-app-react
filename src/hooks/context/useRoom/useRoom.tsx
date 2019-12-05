@@ -1,11 +1,11 @@
 import EventEmitter from 'events';
 import { useEffect, useRef, useState } from 'react';
 import Video, { ConnectOptions, LocalTrack, Room } from 'twilio-video';
-import { CallbackFunction } from '../../../types';
+import { Callback } from '../../../types';
 
 export default function useRoom(
   localTracks: LocalTrack[],
-  onError: CallbackFunction,
+  onError: Callback,
   token?: string,
   options?: ConnectOptions
 ) {

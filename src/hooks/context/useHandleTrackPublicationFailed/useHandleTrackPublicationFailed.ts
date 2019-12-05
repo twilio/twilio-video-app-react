@@ -1,9 +1,9 @@
 import { Room } from 'twilio-video';
 import { useEffect } from 'react';
 
-import { CallbackFunction } from '../../../types';
+import { Callback } from '../../../types';
 
-export default function useHandleTrackPublicationFailed(room: Room, onError: CallbackFunction) {
+export default function useHandleTrackPublicationFailed(room: Room, onError: Callback) {
   const { localParticipant } = room;
   useEffect(() => {
     if (localParticipant) {

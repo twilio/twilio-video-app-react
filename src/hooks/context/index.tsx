@@ -1,6 +1,6 @@
 import React, { createContext, ReactNode, useContext } from 'react';
 import { ConnectOptions, LocalTrack, Room, TwilioError } from 'twilio-video';
-import { CallbackFunction, ErrorCallback } from '../../types';
+import { Callback, ErrorCallback } from '../../types';
 import { SelectedParticipantProvider } from './useSelectedParticipant/useSelectedParticipant';
 
 import useHandleRoomDisconnectionErrors from './useHandleRoomDisconnectionErrors/useHandleRoomDisconnectionErrors';
@@ -14,7 +14,7 @@ export interface IVideoContext {
   localTracks: LocalTrack[];
   isConnecting: boolean;
   onError: ErrorCallback;
-  onDisconnect: CallbackFunction;
+  onDisconnect: Callback;
   getLocalVideoTrack: Function;
 }
 
@@ -24,11 +24,11 @@ interface VideoProviderProps {
   token?: string;
   options?: ConnectOptions;
   onError: ErrorCallback;
-  onDisconnect: CallbackFunction;
+  onDisconnect: Callback;
   children: ReactNode;
 }
 
-const useRoomCallbacks = (room: Room, onError: CallbackFunction, onDisconnect: CallbackFunction) => {
+const useRoomCallbacks = (room: Room, onError: Callback, onDisconnect: Callback) => {
   useHandleRoomDisconnectionErrors(room, onError);
   useHandleTrackPublicationFailed(room, onError);
   useHandleOnDisconnect(room, onDisconnect);
