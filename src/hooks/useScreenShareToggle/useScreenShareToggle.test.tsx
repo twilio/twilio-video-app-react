@@ -20,9 +20,11 @@ const mockTrack: any = { stop: jest.fn() };
 
 const mockMediaDevices = {
   value: {
-    getDisplayMedia: jest.fn(() => ({
-      getTracks: jest.fn(() => [mockTrack]),
-    })),
+    getDisplayMedia: jest.fn(() =>
+      Promise.resolve({
+        getTracks: jest.fn(() => [mockTrack]),
+      })
+    ),
   } as any,
 };
 

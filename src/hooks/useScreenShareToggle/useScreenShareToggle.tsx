@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef } from 'react';
 import { useVideoContext } from '../context';
 import { LogLevels, Track } from 'twilio-video';
+import useErrorHandler from '../useErrorHandler/useErrorHandler';
 
 interface MediaStreamTrackPublishOptions {
   name?: string;
@@ -12,28 +13,39 @@ export default function useScreenShareToggle() {
   const { room } = useVideoContext();
   const [isSharing, setIsSharing] = useState(false);
   const stopScreenShareRef = useRef<() => void>(null!);
+  const onError = useErrorHandler();
 
-  const shareScreen = useCallback(async () => {
-    const stream = await navigator.mediaDevices.getDisplayMedia();
-    const track = stream.getTracks()[0];
+  const shareScreen = useCallback(() => {
+    navigator.mediaDevices
+      .getDisplayMedia()
+      .then(stream => {
+        const track = stream.getTracks()[0];
 
-    const trackPublication = await room.localParticipant.publishTrack(track, {
-      name: 'screen',
-      priority: 'low',
-    } as MediaStreamTrackPublishOptions);
+        room.localParticipant
+          .publishTrack(track, {
+            name: 'screen',
+            priority: 'low',
+          } as MediaStreamTrackPublishOptions)
+          .then(trackPublication => {
+            stopScreenShareRef.current = () => {
+              room.localParticipant.unpublishTrack(track);
+              // TODO: remove this if the SDK is updated to emit this event
+              room.localParticipant.emit('trackUnpublished', trackPublication);
+              track.stop();
+              setIsSharing(false);
+            };
 
-    stopScreenShareRef.current = () => {
-      room.localParticipant.unpublishTrack(track);
-      // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
-      room.localParticipant.emit('trackUnpublished', trackPublication);
-      track.stop();
-      setIsSharing(false);
-    };
-
-    track.onended = stopScreenShareRef.current;
-
-    setIsSharing(true);
-  }, [room]);
+            track.onended = stopScreenShareRef.current;
+            setIsSharing(true);
+          })
+          .catch(onError);
+      })
+      .catch(error => {
+        if (error.name !== 'AbortError' && error.name !== 'NotAllowedError') {
+          onError(error);
+        }
+      });
+  }, [room, onError]);
 
   const toggle = useCallback(() => {
     !isSharing ? shareScreen() : stopScreenShareRef.current();
