@@ -39,7 +39,9 @@ app.post('/token', (req, res) => {
   const videoGrant = new VideoGrant({ room });
   token.addGrant(videoGrant);
   res.json({ token: token.toJwt() });
-  console.log(`issued token for ${token.identity} in room ${req.body.room}`);
+  if (process.env.CI !== 'true') {
+    console.log(`issued token for ${token.identity} in room ${req.body.room}`);
+  }
 });
 
 app.listen(8080, () => console.log('token server running on 8080'));
