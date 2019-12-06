@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node
+      - image: circleci/node-browsers
     working_directory: ~/twilio-video-react-app
 
     steps:
@@ -25,6 +25,8 @@ jobs:
           path: coverage
 
       - run: npm run build
+
+      - run: npm run cypress:ci
 
       - persist_to_workspace:
           root: .

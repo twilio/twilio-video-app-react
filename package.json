@@ -60,7 +60,7 @@
     "server": "node server.js",
     "test:ci": "jest --ci --runInBand --reporters=default --reporters=jest-junit --coverage",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run",
+    "cypress:run": "cypress run --browser chrome",
     "cypress:ci": "CYPRESS_baseUrl=http://localhost:8080 start-server-and-test server http://localhost:8080 cypress:run"
   },
   "eslintConfig": {
