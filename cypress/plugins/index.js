@@ -27,7 +27,6 @@ module.exports = (on, config) => {
       const browser = await puppeteer.launch(browserOptions);
       const page = (participants[name] = await browser.newPage()); // keep track of this participant for future use
       await page.goto(config.baseUrl);
-      console.log(config.baseUrl);
       await page.type('#menu-name', name);
       await page.type('#menu-room', roomName);
       await page.click('[type="submit"]');

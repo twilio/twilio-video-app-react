@@ -2,8 +2,8 @@
   "video": false,
   "defaultCommandTimeout": 10000,
   "baseUrl": "http://localhost:3000",
-  "reporter": "junit",
+  "reporter": "cypress-multi-reporters",
   "reporterOptions": {
-    "mochaFile": "test-reports/cypress/results.xml"
+    "configFile": "cypress/reporter-config.json"
   }
 }
