@@ -15,10 +15,10 @@ export default function detectSound(audioEl) {
       results.push(samples.some(i => i !== 128));
       if (results.length > 50) {
         source.disconnect();
-        cancelAnimationFrame(reqId);
+        clearTimeout(reqId);
         resolve(results.some(result => result));
       } else {
-        reqId = requestAnimationFrame(detect);
+        reqId = setTimeout(detect, 50);
       }
     }
     detect();
