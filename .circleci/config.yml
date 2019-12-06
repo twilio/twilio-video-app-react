@@ -32,8 +32,6 @@ jobs:
             JEST_JUNIT_CLASSNAME: "{classname}"
             JEST_JUNIT_TITLE: "{title}"
 
-      - store_test_results:
-          path: test-reports
       - store_artifacts:
           path: coverage
 
@@ -47,6 +45,9 @@ jobs:
           echo BASIC_AUTH_PASSWORD=$BASIC_AUTH_PASSWORD >> .env
 
       - run: npm run cypress:ci
+
+      - store_test_results:
+          path: test-reports
 
       - persist_to_workspace:
           root: .
