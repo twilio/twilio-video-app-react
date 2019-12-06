@@ -1,4 +1,4 @@
-import { LocalVideoTrack, RemoteVideoTrack } from 'twilio-video';
+import { LocalVideoTrack, RemoteVideoTrack, TwilioError } from 'twilio-video';
 
 declare module 'twilio-video' {
   interface LocalParticipant {
@@ -26,5 +26,9 @@ declare global {
     getDisplayMedia(): Promise<MediaStream>;
   }
 }
+
+export type Callback = (...args: any[]) => void;
+
+export type ErrorCallback = (error: TwilioError) => void;
 
 export type IVideoTrack = LocalVideoTrack | RemoteVideoTrack;

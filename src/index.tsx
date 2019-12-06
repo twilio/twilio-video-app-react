@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { useDispatch } from 'react-redux';
 
 import { CssBaseline } from '@material-ui/core';
 import { MuiThemeProvider } from '@material-ui/core/styles';
@@ -12,6 +13,8 @@ import { ConnectOptions } from 'twilio-video';
 import theme from './theme';
 import './types';
 import { VideoProvider } from './hooks/context';
+import { setError, dismissError, clearToken } from './store/main/main';
+import ErrorDialog from './components/ErrorDialog/ErrorDialog';
 
 const connectionOptions: ConnectOptions = {
   dominantSpeaker: true,
@@ -36,10 +39,18 @@ const connectionOptions: ConnectOptions = {
 };
 
 const VideoProviderWithToken = () => {
+  const dispatch = useDispatch();
   const token = useSelector(state => state.token);
+  const error = useSelector(state => state.error);
 
   return (
-    <VideoProvider token={token} options={connectionOptions}>
+    <VideoProvider
+      token={token}
+      options={connectionOptions}
+      onError={err => dispatch(setError(err))}
+      onDisconnect={() => dispatch(clearToken())}
+    >
+      <ErrorDialog dismissError={() => dispatch(dismissError())} error={error} />
       <App />
     </VideoProvider>
   );
