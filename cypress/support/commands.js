@@ -1,7 +1,7 @@
 import detectSound from './detectSound';
 
 Cypress.Commands.add('joinRoom', (username, roomname) => {
-  cy.visit('http://localhost:3000');
+  cy.visit('/');
   cy.get('#menu-name').type(username);
   cy.get('#menu-room').type(roomname);
   cy.get('[type="submit"]').click();
