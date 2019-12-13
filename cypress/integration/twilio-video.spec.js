@@ -1,5 +1,7 @@
 /// <reference types="Cypress" />
 
+// If you are on MacOS and have many popups about Chromium when these tests run, please see: https://stackoverflow.com/questions/54545193/puppeteer-chromium-on-mac-chronically-prompting-accept-incoming-network-connect
+
 // Creates a random string like 'ft68eyjn8i'
 const getRoomName = () =>
   Math.random()

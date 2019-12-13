@@ -14,17 +14,10 @@ module.exports = (on, config) => {
         args.push(`--use-file-for-fake-video-capture=cypress/fixtures/${color}.y4m`);
       }
 
-      const browserOptions = {
+      const browser = await puppeteer.launch({
         headless: true,
         args,
-      };
-
-      // Prevents annoying popups about permissions from appearing when running tests locally
-      if (process.env.CI !== 'true') {
-        browserOptions.executablePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-      }
-
-      const browser = await puppeteer.launch(browserOptions);
+      });
       const page = (participants[name] = await browser.newPage()); // keep track of this participant for future use
       await page.goto(config.baseUrl);
       await page.type('#menu-name', name);
@@ -51,7 +44,9 @@ module.exports = (on, config) => {
       return Promise.resolve(null);
     },
     removeAllParticipants: () => {
-      return Promise.all(Object.keys(participants).map(name => participantFunctions.removeParticipant(name))).then(() => null);
+      return Promise.all(Object.keys(participants).map(name => participantFunctions.removeParticipant(name))).then(
+        () => null
+      );
     },
   };
   on('task', participantFunctions);
