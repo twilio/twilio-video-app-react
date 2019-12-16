@@ -16,7 +16,7 @@ module.exports = (on, config) => {
 
       const browser = await puppeteer.launch({
         headless: true,
-        args,
+        args
       });
       const page = (participants[name] = await browser.newPage()); // keep track of this participant for future use
       await page.goto(config.baseUrl);
@@ -26,9 +26,9 @@ module.exports = (on, config) => {
       await page.waitForSelector('[data-cy-main-participant] video');
       return Promise.resolve(null);
     },
-    muteParticipantAudio: async name => {
+    toggleParticipantAudio: async name => {
       const page = participants[name];
-      await page.click('[title="Mute Audio"]');
+      await page.click('[data-cy-audio-toggle]');
       return Promise.resolve(null);
     },
     shareParticipantScreen: async name => {

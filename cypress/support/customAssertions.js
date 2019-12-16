@@ -40,8 +40,13 @@ const isSameVideoTrack = (_chai, utils) => {
   function assertIsSameVideoTrack($el1) {
     const $el2 = utils.flag(this, 'object');
     const result = compareVideoElements($el1[0], $el2[0]);
+
+    const { videoHeight, videoWidth } = $el1[0].videoWidth > $el2[0].videoWidth ? $el2[0] : $el1[0];
+    const totalPixels = videoHeight * videoWidth;
+    const percentageTheshold = 0.1;
+
     this.assert(
-      result === 0,
+      result < totalPixels * percentageTheshold,
       `expected #{act} to have same track as #{exp} - ${result} pixels were different`,
       `expected #{act} to not have same track as #{exp} - ${result} pixels were different`,
       $el1.selector || $el1[0].outerHTML,

@@ -93,7 +93,7 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
           <NetworkQualityLevel qualityLevel={networkQualityLevel} />
         </InfoRow>
         <div>
-          {!isAudioEnabled && <MicOff />}
+          {!isAudioEnabled && <MicOff data-cy-audio-mute-icon />}
           {!isVideoEnabled && <VideocamOff />}
           {isScreenShareEnabled && <ScreenShare />}
         </div>
