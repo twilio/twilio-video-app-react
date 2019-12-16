@@ -37,7 +37,7 @@
     "redux-thunk": "^2.3.0",
     "ts-jest": "^24.1.0",
     "twilio": "^3.36.0",
-    "twilio-video": "github:twilio/twilio-video.js#2.0.0-rc48",
+    "twilio-video": "2.0.0-beta16",
     "typescript": "3.6.4"
   },
   "lint-staged": {
@@ -81,6 +81,8 @@
   },
   "proxy": "http://localhost:8080/",
   "jest": {
-    "snapshotSerializers": ["enzyme-to-json/serializer"]
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
   }
 }

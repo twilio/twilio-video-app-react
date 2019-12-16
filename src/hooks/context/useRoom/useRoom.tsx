@@ -19,6 +19,10 @@ export default function useRoom(
       Video.connect(token, { ...options, tracks: [] }).then(
         newRoom => {
           setRoom(newRoom);
+
+          // @ts-ignore
+          window.twilioRoom = newRoom;
+
           localTracks.forEach(track =>
             // Publishing here so we can set the track priority
             newRoom.localParticipant.publishTrack(track, { priority: track.name === 'camera' ? 'low' : 'standard' })
