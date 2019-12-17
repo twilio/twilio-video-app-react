@@ -41,7 +41,7 @@ export default function ParticipantInfo({ participant, children }: ParticipantIn
   const isVideoEnabled = usePublicationIsTrackEnabled(publications.find(p => p.trackName === 'camera'));
 
   return (
-    <Container>
+    <Container data-cy-main-participant>
       <InfoContainer>
         <Identity>
           {participant.identity}

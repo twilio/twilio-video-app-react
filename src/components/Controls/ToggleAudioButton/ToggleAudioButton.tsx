@@ -26,7 +26,7 @@ export default function ToggleAudioButton(props: { disabled?: boolean }) {
       placement="top"
       PopperProps={{ disablePortal: true }}
     >
-      <Fab className={classes.fab} onClick={toggleAudioEnabled} disabled={props.disabled}>
+      <Fab className={classes.fab} onClick={toggleAudioEnabled} disabled={props.disabled} data-cy-audio-toggle>
         {isAudioEnabled ? <Mic /> : <MicOff />}
       </Fab>
     </Tooltip>

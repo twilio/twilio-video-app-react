@@ -2,13 +2,26 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node
+      - image: circleci/node:latest-browsers
     working_directory: ~/twilio-video-react-app
 
     steps:
       - checkout
+
+      - restore_cache:
+          keys:
+            - v1-deps-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - v1-deps-{{ .Branch }}
+            - v1-deps
     
       - run: npm ci
+
+      - save_cache:
+          key: v1-deps-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          # cache NPM modules and the folder with the Cypress binary
+          paths:
+            - ~/.npm
+            - ~/.cache
 
       - run:
           name: "Jest Unit Tests"
@@ -19,12 +32,22 @@ jobs:
             JEST_JUNIT_CLASSNAME: "{classname}"
             JEST_JUNIT_TITLE: "{title}"
 
-      - store_test_results:
-          path: test-reports
       - store_artifacts:
           path: coverage
 
       - run: npm run build
+
+      - run: |
+          echo ACCOUNT_SID=$TWILIO_ACCOUNT_SID >> .env
+          echo API_KEY=$TWILIO_API_KEY >> .env
+          echo API_SECRET=$TWILIO_API_SECRET >> .env
+          echo BASIC_AUTH_USERNAME=$BASIC_AUTH_USERNAME >> .env
+          echo BASIC_AUTH_PASSWORD=$BASIC_AUTH_PASSWORD >> .env
+
+      - run: npm run cypress:ci
+
+      - store_test_results:
+          path: test-reports
 
       - persist_to_workspace:
           root: .
@@ -43,13 +66,6 @@ jobs:
       - run: |
           echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
           gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
-
-      - run: |
-          echo ACCOUNT_SID=$TWILIO_ACCOUNT_SID >> .env
-          echo API_KEY=$TWILIO_API_KEY >> .env
-          echo API_SECRET=$TWILIO_API_SECRET >> .env
-          echo BASIC_AUTH_USERNAME=$BASIC_AUTH_USERNAME >> .env
-          echo BASIC_AUTH_PASSWORD=$BASIC_AUTH_PASSWORD >> .env
 
       - run: echo $CIRCLE_TAG > build/version.txt
 

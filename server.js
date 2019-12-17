@@ -1,4 +1,6 @@
-const app = require('express')();
+const express = require('express')
+const app = express();
+const path = require('path')
 const AccessToken = require('twilio').jwt.AccessToken;
 const VideoGrant = AccessToken.VideoGrant;
 const bodyParser = require('body-parser');
@@ -28,6 +30,8 @@ if (process.env.USE_BASIC_AUTH === 'true') {
   });
 }
 
+app.use(express.static(path.join(__dirname, 'build')))
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'build/index.html')))
 app.post('/token', (req, res) => {
   const { name, room } = req.body;
   const token = new AccessToken(twilioAccountSid, twilioApiKey, twilioApiSecret, { ttl: MAX_ALLOWED_SESSION_DURATION });
@@ -35,7 +39,9 @@ app.post('/token', (req, res) => {
   const videoGrant = new VideoGrant({ room });
   token.addGrant(videoGrant);
   res.json({ token: token.toJwt() });
-  console.log(`issued token for ${token.identity} in room ${req.body.room}`);
+  if (process.env.CI !== 'true') {
+    console.log(`issued token for ${token.identity} in room ${req.body.room}`);
+  }
 });
 
 app.listen(8080, () => console.log('token server running on 8080'));
