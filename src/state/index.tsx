@@ -40,7 +40,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
 export function useAppState() {
   const context = useContext(StateContext);
   if (!context) {
-    throw new Error('useAppContext must be used within the AppContextProvider');
+    throw new Error('useAppState must be used within the AppStateProvider');
   }
   return context;
 }
