@@ -3,15 +3,14 @@ import ReactDOM from 'react-dom';
 
 import { CssBaseline } from '@material-ui/core';
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import './types';
 
 import App from './App';
+import AppStateProvider, { useAppState } from './state';
 import { ConnectOptions } from 'twilio-video';
+import ErrorDialog from './components/ErrorDialog/ErrorDialog';
 import theme from './theme';
 import './types';
 import { VideoProvider } from './hooks/context';
-import ErrorDialog from './components/ErrorDialog/ErrorDialog';
-import AppStateProvider, { useAppState } from './state';
 
 const connectionOptions: ConnectOptions = {
   dominantSpeaker: true,

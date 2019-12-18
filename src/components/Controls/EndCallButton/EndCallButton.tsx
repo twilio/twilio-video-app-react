@@ -5,8 +5,8 @@ import CallEnd from '@material-ui/icons/CallEnd';
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import { useVideoContext } from '../../../hooks/context';
 import { useAppState } from '../../../state';
+import { useVideoContext } from '../../../hooks/context';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

@@ -1,4 +1,4 @@
-import React, { useState, useContext, createContext, useCallback } from 'react';
+import React, { createContext, useCallback, useContext, useState } from 'react';
 import { TwilioError } from 'twilio-video';
 
 interface StateContextType {
@@ -10,6 +10,7 @@ interface StateContextType {
     getToken(name: string, room: string): void;
   };
 }
+
 export const StateContext = createContext<StateContextType>(null!);
 
 export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
