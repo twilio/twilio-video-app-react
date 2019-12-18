@@ -5,9 +5,8 @@ import CallEnd from '@material-ui/icons/CallEnd';
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import { receiveToken } from '../../../store/main/main';
-import { useDispatch } from 'react-redux';
 import { useVideoContext } from '../../../hooks/context';
+import { useAppState } from '../../../state';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -19,12 +18,14 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function EndCallButton() {
   const classes = useStyles();
-  const dispatch = useDispatch();
+  const {
+    actions: { setToken },
+  } = useAppState();
   const { room } = useVideoContext();
 
   const handleClick = () => {
     room.disconnect();
-    dispatch(receiveToken(''));
+    setToken('');
   };
 
   return (

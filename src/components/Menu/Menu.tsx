@@ -1,5 +1,4 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -8,7 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
 import Toolbar from '@material-ui/core/Toolbar';
 
-import { getToken } from '../../store/main/main';
+import { useAppState } from '../../state';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import { useVideoContext } from '../../hooks/context';
 import ToggleFullscreenButton from '../ToggleFullScreenButton/ToggleFullScreenButton';
@@ -42,8 +41,10 @@ export default function Menu() {
   const [name, setName] = useState<string>('');
   const [roomName, setRoomName] = useState<string>(getRoomName());
   const roomState = useRoomState();
-  const dispatch = useDispatch();
   const { isConnecting } = useVideoContext();
+  const {
+    actions: { getToken },
+  } = useAppState();
 
   const classes = useStyles();
 
@@ -58,7 +59,7 @@ export default function Menu() {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     window.history.replaceState(null, '', window.encodeURI(`/room/${roomName}`));
-    dispatch(getToken(name, roomName));
+    getToken(name, roomName);
   };
 
   return (
