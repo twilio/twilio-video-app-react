@@ -15,7 +15,7 @@ const mockGetToken = jest.fn();
 jest.mock('../../hooks/context');
 jest.mock('../../hooks/useRoomState/useRoomState');
 jest.mock('../../hooks/useFullScreenToggler/useFullScreenToggler');
-jest.mock('../../state', () => ({ useAppState: () => ({ actions: { getToken: mockGetToken } }) }));
+jest.mock('../../state', () => ({ useAppState: () => ({ getToken: mockGetToken }) }));
 
 Object.defineProperty(window, 'location', { value: { pathname: '', configurable: true } });
 

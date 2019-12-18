@@ -5,7 +5,7 @@ import EndCallButton from './EndCallButton';
 
 const mockSetToken = jest.fn();
 const mockRoom: any = { disconnect: jest.fn() };
-jest.mock('../../../state', () => ({ useAppState: () => ({ actions: { setToken: mockSetToken } }) }));
+jest.mock('../../../state', () => ({ useAppState: () => ({ setToken: mockSetToken }) }));
 jest.mock('../../../hooks/context', () => ({ useVideoContext: () => ({ room: mockRoom }) }));
 
 describe('End Call button', () => {

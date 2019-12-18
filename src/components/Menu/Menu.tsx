@@ -42,9 +42,7 @@ export default function Menu() {
   const [roomName, setRoomName] = useState<string>(getRoomName());
   const roomState = useRoomState();
   const { isConnecting } = useVideoContext();
-  const {
-    actions: { getToken },
-  } = useAppState();
+  const { getToken } = useAppState();
 
   const classes = useStyles();
 

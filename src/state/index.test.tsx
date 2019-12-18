@@ -9,13 +9,13 @@ const wrapper: React.FC = ({ children }) => <AppStateProvider>{children}</AppSta
 describe('the useAppState hook', () => {
   it('should set a token', () => {
     const { result } = renderHook(useAppState, { wrapper });
-    act(() => result.current.actions.setToken('test'));
+    act(() => result.current.setToken('test'));
     expect(result.current.token).toBe('test');
   });
 
   it('should set an error', () => {
     const { result } = renderHook(useAppState, { wrapper });
-    act(() => result.current.actions.setError(new Error('testError') as TwilioError));
+    act(() => result.current.setError(new Error('testError') as TwilioError));
     expect(result.current.error!.message).toBe('testError');
   });
 
@@ -24,7 +24,7 @@ describe('the useAppState hook', () => {
     window.fetch = jest.fn(() => Promise.resolve({ json: () => ({ token: 'testToken' }) }));
 
     const { result, waitForNextUpdate } = renderHook(useAppState, { wrapper });
-    result.current.actions.getToken('testname', 'testroom');
+    result.current.getToken('testname', 'testroom');
     await waitForNextUpdate();
     expect(window.fetch).toHaveBeenCalledWith(
       '/token',

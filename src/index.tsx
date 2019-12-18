@@ -35,11 +35,7 @@ const connectionOptions: ConnectOptions = {
 };
 
 const VideoProviderWithToken = () => {
-  const {
-    error,
-    token,
-    actions: { setError, setToken },
-  } = useAppState();
+  const { error, token, setError, setToken } = useAppState();
 
   return (
     <VideoProvider token={token} options={connectionOptions} onError={setError} onDisconnect={() => setToken('')}>

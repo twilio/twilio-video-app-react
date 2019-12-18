@@ -18,9 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function EndCallButton() {
   const classes = useStyles();
-  const {
-    actions: { setToken },
-  } = useAppState();
+  const { setToken } = useAppState();
   const { room } = useVideoContext();
 
   const handleClick = () => {

@@ -4,11 +4,9 @@ import { TwilioError } from 'twilio-video';
 interface StateContextType {
   token: string;
   error: TwilioError | null;
-  actions: {
-    setToken(token: string): void;
-    setError(error: TwilioError | null): void;
-    getToken(name: string, room: string): void;
-  };
+  setToken(token: string): void;
+  setError(error: TwilioError | null): void;
+  getToken(name: string, room: string): void;
 }
 
 export const StateContext = createContext<StateContextType>(null!);
@@ -32,7 +30,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   );
 
   return (
-    <StateContext.Provider value={{ token, error, actions: { setToken, setError, getToken } }}>
+    <StateContext.Provider value={{ token, error, setToken, setError, getToken }}>
       {props.children}
     </StateContext.Provider>
   );
