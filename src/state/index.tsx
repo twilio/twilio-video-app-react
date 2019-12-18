@@ -23,7 +23,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, roomName }),
+        body: JSON.stringify({ name, room: roomName }),
       })
         .then(res => res.json())
         .then(res => setToken(res.token));

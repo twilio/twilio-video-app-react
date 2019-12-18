@@ -24,9 +24,12 @@ describe('the useAppState hook', () => {
     window.fetch = jest.fn(() => Promise.resolve({ json: () => ({ token: 'testToken' }) }));
 
     const { result, waitForNextUpdate } = renderHook(useAppState, { wrapper });
-    result.current.actions.getToken('testroom', 'testname');
+    result.current.actions.getToken('testname', 'testroom');
     await waitForNextUpdate();
-    expect(window.fetch).toHaveBeenCalledWith('/token', expect.any(Object));
+    expect(window.fetch).toHaveBeenCalledWith(
+      '/token',
+      expect.objectContaining({ body: JSON.stringify({ name: 'testname', room: 'testroom' }) })
+    );
     expect(result.current.token).toBe('testToken');
   });
 
