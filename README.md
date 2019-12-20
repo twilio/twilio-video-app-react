@@ -90,6 +90,12 @@ This will open the Cypress test runner. When it's open, select a test file to ru
 
 Note: These Cypress tests will connect to Twilio rooms, so be sure to have `npm start` running in a separate terminal before running the tests. If you haven't already done so, you will need to add account credentials to the `.env` file.
 
+## Configuration
+
+The `connect` function from the SDK accepts a [configuration object](https://media.twiliocdn.com/sdk/js/video/releases/2.0.0-beta16/docs/global.html#ConnectOptions). The configuration object for this application can be found in `src/index.ts`. In this object, we 1) enable dominant speaker detection, 2) enable the network quality API, and 3) supply various options to configure the [bandwidth profile](https://www.twilio.com/docs/video/tutorials/using-bandwidth-profile-api).
+
+This application dynamically changes the priority of certain remote video tracks in order to provide a good user experience. Any video track that will be displayed in the main video area will have `track.setPriority('high')` called on it (see the [VideoTrack](https://github.com/twilio/twilio-video-app-react/blob/AHOYAPPS-30-readme/src/components/VideoTrack/VideoTrack.tsx#L24) component) when the component is mounted. This higher priority enables the track to be rendered at a high resolution. `track.setPriority(null)` is called when the component is unmounted so that the track's priority is set to its default. 
+
 ## Application Architecture
 
 This state of this application (with a few exceptions) is managed by the [room object](https://media.twiliocdn.com/sdk/js/video/releases/2.0.0-beta16/docs/Room.html) that is supplied by the SDK. The `room` object contains all information about the room that the user is connected to. The class hierarchy of the room object can be viewed [here](https://www.twilio.com/docs/video/migrating-1x-2x#object-model).
@@ -121,7 +127,3 @@ export default function useDominantSpeaker(room) {
 In this hook, the `useEffect` hook can be used to to subscribe to the `domainantSpeakerChanged` event emitted by the room object. When this event is emitted, the `setDominantSpeaker` function is called which will update the `domainantSpeaker` variable and trigger a re-render of any components that are consuming this hook.  
 
 For more information on how React hooks can be used with the Twilio Video SDK, see this tutorial: https://www.twilio.com/blog/video-chat-react-hooks.
-
-## Configuration
-
-The `connect` function from the SDK accepts a [configuration object](https://media.twiliocdn.com/sdk/js/video/releases/2.0.0-beta16/docs/global.html#ConnectOptions). The configuration object for this application can be found in `src/index.ts`. In this object, we 1) enable dominant speaker detection, 2) enable the network quality API, and 3) we supply various options to configure the [bandwidth profile](https://www.twilio.com/docs/video/tutorials/using-bandwidth-profile-api).
