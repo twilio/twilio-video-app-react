@@ -1,5 +1,5 @@
 import EventEmitter from 'events';
-import { renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react-hooks';
 import useRoom from './useRoom';
 import Video from 'twilio-video';
 
@@ -71,6 +71,17 @@ describe('the useRoom hook', () => {
     setImmediate(() => {
       expect(mockOnError).toHaveBeenCalledWith('mockError');
       done();
+    });
+  });
+
+  it('should reset the room object on disconnect', async () => {
+    const { result, waitForNextUpdate } = renderHook(() => useRoom([], () => {}, 'token', {}));
+    await waitForNextUpdate();
+    expect(result.current.room.state).toBe('connected');
+    await act(async () => {
+      result.current.room.emit('disconnected');
+      await waitForNextUpdate();
+      expect(result.current.room.state).toBe(undefined);
     });
   });
 });
