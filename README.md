@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/twilio/twilio-video-app-react.svg?style=svg&circle-token=9d6b1e89d148181aaa6874c29849c730b8ca406d)](https://circleci.com/gh/twilio/twilio-video-app-react)
 
-This is a collaboration application built with the [twilio-video.js SDK](https://github.com/twilio/twilio-video.js) and [Create React App](https://github.com/facebook/create-react-app).
+This is a video collaboration application built with the [twilio-video.js SDK](https://github.com/twilio/twilio-video.js) and [Create React App](https://github.com/facebook/create-react-app).
 
 ## Getting Started
 
@@ -92,17 +92,17 @@ Note: These Cypress tests will connect to Twilio rooms, so be sure to have `npm 
 
 ## Configuration
 
-The `connect` function from the SDK accepts a [configuration object](https://media.twiliocdn.com/sdk/js/video/releases/2.0.0-beta16/docs/global.html#ConnectOptions). The configuration object for this application can be found in `src/index.ts`. In this object, we 1) enable dominant speaker detection, 2) enable the network quality API, and 3) supply various options to configure the [bandwidth profile](https://www.twilio.com/docs/video/tutorials/using-bandwidth-profile-api).
+The `connect` function from the SDK accepts a [configuration object](https://media.twiliocdn.com/sdk/js/video/releases/2.0.0-beta16/docs/global.html#ConnectOptions). The configuration object for this application can be found in [src/index.ts](https://github.com/twilio/twilio-video-app-react/blob/AHOYAPPS-30-readme/src/index.tsx#L19). In this object, we 1) enable dominant speaker detection, 2) enable the network quality API, and 3) supply various options to configure the [bandwidth profile](https://www.twilio.com/docs/video/tutorials/using-bandwidth-profile-api).
 
 This application dynamically changes the priority of certain remote video tracks in order to provide a good user experience. Any video track that will be displayed in the main video area will have `track.setPriority('high')` called on it (see the [VideoTrack](https://github.com/twilio/twilio-video-app-react/blob/AHOYAPPS-30-readme/src/components/VideoTrack/VideoTrack.tsx#L24) component) when the component is mounted. This higher priority enables the track to be rendered at a high resolution. `track.setPriority(null)` is called when the component is unmounted so that the track's priority is set to its default. 
 
 ## Application Architecture
 
-This state of this application (with a few exceptions) is managed by the [room object](https://media.twiliocdn.com/sdk/js/video/releases/2.0.0-beta16/docs/Room.html) that is supplied by the SDK. The `room` object contains all information about the room that the user is connected to. The class hierarchy of the room object can be viewed [here](https://www.twilio.com/docs/video/migrating-1x-2x#object-model).
+This state of this application (with a few exceptions) is managed by the [room object](https://media.twiliocdn.com/sdk/js/video/releases/2.0.0-beta16/docs/Room.html) that is supplied by the SDK. The `room` object contains all information about the room that the user is connected to. The class hierarchy of the `room` object can be viewed [here](https://www.twilio.com/docs/video/migrating-1x-2x#object-model).
 
 One great way to learn about the room object is to explore it in the browser console. When you are connected to a room, the application will expose the room object as a window variable: `window.twilioRoom`.
 
-Since the `room` object maintains all state that relates to the connected room, it isn't necessary to use a tool like Redux to track the state of the room. We can instead use the `room` object as our source of truth. One caveat is that the `room` object is not immutable, so we will need some way of triggering component re-renders in React. The `room` object and most child properties are [event emitters](https://nodejs.org/api/events.html#events_class_eventemitter), which means that we can subscribe to these events to update React components as the room state changes. 
+Since the `room` object maintains all state that relates to the connected room, it isn't necessary to use a tool like Redux to track the state of the room. We can instead use the `room` object as our source of truth. One caveat is that we will need some way of triggering component re-renders in React. The `room` object and most child properties are [event emitters](https://nodejs.org/api/events.html#events_class_eventemitter), which means that we can subscribe to these events to update React components as the room state changes. 
 
 [React hooks](https://reactjs.org/docs/hooks-intro.html) can be used to subscribe to events and trigger component re-renders. This application frequently uses the `useState` and `useEffect` hooks to subscribe to changes in room state. Here is a simple example:
 
@@ -124,6 +124,6 @@ export default function useDominantSpeaker(room) {
 
 ```
 
-In this hook, the `useEffect` hook can be used to to subscribe to the `domainantSpeakerChanged` event emitted by the room object. When this event is emitted, the `setDominantSpeaker` function is called which will update the `domainantSpeaker` variable and trigger a re-render of any components that are consuming this hook.  
+In this hook, the `useEffect` hook is used to subscribe to the `domainantSpeakerChanged` event emitted by the `room` object. When this event is emitted, the `setDominantSpeaker` function is called which will update the `domainantSpeaker` variable and trigger a re-render of any components that are consuming this hook.  
 
 For more information on how React hooks can be used with the Twilio Video SDK, see this tutorial: https://www.twilio.com/blog/video-chat-react-hooks.
