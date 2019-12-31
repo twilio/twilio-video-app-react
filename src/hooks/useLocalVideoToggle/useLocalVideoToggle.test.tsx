@@ -7,8 +7,6 @@ import { LocalParticipant } from 'twilio-video';
 jest.mock('../context');
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 
-jest.mock('../useIsTrackEnabled/useIsTrackEnabled', () => () => true);
-
 describe('the useLocalVideoToggle hook', () => {
   it('should return true when a localVideoTrack exists', () => {
     mockUseVideoContext.mockImplementation(() => ({
