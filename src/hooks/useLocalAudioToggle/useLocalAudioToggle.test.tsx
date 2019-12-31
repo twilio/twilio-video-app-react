@@ -39,7 +39,7 @@ describe('the useLocalAudioToggle hook', () => {
   describe('toggleAudioEnabled function', () => {
     it('should call track.stop when a localAudioTrack exists', () => {
       const mockLocalTrack = {
-        name: 'camera',
+        name: 'microphone',
         stop: jest.fn(),
       };
 
@@ -55,7 +55,7 @@ describe('the useLocalAudioToggle hook', () => {
 
     it('should call localParticipant.unpublishTrack when a localAudioTrack and localParticipant exists', () => {
       const mockLocalTrack = {
-        name: 'camera',
+        name: 'microphone',
         stop: jest.fn(),
       };
 
