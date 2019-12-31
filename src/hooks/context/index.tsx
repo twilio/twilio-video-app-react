@@ -9,6 +9,13 @@ import useHandleTrackPublicationFailed from './useHandleTrackPublicationFailed/u
 import useLocalTracks from './useLocalTracks/useLocalTracks';
 import useRoom from './useRoom/useRoom';
 
+/*
+ *  The hooks used by the VideoProvider component are different than the hooks found in the 'hooks/' folder. The hooks
+ *  in the 'hooks/' folder can be used anywhere in a video application, and they can be used any number of times.
+ *  the hooks in the 'context/' folder are intended to be used by the VideoProvider component only. Using these hooks
+ *  elsewhere in the application may cause problems as the hooks should not be used more than once in an application.
+ */
+
 export interface IVideoContext {
   room: Room;
   localTracks: LocalTrack[];
@@ -28,12 +35,6 @@ interface VideoProviderProps {
   children: ReactNode;
 }
 
-const useRoomCallbacks = (room: Room, onError: Callback, onDisconnect: Callback) => {
-  useHandleRoomDisconnectionErrors(room, onError);
-  useHandleTrackPublicationFailed(room, onError);
-  useHandleOnDisconnect(room, onDisconnect);
-};
-
 export function VideoProvider({
   token,
   options,
@@ -49,7 +50,10 @@ export function VideoProvider({
   const [localTracks, getLocalVideoTrack] = useLocalTracks();
   const { room, isConnecting } = useRoom(localTracks, onErrorCallback, token, options);
 
-  useRoomCallbacks(room, onErrorCallback, onDisconnect);
+  // Register onError and onDisconnect callback functions.
+  useHandleRoomDisconnectionErrors(room, onError);
+  useHandleTrackPublicationFailed(room, onError);
+  useHandleOnDisconnect(room, onDisconnect);
 
   return (
     <VideoContext.Provider
