@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks';
 import useLocalAudioToggle from './useLocalAudioToggle';
-import { useVideoContext } from '../context';
+import useVideoContext from '../useVideoContext/useVideoContext';
 
 jest.mock('../context');
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;

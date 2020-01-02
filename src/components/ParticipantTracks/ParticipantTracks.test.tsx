@@ -2,7 +2,7 @@ import React from 'react';
 import ParticipantTracks from './ParticipantTracks';
 import usePublications from '../../hooks/usePublications/usePublications';
 import { shallow } from 'enzyme';
-import { useVideoContext } from '../../hooks/context';
+import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 jest.mock('../../hooks/usePublications/usePublications', () => jest.fn(() => [{ trackSid: 0 }, { trackSid: 1 }]));
 jest.mock('../../hooks/context');

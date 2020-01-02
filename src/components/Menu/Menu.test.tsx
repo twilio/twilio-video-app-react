@@ -2,7 +2,8 @@ import React from 'react';
 import Menu, { getRoomName } from './Menu';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useFullScreenToggler from '../../hooks/useFullScreenToggler/useFullScreenToggler';
-import { IVideoContext, useVideoContext } from '../../hooks/context';
+import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import { IVideoContext } from '../VideoProvider';
 import { fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 

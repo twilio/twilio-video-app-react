@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks';
 import useLocalVideoToggle from './useLocalVideoToggle';
-import { useVideoContext } from '../context';
+import useVideoContext from '../useVideoContext/useVideoContext';
 import { EventEmitter } from 'events';
 import { LocalParticipant } from 'twilio-video';
 

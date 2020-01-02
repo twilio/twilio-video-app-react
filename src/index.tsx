@@ -10,7 +10,7 @@ import { ConnectOptions } from 'twilio-video';
 import ErrorDialog from './components/ErrorDialog/ErrorDialog';
 import theme from './theme';
 import './types';
-import { VideoProvider } from './hooks/context';
+import { VideoProvider } from './components/VideoProvider';
 
 const connectionOptions: ConnectOptions = {
   dominantSpeaker: true,

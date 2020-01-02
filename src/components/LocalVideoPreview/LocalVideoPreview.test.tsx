@@ -1,7 +1,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import LocalVideoPreview from './LocalVideoPreview';
-import { IVideoContext, useVideoContext } from '../../hooks/context';
+import { IVideoContext } from '../VideoProvider';
+import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 jest.mock('../../hooks/context');
 
