@@ -4,7 +4,7 @@ import useVideoContext from '../useVideoContext/useVideoContext';
 import { EventEmitter } from 'events';
 import { LocalParticipant } from 'twilio-video';
 
-jest.mock('../context');
+jest.mock('../useVideoContext/useVideoContext');
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 
 jest.mock('../useIsTrackEnabled/useIsTrackEnabled', () => () => true);

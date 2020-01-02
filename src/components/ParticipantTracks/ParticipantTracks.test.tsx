@@ -5,7 +5,7 @@ import { shallow } from 'enzyme';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 jest.mock('../../hooks/usePublications/usePublications', () => jest.fn(() => [{ trackSid: 0 }, { trackSid: 1 }]));
-jest.mock('../../hooks/context');
+jest.mock('../../hooks/useVideoContext/useVideoContext');
 
 const mockUsePublications = usePublications as jest.Mock<any>;
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;

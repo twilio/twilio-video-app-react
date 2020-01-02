@@ -13,7 +13,7 @@ const mockedUseVideoContext = useVideoContext as jest.Mock<IVideoContext>;
 const mockToggleFullScreen = jest.fn();
 const mockGetToken = jest.fn();
 
-jest.mock('../../hooks/context');
+jest.mock('../../hooks/useVideoContext/useVideoContext');
 jest.mock('../../hooks/useRoomState/useRoomState');
 jest.mock('../../hooks/useFullScreenToggler/useFullScreenToggler');
 jest.mock('../../state', () => ({ useAppState: () => ({ getToken: mockGetToken }) }));

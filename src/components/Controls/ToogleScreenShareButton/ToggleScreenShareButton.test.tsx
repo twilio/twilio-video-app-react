@@ -9,7 +9,7 @@ import ToggleScreenShareButton from './ToggleScreenShareButton';
 
 jest.mock('../../../hooks/useScreenShareToggle/useScreenShareToggle');
 jest.mock('../../../hooks/useScreenShareParticipant/useScreenShareParticipant');
-jest.mock('../../../hooks/context');
+jest.mock('../../../hooks/useVideoContext/useVideoContext');
 
 const mockUseScreenShareToggle = useScreenShareToggle as jest.Mock<any>;
 const mockUseScreenShareParticipant = useScreenShareParticipant as jest.Mock<any>;

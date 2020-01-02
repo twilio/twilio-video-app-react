@@ -3,7 +3,7 @@ import { EventEmitter } from 'events';
 import useScreenShareParticipant from './useScreenShareParticipant';
 import useVideoContext from '../useVideoContext/useVideoContext';
 
-jest.mock('../context');
+jest.mock('../useVideoContext/useVideoContext');
 
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 
