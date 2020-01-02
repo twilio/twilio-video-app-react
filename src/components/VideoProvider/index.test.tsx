@@ -19,7 +19,7 @@ jest.mock('./useHandleTrackPublicationFailed/useHandleTrackPublicationFailed');
 jest.mock('./useHandleTrackPublicationFailed/useHandleTrackPublicationFailed');
 jest.mock('./useHandleOnDisconnect/useHandleOnDisconnect');
 
-describe('the useVideoContext hook', () => {
+describe('the VideoProvider component', () => {
   it('should correctly return the Video Context object', () => {
     const wrapper: React.FC = ({ children }) => (
       <VideoProvider
@@ -49,12 +49,7 @@ describe('the useVideoContext hook', () => {
     expect(useHandleOnDisconnect).toHaveBeenCalledWith(mockRoom, mockOnDisconnect);
   });
 
-  it('should throw an error if used outside of the VideoProvider', () => {
-    const { result } = renderHook(useVideoContext);
-    expect(result.error.message).toBe('useVideoContext must be used within a VideoProvider');
-  });
-
-  it('should call wrapper onError Prop when there is some error inside the context', () => {
+  it('should call the onError function when there is an error', () => {
     const mockOnError = jest.fn();
     const wrapper: React.FC = ({ children }) => (
       <VideoProvider
