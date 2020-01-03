@@ -20,7 +20,7 @@ API_KEY=SKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 API_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
-Now the local token server (see `server.js`) can dispense Access Tokens to connect to a Room.
+Now the local token server (see [server.js](server.js)) can dispense Access Tokens to connect to a Room.
 
 ### Running the App
 
