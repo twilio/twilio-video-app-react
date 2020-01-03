@@ -7,6 +7,7 @@ export default function usePublicationIsTrackEnabled(publication?: PublicationTy
   const [isEnabled, setIsEnabled] = useState(publication ? publication.isTrackEnabled : false);
 
   useEffect(() => {
+    // Reset the value when the 'publication' variable changes.
     setIsEnabled(publication ? publication.isTrackEnabled : false);
 
     if (publication) {
