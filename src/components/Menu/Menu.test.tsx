@@ -6,21 +6,21 @@ import { IVideoContext, useVideoContext } from '../../hooks/context';
 import { fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-jest.mock('../../hooks/context');
-jest.mock('../../hooks/useRoomState/useRoomState');
-jest.mock('../../hooks/useFullScreenToggler/useFullScreenToggler');
-jest.mock('../../store/main/main');
-jest.mock('react-redux', () => ({ useDispatch: () => jest.fn() }));
-
 const mockedUseRoomState = useRoomState as jest.Mock<string>;
 const mockedUseFullScreenToggler = useFullScreenToggler as jest.Mock;
 const mockedUseVideoContext = useVideoContext as jest.Mock<IVideoContext>;
-const toggleFullScreen = jest.fn();
+const mockToggleFullScreen = jest.fn();
+const mockGetToken = jest.fn();
+
+jest.mock('../../hooks/context');
+jest.mock('../../hooks/useRoomState/useRoomState');
+jest.mock('../../hooks/useFullScreenToggler/useFullScreenToggler');
+jest.mock('../../state', () => ({ useAppState: () => ({ getToken: mockGetToken }) }));
 
 Object.defineProperty(window, 'location', { value: { pathname: '', configurable: true } });
 
 describe('the Menu component', () => {
-  mockedUseFullScreenToggler.mockImplementation(() => [true, toggleFullScreen]);
+  mockedUseFullScreenToggler.mockImplementation(() => [true, mockToggleFullScreen]);
 
   it('should hide inputs when connected to a room', () => {
     mockedUseRoomState.mockImplementation(() => 'connected');
@@ -82,6 +82,16 @@ describe('the Menu component', () => {
     fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo Test' } });
     fireEvent.click(getByText('Join Room').parentElement!);
     expect(window.history.replaceState).toHaveBeenCalledWith(null, '', '/room/Foo%20Test');
+  });
+
+  it('should call getToken on submit', () => {
+    mockedUseRoomState.mockImplementation(() => 'disconnected');
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false } as any));
+    const { getByLabelText, getByText } = render(<Menu />);
+    fireEvent.change(getByLabelText('Name'), { target: { value: 'Foo' } });
+    fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo Test' } });
+    fireEvent.click(getByText('Join Room').parentElement!);
+    expect(mockGetToken).toHaveBeenCalledWith('Foo', 'Foo Test');
   });
 
   it('should populate the Room name from the URL', () => {
