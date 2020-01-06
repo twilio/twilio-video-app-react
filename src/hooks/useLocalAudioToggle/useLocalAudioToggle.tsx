@@ -1,18 +1,31 @@
 import { useCallback } from 'react';
 import { useVideoContext } from '../context';
 import { LocalAudioTrack } from 'twilio-video';
-import useIsTrackEnabled from '../useIsTrackEnabled/useIsTrackEnabled';
 
 export default function useLocalAudioToggle() {
-  const { localTracks } = useVideoContext();
+  const {
+    room: { localParticipant },
+    localTracks,
+    getLocalAudioTrack,
+  } = useVideoContext();
   const audioTrack = localTracks.find(track => track.name === 'microphone') as LocalAudioTrack;
-  const isEnabled = useIsTrackEnabled(audioTrack);
 
   const toggleAudioEnabled = useCallback(() => {
     if (audioTrack) {
-      audioTrack.isEnabled ? audioTrack.disable() : audioTrack.enable();
+      if (localParticipant) {
+        const localTrackPublication = localParticipant.unpublishTrack(audioTrack);
+        // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
+        localParticipant.emit('trackUnpublished', localTrackPublication);
+      }
+      audioTrack.stop();
+    } else {
+      getLocalAudioTrack().then((track: LocalAudioTrack) => {
+        if (localParticipant) {
+          localParticipant.publishTrack(track);
+        }
+      });
     }
-  }, [audioTrack]);
+  }, [audioTrack, localParticipant, getLocalAudioTrack]);
 
-  return [isEnabled, toggleAudioEnabled] as const;
+  return [!!audioTrack, toggleAudioEnabled] as const;
 }
