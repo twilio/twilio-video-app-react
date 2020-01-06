@@ -20,7 +20,7 @@ export default function useRoom(
         newRoom => {
           setRoom(newRoom);
 
-          newRoom.on('disconnected', () => {
+          newRoom.once('disconnected', () => {
             setRoom(new EventEmitter() as Room);
           });
 
