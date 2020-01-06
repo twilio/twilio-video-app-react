@@ -19,6 +19,10 @@ declare module 'twilio-video' {
     isSwitchedOff: boolean;
     setPriority: (priority: Track.Priority | null) => void;
   }
+
+  interface ConnectOptions {
+    trackSwitchOffMode?: 'predicted' | 'detected' | 'disabled';
+  }
 }
 
 declare global {
