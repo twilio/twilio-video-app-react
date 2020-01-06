@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useContext } from 'react';
+import React, { createContext, ReactNode } from 'react';
 import { ConnectOptions, LocalTrack, Room, TwilioError } from 'twilio-video';
 import { Callback, ErrorCallback } from '../../types';
 import { SelectedParticipantProvider } from './useSelectedParticipant/useSelectedParticipant';
@@ -10,10 +10,10 @@ import useLocalTracks from './useLocalTracks/useLocalTracks';
 import useRoom from './useRoom/useRoom';
 
 /*
- *  The hooks used by the VideoProvider component are different than the hooks found in the 'hooks/' folder. The hooks
- *  in the 'hooks/' folder can be used anywhere in a video application, and they can be used any number of times.
- *  the hooks in the 'context/' folder are intended to be used by the VideoProvider component only. Using these hooks
- *  elsewhere in the application may cause problems as the hooks should not be used more than once in an application.
+ *  The hooks used by the VideoProvider component are different than the hooks found in the 'hooks/' directory. The hooks
+ *  in the 'hooks/' directory can be used anywhere in a video application, and they can be used any number of times.
+ *  the hooks in the 'VideoProvider/' directory are intended to be used by the VideoProvider component only. Using these hooks
+ *  elsewhere in the application may cause problems as these hooks should not be used more than once in an application.
  */
 
 export interface IVideoContext {
@@ -71,12 +71,4 @@ export function VideoProvider({
       <SelectedParticipantProvider room={room}>{children}</SelectedParticipantProvider>
     </VideoContext.Provider>
   );
-}
-
-export function useVideoContext() {
-  const context = useContext(VideoContext);
-  if (!context) {
-    throw new Error('useVideoContext must be used within a VideoProvider');
-  }
-  return context;
 }

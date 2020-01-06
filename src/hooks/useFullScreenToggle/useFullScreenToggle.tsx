@@ -1,13 +1,11 @@
 import { useCallback, useState, useEffect } from 'react';
 import fscreen from 'fscreen';
 
-const getIsFullScreen = () => !!fscreen.fullscreenElement;
-
-export default function useFullScreenToggler() {
-  const [isFullScreen, setIsFullScreen] = useState<Boolean>(getIsFullScreen());
+export default function useFullScreenToggle() {
+  const [isFullScreen, setIsFullScreen] = useState<Boolean>(!!fscreen.fullscreenElement);
 
   useEffect(() => {
-    const onFullScreenChange = () => setIsFullScreen(getIsFullScreen());
+    const onFullScreenChange = () => setIsFullScreen(!!fscreen.fullscreenElement);
     fscreen.addEventListener('fullscreenchange', onFullScreenChange);
     return () => {
       fscreen.removeEventListener('fullscreenchange', onFullScreenChange);
