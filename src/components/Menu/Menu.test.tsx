@@ -1,26 +1,27 @@
 import React from 'react';
 import Menu, { getRoomName } from './Menu';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
-import useFullScreenToggler from '../../hooks/useFullScreenToggler/useFullScreenToggler';
-import { IVideoContext, useVideoContext } from '../../hooks/context';
+import useFullScreenToggle from '../../hooks/useFullScreenToggle/useFullScreenToggle';
+import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import { IVideoContext } from '../VideoProvider';
 import { fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 const mockedUseRoomState = useRoomState as jest.Mock<string>;
-const mockedUseFullScreenToggler = useFullScreenToggler as jest.Mock;
+const mockeduseFullScreenToggle = useFullScreenToggle as jest.Mock;
 const mockedUseVideoContext = useVideoContext as jest.Mock<IVideoContext>;
 const mockToggleFullScreen = jest.fn();
 const mockGetToken = jest.fn();
 
-jest.mock('../../hooks/context');
+jest.mock('../../hooks/useVideoContext/useVideoContext');
 jest.mock('../../hooks/useRoomState/useRoomState');
-jest.mock('../../hooks/useFullScreenToggler/useFullScreenToggler');
+jest.mock('../../hooks/useFullScreenToggle/useFullScreenToggle');
 jest.mock('../../state', () => ({ useAppState: () => ({ getToken: mockGetToken }) }));
 
 Object.defineProperty(window, 'location', { value: { pathname: '', configurable: true } });
 
 describe('the Menu component', () => {
-  mockedUseFullScreenToggler.mockImplementation(() => [true, mockToggleFullScreen]);
+  mockeduseFullScreenToggle.mockImplementation(() => [true, mockToggleFullScreen]);
 
   it('should hide inputs when connected to a room', () => {
     mockedUseRoomState.mockImplementation(() => 'connected');

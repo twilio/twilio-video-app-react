@@ -1,7 +1,6 @@
 import { useState, useCallback, useRef } from 'react';
-import { useVideoContext } from '../context';
+import useVideoContext from '../useVideoContext/useVideoContext';
 import { LogLevels, Track } from 'twilio-video';
-import useErrorHandler from '../useErrorHandler/useErrorHandler';
 
 interface MediaStreamTrackPublishOptions {
   name?: string;
@@ -10,10 +9,9 @@ interface MediaStreamTrackPublishOptions {
 }
 
 export default function useScreenShareToggle() {
-  const { room } = useVideoContext();
+  const { room, onError } = useVideoContext();
   const [isSharing, setIsSharing] = useState(false);
   const stopScreenShareRef = useRef<() => void>(null!);
-  const onError = useErrorHandler();
 
   const shareScreen = useCallback(() => {
     navigator.mediaDevices

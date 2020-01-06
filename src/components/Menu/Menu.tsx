@@ -10,7 +10,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 
 import { useAppState } from '../../state';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
-import { useVideoContext } from '../../hooks/context';
+import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

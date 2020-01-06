@@ -1,9 +1,9 @@
 import { act, renderHook } from '@testing-library/react-hooks';
 import EventEmitter from 'events';
 import useParticipants from './useParticipants';
-import { useVideoContext } from '../context';
+import useVideoContext from '../useVideoContext/useVideoContext';
 
-jest.mock('../context');
+jest.mock('../useVideoContext/useVideoContext');
 
 const mockedVideoContext = useVideoContext as jest.Mock<any>;
 

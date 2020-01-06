@@ -8,7 +8,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 import useScreenShareToggle from '../../../hooks/useScreenShareToggle/useScreenShareToggle';
 import useScreenShareParticipant from '../../../hooks/useScreenShareParticipant/useScreenShareParticipant';
-import { useVideoContext } from '../../../hooks/context';
+import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

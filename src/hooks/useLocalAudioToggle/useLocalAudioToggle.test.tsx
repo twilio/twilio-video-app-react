@@ -1,10 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks';
 import useLocalAudioToggle from './useLocalAudioToggle';
-import { useVideoContext } from '../context';
+import useVideoContext from '../useVideoContext/useVideoContext';
 import { EventEmitter } from 'events';
 import { LocalParticipant } from 'twilio-video';
 
-jest.mock('../context');
+jest.mock('../useVideoContext/useVideoContext');
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 
 describe('the useLocalAudioToggle hook', () => {
