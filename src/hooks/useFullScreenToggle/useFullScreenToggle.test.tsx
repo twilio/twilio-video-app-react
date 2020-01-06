@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react-hooks';
-import useFullScreenToggler from './useFullScreenToggler';
+import useFullScreenToggle from './useFullScreenToggle';
 import fscreen from 'fscreen';
 
 jest.mock('fscreen', () => ({
@@ -10,20 +10,20 @@ jest.mock('fscreen', () => ({
   fullscreenElement: null,
 }));
 
-describe('the useFullScreenToggler hook', () => {
+describe('the useFullScreenToggle hook', () => {
   beforeEach(() => {
     // @ts-ignore readonly property
     fscreen.fullscreenElement = null;
     jest.clearAllMocks();
   });
 
-  it('should return a binary array with a getter an the toggler', () => {
-    const { result } = renderHook(useFullScreenToggler);
+  it('should return an array with a boolean and a toggle function', () => {
+    const { result } = renderHook(useFullScreenToggle);
     expect(result.current).toEqual([expect.any(Boolean), expect.any(Function)]);
   });
 
-  it('should request full screen when it gets toggled and it is not already in full screen', () => {
-    const { result } = renderHook(useFullScreenToggler);
+  it('should request full screen when it is toggled and it is not already in full screen', () => {
+    const { result } = renderHook(useFullScreenToggle);
     let [isFullScreen, setFullScreen] = result.current;
     expect(isFullScreen).toBe(false);
     act(() => {
@@ -32,11 +32,11 @@ describe('the useFullScreenToggler hook', () => {
     expect(fscreen.requestFullscreen).toHaveBeenCalledTimes(1);
   });
 
-  it('should exit full screen when it gets toggled and it is activated', () => {
+  it('should exit full screen when it is toggled and it is already in full screen', () => {
     // @ts-ignore readonly property
     fscreen.fullscreenElement = 'Something';
 
-    const { result } = renderHook(useFullScreenToggler);
+    const { result } = renderHook(useFullScreenToggle);
     let [isFullScreen, setFullScreen] = result.current;
     expect(isFullScreen).toBe(true);
     act(() => {
@@ -46,7 +46,7 @@ describe('the useFullScreenToggler hook', () => {
   });
 
   it('should react to fullscreenchange event and update isFullScreen accordingly', async () => {
-    const { result } = renderHook(useFullScreenToggler);
+    const { result } = renderHook(useFullScreenToggle);
     expect(fscreen.addEventListener).toHaveBeenCalledWith('fullscreenchange', expect.any(Function));
     const mockSetIsFullscreen = (fscreen.addEventListener as jest.Mock<any>).mock.calls[0][1];
 
@@ -68,7 +68,7 @@ describe('the useFullScreenToggler hook', () => {
   });
 
   it('should remove listeners on unmount', () => {
-    const { unmount } = renderHook(useFullScreenToggler);
+    const { unmount } = renderHook(useFullScreenToggle);
     expect(fscreen.addEventListener).toHaveBeenCalledWith('fullscreenchange', expect.any(Function));
     unmount();
     expect(fscreen.removeEventListener).toHaveBeenCalledWith('fullscreenchange', expect.any(Function));
