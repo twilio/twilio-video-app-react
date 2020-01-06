@@ -35,6 +35,7 @@ const connectionOptions: ConnectOptions = {
     },
   },
   preferredVideoCodecs: [{ codec: 'VP8', simulcast: true }],
+  trackSwitchOffMode: 'detected',
 };
 
 const VideoProviderWithToken = () => {

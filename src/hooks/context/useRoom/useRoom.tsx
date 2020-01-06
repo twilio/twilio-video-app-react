@@ -21,6 +21,10 @@ export default function useRoom(
         newRoom => {
           setRoom(newRoom);
 
+          newRoom.once('disconnected', () => {
+            setRoom(new EventEmitter() as Room);
+          });
+
           // @ts-ignore
           window.twilioRoom = newRoom;
 

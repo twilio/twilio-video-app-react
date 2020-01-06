@@ -4,11 +4,13 @@ import Video from 'twilio-video';
 import { EventEmitter } from 'events';
 
 describe('the useLocalTracks hook', () => {
-  it('should return an array of tracks and a function', async () => {
+  it('should return an array of tracks and two functions', async () => {
     const { result, waitForNextUpdate } = renderHook(useLocalTracks);
-    expect(result.current).toEqual([[], expect.any(Function)]);
+    expect(result.current.localTracks).toEqual([]);
     await waitForNextUpdate();
-    expect(result.current).toEqual([[expect.any(EventEmitter), expect.any(EventEmitter)], expect.any(Function)]);
+    expect(result.current.localTracks).toEqual([expect.any(EventEmitter), expect.any(EventEmitter)]);
+    expect(result.current.getLocalAudioTrack).toEqual(expect.any(Function));
+    expect(result.current.getLocalVideoTrack).toEqual(expect.any(Function));
   });
 
   it('should be called with the correct arguments', async () => {
@@ -25,9 +27,11 @@ describe('the useLocalTracks hook', () => {
   it('should respond to "stopped" events from the local video track', async () => {
     const { result, waitForNextUpdate } = renderHook(useLocalTracks);
     await waitForNextUpdate();
+    expect(result.current.localTracks).toEqual([expect.any(EventEmitter), expect.any(EventEmitter)]);
     act(() => {
-      result.current[0][1].emit('stopped');
+      result.current.localTracks[0].emit('stopped');
+      result.current.localTracks[1].emit('stopped');
     });
-    expect(result.current).toEqual([[expect.any(EventEmitter)], expect.any(Function)]);
+    expect(result.current.localTracks).toEqual([]);
   });
 });
