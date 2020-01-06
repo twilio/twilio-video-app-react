@@ -1,14 +1,33 @@
 import { useCallback, useEffect, useState } from 'react';
-import Video, { LocalTrack, LocalVideoTrack } from 'twilio-video';
+import Video, { LocalTrack, LocalVideoTrack, LocalAudioTrack } from 'twilio-video';
 
 export function useLocalAudioTrack() {
-  const [track, setTrack] = useState<LocalTrack>();
+  const [track, setTrack] = useState<LocalAudioTrack>();
+
+  const getLocalAudioTrack = useCallback(
+    () =>
+      Video.createLocalAudioTrack({ name: 'microphone' }).then(newTrack => {
+        setTrack(newTrack);
+        return newTrack;
+      }),
+    []
+  );
 
   useEffect(() => {
-    Video.createLocalAudioTrack({ name: 'microphone' }).then(newTrack => setTrack(newTrack));
-  }, [setTrack]);
+    getLocalAudioTrack();
+  }, [getLocalAudioTrack]);
 
-  return track;
+  useEffect(() => {
+    const handleStopped = () => setTrack(undefined);
+    if (track) {
+      track.on('stopped', handleStopped);
+      return () => {
+        track.off('stopped', handleStopped);
+      };
+    }
+  }, [track]);
+
+  return [track, getLocalAudioTrack] as const;
 }
 
 export function useLocalVideoTrack() {
@@ -45,10 +64,10 @@ export function useLocalVideoTrack() {
 }
 
 export default function useLocalTracks() {
-  const audioTrack = useLocalAudioTrack();
+  const [audioTrack, getLocalAudioTrack] = useLocalAudioTrack();
   const [videoTrack, getLocalVideoTrack] = useLocalVideoTrack();
 
-  const tracks = [audioTrack, videoTrack].filter(track => track !== undefined) as LocalTrack[];
+  const localTracks = [audioTrack, videoTrack].filter(track => track !== undefined) as LocalTrack[];
 
-  return [tracks, getLocalVideoTrack] as const;
+  return { localTracks, getLocalAudioTrack, getLocalVideoTrack };
 }
