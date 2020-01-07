@@ -11,6 +11,14 @@ interface ParticipantTracksProps {
   videoPriority?: Track.Priority;
 }
 
+/*
+ *  The object model for the Room object (found here: https://www.twilio.com/docs/video/migrating-1x-2x#object-model) shows
+ *  that Participant objects have TrackPublications, and TrackPublication objects have Tracks.
+ *
+ *  The React components in this application follow the same pattern. This ParticipantTracks component renders Publications,
+ *  and the Publication component renders Tracks.
+ */
+
 export default function ParticipantTracks({
   participant,
   disableAudio,

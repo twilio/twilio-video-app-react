@@ -19,9 +19,12 @@ export default function useScreenShareToggle() {
       .then(stream => {
         const track = stream.getTracks()[0];
 
+        // All video tracks are published with 'low' priority. This works because the video
+        // track that is displayed in the 'MainParticipant' component will have it's priority
+        // set to 'high' via track.setPriority()
         room.localParticipant
           .publishTrack(track, {
-            name: 'screen',
+            name: 'screen', // Tracks can be named to easily find them later
             priority: 'low',
           } as MediaStreamTrackPublishOptions)
           .then(trackPublication => {
@@ -39,15 +42,16 @@ export default function useScreenShareToggle() {
           .catch(onError);
       })
       .catch(error => {
+        // Don't display an error if the user closes the screen share dialog
         if (error.name !== 'AbortError' && error.name !== 'NotAllowedError') {
           onError(error);
         }
       });
   }, [room, onError]);
 
-  const toggle = useCallback(() => {
+  const toggleScreenShare = useCallback(() => {
     !isSharing ? shareScreen() : stopScreenShareRef.current();
   }, [isSharing, shareScreen, stopScreenShareRef]);
 
-  return [isSharing, toggle] as const;
+  return [isSharing, toggleScreenShare] as const;
 }
