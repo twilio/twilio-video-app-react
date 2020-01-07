@@ -23,7 +23,7 @@ export default function useRoom(
 
           newRoom.once('disconnected', () => {
             // Reset the room only after all other `disconnected` listeners have been called.
-            setRoom(new EventEmitter() as Room);
+            setTimeout(() => setRoom(new EventEmitter() as Room));
           });
 
           // @ts-ignore
