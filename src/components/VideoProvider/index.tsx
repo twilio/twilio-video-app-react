@@ -36,12 +36,6 @@ interface VideoProviderProps {
   children: ReactNode;
 }
 
-const useRoomCallbacks = (room: Room, onError: Callback, onDisconnect: Callback) => {
-  useHandleRoomDisconnectionErrors(room, onError);
-  useHandleTrackPublicationFailed(room, onError);
-  useHandleOnDisconnect(room, onDisconnect);
-};
-
 export function VideoProvider({
   token,
   options,
@@ -57,7 +51,10 @@ export function VideoProvider({
   const { localTracks, getLocalAudioTrack, getLocalVideoTrack } = useLocalTracks();
   const { room, isConnecting } = useRoom(localTracks, onErrorCallback, token, options);
 
-  useRoomCallbacks(room, onErrorCallback, onDisconnect);
+  // Register onError and onDisconnect callback functions.
+  useHandleRoomDisconnectionErrors(room, onError);
+  useHandleTrackPublicationFailed(room, onError);
+  useHandleOnDisconnect(room, onDisconnect);
 
   return (
     <VideoContext.Provider

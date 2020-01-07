@@ -3,6 +3,10 @@ import useVideoContext from '../useVideoContext/useVideoContext';
 
 import { Participant, TrackPublication } from 'twilio-video';
 
+/*
+  Returns the participant that is sharing their screen (if any). This hook assumes that only one participant
+  can share their screen at a time.
+*/
 export default function useScreenShareParticipant() {
   const { room } = useVideoContext();
   const [screenShareParticipant, setScreenShareParticipant] = useState();

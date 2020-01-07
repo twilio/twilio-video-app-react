@@ -27,11 +27,13 @@ export default function VideoTrack({ track, isLocal, priority }: VideoTrackProps
     return () => {
       track.detach(el);
       if (track.setPriority && priority) {
+        // Passing `null` to setPriority will set the track's priority to that which it was published with.
         track.setPriority(null);
       }
     };
   }, [track, priority]);
 
+  // The local video track is mirrored.
   const style = isLocal ? { transform: 'rotateY(180deg)' } : {};
 
   return <Video ref={ref} style={style} />;
