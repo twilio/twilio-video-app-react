@@ -16,7 +16,7 @@ module.exports = (on, config) => {
 
       const browser = await puppeteer.launch({
         headless: true,
-        args
+        args,
       });
       const page = (participants[name] = await browser.newPage()); // keep track of this participant for future use
       await page.goto(config.baseUrl);
@@ -47,6 +47,12 @@ module.exports = (on, config) => {
       return Promise.all(Object.keys(participants).map(name => participantFunctions.removeParticipant(name))).then(
         () => null
       );
+    },
+    participantCloseBrowser: async name => {
+      const page = participants[name];
+      await page.close({ runBeforeUnload: true });
+      delete participants[name];
+      return Promise.resolve(null);
     },
   };
   on('task', participantFunctions);
