@@ -22,7 +22,8 @@ export default function useRoom(
           setRoom(newRoom);
 
           newRoom.once('disconnected', () => {
-            setRoom(new EventEmitter() as Room);
+            // Reset the room only after disconnection occurs
+            setTimeout(() => setRoom(new EventEmitter() as Room));
           });
 
           // @ts-ignore
