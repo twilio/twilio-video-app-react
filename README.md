@@ -132,4 +132,4 @@ For more information on how React hooks can be used with the Twilio Video SDK, s
 
 ## License
 
-Apache 2.0 license. See the [LICENSE](LICENSE) file for details.
+See the [LICENSE](LICENSE) file for details.
