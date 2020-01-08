@@ -2,6 +2,7 @@
   "name": "twilio-video-app-react",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "dependencies": {
     "@material-ui/core": "^4.5.1",
     "@material-ui/icons": "^4.5.1",
