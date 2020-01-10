@@ -21,6 +21,7 @@ const connectionOptions: ConnectOptions = {
       mode: 'collaboration',
       renderDimensions: {
         high: { height: 1080, width: 1920 },
+        standard: { height: 90, width: 160 },
         low: { height: 90, width: 160 },
       },
       trackSwitchOffMode: 'detected',
