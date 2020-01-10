@@ -12,6 +12,14 @@ export default function useRoom(
   const [room, setRoom] = useState<Room>(new EventEmitter() as Room);
   const [isConnecting, setIsConnecting] = useState(false);
   const disconnectHandlerRef = useRef<() => void>(() => {});
+  const localTracksRef = useRef<LocalTrack[]>([]);
+
+  useEffect(() => {
+    // It can take a moment for Video.connect to connect to a room. During this time, the user may have enabled or disabled their
+    // local audio or video tracks. If this happens, we store the localTracks in this ref, so that they are correctly published
+    // once the user is connected to the room.
+    localTracksRef.current = localTracks;
+  }, [localTracks]);
 
   useEffect(() => {
     // Connect to a room when we have a token, but not if a connection is in progress.
@@ -29,7 +37,7 @@ export default function useRoom(
           // @ts-ignore
           window.twilioRoom = newRoom;
 
-          localTracks.forEach(track =>
+          localTracksRef.current.forEach(track =>
             // Tracks can be supplied as arguments to the Video.connect() function and they will automatically be published.
             // However, tracks must be published manually in order to set the priority on them.
             // All video tracks are published with 'low' priority. This works because the video
