@@ -18,9 +18,10 @@ describe('the useLocalTracks hook', () => {
     await waitForNextUpdate();
     expect(Video.createLocalAudioTrack).toHaveBeenCalledWith({ name: 'microphone' });
     expect(Video.createLocalVideoTrack).toHaveBeenCalledWith({
+      frameRate: 24,
+      height: 720,
+      width: 1280,
       name: 'camera',
-      width: { ideal: 1280 },
-      height: { ideal: 720 },
     });
   });
 

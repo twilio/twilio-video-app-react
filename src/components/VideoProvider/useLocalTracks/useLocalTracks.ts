@@ -36,9 +36,10 @@ export function useLocalVideoTrack() {
   const getLocalVideoTrack = useCallback(
     () =>
       Video.createLocalVideoTrack({
+        frameRate: 24,
+        height: 720,
+        width: 1280,
         name: 'camera',
-        width: { ideal: 1280 },
-        height: { ideal: 720 },
       }).then(newTrack => {
         setTrack(newTrack);
         return newTrack;
