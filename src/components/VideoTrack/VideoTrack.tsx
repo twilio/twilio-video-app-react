@@ -36,5 +36,5 @@ export default function VideoTrack({ track, isLocal, priority }: VideoTrackProps
   // The local video track is mirrored.
   const style = isLocal ? { transform: 'rotateY(180deg)' } : {};
 
-  return <Video ref={ref} style={style} />;
+  return <Video ref={ref} muted={true} style={style} />;
 }
