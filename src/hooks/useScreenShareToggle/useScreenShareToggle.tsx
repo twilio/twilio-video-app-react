@@ -15,7 +15,14 @@ export default function useScreenShareToggle() {
 
   const shareScreen = useCallback(() => {
     navigator.mediaDevices
-      .getDisplayMedia()
+      .getDisplayMedia({
+        audio: false,
+        video: {
+          frameRate: 3,
+          height: 1080,
+          width: 1920,
+        },
+      })
       .then(stream => {
         const track = stream.getTracks()[0];
 
