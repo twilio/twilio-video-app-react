@@ -1,7 +1,8 @@
 import EventEmitter from 'events';
 import { act, renderHook } from '@testing-library/react-hooks';
 import useRoom from './useRoom';
-import Video from 'twilio-video';
+import Video, { LocalTrack } from 'twilio-video';
+import { mockRoom } from '../../../__mocks__/twilio-video';
 
 const mockVideoConnect = Video.connect as jest.Mock<any>;
 
@@ -20,6 +21,21 @@ describe('the useRoom hook', () => {
     await waitForNextUpdate();
     expect(result.current.room.disconnect).not.toHaveBeenCalled();
     expect(result.current.isConnecting).toBe(false);
+  });
+
+  it('should publish camera tracks with low priority', async () => {
+    const { waitForNextUpdate } = renderHook(() => useRoom([{ name: 'camera' } as LocalTrack], () => {}, 'token', {}));
+    await waitForNextUpdate();
+    expect(mockRoom.localParticipant.publishTrack).toHaveBeenCalledWith({ name: 'camera' }, { priority: 'low' });
+  });
+
+  it('should publish tracks that are supplied in a rerender', async () => {
+    const { rerender, waitForNextUpdate } = renderHook(props => useRoom(props.tracks, () => {}, 'token', {}), {
+      initialProps: { tracks: [] as LocalTrack[] },
+    });
+    rerender({ tracks: [{ name: 'camera' } as LocalTrack] });
+    await waitForNextUpdate();
+    expect(mockRoom.localParticipant.publishTrack).toHaveBeenCalledWith({ name: 'camera' }, { priority: 'low' });
   });
 
   it('should return a room when a token is provided', async () => {
