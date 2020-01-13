@@ -12,15 +12,20 @@ export default function useRoom(
   const [room, setRoom] = useState<Room>(new EventEmitter() as Room);
   const [isConnecting, setIsConnecting] = useState(false);
   const disconnectHandlerRef = useRef<() => void>(() => {});
+  const localTracksRef = useRef<LocalTrack[]>([]);
 
   useEffect(() => {
-    const localAudioTracks = localTracks.filter(({ kind }) => kind === 'audio');
-    const localVideoTracks = localTracks.filter(({ kind }) => kind === 'video');
+    // It can take a moment for Video.connect to connect to a room. During this time, the user may have enabled or disabled their
+    // local audio or video tracks. If this happens, we store the localTracks in this ref, so that they are correctly published
+    // once the user is connected to the room.
+    localTracksRef.current = localTracks;
+  }, [localTracks]);
 
+  useEffect(() => {
     // Connect to a room when we have a token, but not if a connection is in progress.
     if (token && room.state !== 'connected' && !isConnecting) {
       setIsConnecting(true);
-      Video.connect(token, { ...options, tracks: localAudioTracks }).then(
+      Video.connect(token, { ...options, tracks: [] }).then(
         newRoom => {
           setRoom(newRoom);
 
@@ -32,13 +37,13 @@ export default function useRoom(
           // @ts-ignore
           window.twilioRoom = newRoom;
 
-          localVideoTracks.forEach(track =>
+          localTracksRef.current.forEach(track =>
             // Tracks can be supplied as arguments to the Video.connect() function and they will automatically be published.
             // However, tracks must be published manually in order to set the priority on them.
             // All video tracks are published with 'low' priority. This works because the video
             // track that is displayed in the 'MainParticipant' component will have it's priority
             // set to 'high' via track.setPriority()
-            newRoom.localParticipant.publishTrack(track, { priority: 'low' })
+            newRoom.localParticipant.publishTrack(track, { priority: track.kind === 'video' ? 'low' : 'standard' })
           );
 
           disconnectHandlerRef.current = () => newRoom.disconnect();
