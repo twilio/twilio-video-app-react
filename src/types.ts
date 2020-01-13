@@ -20,14 +20,14 @@ declare module 'twilio-video' {
     setPriority: (priority: Track.Priority | null) => void;
   }
 
-  interface ConnectOptions {
+  interface VideoBandwidthProfileOptions {
     trackSwitchOffMode?: 'predicted' | 'detected' | 'disabled';
   }
 }
 
 declare global {
   interface MediaDevices {
-    getDisplayMedia(): Promise<MediaStream>;
+    getDisplayMedia(constraints: MediaStreamConstraints): Promise<MediaStream>;
   }
 }
 

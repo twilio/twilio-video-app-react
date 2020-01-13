@@ -20,6 +20,7 @@ export default function VideoTrack({ track, isLocal, priority }: VideoTrackProps
 
   useEffect(() => {
     const el = ref.current;
+    el.muted = true;
     if (track.setPriority && priority) {
       track.setPriority(priority);
     }
