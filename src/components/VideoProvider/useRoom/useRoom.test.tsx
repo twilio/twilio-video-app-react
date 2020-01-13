@@ -8,6 +8,7 @@ const mockVideoConnect = Video.connect as jest.Mock<any>;
 
 describe('the useRoom hook', () => {
   beforeEach(jest.clearAllMocks);
+  afterEach(() => mockRoom.removeAllListeners());
 
   it('should return an empty room when no token is provided', () => {
     const { result } = renderHook(() => useRoom([], () => {}, '', {}));
