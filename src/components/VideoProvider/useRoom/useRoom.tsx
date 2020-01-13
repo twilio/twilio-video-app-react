@@ -22,13 +22,10 @@ export default function useRoom(
   }, [localTracks]);
 
   useEffect(() => {
-    const localAudioTracks = localTracksRef.current.filter(({ kind }) => kind === 'audio');
-    const localVideoTracks = localTracksRef.current.filter(({ kind }) => kind === 'video');
-
     // Connect to a room when we have a token, but not if a connection is in progress.
     if (token && room.state !== 'connected' && !isConnecting) {
       setIsConnecting(true);
-      Video.connect(token, { ...options, tracks: localAudioTracks }).then(
+      Video.connect(token, options).then(
         newRoom => {
           setRoom(newRoom);
 
@@ -40,13 +37,13 @@ export default function useRoom(
           // @ts-ignore
           window.twilioRoom = newRoom;
 
-          localVideoTracks.forEach(track =>
+          localTracksRef.current.forEach(track =>
             // Tracks can be supplied as arguments to the Video.connect() function and they will automatically be published.
             // However, tracks must be published manually in order to set the priority on them.
             // All video tracks are published with 'low' priority. This works because the video
             // track that is displayed in the 'MainParticipant' component will have it's priority
             // set to 'high' via track.setPriority()
-            newRoom.localParticipant.publishTrack(track, { priority: 'low' })
+            newRoom.localParticipant.publishTrack(track, { priority: track.kind === 'video' ? 'low' : 'standard' })
           );
 
           disconnectHandlerRef.current = () => newRoom.disconnect();
