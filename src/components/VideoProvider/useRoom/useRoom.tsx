@@ -25,7 +25,7 @@ export default function useRoom(
     // Connect to a room when we have a token, but not if a connection is in progress.
     if (token && room.state !== 'connected' && !isConnecting) {
       setIsConnecting(true);
-      Video.connect(token, options).then(
+      Video.connect(token, { ...options, tracks: [] }).then(
         newRoom => {
           setRoom(newRoom);
 
