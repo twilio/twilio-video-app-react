@@ -1,6 +1,6 @@
-const express = require('express')
+const express = require('express');
 const app = express();
-const path = require('path')
+const path = require('path');
 const AccessToken = require('twilio').jwt.AccessToken;
 const VideoGrant = AccessToken.VideoGrant;
 const bodyParser = require('body-parser');
@@ -30,8 +30,8 @@ if (process.env.USE_BASIC_AUTH === 'true') {
   });
 }
 
-app.use(express.static(path.join(__dirname, 'build')))
-app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'build/index.html')))
+app.use(express.static(path.join(__dirname, 'build')));
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'build/index.html')));
 app.post('/token', (req, res) => {
   const { name, room } = req.body;
   const token = new AccessToken(twilioAccountSid, twilioApiKey, twilioApiSecret, { ttl: MAX_ALLOWED_SESSION_DURATION });
