@@ -4,7 +4,6 @@ import { LocalParticipant, RemoteParticipant } from 'twilio-video';
 import VideocamOff from '@material-ui/icons/VideocamOff';
 
 import usePublications from '../../hooks/usePublications/usePublications';
-import usePublicationIsTrackEnabled from '../../hooks/usePublicationIsTrackEnabled/usePublicationIsTrackEnabled';
 
 const Container = styled('div')({
   position: 'relative',
@@ -38,7 +37,7 @@ interface ParticipantInfoProps {
 
 export default function ParticipantInfo({ participant, children }: ParticipantInfoProps) {
   const publications = usePublications(participant);
-  const isVideoEnabled = usePublicationIsTrackEnabled(publications.find(p => p.trackName === 'camera'));
+  const isVideoEnabled = publications.some(p => p.trackName === 'camera');
 
   return (
     <Container data-cy-main-participant>

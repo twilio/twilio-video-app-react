@@ -10,7 +10,6 @@ import VideocamOff from '@material-ui/icons/VideocamOff';
 
 import useParticipantNetworkQualityLevel from '../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel';
 import usePublications from '../../hooks/usePublications/usePublications';
-import usePublicationIsTrackEnabled from '../../hooks/usePublicationIsTrackEnabled/usePublicationIsTrackEnabled';
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
 import useTrack from '../../hooks/useTrack/useTrack';
 
@@ -68,14 +67,12 @@ interface ParticipantInfoProps {
 export default function ParticipantInfo({ participant, onClick, isSelected, children }: ParticipantInfoProps) {
   const publications = usePublications(participant);
 
-  const audioPublication = publications.find(p => p.trackName === 'microphone');
   const videoPublication = publications.find(p => p.trackName === 'camera');
-  const screenSharePublication = publications.find(p => p.trackName === 'screen');
 
   const networkQualityLevel = useParticipantNetworkQualityLevel(participant);
-  const isAudioEnabled = usePublicationIsTrackEnabled(audioPublication);
-  const isVideoEnabled = usePublicationIsTrackEnabled(videoPublication);
-  const isScreenShareEnabled = usePublicationIsTrackEnabled(screenSharePublication);
+  const isAudioEnabled = publications.some(p => p.kind === 'audio');
+  const isVideoEnabled = publications.some(p => p.trackName === 'camera');
+  const isScreenShareEnabled = publications.find(p => p.trackName === 'screen');
 
   const videoTrack = useTrack(videoPublication);
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
