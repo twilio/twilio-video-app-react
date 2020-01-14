@@ -25,12 +25,16 @@ export default function Publication({ publication, isLocal, disableAudio, videoP
 
   if (!track) return null;
 
-  switch (track.name) {
-    case 'screen':
-      return <VideoTrack track={track as IVideoTrack} priority={videoPriority} />;
-    case 'camera':
-      return <VideoTrack track={track as IVideoTrack} isLocal={isLocal} priority={videoPriority} />;
-    case 'microphone':
+  switch (track.kind) {
+    case 'video':
+      return (
+        <VideoTrack
+          track={track as IVideoTrack}
+          priority={videoPriority}
+          isLocal={track.name === 'camera' && isLocal}
+        />
+      );
+    case 'audio':
       return disableAudio ? null : <AudioTrack track={track as IAudioTrack} />;
     default:
       return null;
