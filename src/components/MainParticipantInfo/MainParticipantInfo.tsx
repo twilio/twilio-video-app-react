@@ -30,12 +30,12 @@ const Identity = styled('h4')({
   },
 });
 
-interface ParticipantInfoProps {
+interface MainParticipantInfoProps {
   participant: LocalParticipant | RemoteParticipant;
   children: React.ReactNode;
 }
 
-export default function ParticipantInfo({ participant, children }: ParticipantInfoProps) {
+export default function MainParticipantInfo({ participant, children }: MainParticipantInfoProps) {
   const publications = usePublications(participant);
   const isVideoEnabled = publications.some(p => p.trackName === 'camera');
 
