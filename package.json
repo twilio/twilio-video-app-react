@@ -26,6 +26,7 @@
     "enzyme-adapter-react-16": "^1.15.1",
     "enzyme-to-json": "^3.4.3",
     "express": "^4.17.1",
+    "firebase": "^7.7.0",
     "fscreen": "^1.0.2",
     "husky": "^3.0.9",
     "jest-junit": "^9.0.0",
