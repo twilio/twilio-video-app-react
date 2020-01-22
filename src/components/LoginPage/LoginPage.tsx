@@ -47,7 +47,7 @@ export default function Login() {
     <Grid container justify="center">
       <Paper className={classes.paper} elevation={6}>
         <TwilioLogo className={classes.twilioLogo} />
-        <img className={classes.videoLogo} src={videoLogo}></img>
+        <img className={classes.videoLogo} src={videoLogo} alt="Video Logo"></img>
         <Typography variant="h5">Video Collaboration App</Typography>
         <Button
           variant="contained"
