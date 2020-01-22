@@ -19,6 +19,11 @@ handlers:
   static_files: build/\1
   upload: build/.*\.(json|ico|js|txt)$
 
+- url: /apple-app-site-association
+  secure: always
+  static_files: build/apple-app-site-association
+  upload: build/apple-app-site-association
+
 - url: .*
   secure: always
   static_files: build/index.html
