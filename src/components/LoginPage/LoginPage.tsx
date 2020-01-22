@@ -17,7 +17,7 @@ const useStyles = makeStyles({
   },
   videoLogo: {
     width: '25%',
-    padding: '3em 0 1.5em',
+    padding: '2.4em 0 2.1em',
   },
   paper: {
     display: 'flex',
@@ -29,8 +29,10 @@ const useStyles = makeStyles({
     color: 'black',
   },
   button: {
+    color: 'black',
     background: 'white',
     marginTop: '2em',
+    textTransform: 'none',
   },
 });
 
@@ -40,16 +42,14 @@ export default function Login() {
 
   return (
     <Grid container justify="center">
-      <Grid xs={3}>
-        <Paper className={classes.paper} elevation={6}>
-          <TwilioLogo className={classes.twilioLogo} />
-          <img className={classes.videoLogo} src={videoLogo}></img>
-          <Typography variant="h5">Video Collaboration App</Typography>
-          <Button variant="contained" className={classes.button} onClick={signIn} startIcon={<Qqq />}>
-            Continue with Google
-          </Button>
-        </Paper>
-      </Grid>
+      <Paper className={classes.paper} elevation={6}>
+        <TwilioLogo className={classes.twilioLogo} />
+        <img className={classes.videoLogo} src={videoLogo}></img>
+        <Typography variant="h5">Video Collaboration App</Typography>
+        <Button variant="contained" color="primary" className={classes.button} onClick={signIn} startIcon={<Qqq />}>
+          Sign in with Google
+        </Button>
+      </Paper>
     </Grid>
   );
 }
