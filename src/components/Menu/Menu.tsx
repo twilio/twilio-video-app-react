@@ -7,6 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
 import ToggleFullscreenButton from '../ToggleFullScreenButton/ToggleFullScreenButton';
 import Toolbar from '@material-ui/core/Toolbar';
+import UserAvatar from './UserAvatar/UserAvatar';
 
 import { useAppState } from '../../state';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
@@ -90,6 +91,7 @@ export default function Menu() {
           <h3>{roomName}</h3>
         )}
         <ToggleFullscreenButton />
+        <UserAvatar />
       </Toolbar>
     </AppBar>
   );
