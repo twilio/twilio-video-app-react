@@ -1,9 +1,12 @@
 import React from 'react';
 import { useAppState } from '../../state';
 
-import makeStyles from '@material-ui/core//styles/makeStyles';
-import { Button, Grid, Paper, Typography } from '@material-ui/core';
-import { ReactComponent as Qqq } from './google-logo.svg';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import { ReactComponent as GoogleLogo } from './google-logo.svg';
 import { ReactComponent as TwilioLogo } from './twilio-logo.svg';
 import videoLogo from './video-logo.png';
 
@@ -46,7 +49,13 @@ export default function Login() {
         <TwilioLogo className={classes.twilioLogo} />
         <img className={classes.videoLogo} src={videoLogo}></img>
         <Typography variant="h5">Video Collaboration App</Typography>
-        <Button variant="contained" color="primary" className={classes.button} onClick={signIn} startIcon={<Qqq />}>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.button}
+          onClick={signIn}
+          startIcon={<GoogleLogo />}
+        >
           Sign in with Google
         </Button>
       </Paper>
