@@ -10,6 +10,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import UserAvatar from './UserAvatar/UserAvatar';
 
 import { useAppState } from '../../state';
+import { useParams } from 'react-router-dom';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
@@ -33,14 +34,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export function getRoomName() {
-  const match = window.location.pathname.match(/^\/room\/([^/]*)/);
-  return match ? window.decodeURI(match[1]) : '';
-}
-
 export default function Menu() {
-  const [name, setName] = useState<string>('');
-  const [roomName, setRoomName] = useState<string>(getRoomName());
+  const { URLRoomName } = useParams();
+  const { user } = useAppState();
+  const [name, setName] = useState<string>(user?.displayName || '');
+  const [roomName, setRoomName] = useState<string>(URLRoomName || '');
   const roomState = useRoomState();
   const { isConnecting } = useVideoContext();
   const { getToken } = useAppState();
@@ -66,14 +64,16 @@ export default function Menu() {
       <Toolbar>
         {roomState === 'disconnected' ? (
           <form className={classes.form} onSubmit={handleSubmit}>
-            <TextField
-              id="menu-name"
-              label="Name"
-              className={classes.textField}
-              value={name}
-              onChange={handleNameChange}
-              margin="dense"
-            />
+            {!user?.displayName && (
+              <TextField
+                id="menu-name"
+                label="Name"
+                className={classes.textField}
+                value={name}
+                onChange={handleNameChange}
+                margin="dense"
+              />
+            )}
             <TextField
               id="menu-room"
               label="Room"
