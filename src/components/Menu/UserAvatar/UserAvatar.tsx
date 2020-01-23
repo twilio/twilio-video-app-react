@@ -12,11 +12,11 @@ import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 const useStyles = makeStyles({
   red: {
     color: 'white',
-    backgroundColor: '#cc2b33',
+    backgroundColor: '#F22F46',
   },
 });
 
-export function getInititals(name: string) {
+export function getInitials(name: string) {
   return name
     .split(' ')
     .map(text => text[0])
@@ -48,7 +48,7 @@ export default function UserAvatar() {
         {user.photoURL ? (
           <Avatar src={user.photoURL} />
         ) : (
-          <Avatar className={classes.red}>{user.displayName ? getInititals(user.displayName) : <Person />}</Avatar>
+          <Avatar className={classes.red}>{user.displayName ? getInitials(user.displayName) : <Person />}</Avatar>
         )}
       </IconButton>
       <Menu open={menuOpen} onClose={() => setMenuOpen(state => !state)} anchorEl={anchorRef.current}>
