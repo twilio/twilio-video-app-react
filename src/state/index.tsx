@@ -17,19 +17,15 @@ interface StateContextType {
 
 export const StateContext = createContext<StateContextType>(null!);
 
-async function getVideoServiceToken(name: string, roomName: string, user: User) {
+export async function getVideoServiceToken(name: string, roomName: string, user: User) {
   const idToken = await user!.getIdToken();
-  return fetch(
-    `https://app.video.bytwilio.com/api/v1/token?roomName=${roomName}&identity=${name}&appEnvironment=production&environment=prod`,
-    {
-      method: 'GET',
-      headers: { Authorization: idToken },
-      credentials: 'same-origin',
-    }
-  ).then(res => res.text());
+  return fetch(`https://app.video.bytwilio.com/api/v1/token?roomName=${roomName}&identity=${name}`, {
+    method: 'GET',
+    headers: { Authorization: idToken },
+  }).then(res => res.text());
 }
 
-function getLocalToken(name: string, roomName: string) {
+export function getLocalToken(name: string, roomName: string) {
   return fetch(`/token`, {
     method: 'POST',
     headers: {
