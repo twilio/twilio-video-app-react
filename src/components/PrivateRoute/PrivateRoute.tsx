@@ -3,14 +3,14 @@ import { Redirect, Route, RouteProps } from 'react-router-dom';
 import { useAppState } from '../../state';
 
 export default function PrivateRoute({ children, ...rest }: RouteProps) {
-  const { isReady, user } = useAppState();
+  const { isAuthReady, user } = useAppState();
   return (
     <Route
       {...rest}
       render={({ location }) =>
         user ? (
           children
-        ) : isReady ? (
+        ) : isAuthReady ? (
           <Redirect
             to={{
               pathname: '/login',
