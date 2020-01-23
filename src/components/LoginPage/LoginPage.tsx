@@ -9,10 +9,12 @@ import Typography from '@material-ui/core/Typography';
 import { ReactComponent as GoogleLogo } from './google-logo.svg';
 import { ReactComponent as TwilioLogo } from './twilio-logo.svg';
 import videoLogo from './video-logo.png';
+import { useLocation, useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles({
   container: {
-    display: 'flex',
+    height: '100vh',
+    background: '#0D122B',
   },
   twilioLogo: {
     width: '55%',
@@ -34,28 +36,38 @@ const useStyles = makeStyles({
   button: {
     color: 'black',
     background: 'white',
-    marginTop: '2em',
+    margin: '2em 0 0.7em',
     textTransform: 'none',
   },
 });
 
 export default function Login() {
   const classes = useStyles();
-  const { signIn } = useAppState();
+  const { signIn, user, isAuthReady } = useAppState();
+  const history = useHistory();
+  const location = useLocation<{ from: Location }>();
+
+  const login = () => {
+    signIn().then(() => {
+      history.replace(location?.state?.from || { pathname: '/' });
+    });
+  };
+
+  if (user) {
+    history.replace('/');
+  }
+
+  if (!isAuthReady) {
+    return null;
+  }
 
   return (
-    <Grid container justify="center">
+    <Grid container justify="center" alignItems="flex-start" className={classes.container}>
       <Paper className={classes.paper} elevation={6}>
         <TwilioLogo className={classes.twilioLogo} />
         <img className={classes.videoLogo} src={videoLogo} alt="Video Logo"></img>
         <Typography variant="h5">Video Collaboration App</Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.button}
-          onClick={signIn}
-          startIcon={<GoogleLogo />}
-        >
+        <Button variant="contained" className={classes.button} onClick={login} startIcon={<GoogleLogo />}>
           Sign in with Google
         </Button>
       </Paper>
