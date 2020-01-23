@@ -17,9 +17,6 @@ export default createMuiTheme({
     primary: {
       main: '#F22F46',
     },
-    background: {
-      default: '#0D122B',
-    },
   },
   sidebarPosition: '15%',
 });
