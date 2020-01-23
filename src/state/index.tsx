@@ -1,5 +1,7 @@
 import React, { createContext, useCallback, useContext, useState } from 'react';
 import { TwilioError } from 'twilio-video';
+import useAuth from './useAuth';
+import { User } from 'firebase';
 
 interface StateContextType {
   token: string;
@@ -7,30 +9,54 @@ interface StateContextType {
   setToken(token: string): void;
   setError(error: TwilioError | null): void;
   getToken(name: string, room: string): void;
+  user: User | null;
+  signIn(): Promise<void>;
+  signOut(): Promise<void>;
+  isAuthReady: boolean;
 }
 
 export const StateContext = createContext<StateContextType>(null!);
 
+async function getVideoServiceToken(name: string, roomName: string, user: User) {
+  const idToken = await user!.getIdToken();
+  return fetch(
+    `https://app.video.bytwilio.com/api/v1/token?roomName=${roomName}&identity=${name}&appEnvironment=production&environment=prod`,
+    {
+      method: 'GET',
+      headers: { Authorization: idToken },
+      credentials: 'same-origin',
+    }
+  ).then(res => res.text());
+}
+
+function getLocalToken(name: string, roomName: string) {
+  return fetch(`/token`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ name, room: roomName }),
+  })
+    .then(res => res.json())
+    .then(res => res.token);
+}
+
 export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const [token, setToken] = useState('');
   const [error, setError] = useState<TwilioError | null>(null);
+
+  const { user, signIn, signOut, isAuthReady } = useAuth(setToken);
+
   const getToken = useCallback(
-    (name: string, roomName: string) => {
-      return fetch(`/token`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, room: roomName }),
-      })
-        .then(res => res.json())
-        .then(res => setToken(res.token));
-    },
-    [setToken]
+    (name, roomname) =>
+      getVideoServiceToken(name, roomname, user!)
+        .then(setToken)
+        .catch(setError),
+    [setToken, user]
   );
 
   return (
-    <StateContext.Provider value={{ token, error, setToken, setError, getToken }}>
+    <StateContext.Provider value={{ token, error, setToken, setError, getToken, user, signIn, signOut, isAuthReady }}>
       {props.children}
     </StateContext.Provider>
   );
