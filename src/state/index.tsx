@@ -48,10 +48,17 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const { user, signIn, signOut, isAuthReady } = useAuth(setToken);
 
   const getToken = useCallback(
-    (name, roomname) =>
-      getVideoServiceToken(name, roomname, user!)
-        .then(setToken)
-        .catch(setError),
+    (name, roomname) => {
+      if (process.env.REACT_APP_USE_FIREBASE_AUTH === 'true') {
+        getVideoServiceToken(name, roomname, user!)
+          .then(setToken)
+          .catch(setError);
+      } else {
+        getLocalToken(name, roomname)
+          .then(setToken)
+          .catch(setError);
+      }
+    },
     [setToken, user]
   );
 

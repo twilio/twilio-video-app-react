@@ -53,7 +53,7 @@ export default function Login() {
     });
   };
 
-  if (user) {
+  if (user || process.env.REACT_APP_USE_FIREBASE_AUTH !== 'true') {
     history.replace('/');
   }
 

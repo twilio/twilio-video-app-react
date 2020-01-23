@@ -8,7 +8,7 @@ export default function PrivateRoute({ children, ...rest }: RouteProps) {
     <Route
       {...rest}
       render={({ location }) =>
-        user ? (
+        user || process.env.REACT_APP_USE_FIREBASE_AUTH !== 'true' ? (
           children
         ) : isAuthReady ? (
           <Redirect
