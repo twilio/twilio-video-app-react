@@ -14,10 +14,10 @@ handlers:
   secure: always
   static_dir: build/static
 
-- url: /(.*\.(json|ico|js|txt))$
+- url: /(.*\.(json|ico|js|txt|png))$
   secure: always
   static_files: build/\1
-  upload: build/.*\.(json|ico|js|txt)$
+  upload: build/.*\.(json|ico|js|txt|png)$
 
 - url: .*
   secure: always
