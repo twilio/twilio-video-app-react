@@ -34,7 +34,7 @@ export default function UserAvatar() {
   const handleSignOut = useCallback(() => {
     signOut().then(() => {
       room.disconnect?.();
-      (localTracks as any[]).forEach(track => track.stop());
+      localTracks.forEach(track => track.stop());
     });
   }, [room.disconnect, localTracks, signOut]);
 
