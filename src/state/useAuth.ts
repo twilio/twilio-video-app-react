@@ -10,23 +10,24 @@ const firebaseConfig = {
   messagingSenderId: '285008367772',
 };
 
-firebase.initializeApp(firebaseConfig);
-
-const provider = new firebase.auth.GoogleAuthProvider();
-provider.addScope('https://www.googleapis.com/auth/plus.login');
-
 export default function useAuth(setToken: any) {
   const [user, setUser] = useState<firebase.User | null>(null);
   const [isAuthReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(user => {
-      setUser(user);
-      setIsReady(true);
-    });
+    if (process.env.REACT_APP_USE_FIREBASE_AUTH === 'true') {
+      firebase.initializeApp(firebaseConfig);
+      firebase.auth().onAuthStateChanged(user => {
+        setUser(user);
+        setIsReady(true);
+      });
+    }
   }, []);
 
   const signIn = useCallback(() => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    provider.addScope('https://www.googleapis.com/auth/plus.login');
+
     return firebase
       .auth()
       .signInWithPopup(provider)
