@@ -1,15 +1,6 @@
 runtime: nodejs12
 
-entrypoint: node server.js
-
-env_variables:
-  USE_BASIC_AUTH: "true"
-
 handlers:
-- url: /token
-  secure: always
-  script: auto
-
 - url: /static
   secure: always
   static_dir: build/static
