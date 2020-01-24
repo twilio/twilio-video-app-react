@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -35,15 +35,20 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function Menu() {
-  const { URLRoomName } = useParams();
-  const { user } = useAppState();
-  const [name, setName] = useState<string>(user?.displayName || '');
-  const [roomName, setRoomName] = useState<string>(URLRoomName || '');
-  const roomState = useRoomState();
-  const { isConnecting } = useVideoContext();
-  const { getToken } = useAppState();
-
   const classes = useStyles();
+  const { URLRoomName } = useParams();
+  const { user, getToken } = useAppState();
+  const { isConnecting } = useVideoContext();
+  const roomState = useRoomState();
+
+  const [name, setName] = useState<string>(user?.displayName || '');
+  const [roomName, setRoomName] = useState<string>('');
+
+  useEffect(() => {
+    if (URLRoomName) {
+      setRoomName(URLRoomName);
+    }
+  }, [URLRoomName]);
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
