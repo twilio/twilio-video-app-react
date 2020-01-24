@@ -4,6 +4,7 @@ import { useAppState } from '../../state';
 
 export default function PrivateRoute({ children, ...rest }: RouteProps) {
   const { isAuthReady, user } = useAppState();
+
   return (
     <Route
       {...rest}
