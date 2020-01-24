@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useState } from 'react';
 import { TwilioError } from 'twilio-video';
-import useAuth from './useAuth';
+import useAuth from './useAuth/useAuth';
 import { User } from 'firebase';
 
 interface StateContextType {
