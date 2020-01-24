@@ -52,15 +52,9 @@ ReactDOM.render(
     <Router>
       <AppStateProvider>
         <Switch>
-          <PrivateRoute exact path="/">
-            <VideoApp />
-          </PrivateRoute>
-          <PrivateRoute path="/room/:URLRoomName">
-            <VideoApp></VideoApp>
-          </PrivateRoute>
-          <Route path="/login">
-            <LoginPage />
-          </Route>
+          <PrivateRoute exact path="/" component={VideoApp} />
+          <PrivateRoute path="/room/:URLRoomName" component={VideoApp} />
+          <Route path="/login" component={LoginPage} />
           <Redirect to="/" />
         </Switch>
       </AppStateProvider>
