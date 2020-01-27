@@ -84,14 +84,12 @@ describe('the useRoom hook', () => {
     expect(Video.connect).toHaveBeenCalledTimes(1);
   });
 
-  it('should call onError and set isConnecting to false when there is an error', async done => {
+  it('should call onError when there is an error', done => {
     const mockOnError = jest.fn();
     mockVideoConnect.mockImplementationOnce(() => Promise.reject('mockError'));
-    const { result, waitForNextUpdate } = renderHook(() => useRoom([], mockOnError, 'token', {}));
-    await waitForNextUpdate();
+    renderHook(() => useRoom([], mockOnError, 'token', {}));
     setImmediate(() => {
       expect(mockOnError).toHaveBeenCalledWith('mockError');
-      expect(result.current.isConnecting).toBe(false);
       done();
     });
   });

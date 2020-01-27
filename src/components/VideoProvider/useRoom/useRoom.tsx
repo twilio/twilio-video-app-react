@@ -52,10 +52,7 @@ export default function useRoom(
           // Add a listener to disconnect from the room when a user closes their browser
           window.addEventListener('beforeunload', disconnectHandlerRef.current);
         },
-        error => {
-          onError(error);
-          setIsConnecting(false);
-        }
+        error => onError(error)
       );
     }
 
