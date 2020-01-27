@@ -36,7 +36,7 @@ You will also see any linting errors in the console.
 
 This will run a standalone token server.
 
-The token server runs on port 8080 and expects a `POST` request at the `/token` route with the following JSON body:
+The token server runs on port 8081 and expects a `POST` request at the `/token` route with the following JSON body:
 
 ```
 {
@@ -55,7 +55,7 @@ The response is the following JSON object:
 
 Try it out with this sample `curl` command:
 
-`curl http://localhost:8080/token -H "Content-Type: application/json" -d '{"name": "My Name", "room": "My Room"}'`
+`curl http://localhost:8081/token -H "Content-Type: application/json" -d '{"name": "My Name", "room": "My Room"}'`
 
 ### Multiple Participants in a Room
 
