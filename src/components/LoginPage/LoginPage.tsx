@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import { ReactComponent as GoogleLogo } from './google-logo.svg';
 import { ReactComponent as TwilioLogo } from './twilio-logo.svg';
 import videoLogo from './video-logo.png';
@@ -36,7 +35,7 @@ const useStyles = makeStyles({
   button: {
     color: 'black',
     background: 'white',
-    margin: '2em 0 0.7em',
+    margin: '0.8em 0 0.7em',
     textTransform: 'none',
   },
 });
@@ -66,7 +65,6 @@ export default function Login() {
       <Paper className={classes.paper} elevation={6}>
         <TwilioLogo className={classes.twilioLogo} />
         <img className={classes.videoLogo} src={videoLogo} alt="Video Logo"></img>
-        <Typography variant="h5">Video Collaboration App</Typography>
         <Button variant="contained" className={classes.button} onClick={login} startIcon={<GoogleLogo />}>
           Sign in with Google
         </Button>
