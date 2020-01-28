@@ -24,7 +24,6 @@ const connectionOptions: ConnectOptions = {
         standard: { height: 90, width: 160 },
         low: { height: 90, width: 160 },
       },
-      trackSwitchOffMode: 'detected',
     },
   },
   dominantSpeaker: true,
