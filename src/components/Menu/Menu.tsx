@@ -13,6 +13,7 @@ import { useAppState } from '../../state';
 import { useParams } from 'react-router-dom';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,6 +31,11 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     loadingSpinner: {
       marginLeft: '1em',
+    },
+    displayName: {
+      marginLeft: '2.2em',
+      minWidth: '200px',
+      fontWeight: 600,
     },
   })
 );
@@ -69,7 +75,7 @@ export default function Menu() {
       <Toolbar>
         {roomState === 'disconnected' ? (
           <form className={classes.form} onSubmit={handleSubmit}>
-            {!user?.displayName && (
+            {!user?.displayName ? (
               <TextField
                 id="menu-name"
                 label="Name"
@@ -78,6 +84,10 @@ export default function Menu() {
                 onChange={handleNameChange}
                 margin="dense"
               />
+            ) : (
+              <Typography className={classes.displayName} variant="body1">
+                {user.displayName}
+              </Typography>
             )}
             <TextField
               id="menu-room"

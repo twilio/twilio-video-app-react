@@ -118,11 +118,12 @@ describe('the Menu component', () => {
     expect(getByLabelText('Room').getAttribute('value')).toEqual('test');
   });
 
-  it('should hide the name input when a user has the displayName property', () => {
-    mockUseAppState.mockImplementation(() => ({ user: { displayName: 'test' } }));
+  it('should hide the name input when a user has the displayName property and display the name instead', () => {
+    mockUseAppState.mockImplementation(() => ({ user: { displayName: 'Test Name' } }));
     mockedUseRoomState.mockImplementation(() => 'disconnected');
     mockedUseVideoContext.mockImplementation(() => ({ isConnecting: true, room: {} } as any));
-    const { queryByLabelText } = render(renderComponent());
+    const { queryByLabelText, findByText } = render(renderComponent());
     expect(queryByLabelText('Name')).toBe(null);
+    expect(findByText('Test Name')).toBeTruthy();
   });
 });
