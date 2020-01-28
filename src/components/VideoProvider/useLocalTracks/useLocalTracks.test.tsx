@@ -9,14 +9,13 @@ describe('the useLocalTracks hook', () => {
     expect(result.current.localTracks).toEqual([]);
     await waitForNextUpdate();
     expect(result.current.localTracks).toEqual([expect.any(EventEmitter), expect.any(EventEmitter)]);
-    expect(result.current.getLocalAudioTrack).toEqual(expect.any(Function));
     expect(result.current.getLocalVideoTrack).toEqual(expect.any(Function));
   });
 
   it('should be called with the correct arguments', async () => {
     const { waitForNextUpdate } = renderHook(useLocalTracks);
     await waitForNextUpdate();
-    expect(Video.createLocalAudioTrack).toHaveBeenCalledWith({ name: 'microphone' });
+    expect(Video.createLocalAudioTrack).toHaveBeenCalled();
     expect(Video.createLocalVideoTrack).toHaveBeenCalledWith({
       frameRate: 24,
       height: 720,
