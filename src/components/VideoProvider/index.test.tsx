@@ -14,7 +14,7 @@ const mockRoom = new EventEmitter() as Room;
 const mockOnDisconnect = jest.fn();
 jest.mock('./useRoom/useRoom', () => jest.fn(() => ({ room: mockRoom, isConnecting: false })));
 jest.mock('./useLocalTracks/useLocalTracks', () =>
-  jest.fn(() => ({ localTracks: ['mockTrack'], getLocalVideoTrack: jest.fn(), getLocalAudioTrack: jest.fn() }))
+  jest.fn(() => ({ localTracks: ['mockTrack'], getLocalVideoTrack: jest.fn() }))
 );
 jest.mock('./useHandleRoomDisconnectionErrors/useHandleRoomDisconnectionErrors');
 jest.mock('./useHandleTrackPublicationFailed/useHandleTrackPublicationFailed');
@@ -40,7 +40,6 @@ describe('the VideoProvider component', () => {
       room: mockRoom,
       onError: expect.any(Function),
       onDisconnect: mockOnDisconnect,
-      getLocalAudioTrack: expect.any(Function),
       getLocalVideoTrack: expect.any(Function),
     });
     expect(useRoom).toHaveBeenCalledWith(['mockTrack'], expect.any(Function), 'mockToken', {

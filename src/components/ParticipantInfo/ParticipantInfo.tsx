@@ -11,6 +11,7 @@ import VideocamOff from '@material-ui/icons/VideocamOff';
 import useParticipantNetworkQualityLevel from '../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel';
 import usePublications from '../../hooks/usePublications/usePublications';
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
+import usePublicationIsTrackEnabled from '../../hooks/usePublicationIsTrackEnabled/usePublicationIsTrackEnabled';
 import useTrack from '../../hooks/useTrack/useTrack';
 
 interface ContainerProps {
@@ -67,11 +68,12 @@ interface ParticipantInfoProps {
 export default function ParticipantInfo({ participant, onClick, isSelected, children }: ParticipantInfoProps) {
   const publications = usePublications(participant);
 
+  const audioPublication = publications.find(p => p.kind === 'audio');
   const videoPublication = publications.find(p => p.trackName === 'camera');
 
   const networkQualityLevel = useParticipantNetworkQualityLevel(participant);
-  const isAudioEnabled = publications.some(p => p.kind === 'audio');
-  const isVideoEnabled = publications.some(p => p.trackName === 'camera');
+  const isAudioEnabled = usePublicationIsTrackEnabled(audioPublication);
+  const isVideoEnabled = Boolean(videoPublication);
   const isScreenShareEnabled = publications.find(p => p.trackName === 'screen');
 
   const videoTrack = useTrack(videoPublication);

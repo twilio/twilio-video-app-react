@@ -22,7 +22,6 @@ export interface IVideoContext {
   isConnecting: boolean;
   onError: ErrorCallback;
   onDisconnect: Callback;
-  getLocalAudioTrack: Function;
   getLocalVideoTrack: Function;
 }
 
@@ -48,7 +47,7 @@ export function VideoProvider({
     onError(error);
   };
 
-  const { localTracks, getLocalAudioTrack, getLocalVideoTrack } = useLocalTracks();
+  const { localTracks, getLocalVideoTrack } = useLocalTracks();
   const { room, isConnecting } = useRoom(localTracks, onErrorCallback, token, options);
 
   // Register onError and onDisconnect callback functions.
@@ -64,7 +63,6 @@ export function VideoProvider({
         isConnecting,
         onError: onErrorCallback,
         onDisconnect,
-        getLocalAudioTrack,
         getLocalVideoTrack,
       }}
     >

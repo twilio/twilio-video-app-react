@@ -1,0 +1,14 @@
+{
+	"applinks": {
+		"apps": [],
+		"details": [{
+				"appID": "SX5J6BN2KX.com.twilio.video-app",
+				"paths": ["/room/*"]
+			},
+			{
+				"appID": "SX5J6BN2KX.com.twilio.video-app-internal",
+				"paths": ["/room/*"]
+			}
+		]
+	}
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.twilio.video.app.internal",
+      "sha256_cert_fingerprints": [
+        "48:F3:DA:B7:2B:1B:06:2B:35:7E:29:B8:63:2E:03:B9:77:BB:E9:F2:86:BF:50:FB:1C:83:7A:12:38:BD:C7:3F"
+      ]
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.twilio.video.app",
+      "sha256_cert_fingerprints": [
+        "48:F3:DA:B7:2B:1B:06:2B:35:7E:29:B8:63:2E:03:B9:77:BB:E9:F2:86:BF:50:FB:1C:83:7A:12:38:BD:C7:3F"
+      ]
+    }
+  }
+]
