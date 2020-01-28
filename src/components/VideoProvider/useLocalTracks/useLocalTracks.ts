@@ -4,18 +4,11 @@ import Video, { LocalTrack, LocalVideoTrack, LocalAudioTrack } from 'twilio-vide
 export function useLocalAudioTrack() {
   const [track, setTrack] = useState<LocalAudioTrack>();
 
-  const getLocalAudioTrack = useCallback(
-    () =>
-      Video.createLocalAudioTrack({ name: 'microphone' }).then(newTrack => {
-        setTrack(newTrack);
-        return newTrack;
-      }),
-    []
-  );
-
   useEffect(() => {
-    getLocalAudioTrack();
-  }, [getLocalAudioTrack]);
+    Video.createLocalAudioTrack().then(newTrack => {
+      setTrack(newTrack);
+    });
+  }, []);
 
   useEffect(() => {
     const handleStopped = () => setTrack(undefined);
@@ -27,7 +20,7 @@ export function useLocalAudioTrack() {
     }
   }, [track]);
 
-  return [track, getLocalAudioTrack] as const;
+  return track;
 }
 
 export function useLocalVideoTrack() {
@@ -66,10 +59,10 @@ export function useLocalVideoTrack() {
 }
 
 export default function useLocalTracks() {
-  const [audioTrack, getLocalAudioTrack] = useLocalAudioTrack();
+  const audioTrack = useLocalAudioTrack();
   const [videoTrack, getLocalVideoTrack] = useLocalVideoTrack();
 
   const localTracks = [audioTrack, videoTrack].filter(track => track !== undefined) as LocalTrack[];
 
-  return { localTracks, getLocalAudioTrack, getLocalVideoTrack };
+  return { localTracks, getLocalVideoTrack };
 }

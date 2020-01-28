@@ -25,13 +25,23 @@ describe('the ParticipantInfo component', () => {
   });
 
   it('should not display MicOff icon when an audio track is published', () => {
-    mockUsePublications.mockImplementation(() => [{ kind: 'audio' }]);
+    mockUsePublications.mockImplementation(() => [{ kind: 'audio', isTrackEnabled: true }]);
     const wrapper = shallow(
       <ParticipantInfo onClick={() => {}} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
         mock children
       </ParticipantInfo>
     );
     expect(wrapper.find('MicOffIcon').exists()).toEqual(false);
+  });
+
+  it('should not display MicOff icon when an audio track is published and not enabled', () => {
+    mockUsePublications.mockImplementation(() => [{ kind: 'audio', isTrackEnabled: false }]);
+    const wrapper = shallow(
+      <ParticipantInfo onClick={() => {}} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
+        mock children
+      </ParticipantInfo>
+    );
+    expect(wrapper.find('MicOffIcon').exists()).toEqual(true);
   });
 
   it('should display ScreenShare icon when participant has published a screen share track', () => {
