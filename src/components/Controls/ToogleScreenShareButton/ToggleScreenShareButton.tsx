@@ -28,7 +28,7 @@ export default function ToggleScreenShareButton(props: { disabled?: boolean }) {
   const screenShareParticipant = useScreenShareParticipant();
   const { room } = useVideoContext();
   const disableScreenShareButton = screenShareParticipant && screenShareParticipant !== room.localParticipant;
-  const tooltipMessage = isScreenShared ? 'Stop Screen Sharing' : 'Share Screen';
+  const tooltipMessage = isScreenShared ? 'Stop Sharing Screen' : 'Share Screen';
 
   return (
     navigator.mediaDevices &&

@@ -29,12 +29,14 @@ describe('the ToggleScreenShareButton component', () => {
     mockUseScreenShareToggle.mockImplementation(() => [false, () => {}]);
     const wrapper = shallow(<ToggleScreenShareButton />);
     expect(wrapper.find('ScreenShareIcon').exists()).toBe(true);
+    expect(wrapper.prop('title')).toBe('Share Screen');
   });
 
   it('should render correctly when the user is sharing their screen', () => {
     mockUseScreenShareToggle.mockImplementation(() => [true, () => {}]);
     const wrapper = shallow(<ToggleScreenShareButton />);
     expect(wrapper.find('StopScreenShareIcon').exists()).toBe(true);
+    expect(wrapper.prop('title')).toBe('Stop Sharing Screen');
   });
 
   it('should render correctly when another user is sharing their screen', () => {
@@ -42,6 +44,7 @@ describe('the ToggleScreenShareButton component', () => {
     mockUseScreenShareToggle.mockImplementation(() => [false, () => {}]);
     const wrapper = shallow(<ToggleScreenShareButton />);
     expect(wrapper.find('WithStyles(ForwardRef(Fab))').prop('disabled')).toBe(true);
+    expect(wrapper.prop('title')).toBe('Cannot share screen when another user is sharing');
   });
 
   it('should call the correct toggle function when clicked', () => {
