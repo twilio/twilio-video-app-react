@@ -38,6 +38,15 @@ describe('the ErrorDialog component', () => {
     expect(wrapper.find('code').text()).toBe(`Error Code: ${code}`);
   });
 
+  it('should display an enhanced error message when error code is 20101', () => {
+    const error = { message, code: 20101 } as TwilioError;
+    const wrapper = shallow(<ErrorDialog dismissError={() => {}} error={error} />);
+    expect(wrapper.find(DialogContentText).text()).toBe(
+      message + '. Please make sure you are using the correct credentials.'
+    );
+    expect(wrapper.find('code').text()).toBe(`Error Code: ${20101}`);
+  });
+
   it('should invoke dismissError prop when the user clicks on OK button', () => {
     const error = { message, code } as TwilioError;
     const dismissError = jest.fn();
