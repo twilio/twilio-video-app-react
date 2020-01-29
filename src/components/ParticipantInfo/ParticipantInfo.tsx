@@ -21,15 +21,15 @@ const useStyles = makeStyles((theme: Theme) =>
       position: 'relative',
       display: 'flex',
       alignItems: 'center',
-      border: '2px solid transparent',
-      height: `calc(${theme.sidebarWidth} * 9 / 16)`,
+      border: '1px solid transparent',
+      height: `${(theme.sidebarWidth * 9) / 16}px`,
       overflow: 'hidden',
       '& video': {
         filter: 'none',
       },
     },
     isSelected: {
-      border: '2px solid white',
+      border: '1px solid white',
     },
     isVideoSwitchedOff: {
       '& video': {
