@@ -41,7 +41,7 @@ export default function Menu() {
   const [name, setName] = useState<string>('');
   const [roomName, setRoomName] = useState<string>(getRoomName());
   const roomState = useRoomState();
-  const { isConnecting } = useVideoContext();
+  const { isConnecting, connect } = useVideoContext();
   const { getToken } = useAppState();
 
   const classes = useStyles();
@@ -57,7 +57,7 @@ export default function Menu() {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     window.history.replaceState(null, '', window.encodeURI(`/room/${roomName}`));
-    getToken(name, roomName);
+    getToken(name, roomName).then(token => connect(token));
   };
 
   return (
