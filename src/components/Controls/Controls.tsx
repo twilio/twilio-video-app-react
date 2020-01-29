@@ -13,6 +13,7 @@ import useRoomState from '../../hooks/useRoomState/useRoomState';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
+      display: 'flex',
       position: 'absolute',
       right: '50%',
       transform: 'translate(50%, 30px)',
