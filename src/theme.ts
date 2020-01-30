@@ -2,12 +2,12 @@ import { createMuiTheme } from '@material-ui/core';
 
 declare module '@material-ui/core/styles/createMuiTheme' {
   interface Theme {
-    sidebarPosition: string;
+    sidebarWidth: number;
   }
 
   // allow configuration using `createMuiTheme`
   interface ThemeOptions {
-    sidebarPosition?: string;
+    sidebarWidth?: number;
   }
 }
 
@@ -18,5 +18,5 @@ export default createMuiTheme({
       main: '#cc2b33',
     },
   },
-  sidebarPosition: '15%',
+  sidebarWidth: 260,
 });

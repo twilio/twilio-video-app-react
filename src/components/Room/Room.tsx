@@ -10,7 +10,7 @@ const Container = styled('div')({
 
 const MainParticipantContainer = styled('div')(({ theme }) => ({
   position: 'absolute',
-  left: theme.sidebarPosition,
+  left: theme.sidebarWidth,
   right: 0,
   top: 0,
   bottom: 0,

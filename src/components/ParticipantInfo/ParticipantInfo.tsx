@@ -1,5 +1,6 @@
 import React from 'react';
-import { styled } from '@material-ui/core/styles';
+import clsx from 'clsx';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalParticipant, RemoteParticipant, RemoteVideoTrack, LocalVideoTrack } from 'twilio-video';
 
 import BandwidthWarning from './BandwidthWarning/BandwidthWarning';
@@ -14,49 +15,52 @@ import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackS
 import usePublicationIsTrackEnabled from '../../hooks/usePublicationIsTrackEnabled/usePublicationIsTrackEnabled';
 import useTrack from '../../hooks/useTrack/useTrack';
 
-interface ContainerProps {
-  isSelected: boolean;
-  isSwitchedOff: boolean;
-  onClick: () => void;
-}
-const Container = styled(({ isSelected, isSwitchedOff, ...otherProps }: ContainerProps) => <div {...otherProps}></div>)(
-  {
-    position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
-    minHeight: '5em',
-    border: ({ isSelected }) => (isSelected ? '1px solid white' : '1px solid transparent'),
-    overflow: 'hidden',
-    '& video': {
-      filter: ({ isSwitchedOff }) => (isSwitchedOff ? 'blur(4px) grayscale(1) brightness(0.5)' : 'none'),
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    container: {
+      position: 'relative',
+      display: 'flex',
+      alignItems: 'center',
+      border: '1px solid transparent',
+      height: `${(theme.sidebarWidth * 9) / 16}px`,
+      overflow: 'hidden',
+      '& video': {
+        filter: 'none',
+      },
     },
-  }
+    isSelected: {
+      border: '1px solid white',
+    },
+    isVideoSwitchedOff: {
+      '& video': {
+        filter: 'blur(4px) grayscale(1) brightness(0.5)',
+      },
+    },
+    infoContainer: {
+      position: 'absolute',
+      zIndex: 1,
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      height: '100%',
+      padding: '0.4em',
+      width: '100%',
+      background: 'transparent',
+    },
+    hideVideo: {
+      background: 'black',
+    },
+    identity: {
+      background: 'rgba(0, 0, 0, 0.7)',
+      padding: '0.1em 0.3em',
+      margin: 0,
+    },
+    infoRow: {
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
+  })
 );
-
-export const InfoContainer = styled(({ hideVideo, ...otherProps }: { hideVideo?: boolean }) => <div {...otherProps} />)(
-  {
-    position: 'absolute',
-    zIndex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    height: '100%',
-    padding: '0.4em',
-    width: '100%',
-    background: ({ hideVideo }) => (hideVideo ? 'black' : 'transparent'),
-  }
-);
-
-const Identity = styled('h4')({
-  background: 'rgba(0, 0, 0, 0.7)',
-  padding: '0.1em 0.3em',
-  margin: 0,
-});
-
-const InfoRow = styled('div')({
-  display: 'flex',
-  justifyContent: 'space-between',
-});
 
 interface ParticipantInfoProps {
   participant: LocalParticipant | RemoteParticipant;
@@ -79,26 +83,30 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
   const videoTrack = useTrack(videoPublication);
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
 
+  const classes = useStyles();
+
   return (
-    <Container
+    <div
+      className={clsx(classes.container, {
+        [classes.isSelected]: isSelected,
+        [classes.isVideoSwitchedOff]: isVideoSwitchedOff,
+      })}
       onClick={onClick}
-      isSelected={isSelected}
-      isSwitchedOff={isVideoSwitchedOff}
       data-cy-participant={participant.identity}
     >
-      <InfoContainer hideVideo={!isVideoEnabled}>
-        <InfoRow>
-          <Identity>{participant.identity}</Identity>
+      <div className={clsx(classes.infoContainer, { [classes.hideVideo]: !isVideoEnabled })}>
+        <div className={classes.infoRow}>
+          <h4 className={classes.identity}>{participant.identity}</h4>
           <NetworkQualityLevel qualityLevel={networkQualityLevel} />
-        </InfoRow>
+        </div>
         <div>
           {!isAudioEnabled && <MicOff data-cy-audio-mute-icon />}
           {!isVideoEnabled && <VideocamOff />}
           {isScreenShareEnabled && <ScreenShare />}
         </div>
-      </InfoContainer>
+      </div>
       {isVideoSwitchedOff && <BandwidthWarning />}
       {children}
-    </Container>
+    </div>
   );
 }
