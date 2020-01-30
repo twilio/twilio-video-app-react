@@ -18,7 +18,7 @@ app.get('/token', (req, res) => {
   token.identity = identity;
   const videoGrant = new VideoGrant({ room: roomName });
   token.addGrant(videoGrant);
-  res.text(token.toJwt());
+  res.send(token.toJwt());
   console.log(`issued token for ${identity} in room ${roomName}`);
 });
 

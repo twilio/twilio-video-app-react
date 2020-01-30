@@ -17,26 +17,6 @@ interface StateContextType {
 
 export const StateContext = createContext<StateContextType>(null!);
 
-export async function getVideoServiceToken(name: string, roomName: string, user: User) {
-  const idToken = await user!.getIdToken();
-  return fetch(`https://app.video.bytwilio.com/api/v1/token?roomName=${roomName}&identity=${name}`, {
-    method: 'GET',
-    headers: { Authorization: idToken },
-  }).then(res => res.text());
-}
-
-export function getLocalToken(name: string, roomName: string) {
-  return fetch(`/token`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ name, room: roomName }),
-  })
-    .then(res => res.json())
-    .then(res => res.token);
-}
-
 export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const [token, setToken] = useState('');
   const [error, setError] = useState<TwilioError | null>(null);
@@ -44,16 +24,21 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const { user, signIn, signOut, isAuthReady } = useAuth(setToken);
 
   const getToken = useCallback(
-    (name, roomname) => {
+    async (identity, roomName) => {
+      const headers = new Headers();
+
       if (process.env.REACT_APP_USE_FIREBASE_AUTH === 'true') {
-        getVideoServiceToken(name, roomname, user!)
-          .then(setToken)
-          .catch(setError);
-      } else {
-        getLocalToken(name, roomname)
-          .then(setToken)
-          .catch(setError);
+        const idToken = await user!.getIdToken();
+        headers.set('Authorization', idToken);
       }
+
+      const endpoint = process.env.REACT_APP_TOKEN_ENDPOINT || '/token';
+      const params = new URLSearchParams({ identity, roomName });
+
+      return fetch(`${endpoint}?${params}`, { headers })
+        .then(res => res.text())
+        .then(setToken)
+        .catch(setError);
     },
     [setToken, user]
   );
