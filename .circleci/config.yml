@@ -35,7 +35,11 @@ jobs:
       - store_artifacts:
           path: coverage
 
-      - run: npm run build
+      - run: 
+          name: "Build app with Firebase auth disabled"
+          command: npm run build
+          environment:
+            REACT_APP_TOKEN_ENDPOINT: "http://localhost:8080/token"
 
       - run: |
           echo ACCOUNT_SID=$TWILIO_ACCOUNT_SID >> .env
