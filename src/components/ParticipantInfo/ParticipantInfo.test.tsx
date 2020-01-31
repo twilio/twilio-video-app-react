@@ -4,8 +4,6 @@ import { shallow } from 'enzyme';
 import usePublications from '../../hooks/usePublications/usePublications';
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
 
-import { InfoContainer } from './ParticipantInfo';
-
 jest.mock('../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel', () => () => 4);
 jest.mock('../../hooks/usePublications/usePublications');
 jest.mock('../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff');
@@ -71,7 +69,7 @@ describe('the ParticipantInfo component', () => {
         mock children
       </ParticipantInfo>
     );
-    expect(wrapper.find(InfoContainer).prop('hideVideo')).toEqual(true);
+    expect(wrapper.find('.makeStyles-infoContainer-4').prop('className')).toContain('makeStyles-hideVideo-5');
   });
 
   it('should not add hideVideoProp to InfoContainer component when a video track is published', () => {
@@ -81,7 +79,7 @@ describe('the ParticipantInfo component', () => {
         mock children
       </ParticipantInfo>
     );
-    expect(wrapper.find(InfoContainer).prop('hideVideo')).toEqual(false);
+    expect(wrapper.find('.makeStyles-infoContainer-4').prop('className')).not.toContain('makeStyles-hideVideo-5');
   });
 
   it('should render a VideoCamOff icon when no video tracks are published', () => {
@@ -112,7 +110,7 @@ describe('the ParticipantInfo component', () => {
         mock children
       </ParticipantInfo>
     );
-    expect(wrapper.prop('isSwitchedOff')).toEqual(true);
+    expect(wrapper.find('.makeStyles-container-1').prop('className')).toContain('makeStyles-isVideoSwitchedOff-3');
   });
 
   it('should not add isSwitchedOff prop to Container component when video is not switched off', () => {
@@ -123,6 +121,6 @@ describe('the ParticipantInfo component', () => {
         mock children
       </ParticipantInfo>
     );
-    expect(wrapper.prop('isSwitchedOff')).toEqual(false);
+    expect(wrapper.find('.makeStyles-container-1').prop('className')).not.toContain('makeStyles-isVideoSwitchedOff-3');
   });
 });
