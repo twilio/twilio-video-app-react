@@ -35,7 +35,7 @@ jobs:
       - store_artifacts:
           path: coverage
 
-      - run: REACT_APP_TOKEN_ENDPOINT=http://localhost:8080 npm run build
+      - run: REACT_APP_TOKEN_ENDPOINT=http://localhost:8080/token npm run build
 
       - run: |
           echo ACCOUNT_SID=$TWILIO_ACCOUNT_SID >> .env
