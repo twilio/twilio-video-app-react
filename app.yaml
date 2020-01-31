@@ -1,23 +1,16 @@
-runtime: nodejs12
-
-entrypoint: node server.js
-
-env_variables:
-  USE_BASIC_AUTH: "true"
+runtime: python27
+api_version: 1
+threadsafe: true
 
 handlers:
-- url: /token
-  secure: always
-  script: auto
-
 - url: /static
   secure: always
   static_dir: build/static
 
-- url: /(.*\.(json|ico|js|txt))$
+- url: /(.*\.(json|ico|js|txt|png))$
   secure: always
   static_files: build/\1
-  upload: build/.*\.(json|ico|js|txt)$
+  upload: build/.*\.(json|ico|js|txt|png)$
 
 - url: /apple-app-site-association
   secure: always
