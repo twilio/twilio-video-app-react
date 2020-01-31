@@ -5,5 +5,8 @@
   "reporter": "cypress-multi-reporters",
   "reporterOptions": {
     "configFile": "cypress/reporter-config.json"
+  },
+  "env": {
+    "REACT_APP_TOKEN_ENDPOINT": "http://localhost:8080/token"
   }
 }
