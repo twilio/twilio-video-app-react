@@ -6,15 +6,17 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 
 import App from './App';
 import AppStateProvider, { useAppState } from './state';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import { ConnectOptions } from 'twilio-video';
 import ErrorDialog from './components/ErrorDialog/ErrorDialog';
+import LoginPage from './components/LoginPage/LoginPage';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import theme from './theme';
 import './types';
 import { VideoProvider } from './components/VideoProvider';
 
 // See: https://media.twiliocdn.com/sdk/js/video/releases/2.0.0/docs/global.html#ConnectOptions
 // for available connection options.
-
 const connectionOptions: ConnectOptions = {
   bandwidthProfile: {
     video: {
@@ -32,7 +34,7 @@ const connectionOptions: ConnectOptions = {
   preferredVideoCodecs: [{ codec: 'VP8', simulcast: true }],
 };
 
-const VideoProviderWithToken = () => {
+const VideoApp = () => {
   const { error, token, setError, setToken } = useAppState();
 
   return (
@@ -44,11 +46,24 @@ const VideoProviderWithToken = () => {
 };
 
 ReactDOM.render(
-  <AppStateProvider>
-    <MuiThemeProvider theme={theme}>
-      <CssBaseline />
-      <VideoProviderWithToken />
-    </MuiThemeProvider>
-  </AppStateProvider>,
+  <MuiThemeProvider theme={theme}>
+    <CssBaseline />
+    <Router>
+      <AppStateProvider>
+        <Switch>
+          <PrivateRoute exact path="/">
+            <VideoApp />
+          </PrivateRoute>
+          <PrivateRoute path="/room/:URLRoomName">
+            <VideoApp />
+          </PrivateRoute>
+          <Route path="/login">
+            <LoginPage />
+          </Route>
+          <Redirect to="/" />
+        </Switch>
+      </AppStateProvider>
+    </Router>
+  </MuiThemeProvider>,
   document.getElementById('root')
 );

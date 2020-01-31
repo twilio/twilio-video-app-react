@@ -36,26 +36,18 @@ You will also see any linting errors in the console.
 
 This will run a standalone token server.
 
-The token server runs on port 8080 and expects a `POST` request at the `/token` route with the following JSON body:
+The token server runs on port 8080 and expects a `GET` request at the `/token` route with the following query parameters:
 
 ```
-{
-  name: string,  // the user's identity
-  room: string   // the room name
-}
+identity: string,  // the user's identity
+roomName: string   // the room name
 ```
 
-The response is the following JSON object:
-
-```
-{
-  token: string
-}
-```
+The response will be a token that can be used to connect to a room.
 
 Try it out with this sample `curl` command:
 
-`curl http://localhost:8080/token -H "Content-Type: application/json" -d '{"name": "My Name", "room": "My Room"}'`
+`curl 'localhost:8080/token?identity=TestName&roomName=TestRoom'`
 
 ### Multiple Participants in a Room
 
@@ -125,6 +117,12 @@ The `connect` function from the SDK accepts a [configuration object](https://med
 ### Track Priority Settings
 
 This application dynamically changes the priority of remote video tracks to provide an optimal collaboration experience. Any video track that will be displayed in the main video area will have `track.setPriority('high')` called on it (see the [VideoTrack](https://github.com/twilio/twilio-video-app-react/blob/AHOYAPPS-30-readme/src/components/VideoTrack/VideoTrack.tsx#L24) component) when the component is mounted. This higher priority enables the track to be rendered at a high resolution. `track.setPriority(null)` is called when the component is unmounted so that the track's priority is set to its publish priority (low).
+
+## Google Authentication using Firebase (optional)
+
+This application can be configured to authenticate users before they use the app. Once users have signed into the app with their Google credentials, their Firebase ID Token will be included in the Authorization header of the HTTP request that is used to obtain an access token. The Firebase ID Token can then be [verified](https://firebase.google.com/docs/auth/admin/verify-id-tokens) by the server that dispenses access tokens for connecting to a room. 
+
+See [.env.example](.env.example) for an explanation of the environment variables that must be set to enable Google authentication.
 
 ## License
 
