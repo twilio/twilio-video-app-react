@@ -25,7 +25,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
 
   const getToken = useCallback(
     async (identity, roomName) => {
-      const headers = new Headers();
+      const headers = new window.Headers();
 
       if (process.env.REACT_APP_USE_FIREBASE_AUTH === 'true') {
         const idToken = await user!.getIdToken();
@@ -33,7 +33,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
       }
 
       const endpoint = process.env.REACT_APP_TOKEN_ENDPOINT || '/token';
-      const params = new URLSearchParams({ identity, roomName });
+      const params = new window.URLSearchParams({ identity, roomName });
 
       return fetch(`${endpoint}?${params}`, { headers })
         .then(res => res.text())
