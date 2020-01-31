@@ -10,7 +10,7 @@ const firebaseConfig = {
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
 };
 
-export default function useAuth(setToken: any) {
+export default function useAuth() {
   const [user, setUser] = useState<firebase.User | null>(null);
   const [isAuthReady, setIsReady] = useState(false);
 
@@ -42,9 +42,8 @@ export default function useAuth(setToken: any) {
       .signOut()
       .then(() => {
         setUser(null);
-        setToken('');
       });
-  }, [setToken]);
+  }, []);
 
   return { user, signIn, signOut, isAuthReady };
 }

@@ -6,7 +6,7 @@ import { User } from 'firebase';
 interface StateContextType {
   error: TwilioError | null;
   setError(error: TwilioError | null): void;
-  getToken(name: string, room: string): Promise<string | void>;
+  getToken(name: string, room: string): Promise<string>;
   user: User | null;
   signIn(): Promise<void>;
   signOut(): Promise<void>;
@@ -33,8 +33,11 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
       const params = new window.URLSearchParams({ identity, roomName });
 
       return fetch(`${endpoint}?${params}`, { headers })
-        .then(res => res.text())
-        .catch(setError);
+        .then(res => res.text(), setError)
+        .catch(error => {
+          setError(error);
+          return error;
+        });
     },
     [user]
   );
