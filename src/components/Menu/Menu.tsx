@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -7,10 +7,13 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
 import ToggleFullscreenButton from '../ToggleFullScreenButton/ToggleFullScreenButton';
 import Toolbar from '@material-ui/core/Toolbar';
+import UserAvatar from './UserAvatar/UserAvatar';
 
 import { useAppState } from '../../state';
+import { useParams } from 'react-router-dom';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,22 +32,29 @@ const useStyles = makeStyles((theme: Theme) =>
     loadingSpinner: {
       marginLeft: '1em',
     },
+    displayName: {
+      marginLeft: '2.2em',
+      minWidth: '200px',
+      fontWeight: 600,
+    },
   })
 );
 
-export function getRoomName() {
-  const match = window.location.pathname.match(/^\/room\/([^/]*)/);
-  return match ? window.decodeURI(match[1]) : '';
-}
-
 export default function Menu() {
-  const [name, setName] = useState<string>('');
-  const [roomName, setRoomName] = useState<string>(getRoomName());
-  const roomState = useRoomState();
-  const { isConnecting } = useVideoContext();
-  const { getToken } = useAppState();
-
   const classes = useStyles();
+  const { URLRoomName } = useParams();
+  const { user, getToken } = useAppState();
+  const { isConnecting } = useVideoContext();
+  const roomState = useRoomState();
+
+  const [name, setName] = useState<string>(user?.displayName || '');
+  const [roomName, setRoomName] = useState<string>('');
+
+  useEffect(() => {
+    if (URLRoomName) {
+      setRoomName(URLRoomName);
+    }
+  }, [URLRoomName]);
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -65,14 +75,20 @@ export default function Menu() {
       <Toolbar>
         {roomState === 'disconnected' ? (
           <form className={classes.form} onSubmit={handleSubmit}>
-            <TextField
-              id="menu-name"
-              label="Name"
-              className={classes.textField}
-              value={name}
-              onChange={handleNameChange}
-              margin="dense"
-            />
+            {!user?.displayName ? (
+              <TextField
+                id="menu-name"
+                label="Name"
+                className={classes.textField}
+                value={name}
+                onChange={handleNameChange}
+                margin="dense"
+              />
+            ) : (
+              <Typography className={classes.displayName} variant="body1">
+                {user.displayName}
+              </Typography>
+            )}
             <TextField
               id="menu-room"
               label="Room"
@@ -90,6 +106,7 @@ export default function Menu() {
           <h3>{roomName}</h3>
         )}
         <ToggleFullscreenButton />
+        <UserAvatar />
       </Toolbar>
     </AppBar>
   );

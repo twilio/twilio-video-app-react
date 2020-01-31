@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import Video, { LocalTrack, LocalVideoTrack, LocalAudioTrack } from 'twilio-video';
+import Video, { LocalVideoTrack, LocalAudioTrack } from 'twilio-video';
 
 export function useLocalAudioTrack() {
   const [track, setTrack] = useState<LocalAudioTrack>();
@@ -62,7 +62,10 @@ export default function useLocalTracks() {
   const audioTrack = useLocalAudioTrack();
   const [videoTrack, getLocalVideoTrack] = useLocalVideoTrack();
 
-  const localTracks = [audioTrack, videoTrack].filter(track => track !== undefined) as LocalTrack[];
+  const localTracks = [audioTrack, videoTrack].filter(track => track !== undefined) as (
+    | LocalAudioTrack
+    | LocalVideoTrack
+  )[];
 
   return { localTracks, getLocalVideoTrack };
 }

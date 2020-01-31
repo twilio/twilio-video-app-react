@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode } from 'react';
-import { ConnectOptions, LocalTrack, Room, TwilioError } from 'twilio-video';
+import { ConnectOptions, Room, TwilioError, LocalAudioTrack, LocalVideoTrack } from 'twilio-video';
 import { Callback, ErrorCallback } from '../../types';
 import { SelectedParticipantProvider } from './useSelectedParticipant/useSelectedParticipant';
 
@@ -18,7 +18,7 @@ import useRoom from './useRoom/useRoom';
 
 export interface IVideoContext {
   room: Room;
-  localTracks: LocalTrack[];
+  localTracks: (LocalAudioTrack | LocalVideoTrack)[];
   isConnecting: boolean;
   onError: ErrorCallback;
   onDisconnect: Callback;
