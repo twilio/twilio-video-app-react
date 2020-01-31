@@ -11,7 +11,8 @@ const mockedUseRoomState = useRoomState as jest.Mock<string>;
 const mockeduseFullScreenToggle = useFullScreenToggle as jest.Mock;
 const mockedUseVideoContext = useVideoContext as jest.Mock<IVideoContext>;
 const mockToggleFullScreen = jest.fn();
-const mockGetToken = jest.fn();
+const mockConnect = jest.fn();
+const mockGetToken = jest.fn(() => Promise.resolve('mockToken'));
 
 jest.mock('../../hooks/useVideoContext/useVideoContext');
 jest.mock('../../hooks/useRoomState/useRoomState');
@@ -21,6 +22,7 @@ jest.mock('../../state', () => ({ useAppState: () => ({ getToken: mockGetToken }
 Object.defineProperty(window, 'location', { value: { pathname: '', configurable: true } });
 
 describe('the Menu component', () => {
+  beforeEach(jest.clearAllMocks);
   mockeduseFullScreenToggle.mockImplementation(() => [true, mockToggleFullScreen]);
 
   it('should hide inputs when connected to a room', () => {
@@ -77,7 +79,7 @@ describe('the Menu component', () => {
   it('should update the URL to include the room name on submit', () => {
     Object.defineProperty(window.history, 'replaceState', { value: jest.fn() });
     mockedUseRoomState.mockImplementation(() => 'disconnected');
-    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false } as any));
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false, connect: mockConnect } as any));
     const { getByLabelText, getByText } = render(<Menu />);
     fireEvent.change(getByLabelText('Name'), { target: { value: 'Foo' } });
     fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo Test' } });
@@ -85,14 +87,18 @@ describe('the Menu component', () => {
     expect(window.history.replaceState).toHaveBeenCalledWith(null, '', '/room/Foo%20Test');
   });
 
-  it('should call getToken on submit', () => {
+  it('should call getToken() and connect() on submit', done => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
-    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false } as any));
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false, connect: mockConnect } as any));
     const { getByLabelText, getByText } = render(<Menu />);
     fireEvent.change(getByLabelText('Name'), { target: { value: 'Foo' } });
     fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo Test' } });
     fireEvent.click(getByText('Join Room').parentElement!);
     expect(mockGetToken).toHaveBeenCalledWith('Foo', 'Foo Test');
+    setImmediate(() => {
+      expect(mockConnect).toHaveBeenCalledWith('mockToken');
+      done();
+    });
   });
 
   it('should populate the Room name from the URL', () => {
