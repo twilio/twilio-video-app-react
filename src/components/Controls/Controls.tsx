@@ -22,12 +22,12 @@ const useStyles = makeStyles((theme: Theme) =>
       transition: 'opacity 1.2s, transform 1.2s, visibility 0s 1.2s',
       opacity: 0,
       visibility: 'hidden',
-    },
-    active: {
-      transition: 'opacity 0.6s, transform 0.6s, visibility 0s',
-      opacity: 1,
-      visibility: 'visible',
-      transform: 'translate(50%, 0px)',
+      '&.showControls, &:hover': {
+        transition: 'opacity 0.6s, transform 0.6s, visibility 0s',
+        opacity: 1,
+        visibility: 'visible',
+        transform: 'translate(50%, 0px)',
+      },
     },
   })
 );
@@ -40,7 +40,7 @@ export default function Controls() {
   const showControls = isUserActive || roomState === 'disconnected';
 
   return (
-    <div className={clsx(classes.container, { [classes.active]: showControls })}>
+    <div className={clsx(classes.container, { showControls })}>
       <ToggleAudioButton disabled={isReconnecting} />
       <ToggleVideoButton disabled={isReconnecting} />
       {roomState !== 'disconnected' && (
