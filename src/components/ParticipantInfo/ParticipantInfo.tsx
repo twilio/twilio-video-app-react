@@ -27,6 +27,10 @@ const useStyles = makeStyles((theme: Theme) =>
       '& video': {
         filter: 'none',
       },
+      '& svg': {
+        stroke: 'black',
+        strokeWidth: '0.8px',
+      },
     },
     isSelected: {
       border: '1px solid white',
