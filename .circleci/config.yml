@@ -35,19 +35,36 @@ jobs:
       - store_artifacts:
           path: coverage
 
-      - run: npm run build
+      - run: 
+          name: "Build app with Firebase auth disabled"
+          command: npm run build
+          environment:
+            REACT_APP_TOKEN_ENDPOINT: "http://localhost:8080/token"
 
-      - run: |
-          echo ACCOUNT_SID=$TWILIO_ACCOUNT_SID >> .env
-          echo API_KEY=$TWILIO_API_KEY >> .env
-          echo API_SECRET=$TWILIO_API_SECRET >> .env
-          echo BASIC_AUTH_USERNAME=$BASIC_AUTH_USERNAME >> .env
-          echo BASIC_AUTH_PASSWORD=$BASIC_AUTH_PASSWORD >> .env
+      - run: 
+          name: "Set environment variables for local token server (used by Cypress tests)"
+          command: |
+            echo ACCOUNT_SID=$TWILIO_ACCOUNT_SID >> .env
+            echo API_KEY=$TWILIO_API_KEY >> .env
+            echo API_SECRET=$TWILIO_API_SECRET >> .env
 
       - run: npm run cypress:ci
 
       - store_test_results:
           path: test-reports
+
+      # Rebuild app with firebase auth enabled
+      - run:
+          name: "Build app with Firebase auth enabled"
+          command: |
+            echo REACT_APP_USE_FIREBASE_AUTH=true >> .env
+            echo REACT_APP_TOKEN_ENDPOINT=$REACT_APP_TOKEN_ENDPOINT >> .env
+            echo REACT_APP_FIREBASE_API_KEY=$REACT_APP_FIREBASE_API_KEY >> .env
+            echo REACT_APP_FIREBASE_AUTH_DOMAIN=$REACT_APP_FIREBASE_AUTH_DOMAIN >> .env
+            echo REACT_APP_FIREBASE_DATABASE_URL=$REACT_APP_FIREBASE_DATABASE_URL >> .env
+            echo REACT_APP_FIREBASE_STORAGE_BUCKET=$REACT_APP_FIREBASE_STORAGE_BUCKET >> .env
+            echo REACT_APP_FIREBASE_MESSAGING_SENDER_ID=$REACT_APP_FIREBASE_MESSAGING_SENDER_ID >> .env
+            npm run build
 
       - persist_to_workspace:
           root: .
@@ -68,9 +85,6 @@ jobs:
           gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
 
       - run: echo $CIRCLE_TAG > build/version.txt
-
-      # Rebuild app with firebase auth enabled
-      - run: REACT_APP_USE_FIREBASE_AUTH=true npm build
 
       - run: gcloud app deploy -q
 
