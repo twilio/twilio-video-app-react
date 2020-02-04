@@ -3,7 +3,7 @@ import { TwilioError } from 'twilio-video';
 import useAuth from './useAuth/useAuth';
 import { User } from 'firebase';
 
-interface StateContextType {
+export interface StateContextType {
   error: TwilioError | null;
   setError(error: TwilioError | null): void;
   getToken(name: string, room: string): Promise<string>;

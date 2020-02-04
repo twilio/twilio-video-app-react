@@ -1,13 +1,8 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
 import makeStyles from '@material-ui/styles/makeStyles';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import Person from '@material-ui/icons/Person';
-
-import { useAppState } from '../../../state';
-import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import { StateContextType } from '../../../state';
 
 const useStyles = makeStyles({
   red: {
@@ -24,36 +19,13 @@ export function getInitials(name: string) {
     .toUpperCase();
 }
 
-export default function UserAvatar() {
+export default function UserAvatar({ user }: { user: StateContextType['user'] }) {
   const classes = useStyles();
-  const { user, signOut } = useAppState();
-  const { room, localTracks } = useVideoContext();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const anchorRef = useRef<HTMLDivElement>(null);
+  const { displayName, photoURL } = user!;
 
-  const handleSignOut = useCallback(() => {
-    room.disconnect?.();
-    localTracks.forEach(track => track.stop());
-    signOut();
-  }, [room.disconnect, localTracks, signOut]);
-
-  if (!user) {
-    return null;
-  }
-
-  return (
-    <div ref={anchorRef}>
-      <IconButton color="inherit" onClick={() => setMenuOpen(state => !state)}>
-        {user.photoURL ? (
-          <Avatar src={user.photoURL} />
-        ) : (
-          <Avatar className={classes.red}>{user.displayName ? getInitials(user.displayName) : <Person />}</Avatar>
-        )}
-      </IconButton>
-      <Menu open={menuOpen} onClose={() => setMenuOpen(state => !state)} anchorEl={anchorRef.current}>
-        <MenuItem disabled>{user.displayName}</MenuItem>
-        <MenuItem onClick={handleSignOut}>Logout</MenuItem>
-      </Menu>
-    </div>
+  return photoURL ? (
+    <Avatar src={photoURL} />
+  ) : (
+    <Avatar className={classes.red}>{displayName ? getInitials(displayName) : <Person />}</Avatar>
   );
 }
