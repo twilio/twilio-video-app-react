@@ -1,5 +1,5 @@
 import React from 'react';
-import Menu from './Menu';
+import MenuBar from './MenuBar';
 import { MemoryRouter, Route } from 'react-router-dom';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useFullScreenToggle from '../../hooks/useFullScreenToggle/useFullScreenToggle';
@@ -26,11 +26,11 @@ Object.defineProperty(window, 'location', { value: { pathname: '', configurable:
 
 const renderComponent = () => (
   <MemoryRouter>
-    <Menu />
+    <MenuBar />
   </MemoryRouter>
 );
 
-describe('the Menu component', () => {
+describe('the MenuBar component', () => {
   beforeEach(jest.clearAllMocks);
   mockeduseFullScreenToggle.mockImplementation(() => [true, mockToggleFullScreen]);
   mockUseAppState.mockImplementation(() => ({ getToken: mockGetToken }));
@@ -117,7 +117,7 @@ describe('the Menu component', () => {
     const { getByLabelText } = render(
       <MemoryRouter initialEntries={['/room/test']}>
         <Route path="/room/:URLRoomName">
-          <Menu />
+          <MenuBar />
         </Route>
       </MemoryRouter>
     );
