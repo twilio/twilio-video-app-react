@@ -18,7 +18,7 @@ describe('the Controls component', () => {
     it('should have the "active" class', () => {
       mockUseRoomState.mockImplementation(() => 'disconnected');
       const wrapper = shallow(<Controls />);
-      expect(wrapper.find('div').prop('className')).toContain('makeStyles-active-2');
+      expect(wrapper.find('div').prop('className')).toContain('showControls');
     });
 
     it('should not render the ToggleScreenShare and EndCall buttons when not connected to a room', () => {
@@ -50,13 +50,13 @@ describe('the Controls component', () => {
     it('should have the "active" class when the user is not connected to a room', () => {
       mockUseRoomState.mockImplementation(() => 'disconnected');
       const wrapper = shallow(<Controls />);
-      expect(wrapper.find('div').prop('className')).toContain('makeStyles-active-2');
+      expect(wrapper.find('div').prop('className')).toContain('showControls');
     });
 
     it('should not have the "active" class when the user is connected to a room', () => {
       mockUseRoomState.mockImplementation(() => 'connected');
       const wrapper = shallow(<Controls />);
-      expect(wrapper.find('div').prop('className')).not.toContain('makeStyles-active-2');
+      expect(wrapper.find('div').prop('className')).not.toContain('showControls');
     });
   });
 });
