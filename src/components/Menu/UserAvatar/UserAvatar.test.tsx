@@ -57,21 +57,20 @@ describe('the UserAvatar component', () => {
     ).toBe('Test User');
   });
 
-  it('should disconnect from the room and stop all tracks on signout', done => {
+  it('should disconnect from the room and stop all tracks on signout', () => {
+    const mockSignOut = jest.fn(() => Promise.resolve());
     mockUseAppState.mockImplementation(() => ({
       user: { displayName: 'Test User' },
-      signOut: jest.fn(() => Promise.resolve()),
+      signOut: mockSignOut,
     }));
     const wrapper = shallow(<UserAvatar />);
     wrapper
       .find(MenuItem)
       .at(1)
       .simulate('click');
-    setImmediate(() => {
-      expect(mockDisconnect).toHaveBeenCalled();
-      expect(mockTrack.stop).toHaveBeenCalled();
-      done();
-    });
+    expect(mockDisconnect).toHaveBeenCalled();
+    expect(mockTrack.stop).toHaveBeenCalled();
+    expect(mockSignOut).toHaveBeenCalled();
   });
 
   describe('getInitials function', () => {

@@ -19,12 +19,6 @@ describe('the useAppState hook', () => {
   beforeEach(jest.clearAllMocks);
   beforeEach(() => (process.env = {} as any));
 
-  it('should set a token', () => {
-    const { result } = renderHook(useAppState, { wrapper });
-    act(() => result.current.setToken('test'));
-    expect(result.current.token).toBe('test');
-  });
-
   it('should set an error', () => {
     const { result } = renderHook(useAppState, { wrapper });
     act(() => result.current.setError(new Error('testError') as TwilioError));
@@ -39,10 +33,10 @@ describe('the useAppState hook', () => {
   it('should get a token using the REACT_APP_TOKEN_ENDPOINT environment variable when avaiable', async () => {
     process.env.REACT_APP_TOKEN_ENDPOINT = 'http://test.com/api/token';
 
-    const { result, waitForNextUpdate } = renderHook(useAppState, { wrapper });
-    result.current.getToken('testname', 'testroom');
+    const { result } = renderHook(useAppState, { wrapper });
 
-    await waitForNextUpdate();
+    const token = await result.current.getToken('testname', 'testroom');
+    expect(token).toBe('mockVideoToken');
 
     expect(window.fetch).toHaveBeenCalledWith('http://test.com/api/token?identity=testname&roomName=testroom', {
       headers: { _headers: {} },
@@ -53,15 +47,14 @@ describe('the useAppState hook', () => {
     it('should get a token from the local token server', async () => {
       process.env.REACT_APP_USE_FIREBASE_AUTH = 'false';
 
-      const { result, waitForNextUpdate } = renderHook(useAppState, { wrapper });
-      result.current.getToken('testname', 'testroom');
+      const { result } = renderHook(useAppState, { wrapper });
 
-      await waitForNextUpdate();
+      const token = await result.current.getToken('testname', 'testroom');
+      expect(token).toBe('mockVideoToken');
 
       expect(window.fetch).toHaveBeenCalledWith('/token?identity=testname&roomName=testroom', {
         headers: { _headers: {} },
       });
-      expect(result.current.token).toBe('mockVideoToken');
     });
   });
 
@@ -69,15 +62,14 @@ describe('the useAppState hook', () => {
     it("should include the user's firebase ID token in the authorization header", async () => {
       process.env.REACT_APP_USE_FIREBASE_AUTH = 'true';
 
-      const { result, waitForNextUpdate } = renderHook(useAppState, { wrapper });
-      result.current.getToken('testname', 'testroom');
+      const { result } = renderHook(useAppState, { wrapper });
 
-      await waitForNextUpdate();
+      const token = await result.current.getToken('testname', 'testroom');
+      expect(token).toBe('mockVideoToken');
 
       expect(window.fetch).toHaveBeenCalledWith('/token?identity=testname&roomName=testroom', {
         headers: { _headers: { authorization: ['mockFirebaseToken'] } },
       });
-      expect(result.current.token).toBe('mockVideoToken');
     });
   });
 });

@@ -32,10 +32,9 @@ export default function UserAvatar() {
   const anchorRef = useRef<HTMLDivElement>(null);
 
   const handleSignOut = useCallback(() => {
-    signOut().then(() => {
-      room.disconnect?.();
-      localTracks.forEach(track => track.stop());
-    });
+    room.disconnect?.();
+    localTracks.forEach(track => track.stop());
+    signOut();
   }, [room.disconnect, localTracks, signOut]);
 
   if (!user) {
