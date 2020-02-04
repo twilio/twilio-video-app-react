@@ -16,15 +16,13 @@ jest.mock('firebase/app', () => {
 
 jest.mock('firebase/auth');
 
-const mockSetToken = jest.fn();
-
 describe('the useAuth hook', () => {
   afterEach(jest.clearAllMocks);
 
   describe('with auth enabled', () => {
     it('should set isAuthReady to true and set a user on load', async () => {
       process.env.REACT_APP_USE_FIREBASE_AUTH = 'true';
-      const { result, waitForNextUpdate } = renderHook(() => useAuth(mockSetToken));
+      const { result, waitForNextUpdate } = renderHook(() => useAuth());
       expect(result.current.isAuthReady).toBe(false);
       expect(result.current.user).toBe(null);
       await waitForNextUpdate();
@@ -32,20 +30,19 @@ describe('the useAuth hook', () => {
       expect(result.current.user).toBe('mockUser');
     });
 
-    it('should set user to null and reset token on signOut', async () => {
+    it('should set user to null on signOut', async () => {
       process.env.REACT_APP_USE_FIREBASE_AUTH = 'true';
-      const { result, waitForNextUpdate } = renderHook(() => useAuth(mockSetToken));
+      const { result, waitForNextUpdate } = renderHook(() => useAuth());
       await waitForNextUpdate();
       result.current.signOut();
       await waitForNextUpdate();
       expect(result.current.isAuthReady).toBe(true);
       expect(result.current.user).toBe(null);
-      expect(mockSetToken).toHaveBeenCalledWith('');
     });
 
     it('should set a new user on signIn', async () => {
       process.env.REACT_APP_USE_FIREBASE_AUTH = 'true';
-      const { result, waitForNextUpdate } = renderHook(() => useAuth(mockSetToken));
+      const { result, waitForNextUpdate } = renderHook(() => useAuth());
       await waitForNextUpdate();
       result.current.signIn();
       await waitForNextUpdate();
@@ -56,7 +53,7 @@ describe('the useAuth hook', () => {
   describe('with auth disabled', () => {
     it('should not initialize', done => {
       process.env.REACT_APP_USE_FIREBASE_AUTH = 'false';
-      const { result } = renderHook(() => useAuth(mockSetToken));
+      const { result } = renderHook(() => useAuth());
       setImmediate(() => {
         expect(result.current.isAuthReady).toBe(false);
         done();

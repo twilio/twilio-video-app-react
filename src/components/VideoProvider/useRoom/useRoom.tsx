@@ -1,14 +1,9 @@
 import EventEmitter from 'events';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Video, { ConnectOptions, LocalTrack, Room } from 'twilio-video';
 import { Callback } from '../../../types';
 
-export default function useRoom(
-  localTracks: LocalTrack[],
-  onError: Callback,
-  token?: string,
-  options?: ConnectOptions
-) {
+export default function useRoom(localTracks: LocalTrack[], onError: Callback, options?: ConnectOptions) {
   const [room, setRoom] = useState<Room>(new EventEmitter() as Room);
   const [isConnecting, setIsConnecting] = useState(false);
   const disconnectHandlerRef = useRef<() => void>(() => {});
@@ -21,17 +16,17 @@ export default function useRoom(
     localTracksRef.current = localTracks;
   }, [localTracks]);
 
-  useEffect(() => {
-    // Connect to a room when we have a token, but not if a connection is in progress.
-    if (token && room.state !== 'connected' && !isConnecting) {
+  const connect = useCallback(
+    token => {
       setIsConnecting(true);
-      Video.connect(token, { ...options, tracks: [] }).then(
+      return Video.connect(token, { ...options, tracks: [] }).then(
         newRoom => {
           setRoom(newRoom);
 
           newRoom.once('disconnected', () => {
             // Reset the room only after all other `disconnected` listeners have been called.
             setTimeout(() => setRoom(new EventEmitter() as Room));
+            window.removeEventListener('beforeunload', disconnectHandlerRef.current);
           });
 
           // @ts-ignore
@@ -52,16 +47,14 @@ export default function useRoom(
           // Add a listener to disconnect from the room when a user closes their browser
           window.addEventListener('beforeunload', disconnectHandlerRef.current);
         },
-        error => onError(error)
+        error => {
+          onError(error);
+          setIsConnecting(false);
+        }
       );
-    }
+    },
+    [options, onError]
+  );
 
-    return () => {
-      if (room.state !== 'connected' && !isConnecting) {
-        window.removeEventListener('beforeunload', disconnectHandlerRef.current);
-      }
-    };
-  }, [token, options, room, localTracks, setIsConnecting, isConnecting, onError]);
-
-  return { room, isConnecting };
+  return { room, isConnecting, connect };
 }

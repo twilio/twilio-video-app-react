@@ -4,11 +4,9 @@ import useAuth from './useAuth/useAuth';
 import { User } from 'firebase';
 
 interface StateContextType {
-  token: string;
   error: TwilioError | null;
-  setToken(token: string): void;
   setError(error: TwilioError | null): void;
-  getToken(name: string, room: string): void;
+  getToken(name: string, room: string): Promise<string>;
   user: User | null;
   signIn(): Promise<void>;
   signOut(): Promise<void>;
@@ -18,10 +16,9 @@ interface StateContextType {
 export const StateContext = createContext<StateContextType>(null!);
 
 export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
-  const [token, setToken] = useState('');
   const [error, setError] = useState<TwilioError | null>(null);
 
-  const { user, signIn, signOut, isAuthReady } = useAuth(setToken);
+  const { user, signIn, signOut, isAuthReady } = useAuth();
 
   const getToken = useCallback(
     async (identity, roomName) => {
@@ -36,15 +33,17 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
       const params = new window.URLSearchParams({ identity, roomName });
 
       return fetch(`${endpoint}?${params}`, { headers })
-        .then(res => res.text())
-        .then(setToken)
-        .catch(setError);
+        .then(res => res.text(), setError)
+        .catch(error => {
+          setError(error);
+          return error;
+        });
     },
-    [setToken, user]
+    [user]
   );
 
   return (
-    <StateContext.Provider value={{ token, error, setToken, setError, getToken, user, signIn, signOut, isAuthReady }}>
+    <StateContext.Provider value={{ error, setError, getToken, user, signIn, signOut, isAuthReady }}>
       {props.children}
     </StateContext.Provider>
   );
