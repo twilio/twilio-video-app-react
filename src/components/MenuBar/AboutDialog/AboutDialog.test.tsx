@@ -3,6 +3,7 @@ import AboutDialog from './AboutDialog';
 import { render } from '@testing-library/react';
 
 jest.mock('twilio-video', () => ({ version: '1.2', isSupported: true }));
+jest.mock('../../../../package.json', () => ({ version: '1.3' }));
 
 describe('the AboutDialog component', () => {
   it('should display Video.isSupported', () => {
@@ -13,6 +14,11 @@ describe('the AboutDialog component', () => {
   it('should display the SDK version', () => {
     const { getByText } = render(<AboutDialog open={true} onClose={() => {}} />);
     expect(getByText('SDK Version: 1.2')).toBeTruthy();
+  });
+
+  it('should display the package.json version', () => {
+    const { getByText } = render(<AboutDialog open={true} onClose={() => {}} />);
+    expect(getByText('App Version: 1.3')).toBeTruthy();
   });
 
   describe('when running locally', () => {
