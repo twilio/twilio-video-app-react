@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode } from 'react';
-import { ConnectOptions, LocalTrack, Room, TwilioError } from 'twilio-video';
+import { ConnectOptions, Room, TwilioError, LocalAudioTrack, LocalVideoTrack } from 'twilio-video';
 import { Callback, ErrorCallback } from '../../types';
 import { SelectedParticipantProvider } from './useSelectedParticipant/useSelectedParticipant';
 
@@ -18,38 +18,31 @@ import useRoom from './useRoom/useRoom';
 
 export interface IVideoContext {
   room: Room;
-  localTracks: LocalTrack[];
+  localTracks: (LocalAudioTrack | LocalVideoTrack)[];
   isConnecting: boolean;
+  connect: (token: string) => Promise<void>;
   onError: ErrorCallback;
   onDisconnect: Callback;
-  getLocalAudioTrack: Function;
-  getLocalVideoTrack: Function;
+  getLocalVideoTrack: () => Promise<LocalVideoTrack>;
 }
 
 export const VideoContext = createContext<IVideoContext>(null!);
 
 interface VideoProviderProps {
-  token?: string;
   options?: ConnectOptions;
   onError: ErrorCallback;
-  onDisconnect: Callback;
+  onDisconnect?: Callback;
   children: ReactNode;
 }
 
-export function VideoProvider({
-  token,
-  options,
-  children,
-  onError = () => {},
-  onDisconnect = () => {},
-}: VideoProviderProps) {
+export function VideoProvider({ options, children, onError = () => {}, onDisconnect = () => {} }: VideoProviderProps) {
   const onErrorCallback = (error: TwilioError) => {
     console.log(`ERROR: ${error.message}`, error);
     onError(error);
   };
 
-  const { localTracks, getLocalAudioTrack, getLocalVideoTrack } = useLocalTracks();
-  const { room, isConnecting } = useRoom(localTracks, onErrorCallback, token, options);
+  const { localTracks, getLocalVideoTrack } = useLocalTracks();
+  const { room, isConnecting, connect } = useRoom(localTracks, onErrorCallback, options);
 
   // Register onError and onDisconnect callback functions.
   useHandleRoomDisconnectionErrors(room, onError);
@@ -64,8 +57,8 @@ export function VideoProvider({
         isConnecting,
         onError: onErrorCallback,
         onDisconnect,
-        getLocalAudioTrack,
         getLocalVideoTrack,
+        connect,
       }}
     >
       <SelectedParticipantProvider room={room}>{children}</SelectedParticipantProvider>

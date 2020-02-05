@@ -28,16 +28,19 @@ module.exports = (on, config) => {
     },
     toggleParticipantAudio: async name => {
       const page = participants[name];
+      await page.click('body'); // To make controls reappear
       await page.click('[data-cy-audio-toggle]');
       return Promise.resolve(null);
     },
     shareParticipantScreen: async name => {
       const page = participants[name];
+      await page.click('body');
       await page.click('[title="Share Screen"]');
       return Promise.resolve(null);
     },
     removeParticipant: async name => {
       const page = participants[name];
+      await page.click('body');
       await page.click('[title="End Call"]');
       await page.close();
       delete participants[name];
