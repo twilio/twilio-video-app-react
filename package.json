@@ -68,7 +68,7 @@
     "test:ci": "jest --ci --runInBand --reporters=default --reporters=jest-junit --coverage",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --browser chrome",
-    "cypress:ci": "CYPRESS_baseUrl=http://localhost:8080 start-server-and-test server http://localhost:8080 cypress:run"
+    "cypress:ci": "CYPRESS_baseUrl=http://localhost:8081 start-server-and-test server http://localhost:8081 cypress:run"
   },
   "eslintConfig": {
     "extends": "react-app",
@@ -93,7 +93,7 @@
       "pre-commit": "lint-staged"
     }
   },
-  "proxy": "http://localhost:8080/",
+  "proxy": "http://localhost:8081/",
   "jest": {
     "snapshotSerializers": [
       "enzyme-to-json/serializer"

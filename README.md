@@ -36,7 +36,7 @@ You will also see any linting errors in the console.
 
 This will run a standalone token server.
 
-The token server runs on port 8080 and expects a `GET` request at the `/token` route with the following query parameters:
+The token server runs on port 8081 and expects a `GET` request at the `/token` route with the following query parameters:
 
 ```
 identity: string,  // the user's identity
@@ -47,7 +47,7 @@ The response will be a token that can be used to connect to a room.
 
 Try it out with this sample `curl` command:
 
-`curl 'localhost:8080/token?identity=TestName&roomName=TestRoom'`
+`curl 'localhost:8081/token?identity=TestName&roomName=TestRoom'`
 
 ### Multiple Participants in a Room
 
