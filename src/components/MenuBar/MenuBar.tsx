@@ -7,7 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
 import ToggleFullscreenButton from '../ToggleFullScreenButton/ToggleFullScreenButton';
 import Toolbar from '@material-ui/core/Toolbar';
-import UserAvatar from './UserAvatar/UserAvatar';
+import Menu from './Menu/Menu';
 
 import { useAppState } from '../../state';
 import { useParams } from 'react-router-dom';
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function Menu() {
+export default function MenuBar() {
   const classes = useStyles();
   const { URLRoomName } = useParams();
   const { user, getToken } = useAppState();
@@ -106,7 +106,7 @@ export default function Menu() {
           <h3>{roomName}</h3>
         )}
         <ToggleFullscreenButton />
-        <UserAvatar />
+        <Menu />
       </Toolbar>
     </AppBar>
   );
