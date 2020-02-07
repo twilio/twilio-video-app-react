@@ -6,6 +6,7 @@ import { LocalParticipant, RemoteParticipant, RemoteVideoTrack, LocalVideoTrack 
 import BandwidthWarning from './BandwidthWarning/BandwidthWarning';
 import MicOff from '@material-ui/icons/MicOff';
 import NetworkQualityLevel from '../NewtorkQualityLevel/NetworkQualityLevel';
+import PinIcon from './PinIcon/PinIcon';
 import ScreenShare from '@material-ui/icons/ScreenShare';
 import VideocamOff from '@material-ui/icons/VideocamOff';
 
@@ -31,9 +32,6 @@ const useStyles = makeStyles((theme: Theme) =>
         stroke: 'black',
         strokeWidth: '0.8px',
       },
-    },
-    isSelected: {
-      border: '1px solid white',
     },
     isVideoSwitchedOff: {
       '& video': {
@@ -92,7 +90,6 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
   return (
     <div
       className={clsx(classes.container, {
-        [classes.isSelected]: isSelected,
         [classes.isVideoSwitchedOff]: isVideoSwitchedOff,
       })}
       onClick={onClick}
@@ -107,6 +104,7 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
           {!isAudioEnabled && <MicOff data-cy-audio-mute-icon />}
           {!isVideoEnabled && <VideocamOff />}
           {isScreenShareEnabled && <ScreenShare />}
+          {isSelected && <PinIcon />}
         </div>
       </div>
       {isVideoSwitchedOff && <BandwidthWarning />}
