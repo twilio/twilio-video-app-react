@@ -43,7 +43,7 @@ describe('the AboutDialog component', () => {
       // @ts-ignore
       process.env = {
         REACT_APP_GIT_TAG: 'v0.1',
-        REACT_APP_GIT_HASH: '01b2c3',
+        REACT_APP_GIT_COMMIT: '01b2c3',
       };
     });
 
