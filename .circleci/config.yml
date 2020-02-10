@@ -65,7 +65,7 @@ jobs:
             echo REACT_APP_FIREBASE_STORAGE_BUCKET=$REACT_APP_FIREBASE_STORAGE_BUCKET >> .env
             echo REACT_APP_FIREBASE_MESSAGING_SENDER_ID=$REACT_APP_FIREBASE_MESSAGING_SENDER_ID >> .env
             echo REACT_APP_GIT_TAG=$CIRCLE_TAG >> .env
-            echo REACT_APP_GIT_COMMIT=$CIRCLE_COMMIT >> .env
+            echo REACT_APP_GIT_COMMIT=$CIRCLE_SHA1 >> .env
             npm run build
 
       - persist_to_workspace:
