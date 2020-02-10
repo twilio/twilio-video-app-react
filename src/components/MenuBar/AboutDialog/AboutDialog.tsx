@@ -23,7 +23,7 @@ function AboutDialog({ open, onClose }: PropsWithChildren<AboutDialogProps>) {
         <DialogContentText>SDK Version: {Video.version}</DialogContentText>
         <DialogContentText>App Version: {appVersion}</DialogContentText>
         <DialogContentText>Deployed Tag: {process.env.REACT_APP_GIT_TAG || 'N/A'}</DialogContentText>
-        <DialogContentText>Deployed Commit Hash: {process.env.REACT_APP_GIT_HASH || 'N/A'}</DialogContentText>
+        <DialogContentText>Deployed Commit Hash: {process.env.REACT_APP_GIT_COMMIT || 'N/A'}</DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="primary" autoFocus>
