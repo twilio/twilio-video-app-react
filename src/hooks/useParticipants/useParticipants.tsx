@@ -9,13 +9,13 @@ export default function useParticipants() {
   const [participants, setParticipants] = useState(Array.from(room.participants.values()));
 
   useEffect(() => {
-    if (dominantSpeaker && participants.includes(dominantSpeaker)) {
+    if (dominantSpeaker) {
       setParticipants(prevParticipants => [
         dominantSpeaker,
         ...prevParticipants.filter(participant => participant !== dominantSpeaker),
       ]);
     }
-  }, [dominantSpeaker, participants]);
+  }, [dominantSpeaker]);
 
   useEffect(() => {
     const participantConnected = (participant: RemoteParticipant) =>
