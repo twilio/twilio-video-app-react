@@ -1,5 +1,6 @@
 import React from 'react';
 import ParticipantInfo from './ParticipantInfo';
+import PinIcon from './PinIcon/PinIcon';
 import { shallow } from 'enzyme';
 import usePublications from '../../hooks/usePublications/usePublications';
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
@@ -69,7 +70,7 @@ describe('the ParticipantInfo component', () => {
         mock children
       </ParticipantInfo>
     );
-    expect(wrapper.find('.makeStyles-infoContainer-4').prop('className')).toContain('makeStyles-hideVideo-5');
+    expect(wrapper.find('.makeStyles-infoContainer-3').prop('className')).toContain('hideVideo');
   });
 
   it('should not add hideVideoProp to InfoContainer component when a video track is published', () => {
@@ -79,7 +80,7 @@ describe('the ParticipantInfo component', () => {
         mock children
       </ParticipantInfo>
     );
-    expect(wrapper.find('.makeStyles-infoContainer-4').prop('className')).not.toContain('makeStyles-hideVideo-5');
+    expect(wrapper.find('.makeStyles-infoContainer-3').prop('className')).not.toContain('hideVideo');
   });
 
   it('should render a VideoCamOff icon when no video tracks are published', () => {
@@ -110,7 +111,7 @@ describe('the ParticipantInfo component', () => {
         mock children
       </ParticipantInfo>
     );
-    expect(wrapper.find('.makeStyles-container-1').prop('className')).toContain('makeStyles-isVideoSwitchedOff-3');
+    expect(wrapper.find('.makeStyles-container-1').prop('className')).toContain('isVideoSwitchedOff');
   });
 
   it('should not add isSwitchedOff prop to Container component when video is not switched off', () => {
@@ -121,6 +122,26 @@ describe('the ParticipantInfo component', () => {
         mock children
       </ParticipantInfo>
     );
-    expect(wrapper.find('.makeStyles-container-1').prop('className')).not.toContain('makeStyles-isVideoSwitchedOff-3');
+    expect(wrapper.find('.makeStyles-container-1').prop('className')).not.toContain('isVideoSwitchedOff');
+  });
+
+  it('should render the PinIcon component when the participant is selected', () => {
+    mockUsePublications.mockImplementation(() => [{ trackName: 'camera' }]);
+    const wrapper = shallow(
+      <ParticipantInfo onClick={() => {}} isSelected={true} participant={{ identity: 'mockIdentity' } as any}>
+        mock children
+      </ParticipantInfo>
+    );
+    expect(wrapper.exists(PinIcon)).toBe(true);
+  });
+
+  it('should not render the PinIcon component when the participant is not selected', () => {
+    mockUsePublications.mockImplementation(() => [{ trackName: 'camera' }]);
+    const wrapper = shallow(
+      <ParticipantInfo onClick={() => {}} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
+        mock children
+      </ParticipantInfo>
+    );
+    expect(wrapper.exists(PinIcon)).toBe(false);
   });
 });
