@@ -6,6 +6,7 @@ import { LocalParticipant, RemoteParticipant, RemoteVideoTrack, LocalVideoTrack 
 import BandwidthWarning from './BandwidthWarning/BandwidthWarning';
 import MicOff from '@material-ui/icons/MicOff';
 import NetworkQualityLevel from '../NewtorkQualityLevel/NetworkQualityLevel';
+import ParticipantConnectionIndicator from './ParticipantConnectionIndicator/ParticipantConnectionIndicator';
 import ScreenShare from '@material-ui/icons/ScreenShare';
 import VideocamOff from '@material-ui/icons/VideocamOff';
 
@@ -58,6 +59,8 @@ const useStyles = makeStyles((theme: Theme) =>
       background: 'rgba(0, 0, 0, 0.7)',
       padding: '0.1em 0.3em',
       margin: 0,
+      display: 'flex',
+      alignItems: 'center',
     },
     infoRow: {
       display: 'flex',
@@ -100,7 +103,10 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
     >
       <div className={clsx(classes.infoContainer, { [classes.hideVideo]: !isVideoEnabled })}>
         <div className={classes.infoRow}>
-          <h4 className={classes.identity}>{participant.identity}</h4>
+          <h4 className={classes.identity}>
+            <ParticipantConnectionIndicator participant={participant} />
+            {participant.identity}
+          </h4>
           <NetworkQualityLevel qualityLevel={networkQualityLevel} />
         </div>
         <div>
