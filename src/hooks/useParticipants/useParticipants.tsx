@@ -8,6 +8,9 @@ export default function useParticipants() {
   const dominantSpeaker = useDominantSpeaker();
   const [participants, setParticipants] = useState(Array.from(room.participants.values()));
 
+  // When the dominant speaker changes, they are moved to the front of the participants array.
+  // This means that the most recent dominant speakers will always be near the top of the
+  // ParticipantStrip component.
   useEffect(() => {
     if (dominantSpeaker) {
       setParticipants(prevParticipants => [
