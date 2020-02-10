@@ -15,7 +15,7 @@ export default function useParticipants() {
         ...prevParticipants.filter(participant => participant !== dominantSpeaker),
       ]);
     }
-  }, [dominantSpeaker]);
+  }, [dominantSpeaker, participants]);
 
   useEffect(() => {
     const participantConnected = (participant: RemoteParticipant) =>
