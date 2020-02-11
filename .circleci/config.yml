@@ -44,9 +44,9 @@ jobs:
       - run: 
           name: "Set environment variables for local token server (used by Cypress tests)"
           command: |
-            echo ACCOUNT_SID=$TWILIO_ACCOUNT_SID >> .env
-            echo API_KEY=$TWILIO_API_KEY >> .env
-            echo API_SECRET=$TWILIO_API_SECRET >> .env
+            echo TWILIO_ACCOUNT_SID=$TWILIO_ACCOUNT_SID >> .env
+            echo TWILIO_API_KEY_SID=$TWILIO_API_KEY >> .env
+            echo TWILIO_API_KEY_SECRET=$TWILIO_API_SECRET >> .env
 
       - run: npm run cypress:ci
 
