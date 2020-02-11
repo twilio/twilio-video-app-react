@@ -13,6 +13,12 @@ describe('the VideoTrack component', () => {
     expect(mockTrack.detach).not.toHaveBeenCalled();
   });
 
+  it('it should call the detach method when the component unmounts', () => {
+    const { unmount } = render(<VideoTrack track={mockTrack} />);
+    unmount();
+    expect(mockTrack.detach).toHaveBeenCalledWith(expect.any(window.HTMLVideoElement));
+  });
+
   it('should flip the video horizontally if the track is local', () => {
     const { container } = render(<VideoTrack track={mockTrack} isLocal />);
     expect(container.querySelector('video')!.style.transform).toEqual('rotateY(180deg)');
