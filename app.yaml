@@ -12,10 +12,10 @@ handlers:
   static_files: build/\1
   upload: build/.*\.(json|ico|js|txt|png)$
 
-- url: /apple-app-site-association
+- url: /.well-known/apple-app-site-association
   secure: always
-  static_files: build/apple-app-site-association
-  upload: build/apple-app-site-association
+  static_files: build/.well-known/apple-app-site-association
+  upload: build/.well-known/apple-app-site-association
 
 - url: .*
   secure: always
