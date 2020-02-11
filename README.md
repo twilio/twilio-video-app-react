@@ -12,13 +12,13 @@ This application requires an access token to connect to a Room. The included loc
 
 - Create an account in the [Twilio Console](https://www.twilio.com/console).
 - Click on 'Settings' and take note of your Account SID.
-- Create an API Key and Secret in the [API Keys Section](https://www.twilio.com/console/video/project/api-keys) under Programmable Video Tools in the Twilio Console.
-- Store your Account SID, API Key, and API Secret in a new file called `.env` in the root level of the application (example below).
+- Create a new API Key in the [API Keys Section](https://www.twilio.com/console/video/project/api-keys) under Programmable Video Tools in the Twilio Console. Take note of the SID and Secret of the new API key.
+- Store your Account SID, API Key SID, and API Key Secret in a new file called `.env` in the root level of the application (example below).
 
 ```
-ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-API_KEY=SKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-API_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TWILIO_API_KEY_SID=SKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TWILIO_API_KEY_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 Now the local token server (see [server.js](server.js)) can dispense Access Tokens to connect to a Room.

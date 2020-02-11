@@ -6,15 +6,17 @@ const VideoGrant = AccessToken.VideoGrant;
 require('dotenv').config();
 
 const MAX_ALLOWED_SESSION_DURATION = 14400;
-const twilioAccountSid = process.env.ACCOUNT_SID;
-const twilioApiKey = process.env.API_KEY;
-const twilioApiSecret = process.env.API_SECRET;
+const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
+const twilioApiKeySID = process.env.TWILIO_API_KEY_SID;
+const twilioApiKeySecret = process.env.TWILIO_API_KEY_SECRET;
 
 app.use(express.static(path.join(__dirname, 'build')));
 
 app.get('/token', (req, res) => {
-  const {identity, roomName} = req.query
-  const token = new AccessToken(twilioAccountSid, twilioApiKey, twilioApiSecret, { ttl: MAX_ALLOWED_SESSION_DURATION });
+  const { identity, roomName } = req.query;
+  const token = new AccessToken(twilioAccountSid, twilioApiKeySID, twilioApiKeySecret, {
+    ttl: MAX_ALLOWED_SESSION_DURATION,
+  });
   token.identity = identity;
   const videoGrant = new VideoGrant({ room: roomName });
   token.addGrant(videoGrant);
