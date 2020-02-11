@@ -4,20 +4,22 @@ exports[`the ParticipantTracks component should render an array of publications 
 <Fragment>
   <Publication
     isLocal={false}
-    key="0"
+    key="video"
     participant="mockParticipant"
     publication={
       Object {
+        "kind": "video",
         "trackSid": 0,
       }
     }
   />
   <Publication
     isLocal={false}
-    key="1"
+    key="audio"
     participant="mockParticipant"
     publication={
       Object {
+        "kind": "audio",
         "trackSid": 1,
       }
     }
