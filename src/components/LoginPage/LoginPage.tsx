@@ -60,7 +60,7 @@ const theme = createMuiTheme({
   },
 });
 
-export default function Login() {
+export default function LoginPage() {
   const classes = useStyles();
   const { signIn, user, isAuthReady } = useAppState();
   const history = useHistory();
@@ -68,8 +68,7 @@ export default function Login() {
   const [passcode, setPasscode] = useState('');
   const [authError, setAuthError] = useState<Error | null>(null);
 
-  const isAuthEnabled =
-    process.env.REACT_APP_USE_FIREBASE_AUTH === 'true' || process.env.REACT_APP_USE_PASSCODE_AUTH === 'true';
+  const isAuthEnabled = Boolean(process.env.REACT_APP_SET_AUTH);
 
   const login = () => {
     setAuthError(null);
@@ -100,13 +99,13 @@ export default function Login() {
           <TwilioLogo className={classes.twilioLogo} />
           <img className={classes.videoLogo} src={videoLogo} alt="Video Logo"></img>
 
-          {process.env.REACT_APP_USE_FIREBASE_AUTH === 'true' && (
+          {process.env.REACT_APP_SET_AUTH === 'firebase' && (
             <Button variant="contained" className={classes.button} onClick={login} startIcon={<GoogleLogo />}>
               Sign in with Google
             </Button>
           )}
 
-          {process.env.REACT_APP_USE_PASSCODE_AUTH === 'true' && (
+          {process.env.REACT_APP_SET_AUTH === 'passcode' && (
             <form onSubmit={handleSubmit}>
               <Grid container alignItems="center" direction="column">
                 <TextField
@@ -128,7 +127,6 @@ export default function Login() {
               </Grid>
             </form>
           )}
-
         </Paper>
       </Grid>
     </ThemeProvider>
