@@ -1,23 +1,22 @@
 import { useCallback, useEffect, useState } from 'react';
 
-function getPasscode() {
+export function getPasscode() {
   const match = window.location.search.match(/appcode=(.*)&?/);
   const passcode = match ? match[1].slice(0, 6) : window.sessionStorage.getItem('passcode');
   return passcode;
 }
 
-function fetchToken(name: string, room: string, passcode: string) {
+export function fetchToken(name: string, room: string, passcode: string) {
   return fetch(`/token`, {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
     },
-    body: JSON.stringify({ user_identity: name, room_name: room, passcode }),
-    mode: 'cors',
+    body: JSON.stringify({ user_identity: name, room_name: room, passcode })
   });
 }
 
-function verifyPasscode(passcode: string) {
+export function verifyPasscode(passcode: string) {
   return fetchToken('verification name', 'verification room', passcode).then(async res => {
     const jsonResponse = await res.json();
     if (res.status === 401) {
@@ -30,7 +29,7 @@ function verifyPasscode(passcode: string) {
   });
 }
 
-function getErrorMessage(message: string) {
+export function getErrorMessage(message: string) {
   switch (message) {
     case 'unauthorized':
       return 'Appcode is incorrect';
