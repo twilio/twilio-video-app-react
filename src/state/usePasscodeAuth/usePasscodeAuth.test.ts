@@ -19,9 +19,26 @@ describe('the usePasscodeAuth hook', () => {
       expect(result.current).toMatchObject({ isAuthReady: true, user: { passcode: '123123' } });
     });
 
+    it('should remove the query parameter from the URL when the appcode is valid', async () => {
+      // @ts-ignore
+      window.fetch = jest.fn(() => Promise.resolve({ ok: true, json: () => ({ token: 'mockVideoToken' }) }));
+      // @ts-ignore
+      window.location = {
+        search: '?appcode=000000',
+        origin: 'http://test-origin',
+        pathname: '/test-pathname',
+      };
+      Object.defineProperty(window.history, 'replaceState', { value: jest.fn() });
+      window.sessionStorage.setItem('passcode', '123123');
+      const { waitForNextUpdate } = renderHook(usePasscodeAuth);
+      await waitForNextUpdate();
+      expect(window.history.replaceState).toHaveBeenCalledWith({}, '', 'http://test-origin/test-pathname');
+    });
+
     it('should not return a user when the app code is invalid', async () => {
       // @ts-ignore
       window.fetch = jest.fn(() => Promise.resolve({ status: 401, json: () => ({ type: 'errorMessage' }) }));
+      window.location.search = ''
       window.sessionStorage.setItem('passcode', '123123');
       const { result, waitForNextUpdate } = renderHook(usePasscodeAuth);
       await waitForNextUpdate();
@@ -82,12 +99,12 @@ describe('the getPasscode function', () => {
   beforeEach(() => window.sessionStorage.clear());
 
   it('should return the appcode from session storage', () => {
+    window.location.search = ''
     window.sessionStorage.setItem('passcode', '123123');
     expect(getPasscode()).toBe('123123');
   });
 
   it('should return the appcode from the URL', () => {
-    // @ts-ignore
     window.location.search = '?appcode=234234';
 
     expect(getPasscode()).toBe('234234');
@@ -95,10 +112,14 @@ describe('the getPasscode function', () => {
 
   it('should return the appcode from the URL when the app code is also sotred in sessionstorage', () => {
     window.sessionStorage.setItem('passcode', '123123');
-    // @ts-ignore
     window.location.search = '?appcode=234234';
 
     expect(getPasscode()).toBe('234234');
+  });
+
+  it('should return null when there is no passcode', () => {
+    window.location.search = '';
+    expect(getPasscode()).toBe(null);
   });
 });
 
