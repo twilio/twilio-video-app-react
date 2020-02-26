@@ -1,4 +1,4 @@
-import useAuth from './useAuth';
+import useFirebaseAuth from './useFirebaseAuth';
 import { renderHook } from '@testing-library/react-hooks';
 
 jest.mock('firebase/app', () => {
@@ -16,13 +16,13 @@ jest.mock('firebase/app', () => {
 
 jest.mock('firebase/auth');
 
-describe('the useAuth hook', () => {
+describe('the useFirebaseAuth hook', () => {
   afterEach(jest.clearAllMocks);
 
   describe('with auth enabled', () => {
     it('should set isAuthReady to true and set a user on load', async () => {
       process.env.REACT_APP_USE_FIREBASE_AUTH = 'true';
-      const { result, waitForNextUpdate } = renderHook(() => useAuth());
+      const { result, waitForNextUpdate } = renderHook(() => useFirebaseAuth());
       expect(result.current.isAuthReady).toBe(false);
       expect(result.current.user).toBe(null);
       await waitForNextUpdate();
@@ -32,7 +32,7 @@ describe('the useAuth hook', () => {
 
     it('should set user to null on signOut', async () => {
       process.env.REACT_APP_USE_FIREBASE_AUTH = 'true';
-      const { result, waitForNextUpdate } = renderHook(() => useAuth());
+      const { result, waitForNextUpdate } = renderHook(() => useFirebaseAuth());
       await waitForNextUpdate();
       result.current.signOut();
       await waitForNextUpdate();
@@ -42,7 +42,7 @@ describe('the useAuth hook', () => {
 
     it('should set a new user on signIn', async () => {
       process.env.REACT_APP_USE_FIREBASE_AUTH = 'true';
-      const { result, waitForNextUpdate } = renderHook(() => useAuth());
+      const { result, waitForNextUpdate } = renderHook(() => useFirebaseAuth());
       await waitForNextUpdate();
       result.current.signIn();
       await waitForNextUpdate();
@@ -53,7 +53,7 @@ describe('the useAuth hook', () => {
   describe('with auth disabled', () => {
     it('should not initialize', done => {
       process.env.REACT_APP_USE_FIREBASE_AUTH = 'false';
-      const { result } = renderHook(() => useAuth());
+      const { result } = renderHook(() => useFirebaseAuth());
       setImmediate(() => {
         expect(result.current.isAuthReady).toBe(false);
         done();
