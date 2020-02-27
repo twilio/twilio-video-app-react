@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 
 export function getPasscode() {
-  const match = window.location.search.match(/appcode=(.*)&?/);
-  const passcode = match ? match[1].slice(0, 6) : window.sessionStorage.getItem('passcode');
+  const match = window.location.search.match(/passcode=(.*)&?/);
+  const passcode = match ? match[1] : window.sessionStorage.getItem('passcode');
   return passcode;
 }
 
@@ -32,9 +32,9 @@ export function verifyPasscode(passcode: string) {
 export function getErrorMessage(message: string) {
   switch (message) {
     case 'unauthorized':
-      return 'Appcode is incorrect';
+      return 'Passcode is incorrect';
     case 'expired':
-      return 'Appcode has expired';
+      return 'Passcode has expired';
     default:
       return message;
   }

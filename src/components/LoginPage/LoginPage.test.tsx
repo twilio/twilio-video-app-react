@@ -81,10 +81,10 @@ describe('the LoginPage component', () => {
       const { getByLabelText, getByText } = render(<LoginPage />);
 
       act(() => {
-        fireEvent.change(getByLabelText('Appcode'), { target: { value: '1234' } });
+        fireEvent.change(getByLabelText('Passcode'), { target: { value: '1234' } });
       });
       act(() => {
-        fireEvent.submit(getByText('Enter'));
+        fireEvent.submit(getByText('Submit'));
       });
 
       setImmediate(() => {
@@ -100,11 +100,11 @@ describe('the LoginPage component', () => {
       const { getByLabelText, getByText } = render(<LoginPage />);
 
       act(() => {
-        fireEvent.change(getByLabelText('Appcode'), { target: { value: '1234' } });
+        fireEvent.change(getByLabelText('Passcode'), { target: { value: '1234' } });
       });
       
       act(() => {
-        fireEvent.submit(getByText('Enter'));
+        fireEvent.submit(getByText('Submit'));
       });
 
       const element = await waitForElement(() => getByText('Test Error')) 

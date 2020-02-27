@@ -10,7 +10,7 @@ window.location = {
 describe('the usePasscodeAuth hook', () => {
   describe('on first render', () => {
     beforeEach(() => window.sessionStorage.clear());
-    it('should return a user when the appcode is valid', async () => {
+    it('should return a user when the passcode is valid', async () => {
       // @ts-ignore
       window.fetch = jest.fn(() => Promise.resolve({ ok: true, json: () => ({ token: 'mockVideoToken' }) }));
       window.sessionStorage.setItem('passcode', '123123');
@@ -19,12 +19,12 @@ describe('the usePasscodeAuth hook', () => {
       expect(result.current).toMatchObject({ isAuthReady: true, user: { passcode: '123123' } });
     });
 
-    it('should remove the query parameter from the URL when the appcode is valid', async () => {
+    it('should remove the query parameter from the URL when the passcode is valid', async () => {
       // @ts-ignore
       window.fetch = jest.fn(() => Promise.resolve({ ok: true, json: () => ({ token: 'mockVideoToken' }) }));
       // @ts-ignore
       window.location = {
-        search: '?appcode=000000',
+        search: '?passcode=000000',
         origin: 'http://test-origin',
         pathname: '/test-pathname',
       };
@@ -45,7 +45,7 @@ describe('the usePasscodeAuth hook', () => {
       expect(result.current).toMatchObject({ isAuthReady: true, user: null });
     });
 
-    it('should not return a user when there is no appcode', () => {
+    it('should not return a user when there is no passcode', () => {
       const { result } = renderHook(usePasscodeAuth);
       expect(result.current).toMatchObject({ isAuthReady: true, user: null });
     });
@@ -65,7 +65,7 @@ describe('the usePasscodeAuth hook', () => {
   });
 
   describe('signin function', () => {
-    it('should set a user when a valid appcode is submitted', async () => {
+    it('should set a user when a valid passcode is submitted', async () => {
       // @ts-ignore
       window.fetch = jest.fn(() => Promise.resolve({ ok: true, json: () => ({ token: 'mockVideoToken' }) }));
       const { result } = renderHook(usePasscodeAuth);
@@ -73,23 +73,23 @@ describe('the usePasscodeAuth hook', () => {
       expect(result.current.user).toEqual({ passcode: '123456' });
     });
 
-    it('should return an error when an invalid appcode is submitted', async () => {
+    it('should return an error when an invalid passcode is submitted', async () => {
       // @ts-ignore
       window.fetch = jest.fn(() => Promise.resolve({ status: 401, json: () => ({ type: 'unauthorized' }) }));
       const { result, waitForNextUpdate } = renderHook(usePasscodeAuth);
       await waitForNextUpdate();
       result.current.signIn('123456').catch(err => {
-        expect(err.message).toBe('Appcode is incorrect');
+        expect(err.message).toBe('Passcode is incorrect');
       });
     });
 
-    it('should return an error when an expired appcode is submitted', async () => {
+    it('should return an error when an expired passcode is submitted', async () => {
       // @ts-ignore
       window.fetch = jest.fn(() => Promise.resolve({ status: 401, json: () => ({ type: 'expired' }) }));
       const { result, waitForNextUpdate } = renderHook(usePasscodeAuth);
       await waitForNextUpdate();
       result.current.signIn('123456').catch(err => {
-        expect(err.message).toBe('Appcode has expired');
+        expect(err.message).toBe('Passcode has expired');
       });
     });
   });
@@ -98,21 +98,21 @@ describe('the usePasscodeAuth hook', () => {
 describe('the getPasscode function', () => {
   beforeEach(() => window.sessionStorage.clear());
 
-  it('should return the appcode from session storage', () => {
+  it('should return the passcode from session storage', () => {
     window.location.search = ''
     window.sessionStorage.setItem('passcode', '123123');
     expect(getPasscode()).toBe('123123');
   });
 
-  it('should return the appcode from the URL', () => {
-    window.location.search = '?appcode=234234';
+  it('should return the passcode from the URL', () => {
+    window.location.search = '?passcode=234234';
 
     expect(getPasscode()).toBe('234234');
   });
 
-  it('should return the appcode from the URL when the app code is also sotred in sessionstorage', () => {
+  it('should return the passcode from the URL when the app code is also sotred in sessionstorage', () => {
     window.sessionStorage.setItem('passcode', '123123');
-    window.location.search = '?appcode=234234';
+    window.location.search = '?passcode=234234';
 
     expect(getPasscode()).toBe('234234');
   });

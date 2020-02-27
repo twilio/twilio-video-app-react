@@ -110,8 +110,9 @@ export default function LoginPage() {
               <Grid container alignItems="center" direction="column">
                 <TextField
                   id="input-passcode"
-                  label="Appcode"
+                  label="Passcode"
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setPasscode(e.target.value)}
+                  type="password"
                 />
                 <div>
                   {authError && (
@@ -122,7 +123,7 @@ export default function LoginPage() {
                   )}
                 </div>
                 <Button variant="contained" className={classes.button} type="submit" disabled={!passcode.length}>
-                  Enter
+                  Submit
                 </Button>
               </Grid>
             </form>
