@@ -47,7 +47,7 @@
     "start-server-and-test": "^1.10.8",
     "ts-jest": "^24.3.0",
     "twilio": "^3.39.3",
-    "twilio-video": "^2.1.0",
+    "twilio-video": "^2.2.0",
     "typescript": "^3.7.5"
   },
   "lint-staged": {
