@@ -1,11 +1,20 @@
-import usePasscodeAuth, { getPasscode, verifyPasscode, getErrorMessage } from './usePasscodeAuth';
+import React from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
+import { createBrowserHistory } from 'history';
+import { Router } from 'react-router-dom';
+import usePasscodeAuth, { getPasscode, verifyPasscode } from './usePasscodeAuth';
 
 delete window.location;
 // @ts-ignore
 window.location = {
   search: '',
 };
+
+const customHistory = { ...createBrowserHistory(), replace: jest.fn() };
+
+const wrapper = (props: React.PropsWithChildren<unknown>) => (
+  <Router history={customHistory as any}>{props.children}</Router>
+);
 
 describe('the usePasscodeAuth hook', () => {
   describe('on first render', () => {
@@ -14,7 +23,7 @@ describe('the usePasscodeAuth hook', () => {
       // @ts-ignore
       window.fetch = jest.fn(() => Promise.resolve({ ok: true, json: () => ({ token: 'mockVideoToken' }) }));
       window.sessionStorage.setItem('passcode', '123123');
-      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth);
+      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
       await waitForNextUpdate();
       expect(result.current).toMatchObject({ isAuthReady: true, user: { passcode: '123123' } });
     });
@@ -30,23 +39,23 @@ describe('the usePasscodeAuth hook', () => {
       };
       Object.defineProperty(window.history, 'replaceState', { value: jest.fn() });
       window.sessionStorage.setItem('passcode', '123123');
-      const { waitForNextUpdate } = renderHook(usePasscodeAuth);
+      const { waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
       await waitForNextUpdate();
-      expect(window.history.replaceState).toHaveBeenCalledWith({}, '', 'http://test-origin/test-pathname');
+      expect(customHistory.replace).toHaveBeenLastCalledWith('/test-pathname');
     });
 
     it('should not return a user when the app code is invalid', async () => {
       // @ts-ignore
       window.fetch = jest.fn(() => Promise.resolve({ status: 401, json: () => ({ type: 'errorMessage' }) }));
-      window.location.search = ''
+      window.location.search = '';
       window.sessionStorage.setItem('passcode', '123123');
-      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth);
+      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
       await waitForNextUpdate();
       expect(result.current).toMatchObject({ isAuthReady: true, user: null });
     });
 
     it('should not return a user when there is no passcode', () => {
-      const { result } = renderHook(usePasscodeAuth);
+      const { result } = renderHook(usePasscodeAuth, { wrapper });
       expect(result.current).toMatchObject({ isAuthReady: true, user: null });
     });
   });
@@ -56,7 +65,7 @@ describe('the usePasscodeAuth hook', () => {
       // @ts-ignore
       window.fetch = jest.fn(() => Promise.resolve({ ok: true, json: () => ({ token: 'mockVideoToken' }) }));
       window.sessionStorage.setItem('passcode', '123123');
-      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth);
+      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
       await waitForNextUpdate();
       await act(() => result.current.signOut());
       expect(window.sessionStorage.getItem('passcode')).toBe(null);
@@ -68,15 +77,15 @@ describe('the usePasscodeAuth hook', () => {
     it('should set a user when a valid passcode is submitted', async () => {
       // @ts-ignore
       window.fetch = jest.fn(() => Promise.resolve({ ok: true, json: () => ({ token: 'mockVideoToken' }) }));
-      const { result } = renderHook(usePasscodeAuth);
+      const { result } = renderHook(usePasscodeAuth, { wrapper });
       await act(() => result.current.signIn('123456'));
       expect(result.current.user).toEqual({ passcode: '123456' });
     });
 
     it('should return an error when an invalid passcode is submitted', async () => {
       // @ts-ignore
-      window.fetch = jest.fn(() => Promise.resolve({ status: 401, json: () => ({ type: 'unauthorized' }) }));
-      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth);
+      window.fetch = jest.fn(() => Promise.resolve({ status: 401, json: () => ({ error: 'unauthorized' }) }));
+      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
       await waitForNextUpdate();
       result.current.signIn('123456').catch(err => {
         expect(err.message).toBe('Passcode is incorrect');
@@ -85,8 +94,8 @@ describe('the usePasscodeAuth hook', () => {
 
     it('should return an error when an expired passcode is submitted', async () => {
       // @ts-ignore
-      window.fetch = jest.fn(() => Promise.resolve({ status: 401, json: () => ({ type: 'expired' }) }));
-      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth);
+      window.fetch = jest.fn(() => Promise.resolve({ status: 401, json: () => ({ error: 'expired' }) }));
+      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
       await waitForNextUpdate();
       result.current.signIn('123456').catch(err => {
         expect(err.message).toBe('Passcode has expired');
@@ -99,7 +108,7 @@ describe('the getPasscode function', () => {
   beforeEach(() => window.sessionStorage.clear());
 
   it('should return the passcode from session storage', () => {
-    window.location.search = ''
+    window.location.search = '';
     window.sessionStorage.setItem('passcode', '123123');
     expect(getPasscode()).toBe('123123');
   });
@@ -134,7 +143,7 @@ describe('the verifyPasscode function', () => {
 
   it('should return the correct response when the passcode is invalid', async () => {
     // @ts-ignore
-    window.fetch = jest.fn(() => Promise.resolve({ status: 401, json: () => ({ type: 'errorMessage' }) }));
+    window.fetch = jest.fn(() => Promise.resolve({ status: 401, json: () => ({ error: 'errorMessage' }) }));
 
     const result = await verifyPasscode('123456');
     expect(result).toEqual({ isValid: false, error: 'errorMessage' });

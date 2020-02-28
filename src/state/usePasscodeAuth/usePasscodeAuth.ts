@@ -55,7 +55,7 @@ export default function usePasscodeAuth() {
     },
     [user]
   );
-
+  
   useEffect(() => {
     const passcode = getPasscode();
 
