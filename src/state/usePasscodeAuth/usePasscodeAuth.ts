@@ -18,7 +18,7 @@ export function fetchToken(name: string, room: string, passcode: string) {
 }
 
 export function verifyPasscode(passcode: string) {
-  return fetchToken('verification name', 'verification room', passcode).then(async res => {
+  return fetchToken('temp-name', 'temp-room', passcode).then(async res => {
     const jsonResponse = await res.json();
     if (res.status === 401) {
       return { isValid: false, error: jsonResponse.error?.message };
