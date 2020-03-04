@@ -8,6 +8,16 @@ This application demonstrates a multi-party video application built with [twilio
 
 Run `npm install` to install all dependencies.
 
+The fastest way to get started is to use the Twilio CLI:
+
+- Install and configure the [Twilio CLI](https://www.twilio.com/docs/twilio-cli/quickstart).
+- Run `twilio plugins:install @twilio-labs/plugin-rtc` to install the WebRTC plugin.
+- Run `npm run deploy:twilio-cli` 
+
+This will deploy the application as a [Twilio Function](https://www.twilio.com/docs/runtime/functions) and provide a link to the app. For more information see the documentation for the [WebRTC Twilio Cli plugin](https://github.com/twilio-labs/plugin-rtc).
+
+### Running the local token server
+
 This application requires an access token to connect to a Room. The included local token [server](server.js) provides the application with access tokens. Perform the following steps to setup the local token server:
 
 - Create an account in the [Twilio Console](https://www.twilio.com/console).
