@@ -21,7 +21,7 @@ export function verifyPasscode(passcode: string) {
   return fetchToken('verification name', 'verification room', passcode).then(async res => {
     const jsonResponse = await res.json();
     if (res.status === 401) {
-      return { isValid: false, error: jsonResponse.error };
+      return { isValid: false, error: jsonResponse.error?.message };
     }
 
     if (res.ok && jsonResponse.token) {
@@ -32,9 +32,9 @@ export function verifyPasscode(passcode: string) {
 
 export function getErrorMessage(message: string) {
   switch (message) {
-    case 'unauthorized':
+    case 'passcode incorrect':
       return 'Passcode is incorrect';
-    case 'expired':
+    case 'passcode expired':
       return 'Passcode has expired';
     default:
       return message;
@@ -55,7 +55,7 @@ export default function usePasscodeAuth() {
     },
     [user]
   );
-  
+
   useEffect(() => {
     const passcode = getPasscode();
 

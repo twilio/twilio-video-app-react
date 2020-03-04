@@ -84,7 +84,9 @@ describe('the usePasscodeAuth hook', () => {
 
     it('should return an error when an invalid passcode is submitted', async () => {
       // @ts-ignore
-      window.fetch = jest.fn(() => Promise.resolve({ status: 401, json: () => ({ error: 'unauthorized' }) }));
+      window.fetch = jest.fn(() =>
+        Promise.resolve({ status: 401, json: () => ({ error: { message: 'passcode incorrect' } }) })
+      );
       const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
       await waitForNextUpdate();
       result.current.signIn('123456').catch(err => {
@@ -94,7 +96,9 @@ describe('the usePasscodeAuth hook', () => {
 
     it('should return an error when an expired passcode is submitted', async () => {
       // @ts-ignore
-      window.fetch = jest.fn(() => Promise.resolve({ status: 401, json: () => ({ error: 'expired' }) }));
+      window.fetch = jest.fn(() =>
+        Promise.resolve({ status: 401, json: () => ({ error: { message: 'passcode expired' } }) })
+      );
       const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
       await waitForNextUpdate();
       result.current.signIn('123456').catch(err => {
@@ -143,7 +147,7 @@ describe('the verifyPasscode function', () => {
 
   it('should return the correct response when the passcode is invalid', async () => {
     // @ts-ignore
-    window.fetch = jest.fn(() => Promise.resolve({ status: 401, json: () => ({ error: 'errorMessage' }) }));
+    window.fetch = jest.fn(() => Promise.resolve({ status: 401, json: () => ({ error: {message:'errorMessage' }}) }));
 
     const result = await verifyPasscode('123456');
     expect(result).toEqual({ isValid: false, error: 'errorMessage' });
