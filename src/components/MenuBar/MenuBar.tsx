@@ -66,7 +66,10 @@ export default function MenuBar() {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    window.history.replaceState(null, '', window.encodeURI(`/room/${roomName}`));
+    // If this app is deployed as a twilio function, don't change the URL beacuse routing isn't supported.
+    if (!window.location.origin.includes('twil.io')) {
+      window.history.replaceState(null, '', window.encodeURI(`/room/${roomName}`));
+    }
     getToken(name, roomName).then(token => connect(token));
   };
 

@@ -57,7 +57,7 @@ jobs:
       - run:
           name: "Build app with Firebase auth enabled"
           command: |
-            echo REACT_APP_USE_FIREBASE_AUTH=true >> .env
+            echo REACT_APP_SET_AUTH=firebase >> .env
             echo REACT_APP_TOKEN_ENDPOINT=$REACT_APP_TOKEN_ENDPOINT >> .env
             echo REACT_APP_FIREBASE_API_KEY=$REACT_APP_FIREBASE_API_KEY >> .env
             echo REACT_APP_FIREBASE_AUTH_DOMAIN=$REACT_APP_FIREBASE_AUTH_DOMAIN >> .env

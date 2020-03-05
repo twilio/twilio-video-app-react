@@ -69,7 +69,8 @@
     "test:ci": "jest --ci --runInBand --reporters=default --reporters=jest-junit --coverage",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --browser chrome",
-    "cypress:ci": "CYPRESS_baseUrl=http://localhost:8081 start-server-and-test server http://localhost:8081 cypress:run"
+    "cypress:ci": "CYPRESS_baseUrl=http://localhost:8081 start-server-and-test server http://localhost:8081 cypress:run",
+    "deploy:twilio-cli": "REACT_APP_SET_AUTH=passcode npm run build && twilio rtc:apps:video:deploy --authentication=passcode --app-directory ./build"
   },
   "eslintConfig": {
     "extends": "react-app",

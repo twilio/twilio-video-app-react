@@ -6,7 +6,6 @@ import UserAvatar from '../UserAvatar/UserAvatar';
 import { useAppState } from '../../../state';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 import { MenuItem } from '@material-ui/core';
-import Person from '@material-ui/icons/Person';
 
 jest.mock('../../../state');
 jest.mock('../../../hooks/useVideoContext/useVideoContext');
