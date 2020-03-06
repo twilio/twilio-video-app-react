@@ -3,12 +3,11 @@ import { act, renderHook } from '@testing-library/react-hooks';
 import { TwilioError } from 'twilio-video';
 
 import AppStateProvider, { useAppState } from './index';
+import useFirebaseAuth from './useFirebaseAuth/useFirebaseAuth';
+import usePasscodeAuth from './usePasscodeAuth/usePasscodeAuth';
 
-jest.mock('./useAuth/useAuth', () => () => ({
-  user: {
-    getIdToken: () => Promise.resolve('mockFirebaseToken'),
-  },
-}));
+jest.mock('./useFirebaseAuth/useFirebaseAuth', () => jest.fn(() => ({ user: 'firebaseUser' })));
+jest.mock('./usePasscodeAuth/usePasscodeAuth', () => jest.fn(() => ({ user: 'passcodeUser' })));
 
 // @ts-ignore
 window.fetch = jest.fn(() => Promise.resolve({ text: () => 'mockVideoToken' }));
@@ -44,32 +43,29 @@ describe('the useAppState hook', () => {
   });
 
   describe('with auth disabled', () => {
-    it('should get a token from the local token server', async () => {
-      process.env.REACT_APP_USE_FIREBASE_AUTH = 'false';
-
-      const { result } = renderHook(useAppState, { wrapper });
-
-      const token = await result.current.getToken('testname', 'testroom');
-      expect(token).toBe('mockVideoToken');
-
-      expect(window.fetch).toHaveBeenCalledWith('/token?identity=testname&roomName=testroom', {
-        headers: { _headers: {} },
-      });
+    it('should not use any auth hooks', async () => {
+      delete process.env.REACT_APP_USE_FIREBASE_AUTH;
+      renderHook(useAppState, { wrapper });
+      expect(useFirebaseAuth).not.toHaveBeenCalled();
+      expect(usePasscodeAuth).not.toHaveBeenCalled();
     });
   });
 
-  describe('with auth enabled', () => {
-    it("should include the user's firebase ID token in the authorization header", async () => {
-      process.env.REACT_APP_USE_FIREBASE_AUTH = 'true';
-
+  describe('with firebase auth enabled', () => {
+    it('should use the useFirebaseAuth hook', async () => {
+      process.env.REACT_APP_SET_AUTH = 'firebase';
       const { result } = renderHook(useAppState, { wrapper });
+      expect(useFirebaseAuth).toHaveBeenCalled();
+      expect(result.current.user).toBe('firebaseUser')
+    });
+  });
 
-      const token = await result.current.getToken('testname', 'testroom');
-      expect(token).toBe('mockVideoToken');
-
-      expect(window.fetch).toHaveBeenCalledWith('/token?identity=testname&roomName=testroom', {
-        headers: { _headers: { authorization: ['mockFirebaseToken'] } },
-      });
+  describe('with passcode auth enabled', () => {
+    it('should use the usePasscodeAuth hook', async () => {
+      process.env.REACT_APP_SET_AUTH = 'passcode';
+      const { result } = renderHook(useAppState, { wrapper });
+      expect(usePasscodeAuth).toHaveBeenCalled();
+      expect(result.current.user).toBe('passcodeUser')
     });
   });
 });

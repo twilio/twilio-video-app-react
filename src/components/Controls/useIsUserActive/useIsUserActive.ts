@@ -22,6 +22,7 @@ export default function useIsUserActive() {
       window.removeEventListener('mousemove', handleUserActivity);
       window.removeEventListener('click', handleUserActivity);
       window.removeEventListener('keydown', handleUserActivity);
+      clearTimeout(timeoutIDRef.current);
     };
   }, []);
 
