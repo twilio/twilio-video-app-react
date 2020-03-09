@@ -49,9 +49,10 @@ export default function MainParticipantInfo({ participant, children }: MainParti
 
   const publications = usePublications(participant);
   const videoPublication = publications.find(p => p.trackName === 'camera');
+  const screenSharePublication = publications.find(p => p.trackName === 'screen');
   const isVideoEnabled = Boolean(videoPublication);
 
-  const videoTrack = useTrack(videoPublication);
+  const videoTrack = useTrack(screenSharePublication || videoPublication);
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
 
   return (
