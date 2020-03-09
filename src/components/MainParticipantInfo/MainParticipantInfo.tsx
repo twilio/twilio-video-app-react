@@ -2,12 +2,12 @@ import React from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { LocalParticipant, RemoteParticipant, RemoteVideoTrack, LocalVideoTrack } from 'twilio-video';
-import VideocamOff from '@material-ui/icons/VideocamOff';
 
+import BandwidthWarning from '../BandwidthWarning/BandwidthWarning';
+import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
 import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
-import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
-import BandwidthWarning from '../BandwidthWarning/BandwidthWarning';
+import VideocamOff from '@material-ui/icons/VideocamOff';
 
 const useStyles = makeStyles({
   container: {
