@@ -58,7 +58,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const getToken: StateContextType['getToken'] = (name, room) =>
     contextValue.getToken(name, room).catch(err => {
       setError(err);
-      return err;
+      return Promise.reject(err);
     });
 
   return <StateContext.Provider value={{ ...contextValue, getToken }}>{props.children}</StateContext.Provider>;
