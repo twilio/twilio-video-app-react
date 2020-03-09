@@ -32,7 +32,7 @@ describe('the MainParticipantInfo component', () => {
     expect(wrapper.find('VideocamOffIcon').exists()).toEqual(false);
   });
 
-  it('should add isSwitchedOff prop to Container component when video is switched off', () => {
+  it('should add isVideoSwitchedOff class to container div when video is switched off', () => {
     mockUseIsTrackSwitchedOff.mockImplementation(() => true);
     // mockUsePublications.mockImplementation(() => [{ trackName: 'camera' }]);
     const wrapper = shallow(
@@ -41,7 +41,7 @@ describe('the MainParticipantInfo component', () => {
     expect(wrapper.find('.makeStyles-container-1').prop('className')).toContain('isVideoSwitchedOff');
   });
 
-  it('should not add isSwitchedOff prop to Container component when video is not switched off', () => {
+  it('should not add isVideoSwitchedOff class to container div when video is not switched off', () => {
     mockUseIsTrackSwitchedOff.mockImplementation(() => false);
     // mockUsePublications.mockImplementation(() => [{ trackName: 'camera' }]);
     const wrapper = shallow(
