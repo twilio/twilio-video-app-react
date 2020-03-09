@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalParticipant, RemoteParticipant, RemoteVideoTrack, LocalVideoTrack } from 'twilio-video';
 
-import BandwidthWarning from './BandwidthWarning/BandwidthWarning';
+import BandwidthWarning from '../BandwidthWarning/BandwidthWarning';
 import MicOff from '@material-ui/icons/MicOff';
 import NetworkQualityLevel from '../NewtorkQualityLevel/NetworkQualityLevel';
 import ParticipantConnectionIndicator from './ParticipantConnectionIndicator/ParticipantConnectionIndicator';
