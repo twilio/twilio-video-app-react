@@ -10,18 +10,31 @@ const firebaseConfig = {
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
 };
 
-export default function useAuth() {
+export default function useFirebaseAuth() {
   const [user, setUser] = useState<firebase.User | null>(null);
-  const [isAuthReady, setIsReady] = useState(false);
+  const [isAuthReady, setIsAuthReady] = useState(false);
+
+  const getToken = useCallback(
+    async (identity: string, roomName: string) => {
+      const headers = new window.Headers();
+
+      const idToken = await user!.getIdToken();
+      headers.set('Authorization', idToken);
+
+      const endpoint = process.env.REACT_APP_TOKEN_ENDPOINT || '/token';
+      const params = new window.URLSearchParams({ identity, roomName });
+
+      return fetch(`${endpoint}?${params}`, { headers }).then(res => res.text());
+    },
+    [user]
+  );
 
   useEffect(() => {
-    if (process.env.REACT_APP_USE_FIREBASE_AUTH === 'true') {
-      firebase.initializeApp(firebaseConfig);
-      firebase.auth().onAuthStateChanged(user => {
-        setUser(user);
-        setIsReady(true);
-      });
-    }
+    firebase.initializeApp(firebaseConfig);
+    firebase.auth().onAuthStateChanged(user => {
+      setUser(user);
+      setIsAuthReady(true);
+    });
   }, []);
 
   const signIn = useCallback(() => {
@@ -45,5 +58,5 @@ export default function useAuth() {
       });
   }, []);
 
-  return { user, signIn, signOut, isAuthReady };
+  return { user, signIn, signOut, isAuthReady, getToken };
 }

@@ -30,6 +30,15 @@ const renderComponent = () => (
   </MemoryRouter>
 );
 
+delete window.location;
+// @ts-ignore
+window.location = {
+  origin: '',
+};
+
+const mockReplaceState = jest.fn();
+Object.defineProperty(window.history, 'replaceState', { value: mockReplaceState });
+
 describe('the MenuBar component', () => {
   beforeEach(jest.clearAllMocks);
   mockeduseFullScreenToggle.mockImplementation(() => [true, mockToggleFullScreen]);
@@ -87,7 +96,7 @@ describe('the MenuBar component', () => {
   });
 
   it('should update the URL to include the room name on submit', () => {
-    Object.defineProperty(window.history, 'replaceState', { value: jest.fn() });
+
     mockedUseRoomState.mockImplementation(() => 'disconnected');
     mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false, connect: mockConnect, room: {} } as any));
     const { getByLabelText, getByText } = render(renderComponent());
@@ -95,6 +104,18 @@ describe('the MenuBar component', () => {
     fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo Test' } });
     fireEvent.click(getByText('Join Room').parentElement!);
     expect(window.history.replaceState).toHaveBeenCalledWith(null, '', '/room/Foo%20Test');
+  });
+
+  it('should not update the URL when the app is deployed as a Twilio function', () => {
+    // @ts-ignore
+    window.location = { origin: 'https://video-app-1234-twil.io' };
+    mockedUseRoomState.mockImplementation(() => 'disconnected');
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false, connect: mockConnect, room: {} } as any));
+    const { getByLabelText, getByText } = render(renderComponent());
+    fireEvent.change(getByLabelText('Name'), { target: { value: 'Foo' } });
+    fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo Test' } });
+    fireEvent.click(getByText('Join Room').parentElement!);
+    expect(window.history.replaceState).not.toHaveBeenCalled();
   });
 
   it('should call getToken() and connect() on submit', done => {
