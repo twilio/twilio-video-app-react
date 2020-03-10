@@ -4,7 +4,7 @@
 
 This application demonstrates a multi-party video application built with [twilio-video.js](https://github.com/twilio/twilio-video.js) and [Create React App](https://github.com/facebook/create-react-app).
 
-![App Preview](https://user-images.githubusercontent.com/12685223/76361423-a5af0e00-62e4-11ea-98ec-c6872ec8cc62.png)
+![App Preview](https://user-images.githubusercontent.com/12685223/76361972-c035b700-62e5-11ea-8f9d-0bb24bd73fd4.png)
 
 ## Features
 
