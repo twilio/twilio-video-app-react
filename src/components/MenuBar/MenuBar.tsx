@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function MenuBar() {
   const classes = useStyles();
   const { URLRoomName } = useParams();
-  const { user, getToken } = useAppState();
+  const { user, getToken, isFetching } = useAppState();
   const { isConnecting, connect } = useVideoContext();
   const roomState = useRoomState();
 
@@ -100,10 +100,15 @@ export default function MenuBar() {
               onChange={handleRoomNameChange}
               margin="dense"
             />
-            <Button type="submit" color="primary" variant="contained" disabled={isConnecting || !name || !roomName}>
+            <Button
+              type="submit"
+              color="primary"
+              variant="contained"
+              disabled={isConnecting || !name || !roomName || isFetching}
+            >
               Join Room
             </Button>
-            {isConnecting && <CircularProgress className={classes.loadingSpinner} />}
+            {(isConnecting || isFetching) && <CircularProgress className={classes.loadingSpinner} />}
           </form>
         ) : (
           <h3>{roomName}</h3>
