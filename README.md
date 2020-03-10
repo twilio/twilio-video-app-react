@@ -6,6 +6,25 @@ This application demonstrates a multi-party video application built with [twilio
 
 ![App Preview](https://user-images.githubusercontent.com/12685223/76360925-8cf22880-62e3-11ea-8fa2-9561e615b649.png)
 
+## Features
+
+- Video conferencing with real-time video and audio
+- Enable/disable camera
+- Mute/unmute microphone
+- Screen sharing
+- [Dominant speaker](https://www.twilio.com/docs/video/detecting-dominant-speaker) detection
+- [Network quality](https://www.twilio.com/docs/video/using-network-quality-api) indicator
+
+## Requirements
+
+Node.js Version | NPM Version
+------------ | -------------
+10+ | 6+
+
+### Browser Support
+
+See browser support table for [twilio-video.js SDK](https://github.com/twilio/twilio-video.js/tree/master/#browser-support).
+
 ## Getting Started
 
 Run `npm install` to install all dependencies.
