@@ -38,6 +38,8 @@ The fastest way to get started is to use the Twilio CLI:
 
 This will deploy the application as a [Twilio Function](https://www.twilio.com/docs/runtime/functions) and provide a link to the app. For more information see the documentation for the [WebRTC Twilio Cli plugin](https://github.com/twilio-labs/plugin-rtc).
 
+The link and passcode will expire after one week. To deploy a new instance of the app, run `npm run deploy:twilio-cli -- --override`.
+
 ### Running the local token server
 
 This application requires an access token to connect to a Room. The included local token [server](server.js) provides the application with access tokens. Perform the following steps to setup the local token server:
