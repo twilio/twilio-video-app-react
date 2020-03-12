@@ -162,6 +162,7 @@ See [.env.example](.env.example) for an explanation of the environment variables
 
 - [Twilio Video Android App](https://github.com/twilio/twilio-video-app-android)
 - [Twilio Video iOS App](https://github.com/twilio/twilio-video-app-ios)
+- [Twilio CLI RTC Plugin](https://github.com/twilio-labs/plugin-rtc)
 
 ## License
 
