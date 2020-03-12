@@ -1,6 +1,6 @@
 # Twilio Video React App
 
-[![CircleCI](https://circleci.com/gh/twilio/twilio-video-app-react.svg?style=shield&circle-token=9d6b1e89d148181aaa6874c29849c730b8ca406d)](https://circleci.com/gh/twilio/twilio-video-app-react)
+[![CircleCI](https://circleci.com/gh/twilio/twilio-video-app-react.svg?style=shield)](https://circleci.com/gh/twilio/twilio-video-app-react)
 
 This application demonstrates a multi-party video application built with [twilio-video.js](https://github.com/twilio/twilio-video.js) and [Create React App](https://github.com/facebook/create-react-app).
 
