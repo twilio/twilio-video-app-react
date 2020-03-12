@@ -155,7 +155,7 @@ This application can be configured to authenticate users before they use the app
 
 See [.env.example](.env.example) for an explanation of the environment variables that must be set to enable Google authentication.
 
-## Other Platforms
+## Related
 
 - [Twilio Video Android App](https://github.com/twilio/twilio-video-app-android)
 - [Twilio Video iOS App](https://github.com/twilio/twilio-video-app-ios)
