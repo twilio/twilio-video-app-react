@@ -1,6 +1,6 @@
-# Twilio React Video App
+# Twilio Video React App
 
-[![CircleCI](https://circleci.com/gh/twilio/twilio-video-app-react.svg?style=svg&circle-token=9d6b1e89d148181aaa6874c29849c730b8ca406d)](https://circleci.com/gh/twilio/twilio-video-app-react)
+[![CircleCI](https://circleci.com/gh/twilio/twilio-video-app-react.svg?style=svg)](https://circleci.com/gh/twilio/twilio-video-app-react)
 
 This application demonstrates a multi-party video application built with [twilio-video.js](https://github.com/twilio/twilio-video.js) and [Create React App](https://github.com/facebook/create-react-app).
 
@@ -8,13 +8,13 @@ This application demonstrates a multi-party video application built with [twilio
 
 ## Features
 
-- Video conferencing with real-time video and audio
-- Enable/disable camera
-- Mute/unmute microphone
-- Screen sharing
-- [Dominant speaker](https://www.twilio.com/docs/video/detecting-dominant-speaker) detection
-- [Network quality](https://www.twilio.com/docs/video/using-network-quality-api) indicator
-- [Bandwidth Profile API](https://www.twilio.com/docs/video/tutorials/using-bandwidth-profile-api)
+- [x] Video conferencing with real-time video and audio
+- [x] Enable/disable camera
+- [x] Mute/unmute mic
+- [x] Screen sharing
+- [x] [Dominant speaker](https://www.twilio.com/docs/video/detecting-dominant-speaker) indicator
+- [x] [Network quality](https://www.twilio.com/docs/video/using-network-quality-api) indicator
+- [x] [Bandwidth Profile API](https://www.twilio.com/docs/video/tutorials/using-bandwidth-profile-api)
 
 ## Requirements
 
@@ -37,6 +37,8 @@ The fastest way to get started is to use the Twilio CLI:
 3. Run `npm run deploy:twilio-cli` 
 
 This will deploy the application as a [Twilio Function](https://www.twilio.com/docs/runtime/functions) and provide a link to the app. For more information see the documentation for the [WebRTC Twilio Cli plugin](https://github.com/twilio-labs/plugin-rtc).
+
+The link and passcode will expire after one week. To deploy a new instance of the app, run `npm run deploy:twilio-cli -- --override`.
 
 ### Running the local token server
 
@@ -93,7 +95,7 @@ Additionally, if you would like to invite other participants to a room, each par
 
 This script will build the static assets for the application in the `build/` directory.
 
-## Testing
+## Tests
 
 This application has unit tests (using [Jest](https://jestjs.io/)) and E2E tests (using [Cypress](https://www.cypress.io/)). You can run the tests with the following scripts.
 
@@ -155,6 +157,12 @@ This application dynamically changes the priority of remote video tracks to prov
 This application can be configured to authenticate users before they use the app. Once users have signed into the app with their Google credentials, their Firebase ID Token will be included in the Authorization header of the HTTP request that is used to obtain an access token. The Firebase ID Token can then be [verified](https://firebase.google.com/docs/auth/admin/verify-id-tokens) by the server that dispenses access tokens for connecting to a room. 
 
 See [.env.example](.env.example) for an explanation of the environment variables that must be set to enable Google authentication.
+
+## Related
+
+- [Twilio Video Android App](https://github.com/twilio/twilio-video-app-android)
+- [Twilio Video iOS App](https://github.com/twilio/twilio-video-app-ios)
+- [Twilio CLI RTC Plugin](https://github.com/twilio-labs/plugin-rtc)
 
 ## License
 
