@@ -14,7 +14,6 @@ This application demonstrates a multi-party video application built with [twilio
 - [x] Screen sharing
 - [x] [Dominant speaker](https://www.twilio.com/docs/video/detecting-dominant-speaker) indicator
 - [x] [Network quality](https://www.twilio.com/docs/video/using-network-quality-api) indicator
-- [x] [Bandwidth Profile API](https://www.twilio.com/docs/video/tutorials/using-bandwidth-profile-api)
 
 ## Requirements
 
