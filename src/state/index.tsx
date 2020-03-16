@@ -69,6 +69,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
       })
       .catch(err => {
         setError(err);
+        setIsFetching(false);
         return Promise.reject(err);
       });
   };
