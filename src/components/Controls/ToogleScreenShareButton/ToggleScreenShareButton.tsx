@@ -28,28 +28,37 @@ export default function ToggleScreenShareButton(props: { disabled?: boolean }) {
   const screenShareParticipant = useScreenShareParticipant();
   const { room } = useVideoContext();
   const disableScreenShareButton = screenShareParticipant && screenShareParticipant !== room.localParticipant;
-  const tooltipMessage = isScreenShared ? 'Stop Sharing Screen' : 'Share Screen';
+  const screenShareIsSupported = navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia;
+  const isDisabled = props.disabled || disableScreenShareButton || !screenShareIsSupported;
+
+  let tooltipMessage = 'Share Screen';
+
+  if (isScreenShared) {
+    tooltipMessage = 'Stop Sharing Screen';
+  }
+
+  if (disableScreenShareButton) {
+    tooltipMessage = 'Cannot share screen when another user is sharing';
+  }
+
+  if (!screenShareIsSupported) {
+    tooltipMessage = 'Screen sharing is not supported with this browser';
+  }
 
   return (
-    navigator.mediaDevices &&
-    navigator.mediaDevices.getDisplayMedia && (
-      <Tooltip
-        title={disableScreenShareButton ? 'Cannot share screen when another user is sharing' : tooltipMessage}
-        placement="top"
-        PopperProps={{ disablePortal: true }}
-      >
-        <div>
-          {/* The div element is needed because a disabled button will not emit hover events and we want to display
-            a tooltip when screen sharing is disabled */}
-          <Fab
-            className={classes.fab}
-            onClick={toggleScreenShare}
-            disabled={props.disabled || disableScreenShareButton}
-          >
-            {isScreenShared ? <StopScreenShare /> : <ScreenShare />}
-          </Fab>
-        </div>
-      </Tooltip>
-    )
+    <Tooltip
+      title={tooltipMessage}
+      placement="top"
+      PopperProps={{ disablePortal: true }}
+      style={{ cursor: isDisabled ? 'not-allowed' : '' }}
+    >
+      <div>
+        {/* The div element is needed because a disabled button will not emit hover events and we want to display
+          a tooltip when screen sharing is disabled */}
+        <Fab className={classes.fab} onClick={toggleScreenShare} disabled={isDisabled}>
+          {isScreenShared ? <StopScreenShare /> : <ScreenShare />}
+        </Fab>
+      </div>
+    </Tooltip>
   );
 }
