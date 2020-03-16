@@ -55,7 +55,7 @@ export default function ToggleScreenShareButton(props: { disabled?: boolean }) {
       title={tooltipMessage}
       placement="top"
       PopperProps={{ disablePortal: true }}
-      style={{ cursor: isDisabled ? 'not-allowed' : '' }}
+      style={{ cursor: isDisabled ? 'not-allowed' : 'pointer' }}
     >
       <div>
         {/* The div element is needed because a disabled button will not emit hover events and we want to display
