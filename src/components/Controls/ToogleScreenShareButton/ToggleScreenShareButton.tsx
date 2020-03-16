@@ -10,6 +10,11 @@ import useScreenShareToggle from '../../../hooks/useScreenShareToggle/useScreenS
 import useScreenShareParticipant from '../../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
+export const SCREEN_SHARE_TEXT = 'Share Screen';
+export const STOP_SCREEN_SHARE_TEXT = 'Stop Sharing Screen';
+export const SHARE_IN_PROGRESS_TEXT = 'Cannot share screen when another user is sharing';
+export const SHARE_NOT_SUPPORTED_TEXT = 'Screen sharing is not supported with this browser';
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     fab: {
@@ -31,18 +36,18 @@ export default function ToggleScreenShareButton(props: { disabled?: boolean }) {
   const screenShareIsSupported = navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia;
   const isDisabled = props.disabled || disableScreenShareButton || !screenShareIsSupported;
 
-  let tooltipMessage = 'Share Screen';
+  let tooltipMessage = SCREEN_SHARE_TEXT;
 
   if (isScreenShared) {
-    tooltipMessage = 'Stop Sharing Screen';
+    tooltipMessage = STOP_SCREEN_SHARE_TEXT;
   }
 
   if (disableScreenShareButton) {
-    tooltipMessage = 'Cannot share screen when another user is sharing';
+    tooltipMessage = SHARE_IN_PROGRESS_TEXT;
   }
 
   if (!screenShareIsSupported) {
-    tooltipMessage = 'Screen sharing is not supported with this browser';
+    tooltipMessage = SHARE_NOT_SUPPORTED_TEXT;
   }
 
   return (
