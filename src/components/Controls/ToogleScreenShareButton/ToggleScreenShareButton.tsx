@@ -33,8 +33,8 @@ export default function ToggleScreenShareButton(props: { disabled?: boolean }) {
   const screenShareParticipant = useScreenShareParticipant();
   const { room } = useVideoContext();
   const disableScreenShareButton = screenShareParticipant && screenShareParticipant !== room.localParticipant;
-  const screenShareIsSupported = navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia;
-  const isDisabled = props.disabled || disableScreenShareButton || !screenShareIsSupported;
+  const isScreenShareSupported = navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia;
+  const isDisabled = props.disabled || disableScreenShareButton || !isScreenShareSupported;
 
   let tooltipMessage = SCREEN_SHARE_TEXT;
 
@@ -46,7 +46,7 @@ export default function ToggleScreenShareButton(props: { disabled?: boolean }) {
     tooltipMessage = SHARE_IN_PROGRESS_TEXT;
   }
 
-  if (!screenShareIsSupported) {
+  if (!isScreenShareSupported) {
     tooltipMessage = SHARE_NOT_SUPPORTED_TEXT;
   }
 
