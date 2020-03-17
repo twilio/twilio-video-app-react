@@ -5,7 +5,12 @@ import useScreenShareParticipant from '../../../hooks/useScreenShareParticipant/
 import useScreenShareToggle from '../../../hooks/useScreenShareToggle/useScreenShareToggle';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
-import ToggleScreenShareButton from './ToggleScreenShareButton';
+import ToggleScreenShareButton, {
+  SCREEN_SHARE_TEXT,
+  STOP_SCREEN_SHARE_TEXT,
+  SHARE_IN_PROGRESS_TEXT,
+  SHARE_NOT_SUPPORTED_TEXT,
+} from './ToggleScreenShareButton';
 
 jest.mock('../../../hooks/useScreenShareToggle/useScreenShareToggle');
 jest.mock('../../../hooks/useScreenShareParticipant/useScreenShareParticipant');
@@ -29,14 +34,14 @@ describe('the ToggleScreenShareButton component', () => {
     mockUseScreenShareToggle.mockImplementation(() => [false, () => {}]);
     const wrapper = shallow(<ToggleScreenShareButton />);
     expect(wrapper.find('ScreenShareIcon').exists()).toBe(true);
-    expect(wrapper.prop('title')).toBe('Share Screen');
+    expect(wrapper.prop('title')).toBe(SCREEN_SHARE_TEXT);
   });
 
   it('should render correctly when the user is sharing their screen', () => {
     mockUseScreenShareToggle.mockImplementation(() => [true, () => {}]);
     const wrapper = shallow(<ToggleScreenShareButton />);
     expect(wrapper.find('StopScreenShareIcon').exists()).toBe(true);
-    expect(wrapper.prop('title')).toBe('Stop Sharing Screen');
+    expect(wrapper.prop('title')).toBe(STOP_SCREEN_SHARE_TEXT);
   });
 
   it('should render correctly when another user is sharing their screen', () => {
@@ -44,7 +49,7 @@ describe('the ToggleScreenShareButton component', () => {
     mockUseScreenShareToggle.mockImplementation(() => [false, () => {}]);
     const wrapper = shallow(<ToggleScreenShareButton />);
     expect(wrapper.find('WithStyles(ForwardRef(Fab))').prop('disabled')).toBe(true);
-    expect(wrapper.prop('title')).toBe('Cannot share screen when another user is sharing');
+    expect(wrapper.prop('title')).toBe(SHARE_IN_PROGRESS_TEXT);
   });
 
   it('should call the correct toggle function when clicked', () => {
@@ -55,10 +60,11 @@ describe('the ToggleScreenShareButton component', () => {
     expect(mockFn).toHaveBeenCalled();
   });
 
-  it('should not render the screenshare button if screensharing is not supported', () => {
+  it('should render the screenshare button with the correct messaging if screensharing is not supported', () => {
     Object.defineProperty(navigator, 'mediaDevices', { value: { getDisplayMedia: undefined } });
     const wrapper = shallow(<ToggleScreenShareButton />);
-    expect(wrapper.find('ScreenShareIcon').exists()).toBe(false);
-    expect(wrapper.find('StopScreenShareIcon').exists()).toBe(false);
+    expect(wrapper.find('ScreenShareIcon').exists()).toBe(true);
+    expect(wrapper.find('WithStyles(ForwardRef(Fab))').prop('disabled')).toBe(true);
+    expect(wrapper.prop('title')).toBe(SHARE_NOT_SUPPORTED_TEXT);
   });
 });
