@@ -77,18 +77,18 @@ describe('the useAppState hook', () => {
 
   describe('the getToken function', () => {
     it('should set isFetching to true after getToken is called, and false after getToken succeeds', async () => {
-      // Using passcode auth so it's easier to mock the getToken function
+      // Using passcode auth because it's easier to mock the getToken function
       process.env.REACT_APP_SET_AUTH = 'passcode';
       mockUsePasscodeAuth.mockImplementation(() => {
         return {
           getToken: () =>
             new Promise(resolve => {
+              // Using fake timers so we can control when the promise resolves
               setTimeout(() => resolve({ text: () => 'mockVideoToken' }), 10);
             }),
         };
       });
 
-      // Using fake timers so we can control when the promise resolves
       jest.useFakeTimers();
 
       const { result, waitForNextUpdate } = renderHook(useAppState, { wrapper });
