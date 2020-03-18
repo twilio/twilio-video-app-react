@@ -16,6 +16,7 @@
     "@types/react-router-dom": "^5.1.3",
     "@types/twilio-video": "^2.0.10",
     "concurrently": "^5.1.0",
+    "cross-env": "^7.0.2",
     "express": "^4.17.1",
     "firebase": "^7.8.0",
     "fscreen": "^1.0.2",
@@ -69,8 +70,8 @@
     "test:ci": "jest --ci --runInBand --reporters=default --reporters=jest-junit --coverage",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --browser chrome",
-    "cypress:ci": "CYPRESS_baseUrl=http://localhost:8081 start-server-and-test server http://localhost:8081 cypress:run",
-    "deploy:twilio-cli": "REACT_APP_SET_AUTH=passcode npm run build && twilio rtc:apps:video:deploy --authentication=passcode --app-directory ./build"
+    "cypress:ci": "cross-env CYPRESS_baseUrl=http://localhost:8081 start-server-and-test server http://localhost:8081 cypress:run",
+    "deploy:twilio-cli": "cross-env REACT_APP_SET_AUTH=passcode npm run build && twilio rtc:apps:video:deploy --authentication=passcode --app-directory ./build"
   },
   "eslintConfig": {
     "extends": "react-app",
