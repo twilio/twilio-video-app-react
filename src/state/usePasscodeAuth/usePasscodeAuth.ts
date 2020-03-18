@@ -1,9 +1,22 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+const queryString = require('query-string');
+
+export function getRoomName() {
+  const parsed = queryString.parse(window.location.search);
+  const room = parsed.room ? parsed.room : window.sessionStorage.getItem('room');
+  return room;
+}
+
+export function getUserName() {
+  const parsed = queryString.parse(window.location.search);
+  const user = parsed.user ? parsed.user : window.sessionStorage.getItem('user');
+  return user;
+}
 
 export function getPasscode() {
-  const match = window.location.search.match(/passcode=(.*)&?/);
-  const passcode = match ? match[1] : window.sessionStorage.getItem('passcode');
+  const parsed = queryString.parse(window.location.search);
+  const passcode = parsed.passcode ? parsed.passcode : window.sessionStorage.getItem('passcode');
   return passcode;
 }
 
@@ -58,6 +71,8 @@ export default function usePasscodeAuth() {
 
   useEffect(() => {
     const passcode = getPasscode();
+    const room = getRoomName();
+    const user = getUserName();
 
     if (passcode) {
       verifyPasscode(passcode)
@@ -65,6 +80,15 @@ export default function usePasscodeAuth() {
           if (verification?.isValid) {
             setUser({ passcode } as any);
             window.sessionStorage.setItem('passcode', passcode);
+
+            if (user) {
+              window.sessionStorage.setItem('user', user);
+            }
+
+            if (room) {
+              window.sessionStorage.setItem('room', room);
+            }
+
             history.replace(window.location.pathname);
           }
         })
@@ -79,6 +103,17 @@ export default function usePasscodeAuth() {
       if (verification?.isValid) {
         setUser({ passcode } as any);
         window.sessionStorage.setItem('passcode', passcode);
+
+        const room = getRoomName();
+        const user = getUserName();
+
+        if (user) {
+          window.sessionStorage.setItem('user', user);
+        }
+
+        if (room) {
+          window.sessionStorage.setItem('room', room);
+        }
       } else {
         throw new Error(getErrorMessage(verification?.error));
       }

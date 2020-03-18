@@ -42,7 +42,14 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function MenuBar() {
   const classes = useStyles();
-  const { URLRoomName } = useParams();
+  let { URLRoomName } = useParams();
+
+  if (!URLRoomName) {
+    URLRoomName = window.sessionStorage.getItem('room') || '';
+  }
+
+  const URLUserName = window.sessionStorage.getItem('user') || '';
+
   const { user, getToken } = useAppState();
   const { isConnecting, connect } = useVideoContext();
   const roomState = useRoomState();
@@ -54,7 +61,15 @@ export default function MenuBar() {
     if (URLRoomName) {
       setRoomName(URLRoomName);
     }
-  }, [URLRoomName]);
+
+    if (URLUserName) {
+      setName(URLUserName);
+    }
+
+    if (URLRoomName && URLUserName) {
+      getToken(URLUserName, URLRoomName).then(token => connect(token));
+    }
+  }, [URLRoomName, URLUserName]);
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);

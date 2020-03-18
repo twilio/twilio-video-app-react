@@ -23,6 +23,7 @@
     "lint-staged": "^9.5.0",
     "lodash.throttle": "^4.1.1",
     "prettier": "^1.19.1",
+    "query-string": "^6.11.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
