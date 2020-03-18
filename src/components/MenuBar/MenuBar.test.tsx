@@ -58,9 +58,17 @@ describe('the MenuBar component', () => {
     expect(container.querySelectorAll('input').length).toEqual(2);
   });
 
-  it('should display a loading spinner when connecting to a room', () => {
+  it('should display a loading spinner while connecting to a room', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
     mockedUseVideoContext.mockImplementation(() => ({ isConnecting: true, room: {} } as any));
+    const { container } = render(renderComponent());
+    expect(container.querySelector('svg')).not.toBeNull();
+  });
+
+  it('should display a loading spinner while fetching a token', () => {
+    mockedUseRoomState.mockImplementation(() => 'disconnected');
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false, room: {} } as any));
+    mockUseAppState.mockImplementationOnce(() => ({ isFetching: true }));
     const { container } = render(renderComponent());
     expect(container.querySelector('svg')).not.toBeNull();
   });
@@ -96,7 +104,6 @@ describe('the MenuBar component', () => {
   });
 
   it('should update the URL to include the room name on submit', () => {
-
     mockedUseRoomState.mockImplementation(() => 'disconnected');
     mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false, connect: mockConnect, room: {} } as any));
     const { getByLabelText, getByText } = render(renderComponent());
