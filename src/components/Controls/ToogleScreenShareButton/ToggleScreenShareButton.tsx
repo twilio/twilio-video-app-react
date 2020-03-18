@@ -10,6 +10,11 @@ import useScreenShareToggle from '../../../hooks/useScreenShareToggle/useScreenS
 import useScreenShareParticipant from '../../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
+export const SCREEN_SHARE_TEXT = 'Share Screen';
+export const STOP_SCREEN_SHARE_TEXT = 'Stop Sharing Screen';
+export const SHARE_IN_PROGRESS_TEXT = 'Cannot share screen when another user is sharing';
+export const SHARE_NOT_SUPPORTED_TEXT = 'Screen sharing is not supported with this browser';
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     fab: {
@@ -28,28 +33,37 @@ export default function ToggleScreenShareButton(props: { disabled?: boolean }) {
   const screenShareParticipant = useScreenShareParticipant();
   const { room } = useVideoContext();
   const disableScreenShareButton = screenShareParticipant && screenShareParticipant !== room.localParticipant;
-  const tooltipMessage = isScreenShared ? 'Stop Sharing Screen' : 'Share Screen';
+  const isScreenShareSupported = navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia;
+  const isDisabled = props.disabled || disableScreenShareButton || !isScreenShareSupported;
+
+  let tooltipMessage = SCREEN_SHARE_TEXT;
+
+  if (isScreenShared) {
+    tooltipMessage = STOP_SCREEN_SHARE_TEXT;
+  }
+
+  if (disableScreenShareButton) {
+    tooltipMessage = SHARE_IN_PROGRESS_TEXT;
+  }
+
+  if (!isScreenShareSupported) {
+    tooltipMessage = SHARE_NOT_SUPPORTED_TEXT;
+  }
 
   return (
-    navigator.mediaDevices &&
-    navigator.mediaDevices.getDisplayMedia && (
-      <Tooltip
-        title={disableScreenShareButton ? 'Cannot share screen when another user is sharing' : tooltipMessage}
-        placement="top"
-        PopperProps={{ disablePortal: true }}
-      >
-        <div>
-          {/* The div element is needed because a disabled button will not emit hover events and we want to display
-            a tooltip when screen sharing is disabled */}
-          <Fab
-            className={classes.fab}
-            onClick={toggleScreenShare}
-            disabled={props.disabled || disableScreenShareButton}
-          >
-            {isScreenShared ? <StopScreenShare /> : <ScreenShare />}
-          </Fab>
-        </div>
-      </Tooltip>
-    )
+    <Tooltip
+      title={tooltipMessage}
+      placement="top"
+      PopperProps={{ disablePortal: true }}
+      style={{ cursor: isDisabled ? 'not-allowed' : 'pointer' }}
+    >
+      <div>
+        {/* The div element is needed because a disabled button will not emit hover events and we want to display
+          a tooltip when screen sharing is disabled */}
+        <Fab className={classes.fab} onClick={toggleScreenShare} disabled={isDisabled}>
+          {isScreenShared ? <StopScreenShare /> : <ScreenShare />}
+        </Fab>
+      </div>
+    </Tooltip>
   );
 }
