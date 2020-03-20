@@ -2,11 +2,69 @@
 
 [![CircleCI](https://circleci.com/gh/twilio/twilio-video-app-react.svg?style=svg)](https://circleci.com/gh/twilio/twilio-video-app-react)
 
+## What is it
+
 This application demonstrates a multi-party video application built with [twilio-video.js](https://github.com/twilio/twilio-video.js) and [Create React App](https://github.com/facebook/create-react-app).
+
+* Deploy to [Twilio Serverless](https://www.twilio.com/docs/runtime/functions-assets-api) in just a few minutes
+* No other infrastructure is required
+* No code changes are required before your first deploy
+* There is no cost associated with deploying the app
+* When using the app, you will be charged [$0.01 / video participant minute](https://www.twilio.com/video/pricing).
 
 ![App Preview](https://user-images.githubusercontent.com/12685223/76361972-c035b700-62e5-11ea-8f9d-0bb24bd73fd4.png)
 
+## Pre-requisites
+
+You must have the following installed:
+
+* [Node.js v10+](https://nodejs.org/en/download/)
+* NPM v6+ (comes installed with newer Node versions)
+
+## Install Twilio CLI
+
+The app is deployed to Twilio using the Twilio CLI. Install twilio-cli with
+
+    $ npm install -g twilio-cli
+
+It requires an additional plugin. Install the CLI plugin with:
+
+    $ twilio plugins:install @twilio-labs/plugin-rtc
+
+## Deploy the app to Twilio
+
+The app is deployed to Twilio with a single command:
+
+    $ npm run deploy:twilio-cli
+
+This performs the following steps:
+
+* Builds the React app in the `src` directory
+* Generates a random code used to access the Video app
+* Deploys the React app and token server function as a Twilio Serverless service.
+* Prints the URL for the app and the passcode.
+
+**The passcode will expire after one week**. To generate a new passcode, redeploy the app:
+
+    $ npm run deploy:twilio-cli -- --override
+
+## View app details
+
+View the URL and passcode for the Video app with
+
+     $ twilio rtc:apps:video:view
+
+## Delete the app
+
+Delete the app with
+
+    $ twilio rtc:apps:delete
+
+This removes the Serverless app from Twilio. This will ensure that no further cost are incurred by the app.
+
 ## Features
+
+The Video app has the following features:
 
 - [x] Video conferencing with real-time video and audio
 - [x] Enable/disable camera
@@ -16,31 +74,13 @@ This application demonstrates a multi-party video application built with [twilio
 - [x] [Network quality](https://www.twilio.com/docs/video/using-network-quality-api) indicator
 - [x] [Bandwidth Profile API](https://www.twilio.com/docs/video/tutorials/using-bandwidth-profile-api)
 
-## Requirements
-
-Node.js Version | NPM Version
------------- | -------------
-10+ | 6+
-
-### Browser Support
+## Browser Support
 
 See browser support table for [twilio-video.js SDK](https://github.com/twilio/twilio-video.js/tree/master/#browser-support).
 
-## Getting Started
+## Deeper dive
 
-Run `npm install` to install all dependencies.
-
-The fastest way to get started is to use the Twilio CLI:
-
-1. Install and configure the [Twilio CLI](https://www.twilio.com/docs/twilio-cli/quickstart).
-2. Run `twilio plugins:install @twilio-labs/plugin-rtc` to install the app's support plugin.
-3. Run `npm run deploy:twilio-cli` 
-
-This will deploy the application as a [Twilio Function](https://www.twilio.com/docs/runtime/functions) and provide a link to the app. For more information see the documentation for the [WebRTC Twilio Cli plugin](https://github.com/twilio-labs/plugin-rtc).
-
-The link and passcode will expire after one week. To deploy a new instance of the app, run `npm run deploy:twilio-cli -- --override`.
-
-### Running the local token server
+### Running a local token server
 
 This application requires an access token to connect to a Room. The included local token [server](server.js) provides the application with access tokens. Perform the following steps to setup the local token server:
 
@@ -57,18 +97,18 @@ TWILIO_API_KEY_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 Now the local token server (see [server.js](server.js)) can dispense Access Tokens to connect to a Room.
 
-### Running the App
+### Running the App locally
 
-#### `npm start`
+Run the app locally with
+
+    $ npm start
 
 This will start the local token server and run the app in the development mode. Open [http://localhost:3000](http://localhost:3000) to see the application in the browser.
 
 The page will reload if you make changes to the source code in `src/`.
-You will also see any linting errors in the console.
+You will also see any linting errors in the console. Start the token server locally with
 
-#### `npm run server`
-
-This will run a standalone token server.
+    $ npm run server
 
 The token server runs on port 8081 and expects a `GET` request at the `/token` route with the following query parameters:
 
@@ -91,29 +131,35 @@ Additionally, if you would like to invite other participants to a room, each par
 
 ### Building
 
-#### `npm run build`
+Build the React app with
+
+    $ npm run build
 
 This script will build the static assets for the application in the `build/` directory.
 
-## Tests
+### Tests
 
 This application has unit tests (using [Jest](https://jestjs.io/)) and E2E tests (using [Cypress](https://www.cypress.io/)). You can run the tests with the following scripts.
 
-### Unit Tests
+#### Unit Tests
 
-#### `npm test`
+Run unit tests with
+
+    $ npm test
 
 This will run all unit tests with Jest and output the results to the console.
 
-### E2E Tests
+#### E2E Tests
 
-#### `npm run cypress:open`
+Run end to end tests with
+
+    $ npm run cypress:open
 
 This will open the Cypress test runner. When it's open, select a test file to run.
 
 Note: Be sure to complete the 'Getting Started' section before running these tests. These Cypress tests will connect to real Twilio rooms, so you may be billed for any time that is used.
 
-## Application Architecture
+### Application Architecture
 
 The state of this application (with a few exceptions) is managed by the [room object](https://media.twiliocdn.com/sdk/js/video/releases/2.0.0/docs/Room.html) that is supplied by the SDK. The `room` object contains all information about the room that the user is connected to. The class hierarchy of the `room` object can be viewed [here](https://www.twilio.com/docs/video/migrating-1x-2x#object-model).
 
@@ -144,15 +190,15 @@ In this hook, the `useEffect` hook is used to subscribe to the `dominantSpeakerC
 
 For more information on how React hooks can be used with the Twilio Video SDK, see this tutorial: https://www.twilio.com/blog/video-chat-react-hooks. To see all of the hooks used by this application, look in the `src/hooks` directory.
 
-## Configuration
+### Configuration
 
 The `connect` function from the SDK accepts a [configuration object](https://media.twiliocdn.com/sdk/js/video/releases/2.0.0/docs/global.html#ConnectOptions). The configuration object for this application can be found in [src/index.ts](https://github.com/twilio/twilio-video-app-react/blob/master/src/index.tsx#L20). In this object, we 1) enable dominant speaker detection, 2) enable the network quality API, and 3) supply various options to configure the [bandwidth profile](https://www.twilio.com/docs/video/tutorials/using-bandwidth-profile-api).
 
-### Track Priority Settings
+#### Track Priority Settings
 
 This application dynamically changes the priority of remote video tracks to provide an optimal collaboration experience. Any video track that will be displayed in the main video area will have `track.setPriority('high')` called on it (see the [VideoTrack](https://github.com/twilio/twilio-video-app-react/blob/master/src/components/VideoTrack/VideoTrack.tsx#L25) component) when the component is mounted. This higher priority enables the track to be rendered at a high resolution. `track.setPriority(null)` is called when the component is unmounted so that the track's priority is set to its publish priority (low).
 
-## Google Authentication using Firebase (optional)
+### Google Authentication using Firebase (optional)
 
 This application can be configured to authenticate users before they use the app. Once users have signed into the app with their Google credentials, their Firebase ID Token will be included in the Authorization header of the HTTP request that is used to obtain an access token. The Firebase ID Token can then be [verified](https://firebase.google.com/docs/auth/admin/verify-id-tokens) by the server that dispenses access tokens for connecting to a room. 
 
