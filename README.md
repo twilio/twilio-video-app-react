@@ -6,11 +6,11 @@
 
 This application demonstrates a multi-party video application built with [twilio-video.js](https://github.com/twilio/twilio-video.js) and [Create React App](https://github.com/facebook/create-react-app).
 
-* Deploy to Twilio Serverless in just a few minutes
+* Deploy to [Twilio Serverless](https://www.twilio.com/docs/runtime/functions-assets-api) in just a few minutes
 * No other infrastructure is required
 * No code changes are required before your first deploy
 * There is no cost associated with deploying the app
-* When using the app, you will be charged $0.01 / video participant minute.
+* When using the app, you will be charged [$0.01 / video participant minute](https://www.twilio.com/video/pricing).
 
 ![App Preview](https://user-images.githubusercontent.com/12685223/76361972-c035b700-62e5-11ea-8f9d-0bb24bd73fd4.png)
 
