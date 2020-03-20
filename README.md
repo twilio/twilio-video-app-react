@@ -36,11 +36,17 @@ This performs the following steps:
 * Builds the React app in the `src` directory
 * Generates a random code used to access the Video app
 * Deploys the React app and token server function as a Twilio Serverless service.
-* Prints the URL for the app and the access code.
+* Prints the URL for the app and the passcode.
 
 **The passcode will expire after one week**. To generate a new passcode, redeploy the app:
 
     $ npm run deploy:twilio-cli -- --override
+
+## View app details
+
+View the URL and passcode for the Video app with
+
+     $ twilio rtc:apps:video:view
 
 ## Delete the app
 
