@@ -12,6 +12,7 @@ export interface StateContextType {
   signIn?(passcode?: string): Promise<void>;
   signOut?(): Promise<void>;
   isAuthReady?: boolean;
+  isFetching: boolean;
 }
 
 export const StateContext = createContext<StateContextType>(null!);
@@ -27,9 +28,12 @@ export const StateContext = createContext<StateContextType>(null!);
 */
 export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const [error, setError] = useState<TwilioError | null>(null);
+  const [isFetching, setIsFetching] = useState(false);
+
   let contextValue = {
     error,
     setError,
+    isFetching,
   } as StateContextType;
 
   if (process.env.REACT_APP_SET_AUTH === 'firebase') {
@@ -55,11 +59,20 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     };
   }
 
-  const getToken: StateContextType['getToken'] = (name, room) =>
-    contextValue.getToken(name, room).catch(err => {
-      setError(err);
-      return Promise.reject(err);
-    });
+  const getToken: StateContextType['getToken'] = (name, room) => {
+    setIsFetching(true);
+    return contextValue
+      .getToken(name, room)
+      .then(res => {
+        setIsFetching(false);
+        return res;
+      })
+      .catch(err => {
+        setError(err);
+        setIsFetching(false);
+        return Promise.reject(err);
+      });
+  };
 
   return <StateContext.Provider value={{ ...contextValue, getToken }}>{props.children}</StateContext.Provider>;
 }
