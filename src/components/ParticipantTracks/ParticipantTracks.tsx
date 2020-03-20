@@ -8,7 +8,7 @@ interface ParticipantTracksProps {
   participant: LocalParticipant | RemoteParticipant;
   disableAudio?: boolean;
   enableScreenShare?: boolean;
-  videoPriority?: Track.Priority;
+  videoPriority?: Track.Priority | null;
 }
 
 /*

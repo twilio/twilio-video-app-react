@@ -12,7 +12,7 @@ const Video = styled('video')({
 interface VideoTrackProps {
   track: IVideoTrack;
   isLocal?: boolean;
-  priority?: Track.Priority;
+  priority?: Track.Priority | null;
 }
 
 export default function VideoTrack({ track, isLocal, priority }: VideoTrackProps) {
