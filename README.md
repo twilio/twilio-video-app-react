@@ -21,7 +21,7 @@ The app is deployed to Twilio using the Twilio CLI. Install twilio-cli with
 
     $ npm install -g twilio-cli
 
-it requires an additional plugin. Install the CLI plugin with:
+It requires an additional plugin. Install the CLI plugin with:
 
     $ twilio plugins:install @twilio-labs/plugin-rtc
 
