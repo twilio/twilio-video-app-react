@@ -4,7 +4,7 @@
 
 This application demonstrates a multi-party video application built with [twilio-video.js](https://github.com/twilio/twilio-video.js) and [Create React App](https://github.com/facebook/create-react-app).
 
-The app can be deployed to Twilio Serverless in just a few minutes. No other infrastructure is required. No code changes are required. There are no cost associated with deploying the app. When using the app, you will be charged $0.01 / video participant minute.
+The app can be deployed to Twilio Serverless in just a few minutes. No other infrastructure is required. No code changes are required. There is no cost associated with deploying the app. When using the app, you will be charged $0.01 / video participant minute.
 
 ![App Preview](https://user-images.githubusercontent.com/12685223/76361972-c035b700-62e5-11ea-8f9d-0bb24bd73fd4.png)
 
@@ -31,7 +31,7 @@ The app is deployed to Twilio with a single command:
 
     $ npm run deploy:twilio-cli
 
-This will perform the following steps:
+This performs the following steps:
 
 * Builds the React app in the `src` directory
 * Generates a random code used to access the Video app
@@ -42,6 +42,13 @@ This will perform the following steps:
 
     $ npm run deploy:twilio-cli -- --override
 
+# Delete the app
+
+Delete the app with
+
+    $ twilio rtc:apps:delete
+
+This removes the Serverless app from Twilio. This will ensure that no further cost are incurred by the app.
 
 # Features
 
