@@ -58,7 +58,7 @@ View the URL and passcode for the Video app with
 
 Delete the app with
 
-    $ twilio rtc:apps:delete
+    $ twilio rtc:apps:video:delete
 
 This removes the Serverless app from Twilio. This will ensure that no further cost are incurred by the app.
 
