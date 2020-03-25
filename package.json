@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "license": "Apache-2.0",
+  "homepage": "./",
   "dependencies": {
     "@material-ui/core": "^4.9.1",
     "@material-ui/icons": "^4.9.1",
@@ -29,7 +30,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.3.1",
     "twilio": "^3.39.3",
-    "twilio-video": "^2.2.0",
+    "twilio-video": "^2.3.0",
     "typescript": "^3.7.5"
   },
   "devDependencies": {
