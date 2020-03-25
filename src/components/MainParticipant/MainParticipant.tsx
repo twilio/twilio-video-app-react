@@ -3,12 +3,15 @@ import ParticipantTracks from '../ParticipantTracks/ParticipantTracks';
 import React from 'react';
 import useMainSpeaker from '../../hooks/useMainSpeaker/useMainSpeaker';
 import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
+import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 
 export default function MainParticipant() {
   const mainParticipant = useMainSpeaker();
   const [selectedParticipant] = useSelectedParticipant();
+  const screenShareParticipant = useScreenShareParticipant();
 
-  const videoPriority = mainParticipant === selectedParticipant ? 'high' : null;
+  const videoPriority =
+    mainParticipant === selectedParticipant || mainParticipant === screenShareParticipant ? 'high' : null;
 
   return (
     /* audio is disabled for this participant component because this participant's audio 
