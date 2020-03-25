@@ -21,7 +21,9 @@ describe('the usePasscodeAuth hook', () => {
     beforeEach(() => window.sessionStorage.clear());
     it('should return a user when the passcode is valid', async () => {
       // @ts-ignore
-      window.fetch = jest.fn(() => Promise.resolve({ ok: true, json: () => ({ token: 'mockVideoToken' }) }));
+      window.fetch = jest.fn(() =>
+        Promise.resolve({ ok: true, json: () => Promise.resolve({ token: 'mockVideoToken' }) })
+      );
       window.sessionStorage.setItem('passcode', '123123');
       const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
       await waitForNextUpdate();
@@ -30,7 +32,9 @@ describe('the usePasscodeAuth hook', () => {
 
     it('should remove the query parameter from the URL when the passcode is valid', async () => {
       // @ts-ignore
-      window.fetch = jest.fn(() => Promise.resolve({ ok: true, json: () => ({ token: 'mockVideoToken' }) }));
+      window.fetch = jest.fn(() =>
+        Promise.resolve({ ok: true, json: () => Promise.resolve({ token: 'mockVideoToken' }) })
+      );
       // @ts-ignore
       window.location = {
         search: '?passcode=000000',
@@ -46,7 +50,9 @@ describe('the usePasscodeAuth hook', () => {
 
     it('should not return a user when the app code is invalid', async () => {
       // @ts-ignore
-      window.fetch = jest.fn(() => Promise.resolve({ status: 401, json: () => ({ type: 'errorMessage' }) }));
+      window.fetch = jest.fn(() =>
+        Promise.resolve({ status: 401, json: () => Promise.resolve({ type: 'errorMessage' }) })
+      );
       window.location.search = '';
       window.sessionStorage.setItem('passcode', '123123');
       const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
@@ -63,7 +69,9 @@ describe('the usePasscodeAuth hook', () => {
   describe('signout function', () => {
     it('should clear session storage and user on signout', async () => {
       // @ts-ignore
-      window.fetch = jest.fn(() => Promise.resolve({ ok: true, json: () => ({ token: 'mockVideoToken' }) }));
+      window.fetch = jest.fn(() =>
+        Promise.resolve({ ok: true, json: () => Promise.resolve({ token: 'mockVideoToken' }) })
+      );
       window.sessionStorage.setItem('passcode', '123123');
       const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
       await waitForNextUpdate();
@@ -76,7 +84,9 @@ describe('the usePasscodeAuth hook', () => {
   describe('signin function', () => {
     it('should set a user when a valid passcode is submitted', async () => {
       // @ts-ignore
-      window.fetch = jest.fn(() => Promise.resolve({ ok: true, json: () => ({ token: 'mockVideoToken' }) }));
+      window.fetch = jest.fn(() =>
+        Promise.resolve({ ok: true, json: () => Promise.resolve({ token: 'mockVideoToken' }) })
+      );
       const { result } = renderHook(usePasscodeAuth, { wrapper });
       await act(() => result.current.signIn('123456'));
       expect(result.current.user).toEqual({ passcode: '123456' });
@@ -85,7 +95,7 @@ describe('the usePasscodeAuth hook', () => {
     it('should return an error when an invalid passcode is submitted', async () => {
       // @ts-ignore
       window.fetch = jest.fn(() =>
-        Promise.resolve({ status: 401, json: () => ({ error: { message: 'passcode incorrect' } }) })
+        Promise.resolve({ status: 401, json: () => Promise.resolve({ error: { message: 'passcode incorrect' } }) })
       );
       const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
       await waitForNextUpdate();
@@ -97,11 +107,45 @@ describe('the usePasscodeAuth hook', () => {
     it('should return an error when an expired passcode is submitted', async () => {
       // @ts-ignore
       window.fetch = jest.fn(() =>
-        Promise.resolve({ status: 401, json: () => ({ error: { message: 'passcode expired' } }) })
+        Promise.resolve({ status: 401, json: () => Promise.resolve({ error: { message: 'passcode expired' } }) })
       );
       const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
       await waitForNextUpdate();
       result.current.signIn('123456').catch(err => {
+        expect(err.message).toBe('Passcode has expired');
+      });
+    });
+  });
+
+  describe('the getToken function', () => {
+    it('should return a token', async () => {
+      // @ts-ignore
+      window.fetch = jest.fn(() =>
+        Promise.resolve({ ok: true, json: () => Promise.resolve({ token: 'mockVideoToken' }) })
+      );
+      window.sessionStorage.setItem('passcode', '123123');
+      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
+      await waitForNextUpdate();
+      result.current.getToken('test-name', 'test-room').then(token => {
+        expect(token).toBe('mockVideoToken');
+      });
+    });
+
+    it('should return a useful error message from the serverless function', async () => {
+      // @ts-ignore
+      window.fetch = jest.fn(() =>
+        // Return a successful response when the passcode is initially verified
+        Promise.resolve({ ok: true, json: () => Promise.resolve({ token: 'mockVideoToken' }) })
+      );
+      window.sessionStorage.setItem('passcode', '123123');
+      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
+      await waitForNextUpdate();
+      // @ts-ignore
+      window.fetch = jest.fn(() =>
+        // Return an error when the user tries to join a room
+        Promise.resolve({ status: 401, json: () => Promise.resolve({ error: { message: 'passcode expired' } }) })
+      );
+      result.current.getToken('test-name', 'test-room').catch(err => {
         expect(err.message).toBe('Passcode has expired');
       });
     });
@@ -139,7 +183,9 @@ describe('the getPasscode function', () => {
 describe('the verifyPasscode function', () => {
   it('should return the correct response when the passcode is valid', async () => {
     // @ts-ignore
-    window.fetch = jest.fn(() => Promise.resolve({ ok: true, json: () => ({ token: 'mockVideoToken' }) }));
+    window.fetch = jest.fn(() =>
+      Promise.resolve({ ok: true, json: () => Promise.resolve({ token: 'mockVideoToken' }) })
+    );
 
     const result = await verifyPasscode('123456');
     expect(result).toEqual({ isValid: true });
@@ -147,7 +193,9 @@ describe('the verifyPasscode function', () => {
 
   it('should return the correct response when the passcode is invalid', async () => {
     // @ts-ignore
-    window.fetch = jest.fn(() => Promise.resolve({ status: 401, json: () => ({ error: {message:'errorMessage' }}) }));
+    window.fetch = jest.fn(() =>
+      Promise.resolve({ status: 401, json: () => Promise.resolve({ error: { message: 'errorMessage' } }) })
+    );
 
     const result = await verifyPasscode('123456');
     expect(result).toEqual({ isValid: false, error: 'errorMessage' });

@@ -50,6 +50,14 @@ export default function usePasscodeAuth() {
   const getToken = useCallback(
     (name: string, room: string) => {
       return fetchToken(name, room, user!.passcode)
+        .then(async res => {
+          if (res.ok) {
+            return res;
+          }
+          const json = await res.json();
+          const errorMessage = getErrorMessage(json.error?.message || res.statusText);
+          throw Error(errorMessage);
+        })
         .then(res => res.json())
         .then(res => res.token as string);
     },
