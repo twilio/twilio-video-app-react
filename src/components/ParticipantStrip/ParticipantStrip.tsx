@@ -13,6 +13,12 @@ const Container = styled('aside')(({ theme }) => ({
   left: 0,
   padding: '0.5em',
   overflowY: 'auto',
+  [theme.breakpoints.down('xs')]: {
+    right: 0,
+    top: `calc(100% - ${theme.sidebarMobileHeight}px)`,
+    padding: 0,
+    display: 'flex',
+  },
 }));
 
 export default function ParticipantStrip() {

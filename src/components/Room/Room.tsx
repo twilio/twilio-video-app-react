@@ -9,6 +9,7 @@ const Container = styled('div')({
 });
 
 const MainParticipantContainer = styled('div')(({ theme }) => ({
+  display: 'flex',
   position: 'absolute',
   left: theme.sidebarWidth,
   right: 0,
@@ -16,6 +17,10 @@ const MainParticipantContainer = styled('div')(({ theme }) => ({
   bottom: 0,
   '& > div': {
     height: '100%',
+  },
+  [theme.breakpoints.down('xs')]: {
+    left: 0,
+    bottom: theme.sidebarMobileHeight,
   },
 }));
 
