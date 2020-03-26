@@ -21,13 +21,21 @@ You must have the following installed:
 * [Node.js v10+](https://nodejs.org/en/download/)
 * NPM v6+ (comes installed with newer Node versions)
 
+## Install Dependencies
+
+Run `npm install` to install all dependencies from NPM.
+
 ## Install Twilio CLI
 
-The app is deployed to Twilio using the Twilio CLI. Install twilio-cli with
+The app is deployed to Twilio using the Twilio CLI. Install twilio-cli with:
 
     $ npm install -g twilio-cli
 
-It requires an additional plugin. Install the CLI plugin with:
+Login to the Twilio CLI. You will be prompted for your Account SID and Auth Token, both of which you can find on the dashboard of your [Twilio console](https://twilio.com/console).
+
+    $ twilio login
+
+This app requires an additional plugin. Install the CLI plugin with:
 
     $ twilio plugins:install @twilio-labs/plugin-rtc
 
