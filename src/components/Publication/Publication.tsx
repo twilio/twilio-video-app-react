@@ -17,7 +17,7 @@ interface PublicationProps {
   participant: Participant;
   isLocal: boolean;
   disableAudio?: boolean;
-  videoPriority?: Track.Priority;
+  videoPriority?: Track.Priority | null;
 }
 
 export default function Publication({ publication, isLocal, disableAudio, videoPriority }: PublicationProps) {

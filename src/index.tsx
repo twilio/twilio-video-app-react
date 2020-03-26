@@ -21,9 +21,10 @@ const connectionOptions: ConnectOptions = {
   bandwidthProfile: {
     video: {
       mode: 'collaboration',
+      dominantSpeakerPriority: 'standard',
       renderDimensions: {
         high: { height: 1080, width: 1920 },
-        standard: { height: 90, width: 160 },
+        standard: { height: 720, width: 1280 },
         low: { height: 90, width: 160 },
       },
     },
