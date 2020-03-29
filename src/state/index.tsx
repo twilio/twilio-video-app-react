@@ -47,6 +47,10 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
       ...usePasscodeAuth(), // eslint-disable-line react-hooks/rules-of-hooks
     };
   } else {
+    const match = window.location.search.match(/user=(.*)&?/);
+    const urlUser = match ? match[1] : '';
+    window.sessionStorage.setItem('user', urlUser);
+
     contextValue = {
       ...contextValue,
       getToken: async (identity, roomName) => {

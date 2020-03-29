@@ -46,15 +46,22 @@ export default function MenuBar() {
   const { user, getToken, isFetching } = useAppState();
   const { isConnecting, connect } = useVideoContext();
   const roomState = useRoomState();
-
+  const URLUserName = window.sessionStorage.getItem('user') || '';
   const [name, setName] = useState<string>(user?.displayName || '');
+
   const [roomName, setRoomName] = useState<string>('');
 
   useEffect(() => {
     if (URLRoomName) {
       setRoomName(URLRoomName);
     }
-  }, [URLRoomName]);
+    if (URLUserName) {
+      setName(URLUserName);
+    }
+    if (URLRoomName && URLUserName) {
+      getToken(URLUserName, URLRoomName).then(token => connect(token));
+    }
+  }, [URLRoomName, URLUserName]);
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
