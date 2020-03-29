@@ -9,6 +9,7 @@ const MAX_ALLOWED_SESSION_DURATION = 14400;
 const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
 const twilioApiKeySID = process.env.TWILIO_API_KEY_SID;
 const twilioApiKeySecret = process.env.TWILIO_API_KEY_SECRET;
+const app_token_endpoint = process.env.REACT_APP_TOKEN_ENDPOINT;
 
 app.use(express.static(path.join(__dirname, 'build')));
 
@@ -26,4 +27,6 @@ app.get('/token', (req, res) => {
 
 app.get('*', (_, res) => res.sendFile(path.join(__dirname, 'build/index.html')));
 
-app.listen(8081, () => console.log('token server running on 8081'));
+if(!app_token_endpoint){
+  app.listen(8081, () => console.log('token server running on 8081'));
+}
