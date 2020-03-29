@@ -12,6 +12,7 @@ const Container = styled('aside')(({ theme }) => ({
   right: `calc(100% - ${theme.sidebarWidth}px)`,
   left: 0,
   padding: '0.5em',
+  zIndex: 10,
   overflowY: 'auto',
 }));
 

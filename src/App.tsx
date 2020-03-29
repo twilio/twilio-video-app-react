@@ -3,7 +3,6 @@ import { styled } from '@material-ui/core/styles';
 
 import Controls from './components/Controls/Controls';
 import LocalVideoPreview from './components/LocalVideoPreview/LocalVideoPreview';
-import MenuBar from './components/MenuBar/MenuBar';
 import ReconnectingNotification from './components/ReconnectingNotification/ReconnectingNotification';
 import Room from './components/Room/Room';
 
@@ -25,7 +24,6 @@ export default function App() {
 
   return (
     <Container>
-      <MenuBar />
       <Main>
         {roomState === 'disconnected' ? <LocalVideoPreview /> : <Room />}
         <Controls />
