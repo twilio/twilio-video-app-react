@@ -42,12 +42,16 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function MenuBar() {
   const classes = useStyles();
-  const { URLRoomName } = useParams();
+  let { URLRoomName } = useParams();
   const { user, getToken, isFetching } = useAppState();
   const { isConnecting, connect } = useVideoContext();
   const roomState = useRoomState();
   const URLUserName = window.sessionStorage.getItem('user') || '';
   const [name, setName] = useState<string>(user?.displayName || '');
+
+  if (!URLRoomName) {
+    URLRoomName = window.sessionStorage.getItem('room') || '';
+  }
 
   const [roomName, setRoomName] = useState<string>('');
 
