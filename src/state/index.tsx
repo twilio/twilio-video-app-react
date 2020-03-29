@@ -47,9 +47,11 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
       ...usePasscodeAuth(), // eslint-disable-line react-hooks/rules-of-hooks
     };
   } else {
-    const match = window.location.search.match(/user=(.*)&?/);
-    const urlUser = match ? match[1] : '';
-    window.sessionStorage.setItem('user', urlUser);
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+
+    window.sessionStorage.setItem('user', urlParams.get('user') || '');
+    window.sessionStorage.setItem('room', urlParams.get('room') || '');
 
     contextValue = {
       ...contextValue,
