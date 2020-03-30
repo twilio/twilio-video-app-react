@@ -2,6 +2,7 @@ import React, { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import AppBar from '@material-ui/core/AppBar';
+import LocalAudioLevelIndicator from './LocalAudioLevelIndicator/LocalAudioLevelIndicator';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
@@ -19,6 +20,12 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
       backgroundColor: theme.palette.background.default,
+    },
+    leftButtonContainer: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginLeft: 'auto',
     },
     form: {
       display: 'flex',
@@ -113,8 +120,11 @@ export default function MenuBar() {
         ) : (
           <h3>{roomName}</h3>
         )}
-        <ToggleFullscreenButton />
-        <Menu />
+        <div className={classes.leftButtonContainer}>
+          <LocalAudioLevelIndicator />
+          <ToggleFullscreenButton />
+          <Menu />
+        </div>
       </Toolbar>
     </AppBar>
   );
