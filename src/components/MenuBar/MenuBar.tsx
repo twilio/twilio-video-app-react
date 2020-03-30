@@ -5,7 +5,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
-import ToggleFullscreenButton from '../ToggleFullScreenButton/ToggleFullScreenButton';
+import ToggleFullscreenButton from './ToggleFullScreenButton/ToggleFullScreenButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import Menu from './Menu/Menu';
 
@@ -20,9 +20,18 @@ const useStyles = makeStyles((theme: Theme) =>
     container: {
       backgroundColor: theme.palette.background.default,
     },
-    form: {
+    rightButtonContainer: {
       display: 'flex',
       alignItems: 'center',
+      marginLeft: 'auto',
+    },
+    form: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      [theme.breakpoints.up('md')]: {
+        marginLeft: '2.2em',
+      },
     },
     textField: {
       marginLeft: theme.spacing(1),
@@ -33,9 +42,12 @@ const useStyles = makeStyles((theme: Theme) =>
       marginLeft: '1em',
     },
     displayName: {
-      marginLeft: '2.2em',
+      margin: '1.1em 0.6em',
       minWidth: '200px',
       fontWeight: 600,
+    },
+    joinButton: {
+      margin: '1em',
     },
   })
 );
@@ -78,7 +90,7 @@ export default function MenuBar() {
       <Toolbar>
         {roomState === 'disconnected' ? (
           <form className={classes.form} onSubmit={handleSubmit}>
-            {!user?.displayName ? (
+            {false ? (
               <TextField
                 id="menu-name"
                 label="Name"
@@ -89,7 +101,7 @@ export default function MenuBar() {
               />
             ) : (
               <Typography className={classes.displayName} variant="body1">
-                {user.displayName}
+                dlskfjlskdjflksdjf
               </Typography>
             )}
             <TextField
@@ -101,6 +113,7 @@ export default function MenuBar() {
               margin="dense"
             />
             <Button
+              className={classes.joinButton}
               type="submit"
               color="primary"
               variant="contained"
@@ -113,8 +126,10 @@ export default function MenuBar() {
         ) : (
           <h3>{roomName}</h3>
         )}
-        <ToggleFullscreenButton />
-        <Menu />
+        <div className={classes.rightButtonContainer}>
+          <ToggleFullscreenButton />
+          <Menu />
+        </div>
       </Toolbar>
     </AppBar>
   );
