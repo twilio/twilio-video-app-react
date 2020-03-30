@@ -32,7 +32,7 @@ export default function useScreenShareToggle() {
         room.localParticipant
           .publishTrack(track, {
             name: 'screen', // Tracks can be named to easily find them later
-            priority: 'high',
+            priority: 'low', // Priority is set to high by the subscriber when the video track is rendered
           } as MediaStreamTrackPublishOptions)
           .then(trackPublication => {
             stopScreenShareRef.current = () => {
