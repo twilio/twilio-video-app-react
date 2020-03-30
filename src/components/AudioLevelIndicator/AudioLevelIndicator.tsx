@@ -3,6 +3,9 @@ import { AudioTrack } from 'twilio-video';
 import MicOff from '@material-ui/icons/MicOff';
 import useIsTrackEnabled from '../../hooks/useIsTrackEnabled/useIsTrackEnabled';
 
+// @ts-ignore
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+
 export default function AudioLevelIndicator({
   size,
   audioTrack,
@@ -61,7 +64,7 @@ export default function AudioLevelIndicator({
     <svg focusable="false" viewBox="0 0 24 24" aria-hidden="true" height={`${SIZE}px`} width={`${SIZE}px`}>
       <defs>
         <clipPath id="audio-level-clip">
-          <rect ref={ref} x="0" y="4" width="24" height="24" />
+          <rect ref={ref} x="0" y="21" width="24" height="24" />
         </clipPath>
       </defs>
       <path
