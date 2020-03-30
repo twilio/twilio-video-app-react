@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { LocalParticipant, RemoteParticipant, RemoteVideoTrack, LocalVideoTrack } from 'twilio-video';
+import { LocalVideoTrack, Participant, RemoteVideoTrack } from 'twilio-video';
 
 import BandwidthWarning from '../BandwidthWarning/BandwidthWarning';
 import MicOff from '@material-ui/icons/MicOff';
@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface ParticipantInfoProps {
-  participant: LocalParticipant | RemoteParticipant;
+  participant: Participant;
   children: React.ReactNode;
   onClick: () => void;
   isSelected: boolean;

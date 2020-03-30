@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { LocalParticipant, RemoteParticipant } from 'twilio-video';
+import { Participant } from 'twilio-video';
 
-export default function useParticipantNetworkQualityLevel(participant: LocalParticipant | RemoteParticipant) {
+export default function useParticipantNetworkQualityLevel(participant: Participant) {
   const [networkQualityLevel, setNetworkQualityLevel] = useState(participant.networkQualityLevel);
 
   useEffect(() => {
