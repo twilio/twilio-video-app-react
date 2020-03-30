@@ -1,11 +1,11 @@
 import React from 'react';
-import { LocalParticipant, RemoteParticipant, Track } from 'twilio-video';
+import { Participant, Track } from 'twilio-video';
 import Publication from '../Publication/Publication';
 import usePublications from '../../hooks/usePublications/usePublications';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 interface ParticipantTracksProps {
-  participant: LocalParticipant | RemoteParticipant;
+  participant: Participant;
   disableAudio?: boolean;
   enableScreenShare?: boolean;
   videoPriority?: Track.Priority | null;

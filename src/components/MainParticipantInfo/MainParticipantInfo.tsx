@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import { LocalParticipant, RemoteParticipant, RemoteVideoTrack, LocalVideoTrack } from 'twilio-video';
+import { LocalVideoTrack, Participant, RemoteVideoTrack } from 'twilio-video';
 
 import BandwidthWarning from '../BandwidthWarning/BandwidthWarning';
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
@@ -40,7 +40,7 @@ const useStyles = makeStyles({
 });
 
 interface MainParticipantInfoProps {
-  participant: LocalParticipant | RemoteParticipant;
+  participant: Participant;
   children: React.ReactNode;
 }
 

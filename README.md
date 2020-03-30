@@ -25,6 +25,8 @@ You must have the following installed:
 
 Run `npm install` to install all dependencies from NPM.
 
+If you want to use `yarn` to install dependencies, first run the [yarn import](https://classic.yarnpkg.com/en/docs/cli/import/) command. This will ensure that yarn installs the package versions that are specified in `package-lock.json`.
+
 ## Install Twilio CLI
 
 The app is deployed to Twilio using the Twilio CLI. Install twilio-cli with:
