@@ -8,6 +8,7 @@ const getUniqueClipId = () => clipId++;
 
 // @ts-ignore
 const AudioContext = window.AudioContext || window.webkitAudioContext;
+let audioContext: AudioContext;
 
 function AudioLevelIndicator({
   size,
@@ -25,39 +26,39 @@ function AudioLevelIndicator({
   useEffect(() => {
     const SVGClipElement = ref.current;
     if (audioTrack && isTrackEnabled && SVGClipElement) {
-      const stream = new MediaStream();
-      stream.addTrack(audioTrack.mediaStreamTrack);
-      const audioContext = new AudioContext();
-      const analyser = audioContext.createAnalyser();
-      const audioSource = audioContext.createMediaStreamSource(stream);
-      const javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
+      audioContext = audioContext || new AudioContext();
+      audioContext.resume().then(() => {
+        const stream = new MediaStream();
+        stream.addTrack(audioTrack.mediaStreamTrack);
+        const analyser = audioContext.createAnalyser();
+        const audioSource = audioContext.createMediaStreamSource(stream);
+        const javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
 
-      analyser.smoothingTimeConstant = 0.6;
-      analyser.fftSize = 1024;
+        analyser.smoothingTimeConstant = 0.6;
+        analyser.fftSize = 1024;
 
-      audioSource.connect(analyser);
-      analyser.connect(javascriptNode);
-      javascriptNode.connect(audioContext.destination);
-      javascriptNode.onaudioprocess = function() {
-        const array = new Uint8Array(analyser.frequencyBinCount);
-        analyser.getByteFrequencyData(array);
-        let values = 0;
+        audioSource.connect(analyser);
+        analyser.connect(javascriptNode);
+        javascriptNode.connect(audioContext.destination);
+        javascriptNode.onaudioprocess = function() {
+          const array = new Uint8Array(analyser.frequencyBinCount);
+          analyser.getByteFrequencyData(array);
+          let values = 0;
 
-        const length = array.length;
-        for (let i = 0; i < length; i++) {
-          values += array[i];
-        }
+          const length = array.length;
+          for (let i = 0; i < length; i++) {
+            values += array[i];
+          }
 
-        const volume = Math.min(21, Math.max(0, Math.log10(values / length / 3) * 14));
+          const volume = Math.min(21, Math.max(0, Math.log10(values / length / 3) * 14));
 
-        window.requestAnimationFrame(() => {
-          SVGClipElement.setAttribute('y', String(21 - volume));
-        });
-      };
+          window.requestAnimationFrame(() => {
+            SVGClipElement.setAttribute('y', String(21 - volume));
+          });
+        };
+      });
 
       return () => {
-        audioContext.close();
-        javascriptNode.disconnect(audioContext.destination);
         SVGClipElement.setAttribute('y', '21');
       };
     }
