@@ -11,6 +11,13 @@ export default function AudioTrack({ track }: AudioTrackProps) {
   useEffect(() => {
     const el = ref.current;
     track.attach(el);
+
+    if (window.location.search.includes('pauseplay=true')) {
+      el.pause();
+      el.play();
+      console.log('called pause()/play() on ', track);
+    }
+
     return () => {
       track.detach(el);
     };
