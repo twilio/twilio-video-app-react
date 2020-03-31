@@ -79,7 +79,7 @@ export default function MenuBar() {
     event.preventDefault();
     // If this app is deployed as a twilio function, don't change the URL beacuse routing isn't supported.
     if (!window.location.origin.includes('twil.io')) {
-      window.history.replaceState(null, '', window.encodeURI(`/room/${roomName}${window.location.search}`));
+      window.history.replaceState(null, '', window.encodeURI(`/room/${roomName}${window.location.search || ''}`));
     }
     getToken(name, roomName).then(token => connect(token));
   };
@@ -89,14 +89,20 @@ export default function MenuBar() {
       <Toolbar>
         {roomState === 'disconnected' ? (
           <form className={classes.form} onSubmit={handleSubmit}>
-            <TextField
-              id="menu-name"
-              label="Name"
-              className={classes.textField}
-              value={name}
-              onChange={handleNameChange}
-              margin="dense"
-            />
+            {window.location.search.includes('customIdentity=true') || !user?.displayName ? (
+              <TextField
+                id="menu-name"
+                label="Name"
+                className={classes.textField}
+                value={name}
+                onChange={handleNameChange}
+                margin="dense"
+              />
+            ) : (
+              <Typography className={classes.displayName} variant="body1">
+                {user.displayName}
+              </Typography>
+            )}
             <TextField
               id="menu-room"
               label="Room"
