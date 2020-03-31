@@ -90,7 +90,7 @@ export default function MenuBar() {
       <Toolbar>
         {roomState === 'disconnected' ? (
           <form className={classes.form} onSubmit={handleSubmit}>
-            {false ? (
+            {!user?.displayName ? (
               <TextField
                 id="menu-name"
                 label="Name"
@@ -101,7 +101,7 @@ export default function MenuBar() {
               />
             ) : (
               <Typography className={classes.displayName} variant="body1">
-                dlskfjlskdjflksdjf
+                {user.displayName}
               </Typography>
             )}
             <TextField
