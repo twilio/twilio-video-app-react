@@ -27,7 +27,7 @@ function AudioLevelIndicator({
     const SVGClipElement = ref.current;
     let processingNode: ScriptProcessorNode;
     let animationFrameID: number;
-    let volume: number;
+    let volume = 0;
 
     if (audioTrack && isTrackEnabled && SVGClipElement) {
       audioContext = audioContext || new AudioContext();
