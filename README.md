@@ -43,6 +43,7 @@ This app requires an additional plugin. Install the CLI plugin with:
 
 ## Deploy the app to Twilio
 
+Before deploying the app, make sure you are using the correct account on the Twilio CLI (using the command `twilio profiles:list` to check). 
 The app is deployed to Twilio with a single command:
 
     $ npm run deploy:twilio-cli
