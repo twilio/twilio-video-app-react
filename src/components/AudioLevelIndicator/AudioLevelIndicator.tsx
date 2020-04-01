@@ -25,41 +25,52 @@ function AudioLevelIndicator({
 
   useEffect(() => {
     const SVGClipElement = ref.current;
+    let processingNode: ScriptProcessorNode;
+    let animationFrameID: number;
+    let volume: number;
+
     if (audioTrack && isTrackEnabled && SVGClipElement) {
       audioContext = audioContext || new AudioContext();
-      audioContext.resume().then(() => {
-        const stream = new MediaStream();
-        stream.addTrack(audioTrack.mediaStreamTrack);
-        const analyser = audioContext.createAnalyser();
-        const audioSource = audioContext.createMediaStreamSource(stream);
-        const javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
+      const stream = new MediaStream();
+      stream.addTrack(audioTrack.mediaStreamTrack.clone());
+      const analyser = audioContext.createAnalyser();
+      const audioSource = audioContext.createMediaStreamSource(stream);
+      processingNode = audioContext.createScriptProcessor(2048, 1, 1);
 
-        analyser.smoothingTimeConstant = 0.6;
-        analyser.fftSize = 1024;
+      analyser.smoothingTimeConstant = 0.6;
+      analyser.fftSize = 1024;
 
-        audioSource.connect(analyser);
-        analyser.connect(javascriptNode);
-        javascriptNode.connect(audioContext.destination);
-        javascriptNode.onaudioprocess = function() {
-          const array = new Uint8Array(analyser.frequencyBinCount);
-          analyser.getByteFrequencyData(array);
-          let values = 0;
+      audioSource.connect(analyser);
+      analyser.connect(processingNode);
+      processingNode.connect(audioContext.destination);
 
-          const length = array.length;
-          for (let i = 0; i < length; i++) {
-            values += array[i];
-          }
+      processingNode.onaudioprocess = function() {
+        const array = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(array);
+        let values = 0;
 
-          const volume = Math.min(21, Math.max(0, Math.log10(values / length / 3) * 14));
+        const length = array.length;
+        for (let i = 0; i < length; i++) {
+          values += array[i];
+        }
 
-          window.requestAnimationFrame(() => {
-            SVGClipElement.setAttribute('y', String(21 - volume));
-          });
-        };
-      });
+        volume = Math.min(21, Math.max(0, Math.log10(values / length / 3) * 14));
+      };
+
+      function render() {
+        animationFrameID = window.requestAnimationFrame(() => {
+          SVGClipElement?.setAttribute('y', String(21 - volume));
+          render();
+        });
+      }
+
+      render();
 
       return () => {
         SVGClipElement.setAttribute('y', '21');
+        window.cancelAnimationFrame(animationFrameID);
+        processingNode.onaudioprocess = null;
+        processingNode.disconnect();
       };
     }
   }, [audioTrack, isTrackEnabled]);
