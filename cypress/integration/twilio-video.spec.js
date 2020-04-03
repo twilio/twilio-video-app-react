@@ -49,12 +49,6 @@ context('A video app user', () => {
       cy.getParticipant('test1').shouldBeMakingSound();
     });
 
-    it('should see other participants disconnect when they close their browser', () => {
-      cy.task('participantCloseBrowser', 'test1');
-      cy.getParticipant('test1').should('not.exist');
-      cy.get('[data-cy-main-participant]').should('contain', 'testuser');
-    });
-
     it('should see the participants audio level indicator moving', () => {
       cy.getParticipant('test1')
         .get('clipPath rect')
@@ -63,6 +57,12 @@ context('A video app user', () => {
       cy.get('clipPath rect')
         .invoke('attr', 'y')
         .should('be.lessThan', 20);
+    });
+
+    it('should see other participants disconnect when they close their browser', () => {
+      cy.task('participantCloseBrowser', 'test1');
+      cy.getParticipant('test1').should('not.exist');
+      cy.get('[data-cy-main-participant]').should('contain', 'testuser');
     });
   });
 
