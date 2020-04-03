@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { AudioTrack } from 'twilio-video';
+import { AudioTrack, LocalAudioTrack, RemoteAudioTrack } from 'twilio-video';
 import MicOff from '@material-ui/icons/MicOff';
 import useIsTrackEnabled from '../../hooks/useIsTrackEnabled/useIsTrackEnabled';
 
@@ -21,44 +21,37 @@ function AudioLevelIndicator({
 }) {
   const SIZE = size || 24;
   const ref = useRef<SVGRectElement>(null);
-  const isTrackEnabled = useIsTrackEnabled(audioTrack as any);
+  const isTrackEnabled = useIsTrackEnabled(audioTrack as LocalAudioTrack | RemoteAudioTrack);
 
   useEffect(() => {
     const SVGClipElement = ref.current;
-    let processingNode: ScriptProcessorNode;
     let animationFrameID: number;
-    let volume = 0;
 
     if (audioTrack && isTrackEnabled && SVGClipElement) {
       audioContext = audioContext || new AudioContext();
       const stream = new MediaStream();
       stream.addTrack(audioTrack.mediaStreamTrack.clone());
-      const analyser = audioContext.createAnalyser();
       const audioSource = audioContext.createMediaStreamSource(stream);
-      processingNode = audioContext.createScriptProcessor(2048, 1, 1);
 
-      analyser.smoothingTimeConstant = 0.6;
+      const analyser = audioContext.createAnalyser();
+      analyser.smoothingTimeConstant = 0.5;
       analyser.fftSize = 1024;
 
       audioSource.connect(analyser);
-      analyser.connect(processingNode);
-      processingNode.connect(audioContext.destination);
-
-      processingNode.onaudioprocess = function() {
-        const array = new Uint8Array(analyser.frequencyBinCount);
-        analyser.getByteFrequencyData(array);
-        let values = 0;
-
-        const length = array.length;
-        for (let i = 0; i < length; i++) {
-          values += array[i];
-        }
-
-        volume = Math.min(21, Math.max(0, Math.log10(values / length / 3) * 14));
-      };
 
       function render() {
         animationFrameID = window.requestAnimationFrame(() => {
+          const array = new Uint8Array(analyser.frequencyBinCount);
+          analyser.getByteFrequencyData(array);
+          let values = 0;
+
+          const length = array.length;
+          for (let i = 0; i < length; i++) {
+            values += array[i];
+          }
+
+          const volume = Math.min(21, Math.max(0, Math.log10(values / length / 3) * 14));
+
           SVGClipElement?.setAttribute('y', String(21 - volume));
           render();
         });
@@ -69,8 +62,6 @@ function AudioLevelIndicator({
       return () => {
         SVGClipElement.setAttribute('y', '21');
         window.cancelAnimationFrame(animationFrameID);
-        processingNode.onaudioprocess = null;
-        processingNode.disconnect();
       };
     }
   }, [audioTrack, isTrackEnabled]);
