@@ -33,7 +33,7 @@ context('A video app user', () => {
         .shouldBeSameVideoAs('[data-cy-main-participant]');
     });
 
-    it('should be able to hear the other participant', () => {
+    it.skip('should be able to hear the other participant', () => {
       cy.getParticipant('test1').shouldBeMakingSound();
     });
 
@@ -63,7 +63,7 @@ context('A video app user', () => {
         .shouldBeSameVideoAs('[data-cy-main-participant]');
     });
 
-    it('should be able to hear the other participant', () => {
+    it.skip('should be able to hear the other participant', () => {
       cy.getParticipant('test1').shouldBeMakingSound();
     });
   });
@@ -94,7 +94,7 @@ context('A video app user', () => {
         .shouldBeColor('green');
     });
 
-    it('should be able to hear the other participants', () => {
+    it.skip('should be able to hear the other participants', () => {
       cy.getParticipant('test1').shouldBeMakingSound();
       cy.getParticipant('test2').shouldBeMakingSound();
       cy.getParticipant('test3').shouldBeMakingSound();
@@ -127,7 +127,7 @@ context('A video app user', () => {
         .shouldBeColor('green');
     });
 
-    it('should be able to hear the other participants', () => {
+    it.skip('should be able to hear the other participants', () => {
       cy.getParticipant('test1').shouldBeMakingSound();
       cy.getParticipant('test2').shouldBeMakingSound();
       cy.getParticipant('test3').shouldBeMakingSound();
