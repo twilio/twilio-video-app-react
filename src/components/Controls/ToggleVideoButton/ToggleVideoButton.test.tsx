@@ -1,10 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import useLocalVideoToggle from '../../../hooks/useLocalVideoToggle/useLocalVideoToggle';
+import useLocalVideoToggle from '@hooks/useLocalVideoToggle/useLocalVideoToggle';
 
 import ToggleVideoButton from './ToggleVideoButton';
 
-jest.mock('../../../hooks/useLocalVideoToggle/useLocalVideoToggle');
+jest.mock('@hooks/useLocalVideoToggle/useLocalVideoToggle');
 
 const mockUseLocalVideoToggle = useLocalVideoToggle as jest.Mock<any>;
 

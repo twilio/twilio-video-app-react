@@ -5,15 +5,15 @@ import { CssBaseline } from '@material-ui/core';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 
 import App from './App';
-import AppStateProvider, { useAppState } from './state';
+import AppStateProvider, { useAppState } from '@state';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import { ConnectOptions } from 'twilio-video';
-import ErrorDialog from './components/ErrorDialog/ErrorDialog';
-import LoginPage from './components/LoginPage/LoginPage';
-import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+import ErrorDialog from '@components/ErrorDialog/ErrorDialog';
+import LoginPage from '@components/LoginPage/LoginPage';
+import PrivateRoute from '@components/PrivateRoute/PrivateRoute';
 import theme from './theme';
-import './types';
-import { VideoProvider } from './components/VideoProvider';
+import '@types';
+import { VideoProvider } from '@components/VideoProvider';
 
 // See: https://media.twiliocdn.com/sdk/js/video/releases/2.0.0/docs/global.html#ConnectOptions
 // for available connection options.

@@ -1,12 +1,12 @@
 import React from 'react';
 import PrivateRoute from './PrivateRoute';
-import { useAppState } from '../../state';
+import { useAppState } from '@state';
 import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 
 const mockUseAppState = useAppState as jest.Mock<any>;
 
-jest.mock('../../state');
+jest.mock('@state');
 
 const MockComponent = () => <h1>test</h1>;
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import LoginPage from './LoginPage';
 import { act, fireEvent, render, waitForElement } from '@testing-library/react';
-import { useAppState } from '../../state';
+import { useAppState } from '@state';
 import { useLocation, useHistory } from 'react-router-dom';
 
 jest.mock('react-router-dom', () => {
@@ -10,7 +10,7 @@ jest.mock('react-router-dom', () => {
     useHistory: jest.fn(),
   };
 });
-jest.mock('../../state');
+jest.mock('@state');
 jest.mock('./google-logo.svg', () => ({ ReactComponent: () => null }));
 jest.mock('./twilio-logo.svg', () => ({ ReactComponent: () => null }));
 jest.mock('./video-logo.png', () => ({ ReactComponent: () => null }));
@@ -102,13 +102,13 @@ describe('the LoginPage component', () => {
       act(() => {
         fireEvent.change(getByLabelText('Passcode'), { target: { value: '1234' } });
       });
-      
+
       act(() => {
         fireEvent.submit(getByText('Submit'));
       });
 
-      const element = await waitForElement(() => getByText('Test Error')) 
-      expect(element).toBeTruthy()
+      const element = await waitForElement(() => getByText('Test Error'));
+      expect(element).toBeTruthy();
     });
   });
 

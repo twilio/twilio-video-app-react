@@ -2,13 +2,13 @@ import React from 'react';
 import MainParticipant from './MainParticipant';
 import ParticipantTracks from '../ParticipantTracks/ParticipantTracks';
 import { shallow } from 'enzyme';
-import useMainSpeaker from '../../hooks/useMainSpeaker/useMainSpeaker';
+import useMainSpeaker from '@hooks/useMainSpeaker/useMainSpeaker';
 import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
-import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
+import useScreenShareParticipant from '@hooks/useScreenShareParticipant/useScreenShareParticipant';
 
-jest.mock('../../hooks/useMainSpeaker/useMainSpeaker');
+jest.mock('@hooks/useMainSpeaker/useMainSpeaker');
 jest.mock('../VideoProvider/useSelectedParticipant/useSelectedParticipant');
-jest.mock('../../hooks/useScreenShareParticipant/useScreenShareParticipant');
+jest.mock('@hooks/useScreenShareParticipant/useScreenShareParticipant');
 
 const mockUseMainSpeaker = useMainSpeaker as jest.Mock<any>;
 const mockUseSelectedParticipant = useSelectedParticipant as jest.Mock<any>;

@@ -1,9 +1,9 @@
 import React from 'react';
 import Publication from './Publication';
 import { shallow } from 'enzyme';
-import useTrack from '../../hooks/useTrack/useTrack';
+import useTrack from '@hooks/useTrack/useTrack';
 
-jest.mock('../../hooks/useTrack/useTrack');
+jest.mock('@hooks/useTrack/useTrack');
 const mockUseTrack = useTrack as jest.Mock<any>;
 
 describe('the Publication component', () => {

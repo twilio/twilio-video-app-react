@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { VideoContext } from '../../components/VideoProvider';
+import { VideoContext } from '@components/VideoProvider';
 
 export default function useVideoContext() {
   const context = useContext(VideoContext);

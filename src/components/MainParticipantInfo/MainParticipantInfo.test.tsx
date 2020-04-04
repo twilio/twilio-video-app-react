@@ -1,14 +1,14 @@
 import React from 'react';
 import MainParticipantInfo from './MainParticipantInfo';
 import { shallow } from 'enzyme';
-import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
-import usePublications from '../../hooks/usePublications/usePublications';
-import useTrack from '../../hooks/useTrack/useTrack';
+import useIsTrackSwitchedOff from '@hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
+import usePublications from '@hooks/usePublications/usePublications';
+import useTrack from '@hooks/useTrack/useTrack';
 
-jest.mock('../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel', () => () => 4);
-jest.mock('../../hooks/usePublications/usePublications');
-jest.mock('../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff');
-jest.mock('../../hooks/useTrack/useTrack');
+jest.mock('@hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel', () => () => 4);
+jest.mock('@hooks/usePublications/usePublications');
+jest.mock('@hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff');
+jest.mock('@hooks/useTrack/useTrack');
 
 const mockUsePublications = usePublications as jest.Mock<any>;
 const mockUseIsTrackSwitchedOff = useIsTrackSwitchedOff as jest.Mock<any>;

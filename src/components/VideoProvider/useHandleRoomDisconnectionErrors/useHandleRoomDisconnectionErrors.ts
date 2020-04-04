@@ -1,7 +1,7 @@
 import { Room, TwilioError } from 'twilio-video';
 import { useEffect } from 'react';
 
-import { Callback } from '../../../types';
+import { Callback } from '@types';
 
 export default function useHandleRoomDisconnectionErrors(room: Room, onError: Callback) {
   useEffect(() => {

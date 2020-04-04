@@ -1,6 +1,6 @@
 import React, { createContext, ReactNode } from 'react';
 import { ConnectOptions, Room, TwilioError, LocalAudioTrack, LocalVideoTrack } from 'twilio-video';
-import { Callback, ErrorCallback } from '../../types';
+import { Callback, ErrorCallback } from '@types';
 import { SelectedParticipantProvider } from './useSelectedParticipant/useSelectedParticipant';
 
 import useHandleRoomDisconnectionErrors from './useHandleRoomDisconnectionErrors/useHandleRoomDisconnectionErrors';

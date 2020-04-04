@@ -3,12 +3,12 @@ import { shallow } from 'enzyme';
 import Menu from './Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import UserAvatar from '../UserAvatar/UserAvatar';
-import { useAppState } from '../../../state';
-import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import { useAppState } from '@state';
+import useVideoContext from '@hooks/useVideoContext/useVideoContext';
 import { MenuItem } from '@material-ui/core';
 
-jest.mock('../../../state');
-jest.mock('../../../hooks/useVideoContext/useVideoContext');
+jest.mock('@state');
+jest.mock('@hooks/useVideoContext/useVideoContext');
 
 const mockUseAppState = useAppState as jest.Mock<any>;
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;

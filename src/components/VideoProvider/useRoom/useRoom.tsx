@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Video, { ConnectOptions, LocalTrack, Room } from 'twilio-video';
-import { Callback } from '../../../types';
+import { Callback } from '@types';
 
 export default function useRoom(localTracks: LocalTrack[], onError: Callback, options?: ConnectOptions) {
   const [room, setRoom] = useState<Room>(new EventEmitter() as Room);

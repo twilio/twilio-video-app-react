@@ -1,9 +1,9 @@
 import React from 'react';
-import useTrack from '../../hooks/useTrack/useTrack';
+import useTrack from '@hooks/useTrack/useTrack';
 import AudioTrack from '../AudioTrack/AudioTrack';
 import VideoTrack from '../VideoTrack/VideoTrack';
 
-import { IVideoTrack } from '../../types';
+import { IVideoTrack } from '@types';
 import {
   AudioTrack as IAudioTrack,
   LocalTrackPublication,

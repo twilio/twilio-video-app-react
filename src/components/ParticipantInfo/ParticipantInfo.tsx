@@ -11,11 +11,11 @@ import PinIcon from './PinIcon/PinIcon';
 import ScreenShare from '@material-ui/icons/ScreenShare';
 import VideocamOff from '@material-ui/icons/VideocamOff';
 
-import useParticipantNetworkQualityLevel from '../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel';
-import usePublications from '../../hooks/usePublications/usePublications';
-import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
-import usePublicationIsTrackEnabled from '../../hooks/usePublicationIsTrackEnabled/usePublicationIsTrackEnabled';
-import useTrack from '../../hooks/useTrack/useTrack';
+import useParticipantNetworkQualityLevel from '@hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel';
+import usePublications from '@hooks/usePublications/usePublications';
+import useIsTrackSwitchedOff from '@hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
+import usePublicationIsTrackEnabled from '@hooks/usePublicationIsTrackEnabled/usePublicationIsTrackEnabled';
+import useTrack from '@hooks/useTrack/useTrack';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
