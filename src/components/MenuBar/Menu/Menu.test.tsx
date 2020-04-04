@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Menu from './Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import UserAvatar from '../UserAvatar/UserAvatar';
+import UserAvatar from '../UserAvatar';
 import { useAppState } from '@state';
 import useVideoContext from '@hooks/useVideoContext';
 import { MenuItem } from '@material-ui/core';

@@ -2,11 +2,11 @@ import EventEmitter from 'events';
 import React from 'react';
 import ParticipantStrip from './ParticipantStrip';
 import { shallow } from 'enzyme';
-import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
+import useSelectedParticipant from '../VideoProvider/useSelectedParticipant';
 import useVideoContext from '@hooks/useVideoContext';
 
 jest.mock('@hooks/useVideoContext');
-jest.mock('../VideoProvider/useSelectedParticipant/useSelectedParticipant');
+jest.mock('../VideoProvider/useSelectedParticipant');
 const mockedVideoContext = useVideoContext as jest.Mock<any>;
 const mockUseSelectedParticipant = useSelectedParticipant as jest.Mock<any>;
 

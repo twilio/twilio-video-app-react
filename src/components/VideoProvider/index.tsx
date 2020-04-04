@@ -3,11 +3,11 @@ import { ConnectOptions, Room, TwilioError, LocalAudioTrack, LocalVideoTrack } f
 import { Callback, ErrorCallback } from '@types';
 import { SelectedParticipantProvider } from './useSelectedParticipant/useSelectedParticipant';
 
-import useHandleRoomDisconnectionErrors from './useHandleRoomDisconnectionErrors/useHandleRoomDisconnectionErrors';
-import useHandleOnDisconnect from './useHandleOnDisconnect/useHandleOnDisconnect';
-import useHandleTrackPublicationFailed from './useHandleTrackPublicationFailed/useHandleTrackPublicationFailed';
-import useLocalTracks from './useLocalTracks/useLocalTracks';
-import useRoom from './useRoom/useRoom';
+import useHandleRoomDisconnectionErrors from './useHandleRoomDisconnectionErrors';
+import useHandleOnDisconnect from './useHandleOnDisconnect';
+import useHandleTrackPublicationFailed from './useHandleTrackPublicationFailed';
+import useLocalTracks from './useLocalTracks';
+import useRoom from './useRoom';
 
 /*
  *  The hooks used by the VideoProvider component are different than the hooks found in the 'hooks/' directory. The hooks

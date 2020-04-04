@@ -1,7 +1,7 @@
 import React from 'react';
 import useTrack from '@hooks/useTrack';
-import AudioTrack from '../AudioTrack/AudioTrack';
-import VideoTrack from '../VideoTrack/VideoTrack';
+import AudioTrack from '../AudioTrack';
+import VideoTrack from '../VideoTrack';
 
 import { IVideoTrack } from '@types';
 import {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Participant, Track } from 'twilio-video';
-import Publication from '../Publication/Publication';
+import Publication from '../Publication';
 import usePublications from '@hooks/usePublications';
 import useVideoContext from '@hooks/useVideoContext';
 

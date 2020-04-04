@@ -3,11 +3,11 @@ import clsx from 'clsx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalVideoTrack, Participant, RemoteVideoTrack } from 'twilio-video';
 
-import BandwidthWarning from '../BandwidthWarning/BandwidthWarning';
+import BandwidthWarning from '../BandwidthWarning';
 import MicOff from '@material-ui/icons/MicOff';
-import NetworkQualityLevel from '../NewtorkQualityLevel/NetworkQualityLevel';
-import ParticipantConnectionIndicator from './ParticipantConnectionIndicator/ParticipantConnectionIndicator';
-import PinIcon from './PinIcon/PinIcon';
+import NetworkQualityLevel from '../NetworkQualityLevel';
+import ParticipantConnectionIndicator from './ParticipantConnectionIndicator';
+import PinIcon from './PinIcon';
 import ScreenShare from '@material-ui/icons/ScreenShare';
 import VideocamOff from '@material-ui/icons/VideocamOff';
 

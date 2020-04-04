@@ -1,6 +1,6 @@
 import React from 'react';
 import ParticipantInfo from './ParticipantInfo';
-import PinIcon from './PinIcon/PinIcon';
+import PinIcon from './PinIcon';
 import { shallow } from 'enzyme';
 import usePublications from '@hooks/usePublications';
 import useIsTrackSwitchedOff from '@hooks/useIsTrackSwitchedOff';

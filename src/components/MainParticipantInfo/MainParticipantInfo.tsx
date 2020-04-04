@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { LocalVideoTrack, Participant, RemoteVideoTrack } from 'twilio-video';
 
-import BandwidthWarning from '../BandwidthWarning/BandwidthWarning';
+import BandwidthWarning from '../BandwidthWarning';
 import useIsTrackSwitchedOff from '@hooks/useIsTrackSwitchedOff';
 import usePublications from '@hooks/usePublications';
 import useTrack from '@hooks/useTrack';

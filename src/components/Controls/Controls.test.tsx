@@ -2,10 +2,10 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import Controls from './Controls';
-import useIsUserActive from './useIsUserActive/useIsUserActive';
+import useIsUserActive from './useIsUserActive';
 import useRoomState from '@hooks/useRoomState';
 
-jest.mock('./useIsUserActive/useIsUserActive');
+jest.mock('./useIsUserActive');
 jest.mock('@hooks/useRoomState');
 
 const mockIsUserActive = useIsUserActive as jest.Mock<boolean>;

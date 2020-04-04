@@ -3,23 +3,21 @@ import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { Room, TwilioError } from 'twilio-video';
 import { VideoProvider } from './index';
-import useLocalTracks from './useLocalTracks/useLocalTracks';
-import useRoom from './useRoom/useRoom';
-import useHandleRoomDisconnectionErrors from './useHandleRoomDisconnectionErrors/useHandleRoomDisconnectionErrors';
-import useHandleTrackPublicationFailed from './useHandleTrackPublicationFailed/useHandleTrackPublicationFailed';
-import useHandleOnDisconnect from './useHandleOnDisconnect/useHandleOnDisconnect';
+import useLocalTracks from './useLocalTracks';
+import useRoom from './useRoom';
+import useHandleRoomDisconnectionErrors from './useHandleRoomDisconnectionErrors';
+import useHandleTrackPublicationFailed from './useHandleTrackPublicationFailed';
+import useHandleOnDisconnect from './useHandleOnDisconnect';
 import useVideoContext from '@hooks/useVideoContext';
 
 const mockRoom = new EventEmitter() as Room;
 const mockOnDisconnect = jest.fn();
-jest.mock('./useRoom/useRoom', () => jest.fn(() => ({ room: mockRoom, isConnecting: false })));
-jest.mock('./useLocalTracks/useLocalTracks', () =>
-  jest.fn(() => ({ localTracks: ['mockTrack'], getLocalVideoTrack: jest.fn() }))
-);
-jest.mock('./useHandleRoomDisconnectionErrors/useHandleRoomDisconnectionErrors');
-jest.mock('./useHandleTrackPublicationFailed/useHandleTrackPublicationFailed');
-jest.mock('./useHandleTrackPublicationFailed/useHandleTrackPublicationFailed');
-jest.mock('./useHandleOnDisconnect/useHandleOnDisconnect');
+jest.mock('./useRoom', () => jest.fn(() => ({ room: mockRoom, isConnecting: false })));
+jest.mock('./useLocalTracks', () => jest.fn(() => ({ localTracks: ['mockTrack'], getLocalVideoTrack: jest.fn() })));
+jest.mock('./useHandleRoomDisconnectionErrors');
+jest.mock('./useHandleTrackPublicationFailed');
+jest.mock('./useHandleTrackPublicationFailed');
+jest.mock('./useHandleOnDisconnect');
 
 describe('the VideoProvider component', () => {
   it('should correctly return the Video Context object', () => {

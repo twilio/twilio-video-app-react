@@ -1,10 +1,10 @@
 import React, { useState, useRef, useCallback } from 'react';
-import AboutDialog from '../AboutDialog/AboutDialog';
+import AboutDialog from '../AboutDialog';
 import IconButton from '@material-ui/core/IconButton';
 import MenuContainer from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import UserAvatar from '../UserAvatar/UserAvatar';
+import UserAvatar from '../UserAvatar';
 
 import { useAppState } from '@state';
 import useVideoContext from '@hooks/useVideoContext';
