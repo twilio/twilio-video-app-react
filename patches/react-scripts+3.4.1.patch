@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-scripts/scripts/utils/verifyTypeScriptSetup.js b/node_modules/react-scripts/scripts/utils/verifyTypeScriptSetup.js
+index ebd93d7..3e195e0 100644
+--- a/node_modules/react-scripts/scripts/utils/verifyTypeScriptSetup.js
++++ b/node_modules/react-scripts/scripts/utils/verifyTypeScriptSetup.js
+@@ -128,7 +128,7 @@ function verifyTypeScriptSetup() {
+       parsedValue: ts.JsxEmit.React,
+       suggested: 'react',
+     },
+-    paths: { value: undefined, reason: 'aliased imports are not supported' },
++    paths: { suggested: { 'src/*': ['src/*'] }, reason: 'aliased imports are not supported' },
+   };
+ 
+   const formatDiagnosticHost = {

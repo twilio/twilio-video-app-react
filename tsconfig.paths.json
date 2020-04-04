@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@src/*": ["*"],
+      "@components/*": ["components/*"],
+      "@hooks/*": ["hooks/*"],
+      "@state": ["state/index.tsx"],
+      "@types": ["types.ts"]
+    }
+  }
+}

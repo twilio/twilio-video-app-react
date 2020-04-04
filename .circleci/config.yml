@@ -8,12 +8,17 @@ jobs:
     steps:
       - checkout
 
+      - run:
+          name: Get Patches Hash
+          command: |
+            cat patches/* | md5 > patches.hash
+
       - restore_cache:
           keys:
-            - v1-deps-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - v1-deps-{{ .Branch }}-{{ checksum "package-lock.json" }}-{{ checksum "patches.hash" }}
             - v1-deps-{{ .Branch }}
             - v1-deps
-    
+
       - run: npm ci
 
       - save_cache:
@@ -35,13 +40,13 @@ jobs:
       - store_artifacts:
           path: coverage
 
-      - run: 
+      - run:
           name: "Build app with Firebase auth disabled"
           command: npm run build
           environment:
             REACT_APP_TOKEN_ENDPOINT: "http://localhost:8081/token"
 
-      - run: 
+      - run:
           name: "Set environment variables for local token server (used by Cypress tests)"
           command: |
             echo TWILIO_ACCOUNT_SID=$TWILIO_ACCOUNT_SID >> .env
@@ -70,7 +75,7 @@ jobs:
 
       - persist_to_workspace:
           root: .
-          paths: 
+          paths:
             - .
 
   deploy:
@@ -81,7 +86,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/twilio-video-react-app
-     
+
       - run: |
           echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
           gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
