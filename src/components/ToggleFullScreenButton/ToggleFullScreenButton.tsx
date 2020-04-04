@@ -5,7 +5,7 @@ import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
 import IconButton from '@material-ui/core/IconButton';
 
-import useFullScreenToggle from '@hooks/useFullScreenToggle/useFullScreenToggle';
+import useFullScreenToggle from '@hooks/useFullScreenToggle';
 
 const FullscreenButton = styled(IconButton)({
   marginLeft: 'auto',

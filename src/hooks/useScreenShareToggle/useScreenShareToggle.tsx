@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from 'react';
-import useVideoContext from '../useVideoContext/useVideoContext';
+import useVideoContext from '../useVideoContext';
 import { LogLevels, Track } from 'twilio-video';
 
 interface MediaStreamTrackPublishOptions {

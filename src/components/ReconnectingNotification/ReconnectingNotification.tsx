@@ -5,7 +5,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import Snackbar from '@material-ui/core/Snackbar';
 import { SnackbarContent } from '@material-ui/core';
 
-import useRoomState from '@hooks/useRoomState/useRoomState';
+import useRoomState from '@hooks/useRoomState';
 
 const useStyles = makeStyles({
   snackbar: {

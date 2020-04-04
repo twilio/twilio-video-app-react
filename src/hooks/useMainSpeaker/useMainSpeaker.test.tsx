@@ -2,9 +2,9 @@ import { EventEmitter } from 'events';
 import { renderHook } from '@testing-library/react-hooks';
 import useMainSpeaker from './useMainSpeaker';
 import useSelectedParticipant from '@components/VideoProvider/useSelectedParticipant/useSelectedParticipant';
-import useVideoContext from '../useVideoContext/useVideoContext';
+import useVideoContext from '../useVideoContext';
 
-jest.mock('../useVideoContext/useVideoContext');
+jest.mock('../useVideoContext');
 jest.mock('@components/VideoProvider/useSelectedParticipant/useSelectedParticipant');
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 const mockSelectedParticipant = useSelectedParticipant as jest.Mock<any>;

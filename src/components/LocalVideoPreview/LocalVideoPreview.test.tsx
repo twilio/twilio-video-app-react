@@ -2,9 +2,9 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import LocalVideoPreview from './LocalVideoPreview';
 import { IVideoContext } from '../VideoProvider';
-import useVideoContext from '@hooks/useVideoContext/useVideoContext';
+import useVideoContext from '@hooks/useVideoContext';
 
-jest.mock('@hooks/useVideoContext/useVideoContext');
+jest.mock('@hooks/useVideoContext');
 
 const mockedVideoContext = useVideoContext as jest.Mock<IVideoContext>;
 

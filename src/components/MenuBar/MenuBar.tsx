@@ -11,8 +11,8 @@ import Menu from './Menu/Menu';
 
 import { useAppState } from '@state';
 import { useParams } from 'react-router-dom';
-import useRoomState from '@hooks/useRoomState/useRoomState';
-import useVideoContext from '@hooks/useVideoContext/useVideoContext';
+import useRoomState from '@hooks/useRoomState';
+import useVideoContext from '@hooks/useVideoContext';
 import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>

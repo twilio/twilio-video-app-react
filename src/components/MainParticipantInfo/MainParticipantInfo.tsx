@@ -4,9 +4,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { LocalVideoTrack, Participant, RemoteVideoTrack } from 'twilio-video';
 
 import BandwidthWarning from '../BandwidthWarning/BandwidthWarning';
-import useIsTrackSwitchedOff from '@hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
-import usePublications from '@hooks/usePublications/usePublications';
-import useTrack from '@hooks/useTrack/useTrack';
+import useIsTrackSwitchedOff from '@hooks/useIsTrackSwitchedOff';
+import usePublications from '@hooks/usePublications';
+import useTrack from '@hooks/useTrack';
 import VideocamOff from '@material-ui/icons/VideocamOff';
 
 const useStyles = makeStyles({

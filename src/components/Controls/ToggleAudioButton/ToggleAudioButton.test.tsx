@@ -1,10 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import useLocalAudioToggle from '@hooks/useLocalAudioToggle/useLocalAudioToggle';
+import useLocalAudioToggle from '@hooks/useLocalAudioToggle';
 
 import ToggleAudioButton from './ToggleAudioButton';
 
-jest.mock('@hooks/useLocalAudioToggle/useLocalAudioToggle');
+jest.mock('@hooks/useLocalAudioToggle');
 
 const mockUseLocalAudioToggle = useLocalAudioToggle as jest.Mock<any>;
 

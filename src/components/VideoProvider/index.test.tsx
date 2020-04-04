@@ -8,7 +8,7 @@ import useRoom from './useRoom/useRoom';
 import useHandleRoomDisconnectionErrors from './useHandleRoomDisconnectionErrors/useHandleRoomDisconnectionErrors';
 import useHandleTrackPublicationFailed from './useHandleTrackPublicationFailed/useHandleTrackPublicationFailed';
 import useHandleOnDisconnect from './useHandleOnDisconnect/useHandleOnDisconnect';
-import useVideoContext from '@hooks/useVideoContext/useVideoContext';
+import useVideoContext from '@hooks/useVideoContext';
 
 const mockRoom = new EventEmitter() as Room;
 const mockOnDisconnect = jest.fn();

@@ -1,9 +1,9 @@
 import React from 'react';
 import MenuBar from './MenuBar';
 import { MemoryRouter, Route } from 'react-router-dom';
-import useRoomState from '@hooks/useRoomState/useRoomState';
-import useFullScreenToggle from '@hooks/useFullScreenToggle/useFullScreenToggle';
-import useVideoContext from '@hooks/useVideoContext/useVideoContext';
+import useRoomState from '@hooks/useRoomState';
+import useFullScreenToggle from '@hooks/useFullScreenToggle';
+import useVideoContext from '@hooks/useVideoContext';
 import { IVideoContext } from '../VideoProvider';
 import { fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
@@ -17,9 +17,9 @@ const mockToggleFullScreen = jest.fn();
 const mockConnect = jest.fn();
 const mockGetToken = jest.fn(() => Promise.resolve('mockToken'));
 
-jest.mock('@hooks/useVideoContext/useVideoContext');
-jest.mock('@hooks/useRoomState/useRoomState');
-jest.mock('@hooks/useFullScreenToggle/useFullScreenToggle');
+jest.mock('@hooks/useVideoContext');
+jest.mock('@hooks/useRoomState');
+jest.mock('@hooks/useFullScreenToggle');
 jest.mock('@state');
 
 Object.defineProperty(window, 'location', { value: { pathname: '', configurable: true } });

@@ -1,9 +1,9 @@
 import MainParticipantInfo from '../MainParticipantInfo/MainParticipantInfo';
 import ParticipantTracks from '../ParticipantTracks/ParticipantTracks';
 import React from 'react';
-import useMainSpeaker from '@hooks/useMainSpeaker/useMainSpeaker';
+import useMainSpeaker from '@hooks/useMainSpeaker';
 import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
-import useScreenShareParticipant from '@hooks/useScreenShareParticipant/useScreenShareParticipant';
+import useScreenShareParticipant from '@hooks/useScreenShareParticipant';
 
 export default function MainParticipant() {
   const mainParticipant = useMainSpeaker();

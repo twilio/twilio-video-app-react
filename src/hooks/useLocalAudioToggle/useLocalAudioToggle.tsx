@@ -1,7 +1,7 @@
 import { LocalAudioTrack } from 'twilio-video';
 import { useCallback } from 'react';
-import useIsTrackEnabled from '../useIsTrackEnabled/useIsTrackEnabled';
-import useVideoContext from '../useVideoContext/useVideoContext';
+import useIsTrackEnabled from '../useIsTrackEnabled';
+import useVideoContext from '../useVideoContext';
 
 export default function useLocalAudioToggle() {
   const { localTracks } = useVideoContext();

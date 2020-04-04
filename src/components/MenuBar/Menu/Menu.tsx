@@ -7,7 +7,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import UserAvatar from '../UserAvatar/UserAvatar';
 
 import { useAppState } from '@state';
-import useVideoContext from '@hooks/useVideoContext/useVideoContext';
+import useVideoContext from '@hooks/useVideoContext';
 
 export default function Menu() {
   const { user, signOut } = useAppState();

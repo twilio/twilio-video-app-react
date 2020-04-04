@@ -7,7 +7,7 @@ import MenuBar from '@components/MenuBar/MenuBar';
 import ReconnectingNotification from '@components/ReconnectingNotification/ReconnectingNotification';
 import Room from '@components/Room/Room';
 
-import useRoomState from '@hooks/useRoomState/useRoomState';
+import useRoomState from '@hooks/useRoomState';
 
 const Container = styled('div')({
   display: 'flex',

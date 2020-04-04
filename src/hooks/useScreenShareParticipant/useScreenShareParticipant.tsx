@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import useVideoContext from '../useVideoContext/useVideoContext';
+import useVideoContext from '../useVideoContext';
 
 import { Participant, TrackPublication } from 'twilio-video';
 

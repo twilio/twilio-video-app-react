@@ -6,9 +6,9 @@ import ScreenShare from '@material-ui/icons/ScreenShare';
 import StopScreenShare from '@material-ui/icons/StopScreenShare';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import useScreenShareToggle from '@hooks/useScreenShareToggle/useScreenShareToggle';
-import useScreenShareParticipant from '@hooks/useScreenShareParticipant/useScreenShareParticipant';
-import useVideoContext from '@hooks/useVideoContext/useVideoContext';
+import useScreenShareToggle from '@hooks/useScreenShareToggle';
+import useScreenShareParticipant from '@hooks/useScreenShareParticipant';
+import useVideoContext from '@hooks/useVideoContext';
 
 export const SCREEN_SHARE_TEXT = 'Share Screen';
 export const STOP_SCREEN_SHARE_TEXT = 'Stop Sharing Screen';
