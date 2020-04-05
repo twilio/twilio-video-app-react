@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import EndCallButton from './EndCallButton';
 import ToggleAudioButton from './ToggleAudioButton';
 import ToggleVideoButton from './ToggleVideoButton';
-import ToggleScreenShareButton from './ToogleScreenShareButton';
+import ToggleScreenShareButton from './ToggleScreenShareButton';
 
 import useIsUserActive from './useIsUserActive';
 import useRoomState from '@hooks/useRoomState';
