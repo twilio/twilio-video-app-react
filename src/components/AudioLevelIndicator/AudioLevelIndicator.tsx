@@ -10,6 +10,21 @@ const getUniqueClipId = () => clipId++;
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 let audioContext: AudioContext;
 
+export function initializeAnalyser(audioTrack: AudioTrack) {
+  audioContext = audioContext || new AudioContext();
+  const stream = new MediaStream();
+  const track = audioTrack.mediaStreamTrack.clone();
+  stream.addTrack(track);
+  const audioSource = audioContext.createMediaStreamSource(stream);
+
+  const analyser = audioContext.createAnalyser();
+  analyser.smoothingTimeConstant = 0.5;
+  analyser.fftSize = 1024;
+
+  audioSource.connect(analyser);
+  return analyser;
+}
+
 function AudioLevelIndicator({
   size,
   audioTrack,
@@ -28,16 +43,16 @@ function AudioLevelIndicator({
     let animationFrameID: number;
 
     if (audioTrack && isTrackEnabled && SVGClipElement) {
-      audioContext = audioContext || new AudioContext();
-      const stream = new MediaStream();
-      stream.addTrack(audioTrack.mediaStreamTrack.clone());
-      const audioSource = audioContext.createMediaStreamSource(stream);
+      let analyser = initializeAnalyser(audioTrack);
 
-      const analyser = audioContext.createAnalyser();
-      analyser.smoothingTimeConstant = 0.5;
-      analyser.fftSize = 1024;
+      const reinitializeAnalyser = () => {
+        analyser = initializeAnalyser(audioTrack);
+      };
 
-      audioSource.connect(analyser);
+      // Here we reinitialize the AnalyserNode on focus to avoid an issue in Safari
+      // where the analysers stop functioning when the user switches to a new tab
+      // and switches back to the app.
+      window.addEventListener('focus', reinitializeAnalyser);
 
       function render() {
         animationFrameID = window.requestAnimationFrame(() => {
@@ -62,6 +77,7 @@ function AudioLevelIndicator({
       return () => {
         SVGClipElement.setAttribute('y', '21');
         window.cancelAnimationFrame(animationFrameID);
+        window.removeEventListener('focus', reinitializeAnalyser);
       };
     }
   }, [audioTrack, isTrackEnabled]);
