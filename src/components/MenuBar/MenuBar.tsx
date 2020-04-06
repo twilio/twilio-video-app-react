@@ -2,10 +2,11 @@ import React, { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import AppBar from '@material-ui/core/AppBar';
+import LocalAudioLevelIndicator from './LocalAudioLevelIndicator/LocalAudioLevelIndicator';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
-import ToggleFullscreenButton from '../ToggleFullScreenButton/ToggleFullScreenButton';
+import ToggleFullscreenButton from './ToggleFullScreenButton/ToggleFullScreenButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import Menu from './Menu/Menu';
 
@@ -20,8 +21,15 @@ const useStyles = makeStyles((theme: Theme) =>
     container: {
       backgroundColor: theme.palette.background.default,
     },
+    leftButtonContainer: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginLeft: 'auto',
+    },
     form: {
       display: 'flex',
+      flexWrap: 'wrap',
       alignItems: 'center',
     },
     textField: {
@@ -36,6 +44,9 @@ const useStyles = makeStyles((theme: Theme) =>
       marginLeft: '2.2em',
       minWidth: '200px',
       fontWeight: 600,
+    },
+    joinButton: {
+      margin: '1em',
     },
   })
 );
@@ -68,7 +79,7 @@ export default function MenuBar() {
     event.preventDefault();
     // If this app is deployed as a twilio function, don't change the URL beacuse routing isn't supported.
     if (!window.location.origin.includes('twil.io')) {
-      window.history.replaceState(null, '', window.encodeURI(`/room/${roomName}`));
+      window.history.replaceState(null, '', window.encodeURI(`/room/${roomName}${window.location.search || ''}`));
     }
     getToken(name, roomName).then(token => connect(token));
   };
@@ -78,7 +89,7 @@ export default function MenuBar() {
       <Toolbar>
         {roomState === 'disconnected' ? (
           <form className={classes.form} onSubmit={handleSubmit}>
-            {!user?.displayName ? (
+            {window.location.search.includes('customIdentity=true') || !user?.displayName ? (
               <TextField
                 id="menu-name"
                 label="Name"
@@ -101,6 +112,7 @@ export default function MenuBar() {
               margin="dense"
             />
             <Button
+              className={classes.joinButton}
               type="submit"
               color="primary"
               variant="contained"
@@ -113,8 +125,11 @@ export default function MenuBar() {
         ) : (
           <h3>{roomName}</h3>
         )}
-        <ToggleFullscreenButton />
-        <Menu />
+        <div className={classes.leftButtonContainer}>
+          <LocalAudioLevelIndicator />
+          <ToggleFullscreenButton />
+          <Menu />
+        </div>
       </Toolbar>
     </AppBar>
   );

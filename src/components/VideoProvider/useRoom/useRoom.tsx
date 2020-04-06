@@ -3,6 +3,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Video, { ConnectOptions, LocalTrack, Room } from 'twilio-video';
 import { Callback } from '../../../types';
 
+// @ts-ignore
+window.TwilioVideo = Video;
+
 export default function useRoom(localTracks: LocalTrack[], onError: Callback, options?: ConnectOptions) {
   const [room, setRoom] = useState<Room>(new EventEmitter() as Room);
   const [isConnecting, setIsConnecting] = useState(false);

@@ -1,10 +1,10 @@
 import React from 'react';
 import clsx from 'clsx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { LocalVideoTrack, Participant, RemoteVideoTrack } from 'twilio-video';
+import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
 
+import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
 import BandwidthWarning from '../BandwidthWarning/BandwidthWarning';
-import MicOff from '@material-ui/icons/MicOff';
 import NetworkQualityLevel from '../NewtorkQualityLevel/NetworkQualityLevel';
 import ParticipantConnectionIndicator from './ParticipantConnectionIndicator/ParticipantConnectionIndicator';
 import PinIcon from './PinIcon/PinIcon';
@@ -14,7 +14,6 @@ import VideocamOff from '@material-ui/icons/VideocamOff';
 import useParticipantNetworkQualityLevel from '../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel';
 import usePublications from '../../hooks/usePublications/usePublications';
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
-import usePublicationIsTrackEnabled from '../../hooks/usePublicationIsTrackEnabled/usePublicationIsTrackEnabled';
 import useTrack from '../../hooks/useTrack/useTrack';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -81,12 +80,13 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
   const videoPublication = publications.find(p => p.trackName === 'camera');
 
   const networkQualityLevel = useParticipantNetworkQualityLevel(participant);
-  const isAudioEnabled = usePublicationIsTrackEnabled(audioPublication);
   const isVideoEnabled = Boolean(videoPublication);
   const isScreenShareEnabled = publications.find(p => p.trackName === 'screen');
 
   const videoTrack = useTrack(videoPublication);
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
+
+  const audioTrack = useTrack(audioPublication) as LocalAudioTrack | RemoteAudioTrack;
 
   const classes = useStyles();
 
@@ -107,7 +107,7 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
           <NetworkQualityLevel qualityLevel={networkQualityLevel} />
         </div>
         <div>
-          {!isAudioEnabled && <MicOff data-cy-audio-mute-icon />}
+          <AudioLevelIndicator audioTrack={audioTrack} background="white" />
           {!isVideoEnabled && <VideocamOff />}
           {isScreenShareEnabled && <ScreenShare />}
           {isSelected && <PinIcon />}
