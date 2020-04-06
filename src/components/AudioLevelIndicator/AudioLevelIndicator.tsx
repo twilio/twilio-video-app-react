@@ -12,9 +12,7 @@ let audioContext: AudioContext;
 
 export function initializeAnalyser(audioTrack: AudioTrack) {
   audioContext = audioContext || new AudioContext();
-  const stream = new MediaStream();
-  const track = audioTrack.mediaStreamTrack.clone();
-  stream.addTrack(track);
+  const stream = new MediaStream([audioTrack.mediaStreamTrack.clone()]);
   const audioSource = audioContext.createMediaStreamSource(stream);
 
   const analyser = audioContext.createAnalyser();
