@@ -1,10 +1,10 @@
 import React from 'react';
 import ParticipantInfo from '../ParticipantInfo/ParticipantInfo';
 import ParticipantTracks from '../ParticipantTracks/ParticipantTracks';
-import { LocalParticipant, RemoteParticipant } from 'twilio-video';
+import { Participant as IParticipant } from 'twilio-video';
 
 interface ParticipantProps {
-  participant: LocalParticipant | RemoteParticipant;
+  participant: IParticipant;
   disableAudio?: boolean;
   enableScreenShare?: boolean;
   onClick: () => void;

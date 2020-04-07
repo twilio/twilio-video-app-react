@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { LocalParticipant, RemoteParticipant } from 'twilio-video';
+import { Participant } from 'twilio-video';
 
-export default function useParticipantIsReconnecting(participant: LocalParticipant | RemoteParticipant) {
+export default function useParticipantIsReconnecting(participant: Participant) {
   const [isReconnecting, setIsReconnecting] = useState(false);
 
   useEffect(() => {

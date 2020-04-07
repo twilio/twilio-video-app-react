@@ -25,6 +25,8 @@ You must have the following installed:
 
 Run `npm install` to install all dependencies from NPM.
 
+If you want to use `yarn` to install dependencies, first run the [yarn import](https://classic.yarnpkg.com/en/docs/cli/import/) command. This will ensure that yarn installs the package versions that are specified in `package-lock.json`.
+
 ## Install Twilio CLI
 
 The app is deployed to Twilio using the Twilio CLI. Install twilio-cli with:
@@ -69,6 +71,14 @@ Delete the app with
     $ twilio rtc:apps:video:delete
 
 This removes the Serverless app from Twilio. This will ensure that no further cost are incurred by the app.
+
+## Troubleshooting The Twilio CLI
+
+If any errors occur after running a [Twilio CLI RTC Plugin](https://github.com/twilio-labs/plugin-rtc) command, then try the following steps.
+
+1. Run `twilio plugins:update` to update the rtc plugin to the latest version.
+1. Run `twilio rtc:apps:video:delete` to delete any existing video apps.
+1. Run `npm run deploy:twilio-cli` to deploy a new video app.
 
 ## Features
 
