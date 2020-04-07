@@ -9,6 +9,18 @@ const getRoomName = () =>
     .slice(2);
 
 context('A video app user', () => {
+  describe('before entering a room', () => {
+    it('should see their audio level indicator moving', () => {
+      cy.visit('/');
+      cy.get('clipPath rect')
+        .invoke('attr', 'y')
+        .should('be', 21);
+      cy.get('clipPath rect')
+        .invoke('attr', 'y')
+        .should('be.lessThan', 20);
+    });
+  });
+
   describe('when entering an empty room that one participant will join', () => {
     const ROOM_NAME = getRoomName();
 
@@ -35,6 +47,16 @@ context('A video app user', () => {
 
     it.skip('should be able to hear the other participant', () => {
       cy.getParticipant('test1').shouldBeMakingSound();
+    });
+
+    it('should see the participants audio level indicator moving', () => {
+      cy.getParticipant('test1')
+        .get('clipPath rect')
+        .invoke('attr', 'y')
+        .should('be', 21);
+      cy.get('clipPath rect')
+        .invoke('attr', 'y')
+        .should('be.lessThan', 20);
     });
 
     it('should see other participants disconnect when they close their browser', () => {
