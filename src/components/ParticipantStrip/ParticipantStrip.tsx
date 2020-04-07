@@ -6,16 +6,11 @@ import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
 
 const Container = styled('aside')(({ theme }) => ({
-  position: 'absolute',
-  top: 0,
-  bottom: 0,
-  right: `calc(100% - ${theme.sidebarWidth}px)`,
-  left: 0,
   padding: '0.5em',
   overflowY: 'auto',
   [theme.breakpoints.down('xs')]: {
-    right: 0,
-    top: `calc(100% - ${theme.sidebarMobileHeight}px)`,
+    overflowY: 'initial',
+    overflowX: 'auto',
     padding: 0,
     display: 'flex',
   },

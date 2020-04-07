@@ -10,14 +10,9 @@ import Room from './components/Room/Room';
 import useRoomState from './hooks/useRoomState/useRoomState';
 
 const Container = styled('div')({
-  display: 'flex',
-  flexDirection: 'column',
+  display: 'grid',
+  gridTemplateRows: 'auto 1fr',
   height: '100vh',
-});
-
-const Main = styled('main')({
-  height: '100%',
-  position: 'relative',
 });
 
 export default function App() {
@@ -26,10 +21,10 @@ export default function App() {
   return (
     <Container>
       <MenuBar />
-      <Main>
+      <main>
         {roomState === 'disconnected' ? <LocalVideoPreview /> : <Room />}
         <Controls />
-      </Main>
+      </main>
       <ReconnectingNotification />
     </Container>
   );
