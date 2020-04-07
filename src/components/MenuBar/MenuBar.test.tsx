@@ -22,19 +22,24 @@ jest.mock('../../hooks/useRoomState/useRoomState');
 jest.mock('../../hooks/useFullScreenToggle/useFullScreenToggle');
 jest.mock('../../state');
 
-Object.defineProperty(window, 'location', { value: { pathname: '', configurable: true } });
-
+delete window.location;
+// @ts-ignore
+window.location = {
+  pathname: '',
+  search: '',
+  origin: '',
+};
 const renderComponent = () => (
   <MemoryRouter>
     <MenuBar />
   </MemoryRouter>
 );
 
-delete window.location;
-// @ts-ignore
-window.location = {
-  origin: '',
-};
+// delete window.location;
+// // @ts-ignore
+// window.location = {
+//   origin: '',
+// };
 
 const mockReplaceState = jest.fn();
 Object.defineProperty(window.history, 'replaceState', { value: mockReplaceState });
@@ -46,28 +51,28 @@ describe('the MenuBar component', () => {
 
   it('should hide inputs when connected to a room', () => {
     mockedUseRoomState.mockImplementation(() => 'connected');
-    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false, room: {} } as any));
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false, room: {}, localTracks: [] } as any));
     const { container } = render(renderComponent());
     expect(container.querySelector('input')).toEqual(null);
   });
 
   it('should display inputs when disconnected from a room', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
-    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false, room: {} } as any));
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false, room: {}, localTracks: [] } as any));
     const { container } = render(renderComponent());
     expect(container.querySelectorAll('input').length).toEqual(2);
   });
 
   it('should display a loading spinner while connecting to a room', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
-    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: true, room: {} } as any));
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: true, room: {}, localTracks: [] } as any));
     const { container } = render(renderComponent());
     expect(container.querySelector('svg')).not.toBeNull();
   });
 
   it('should display a loading spinner while fetching a token', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
-    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false, room: {} } as any));
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false, room: {}, localTracks: [] } as any));
     mockUseAppState.mockImplementationOnce(() => ({ isFetching: true }));
     const { container } = render(renderComponent());
     expect(container.querySelector('svg')).not.toBeNull();
@@ -75,7 +80,7 @@ describe('the MenuBar component', () => {
 
   it('should disable the Join Room button when the Name input or Room input are empty', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
-    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false, room: {} } as any));
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false, room: {}, localTracks: [] } as any));
     const { getByLabelText, getByText } = render(renderComponent());
     expect(getByText('Join Room')).toBeDisabled();
     fireEvent.change(getByLabelText('Name'), { target: { value: 'Foo' } });
@@ -87,7 +92,7 @@ describe('the MenuBar component', () => {
 
   it('should enable the Join Room button when the Name input and Room input are not empty', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
-    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false, room: {} } as any));
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false, room: {}, localTracks: [] } as any));
     const { getByLabelText, getByText } = render(renderComponent());
     fireEvent.change(getByLabelText('Name'), { target: { value: 'Foo' } });
     fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo' } });
@@ -96,7 +101,7 @@ describe('the MenuBar component', () => {
 
   it('should disable the Join Room button when connecting to a room', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
-    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: true, room: {} } as any));
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: true, room: {}, localTracks: [] } as any));
     const { getByLabelText, getByText } = render(renderComponent());
     fireEvent.change(getByLabelText('Name'), { target: { value: 'Foo' } });
     fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo' } });
@@ -105,7 +110,9 @@ describe('the MenuBar component', () => {
 
   it('should update the URL to include the room name on submit', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
-    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false, connect: mockConnect, room: {} } as any));
+    mockedUseVideoContext.mockImplementation(
+      () => ({ isConnecting: false, connect: mockConnect, room: {}, localTracks: [] } as any)
+    );
     const { getByLabelText, getByText } = render(renderComponent());
     fireEvent.change(getByLabelText('Name'), { target: { value: 'Foo' } });
     fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo Test' } });
@@ -115,9 +122,11 @@ describe('the MenuBar component', () => {
 
   it('should not update the URL when the app is deployed as a Twilio function', () => {
     // @ts-ignore
-    window.location = { origin: 'https://video-app-1234-twil.io' };
+    window.location = { ...window.location, origin: 'https://video-app-1234-twil.io' };
     mockedUseRoomState.mockImplementation(() => 'disconnected');
-    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false, connect: mockConnect, room: {} } as any));
+    mockedUseVideoContext.mockImplementation(
+      () => ({ isConnecting: false, connect: mockConnect, room: {}, localTracks: [] } as any)
+    );
     const { getByLabelText, getByText } = render(renderComponent());
     fireEvent.change(getByLabelText('Name'), { target: { value: 'Foo' } });
     fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo Test' } });
@@ -127,7 +136,9 @@ describe('the MenuBar component', () => {
 
   it('should call getToken() and connect() on submit', done => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
-    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false, connect: mockConnect, room: {} } as any));
+    mockedUseVideoContext.mockImplementation(
+      () => ({ isConnecting: false, connect: mockConnect, room: {}, localTracks: [] } as any)
+    );
     const { getByLabelText, getByText } = render(renderComponent());
     fireEvent.change(getByLabelText('Name'), { target: { value: 'Foo' } });
     fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo Test' } });
@@ -141,7 +152,7 @@ describe('the MenuBar component', () => {
 
   it('should populate the Room name from the URL', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
-    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false, room: {} } as any));
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false, room: {}, localTracks: [] } as any));
     const { getByLabelText } = render(
       <MemoryRouter initialEntries={['/room/test']}>
         <Route path="/room/:URLRoomName">
@@ -155,9 +166,19 @@ describe('the MenuBar component', () => {
   it('should hide the name input when a user has the displayName property and display the name instead', () => {
     mockUseAppState.mockImplementation(() => ({ user: { displayName: 'Test Name' } }));
     mockedUseRoomState.mockImplementation(() => 'disconnected');
-    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: true, room: {} } as any));
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: true, room: {}, localTracks: [] } as any));
     const { queryByLabelText, findByText } = render(renderComponent());
     expect(queryByLabelText('Name')).toBe(null);
     expect(findByText('Test Name')).toBeTruthy();
+  });
+
+  it('should show the name input when a user has the displayName property and the customIdentity query parameter is present', () => {
+    window.location = { ...window.location, search: '?customIdentity=true' };
+    mockUseAppState.mockImplementation(() => ({ user: { displayName: 'Test Name' } }));
+    mockedUseRoomState.mockImplementation(() => 'disconnected');
+    mockedUseVideoContext.mockImplementation(() => ({ isConnecting: true, room: {}, localTracks: [] } as any));
+    const { queryByLabelText, queryByText } = render(renderComponent());
+    expect(queryByLabelText('Name')).toBeTruthy();
+    expect(queryByText('Test Name')).not.toBeTruthy();
   });
 });

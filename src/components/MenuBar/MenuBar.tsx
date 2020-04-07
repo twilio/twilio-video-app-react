@@ -2,6 +2,7 @@ import React, { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import AppBar from '@material-ui/core/AppBar';
+import LocalAudioLevelIndicator from './LocalAudioLevelIndicator/LocalAudioLevelIndicator';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
@@ -80,7 +81,7 @@ export default function MenuBar() {
     event.preventDefault();
     // If this app is deployed as a twilio function, don't change the URL beacuse routing isn't supported.
     if (!window.location.origin.includes('twil.io')) {
-      window.history.replaceState(null, '', window.encodeURI(`/room/${roomName}`));
+      window.history.replaceState(null, '', window.encodeURI(`/room/${roomName}${window.location.search || ''}`));
     }
     getToken(name, roomName).then(token => connect(token));
   };
@@ -90,7 +91,7 @@ export default function MenuBar() {
       <Toolbar>
         {roomState === 'disconnected' ? (
           <form className={classes.form} onSubmit={handleSubmit}>
-            {!user?.displayName ? (
+            {window.location.search.includes('customIdentity=true') || !user?.displayName ? (
               <TextField
                 id="menu-name"
                 label="Name"
@@ -127,6 +128,7 @@ export default function MenuBar() {
           <h3>{roomName}</h3>
         )}
         <div className={classes.rightButtonContainer}>
+          <LocalAudioLevelIndicator />
           <ToggleFullscreenButton />
           <Menu />
         </div>
