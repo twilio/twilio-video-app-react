@@ -18,7 +18,7 @@ const Main = styled('main')({
   overflow: 'hidden',
 });
 
-function useHeight() {
+export function useHeight() {
   const [height, setHeight] = useState(window.innerHeight);
 
   useEffect(() => {
