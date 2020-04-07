@@ -16,6 +16,12 @@ const Container = styled('aside')(({ theme }) => ({
   },
 }));
 
+const ScrollContainer = styled('div')(({ theme }) => ({
+  [theme.breakpoints.down('xs')]: {
+    display: 'flex',
+  },
+}));
+
 export default function ParticipantStrip() {
   const {
     room: { localParticipant },
@@ -25,19 +31,21 @@ export default function ParticipantStrip() {
 
   return (
     <Container>
-      <Participant
-        participant={localParticipant}
-        isSelected={selectedParticipant === localParticipant}
-        onClick={() => setSelectedParticipant(localParticipant)}
-      />
-      {participants.map(participant => (
+      <ScrollContainer>
         <Participant
-          key={participant.sid}
-          participant={participant}
-          isSelected={selectedParticipant === participant}
-          onClick={() => setSelectedParticipant(participant)}
+          participant={localParticipant}
+          isSelected={selectedParticipant === localParticipant}
+          onClick={() => setSelectedParticipant(localParticipant)}
         />
-      ))}
+        {participants.map(participant => (
+          <Participant
+            key={participant.sid}
+            participant={participant}
+            isSelected={selectedParticipant === participant}
+            onClick={() => setSelectedParticipant(participant)}
+          />
+        ))}
+      </ScrollContainer>
     </Container>
   );
 }
