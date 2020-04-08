@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { AudioTrack, LocalAudioTrack, RemoteAudioTrack } from 'twilio-video';
+import { interval } from 'd3-timer';
 import MicOff from '@material-ui/icons/MicOff';
 import useIsTrackEnabled from '../../hooks/useIsTrackEnabled/useIsTrackEnabled';
 
@@ -16,7 +17,7 @@ export function initializeAnalyser(audioTrack: AudioTrack) {
   const audioSource = audioContext.createMediaStreamSource(stream);
 
   const analyser = audioContext.createAnalyser();
-  analyser.smoothingTimeConstant = 0.5;
+  analyser.smoothingTimeConstant = 0.4;
   analyser.fftSize = 1024;
 
   audioSource.connect(analyser);
@@ -38,7 +39,6 @@ function AudioLevelIndicator({
 
   useEffect(() => {
     const SVGClipElement = ref.current;
-    let animationFrameID: number;
 
     if (audioTrack && isTrackEnabled && SVGClipElement) {
       let analyser = initializeAnalyser(audioTrack);
@@ -52,29 +52,24 @@ function AudioLevelIndicator({
       // and switches back to the app.
       window.addEventListener('focus', reinitializeAnalyser);
 
-      function render() {
-        animationFrameID = window.requestAnimationFrame(() => {
-          const array = new Uint8Array(analyser.frequencyBinCount);
-          analyser.getByteFrequencyData(array);
-          let values = 0;
+      const timer = interval(() => {
+        const array = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(array);
+        let values = 0;
 
-          const length = array.length;
-          for (let i = 0; i < length; i++) {
-            values += array[i];
-          }
+        const length = array.length;
+        for (let i = 0; i < length; i++) {
+          values += array[i];
+        }
 
-          const volume = Math.min(21, Math.max(0, Math.log10(values / length / 3) * 14));
+        const volume = Math.min(21, Math.max(0, Math.log10(values / length / 3) * 14));
 
-          SVGClipElement?.setAttribute('y', String(21 - volume));
-          render();
-        });
-      }
-
-      render();
+        SVGClipElement?.setAttribute('y', String(21 - volume));
+      }, 50);
 
       return () => {
         SVGClipElement.setAttribute('y', '21');
-        window.cancelAnimationFrame(animationFrameID);
+        timer.stop();
         window.removeEventListener('focus', reinitializeAnalyser);
       };
     }
