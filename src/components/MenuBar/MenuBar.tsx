@@ -21,9 +21,8 @@ const useStyles = makeStyles((theme: Theme) =>
     container: {
       backgroundColor: theme.palette.background.default,
     },
-    leftButtonContainer: {
+    rightButtonContainer: {
       display: 'flex',
-      justifyContent: 'space-between',
       alignItems: 'center',
       marginLeft: 'auto',
     },
@@ -31,6 +30,9 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       flexWrap: 'wrap',
       alignItems: 'center',
+      [theme.breakpoints.up('md')]: {
+        marginLeft: '2.2em',
+      },
     },
     textField: {
       marginLeft: theme.spacing(1),
@@ -41,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginLeft: '1em',
     },
     displayName: {
-      marginLeft: '2.2em',
+      margin: '1.1em 0.6em',
       minWidth: '200px',
       fontWeight: 600,
     },
@@ -125,7 +127,7 @@ export default function MenuBar() {
         ) : (
           <h3>{roomName}</h3>
         )}
-        <div className={classes.leftButtonContainer}>
+        <div className={classes.rightButtonContainer}>
           <LocalAudioLevelIndicator />
           <ToggleFullscreenButton />
           <Menu />

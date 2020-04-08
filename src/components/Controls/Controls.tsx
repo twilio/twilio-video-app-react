@@ -29,6 +29,9 @@ const useStyles = makeStyles((theme: Theme) =>
         visibility: 'visible',
         transform: 'translate(50%, 0px)',
       },
+      [theme.breakpoints.down('xs')]: {
+        bottom: `${theme.sidebarMobileHeight + 3}px`,
+      },
     },
   })
 );
