@@ -12,7 +12,8 @@ const Container = styled('div')(({ theme }) => ({
   [theme.breakpoints.down('xs')]: {
     gridTemplateAreas: '"participantList" "."',
     gridTemplateColumns: `auto`,
-    gridTemplateRows: `1fr ${theme.sidebarMobileHeight}px`,
+    gridTemplateRows: `calc(100% - ${theme.sidebarMobileHeight + 12}px) ${theme.sidebarMobileHeight + 6}px`,
+    gridGap: '6px',
   },
 }));
 
