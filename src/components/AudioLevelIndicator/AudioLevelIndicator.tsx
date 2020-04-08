@@ -18,7 +18,7 @@ export function initializeAnalyser(audioTrack: AudioTrack) {
 
   const analyser = audioContext.createAnalyser();
   analyser.smoothingTimeConstant = 0.4;
-  analyser.fftSize = 1024;
+  analyser.fftSize = 512;
 
   audioSource.connect(analyser);
   return analyser;
@@ -52,14 +52,15 @@ function AudioLevelIndicator({
       // and switches back to the app.
       window.addEventListener('focus', reinitializeAnalyser);
 
+      const sampleArray = new Uint8Array(analyser.frequencyBinCount);
+
       const timer = interval(() => {
-        const array = new Uint8Array(analyser.frequencyBinCount);
-        analyser.getByteFrequencyData(array);
+        analyser.getByteFrequencyData(sampleArray);
         let values = 0;
 
-        const length = array.length;
+        const length = sampleArray.length;
         for (let i = 0; i < length; i++) {
-          values += array[i];
+          values += sampleArray[i];
         }
 
         const volume = Math.min(21, Math.max(0, Math.log10(values / length / 3) * 14));
