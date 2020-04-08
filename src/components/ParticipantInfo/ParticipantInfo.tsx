@@ -32,6 +32,12 @@ const useStyles = makeStyles((theme: Theme) =>
         stroke: 'black',
         strokeWidth: '0.8px',
       },
+      [theme.breakpoints.down('xs')]: {
+        height: theme.sidebarMobileHeight,
+        width: `${(theme.sidebarMobileHeight * 16) / 9}px`,
+        marginRight: '3px',
+        fontSize: '10px',
+      },
     },
     isVideoSwitchedOff: {
       '& video': {
