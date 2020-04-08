@@ -1,7 +1,6 @@
 import { act, renderHook } from '@testing-library/react-hooks';
-import { useHeight } from './App';
 
-jest.mock('./hooks/useRoomState/useRoomState');
+import useHeight from './useHeight';
 
 describe('the useHeight hook', () => {
   it('should return window.innerHeight', () => {

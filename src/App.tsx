@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { styled } from '@material-ui/core/styles';
 
 import Controls from './components/Controls/Controls';
@@ -7,6 +7,7 @@ import MenuBar from './components/MenuBar/MenuBar';
 import ReconnectingNotification from './components/ReconnectingNotification/ReconnectingNotification';
 import Room from './components/Room/Room';
 
+import useHeight from './hooks/useHeight/useHeight';
 import useRoomState from './hooks/useRoomState/useRoomState';
 
 const Container = styled('div')({
@@ -17,23 +18,6 @@ const Container = styled('div')({
 const Main = styled('main')({
   overflow: 'hidden',
 });
-
-export function useHeight() {
-  const [height, setHeight] = useState(window.innerHeight);
-
-  useEffect(() => {
-    const onResize = () => {
-      setHeight(window.innerHeight);
-    };
-
-    window.addEventListener('resize', onResize);
-    return () => {
-      window.removeEventListener('resize', onResize);
-    };
-  });
-
-  return height + 'px';
-}
 
 export default function App() {
   const roomState = useRoomState();
