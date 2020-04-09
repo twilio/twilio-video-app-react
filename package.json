@@ -30,6 +30,7 @@
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.4.1",
+    "strip-color": "^0.1.0",
     "twilio": "^3.39.3",
     "twilio-video": "^2.3.0",
     "typescript": "^3.8.3"
@@ -64,7 +65,7 @@
   "scripts": {
     "start": "concurrently npm:server npm:dev",
     "dev": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "node ./scripts/build.js",
     "test": "jest",
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.{ts,tsx}",
