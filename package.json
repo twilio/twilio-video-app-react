@@ -7,6 +7,7 @@
     "@material-ui/core": "^4.9.1",
     "@material-ui/icons": "^4.9.1",
     "@primer/octicons-react": "^9.4.0",
+    "@types/d3-timer": "^1.0.9",
     "@types/fscreen": "^1.0.1",
     "@types/jest": "^24.9.1",
     "@types/lodash.throttle": "^4.1.6",
@@ -17,6 +18,7 @@
     "@types/twilio-video": "^2.0.10",
     "concurrently": "^5.1.0",
     "cross-env": "^7.0.2",
+    "d3-timer": "^1.0.10",
     "express": "^4.17.1",
     "firebase": "^7.8.0",
     "fscreen": "^1.0.2",
@@ -28,6 +30,7 @@
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.4.1",
+    "strip-color": "^0.1.0",
     "twilio": "^3.39.3",
     "twilio-video": "^2.3.0",
     "typescript": "^3.8.3"
@@ -62,7 +65,7 @@
   "scripts": {
     "start": "concurrently npm:server npm:dev",
     "dev": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "node ./scripts/build.js",
     "test": "jest",
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.{ts,tsx}",

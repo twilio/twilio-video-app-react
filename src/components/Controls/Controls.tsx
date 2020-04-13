@@ -22,11 +22,15 @@ const useStyles = makeStyles((theme: Theme) =>
       transition: 'opacity 1.2s, transform 1.2s, visibility 0s 1.2s',
       opacity: 0,
       visibility: 'hidden',
+      maxWidth: 'min-content',
       '&.showControls, &:hover': {
         transition: 'opacity 0.6s, transform 0.6s, visibility 0s',
         opacity: 1,
         visibility: 'visible',
         transform: 'translate(50%, 0px)',
+      },
+      [theme.breakpoints.down('xs')]: {
+        bottom: `${theme.sidebarMobileHeight + 3}px`,
       },
     },
   })

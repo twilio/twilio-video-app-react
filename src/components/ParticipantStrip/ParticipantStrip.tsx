@@ -6,13 +6,20 @@ import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
 
 const Container = styled('aside')(({ theme }) => ({
-  position: 'absolute',
-  top: 0,
-  bottom: 0,
-  right: `calc(100% - ${theme.sidebarWidth}px)`,
-  left: 0,
   padding: '0.5em',
   overflowY: 'auto',
+  [theme.breakpoints.down('xs')]: {
+    overflowY: 'initial',
+    overflowX: 'auto',
+    padding: 0,
+    display: 'flex',
+  },
+}));
+
+const ScrollContainer = styled('div')(({ theme }) => ({
+  [theme.breakpoints.down('xs')]: {
+    display: 'flex',
+  },
 }));
 
 export default function ParticipantStrip() {
@@ -24,19 +31,21 @@ export default function ParticipantStrip() {
 
   return (
     <Container>
-      <Participant
-        participant={localParticipant}
-        isSelected={selectedParticipant === localParticipant}
-        onClick={() => setSelectedParticipant(localParticipant)}
-      />
-      {participants.map(participant => (
+      <ScrollContainer>
         <Participant
-          key={participant.sid}
-          participant={participant}
-          isSelected={selectedParticipant === participant}
-          onClick={() => setSelectedParticipant(participant)}
+          participant={localParticipant}
+          isSelected={selectedParticipant === localParticipant}
+          onClick={() => setSelectedParticipant(localParticipant)}
         />
-      ))}
+        {participants.map(participant => (
+          <Participant
+            key={participant.sid}
+            participant={participant}
+            isSelected={selectedParticipant === participant}
+            onClick={() => setSelectedParticipant(participant)}
+          />
+        ))}
+      </ScrollContainer>
     </Container>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { AudioTrack as IAudioTrack } from 'twilio-video';
 
 interface AudioTrackProps {
@@ -6,15 +6,9 @@ interface AudioTrackProps {
 }
 
 export default function AudioTrack({ track }: AudioTrackProps) {
-  const ref = useRef<HTMLAudioElement>(null!);
-
   useEffect(() => {
-    const el = ref.current;
-    track.attach(el);
-    return () => {
-      track.detach(el);
-    };
+    document.body.appendChild(track.attach());
+    return () => track.detach().forEach(el => el.remove());
   }, [track]);
-
-  return <audio ref={ref} />;
+  return null;
 }
