@@ -27,7 +27,7 @@ export function useLocalVideoTrack() {
   const [track, setTrack] = useState<LocalVideoTrack>();
 
   const getLocalVideoTrack = useCallback((facingMode?: CreateLocalTrackOptions['facingMode']) => {
-    const constraints: CreateLocalTrackOptions = {
+    const options: CreateLocalTrackOptions = {
       frameRate: 24,
       height: 720,
       width: 1280,
@@ -35,10 +35,10 @@ export function useLocalVideoTrack() {
     };
 
     if (facingMode) {
-      constraints.facingMode = facingMode;
+      options.facingMode = facingMode;
     }
 
-    return Video.createLocalVideoTrack(constraints).then(newTrack => {
+    return Video.createLocalVideoTrack(options).then(newTrack => {
       setTrack(newTrack);
       return newTrack;
     });
