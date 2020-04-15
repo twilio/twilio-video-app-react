@@ -26,6 +26,8 @@ export default function Menu() {
 
   return (
     <div ref={anchorRef}>
+      {/*
+
       <IconButton color="inherit" onClick={() => setMenuOpen(state => !state)}>
         {user ? <UserAvatar user={user} /> : <MoreIcon />}
       </IconButton>
@@ -34,13 +36,14 @@ export default function Menu() {
         <MenuItem onClick={() => setAboutOpen(true)}>About</MenuItem>
         {user && <MenuItem onClick={handleSignOut}>Logout</MenuItem>}
       </MenuContainer>
-      <AboutDialog
+       <AboutDialog
         open={aboutOpen}
         onClose={() => {
           setAboutOpen(false);
           setMenuOpen(false);
         }}
       />
+      */}
     </div>
   );
 }

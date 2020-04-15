@@ -106,10 +106,10 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
     >
       <div className={clsx(classes.infoContainer, { [classes.hideVideo]: !isVideoEnabled })}>
         <div className={classes.infoRow}>
-          <h4 className={classes.identity} style="display:none;">
+          {/* <h4 className={classes.identity}>
             <ParticipantConnectionIndicator participant={participant} />
             {participant.identity}
-          </h4>
+          </h4>*/}
           <NetworkQualityLevel qualityLevel={networkQualityLevel} />
         </div>
         <div>

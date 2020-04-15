@@ -61,12 +61,14 @@ export default function MainParticipantInfo({ participant, children }: MainParti
       data-cy-main-participant
       className={clsx(classes.container, { [classes.isVideoSwitchedOff]: isVideoSwitchedOff })}
     >
-      <div className={classes.infoContainer} style="Display:none;">
+      {/* 
+      <div className={classes.infoContainer}>
         <h4 className={classes.identity}>
           {participant.identity}
           {!isVideoEnabled && <VideocamOff />}
         </h4>
       </div>
+      */}
       {isVideoSwitchedOff && <BandwidthWarning />}
       {children}
     </div>
