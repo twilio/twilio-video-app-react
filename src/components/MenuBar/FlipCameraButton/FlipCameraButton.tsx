@@ -15,8 +15,8 @@ export default function FlipCameraButton() {
 
   useEffect(() => {
     // The 'supportsFacingMode' variable determines if this component is rendered
-    // If facingMode is true, we will set supportsFacingMode to true.
-    // However, if facingMode is ever false again (when the user unpublishes video), we
+    // If 'facingMode' exists, we will set supportsFacingMode to true.
+    // However, if facingMode is ever undefined again (when the user unpublishes video), we
     // won't set 'supportsFacingMode' to false. This prevents the icon from briefly
     // disappearing when the user switches their front/rear camera.
     if (facingMode && supportsFacingMode === null) {
