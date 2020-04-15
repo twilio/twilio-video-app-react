@@ -15,11 +15,17 @@ import { useParams } from 'react-router-dom';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { Typography } from '@material-ui/core';
+import FlipCameraButton from './FlipCameraButton/FlipCameraButton';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
       backgroundColor: theme.palette.background.default,
+    },
+    toolbar: {
+      [theme.breakpoints.down('xs')]: {
+        padding: 0,
+      },
     },
     rightButtonContainer: {
       display: 'flex',
@@ -37,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
     textField: {
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
-      width: 200,
+      maxWidth: 200,
     },
     loadingSpinner: {
       marginLeft: '1em',
@@ -88,7 +94,7 @@ export default function MenuBar() {
 
   return (
     <AppBar className={classes.container} position="static">
-      <Toolbar>
+      <Toolbar className={classes.toolbar}>
         {roomState === 'disconnected' ? (
           <form className={classes.form} onSubmit={handleSubmit}>
             {window.location.search.includes('customIdentity=true') || !user?.displayName ? (
@@ -129,6 +135,7 @@ export default function MenuBar() {
         )}
         <div className={classes.rightButtonContainer}>
           <LocalAudioLevelIndicator />
+          <FlipCameraButton />
           <ToggleFullscreenButton />
           <Menu />
         </div>

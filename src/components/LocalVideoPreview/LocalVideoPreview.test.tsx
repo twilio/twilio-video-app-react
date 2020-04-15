@@ -12,7 +12,9 @@ describe('the LocalVideoPreview component', () => {
   it('it should render a VideoTrack component when there is a "camera" track', () => {
     mockedVideoContext.mockImplementation(() => {
       return {
-        localTracks: [{ name: 'camera', attach: jest.fn(), detach: jest.fn() }],
+        localTracks: [
+          { name: 'camera', attach: jest.fn(), detach: jest.fn(), mediaStreamTrack: { getSettings: () => ({}) } },
+        ],
       } as any;
     });
     const { container } = render(<LocalVideoPreview />);
