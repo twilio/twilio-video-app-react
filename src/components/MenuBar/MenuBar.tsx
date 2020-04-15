@@ -62,6 +62,7 @@ export default function MenuBar() {
 
   const [name, setName] = useState<string>(user?.displayName || '');
   const [roomName, setRoomName] = useState<string>('');
+  const [roomToken, setRoomToken] = useState<string>('');
 
   useEffect(() => {
     if (URLRoomName) {
@@ -76,21 +77,21 @@ export default function MenuBar() {
   const handleRoomNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setRoomName(event.target.value);
   };
+  const handleRoomTokenChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setRoomToken(event.target.value);
+  };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // If this app is deployed as a twilio function, don't change the URL beacuse routing isn't supported.
-    if (!window.location.origin.includes('twil.io')) {
-      window.history.replaceState(null, '', window.encodeURI(`/room/${roomName}${window.location.search || ''}`));
-    }
-    getToken(name, roomName).then(token => connect(token));
+
+    connect(roomToken);
   };
 
   return (
     <AppBar className={classes.container} position="static">
       <Toolbar>
         {roomState === 'disconnected' ? (
-          <form className={classes.form} onSubmit={handleSubmit}>
+          <form className={classes.form} onSubmit={handleSubmit} id="menu-form">
             {window.location.search.includes('customIdentity=true') || !user?.displayName ? (
               <TextField
                 id="menu-name"
@@ -113,8 +114,17 @@ export default function MenuBar() {
               onChange={handleRoomNameChange}
               margin="dense"
             />
+            <TextField
+              id="menu-token"
+              label="Token"
+              className={classes.textField}
+              value={roomToken}
+              onChange={handleRoomTokenChange}
+              margin="dense"
+            />
             <Button
               className={classes.joinButton}
+              id="menu-connect"
               type="submit"
               color="primary"
               variant="contained"
@@ -125,7 +135,7 @@ export default function MenuBar() {
             {(isConnecting || isFetching) && <CircularProgress className={classes.loadingSpinner} />}
           </form>
         ) : (
-          <h3>{roomName}</h3>
+          <h3>{/* {roomName}*/} </h3>
         )}
         <div className={classes.rightButtonContainer}>
           <LocalAudioLevelIndicator />
