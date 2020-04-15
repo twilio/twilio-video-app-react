@@ -62,6 +62,7 @@ export default function MenuBar() {
 
   const [name, setName] = useState<string>(user?.displayName || '');
   const [roomName, setRoomName] = useState<string>('');
+  const [roomToken, setRoomToken] = useState<string>('');
 
   useEffect(() => {
     if (URLRoomName) {
