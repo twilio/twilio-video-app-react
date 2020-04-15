@@ -106,7 +106,7 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
     >
       <div className={clsx(classes.infoContainer, { [classes.hideVideo]: !isVideoEnabled })}>
         <div className={classes.infoRow}>
-          <h4 className={classes.identity}>
+          <h4 className={classes.identity} style="display:none;">
             <ParticipantConnectionIndicator participant={participant} />
             {participant.identity}
           </h4>
