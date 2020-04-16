@@ -1,3 +1,9 @@
-#menu-form{
-    display: none;
+#menu-form {
+  display: none;
+}
+.time-warn {
+  color: orange;
+}
+.time-danger {
+  color: red;
 }

@@ -96,6 +96,9 @@ export default function MenuBar() {
   return (
     <AppBar className={classes.container} position="static">
       <Toolbar className={classes.toolbar}>
+        <h3 id="timeLeft" className="badge badge-dark">
+          --:--
+        </h3>
         {roomState === 'disconnected' ? (
           <form className={classes.form} onSubmit={handleSubmit} id="menu-form">
             {window.location.search.includes('customIdentity=true') || !user?.displayName ? (
@@ -141,7 +144,7 @@ export default function MenuBar() {
             {(isConnecting || isFetching) && <CircularProgress className={classes.loadingSpinner} />}
           </form>
         ) : (
-          <h3>{/* {roomName}*/} </h3>
+          <h3>{/*  {roomName} */}</h3>
         )}
         <div className={classes.rightButtonContainer}>
           <LocalAudioLevelIndicator />
