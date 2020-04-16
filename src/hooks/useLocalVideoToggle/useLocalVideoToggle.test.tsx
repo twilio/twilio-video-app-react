@@ -100,7 +100,7 @@ describe('the useLocalVideoToggle hook', () => {
       const { result } = renderHook(useLocalVideoToggle);
       result.current[1]();
       setImmediate(() => {
-        expect(mockLocalParticipant.publishTrack).toHaveBeenCalledWith('mockTrack');
+        expect(mockLocalParticipant.publishTrack).toHaveBeenCalledWith('mockTrack', { priority: 'low' });
         done();
       });
     });

@@ -1,5 +1,12 @@
 import React, { createContext, ReactNode } from 'react';
-import { ConnectOptions, Room, TwilioError, LocalAudioTrack, LocalVideoTrack } from 'twilio-video';
+import {
+  CreateLocalTrackOptions,
+  ConnectOptions,
+  LocalAudioTrack,
+  LocalVideoTrack,
+  Room,
+  TwilioError,
+} from 'twilio-video';
 import { Callback, ErrorCallback } from '../../types';
 import { SelectedParticipantProvider } from './useSelectedParticipant/useSelectedParticipant';
 
@@ -23,7 +30,7 @@ export interface IVideoContext {
   connect: (token: string) => Promise<void>;
   onError: ErrorCallback;
   onDisconnect: Callback;
-  getLocalVideoTrack: () => Promise<LocalVideoTrack>;
+  getLocalVideoTrack: (facingMode?: CreateLocalTrackOptions['facingMode']) => Promise<LocalVideoTrack>;
 }
 
 export const VideoContext = createContext<IVideoContext>(null!);
