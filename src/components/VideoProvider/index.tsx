@@ -3,6 +3,7 @@ import { ConnectOptions, Room, TwilioError, LocalAudioTrack, LocalVideoTrack } f
 import { Callback, ErrorCallback } from '../../types';
 import { SelectedParticipantProvider } from './useSelectedParticipant/useSelectedParticipant';
 
+import AttachVisibilityHandler from './attachVisibilityHandler/attachVisibilityHandler';
 import useHandleRoomDisconnectionErrors from './useHandleRoomDisconnectionErrors/useHandleRoomDisconnectionErrors';
 import useHandleOnDisconnect from './useHandleOnDisconnect/useHandleOnDisconnect';
 import useHandleTrackPublicationFailed from './useHandleTrackPublicationFailed/useHandleTrackPublicationFailed';
@@ -62,6 +63,11 @@ export function VideoProvider({ options, children, onError = () => {}, onDisconn
       }}
     >
       <SelectedParticipantProvider room={room}>{children}</SelectedParticipantProvider>
+      {/* 
+        The AttachVisibilityHandler component is using the useLocalVideoToggle hook
+        which must be used within the VideoContext Provider.
+      */}
+      <AttachVisibilityHandler />
     </VideoContext.Provider>
   );
 }
