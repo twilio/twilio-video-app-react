@@ -21,7 +21,7 @@ export default function useLocalVideoToggle() {
     } else {
       getLocalVideoTrack().then((track: LocalVideoTrack) => {
         if (localParticipant) {
-          localParticipant.publishTrack(track);
+          localParticipant.publishTrack(track, { priority: 'low' });
         }
       });
     }
