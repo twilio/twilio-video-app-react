@@ -20,9 +20,9 @@ export default function AttachVisibilityHandler() {
         }
       };
 
-      window.addEventListener('visibilitychange', handleVisibilityChange);
+      document.addEventListener('visibilitychange', handleVisibilityChange);
       return () => {
-        window.removeEventListener('visibilitychange', handleVisibilityChange);
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
       };
     }
   }, [isVideoEnabled, room, toggleVideoEnabled]);
