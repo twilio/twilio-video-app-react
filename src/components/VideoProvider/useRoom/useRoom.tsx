@@ -1,20 +1,16 @@
 import { Callback } from '../../../types';
 import EventEmitter from 'events';
 import { isMobile } from '../../../utils';
-import Video, { ConnectOptions, LocalAudioTrack, LocalVideoTrack, Room } from 'twilio-video';
+import Video, { ConnectOptions, LocalTrack, Room } from 'twilio-video';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 // @ts-ignore
 window.TwilioVideo = Video;
 
-export default function useRoom(
-  localTracks: (LocalAudioTrack | LocalVideoTrack)[],
-  onError: Callback,
-  options?: ConnectOptions
-) {
+export default function useRoom(localTracks: LocalTrack[], onError: Callback, options?: ConnectOptions) {
   const [room, setRoom] = useState<Room>(new EventEmitter() as Room);
   const [isConnecting, setIsConnecting] = useState(false);
-  const localTracksRef = useRef<(LocalAudioTrack | LocalVideoTrack)[]>([]);
+  const localTracksRef = useRef<LocalTrack[]>([]);
 
   useEffect(() => {
     // It can take a moment for Video.connect to connect to a room. During this time, the user may have enabled or disabled their
