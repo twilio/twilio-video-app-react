@@ -1,6 +1,9 @@
 #menu-form {
   display: none;
 }
+.time-standard {
+  color: black;
+}
 .time-warn {
   color: orange;
 }
