@@ -5,10 +5,11 @@ import { Participant as IParticipant } from 'twilio-video';
 
 interface ParticipantProps {
   participant: IParticipant;
-  disableAudio?: boolean;
+  disableAudio: boolean;
   enableScreenShare?: boolean;
   onClick: () => void;
   isSelected: boolean;
+  hideParticipant: boolean;
 }
 
 export default function Participant({
@@ -17,10 +18,21 @@ export default function Participant({
   enableScreenShare,
   onClick,
   isSelected,
+  hideParticipant,
 }: ParticipantProps) {
   return (
-    <ParticipantInfo participant={participant} onClick={onClick} isSelected={isSelected}>
-      <ParticipantTracks participant={participant} disableAudio={disableAudio} enableScreenShare={enableScreenShare} />
+    <ParticipantInfo
+      hideParticipant={hideParticipant}
+      participant={participant}
+      disableAudio={disableAudio}
+      onClick={onClick}
+      isSelected={isSelected}
+    >
+      <ParticipantTracks
+        participant={participant}
+        disableAudio={disableAudio}
+        enableScreenShare={enableScreenShare && participant.identity.split('|')[1] !== 'True'}
+      />
     </ParticipantInfo>
   );
 }

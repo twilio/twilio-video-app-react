@@ -39,6 +39,9 @@ const useStyles = makeStyles((theme: Theme) =>
         fontSize: '10px',
       },
     },
+    hideContainer: {
+      display: 'none',
+    },
     isVideoSwitchedOff: {
       '& video': {
         filter: 'blur(4px) grayscale(1) brightness(0.5)',
@@ -73,13 +76,22 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface ParticipantInfoProps {
+  hideParticipant: boolean;
   participant: Participant;
+  disableAudio: boolean;
   children: React.ReactNode;
   onClick: () => void;
   isSelected: boolean;
 }
 
-export default function ParticipantInfo({ participant, onClick, isSelected, children }: ParticipantInfoProps) {
+export default function ParticipantInfo({
+  hideParticipant,
+  participant,
+  disableAudio,
+  onClick,
+  isSelected,
+  children,
+}: ParticipantInfoProps) {
   const publications = usePublications(participant);
 
   const audioPublication = publications.find(p => p.kind === 'audio');
@@ -96,20 +108,28 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
 
   const classes = useStyles();
 
+  if (disableAudio) {
+    const localAudio = audioPublication?.track as LocalAudioTrack;
+    if (localAudio && localAudio.disable && localAudio.isEnabled) {
+      localAudio.disable();
+    }
+  }
+
   return (
     <div
       className={clsx(classes.container, {
         [classes.isVideoSwitchedOff]: isVideoSwitchedOff,
+        [classes.hideContainer]: hideParticipant,
       })}
       onClick={onClick}
       data-cy-participant={participant.identity}
     >
       <div className={clsx(classes.infoContainer, { [classes.hideVideo]: !isVideoEnabled })}>
         <div className={classes.infoRow}>
-          {/* <h4 className={classes.identity}>
+          <h4 className={classes.identity}>
             <ParticipantConnectionIndicator participant={participant} />
-            {participant.identity}
-          </h4>*/}
+            {participant.identity.split('|')[2]}
+          </h4>
           <NetworkQualityLevel qualityLevel={networkQualityLevel} />
         </div>
         <div>

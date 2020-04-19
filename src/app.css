@@ -1,12 +1,40 @@
 #menu-form {
   display: none;
 }
-.time-standard {
-  color: black;
-}
 .time-warn {
   color: orange;
+  font-size: x-large;
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
 }
 .time-danger {
   color: red;
+  font-size: x-large;
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.blink_me {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.time-normal {
+  color: black;
+  font-size: x-large;
 }

@@ -96,7 +96,8 @@ export default function MenuBar() {
   return (
     <AppBar className={classes.container} position="static">
       <Toolbar className={classes.toolbar}>
-        <h3 id="timeLeft" className="time-standard">
+        <input id="toggleScreenShare" type="hidden" />
+        <h3 id="timeLeft" className="time-normal">
           --:--
         </h3>
         {roomState === 'disconnected' ? (

@@ -42,14 +42,23 @@ export default function Controls() {
   const isReconnecting = roomState === 'reconnecting';
   const isUserActive = useIsUserActive();
   const showControls = isUserActive || roomState === 'disconnected';
+  const screenShare = document.getElementById('toggleScreenShare');
+  let isDisabled = false;
+  if (screenShare && screenShare.getAttribute('value') === 'True') {
+    isDisabled = true;
+  }
 
   return (
     <div className={clsx(classes.container, { showControls })}>
       <ToggleAudioButton disabled={isReconnecting} />
       <ToggleVideoButton disabled={isReconnecting} />
-      {roomState !== 'disconnected' && (
+      {roomState !== 'disconnected' && !isDisabled && (
         <>
           <ToggleScreenShareButton disabled={isReconnecting} />
+        </>
+      )}
+      {roomState !== 'disconnected' && (
+        <>
           <EndCallButton />
         </>
       )}
