@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme: Theme) =>
       background: 'black',
     },
     identity: {
-      background: 'rgba(0, 0, 0, 0.7)',
+      //background: 'rgba(0, 0, 0, 0.7)',
       padding: '0.1em 0.3em',
       margin: 0,
       display: 'flex',
