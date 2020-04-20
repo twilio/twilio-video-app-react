@@ -14,7 +14,7 @@ This application demonstrates a multi-party video application built with [twilio
 
 ![App Preview](https://user-images.githubusercontent.com/12685223/76361972-c035b700-62e5-11ea-8f9d-0bb24bd73fd4.png)
 
-## Pre-requisites
+## Prerequisites
 
 You must have the following installed:
 
