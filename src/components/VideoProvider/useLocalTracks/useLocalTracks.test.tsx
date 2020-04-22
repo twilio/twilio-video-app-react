@@ -3,6 +3,10 @@ import useLocalTracks from './useLocalTracks';
 import Video from 'twilio-video';
 import { EventEmitter } from 'events';
 
+// mock enumerateDevices so that it behaves as if the user has already granted permissions to use local media.
+// @ts-ignore
+navigator.mediaDevices = { enumerateDevices: () => Promise.resolve([{ deviceId: 1, label: '1' }]) };
+
 describe('the useLocalTracks hook', () => {
   it('should return an array of tracks and two functions', async () => {
     const { result, waitForNextUpdate } = renderHook(useLocalTracks);
