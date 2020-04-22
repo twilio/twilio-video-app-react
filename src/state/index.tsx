@@ -13,6 +13,8 @@ export interface StateContextType {
   signOut?(): Promise<void>;
   isAuthReady?: boolean;
   isFetching: boolean;
+  activeSinkId: string;
+  setActiveSinkId(sinkId: string): void;
 }
 
 export const StateContext = createContext<StateContextType>(null!);
@@ -29,11 +31,14 @@ export const StateContext = createContext<StateContextType>(null!);
 export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const [error, setError] = useState<TwilioError | null>(null);
   const [isFetching, setIsFetching] = useState(false);
+  const [activeSinkId, setActiveSinkId] = useState('default');
 
   let contextValue = {
     error,
     setError,
     isFetching,
+    activeSinkId,
+    setActiveSinkId,
   } as StateContextType;
 
   if (process.env.REACT_APP_SET_AUTH === 'firebase') {

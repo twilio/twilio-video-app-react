@@ -31,7 +31,7 @@ declare global {
   }
 
   interface HTMLMediaElement {
-    setSinkId(sinkId: string): Promise<undefined>;
+    setSinkId?(sinkId: string): Promise<undefined>;
   }
 }
 
