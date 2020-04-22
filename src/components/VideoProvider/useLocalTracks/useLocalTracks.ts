@@ -4,11 +4,22 @@ import Video, { LocalVideoTrack, LocalAudioTrack, CreateLocalTrackOptions } from
 export function useLocalAudioTrack() {
   const [track, setTrack] = useState<LocalAudioTrack>();
 
-  useEffect(() => {
-    Video.createLocalAudioTrack().then(newTrack => {
+  const getLocalAudioTrack = useCallback((deviceId?: string) => {
+    const options: CreateLocalTrackOptions = {};
+
+    if (deviceId) {
+      options.deviceId = { exact: deviceId };
+    }
+
+    return Video.createLocalAudioTrack(options).then(newTrack => {
       setTrack(newTrack);
+      return newTrack;
     });
   }, []);
+
+  useEffect(() => {
+    getLocalAudioTrack();
+  }, [getLocalAudioTrack]);
 
   useEffect(() => {
     const handleStopped = () => setTrack(undefined);
@@ -20,7 +31,7 @@ export function useLocalAudioTrack() {
     }
   }, [track]);
 
-  return track;
+  return [track, getLocalAudioTrack] as const;
 }
 
 export function useLocalVideoTrack() {
@@ -63,7 +74,7 @@ export function useLocalVideoTrack() {
 }
 
 export default function useLocalTracks() {
-  const audioTrack = useLocalAudioTrack();
+  const [audioTrack, getLocalAudioTrack] = useLocalAudioTrack();
   const [videoTrack, getLocalVideoTrack] = useLocalVideoTrack();
 
   const localTracks = [audioTrack, videoTrack].filter(track => track !== undefined) as (
@@ -71,5 +82,5 @@ export default function useLocalTracks() {
     | LocalVideoTrack
   )[];
 
-  return { localTracks, getLocalVideoTrack };
+  return { localTracks, getLocalVideoTrack, getLocalAudioTrack };
 }
