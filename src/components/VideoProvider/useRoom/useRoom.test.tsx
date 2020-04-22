@@ -3,6 +3,7 @@ import EventEmitter from 'events';
 import { mockRoom } from '../../../__mocks__/twilio-video';
 import useRoom from './useRoom';
 import Video, { LocalTrack } from 'twilio-video';
+import * as utils from '../../../utils';
 
 const mockVideoConnect = Video.connect as jest.Mock<any>;
 
@@ -102,5 +103,32 @@ describe('the useRoom hook', () => {
     result.current.room.emit('disconnected');
     await waitForNextUpdate();
     expect(result.current.room.state).toBe(undefined);
+  });
+
+  describe('when isMobile is true', () => {
+    // @ts-ignore
+    utils.isMobile = true;
+
+    it('should add a listener for the "pagehide" event when connected to a room', async () => {
+      jest.spyOn(window, 'addEventListener');
+      const { result, waitForNextUpdate } = renderHook(() => useRoom([], () => {}, {}));
+      act(() => {
+        result.current.connect('token');
+      });
+      await waitForNextUpdate();
+      expect(window.addEventListener).toHaveBeenCalledWith('pagehide', expect.any(Function));
+    });
+
+    it('should remove the listener for the "pagehide" event when the room is disconnected', async () => {
+      jest.spyOn(window, 'removeEventListener');
+      const { result, waitForNextUpdate } = renderHook(() => useRoom([], () => {}, {}));
+      act(() => {
+        result.current.connect('token');
+      });
+      await waitForNextUpdate();
+      result.current.room.emit('disconnected');
+      await waitForNextUpdate();
+      expect(window.removeEventListener).toHaveBeenCalledWith('pagehide', expect.any(Function));
+    });
   });
 });
