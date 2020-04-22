@@ -4,3 +4,5 @@ export const isMobile = (() => {
   }
   return /Mobile/.test(navigator.userAgent);
 })();
+
+export const isSetSinkIdSupported = !!document.createElement('audio').setSinkId;
