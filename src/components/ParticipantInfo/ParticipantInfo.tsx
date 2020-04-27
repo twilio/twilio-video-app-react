@@ -83,11 +83,11 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
   const publications = usePublications(participant);
 
   const audioPublication = publications.find(p => p.kind === 'audio');
-  const videoPublication = publications.find(p => p.trackName === 'camera');
+  const videoPublication = publications.find(p => p.trackName.includes('camera'));
 
   const networkQualityLevel = useParticipantNetworkQualityLevel(participant);
   const isVideoEnabled = Boolean(videoPublication);
-  const isScreenShareEnabled = publications.find(p => p.trackName === 'screen');
+  const isScreenShareEnabled = publications.find(p => p.trackName.includes('screen'));
 
   const videoTrack = useTrack(videoPublication);
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);

@@ -49,7 +49,7 @@ export function useLocalVideoTrack() {
       frameRate: 24,
       height: 720,
       width: 1280,
-      name: 'camera',
+      name: `camera-${Date.now()}`,
     };
 
     if (facingMode) {
