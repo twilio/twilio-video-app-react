@@ -11,9 +11,8 @@ const getUniqueClipId = () => clipId++;
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 let audioContext: AudioContext;
 
-export function initializeAnalyser(audioTrack: AudioTrack) {
+export function initializeAnalyser(stream: MediaStream) {
   audioContext = audioContext || new AudioContext();
-  const stream = new MediaStream([audioTrack.mediaStreamTrack.clone()]);
   const audioSource = audioContext.createMediaStreamSource(stream);
 
   const analyser = audioContext.createAnalyser();
@@ -21,6 +20,7 @@ export function initializeAnalyser(audioTrack: AudioTrack) {
   analyser.fftSize = 512;
 
   audioSource.connect(analyser);
+  console.log(analyser);
   return analyser;
 }
 
@@ -35,16 +35,18 @@ function AudioLevelIndicator({
 }) {
   const SIZE = size || 24;
   const ref = useRef<SVGRectElement>(null);
+  const mediaStreamRef = useRef<MediaStream>();
   const isTrackEnabled = useIsTrackEnabled(audioTrack as LocalAudioTrack | RemoteAudioTrack);
 
   useEffect(() => {
     const SVGClipElement = ref.current;
 
     if (audioTrack && isTrackEnabled && SVGClipElement) {
-      let analyser = initializeAnalyser(audioTrack);
+      mediaStreamRef.current = new MediaStream([audioTrack.mediaStreamTrack.clone()]);
+      let analyser = initializeAnalyser(mediaStreamRef.current);
 
       const reinitializeAnalyser = () => {
-        analyser = initializeAnalyser(audioTrack);
+        analyser = initializeAnalyser(mediaStreamRef.current!);
       };
 
       // Here we reinitialize the AnalyserNode on focus to avoid an issue in Safari
@@ -72,6 +74,7 @@ function AudioLevelIndicator({
         SVGClipElement.setAttribute('y', '21');
         timer.stop();
         window.removeEventListener('focus', reinitializeAnalyser);
+        mediaStreamRef.current?.getTracks().forEach(track => track.stop());
       };
     }
   }, [audioTrack, isTrackEnabled]);
