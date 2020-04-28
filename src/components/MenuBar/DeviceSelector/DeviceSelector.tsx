@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 import AudioInputList from './AudioInputList/AudioInputList';
 import AudioOutputList from './AudioOutputList/AudioOutputList';
-import { Dialog, IconButton, DialogTitle, Divider } from '@material-ui/core';
+import { Dialog, IconButton, DialogTitle, Divider, DialogContent, Button } from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { isSetSinkIdSupported } from '../../../utils';
+import VideoInputList from './VideoInputList/VideoInputList';
 
 export function DeviceSelctor() {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,15 +15,12 @@ export function DeviceSelctor() {
         <SettingsIcon />
       </IconButton>
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-        <DialogTitle>Audio Inputs</DialogTitle>
-        <AudioInputList />
-        <Divider />
-        {isSetSinkIdSupported && (
-          <>
-            <DialogTitle>Audio Outputs</DialogTitle>
-            <AudioOutputList />
-          </>
-        )}
+        <DialogContent>
+          <AudioInputList />
+          <AudioOutputList />
+          <VideoInputList />
+          <Button onClick={() => setIsOpen(false)}>Done</Button>
+        </DialogContent>
       </Dialog>
     </>
   );
