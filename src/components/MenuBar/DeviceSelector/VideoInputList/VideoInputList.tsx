@@ -54,7 +54,7 @@ export default function VideoInputList() {
       ) : (
         <>
           <Typography variant="h6">Video Input:</Typography>
-          <Typography>{localVideoTrack?.mediaStreamTrack.label}</Typography>
+          <Typography>{localVideoTrack?.mediaStreamTrack.label || 'No Local Video'}</Typography>
         </>
       )}
       {localVideoTrack && (
