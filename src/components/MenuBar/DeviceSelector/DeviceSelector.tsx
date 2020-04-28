@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme: Theme) =>
     container: {
       width: '500px',
       [theme.breakpoints.down('xs')]: {
-        width: '100%',
+        width: 'calc(100vw - 32px)',
       },
       '& .inputSelect': {
         width: 'calc(100% - 35px)',
@@ -23,6 +23,11 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     button: {
       float: 'right',
+    },
+    paper: {
+      [theme.breakpoints.down('xs')]: {
+        margin: '16px',
+      },
     },
   })
 );
@@ -36,7 +41,7 @@ export function DeviceSelctor() {
       <IconButton onClick={() => setIsOpen(true)}>
         <SettingsIcon />
       </IconButton>
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+      <Dialog open={isOpen} onClose={() => setIsOpen(false)} classes={{ paper: classes.paper }}>
         <DialogContent className={classes.container}>
           <div className={classes.listSection}>
             <AudioInputList />
