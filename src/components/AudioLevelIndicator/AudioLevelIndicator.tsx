@@ -20,7 +20,6 @@ export function initializeAnalyser(stream: MediaStream) {
   analyser.fftSize = 512;
 
   audioSource.connect(analyser);
-  console.log(analyser);
   return analyser;
 }
 
@@ -37,6 +36,14 @@ function AudioLevelIndicator({
   const ref = useRef<SVGRectElement>(null);
   const mediaStreamRef = useRef<MediaStream>();
   const isTrackEnabled = useIsTrackEnabled(audioTrack as LocalAudioTrack | RemoteAudioTrack);
+
+  useEffect(() => {
+    const handleStopped = () => mediaStreamRef.current?.getTracks().forEach(track => track.stop());
+    audioTrack?.on('stopped', handleStopped);
+    return () => {
+      audioTrack?.off('stopped', handleStopped);
+    };
+  }, [audioTrack]);
 
   useEffect(() => {
     const SVGClipElement = ref.current;
@@ -74,7 +81,6 @@ function AudioLevelIndicator({
         SVGClipElement.setAttribute('y', '21');
         timer.stop();
         window.removeEventListener('focus', reinitializeAnalyser);
-        mediaStreamRef.current?.getTracks().forEach(track => track.stop());
       };
     }
   }, [audioTrack, isTrackEnabled]);
