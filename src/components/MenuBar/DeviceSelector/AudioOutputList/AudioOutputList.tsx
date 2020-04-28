@@ -9,6 +9,7 @@ import {
   Select,
   MenuItem,
   DialogContentText,
+  Typography,
 } from '@material-ui/core';
 import { useAppState } from '../../../../state';
 import { useAudioOutputDevices } from '../hooks/hooks';
@@ -18,15 +19,11 @@ export default function AudioOutputList() {
   const { activeSinkId, setActiveSinkId } = useAppState();
 
   return (
-    <div>
+    <div className="inputSelect">
       {audioOutputDevices.length > 1 ? (
-        <FormControl>
-          <InputLabel id="audio-output-select">Audio Output</InputLabel>
-          <Select
-            labelId="audio-output-select"
-            onChange={e => setActiveSinkId(e.target.value as string)}
-            value={activeSinkId}
-          >
+        <FormControl fullWidth>
+          <Typography variant="h6">Audio Output:</Typography>
+          <Select onChange={e => setActiveSinkId(e.target.value as string)} value={activeSinkId}>
             {audioOutputDevices.map(device => (
               <MenuItem value={device.deviceId} key={device.deviceId}>
                 {device.label}
@@ -36,8 +33,8 @@ export default function AudioOutputList() {
         </FormControl>
       ) : (
         <>
-          <DialogContentText>Audio Input</DialogContentText>
-          <DialogContentText>System Default Audio Output</DialogContentText>
+          <Typography variant="h6">Audio Output:</Typography>
+          <Typography>System Default Audio Output</Typography>
         </>
       )}
     </div>

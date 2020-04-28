@@ -2,9 +2,28 @@ import React from 'react';
 import useVideoContext from '../../../../hooks/useVideoContext/useVideoContext';
 import { useAudioInputDevices } from '../hooks/hooks';
 import LocalAudioLevelIndicator from '../../LocalAudioLevelIndicator/LocalAudioLevelIndicator';
-import { DialogTitle, Select, MenuItem, FormControl, InputLabel, DialogContentText } from '@material-ui/core';
+import {
+  DialogTitle,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  DialogContentText,
+  Typography,
+} from '@material-ui/core';
+
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+  container: {
+    display: 'flex',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+  },
+});
 
 export default function AudioInputList() {
+  const classes = useStyles();
   const audioInputDevices = useAudioInputDevices();
   const {
     room: { localParticipant },
@@ -29,28 +48,26 @@ export default function AudioInputList() {
   }
 
   return (
-    <div>
-      {audioInputDevices.length > 1 ? (
-        <FormControl>
-          <InputLabel id="audio-input-select">Audio Input</InputLabel>
-          <Select
-            labelId="audio-input-select"
-            onChange={e => replaceTrack(e.target.value as string)}
-            value={localAudioInputDeviceId || ''}
-          >
-            {audioInputDevices.map(device => (
-              <MenuItem value={device.deviceId} key={device.deviceId}>
-                {device.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      ) : (
-        <>
-          <DialogContentText>Audio Input</DialogContentText>
-          <DialogContentText>{localAudioTrack?.mediaStreamTrack.label}</DialogContentText>
-        </>
-      )}
+    <div className={classes.container}>
+      <div className="inputSelect">
+        {audioInputDevices.length > 1 ? (
+          <FormControl fullWidth>
+            <Typography variant="h6">Audio Input:</Typography>
+            <Select onChange={e => replaceTrack(e.target.value as string)} value={localAudioInputDeviceId || ''}>
+              {audioInputDevices.map(device => (
+                <MenuItem value={device.deviceId} key={device.deviceId}>
+                  {device.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        ) : (
+          <>
+            <Typography variant="h6">Audio Input:</Typography>
+            <Typography>{localAudioTrack?.mediaStreamTrack.label}</Typography>
+          </>
+        )}
+      </div>
       <LocalAudioLevelIndicator />
     </div>
   );

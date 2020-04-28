@@ -1,12 +1,22 @@
 import React from 'react';
 import { useVideoInputDevices } from '../hooks/hooks';
 import useVideoContext from '../../../../hooks/useVideoContext/useVideoContext';
-import { FormControl, InputLabel, Select, MenuItem, DialogContentText } from '@material-ui/core';
+import { FormControl, InputLabel, Select, MenuItem, DialogContentText, Typography } from '@material-ui/core';
 
 import { LocalVideoTrack } from 'twilio-video';
 import VideoTrack from '../../../VideoTrack/VideoTrack';
 
+import { createStyles, makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+  preview: {
+    width: '150px',
+    margin: '0.5em 0',
+  },
+});
+
 export default function VideoInputList() {
+  const classes = useStyles();
   const videoInputDevices = useVideoInputDevices();
   const {
     room: { localParticipant },
@@ -35,12 +45,8 @@ export default function VideoInputList() {
     <div>
       {videoInputDevices.length > 1 ? (
         <FormControl>
-          <InputLabel id="video-input-select">Video Input</InputLabel>
-          <Select
-            labelId="video-input-select"
-            onChange={e => replaceTrack(e.target.value as string)}
-            value={localVideoInputDeviceId || ''}
-          >
+          <Typography variant="h6">Video Input:</Typography>
+          <Select onChange={e => replaceTrack(e.target.value as string)} value={localVideoInputDeviceId || ''}>
             {videoInputDevices.map(device => (
               <MenuItem value={device.deviceId} key={device.deviceId}>
                 {device.label}
@@ -50,11 +56,15 @@ export default function VideoInputList() {
         </FormControl>
       ) : (
         <>
-          <DialogContentText>Video Input</DialogContentText>
-          <DialogContentText>{localVideoTrack?.mediaStreamTrack.label}</DialogContentText>
+          <Typography variant="h6">Video Input:</Typography>
+          <Typography>{localVideoTrack?.mediaStreamTrack.label}</Typography>
         </>
       )}
-      {localVideoTrack && <VideoTrack isLocal track={localVideoTrack} />}
+      {localVideoTrack && (
+        <div className={classes.preview}>
+          <VideoTrack isLocal track={localVideoTrack} />
+        </div>
+      )}
     </div>
   );
 }
