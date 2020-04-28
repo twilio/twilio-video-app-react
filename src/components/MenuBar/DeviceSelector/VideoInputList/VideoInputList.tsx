@@ -1,12 +1,10 @@
 import React from 'react';
-import { useVideoInputDevices } from '../hooks/hooks';
-import useVideoContext from '../../../../hooks/useVideoContext/useVideoContext';
-import { FormControl, InputLabel, Select, MenuItem, DialogContentText, Typography } from '@material-ui/core';
-
+import { FormControl, MenuItem, Typography, Select } from '@material-ui/core';
 import { LocalVideoTrack } from 'twilio-video';
+import { makeStyles } from '@material-ui/core/styles';
+import useVideoContext from '../../../../hooks/useVideoContext/useVideoContext';
+import { useVideoInputDevices } from '../hooks/hooks';
 import VideoTrack from '../../../VideoTrack/VideoTrack';
-
-import { createStyles, makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
   preview: {
@@ -29,15 +27,14 @@ export default function VideoInputList() {
 
   function replaceTrack(newDeviceId: string) {
     if (localVideoTrack) {
-      localVideoTrack.on('stopped', () => {
-        getLocalVideoTrack(newDeviceId).then(newTrack => {
-          localParticipant?.publishTrack(newTrack);
-        });
-      });
       localVideoTrack.stop();
-      const localTrackPublication = localParticipant?.unpublishTrack(localVideoTrack);
-      // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
-      localParticipant?.emit('trackUnpublished', localTrackPublication);
+      getLocalVideoTrack(newDeviceId).then(newTrack => {
+        const localTrackPublication = localParticipant?.unpublishTrack(localVideoTrack);
+        // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
+        localParticipant?.emit('trackUnpublished', localTrackPublication);
+
+        localParticipant?.publishTrack(newTrack);
+      });
     }
   }
 

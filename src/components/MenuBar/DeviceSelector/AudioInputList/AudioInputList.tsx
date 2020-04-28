@@ -1,18 +1,9 @@
 import React from 'react';
-import useVideoContext from '../../../../hooks/useVideoContext/useVideoContext';
-import { useAudioInputDevices } from '../hooks/hooks';
+import { FormControl, MenuItem, Typography, Select } from '@material-ui/core';
 import LocalAudioLevelIndicator from '../../LocalAudioLevelIndicator/LocalAudioLevelIndicator';
-import {
-  DialogTitle,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  DialogContentText,
-  Typography,
-} from '@material-ui/core';
-
 import { makeStyles } from '@material-ui/core/styles';
+import { useAudioInputDevices } from '../hooks/hooks';
+import useVideoContext from '../../../../hooks/useVideoContext/useVideoContext';
 
 const useStyles = makeStyles({
   container: {
@@ -30,20 +21,20 @@ export default function AudioInputList() {
     localTracks,
     getLocalAudioTrack,
   } = useVideoContext();
+
   const localAudioTrack = localTracks.find(track => track.kind === 'audio');
   const localAudioInputDeviceId = localAudioTrack?.mediaStreamTrack.getSettings().deviceId;
 
   function replaceTrack(newDeviceId: string) {
     if (localAudioTrack) {
-      localAudioTrack.on('stopped', () => {
-        getLocalAudioTrack(newDeviceId).then(newTrack => {
-          localParticipant?.publishTrack(newTrack);
-        });
-      });
       localAudioTrack.stop();
-      const localTrackPublication = localParticipant?.unpublishTrack(localAudioTrack);
-      // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
-      localParticipant?.emit('trackUnpublished', localTrackPublication);
+      getLocalAudioTrack(newDeviceId).then(newTrack => {
+        const localTrackPublication = localParticipant?.unpublishTrack(localAudioTrack);
+        // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
+        localParticipant?.emit('trackUnpublished', localTrackPublication);
+
+        localParticipant?.publishTrack(newTrack);
+      });
     }
   }
 

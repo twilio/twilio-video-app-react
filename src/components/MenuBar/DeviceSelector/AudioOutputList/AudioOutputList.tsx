@@ -1,16 +1,5 @@
 import React from 'react';
-import {
-  List,
-  ListItem,
-  ListItemText,
-  DialogTitle,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  DialogContentText,
-  Typography,
-} from '@material-ui/core';
+import { FormControl, MenuItem, Typography, Select } from '@material-ui/core';
 import { useAppState } from '../../../../state';
 import { useAudioOutputDevices } from '../hooks/hooks';
 
