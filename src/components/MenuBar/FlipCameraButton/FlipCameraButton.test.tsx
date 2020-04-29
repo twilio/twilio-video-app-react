@@ -71,7 +71,7 @@ describe('the FlipCameraButton', () => {
     expect(mockLocalParticipant.unpublishTrack).toHaveBeenCalledWith(mockVideoTrack);
     expect(mockLocalParticipant.emit).toHaveBeenCalledWith('trackUnpublished', 'mockPublication');
     expect(mockVideoTrack.stop).toHaveBeenCalled();
-    await expect(mockVideoContext.getLocalVideoTrack).toHaveBeenCalledWith('environment');
+    await expect(mockVideoContext.getLocalVideoTrack).toHaveBeenCalledWith({ facingMode: 'environment' });
     expect(mockLocalParticipant.publishTrack).toHaveBeenCalledWith('newMockTrack', { priority: 'low' });
   });
 
@@ -89,6 +89,6 @@ describe('the FlipCameraButton', () => {
     }));
     const { container } = render(<FlipCameraButton />);
     fireEvent.click(container.querySelector('button')!);
-    expect(mockVideoContext.getLocalVideoTrack).toHaveBeenCalledWith('user');
+    expect(mockVideoContext.getLocalVideoTrack).toHaveBeenCalledWith({ facingMode: 'user' });
   });
 });
