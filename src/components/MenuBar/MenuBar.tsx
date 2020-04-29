@@ -15,7 +15,7 @@ import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { Typography } from '@material-ui/core';
 import FlipCameraButton from './FlipCameraButton/FlipCameraButton';
-import { DeviceSelctor } from './DeviceSelector/DeviceSelector';
+import { DeviceSelector } from './DeviceSelector/DeviceSelector';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -135,7 +135,7 @@ export default function MenuBar() {
         )}
         <div className={classes.rightButtonContainer}>
           <FlipCameraButton />
-          <DeviceSelctor />
+          <DeviceSelector />
           <ToggleFullscreenButton />
           <Menu />
         </div>

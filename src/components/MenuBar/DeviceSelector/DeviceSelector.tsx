@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export function DeviceSelctor() {
+export function DeviceSelector() {
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
 
