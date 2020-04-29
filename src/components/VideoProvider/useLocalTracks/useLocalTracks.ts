@@ -41,17 +41,14 @@ export function useLocalAudioTrack() {
 export function useLocalVideoTrack() {
   const [track, setTrack] = useState<LocalVideoTrack>();
 
-  const getLocalVideoTrack = useCallback((facingMode?: CreateLocalTrackOptions['facingMode']) => {
+  const getLocalVideoTrack = useCallback((newOptions?: CreateLocalTrackOptions) => {
     const options: CreateLocalTrackOptions = {
       frameRate: 24,
       height: 720,
       width: 1280,
       name: 'camera',
+      ...newOptions,
     };
-
-    if (facingMode) {
-      options.facingMode = facingMode;
-    }
 
     return ensureMediaPermissions().then(() =>
       Video.createLocalVideoTrack(options).then(newTrack => {

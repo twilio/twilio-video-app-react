@@ -28,7 +28,7 @@ export default function VideoInputList() {
   function replaceTrack(newDeviceId: string) {
     if (localVideoTrack) {
       localVideoTrack.stop();
-      getLocalVideoTrack(newDeviceId).then(newTrack => {
+      getLocalVideoTrack({ deviceId: { exact: newDeviceId } }).then(newTrack => {
         const localTrackPublication = localParticipant?.unpublishTrack(localVideoTrack);
         // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
         localParticipant?.emit('trackUnpublished', localTrackPublication);

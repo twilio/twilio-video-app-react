@@ -32,7 +32,7 @@ export default function FlipCameraButton() {
 
     const newFacingMode = facingMode === 'user' ? 'environment' : 'user';
 
-    getLocalVideoTrack(newFacingMode).then(newVideoTrack => {
+    getLocalVideoTrack({ facingMode: newFacingMode }).then(newVideoTrack => {
       localParticipant?.publishTrack(newVideoTrack, { priority: 'low' });
     });
   }, [facingMode, getLocalVideoTrack, localParticipant, videoTrack]);
