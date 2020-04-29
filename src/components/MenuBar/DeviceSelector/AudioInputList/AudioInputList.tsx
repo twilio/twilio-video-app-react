@@ -26,16 +26,16 @@ export default function AudioInputList() {
   const localAudioInputDeviceId = localAudioTrack?.mediaStreamTrack.getSettings().deviceId;
 
   function replaceTrack(newDeviceId: string) {
-    if (localAudioTrack) {
-      localAudioTrack.stop();
-      getLocalAudioTrack(newDeviceId).then(newTrack => {
+    localAudioTrack?.stop();
+    getLocalAudioTrack(newDeviceId).then(newTrack => {
+      if (localAudioTrack) {
         const localTrackPublication = localParticipant?.unpublishTrack(localAudioTrack);
         // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
         localParticipant?.emit('trackUnpublished', localTrackPublication);
+      }
 
-        localParticipant?.publishTrack(newTrack);
-      });
-    }
+      localParticipant?.publishTrack(newTrack);
+    });
   }
 
   return (
