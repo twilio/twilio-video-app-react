@@ -2,7 +2,7 @@ import React from 'react';
 import AudioInputList from './AudioInputList';
 import { Select, Typography } from '@material-ui/core';
 import { shallow } from 'enzyme';
-import { useAudioInputDevices } from '../hooks/hooks';
+import { useAudioInputDevices } from '../deviceHooks/deviceHooks';
 import useVideoContext from '../../../../hooks/useVideoContext/useVideoContext';
 
 jest.mock('../../../../hooks/useVideoContext/useVideoContext');
