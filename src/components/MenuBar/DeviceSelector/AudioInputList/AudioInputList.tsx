@@ -55,7 +55,7 @@ export default function AudioInputList() {
         ) : (
           <>
             <Typography variant="h6">Audio Input:</Typography>
-            <Typography>{localAudioTrack?.mediaStreamTrack.label}</Typography>
+            <Typography>{localAudioTrack?.mediaStreamTrack.label || 'No Local Audio'}</Typography>
           </>
         )}
       </div>
