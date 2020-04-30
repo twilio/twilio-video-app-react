@@ -38,7 +38,7 @@ export function DeviceSelector() {
 
   return (
     <>
-      <IconButton onClick={() => setIsOpen(true)}>
+      <IconButton onClick={() => setIsOpen(true)} data-cy-device-select>
         <SettingsIcon />
       </IconButton>
       <Dialog open={isOpen} onClose={() => setIsOpen(false)} classes={{ paper: classes.paper }}>
