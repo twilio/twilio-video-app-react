@@ -6,7 +6,7 @@ import { useVideoInputDevices } from '../deviceHooks/deviceHooks';
 import VideoInputList from './VideoInputList';
 
 jest.mock('../../../../hooks/useVideoContext/useVideoContext');
-jest.mock('../hooks/hooks');
+jest.mock('../deviceHooks/deviceHooks');
 
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 const mockUseVideoInputDevices = useVideoInputDevices as jest.Mock<any>;
@@ -14,7 +14,7 @@ const mockGetLocalVideotrack = jest.fn(() => Promise.resolve);
 
 const mockDevice = {
   deviceId: '123',
-  deviceLabel: 'mock device',
+  label: 'mock device',
 };
 
 const mockLocalTrack = {

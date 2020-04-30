@@ -6,6 +6,7 @@ import { useAudioOutputDevices } from '../deviceHooks/deviceHooks';
 export default function AudioOutputList() {
   const audioOutputDevices = useAudioOutputDevices();
   const { activeSinkId, setActiveSinkId } = useAppState();
+  const activeOutputLabel = audioOutputDevices.find(device => device.deviceId === activeSinkId)?.label;
 
   return (
     <div className="inputSelect">
@@ -23,7 +24,7 @@ export default function AudioOutputList() {
       ) : (
         <>
           <Typography variant="h6">Audio Output:</Typography>
-          <Typography>System Default Audio Output</Typography>
+          <Typography>{activeOutputLabel || 'System Default Audio Output'}</Typography>
         </>
       )}
     </div>

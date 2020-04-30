@@ -2,7 +2,7 @@ import React from 'react';
 import { FormControl, MenuItem, Typography, Select } from '@material-ui/core';
 import LocalAudioLevelIndicator from '../LocalAudioLevelIndicator/LocalAudioLevelIndicator';
 import { makeStyles } from '@material-ui/core/styles';
-import { useAudioInputDevices } from '../hooks/hooks';
+import { useAudioInputDevices } from '../deviceHooks/deviceHooks';
 import useVideoContext from '../../../../hooks/useVideoContext/useVideoContext';
 
 const useStyles = makeStyles({
