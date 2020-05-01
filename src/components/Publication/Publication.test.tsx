@@ -9,7 +9,7 @@ const mockUseTrack = useTrack as jest.Mock<any>;
 describe('the Publication component', () => {
   describe('when track.kind is "video"', () => {
     it('should render a VideoTrack', () => {
-      mockUseTrack.mockImplementation(() => ({ kind: 'video' }));
+      mockUseTrack.mockImplementation(() => ({ kind: 'video', name: 'camera-123456' }));
       const wrapper = shallow(
         <Publication isLocal publication={'mockPublication' as any} participant={'mockParticipant' as any} />
       );
@@ -18,7 +18,7 @@ describe('the Publication component', () => {
     });
 
     it('should ignore the "isLocal" prop when track.name is not "camera"', () => {
-      mockUseTrack.mockImplementation(() => ({ kind: 'video' }));
+      mockUseTrack.mockImplementation(() => ({ kind: 'video', name: 'screen-123456' }));
       const wrapper = shallow(
         <Publication isLocal publication={'mockPublication' as any} participant={'mockParticipant' as any} />
       );
@@ -27,7 +27,7 @@ describe('the Publication component', () => {
     });
 
     it('should use the "isLocal" prop when track.name is "camera"', () => {
-      mockUseTrack.mockImplementation(() => ({ kind: 'video', name: 'camera' }));
+      mockUseTrack.mockImplementation(() => ({ kind: 'video', name: 'camera-123456' }));
       const wrapper = shallow(
         <Publication isLocal publication={'mockPublication' as any} participant={'mockParticipant' as any} />
       );
@@ -37,7 +37,7 @@ describe('the Publication component', () => {
   });
   describe('when track.kind is "audio"', () => {
     it('should render an AudioTrack', () => {
-      mockUseTrack.mockImplementation(() => ({ kind: 'audio' }));
+      mockUseTrack.mockImplementation(() => ({ kind: 'audio', name: '123456' }));
       const wrapper = shallow(
         <Publication isLocal publication={'mockPublication' as any} participant={'mockParticipant' as any} />
       );

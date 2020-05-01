@@ -25,7 +25,7 @@ describe('the MainParticipantInfo component', () => {
   });
 
   it('should not render a VideoCamOff icon when a camera track is published', () => {
-    mockUsePublications.mockImplementation(() => [{ trackName: 'camera' }]);
+    mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
     const wrapper = shallow(
       <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
     );
@@ -34,7 +34,6 @@ describe('the MainParticipantInfo component', () => {
 
   it('should add isVideoSwitchedOff class to container div when video is switched off', () => {
     mockUseIsTrackSwitchedOff.mockImplementation(() => true);
-    // mockUsePublications.mockImplementation(() => [{ trackName: 'camera' }]);
     const wrapper = shallow(
       <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
     );
@@ -43,7 +42,6 @@ describe('the MainParticipantInfo component', () => {
 
   it('should not add isVideoSwitchedOff class to container div when video is not switched off', () => {
     mockUseIsTrackSwitchedOff.mockImplementation(() => false);
-    // mockUsePublications.mockImplementation(() => [{ trackName: 'camera' }]);
     const wrapper = shallow(
       <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
     );
@@ -51,15 +49,15 @@ describe('the MainParticipantInfo component', () => {
   });
 
   it('should use the switchOff status of the screen share track when it is available', () => {
-    mockUsePublications.mockImplementation(() => [{ trackName: 'screen' }, { trackName: 'camera' }]);
+    mockUsePublications.mockImplementation(() => [{ trackName: 'screen' }, { trackName: 'camera-123456' }]);
     shallow(<MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>);
     expect(mockUseTrack).toHaveBeenCalledWith({ trackName: 'screen' });
   });
 
   it('should use the switchOff status of the camera track when the screen share track is not available', () => {
     mockUseIsTrackSwitchedOff.mockImplementation(() => false);
-    mockUsePublications.mockImplementation(() => [{ trackName: 'camera' }]);
+    mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
     shallow(<MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>);
-    expect(mockUseTrack).toHaveBeenCalledWith({ trackName: 'camera' });
+    expect(mockUseTrack).toHaveBeenCalledWith({ trackName: 'camera-123456' });
   });
 });

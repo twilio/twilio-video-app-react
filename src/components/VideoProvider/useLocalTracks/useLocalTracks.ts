@@ -42,11 +42,16 @@ export function useLocalVideoTrack() {
   const [track, setTrack] = useState<LocalVideoTrack>();
 
   const getLocalVideoTrack = useCallback((newOptions?: CreateLocalTrackOptions) => {
+    // In the DeviceSelector and FlipCameraButton components, a new video track is created,
+    // then the old track is unpublished and the new track is published. Unpublishing the old
+    // track and publishing the new track at the same time sometimes causes a conflict when the
+    // track name is 'camera', so here we append a timestamp to the track name to avoid the
+    // conflict.
     const options: CreateLocalTrackOptions = {
       frameRate: 24,
       height: 720,
       width: 1280,
-      name: 'camera',
+      name: `camera-${Date.now()}`,
       ...newOptions,
     };
 

@@ -13,7 +13,12 @@ describe('the LocalVideoPreview component', () => {
     mockedVideoContext.mockImplementation(() => {
       return {
         localTracks: [
-          { name: 'camera', attach: jest.fn(), detach: jest.fn(), mediaStreamTrack: { getSettings: () => ({}) } },
+          {
+            name: 'camera-123456',
+            attach: jest.fn(),
+            detach: jest.fn(),
+            mediaStreamTrack: { getSettings: () => ({}) },
+          },
         ],
       } as any;
     });
