@@ -10,7 +10,7 @@ export default function FlipCameraButton() {
     getLocalVideoTrack,
   } = useVideoContext();
   const [supportsFacingMode, setSupportsFacingMode] = useState<Boolean | null>(null);
-  const videoTrack = localTracks.find(track => track.name === 'camera');
+  const videoTrack = localTracks.find(track => track.name.includes('camera'));
   const facingMode = videoTrack?.mediaStreamTrack.getSettings().facingMode;
 
   useEffect(() => {
@@ -25,14 +25,15 @@ export default function FlipCameraButton() {
   }, [facingMode, supportsFacingMode]);
 
   const toggleFacingMode = useCallback(() => {
-    const localTrackPublication = localParticipant?.unpublishTrack(videoTrack!);
-    // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
-    localParticipant?.emit('trackUnpublished', localTrackPublication);
-    videoTrack!.stop();
-
     const newFacingMode = facingMode === 'user' ? 'environment' : 'user';
 
-    getLocalVideoTrack(newFacingMode).then(newVideoTrack => {
+    videoTrack!.stop();
+
+    getLocalVideoTrack({ facingMode: newFacingMode }).then(newVideoTrack => {
+      const localTrackPublication = localParticipant?.unpublishTrack(videoTrack!);
+      // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
+      localParticipant?.emit('trackUnpublished', localTrackPublication);
+
       localParticipant?.publishTrack(newVideoTrack, { priority: 'low' });
     });
   }, [facingMode, getLocalVideoTrack, localParticipant, videoTrack]);

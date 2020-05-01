@@ -17,6 +17,7 @@ describe('the useLocalTracks hook', () => {
   });
 
   it('should be called with the correct arguments', async () => {
+    Date.now = () => 123456;
     const { waitForNextUpdate } = renderHook(useLocalTracks);
     await waitForNextUpdate();
     expect(Video.createLocalAudioTrack).toHaveBeenCalled();
@@ -24,7 +25,7 @@ describe('the useLocalTracks hook', () => {
       frameRate: 24,
       height: 720,
       width: 1280,
-      name: 'camera',
+      name: 'camera-123456',
     });
   });
 

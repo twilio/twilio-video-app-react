@@ -11,9 +11,8 @@ const getUniqueClipId = () => clipId++;
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 let audioContext: AudioContext;
 
-export function initializeAnalyser(audioTrack: AudioTrack) {
+export function initializeAnalyser(stream: MediaStream) {
   audioContext = audioContext || new AudioContext();
-  const stream = new MediaStream([audioTrack.mediaStreamTrack.clone()]);
   const audioSource = audioContext.createMediaStreamSource(stream);
 
   const analyser = audioContext.createAnalyser();
@@ -35,16 +34,34 @@ function AudioLevelIndicator({
 }) {
   const SIZE = size || 24;
   const ref = useRef<SVGRectElement>(null);
+  const mediaStreamRef = useRef<MediaStream>();
   const isTrackEnabled = useIsTrackEnabled(audioTrack as LocalAudioTrack | RemoteAudioTrack);
+
+  useEffect(() => {
+    // Here we listen for the 'stopped' event on the audioTrack. When the audioTrack is stopped,
+    // we stop the cloned track that is stored in mediaStreamRef. It is important that we stop
+    // all tracks when they are not in use. Browsers like Firefox don't let you create a stream
+    // from a new audio device while the active audio device still has active tracks.
+    const handleStopped = () => mediaStreamRef.current?.getTracks().forEach(track => track.stop());
+    audioTrack?.on('stopped', handleStopped);
+    return () => {
+      audioTrack?.off('stopped', handleStopped);
+    };
+  }, [audioTrack]);
 
   useEffect(() => {
     const SVGClipElement = ref.current;
 
     if (audioTrack && isTrackEnabled && SVGClipElement) {
-      let analyser = initializeAnalyser(audioTrack);
+      // Here we create a new MediaStream from a clone of the mediaStreamTrack.
+      // A clone is created to allow multiple instances of this component for a single
+      // AudioTrack on iOS Safari. It is stored in a ref so that the cloned track can be stopped
+      // when the original track is stopped.
+      mediaStreamRef.current = new MediaStream([audioTrack.mediaStreamTrack.clone()]);
+      let analyser = initializeAnalyser(mediaStreamRef.current);
 
       const reinitializeAnalyser = () => {
-        analyser = initializeAnalyser(audioTrack);
+        analyser = initializeAnalyser(mediaStreamRef.current!);
       };
 
       // Here we reinitialize the AnalyserNode on focus to avoid an issue in Safari

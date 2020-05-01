@@ -12,7 +12,7 @@ describe('the useLocalVideoToggle hook', () => {
     mockUseVideoContext.mockImplementation(() => ({
       localTracks: [
         {
-          name: 'camera',
+          name: 'camera-123456',
         },
       ],
       room: { localParticipant: {} },
@@ -39,7 +39,7 @@ describe('the useLocalVideoToggle hook', () => {
   describe('toggleAudioEnabled function', () => {
     it('should call track.stop when a localVideoTrack exists', () => {
       const mockLocalTrack = {
-        name: 'camera',
+        name: 'camera-123456',
         stop: jest.fn(),
       };
 
@@ -55,7 +55,7 @@ describe('the useLocalVideoToggle hook', () => {
 
     it('should call localParticipant.unpublishTrack when a localVideoTrack and localParticipant exists', () => {
       const mockLocalTrack = {
-        name: 'camera',
+        name: 'camera-123456',
         stop: jest.fn(),
       };
 
