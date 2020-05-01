@@ -26,6 +26,12 @@ declare module 'twilio-video' {
 }
 
 declare global {
+  interface Window {
+    visualViewport?: {
+      scale: number;
+    };
+  }
+
   interface MediaDevices {
     getDisplayMedia(constraints: MediaStreamConstraints): Promise<MediaStream>;
   }
