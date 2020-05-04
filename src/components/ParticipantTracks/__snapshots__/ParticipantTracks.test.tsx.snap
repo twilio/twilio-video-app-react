@@ -9,6 +9,7 @@ exports[`the ParticipantTracks component should render an array of publications 
     publication={
       Object {
         "kind": "video",
+        "trackName": "",
         "trackSid": 0,
       }
     }
@@ -20,6 +21,7 @@ exports[`the ParticipantTracks component should render an array of publications 
     publication={
       Object {
         "kind": "audio",
+        "trackName": "",
         "trackSid": 1,
       }
     }

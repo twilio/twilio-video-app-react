@@ -19,7 +19,9 @@ export default function useScreenShareParticipant() {
             // the screenshare participant could be the localParticipant
             .concat(room.localParticipant)
             .find((participant: Participant) =>
-              Array.from<TrackPublication>(participant.tracks.values()).find(track => track.trackName === 'screen')
+              Array.from<TrackPublication>(participant.tracks.values()).find(track =>
+                track.trackName.includes('screen')
+              )
             )
         );
       };
