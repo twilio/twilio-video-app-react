@@ -31,10 +31,10 @@ export default function ParticipantTracks({
 
   let filteredPublications;
 
-  if (enableScreenShare && publications.some(p => p.trackName === 'screen')) {
-    filteredPublications = publications.filter(p => p.trackName !== 'camera');
+  if (enableScreenShare && publications.some(p => p.trackName.includes('screen'))) {
+    filteredPublications = publications.filter(p => !p.trackName.includes('camera'));
   } else {
-    filteredPublications = publications.filter(p => p.trackName !== 'screen');
+    filteredPublications = publications.filter(p => !p.trackName.includes('screen'));
   }
 
   return (

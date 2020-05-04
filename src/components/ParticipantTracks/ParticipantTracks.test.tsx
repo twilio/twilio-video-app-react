@@ -6,8 +6,8 @@ import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 jest.mock('../../hooks/usePublications/usePublications', () =>
   jest.fn(() => [
-    { trackSid: 0, kind: 'video' },
-    { trackSid: 1, kind: 'audio' },
+    { trackSid: 0, kind: 'video', trackName: '' },
+    { trackSid: 1, kind: 'audio', trackName: '' },
   ])
 );
 jest.mock('../../hooks/useVideoContext/useVideoContext');
@@ -40,7 +40,7 @@ describe('the ParticipantTracks component', () => {
     mockUseVideoContext.mockImplementation(() => ({ room: {} }));
     mockUsePublications.mockImplementation(() => [
       { trackName: 'screen', trackSid: 0, kind: 'video' },
-      { trackName: 'camera', trackSid: 1, kind: 'video' },
+      { trackName: 'camera-123456', trackSid: 1, kind: 'video' },
     ]);
     const wrapper = shallow(<ParticipantTracks participant={'mockParticipant' as any} />);
     expect(wrapper.find('Publication').length).toBe(1);
@@ -49,7 +49,7 @@ describe('the ParticipantTracks component', () => {
         .find('Publication')
         .at(0)
         .prop('publication')
-    ).toEqual({ trackName: 'camera', trackSid: 1, kind: 'video' });
+    ).toEqual({ trackName: 'camera-123456', trackSid: 1, kind: 'video' });
   });
 
   describe('with enableScreenShare prop', () => {
@@ -57,7 +57,7 @@ describe('the ParticipantTracks component', () => {
       mockUseVideoContext.mockImplementation(() => ({ room: {} }));
       mockUsePublications.mockImplementation(() => [
         { trackName: 'screen', trackSid: 0, kind: 'video' },
-        { trackName: 'camera', trackSid: 1, kind: 'video' },
+        { trackName: 'camera-123456', trackSid: 1, kind: 'video' },
       ]);
       const wrapper = shallow(<ParticipantTracks participant={'mockParticipant' as any} enableScreenShare />);
       expect(wrapper.find('Publication').length).toBe(1);
@@ -71,7 +71,7 @@ describe('the ParticipantTracks component', () => {
 
     it('should render camera publications when a screen share publication is absent', () => {
       mockUseVideoContext.mockImplementation(() => ({ room: {} }));
-      mockUsePublications.mockImplementation(() => [{ trackName: 'camera', trackSid: 1, kind: 'video' }]);
+      mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456', trackSid: 1, kind: 'video' }]);
       const wrapper = shallow(<ParticipantTracks participant={'mockParticipant' as any} enableScreenShare />);
       expect(wrapper.find('Publication').length).toBe(1);
       expect(
@@ -79,7 +79,7 @@ describe('the ParticipantTracks component', () => {
           .find('Publication')
           .at(0)
           .prop('publication')
-      ).toEqual({ trackName: 'camera', trackSid: 1, kind: 'video' });
+      ).toEqual({ trackName: 'camera-123456', trackSid: 1, kind: 'video' });
     });
   });
 });
