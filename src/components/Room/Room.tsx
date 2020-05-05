@@ -9,6 +9,7 @@ const Container = styled('div')(({ theme }) => ({
   display: 'grid',
   gridTemplateColumns: `${theme.sidebarWidth}px 1fr`,
   gridTemplateAreas: '". participantList"',
+  gridTemplateRows: '100%',
   [theme.breakpoints.down('xs')]: {
     gridTemplateAreas: '"participantList" "."',
     gridTemplateColumns: `auto`,
