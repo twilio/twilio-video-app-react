@@ -9,9 +9,7 @@ export default function useDisconnectWhenAlone() {
 
   useEffect(() => {
     if (participants.length === 0) {
-      timeoutIdRef.current = window.setTimeout(() => room.disconnect(), 20000);
-    } else {
-      window.clearTimeout(timeoutIdRef.current);
+      timeoutIdRef.current = window.setTimeout(() => room.disconnect(), 5000);
     }
     return () => {
       window.clearTimeout(timeoutIdRef.current);
