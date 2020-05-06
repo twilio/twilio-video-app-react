@@ -2,6 +2,7 @@ import React from 'react';
 import ParticipantStrip from '../ParticipantStrip/ParticipantStrip';
 import { styled } from '@material-ui/core/styles';
 import MainParticipant from '../MainParticipant/MainParticipant';
+import useDisconnectWhenAlone from '../../hooks/useDisconnectWhenAlone/useDisconnectWhenAlone';
 
 const Container = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -19,6 +20,8 @@ const Container = styled('div')(({ theme }) => ({
 }));
 
 export default function Room() {
+  useDisconnectWhenAlone();
+
   return (
     <Container>
       <ParticipantStrip />
