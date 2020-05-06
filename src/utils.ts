@@ -14,7 +14,7 @@ export function ensureMediaPermissions() {
     .then(devices => devices.every(device => !(device.deviceId && device.label)))
     .then(shouldAskForMediaPermissions => {
       if (shouldAskForMediaPermissions) {
-        navigator.mediaDevices
+        return navigator.mediaDevices
           .getUserMedia({ audio: true, video: true })
           .then(mediaStream => mediaStream.getTracks().forEach(track => track.stop()));
       }
