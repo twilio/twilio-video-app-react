@@ -18,7 +18,7 @@ context('A video app user', () => {
         .should('be', 21);
       cy.get('clipPath rect')
         .invoke('attr', 'y')
-        .should('be.lessThan', 20);
+        .should('be.lessThan', 21);
     });
   });
 
@@ -57,7 +57,7 @@ context('A video app user', () => {
         .should('be', 21);
       cy.get('clipPath rect')
         .invoke('attr', 'y')
-        .should('be.lessThan', 20);
+        .should('be.lessThan', 21);
     });
 
     it('should see other participants disconnect when they close their browser', () => {
