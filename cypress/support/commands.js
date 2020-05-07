@@ -37,6 +37,14 @@ Cypress.Commands.add('shouldBeSameVideoAs', { prevSubject: 'element' }, (subject
 
 Cypress.Commands.add('getParticipant', name => cy.get(`[data-cy-participant="${name}"]`));
 
+function getParticipantAudioTrackName(name, window) {
+  const participant = Array.from(window.twilioRoom.participants.values()).find(
+    participant => participant.identity === name
+  );
+  const audioTrack = Array.from(participant.audioTracks.values())[0].track;
+  return audioTrack.name;
+}
+
 Cypress.Commands.add('shouldBeMakingSound', { prevSubject: 'element' }, subject => {
   const resolveValue = $el =>
     detectSound($el[0]).then(value => {
@@ -48,9 +56,13 @@ Cypress.Commands.add('shouldBeMakingSound', { prevSubject: 'element' }, subject 
         }
       );
     });
-
-  cy.wrap(subject)
-    .find('audio')
+    
+  cy.window()
+    .then(win => {
+      const participantIdentity = subject.attr('data-cy-participant');
+      const trackName = getParticipantAudioTrackName(participantIdentity, win);
+      return win.document.querySelector(`[data-cy-audio-track-name="${trackName}"]`);
+    })
     .then(resolveValue)
     .should('equal', true);
 });
