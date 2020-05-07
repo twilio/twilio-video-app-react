@@ -1,6 +1,19 @@
 const puppeteer = require('puppeteer');
 const participants = {};
 
+let browser;
+const args = ['--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream'];
+
+async function init() {
+  if (!browser) {
+    browser = await puppeteer.launch({
+      headless: true,
+      args,
+    });
+  }
+  return Promise.resolve(null)
+}
+
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing).
 // `on` is used to hook into various events Cypress emits
@@ -8,16 +21,12 @@ const participants = {};
 module.exports = (on, config) => {
   const participantFunctions = {
     addParticipant: async ({ name, roomName, color }) => {
-      const args = ['--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream'];
+      await init();
 
       if (color) {
         args.push(`--use-file-for-fake-video-capture=cypress/fixtures/${color}.y4m`);
       }
 
-      const browser = await puppeteer.launch({
-        headless: true,
-        args,
-      });
       const page = (participants[name] = await browser.newPage()); // keep track of this participant for future use
       await page.goto(config.baseUrl);
       await page.type('#menu-name', name);
