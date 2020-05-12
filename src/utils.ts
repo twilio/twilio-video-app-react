@@ -20,3 +20,22 @@ export function ensureMediaPermissions() {
       }
     });
 }
+
+interface ObjType {
+  [q: string]: any;
+}
+
+export function removeUndefineds<T>(obj: T): T {
+  if (obj !== Object(obj)) return obj;
+
+  const target: { [name: string]: any } = {};
+
+  for (const key in obj) {
+    const val = obj[key];
+    if (val) {
+      target[key] = removeUndefineds(val);
+    }
+  }
+
+  return target as T;
+}
