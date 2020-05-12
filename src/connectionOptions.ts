@@ -1,8 +1,8 @@
-import { ConnectOptions } from 'twilio-video';
+import { ConnectOptions, VideoTrack } from 'twilio-video';
 import { isMobile, removeUndefineds } from './utils/utils';
-import { Settings } from './state/settings/settingsReducer';
+import { Settings, RenderDimension } from './state/settings/settingsReducer';
 
-const resolutionMap = {
+const resolutionMap: { [key in RenderDimension]?: VideoTrack.Dimensions } = {
   high: { height: 1080, width: 1920 },
   standard: { height: 720, width: 1280 },
   low: { height: 90, width: 160 },
@@ -51,5 +51,7 @@ export default function generateConnectionOptions(settings: Settings) {
     connectionOptions!.bandwidthProfile!.video!.maxSubscriptionBitrate = 2500000;
   }
 
+  // Here we remove any 'undefined' values. The twilio-video SDK will only use defaults
+  // when no value is passed for an option. It will throw an error when 'undefined' is passed.
   return removeUndefineds(connectionOptions);
 }

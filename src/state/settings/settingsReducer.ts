@@ -1,14 +1,16 @@
 import { Track, VideoBandwidthProfileOptions } from 'twilio-video';
 
+export type RenderDimension = 'low' | 'standard' | 'high' | 'default';
+
 export interface Settings {
   trackSwitchOffMode: VideoBandwidthProfileOptions['trackSwitchOffMode'];
   dominantSpeakerPriority: Track.Priority;
   bandwidthProfileMode: VideoBandwidthProfileOptions['mode'];
   maxTracks: string;
   maxAudioBitrate: string;
-  renderDimensionLow: Track.Priority;
-  renderDimensionStandard: Track.Priority;
-  renderDimensionHigh: Track.Priority;
+  renderDimensionLow: RenderDimension;
+  renderDimensionStandard: RenderDimension;
+  renderDimensionHigh: RenderDimension;
 }
 
 export interface SettingsAction {
