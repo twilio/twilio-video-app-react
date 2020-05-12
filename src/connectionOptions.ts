@@ -1,5 +1,5 @@
 import { ConnectOptions } from 'twilio-video';
-import { isMobile, removeUndefineds } from './utils';
+import { isMobile, removeUndefineds } from './utils/utils';
 import { Settings } from './state/settings/settingsReducer';
 
 const resolutionMap = {

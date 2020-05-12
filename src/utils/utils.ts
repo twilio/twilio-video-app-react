@@ -21,10 +21,7 @@ export function ensureMediaPermissions() {
     });
 }
 
-interface ObjType {
-  [q: string]: any;
-}
-
+// Recursively removes any object keys with a value of undefined
 export function removeUndefineds<T>(obj: T): T {
   if (obj !== Object(obj)) return obj;
 
@@ -32,7 +29,7 @@ export function removeUndefineds<T>(obj: T): T {
 
   for (const key in obj) {
     const val = obj[key];
-    if (val) {
+    if (typeof val === 'undefined') {
       target[key] = removeUndefineds(val);
     }
   }
