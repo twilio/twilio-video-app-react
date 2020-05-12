@@ -29,7 +29,7 @@ export function removeUndefineds<T>(obj: T): T {
 
   for (const key in obj) {
     const val = obj[key];
-    if (typeof val === 'undefined') {
+    if (typeof val !== 'undefined') {
       target[key] = removeUndefineds(val);
     }
   }
