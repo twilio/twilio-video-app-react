@@ -34,7 +34,7 @@ describe('the generateConnectionOptions function', () => {
       dominantSpeakerPriority: 'high',
       bandwidthProfileMode: 'collaboration',
       maxTracks: '100',
-      maxAudioBitrate: '',
+      maxAudioBitrate: '0',
       renderDimensionLow: 'low',
       renderDimensionStandard: 'standard',
       renderDimensionHigh: 'high',
