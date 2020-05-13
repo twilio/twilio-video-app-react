@@ -13,6 +13,10 @@ function getNumber(val: string) {
   return val === '' ? undefined : Number(val);
 }
 
+function getResolution(resolution?: RenderDimension) {
+  return typeof resolution === 'undefined' ? undefined : resolutionMap[resolution];
+}
+
 export default function generateConnectionOptions(settings: Settings) {
   // See: https://media.twiliocdn.com/sdk/js/video/releases/2.0.0/docs/global.html#ConnectOptions
   // for available connection options.
@@ -26,9 +30,9 @@ export default function generateConnectionOptions(settings: Settings) {
         mode: settings.bandwidthProfileMode,
         dominantSpeakerPriority: settings.dominantSpeakerPriority,
         renderDimensions: {
-          low: resolutionMap[settings.renderDimensionLow],
-          standard: resolutionMap[settings.renderDimensionStandard],
-          high: resolutionMap[settings.renderDimensionHigh],
+          low: getResolution(settings.renderDimensionLow),
+          standard: getResolution(settings.renderDimensionStandard),
+          high: getResolution(settings.renderDimensionHigh),
         },
         maxTracks: getNumber(settings.maxTracks),
       },
