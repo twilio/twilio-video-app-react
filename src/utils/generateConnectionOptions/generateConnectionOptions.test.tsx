@@ -1,5 +1,5 @@
-import generateConnectionOptions from './connectionOptions';
-import { Settings } from './state/settings/settingsReducer';
+import generateConnectionOptions from './generateConnectionOptions';
+import { Settings } from '../../state/settings/settingsReducer';
 
 describe('the generateConnectionOptions function', () => {
   it('should remove any undefined values from settings', () => {
