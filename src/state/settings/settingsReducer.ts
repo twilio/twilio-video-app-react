@@ -4,13 +4,13 @@ export type RenderDimension = 'low' | 'standard' | 'high' | 'default';
 
 export interface Settings {
   trackSwitchOffMode: VideoBandwidthProfileOptions['trackSwitchOffMode'];
-  dominantSpeakerPriority: Track.Priority;
+  dominantSpeakerPriority?: Track.Priority;
   bandwidthProfileMode: VideoBandwidthProfileOptions['mode'];
   maxTracks: string;
   maxAudioBitrate: string;
-  renderDimensionLow: RenderDimension;
-  renderDimensionStandard: RenderDimension;
-  renderDimensionHigh: RenderDimension;
+  renderDimensionLow?: RenderDimension;
+  renderDimensionStandard?: RenderDimension;
+  renderDimensionHigh?: RenderDimension;
 }
 
 export interface SettingsAction {
