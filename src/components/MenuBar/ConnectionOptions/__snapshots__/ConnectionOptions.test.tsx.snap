@@ -14,6 +14,7 @@ exports[`the ConnectionOptions component when connected to a room should render 
     <WithStyles(ForwardRef(Grid))
       item={true}
       sm={6}
+      xs={12}
     >
       <WithStyles(ForwardRef(FormControl))
         className="makeStyles-formControl-1"
@@ -159,14 +160,17 @@ exports[`the ConnectionOptions component when connected to a room should render 
     <WithStyles(ForwardRef(Grid))
       item={true}
       sm={6}
+      xs={12}
     >
       <WithStyles(ForwardRef(FormControl))
         className="makeStyles-formControl-1"
+        fullWidth={true}
       >
         <WithStyles(ForwardRef(InputLabel))
+          className="makeStyles-label-2"
           id="renderDimensionLow"
         >
-          Low:
+          Render Dimension (Low Priority):
         </WithStyles(ForwardRef(InputLabel))>
         <WithStyles(ForwardRef(Select))
           disabled={true}
@@ -204,11 +208,13 @@ exports[`the ConnectionOptions component when connected to a room should render 
       </WithStyles(ForwardRef(FormControl))>
       <WithStyles(ForwardRef(FormControl))
         className="makeStyles-formControl-1"
+        fullWidth={true}
       >
         <WithStyles(ForwardRef(InputLabel))
+          className="makeStyles-label-2"
           id="renderDimensionStandard"
         >
-          Standard:
+          Render Dimension (Standard Priority):
         </WithStyles(ForwardRef(InputLabel))>
         <WithStyles(ForwardRef(Select))
           disabled={true}
@@ -246,11 +252,13 @@ exports[`the ConnectionOptions component when connected to a room should render 
       </WithStyles(ForwardRef(FormControl))>
       <WithStyles(ForwardRef(FormControl))
         className="makeStyles-formControl-1"
+        fullWidth={true}
       >
         <WithStyles(ForwardRef(InputLabel))
+          className="makeStyles-label-2"
           id="renderDimensionHigh"
         >
-          High:
+          Render Dimension (High Priority):
         </WithStyles(ForwardRef(InputLabel))>
         <WithStyles(ForwardRef(Select))
           disabled={true}
@@ -305,6 +313,7 @@ exports[`the ConnectionOptions component when not connected to a room should ren
     <WithStyles(ForwardRef(Grid))
       item={true}
       sm={6}
+      xs={12}
     >
       <WithStyles(ForwardRef(FormControl))
         className="makeStyles-formControl-1"
@@ -450,14 +459,17 @@ exports[`the ConnectionOptions component when not connected to a room should ren
     <WithStyles(ForwardRef(Grid))
       item={true}
       sm={6}
+      xs={12}
     >
       <WithStyles(ForwardRef(FormControl))
         className="makeStyles-formControl-1"
+        fullWidth={true}
       >
         <WithStyles(ForwardRef(InputLabel))
+          className="makeStyles-label-2"
           id="renderDimensionLow"
         >
-          Low:
+          Render Dimension (Low Priority):
         </WithStyles(ForwardRef(InputLabel))>
         <WithStyles(ForwardRef(Select))
           disabled={true}
@@ -495,11 +507,13 @@ exports[`the ConnectionOptions component when not connected to a room should ren
       </WithStyles(ForwardRef(FormControl))>
       <WithStyles(ForwardRef(FormControl))
         className="makeStyles-formControl-1"
+        fullWidth={true}
       >
         <WithStyles(ForwardRef(InputLabel))
+          className="makeStyles-label-2"
           id="renderDimensionStandard"
         >
-          Standard:
+          Render Dimension (Standard Priority):
         </WithStyles(ForwardRef(InputLabel))>
         <WithStyles(ForwardRef(Select))
           disabled={true}
@@ -537,11 +551,13 @@ exports[`the ConnectionOptions component when not connected to a room should ren
       </WithStyles(ForwardRef(FormControl))>
       <WithStyles(ForwardRef(FormControl))
         className="makeStyles-formControl-1"
+        fullWidth={true}
       >
         <WithStyles(ForwardRef(InputLabel))
+          className="makeStyles-label-2"
           id="renderDimensionHigh"
         >
-          High:
+          Render Dimension (High Priority):
         </WithStyles(ForwardRef(InputLabel))>
         <WithStyles(ForwardRef(Select))
           disabled={true}
