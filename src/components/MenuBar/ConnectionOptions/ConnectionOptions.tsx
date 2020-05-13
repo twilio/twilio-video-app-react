@@ -1,5 +1,14 @@
 import React, { useCallback } from 'react';
-import { DialogContent, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
+import {
+  DialogContent,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { labels, Settings } from '../../../state/settings/settingsReducer';
 import { useAppState } from '../../../state';
@@ -52,7 +61,10 @@ export default function ConnectionOptions() {
   return (
     <DialogContent>
       <Grid container>
-        <Grid sm={6}>
+        <Typography hidden={!isDisabled} variant="body2">
+          These settings can only be changed when not connectd to a room.
+        </Typography>
+        <Grid item sm={6}>
           <FormControl className={classes.formControl}>
             <InputLabel id={labels.dominantSpeakerPriority}>Dominant Speaker Priority:</InputLabel>
             <Select
@@ -125,7 +137,7 @@ export default function ConnectionOptions() {
           </FormControl>
         </Grid>
 
-        <Grid sm={6}>
+        <Grid item sm={6}>
           <FormControl className={classes.formControl}>
             <InputLabel id={labels.renderDimensionLow}>Low:</InputLabel>
             <Select
