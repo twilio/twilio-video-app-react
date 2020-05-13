@@ -64,7 +64,7 @@ export default function ConnectionOptions() {
         <Typography hidden={!isDisabled} variant="body2">
           These settings can only be changed when not connectd to a room.
         </Typography>
-        <Grid item sm={6}>
+        <Grid item sm={6} xs={12}>
           <FormControl className={classes.formControl}>
             <InputLabel id={labels.dominantSpeakerPriority}>Dominant Speaker Priority:</InputLabel>
             <Select
@@ -137,7 +137,7 @@ export default function ConnectionOptions() {
           </FormControl>
         </Grid>
 
-        <Grid item sm={6}>
+        <Grid item sm={6} xs={12}>
           <FormControl className={classes.formControl}>
             <InputLabel id={labels.renderDimensionLow}>Low:</InputLabel>
             <Select
