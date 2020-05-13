@@ -1,3 +1,5 @@
+import isPlainObject from 'is-plain-object';
+
 export const isMobile = (() => {
   if (typeof navigator === 'undefined' || typeof navigator.userAgent !== 'string') {
     return false;
@@ -23,7 +25,7 @@ export function ensureMediaPermissions() {
 
 // Recursively removes any object keys with a value of undefined
 export function removeUndefineds<T>(obj: T): T {
-  if (obj !== Object(obj)) return obj;
+  if (!isPlainObject(obj)) return obj;
 
   const target: { [name: string]: any } = {};
 
