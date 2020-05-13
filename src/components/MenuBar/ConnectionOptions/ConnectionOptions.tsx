@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { labels, Settings } from '../../../state/settings/settingsReducer';
+import { RenderDimensions } from '../../../state/settings/renderDimensions';
 import { useAppState } from '../../../state';
 import useRoomState from '../../../hooks/useRoomState/useRoomState';
 
@@ -26,20 +27,11 @@ const useStyles = makeStyles({
 
 const withDefault = (val?: string) => (typeof val === 'undefined' ? 'default' : val);
 
-const RenderDimensions = [
-  <MenuItem key="low" value="low">
-    Low (160 x 90)
-  </MenuItem>,
-  <MenuItem key="standard" value="standard">
-    Standard (1280 x 720)
-  </MenuItem>,
-  <MenuItem key="high" value="high">
-    High (1920 x 1080)
-  </MenuItem>,
-  <MenuItem key="default" value="default">
-    Server Default
-  </MenuItem>,
-];
+const RenderDimensionItems = RenderDimensions.map(({ label, value }) => (
+  <MenuItem value={value} key={value}>
+    {label}
+  </MenuItem>
+));
 
 export default function ConnectionOptions() {
   const classes = useStyles();
@@ -65,7 +57,7 @@ export default function ConnectionOptions() {
     <DialogContent>
       <Grid container>
         <Typography hidden={!isDisabled} variant="body2">
-          These settings can only be changed when not connectd to a room.
+          These settings cannot be changed when connected to a room.
         </Typography>
         <Grid item sm={6} xs={12}>
           <FormControl className={classes.formControl}>
@@ -153,7 +145,7 @@ export default function ConnectionOptions() {
               value={withDefault(settings.renderDimensionLow)}
               onChange={handleChange}
             >
-              {RenderDimensions}
+              {RenderDimensionItems}
             </Select>
           </FormControl>
           <FormControl fullWidth className={classes.formControl}>
@@ -168,7 +160,7 @@ export default function ConnectionOptions() {
               value={withDefault(settings.renderDimensionStandard)}
               onChange={handleChange}
             >
-              {RenderDimensions}
+              {RenderDimensionItems}
             </Select>
           </FormControl>
           <FormControl fullWidth className={classes.formControl}>
@@ -183,7 +175,7 @@ export default function ConnectionOptions() {
               value={withDefault(settings.renderDimensionHigh)}
               onChange={handleChange}
             >
-              {RenderDimensions}
+              {RenderDimensionItems}
             </Select>
           </FormControl>
         </Grid>

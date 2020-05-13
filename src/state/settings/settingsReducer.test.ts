@@ -1,4 +1,5 @@
 import { settingsReducer, initialSettings } from './settingsReducer';
+import { getResolution } from './renderDimensions';
 
 describe('the settingsReducer', () => {
   it('should set a setting from the name/value pair provided', () => {
@@ -10,7 +11,7 @@ describe('the settingsReducer', () => {
       maxTracks: '10',
       renderDimensionHigh: 'test',
       renderDimensionLow: 'low',
-      renderDimensionStandard: 'standard',
+      renderDimensionStandard: '960p',
       trackSwitchOffMode: undefined,
     });
   });
@@ -22,10 +23,21 @@ describe('the settingsReducer', () => {
       dominantSpeakerPriority: 'standard',
       maxAudioBitrate: '16000',
       maxTracks: '10',
-      renderDimensionHigh: 'high',
+      renderDimensionHigh: 'wide1080p',
       renderDimensionLow: 'low',
-      renderDimensionStandard: 'standard',
+      renderDimensionStandard: '960p',
       trackSwitchOffMode: undefined,
     });
+  });
+});
+
+describe('the getResolution function', () => {
+  it('should correctly return a resolution', () => {
+    const result = getResolution('720p');
+    expect(result).toEqual({ width: 1280, height: 720 });
+  });
+
+  it('should return undefined when passed undefined', () => {
+    expect(getResolution(undefined)).toBeUndefined();
   });
 });

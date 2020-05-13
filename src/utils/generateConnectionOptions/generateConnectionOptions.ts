@@ -1,20 +1,10 @@
-import { ConnectOptions, VideoTrack } from 'twilio-video';
+import { ConnectOptions } from 'twilio-video';
 import { isMobile, removeUndefineds } from '..';
-import { Settings, RenderDimension } from '../../state/settings/settingsReducer';
-
-const resolutionMap: { [key in RenderDimension]?: VideoTrack.Dimensions } = {
-  high: { height: 1080, width: 1920 },
-  standard: { height: 720, width: 1280 },
-  low: { height: 90, width: 160 },
-  default: undefined,
-};
+import { Settings } from '../../state/settings/settingsReducer';
+import { getResolution } from '../../state/settings/renderDimensions';
 
 function getNumber(val: string) {
   return val === '' ? undefined : Number(val);
-}
-
-function getResolution(resolution?: RenderDimension) {
-  return typeof resolution === 'undefined' ? undefined : resolutionMap[resolution];
 }
 
 export default function generateConnectionOptions(settings: Settings) {

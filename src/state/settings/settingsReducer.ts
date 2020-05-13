@@ -1,6 +1,5 @@
 import { Track, VideoBandwidthProfileOptions } from 'twilio-video';
-
-export type RenderDimension = 'low' | 'standard' | 'high' | 'default';
+import { RenderDimensionValue } from './renderDimensions';
 
 export interface Settings {
   trackSwitchOffMode: VideoBandwidthProfileOptions['trackSwitchOffMode'];
@@ -8,9 +7,9 @@ export interface Settings {
   bandwidthProfileMode: VideoBandwidthProfileOptions['mode'];
   maxTracks: string;
   maxAudioBitrate: string;
-  renderDimensionLow?: RenderDimension;
-  renderDimensionStandard?: RenderDimension;
-  renderDimensionHigh?: RenderDimension;
+  renderDimensionLow?: RenderDimensionValue;
+  renderDimensionStandard?: RenderDimensionValue;
+  renderDimensionHigh?: RenderDimensionValue;
 }
 
 export interface SettingsAction {
@@ -25,8 +24,8 @@ export const initialSettings: Settings = {
   maxTracks: '10',
   maxAudioBitrate: '16000',
   renderDimensionLow: 'low',
-  renderDimensionStandard: 'standard',
-  renderDimensionHigh: 'high',
+  renderDimensionStandard: '960p',
+  renderDimensionHigh: 'wide1080p',
 };
 
 export const labels = (() => {

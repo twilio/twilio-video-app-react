@@ -9,7 +9,7 @@ exports[`the ConnectionOptions component when connected to a room should render 
       hidden={false}
       variant="body2"
     >
-      These settings can only be changed when not connectd to a room.
+      These settings cannot be changed when connected to a room.
     </WithStyles(ForwardRef(Typography))>
     <WithStyles(ForwardRef(Grid))
       item={true}
@@ -187,16 +187,52 @@ exports[`the ConnectionOptions component when connected to a room should render 
             Low (160 x 90)
           </WithStyles(ForwardRef(MenuItem))>
           <WithStyles(ForwardRef(MenuItem))
-            key="standard"
-            value="standard"
+            key="cif"
+            value="cif"
           >
-            Standard (1280 x 720)
+            CIF (352 x 288)
           </WithStyles(ForwardRef(MenuItem))>
           <WithStyles(ForwardRef(MenuItem))
-            key="high"
-            value="high"
+            key="vga"
+            value="vga"
           >
-            High (1920 x 1080)
+            VGA (640 x 480)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="wvga"
+            value="wvga"
+          >
+            WVGA (800 x 480)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="540p"
+            value="540p"
+          >
+            HD 540P (960 x 540)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="720p"
+            value="720p"
+          >
+            HD 720P (1280 x 720)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="960p"
+            value="960p"
+          >
+            HD 960P (1280 x 960)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="standard1080p"
+            value="standard1080p"
+          >
+            HD Standard 1080P (1440 x 1080)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="wide1080p"
+            value="wide1080p"
+          >
+            HD Widescreen 1080P (1920 x 1080)
           </WithStyles(ForwardRef(MenuItem))>
           <WithStyles(ForwardRef(MenuItem))
             key="default"
@@ -222,7 +258,7 @@ exports[`the ConnectionOptions component when connected to a room should render 
           label="renderDimensionStandard"
           name="renderDimensionStandard"
           onChange={[Function]}
-          value="standard"
+          value="960p"
         >
           <WithStyles(ForwardRef(MenuItem))
             key="low"
@@ -231,16 +267,52 @@ exports[`the ConnectionOptions component when connected to a room should render 
             Low (160 x 90)
           </WithStyles(ForwardRef(MenuItem))>
           <WithStyles(ForwardRef(MenuItem))
-            key="standard"
-            value="standard"
+            key="cif"
+            value="cif"
           >
-            Standard (1280 x 720)
+            CIF (352 x 288)
           </WithStyles(ForwardRef(MenuItem))>
           <WithStyles(ForwardRef(MenuItem))
-            key="high"
-            value="high"
+            key="vga"
+            value="vga"
           >
-            High (1920 x 1080)
+            VGA (640 x 480)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="wvga"
+            value="wvga"
+          >
+            WVGA (800 x 480)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="540p"
+            value="540p"
+          >
+            HD 540P (960 x 540)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="720p"
+            value="720p"
+          >
+            HD 720P (1280 x 720)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="960p"
+            value="960p"
+          >
+            HD 960P (1280 x 960)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="standard1080p"
+            value="standard1080p"
+          >
+            HD Standard 1080P (1440 x 1080)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="wide1080p"
+            value="wide1080p"
+          >
+            HD Widescreen 1080P (1920 x 1080)
           </WithStyles(ForwardRef(MenuItem))>
           <WithStyles(ForwardRef(MenuItem))
             key="default"
@@ -266,7 +338,7 @@ exports[`the ConnectionOptions component when connected to a room should render 
           label="renderDimensionHigh"
           name="renderDimensionHigh"
           onChange={[Function]}
-          value="high"
+          value="wide1080p"
         >
           <WithStyles(ForwardRef(MenuItem))
             key="low"
@@ -275,16 +347,52 @@ exports[`the ConnectionOptions component when connected to a room should render 
             Low (160 x 90)
           </WithStyles(ForwardRef(MenuItem))>
           <WithStyles(ForwardRef(MenuItem))
-            key="standard"
-            value="standard"
+            key="cif"
+            value="cif"
           >
-            Standard (1280 x 720)
+            CIF (352 x 288)
           </WithStyles(ForwardRef(MenuItem))>
           <WithStyles(ForwardRef(MenuItem))
-            key="high"
-            value="high"
+            key="vga"
+            value="vga"
           >
-            High (1920 x 1080)
+            VGA (640 x 480)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="wvga"
+            value="wvga"
+          >
+            WVGA (800 x 480)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="540p"
+            value="540p"
+          >
+            HD 540P (960 x 540)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="720p"
+            value="720p"
+          >
+            HD 720P (1280 x 720)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="960p"
+            value="960p"
+          >
+            HD 960P (1280 x 960)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="standard1080p"
+            value="standard1080p"
+          >
+            HD Standard 1080P (1440 x 1080)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="wide1080p"
+            value="wide1080p"
+          >
+            HD Widescreen 1080P (1920 x 1080)
           </WithStyles(ForwardRef(MenuItem))>
           <WithStyles(ForwardRef(MenuItem))
             key="default"
@@ -308,7 +416,7 @@ exports[`the ConnectionOptions component when not connected to a room should ren
       hidden={false}
       variant="body2"
     >
-      These settings can only be changed when not connectd to a room.
+      These settings cannot be changed when connected to a room.
     </WithStyles(ForwardRef(Typography))>
     <WithStyles(ForwardRef(Grid))
       item={true}
@@ -486,16 +594,52 @@ exports[`the ConnectionOptions component when not connected to a room should ren
             Low (160 x 90)
           </WithStyles(ForwardRef(MenuItem))>
           <WithStyles(ForwardRef(MenuItem))
-            key="standard"
-            value="standard"
+            key="cif"
+            value="cif"
           >
-            Standard (1280 x 720)
+            CIF (352 x 288)
           </WithStyles(ForwardRef(MenuItem))>
           <WithStyles(ForwardRef(MenuItem))
-            key="high"
-            value="high"
+            key="vga"
+            value="vga"
           >
-            High (1920 x 1080)
+            VGA (640 x 480)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="wvga"
+            value="wvga"
+          >
+            WVGA (800 x 480)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="540p"
+            value="540p"
+          >
+            HD 540P (960 x 540)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="720p"
+            value="720p"
+          >
+            HD 720P (1280 x 720)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="960p"
+            value="960p"
+          >
+            HD 960P (1280 x 960)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="standard1080p"
+            value="standard1080p"
+          >
+            HD Standard 1080P (1440 x 1080)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="wide1080p"
+            value="wide1080p"
+          >
+            HD Widescreen 1080P (1920 x 1080)
           </WithStyles(ForwardRef(MenuItem))>
           <WithStyles(ForwardRef(MenuItem))
             key="default"
@@ -521,7 +665,7 @@ exports[`the ConnectionOptions component when not connected to a room should ren
           label="renderDimensionStandard"
           name="renderDimensionStandard"
           onChange={[Function]}
-          value="standard"
+          value="960p"
         >
           <WithStyles(ForwardRef(MenuItem))
             key="low"
@@ -530,16 +674,52 @@ exports[`the ConnectionOptions component when not connected to a room should ren
             Low (160 x 90)
           </WithStyles(ForwardRef(MenuItem))>
           <WithStyles(ForwardRef(MenuItem))
-            key="standard"
-            value="standard"
+            key="cif"
+            value="cif"
           >
-            Standard (1280 x 720)
+            CIF (352 x 288)
           </WithStyles(ForwardRef(MenuItem))>
           <WithStyles(ForwardRef(MenuItem))
-            key="high"
-            value="high"
+            key="vga"
+            value="vga"
           >
-            High (1920 x 1080)
+            VGA (640 x 480)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="wvga"
+            value="wvga"
+          >
+            WVGA (800 x 480)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="540p"
+            value="540p"
+          >
+            HD 540P (960 x 540)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="720p"
+            value="720p"
+          >
+            HD 720P (1280 x 720)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="960p"
+            value="960p"
+          >
+            HD 960P (1280 x 960)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="standard1080p"
+            value="standard1080p"
+          >
+            HD Standard 1080P (1440 x 1080)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="wide1080p"
+            value="wide1080p"
+          >
+            HD Widescreen 1080P (1920 x 1080)
           </WithStyles(ForwardRef(MenuItem))>
           <WithStyles(ForwardRef(MenuItem))
             key="default"
@@ -565,7 +745,7 @@ exports[`the ConnectionOptions component when not connected to a room should ren
           label="renderDimensionHigh"
           name="renderDimensionHigh"
           onChange={[Function]}
-          value="high"
+          value="wide1080p"
         >
           <WithStyles(ForwardRef(MenuItem))
             key="low"
@@ -574,16 +754,52 @@ exports[`the ConnectionOptions component when not connected to a room should ren
             Low (160 x 90)
           </WithStyles(ForwardRef(MenuItem))>
           <WithStyles(ForwardRef(MenuItem))
-            key="standard"
-            value="standard"
+            key="cif"
+            value="cif"
           >
-            Standard (1280 x 720)
+            CIF (352 x 288)
           </WithStyles(ForwardRef(MenuItem))>
           <WithStyles(ForwardRef(MenuItem))
-            key="high"
-            value="high"
+            key="vga"
+            value="vga"
           >
-            High (1920 x 1080)
+            VGA (640 x 480)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="wvga"
+            value="wvga"
+          >
+            WVGA (800 x 480)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="540p"
+            value="540p"
+          >
+            HD 540P (960 x 540)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="720p"
+            value="720p"
+          >
+            HD 720P (1280 x 720)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="960p"
+            value="960p"
+          >
+            HD 960P (1280 x 960)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="standard1080p"
+            value="standard1080p"
+          >
+            HD Standard 1080P (1440 x 1080)
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            key="wide1080p"
+            value="wide1080p"
+          >
+            HD Widescreen 1080P (1920 x 1080)
           </WithStyles(ForwardRef(MenuItem))>
           <WithStyles(ForwardRef(MenuItem))
             key="default"

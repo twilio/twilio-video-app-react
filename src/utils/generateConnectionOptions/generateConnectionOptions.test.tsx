@@ -36,8 +36,8 @@ describe('the generateConnectionOptions function', () => {
       maxTracks: '100',
       maxAudioBitrate: '0',
       renderDimensionLow: 'low',
-      renderDimensionStandard: 'standard',
-      renderDimensionHigh: 'high',
+      renderDimensionStandard: '960p',
+      renderDimensionHigh: 'wide1080p',
     };
 
     const result = {
@@ -56,7 +56,7 @@ describe('the generateConnectionOptions function', () => {
               width: 160,
             },
             standard: {
-              height: 720,
+              height: 960,
               width: 1280,
             },
           },
