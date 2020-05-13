@@ -1,4 +1,4 @@
-import { removeUndefineds } from './utils';
+import { removeUndefineds } from '.';
 
 describe('the removeUndefineds function', () => {
   it('should recursively remove any object keys with a value of undefined', () => {

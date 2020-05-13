@@ -1,4 +1,4 @@
-import { isMobile } from '../../../utils/utils';
+import { isMobile } from '../../../utils';
 import { useEffect, useRef } from 'react';
 import useLocalVideoToggle from '../../../hooks/useLocalVideoToggle/useLocalVideoToggle';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { ensureMediaPermissions } from '../../../utils/utils';
+import { ensureMediaPermissions } from '../../../utils';
 import Video, { LocalVideoTrack, LocalAudioTrack, CreateLocalTrackOptions } from 'twilio-video';
 
 export function useLocalAudioTrack() {

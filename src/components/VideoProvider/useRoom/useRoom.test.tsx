@@ -3,7 +3,7 @@ import EventEmitter from 'events';
 import { mockRoom } from '../../../__mocks__/twilio-video';
 import useRoom from './useRoom';
 import Video, { LocalTrack } from 'twilio-video';
-import * as utils from '../../../utils/utils';
+import * as utils from '../../../utils';
 
 const mockVideoConnect = Video.connect as jest.Mock<any>;
 

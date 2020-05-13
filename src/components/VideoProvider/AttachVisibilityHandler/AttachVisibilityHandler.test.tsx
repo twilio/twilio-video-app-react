@@ -2,7 +2,7 @@ import React from 'react';
 import AttachVisibilityHandler from './AttachVisibilityHandler';
 import useLocalVideoToggle from '../../../hooks/useLocalVideoToggle/useLocalVideoToggle';
 import { render } from '@testing-library/react';
-import * as utils from '../../../utils/utils';
+import * as utils from '../../../utils';
 
 jest.mock('../../../hooks/useVideoContext/useVideoContext', () => () => ({ room: {} }));
 jest.mock('../../../hooks/useLocalVideoToggle/useLocalVideoToggle');

@@ -1,5 +1,5 @@
 import { ConnectOptions, VideoTrack } from 'twilio-video';
-import { isMobile, removeUndefineds } from '../utils';
+import { isMobile, removeUndefineds } from '..';
 import { Settings, RenderDimension } from '../../state/settings/settingsReducer';
 
 const resolutionMap: { [key in RenderDimension]?: VideoTrack.Dimensions } = {
