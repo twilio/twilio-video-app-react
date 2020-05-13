@@ -7,7 +7,7 @@ import { DeviceSelector } from '../DeviceSelector/DeviceSelector';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
-      width: '500px',
+      width: '525px',
       minHeight: '380px',
       [theme.breakpoints.down('xs')]: {
         width: 'calc(100vw - 32px)',

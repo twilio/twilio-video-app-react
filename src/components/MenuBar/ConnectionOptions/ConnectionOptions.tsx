@@ -19,6 +19,9 @@ const useStyles = makeStyles({
     display: 'block',
     margin: '1.5em 0.6em',
   },
+  label: {
+    width: '133%', // Labels have scale(0.75) applied to them, so this effectively makes the width 100%
+  },
 });
 
 const withDefault = (val?: string) => (typeof val === 'undefined' ? 'default' : val);
@@ -138,8 +141,10 @@ export default function ConnectionOptions() {
         </Grid>
 
         <Grid item sm={6} xs={12}>
-          <FormControl className={classes.formControl}>
-            <InputLabel id={labels.renderDimensionLow}>Low:</InputLabel>
+          <FormControl fullWidth className={classes.formControl}>
+            <InputLabel id={labels.renderDimensionLow} className={classes.label}>
+              Render Dimension (Low Priority):
+            </InputLabel>
             <Select
               fullWidth
               disabled={isDisabled}
@@ -151,8 +156,10 @@ export default function ConnectionOptions() {
               {RenderDimensions}
             </Select>
           </FormControl>
-          <FormControl className={classes.formControl}>
-            <InputLabel id={labels.renderDimensionStandard}>Standard:</InputLabel>
+          <FormControl fullWidth className={classes.formControl}>
+            <InputLabel id={labels.renderDimensionStandard} className={classes.label}>
+              Render Dimension (Standard Priority):
+            </InputLabel>
             <Select
               fullWidth
               disabled={isDisabled}
@@ -164,8 +171,10 @@ export default function ConnectionOptions() {
               {RenderDimensions}
             </Select>
           </FormControl>
-          <FormControl className={classes.formControl}>
-            <InputLabel id={labels.renderDimensionHigh}>High:</InputLabel>
+          <FormControl fullWidth className={classes.formControl}>
+            <InputLabel id={labels.renderDimensionHigh} className={classes.label}>
+              Render Dimension (High Priority):
+            </InputLabel>
             <Select
               fullWidth
               disabled={isDisabled}
