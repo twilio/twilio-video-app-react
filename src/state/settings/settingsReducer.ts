@@ -12,8 +12,10 @@ export interface Settings {
   renderDimensionHigh?: RenderDimensionValue;
 }
 
+type SettingsKeys = keyof Settings;
+
 export interface SettingsAction {
-  name: keyof Settings;
+  name: SettingsKeys;
   value: string;
 }
 
@@ -28,12 +30,15 @@ export const initialSettings: Settings = {
   renderDimensionHigh: 'wide1080p',
 };
 
-export const labels = (() => {
+// This inputLabels object is used by ConnectionOptions.tsx. It is used to populate the id, name, and label props
+// of the various input elements. Using a typed object like this (instead of strings) eliminates the possibility
+// of there being a typo.
+export const inputLabels = (() => {
   const target: any = {};
   for (const setting in initialSettings) {
-    target[setting] = setting as keyof Settings;
+    target[setting] = setting as SettingsKeys;
   }
-  return target as { [key in keyof Settings]: string };
+  return <{ [key in SettingsKeys]: string }>target;
 })();
 
 export function settingsReducer(state: Settings, action: SettingsAction) {

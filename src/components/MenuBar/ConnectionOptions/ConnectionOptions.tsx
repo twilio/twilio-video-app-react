@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { labels, Settings } from '../../../state/settings/settingsReducer';
+import { inputLabels, Settings } from '../../../state/settings/settingsReducer';
 import { RenderDimensions } from '../../../state/settings/renderDimensions';
 import { useAppState } from '../../../state';
 import useRoomState from '../../../hooks/useRoomState/useRoomState';
@@ -59,14 +59,15 @@ export default function ConnectionOptions() {
         <Typography hidden={!isDisabled} variant="body2">
           These settings cannot be changed when connected to a room.
         </Typography>
+
         <Grid item sm={6} xs={12}>
           <FormControl className={classes.formControl}>
-            <InputLabel id={labels.dominantSpeakerPriority}>Dominant Speaker Priority:</InputLabel>
+            <InputLabel id={inputLabels.dominantSpeakerPriority}>Dominant Speaker Priority:</InputLabel>
             <Select
               fullWidth
               disabled={isDisabled}
-              name={labels.dominantSpeakerPriority}
-              label={labels.dominantSpeakerPriority}
+              name={inputLabels.dominantSpeakerPriority}
+              label={inputLabels.dominantSpeakerPriority}
               value={withDefault(settings.dominantSpeakerPriority)}
               onChange={handleChange}
             >
@@ -76,13 +77,14 @@ export default function ConnectionOptions() {
               <MenuItem value="default">Server Default</MenuItem>
             </Select>
           </FormControl>
+
           <FormControl className={classes.formControl}>
-            <InputLabel id={labels.trackSwitchOffMode}>Track Switch Off Mode:</InputLabel>
+            <InputLabel id={inputLabels.trackSwitchOffMode}>Track Switch Off Mode:</InputLabel>
             <Select
               fullWidth
               disabled={isDisabled}
-              name={labels.trackSwitchOffMode}
-              label={labels.trackSwitchOffMode}
+              name={inputLabels.trackSwitchOffMode}
+              label={inputLabels.trackSwitchOffMode}
               value={withDefault(settings.trackSwitchOffMode)}
               onChange={handleChange}
             >
@@ -92,13 +94,14 @@ export default function ConnectionOptions() {
               <MenuItem value="default">Server Default</MenuItem>
             </Select>
           </FormControl>
+
           <FormControl className={classes.formControl}>
-            <InputLabel id={labels.bandwidthProfileMode}>Mode:</InputLabel>
+            <InputLabel id={inputLabels.bandwidthProfileMode}>Mode:</InputLabel>
             <Select
               fullWidth
               disabled={isDisabled}
-              name={labels.bandwidthProfileMode}
-              label={labels.bandwidthProfileMode}
+              name={inputLabels.bandwidthProfileMode}
+              label={inputLabels.bandwidthProfileMode}
               value={withDefault(settings.bandwidthProfileMode)}
               onChange={handleChange}
             >
@@ -108,70 +111,73 @@ export default function ConnectionOptions() {
               <MenuItem value="default">Server Default</MenuItem>
             </Select>
           </FormControl>
+
           <FormControl className={classes.formControl}>
             <TextField
               disabled={isDisabled}
               fullWidth
-              id={labels.maxTracks}
+              id={inputLabels.maxTracks}
               label="Max Tracks"
-              name={labels.maxTracks}
+              name={inputLabels.maxTracks}
               value={withDefault(settings.maxTracks)}
               onChange={handleNumberChange}
             />
           </FormControl>
+
           <FormControl className={classes.formControl}>
             <TextField
               disabled={isDisabled}
               fullWidth
-              id={labels.maxAudioBitrate}
+              id={inputLabels.maxAudioBitrate}
               label="Audio Bitrate"
-              name={labels.maxAudioBitrate}
+              name={inputLabels.maxAudioBitrate}
               value={withDefault(settings.maxAudioBitrate)}
               onChange={handleNumberChange}
             />
           </FormControl>
         </Grid>
-
         <Grid item sm={6} xs={12}>
           <FormControl fullWidth className={classes.formControl}>
-            <InputLabel id={labels.renderDimensionLow} className={classes.label}>
+            <InputLabel id={inputLabels.renderDimensionLow} className={classes.label}>
               Render Dimension (Low Priority):
             </InputLabel>
             <Select
               fullWidth
               disabled={isDisabled}
-              name={labels.renderDimensionLow}
-              label={labels.renderDimensionLow}
+              name={inputLabels.renderDimensionLow}
+              label={inputLabels.renderDimensionLow}
               value={withDefault(settings.renderDimensionLow)}
               onChange={handleChange}
             >
               {RenderDimensionItems}
             </Select>
           </FormControl>
+
           <FormControl fullWidth className={classes.formControl}>
-            <InputLabel id={labels.renderDimensionStandard} className={classes.label}>
+            <InputLabel id={inputLabels.renderDimensionStandard} className={classes.label}>
               Render Dimension (Standard Priority):
             </InputLabel>
             <Select
               fullWidth
               disabled={isDisabled}
-              name={labels.renderDimensionStandard}
-              label={labels.renderDimensionStandard}
+              name={inputLabels.renderDimensionStandard}
+              label={inputLabels.renderDimensionStandard}
               value={withDefault(settings.renderDimensionStandard)}
               onChange={handleChange}
             >
               {RenderDimensionItems}
             </Select>
           </FormControl>
+
           <FormControl fullWidth className={classes.formControl}>
-            <InputLabel id={labels.renderDimensionHigh} className={classes.label}>
+            <InputLabel id={inputLabels.renderDimensionHigh} className={classes.label}>
               Render Dimension (High Priority):
             </InputLabel>
             <Select
               fullWidth
               disabled={isDisabled}
-              name={labels.renderDimensionHigh}
-              label={labels.renderDimensionHigh}
+              name={inputLabels.renderDimensionHigh}
+              label={inputLabels.renderDimensionHigh}
               value={withDefault(settings.renderDimensionHigh)}
               onChange={handleChange}
             >
