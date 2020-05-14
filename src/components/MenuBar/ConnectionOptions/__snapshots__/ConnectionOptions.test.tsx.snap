@@ -4,6 +4,7 @@ exports[`the ConnectionOptions component when connected to a room should render 
 <WithStyles(ForwardRef(DialogContent))>
   <WithStyles(ForwardRef(Grid))
     container={true}
+    spacing={2}
   >
     <WithStyles(ForwardRef(Typography))
       hidden={false}
@@ -140,7 +141,8 @@ exports[`the ConnectionOptions component when connected to a room should render 
           label="Max Tracks"
           name="maxTracks"
           onChange={[Function]}
-          value="10"
+          placeholder="Leave blank for no limit"
+          value="0"
         />
       </WithStyles(ForwardRef(FormControl))>
       <WithStyles(ForwardRef(FormControl))
@@ -150,9 +152,10 @@ exports[`the ConnectionOptions component when connected to a room should render 
           disabled={true}
           fullWidth={true}
           id="maxAudioBitrate"
-          label="Audio Bitrate"
+          label="Max Audio Bitrate"
           name="maxAudioBitrate"
           onChange={[Function]}
+          placeholder="Leave blank for no limit"
           value="16000"
         />
       </WithStyles(ForwardRef(FormControl))>
@@ -411,6 +414,7 @@ exports[`the ConnectionOptions component when not connected to a room should ren
 <WithStyles(ForwardRef(DialogContent))>
   <WithStyles(ForwardRef(Grid))
     container={true}
+    spacing={2}
   >
     <WithStyles(ForwardRef(Typography))
       hidden={false}
@@ -547,7 +551,8 @@ exports[`the ConnectionOptions component when not connected to a room should ren
           label="Max Tracks"
           name="maxTracks"
           onChange={[Function]}
-          value="10"
+          placeholder="Leave blank for no limit"
+          value="0"
         />
       </WithStyles(ForwardRef(FormControl))>
       <WithStyles(ForwardRef(FormControl))
@@ -557,9 +562,10 @@ exports[`the ConnectionOptions component when not connected to a room should ren
           disabled={true}
           fullWidth={true}
           id="maxAudioBitrate"
-          label="Audio Bitrate"
+          label="Max Audio Bitrate"
           name="maxAudioBitrate"
           onChange={[Function]}
+          placeholder="Leave blank for no limit"
           value="16000"
         />
       </WithStyles(ForwardRef(FormControl))>

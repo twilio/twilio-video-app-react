@@ -18,7 +18,7 @@ import useRoomState from '../../../hooks/useRoomState/useRoomState';
 const useStyles = makeStyles({
   formControl: {
     display: 'block',
-    margin: '1.5em 0.6em',
+    margin: '1.5em 0',
   },
   label: {
     width: '133%', // Labels have scale(0.75) applied to them, so this effectively makes the width 100%
@@ -33,7 +33,7 @@ const RenderDimensionItems = RenderDimensions.map(({ label, value }) => (
   </MenuItem>
 ));
 
-export default function ConnectionOptions() {
+export default function ConnectionOptions({ className, hidden }: { className?: string; hidden?: boolean }) {
   const classes = useStyles();
   const { settings, dispatchSetting } = useAppState();
   const roomState = useRoomState();
@@ -54,8 +54,8 @@ export default function ConnectionOptions() {
   );
 
   return (
-    <DialogContent>
-      <Grid container>
+    <DialogContent className={className} hidden={hidden}>
+      <Grid container spacing={2}>
         <Typography hidden={!isDisabled} variant="body2">
           These settings cannot be changed when connected to a room.
         </Typography>
@@ -118,6 +118,7 @@ export default function ConnectionOptions() {
               fullWidth
               id={inputLabels.maxTracks}
               label="Max Tracks"
+              placeholder="Leave blank for no limit"
               name={inputLabels.maxTracks}
               value={withDefault(settings.maxTracks)}
               onChange={handleNumberChange}
@@ -129,7 +130,8 @@ export default function ConnectionOptions() {
               disabled={isDisabled}
               fullWidth
               id={inputLabels.maxAudioBitrate}
-              label="Audio Bitrate"
+              label="Max Audio Bitrate"
+              placeholder="Leave blank for no limit"
               name={inputLabels.maxAudioBitrate}
               value={withDefault(settings.maxAudioBitrate)}
               onChange={handleNumberChange}

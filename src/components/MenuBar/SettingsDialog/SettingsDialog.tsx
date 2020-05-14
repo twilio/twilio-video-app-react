@@ -41,12 +41,8 @@ export default function SettingsDialog({ open, onClose }: { open: boolean; onClo
         <Tab label="Devices" />
         <Tab label="Settings" />
       </Tabs>
-      <div className={classes.container} hidden={selectedTab !== 0}>
-        <DeviceSelector />
-      </div>
-      <div className={classes.container} hidden={selectedTab !== 1}>
-        <ConnectionOptions />
-      </div>
+      <DeviceSelector className={classes.container} hidden={selectedTab !== 0} />
+      <ConnectionOptions className={classes.container} hidden={selectedTab !== 1} />
       <DialogActions>
         <Button className={classes.button} onClick={onClose}>
           Done

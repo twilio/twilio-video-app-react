@@ -14,11 +14,11 @@ const useStyles = makeStyles({
   },
 });
 
-export function DeviceSelector() {
+export function DeviceSelector({ className, hidden }: { className?: string; hidden?: boolean }) {
   const classes = useStyles();
 
   return (
-    <DialogContent>
+    <DialogContent className={className} hidden={hidden}>
       <div className={classes.listSection}>
         <AudioInputList />
       </div>
