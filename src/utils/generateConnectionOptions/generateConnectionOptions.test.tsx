@@ -17,10 +17,12 @@ describe('the generateConnectionOptions function', () => {
     const result = {
       bandwidthProfile: {
         video: {
+          maxTracks: 0,
           renderDimensions: {},
         },
       },
       dominantSpeaker: true,
+      maxAudioBitrate: 0,
       networkQuality: { local: 1, remote: 1 },
       preferredVideoCodecs: [{ codec: 'VP8', simulcast: true }],
     };

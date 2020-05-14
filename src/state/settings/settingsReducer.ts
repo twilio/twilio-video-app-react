@@ -23,7 +23,7 @@ export const initialSettings: Settings = {
   trackSwitchOffMode: undefined,
   dominantSpeakerPriority: 'standard',
   bandwidthProfileMode: 'collaboration',
-  maxTracks: '10',
+  maxTracks: '0',
   maxAudioBitrate: '16000',
   renderDimensionLow: 'low',
   renderDimensionStandard: '960p',
@@ -38,7 +38,7 @@ export const inputLabels = (() => {
   for (const setting in initialSettings) {
     target[setting] = setting as SettingsKeys;
   }
-  return <{ [key in SettingsKeys]: string }>target;
+  return target as { [key in SettingsKeys]: string };
 })();
 
 export function settingsReducer(state: Settings, action: SettingsAction) {

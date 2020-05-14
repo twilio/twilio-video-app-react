@@ -3,10 +3,6 @@ import { isMobile, removeUndefineds } from '..';
 import { Settings } from '../../state/settings/settingsReducer';
 import { getResolution } from '../../state/settings/renderDimensions';
 
-function getNumber(val: string) {
-  return val === '' ? undefined : Number(val);
-}
-
 export default function generateConnectionOptions(settings: Settings) {
   // See: https://media.twiliocdn.com/sdk/js/video/releases/2.0.0/docs/global.html#ConnectOptions
   // for available connection options.
@@ -24,14 +20,14 @@ export default function generateConnectionOptions(settings: Settings) {
           standard: getResolution(settings.renderDimensionStandard),
           high: getResolution(settings.renderDimensionHigh),
         },
-        maxTracks: getNumber(settings.maxTracks),
+        maxTracks: Number(settings.maxTracks),
       },
     },
     dominantSpeaker: true,
     networkQuality: { local: 1, remote: 1 },
 
     // Comment this line if you are playing music.
-    maxAudioBitrate: getNumber(settings.maxAudioBitrate),
+    maxAudioBitrate: Number(settings.maxAudioBitrate),
 
     // VP8 simulcast enables the media server in a Small Group or Group Room
     // to adapt your encoded video quality for each RemoteParticipant based on
