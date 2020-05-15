@@ -21,9 +21,9 @@ export function useLocalAudioTrack() {
     );
   }, []);
 
-  useEffect(() => {
-    getLocalAudioTrack();
-  }, [getLocalAudioTrack]);
+  // useEffect(() => {
+  //   getLocalAudioTrack();
+  // }, [getLocalAudioTrack]);
 
   useEffect(() => {
     const handleStopped = () => setTrack(undefined);
@@ -63,10 +63,10 @@ export function useLocalVideoTrack() {
     );
   }, []);
 
-  useEffect(() => {
-    // We get a new local video track when the app loads.
-    getLocalVideoTrack();
-  }, [getLocalVideoTrack]);
+  // useEffect(() => {
+  //   // We get a new local video track when the app loads.
+  //   getLocalVideoTrack();
+  // }, [getLocalVideoTrack]);
 
   useEffect(() => {
     const handleStopped = () => setTrack(undefined);
