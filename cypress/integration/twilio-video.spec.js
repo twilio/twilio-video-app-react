@@ -12,7 +12,6 @@ context('A video app user', () => {
   describe('before entering a room', () => {
     it('should see their audio level indicator moving in the media device panel', () => {
       cy.visit('/');
-      cy.get('[data-cy-device-select]').click();
       cy.get('clipPath rect')
         .invoke('attr', 'y')
         .should('be', 21);
