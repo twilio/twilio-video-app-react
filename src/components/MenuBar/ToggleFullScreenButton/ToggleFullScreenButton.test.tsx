@@ -5,8 +5,15 @@ import useFullScreenToggle from '../../../hooks/useFullScreenToggle/useFullScree
 
 import ToggleFullscreenButton from './ToggleFullScreenButton';
 
+import fscreen from 'fscreen';
+
 jest.mock('../../../hooks/useFullScreenToggle/useFullScreenToggle');
 const mockeduseFullScreenToggle = useFullScreenToggle as jest.Mock;
+
+// @ts-ignore
+// document.fullscreenEnabled = true
+
+console.log(fscreen.fullscreenEnabled);
 
 describe('Full screen button', () => {
   const toggleFullScreen = jest.fn();
@@ -28,5 +35,14 @@ describe('Full screen button', () => {
     mockeduseFullScreenToggle.mockImplementation(() => [false, toggleFullScreen]);
     const wrapper = shallow(<ToggleFullscreenButton />);
     expect(wrapper.find('FullscreenIcon').exists()).toBe(true);
+  });
+
+  it('should not render when Fullscreen API is not supported', () => {
+    // @ts-ignore
+    document.fullscreenEnabled = false;
+    const wrapper = shallow(<ToggleFullscreenButton />);
+    expect(wrapper.find(ToggleFullscreenButton).exists()).toBe(false);
+    // @ts-ignore
+    document.fullscreenEnabled = true; // Reset value
   });
 });
