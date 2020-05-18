@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import fscreen from 'fscreen';
 
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
@@ -136,7 +137,7 @@ export default function MenuBar() {
         <div className={classes.rightButtonContainer}>
           <FlipCameraButton />
           <DeviceSelector />
-          <ToggleFullscreenButton />
+          {fscreen.fullscreenEnabled && <ToggleFullscreenButton />}
           <Menu />
         </div>
       </Toolbar>
