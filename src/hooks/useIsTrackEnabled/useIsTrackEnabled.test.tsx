@@ -9,9 +9,9 @@ describe('the useIsTrackEnabled hook', () => {
     mockTrack = new EventEmitter();
   });
 
-  it('should return true when track is undefined', () => {
+  it('should return false when track is undefined', () => {
     const { result } = renderHook(() => useIsTrackEnabled(undefined));
-    expect(result.current).toBe(true);
+    expect(result.current).toBe(false);
   });
 
   it('should return mockTrack.isEnabled by default', () => {
