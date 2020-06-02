@@ -6,12 +6,22 @@ exports[`the ConnectionOptions component when connected to a room should render 
     container={true}
     spacing={2}
   >
-    <WithStyles(ForwardRef(Typography))
-      hidden={false}
-      variant="body2"
+    <WithStyles(ForwardRef(Grid))
+      item={true}
+      xs={12}
     >
-      These settings cannot be changed when connected to a room.
-    </WithStyles(ForwardRef(Typography))>
+      <WithStyles(ForwardRef(Typography))
+        variant="body2"
+      >
+        Bandwidth Profile Settings:
+      </WithStyles(ForwardRef(Typography))>
+      <WithStyles(ForwardRef(Typography))
+        hidden={false}
+        variant="body2"
+      >
+        These settings cannot be changed when connected to a room.
+      </WithStyles(ForwardRef(Typography))>
+    </WithStyles(ForwardRef(Grid))>
     <WithStyles(ForwardRef(Grid))
       item={true}
       sm={6}
@@ -416,12 +426,22 @@ exports[`the ConnectionOptions component when not connected to a room should ren
     container={true}
     spacing={2}
   >
-    <WithStyles(ForwardRef(Typography))
-      hidden={false}
-      variant="body2"
+    <WithStyles(ForwardRef(Grid))
+      item={true}
+      xs={12}
     >
-      These settings cannot be changed when connected to a room.
-    </WithStyles(ForwardRef(Typography))>
+      <WithStyles(ForwardRef(Typography))
+        variant="body2"
+      >
+        Bandwidth Profile Settings:
+      </WithStyles(ForwardRef(Typography))>
+      <WithStyles(ForwardRef(Typography))
+        hidden={false}
+        variant="body2"
+      >
+        These settings cannot be changed when connected to a room.
+      </WithStyles(ForwardRef(Typography))>
+    </WithStyles(ForwardRef(Grid))>
     <WithStyles(ForwardRef(Grid))
       item={true}
       sm={6}
