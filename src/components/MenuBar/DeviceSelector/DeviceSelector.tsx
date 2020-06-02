@@ -8,8 +8,9 @@ import VideoInputList from './VideoInputList/VideoInputList';
 
 const useStyles = makeStyles({
   listSection: {
-    '&:not(:first-child)': {
-      margin: '2em 0',
+    margin: '2em 0',
+    '&:first-child': {
+      margin: '1em 0 2em 0',
     },
   },
 });

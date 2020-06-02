@@ -19,6 +19,9 @@ const useStyles = makeStyles({
   formControl: {
     display: 'block',
     margin: '1.5em 0',
+    '&:first-child': {
+      margin: '0 0 1.5em 0',
+    },
   },
   label: {
     width: '133%', // Labels have scale(0.75) applied to them, so this effectively makes the width 100%
@@ -56,9 +59,12 @@ export default function ConnectionOptions({ className, hidden }: { className?: s
   return (
     <DialogContent className={className} hidden={hidden}>
       <Grid container spacing={2}>
-        <Typography hidden={!isDisabled} variant="body2">
-          These settings cannot be changed when connected to a room.
-        </Typography>
+        <Grid item xs={12}>
+          <Typography variant="body2">Bandwidth Profile Settings:</Typography>
+          <Typography hidden={!isDisabled} variant="body2">
+            These settings cannot be changed when connected to a room.
+          </Typography>
+        </Grid>
 
         <Grid item sm={6} xs={12}>
           <FormControl className={classes.formControl}>
