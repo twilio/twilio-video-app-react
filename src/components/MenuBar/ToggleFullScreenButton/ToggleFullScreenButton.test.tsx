@@ -29,4 +29,13 @@ describe('Full screen button', () => {
     const wrapper = shallow(<ToggleFullscreenButton />);
     expect(wrapper.find('FullscreenIcon').exists()).toBe(true);
   });
+
+  it('should not render when Fullscreen API is not supported', () => {
+    // @ts-ignore
+    document.fullscreenEnabled = false;
+    const wrapper = shallow(<ToggleFullscreenButton />);
+    expect(wrapper.find(ToggleFullscreenButton).exists()).toBe(false);
+    // @ts-ignore
+    document.fullscreenEnabled = true; // Reset value
+  });
 });

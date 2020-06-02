@@ -4,10 +4,10 @@ import { LocalAudioTrack, LocalVideoTrack, RemoteAudioTrack, RemoteVideoTrack } 
 type TrackType = LocalAudioTrack | LocalVideoTrack | RemoteAudioTrack | RemoteVideoTrack | undefined;
 
 export default function useIsTrackEnabled(track: TrackType) {
-  const [isEnabled, setIsEnabled] = useState(track ? track.isEnabled : true);
+  const [isEnabled, setIsEnabled] = useState(track ? track.isEnabled : false);
 
   useEffect(() => {
-    setIsEnabled(track ? track.isEnabled : true);
+    setIsEnabled(track ? track.isEnabled : false);
 
     if (track) {
       const setEnabled = () => setIsEnabled(true);
