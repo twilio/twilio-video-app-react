@@ -13,7 +13,7 @@ export default function useLocalVideoTrackPublisher(room: Room, localTracks: Loc
 
       if (videoTrack && !publishedVideoTrack && !isPublishingLocalVideoTrack) {
         setIsPublishing(true);
-        room.localParticipant.publishTrack(videoTrack).then(() => {
+        room.localParticipant.publishTrack(videoTrack, { priority: 'low' }).then(() => {
           setIsPublishing(false);
         });
       }
