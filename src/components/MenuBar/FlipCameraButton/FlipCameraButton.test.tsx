@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, render, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import FlipCameraButton from './FlipCameraButton';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
@@ -64,15 +64,12 @@ describe('the FlipCameraButton', () => {
     expect(container.querySelector('button')).not.toBeTruthy();
   });
 
-  it('should unpublish the front facing video track and publish the rear facing track when clicked', async () => {
+  it('should stop the front facing video track and get the rear facing track when clicked', async () => {
     mockUserVideoContext.mockImplementation(() => mockVideoContext);
     const { container } = render(<FlipCameraButton />);
     fireEvent.click(container.querySelector('button')!);
     expect(mockVideoTrack.stop).toHaveBeenCalled();
     await expect(mockVideoContext.getLocalVideoTrack).toHaveBeenCalledWith({ facingMode: 'environment' });
-    expect(mockLocalParticipant.unpublishTrack).toHaveBeenCalledWith(mockVideoTrack);
-    expect(mockLocalParticipant.emit).toHaveBeenCalledWith('trackUnpublished', 'mockPublication');
-    expect(mockLocalParticipant.publishTrack).toHaveBeenCalledWith('newMockTrack', { priority: 'low' });
   });
 
   it('should request the front facing video track when the current track is rear facing when clicked', async () => {

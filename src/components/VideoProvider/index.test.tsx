@@ -36,6 +36,7 @@ describe('the VideoProvider component', () => {
       onError: expect.any(Function),
       onDisconnect: mockOnDisconnect,
       getLocalVideoTrack: expect.any(Function),
+      isPublishingLocalVideoTrack: expect.any(Boolean),
     });
     expect(useRoom).toHaveBeenCalledWith([{ name: 'mockTrack' }], expect.any(Function), {
       dominantSpeaker: true,
