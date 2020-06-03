@@ -16,6 +16,7 @@ import useHandleOnDisconnect from './useHandleOnDisconnect/useHandleOnDisconnect
 import useHandleTrackPublicationFailed from './useHandleTrackPublicationFailed/useHandleTrackPublicationFailed';
 import useLocalTracks from './useLocalTracks/useLocalTracks';
 import useRoom from './useRoom/useRoom';
+import useLocalVideoTrackPublisher from './useLocalVideoTrackPublisher/useLocalVideoTrackPublisher';
 
 /*
  *  The hooks used by the VideoProvider component are different than the hooks found in the 'hooks/' directory. The hooks
@@ -33,6 +34,7 @@ export interface IVideoContext {
   onDisconnect: Callback;
   getLocalVideoTrack: (newOptions?: CreateLocalTrackOptions) => Promise<LocalVideoTrack>;
   getLocalAudioTrack: (deviceId?: string) => Promise<LocalAudioTrack>;
+  isPublishingLocalVideoTrack: boolean;
 }
 
 export const VideoContext = createContext<IVideoContext>(null!);
@@ -57,6 +59,7 @@ export function VideoProvider({ options, children, onError = () => {}, onDisconn
   useHandleRoomDisconnectionErrors(room, onError);
   useHandleTrackPublicationFailed(room, onError);
   useHandleOnDisconnect(room, onDisconnect);
+  const isPublishingLocalVideoTrack = useLocalVideoTrackPublisher(room, localTracks);
 
   return (
     <VideoContext.Provider
@@ -69,6 +72,7 @@ export function VideoProvider({ options, children, onError = () => {}, onDisconn
         getLocalVideoTrack,
         getLocalAudioTrack,
         connect,
+        isPublishingLocalVideoTrack,
       }}
     >
       <SelectedParticipantProvider room={room}>{children}</SelectedParticipantProvider>
