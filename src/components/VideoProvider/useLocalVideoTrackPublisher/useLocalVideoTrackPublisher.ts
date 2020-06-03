@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Room, LocalTrack, LocalVideoTrackPublication } from 'twilio-video';
 
 export default function useLocalVideoTrackPublisher(room: Room, localTracks: LocalTrack[]) {
-  const [isPublishingLocalVideoTrack, setIsPublishing] = useState(false);
+  const [isPublishingLocalVideoTrack, setIsPublishingLocalVideoTrack] = useState(false);
   useEffect(() => {
     if (room.state === 'connected') {
       const videoTrack = localTracks.find(track => track.name.includes('camera'));
@@ -12,10 +12,15 @@ export default function useLocalVideoTrackPublisher(room: Room, localTracks: Loc
       const publishedVideoTrack = publishedVideoTrackPublications.find(pub => pub.trackName.includes('camera'))?.track;
 
       if (videoTrack && !publishedVideoTrack && !isPublishingLocalVideoTrack) {
-        setIsPublishing(true);
-        room.localParticipant.publishTrack(videoTrack, { priority: 'low' }).then(() => {
-          setIsPublishing(false);
-        });
+        setIsPublishingLocalVideoTrack(true);
+        room.localParticipant
+          .publishTrack(videoTrack, { priority: 'low' })
+          .then(() => {
+            setIsPublishingLocalVideoTrack(false);
+          })
+          .catch(() => {
+            setIsPublishingLocalVideoTrack(false);
+          });
       }
 
       if (!videoTrack && publishedVideoTrack) {
