@@ -4,11 +4,7 @@ import { IconButton } from '@material-ui/core';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
 export default function FlipCameraButton() {
-  const {
-    room: { localParticipant },
-    localTracks,
-    getLocalVideoTrack,
-  } = useVideoContext();
+  const { localTracks, getLocalVideoTrack } = useVideoContext();
   const [supportsFacingMode, setSupportsFacingMode] = useState<Boolean | null>(null);
   const videoTrack = localTracks.find(track => track.name.includes('camera'));
   const facingMode = videoTrack?.mediaStreamTrack.getSettings().facingMode;
@@ -26,17 +22,9 @@ export default function FlipCameraButton() {
 
   const toggleFacingMode = useCallback(() => {
     const newFacingMode = facingMode === 'user' ? 'environment' : 'user';
-
     videoTrack!.stop();
-
-    getLocalVideoTrack({ facingMode: newFacingMode }).then(newVideoTrack => {
-      const localTrackPublication = localParticipant?.unpublishTrack(videoTrack!);
-      // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
-      localParticipant?.emit('trackUnpublished', localTrackPublication);
-
-      localParticipant?.publishTrack(newVideoTrack, { priority: 'low' });
-    });
-  }, [facingMode, getLocalVideoTrack, localParticipant, videoTrack]);
+    getLocalVideoTrack({ facingMode: newFacingMode });
+  }, [facingMode, getLocalVideoTrack, videoTrack]);
 
   return supportsFacingMode ? (
     <IconButton onClick={toggleFacingMode} disabled={!videoTrack}>
