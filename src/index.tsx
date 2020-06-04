@@ -6,10 +6,9 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 
 import App from './App';
 import AppStateProvider, { useAppState } from './state';
-import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import ErrorDialog from './components/ErrorDialog/ErrorDialog';
 import generateConnectionOptions from './utils/generateConnectionOptions/generateConnectionOptions';
-import LoginPage from './components/LoginPage/LoginPage';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import theme from './theme';
 import './types';
@@ -30,19 +29,17 @@ const VideoApp = () => {
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
     <CssBaseline />
+
     <Router>
       <AppStateProvider>
         <Switch>
           <PrivateRoute exact path="/">
             <VideoApp />
           </PrivateRoute>
-          <PrivateRoute path="/room/:URLRoomName">
+
+          <PrivateRoute path="/:IdentityID/:URLRoomName?">
             <VideoApp />
           </PrivateRoute>
-          <Route path="/login">
-            <LoginPage />
-          </Route>
-          <Redirect to="/" />
         </Switch>
       </AppStateProvider>
     </Router>
