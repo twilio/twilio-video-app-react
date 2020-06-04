@@ -63,7 +63,7 @@ export default function MenuBar() {
   const classes = useStyles();
   const { URLRoomName } = useParams();
   const { user, getToken, isFetching } = useAppState();
-  const { isConnecting, connect } = useVideoContext();
+  const { isConnecting, connect, isAcquiringLocalTracks } = useVideoContext();
   const roomState = useRoomState();
 
   const [name, setName] = useState<string>(user?.displayName || '');
@@ -124,7 +124,7 @@ export default function MenuBar() {
               type="submit"
               color="primary"
               variant="contained"
-              disabled={isConnecting || !name || !roomName || isFetching}
+              disabled={isAcquiringLocalTracks || isConnecting || !name || !roomName || isFetching}
             >
               Join Room
             </Button>
