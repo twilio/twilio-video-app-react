@@ -1,0 +1,14 @@
+[Unit]
+Description=Zenoo Video App
+
+[Service]
+Group=ec2-user
+User=ec2-user
+Environment="PATH=/usr/bin:/home/ec2-user/.nvm/versions/node/v12.18.0/bin"
+WorkingDirectory=/opt/deploys/twilio-video-app-react/
+ExecStart=/opt/deploys/twilio-video-app-react/start.sh
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

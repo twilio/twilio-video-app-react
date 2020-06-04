@@ -2,6 +2,7 @@
 
 # IntelliJ IDEA project config
 .idea
+*.iml
 
 # dependencies
 node_modules
