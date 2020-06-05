@@ -1,6 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-
-import { ensureMediaPermissions } from '../../../utils';
 import Video, { LocalVideoTrack, LocalAudioTrack, CreateLocalTrackOptions } from 'twilio-video';
 
 export default function useLocalTracks() {
@@ -15,12 +13,10 @@ export default function useLocalTracks() {
       options.deviceId = { exact: deviceId };
     }
 
-    return ensureMediaPermissions().then(() =>
-      Video.createLocalAudioTrack(options).then(newTrack => {
-        setAudioTrack(newTrack);
-        return newTrack;
-      })
-    );
+    return Video.createLocalAudioTrack(options).then(newTrack => {
+      setAudioTrack(newTrack);
+      return newTrack;
+    });
   }, []);
 
   const getLocalVideoTrack = useCallback((newOptions?: CreateLocalTrackOptions) => {
@@ -37,12 +33,10 @@ export default function useLocalTracks() {
       ...newOptions,
     };
 
-    return ensureMediaPermissions().then(() =>
-      Video.createLocalVideoTrack(options).then(newTrack => {
-        setVideoTrack(newTrack);
-        return newTrack;
-      })
-    );
+    return Video.createLocalVideoTrack(options).then(newTrack => {
+      setVideoTrack(newTrack);
+      return newTrack;
+    });
   }, []);
 
   useEffect(() => {
