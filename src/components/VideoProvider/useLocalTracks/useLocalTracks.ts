@@ -5,6 +5,7 @@ import Video, { LocalVideoTrack, LocalAudioTrack, CreateLocalTrackOptions } from
 
 export function useLocalAudioTrack() {
   const [track, setTrack] = useState<LocalAudioTrack>();
+  const [isAcquiringLocalAudioTrack, setIsAcquiringLocalAudioTrack] = useState(false);
 
   const getLocalAudioTrack = useCallback((deviceId?: string) => {
     const options: CreateLocalTrackOptions = {};
@@ -22,7 +23,9 @@ export function useLocalAudioTrack() {
   }, []);
 
   useEffect(() => {
-    getLocalAudioTrack();
+    // We get a new local audio track when the app loads.
+    setIsAcquiringLocalAudioTrack(true);
+    getLocalAudioTrack().finally(() => setIsAcquiringLocalAudioTrack(false));
   }, [getLocalAudioTrack]);
 
   useEffect(() => {
@@ -35,11 +38,12 @@ export function useLocalAudioTrack() {
     }
   }, [track]);
 
-  return [track, getLocalAudioTrack] as const;
+  return { audioTrack: track, getLocalAudioTrack, isAcquiringLocalAudioTrack };
 }
 
 export function useLocalVideoTrack() {
   const [track, setTrack] = useState<LocalVideoTrack>();
+  const [isAcquiringLocalVideoTrack, setIsAcquiringLocalVideoTrack] = useState(false);
 
   const getLocalVideoTrack = useCallback((newOptions?: CreateLocalTrackOptions) => {
     // In the DeviceSelector and FlipCameraButton components, a new video track is created,
@@ -65,7 +69,8 @@ export function useLocalVideoTrack() {
 
   useEffect(() => {
     // We get a new local video track when the app loads.
-    getLocalVideoTrack();
+    setIsAcquiringLocalVideoTrack(true);
+    getLocalVideoTrack().finally(() => setIsAcquiringLocalVideoTrack(false));
   }, [getLocalVideoTrack]);
 
   useEffect(() => {
@@ -78,17 +83,19 @@ export function useLocalVideoTrack() {
     }
   }, [track]);
 
-  return [track, getLocalVideoTrack] as const;
+  return { videoTrack: track, getLocalVideoTrack, isAcquiringLocalVideoTrack };
 }
 
 export default function useLocalTracks() {
-  const [audioTrack, getLocalAudioTrack] = useLocalAudioTrack();
-  const [videoTrack, getLocalVideoTrack] = useLocalVideoTrack();
+  const { audioTrack, getLocalAudioTrack, isAcquiringLocalAudioTrack } = useLocalAudioTrack();
+  const { videoTrack, getLocalVideoTrack, isAcquiringLocalVideoTrack } = useLocalVideoTrack();
+
+  const isAcquiringLocalTracks = isAcquiringLocalAudioTrack || isAcquiringLocalVideoTrack;
 
   const localTracks = [audioTrack, videoTrack].filter(track => track !== undefined) as (
     | LocalAudioTrack
     | LocalVideoTrack
   )[];
 
-  return { localTracks, getLocalVideoTrack, getLocalAudioTrack };
+  return { localTracks, getLocalVideoTrack, getLocalAudioTrack, isAcquiringLocalTracks };
 }

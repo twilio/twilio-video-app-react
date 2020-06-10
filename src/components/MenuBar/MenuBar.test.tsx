@@ -108,6 +108,17 @@ describe('the MenuBar component', () => {
     expect(getByText('Join Room')).toBeDisabled();
   });
 
+  it('should disable the Join Room button while local tracks are being acquired', () => {
+    mockedUseRoomState.mockImplementation(() => 'disconnected');
+    mockedUseVideoContext.mockImplementation(
+      () => ({ isAcquiringLocalTracks: true, room: {}, localTracks: [] } as any)
+    );
+    const { getByLabelText, getByText } = render(renderComponent());
+    fireEvent.change(getByLabelText('Name'), { target: { value: 'Foo' } });
+    fireEvent.change(getByLabelText('Room'), { target: { value: 'Foo' } });
+    expect(getByText('Join Room')).toBeDisabled();
+  });
+
   it('should update the URL to include the room name on submit', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
     mockedUseVideoContext.mockImplementation(
