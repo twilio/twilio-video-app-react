@@ -8,6 +8,8 @@ import { EventEmitter } from 'events';
 navigator.mediaDevices = { enumerateDevices: () => Promise.resolve([{ deviceId: 1, label: '1' }]) };
 
 describe('the useLocalTracks hook', () => {
+  afterEach(jest.clearAllMocks);
+
   it('should return an array of tracks and two functions', async () => {
     const { result, waitForNextUpdate } = renderHook(useLocalTracks);
     expect(result.current.localTracks).toEqual([]);
@@ -16,16 +18,18 @@ describe('the useLocalTracks hook', () => {
     expect(result.current.getLocalVideoTrack).toEqual(expect.any(Function));
   });
 
-  it('should be called with the correct arguments', async () => {
+  it('should create local tracks when loaded', async () => {
     Date.now = () => 123456;
     const { waitForNextUpdate } = renderHook(useLocalTracks);
     await waitForNextUpdate();
-    expect(Video.createLocalAudioTrack).toHaveBeenCalled();
-    expect(Video.createLocalVideoTrack).toHaveBeenCalledWith({
-      frameRate: 24,
-      height: 720,
-      width: 1280,
-      name: 'camera-123456',
+    expect(Video.createLocalTracks).toHaveBeenCalledWith({
+      audio: true,
+      video: {
+        frameRate: 24,
+        width: 1280,
+        height: 720,
+        name: 'camera-123456',
+      },
     });
   });
 
