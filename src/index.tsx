@@ -14,19 +14,19 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import theme from './theme';
 import './types';
 import { VideoProvider } from './components/VideoProvider';
-import UnsupportedBrowserWarnings from './components/UnsupportedBrowserWarning/UnsupportedBrowserWarning';
+import UnsupportedBrowserWarning from './components/UnsupportedBrowserWarning/UnsupportedBrowserWarning';
 
 const VideoApp = () => {
   const { error, setError, settings } = useAppState();
   const connectionOptions = generateConnectionOptions(settings);
 
   return (
-    <VideoProvider options={connectionOptions} onError={setError}>
-      <ErrorDialog dismissError={() => setError(null)} error={error} />
-      <UnsupportedBrowserWarnings>
+    <UnsupportedBrowserWarning>
+      <VideoProvider options={connectionOptions} onError={setError}>
+        <ErrorDialog dismissError={() => setError(null)} error={error} />
         <App />
-      </UnsupportedBrowserWarnings>
-    </VideoProvider>
+      </VideoProvider>
+    </UnsupportedBrowserWarning>
   );
 };
 
