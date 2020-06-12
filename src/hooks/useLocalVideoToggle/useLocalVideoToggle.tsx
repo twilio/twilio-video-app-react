@@ -7,6 +7,7 @@ export default function useLocalVideoToggle() {
     room: { localParticipant },
     localTracks,
     getLocalVideoTrack,
+    onError,
   } = useVideoContext();
   const videoTrack = localTracks.find(track => track.name.includes('camera')) as LocalVideoTrack;
   const [isPublishing, setIspublishing] = useState(false);
@@ -22,7 +23,8 @@ export default function useLocalVideoToggle() {
         setIspublishing(true);
         getLocalVideoTrack()
           .then((track: LocalVideoTrack) => localParticipant?.publishTrack(track, { priority: 'low' }))
-          .then(() => setIspublishing(false));
+          .catch(onError)
+          .finally(() => setIspublishing(false));
       }
     }
   }, [videoTrack, localParticipant, getLocalVideoTrack, isPublishing]);

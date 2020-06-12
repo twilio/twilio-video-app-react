@@ -131,5 +131,27 @@ describe('the useLocalVideoToggle hook', () => {
       expect(mockGetLocalVideoTrack).toHaveBeenCalledTimes(1);
       await waitForNextUpdate();
     });
+
+    it('should not call onError when LocalParticipant throws an error', async () => {
+      const mockGetLocalVideoTrack = jest.fn(() => Promise.resolve('mocmockTrack'));
+      const mockOnError = jest.fn();
+
+      const mockLocalParticipant = new EventEmitter() as LocalParticipant;
+      mockLocalParticipant.publishTrack = jest.fn(() => Promise.reject('mockError'));
+
+      mockUseVideoContext.mockImplementation(() => ({
+        localTracks: [],
+        getLocalVideoTrack: mockGetLocalVideoTrack,
+        room: { localParticipant: mockLocalParticipant },
+        onError: mockOnError,
+      }));
+
+      const { result, waitForNextUpdate } = renderHook(useLocalVideoToggle);
+      act(() => {
+        result.current[1]();
+      });
+      await waitForNextUpdate();
+      expect(mockOnError).toHaveBeenCalledWith('mockError');
+    });
   });
 });
