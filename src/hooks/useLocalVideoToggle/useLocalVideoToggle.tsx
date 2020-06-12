@@ -27,7 +27,7 @@ export default function useLocalVideoToggle() {
           .finally(() => setIspublishing(false));
       }
     }
-  }, [videoTrack, localParticipant, getLocalVideoTrack, isPublishing]);
+  }, [videoTrack, localParticipant, getLocalVideoTrack, isPublishing, onError]);
 
   return [!!videoTrack, toggleVideoEnabled] as const;
 }
