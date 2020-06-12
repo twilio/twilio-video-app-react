@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useRef } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import Fab from '@material-ui/core/Fab';
@@ -19,6 +19,14 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function ToggleVideoButton(props: { disabled?: boolean }) {
   const classes = useStyles();
   const [isVideoEnabled, toggleVideoEnabled] = useLocalVideoToggle();
+  const lastClickTimeRef = useRef(0);
+
+  const toggleVideo = useCallback(() => {
+    if (Date.now() - lastClickTimeRef.current > 200) {
+      lastClickTimeRef.current = Date.now();
+      toggleVideoEnabled();
+    }
+  }, [toggleVideoEnabled]);
 
   return (
     <Tooltip
@@ -26,7 +34,7 @@ export default function ToggleVideoButton(props: { disabled?: boolean }) {
       placement="top"
       PopperProps={{ disablePortal: true }}
     >
-      <Fab className={classes.fab} onClick={toggleVideoEnabled} disabled={props.disabled}>
+      <Fab className={classes.fab} onClick={toggleVideo} disabled={props.disabled}>
         {isVideoEnabled ? <Videocam /> : <VideocamOff />}
       </Fab>
     </Tooltip>
