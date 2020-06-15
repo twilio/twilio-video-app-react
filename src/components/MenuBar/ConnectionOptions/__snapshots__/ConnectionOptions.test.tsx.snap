@@ -152,7 +152,7 @@ exports[`the ConnectionOptions component when connected to a room should render 
           name="maxTracks"
           onChange={[Function]}
           placeholder="Leave blank for no limit"
-          value="0"
+          value="10"
         />
       </WithStyles(ForwardRef(FormControl))>
       <WithStyles(ForwardRef(FormControl))
@@ -572,7 +572,7 @@ exports[`the ConnectionOptions component when not connected to a room should ren
           name="maxTracks"
           onChange={[Function]}
           placeholder="Leave blank for no limit"
-          value="0"
+          value="10"
         />
       </WithStyles(ForwardRef(FormControl))>
       <WithStyles(ForwardRef(FormControl))
