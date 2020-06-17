@@ -55,7 +55,6 @@ export default function useLocalTracks() {
         const audioTrack = tracks.find(track => track.kind === 'audio');
         if (videoTrack) {
           setVideoTrack(videoTrack as LocalVideoTrack);
-          console.log(videoTrack);
         }
         if (audioTrack) {
           setAudioTrack(audioTrack as LocalAudioTrack);
