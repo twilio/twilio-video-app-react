@@ -1,6 +1,7 @@
 import { LocalVideoTrack } from 'twilio-video';
 import { useCallback, useState } from 'react';
 import useVideoContext from '../useVideoContext/useVideoContext';
+import useIsLocalTrackStopped from '../useIsLocalTrackStopped/useIsLocalTrackStopped';
 
 export default function useLocalVideoToggle() {
   const {
@@ -11,10 +12,11 @@ export default function useLocalVideoToggle() {
   } = useVideoContext();
   const videoTrack = localTracks.find(track => track.name.includes('camera')) as LocalVideoTrack;
   const [isPublishing, setIspublishing] = useState(false);
+  const isStopped = useIsLocalTrackStopped(videoTrack);
 
   const toggleVideoEnabled = useCallback(() => {
     if (!isPublishing) {
-      if (videoTrack) {
+      if (videoTrack && !isStopped) {
         const localTrackPublication = localParticipant?.unpublishTrack(videoTrack);
         // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
         localParticipant?.emit('trackUnpublished', localTrackPublication);
@@ -27,7 +29,7 @@ export default function useLocalVideoToggle() {
           .finally(() => setIspublishing(false));
       }
     }
-  }, [videoTrack, localParticipant, getLocalVideoTrack, isPublishing, onError]);
+  }, [videoTrack, localParticipant, getLocalVideoTrack, isPublishing, onError, isStopped]);
 
-  return [!!videoTrack, toggleVideoEnabled] as const;
+  return [!isStopped, toggleVideoEnabled] as const;
 }

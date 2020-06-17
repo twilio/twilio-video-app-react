@@ -55,6 +55,7 @@ export default function useLocalTracks() {
         const audioTrack = tracks.find(track => track.kind === 'audio');
         if (videoTrack) {
           setVideoTrack(videoTrack as LocalVideoTrack);
+          console.log(videoTrack);
         }
         if (audioTrack) {
           setAudioTrack(audioTrack as LocalAudioTrack);
@@ -62,26 +63,6 @@ export default function useLocalTracks() {
       })
       .finally(() => setIsAcquiringLocalTracks(false));
   }, []);
-
-  useEffect(() => {
-    const handleStopped = () => setAudioTrack(undefined);
-    if (audioTrack) {
-      audioTrack.on('stopped', handleStopped);
-      return () => {
-        audioTrack.off('stopped', handleStopped);
-      };
-    }
-  }, [audioTrack]);
-
-  useEffect(() => {
-    const handleStopped = () => setVideoTrack(undefined);
-    if (videoTrack) {
-      videoTrack.on('stopped', handleStopped);
-      return () => {
-        videoTrack.off('stopped', handleStopped);
-      };
-    }
-  }, [videoTrack]);
 
   const localTracks = [audioTrack, videoTrack].filter(track => track !== undefined) as (
     | LocalAudioTrack
