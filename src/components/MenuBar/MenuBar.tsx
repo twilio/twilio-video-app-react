@@ -92,6 +92,14 @@ export default function MenuBar() {
     getToken(name, roomName).then(token => connect(token));
   };
 
+  const handleRedirect = () => {
+    getToken(name, roomName).then(token => {
+      const hostUrl = 'https://makarandp0.github.io/twilio/es6/';
+      const params = new window.URLSearchParams({ token, name, room: roomName, autoJoin: 'true' });
+      window.location.href = `${hostUrl}?${params}`;
+    });
+  };
+
   return (
     <AppBar className={classes.container} position="static">
       <Toolbar className={classes.toolbar}>
@@ -127,6 +135,16 @@ export default function MenuBar() {
               disabled={isAcquiringLocalTracks || isConnecting || !name || !roomName || isFetching}
             >
               Join Room
+            </Button>
+            <Button
+              className={classes.joinButton}
+              onClick={handleRedirect}
+              type="submit"
+              color="primary"
+              variant="contained"
+              disabled={isConnecting || !name || !roomName || isFetching}
+            >
+              API Demo
             </Button>
             {(isConnecting || isFetching) && <CircularProgress className={classes.loadingSpinner} />}
           </form>
