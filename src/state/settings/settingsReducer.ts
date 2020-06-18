@@ -1,5 +1,6 @@
-import { Track, VideoBandwidthProfileOptions } from 'twilio-video';
+import { isMobile } from '../../utils';
 import { RenderDimensionValue } from './renderDimensions';
+import { Track, VideoBandwidthProfileOptions } from 'twilio-video';
 
 export interface Settings {
   trackSwitchOffMode: VideoBandwidthProfileOptions['trackSwitchOffMode'];
@@ -23,7 +24,7 @@ export const initialSettings: Settings = {
   trackSwitchOffMode: undefined,
   dominantSpeakerPriority: 'standard',
   bandwidthProfileMode: 'collaboration',
-  maxTracks: '0',
+  maxTracks: isMobile ? '5' : '10',
   maxAudioBitrate: '16000',
   renderDimensionLow: 'low',
   renderDimensionStandard: '960p',

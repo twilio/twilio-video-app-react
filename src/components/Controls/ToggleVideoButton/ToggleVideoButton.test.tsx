@@ -32,4 +32,18 @@ describe('the ToggleVideoButton component', () => {
     wrapper.find('WithStyles(ForwardRef(Fab))').simulate('click');
     expect(mockFn).toHaveBeenCalled();
   });
+
+  it('should throttle the toggle function to 200ms', () => {
+    const mockFn = jest.fn();
+    mockUseLocalVideoToggle.mockImplementation(() => [false, mockFn]);
+    const wrapper = shallow(<ToggleVideoButton />);
+    const button = wrapper.find('WithStyles(ForwardRef(Fab))');
+    Date.now = () => 100000;
+    button.simulate('click'); // Should register
+    Date.now = () => 100100;
+    button.simulate('click'); // Should be ignored
+    Date.now = () => 100300;
+    button.simulate('click'); // Should register
+    expect(mockFn).toHaveBeenCalledTimes(2);
+  });
 });
