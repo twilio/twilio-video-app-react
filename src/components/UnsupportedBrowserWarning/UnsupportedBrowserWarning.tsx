@@ -25,10 +25,10 @@ export default function({ children }: { children: React.ReactElement }) {
           <Grid item xs={12} sm={6}>
             <Paper className={classes.paper}>
               <Typography variant="h4" className={classes.heading}>
-                Browser not supported
+                Browser or context not supported
               </Typography>
               <Typography>
-                This is not a supported browser. Please refer to our list of{' '}
+                Please open this application in one of the{' '}
                 <Link
                   href="https://www.twilio.com/docs/video/javascript#supported-browsers"
                   target="_blank"
@@ -38,21 +38,15 @@ export default function({ children }: { children: React.ReactElement }) {
                 </Link>
                 .
                 <br />
-                {!window.isSecureContext && (
-                  <>
-                    If you are using a browser on the supported browser list, please ensure that this app is served over
-                    a secure context. This app must be served over a secure context (e.g. https or localhost). Please
-                    see:{' '}
-                    <Link
-                      href="https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts"
-                      target="_blank"
-                      rel="noopener"
-                    >
-                      https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts
-                    </Link>
-                    .
-                  </>
-                )}
+                If you are using a supported browser, please ensure that this app is served over a{' '}
+                <Link
+                  href="https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  secure context
+                </Link>{' '}
+                (e.g. https or localhost).
               </Typography>
             </Paper>
           </Grid>

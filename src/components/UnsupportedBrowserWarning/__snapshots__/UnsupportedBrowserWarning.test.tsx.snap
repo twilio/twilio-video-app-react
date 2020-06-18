@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`the UnsupportedBrowserWarning component should render correctly when isSupported is false and isSecureContext is true 1`] = `
+exports[`the UnsupportedBrowserWarning component should render correctly when isSupported is false 1`] = `
 <WithStyles(ForwardRef(Container))>
   <WithStyles(ForwardRef(Grid))
     className="makeStyles-container-1"
@@ -19,10 +19,10 @@ exports[`the UnsupportedBrowserWarning component should render correctly when is
           className="makeStyles-heading-3"
           variant="h4"
         >
-          Browser not supported
+          Browser or context not supported
         </WithStyles(ForwardRef(Typography))>
         <WithStyles(ForwardRef(Typography))>
-          This is not a supported browser. Please refer to our list of
+          Please open this application in one of the
            
           <WithStyles(ForwardRef(Link))
             href="https://www.twilio.com/docs/video/javascript#supported-browsers"
@@ -33,56 +33,17 @@ exports[`the UnsupportedBrowserWarning component should render correctly when is
           </WithStyles(ForwardRef(Link))>
           .
           <br />
-        </WithStyles(ForwardRef(Typography))>
-      </WithStyles(ForwardRef(Paper))>
-    </WithStyles(ForwardRef(Grid))>
-  </WithStyles(ForwardRef(Grid))>
-</WithStyles(ForwardRef(Container))>
-`;
-
-exports[`the UnsupportedBrowserWarning component should render correctly when isSupported is false and isSecureContext is true 2`] = `
-<WithStyles(ForwardRef(Container))>
-  <WithStyles(ForwardRef(Grid))
-    className="makeStyles-container-1"
-    container={true}
-    justify="center"
-  >
-    <WithStyles(ForwardRef(Grid))
-      item={true}
-      sm={6}
-      xs={12}
-    >
-      <WithStyles(ForwardRef(Paper))
-        className="makeStyles-paper-2"
-      >
-        <WithStyles(ForwardRef(Typography))
-          className="makeStyles-heading-3"
-          variant="h4"
-        >
-          Browser not supported
-        </WithStyles(ForwardRef(Typography))>
-        <WithStyles(ForwardRef(Typography))>
-          This is not a supported browser. Please refer to our list of
-           
-          <WithStyles(ForwardRef(Link))
-            href="https://www.twilio.com/docs/video/javascript#supported-browsers"
-            rel="noopener"
-            target="_blank"
-          >
-            supported browsers
-          </WithStyles(ForwardRef(Link))>
-          .
-          <br />
-          If you are using a browser on the supported browser list, please ensure that this app is served over a secure context. This app must be served over a secure context (e.g. https or localhost). Please see:
+          If you are using a supported browser, please ensure that this app is served over a
            
           <WithStyles(ForwardRef(Link))
             href="https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts"
             rel="noopener"
             target="_blank"
           >
-            https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts
+            secure context
           </WithStyles(ForwardRef(Link))>
-          .
+           
+          (e.g. https or localhost).
         </WithStyles(ForwardRef(Typography))>
       </WithStyles(ForwardRef(Paper))>
     </WithStyles(ForwardRef(Grid))>
