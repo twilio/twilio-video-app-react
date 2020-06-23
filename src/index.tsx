@@ -14,7 +14,9 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import theme from './theme';
 import './types';
 import { VideoProvider } from './components/VideoProvider';
-
+import Video from 'twilio-video';
+import { demo } from './demoapp/videoapidemo';
+import './demoapp/index.css';
 const VideoApp = () => {
   const { error, setError, settings } = useAppState();
   const connectionOptions = generateConnectionOptions(settings);
@@ -27,25 +29,30 @@ const VideoApp = () => {
   );
 };
 
-ReactDOM.render(
-  <MuiThemeProvider theme={theme}>
-    <CssBaseline />
-    <Router>
-      <AppStateProvider>
-        <Switch>
-          <PrivateRoute exact path="/">
-            <VideoApp />
-          </PrivateRoute>
-          <PrivateRoute path="/room/:URLRoomName">
-            <VideoApp />
-          </PrivateRoute>
-          <Route path="/login">
-            <LoginPage />
-          </Route>
-          <Redirect to="/" />
-        </Switch>
-      </AppStateProvider>
-    </Router>
-  </MuiThemeProvider>,
-  document.getElementById('root')
-);
+const apiDemo = window.location.search.includes('apidemo=true');
+if (apiDemo === true) {
+  demo(Video, document.getElementById('root'));
+} else {
+  ReactDOM.render(
+    <MuiThemeProvider theme={theme}>
+      <CssBaseline />
+      <Router>
+        <AppStateProvider>
+          <Switch>
+            <PrivateRoute exact path="/">
+              <VideoApp />
+            </PrivateRoute>
+            <PrivateRoute path="/room/:URLRoomName">
+              <VideoApp />
+            </PrivateRoute>
+            <Route path="/login">
+              <LoginPage />
+            </Route>
+            <Redirect to="/" />
+          </Switch>
+        </AppStateProvider>
+      </Router>
+    </MuiThemeProvider>,
+    document.getElementById('root')
+  );
+}

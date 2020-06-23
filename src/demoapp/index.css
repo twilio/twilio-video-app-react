@@ -1,0 +1,227 @@
+@import url(https://fonts.googleapis.com/css?family=Share+Tech+Mono);
+
+div#controls {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+div#main {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  height: auto;
+  width: 100%;
+  background-color: #fff;
+  border: solid red 2px;
+  text-align: center;
+  padding: 2px;
+}
+
+h1.badError {
+  border: solid red;
+  text-align: center;
+}
+
+div#main div#localControls {
+  margin: 10px;
+  display: flex;
+  width: 100%;
+  background-color: #fff;
+}
+
+div#main div#localControls div#audioTrack,
+div#main div#localControls div#videoTrack,
+div#main div#localControls div#room-controls {
+  margin: 10px;
+  width: 30%;
+  background-color: #fff;
+}
+
+body {
+  margin: 2px;
+}
+
+div#main video {
+  max-width: 100% !important;
+  max-height: 80% !important;
+}
+
+div#remote-participants {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  height: auto;
+  width: 100%;
+  background-color: #fff;
+  text-align: center;
+  margin: auto;
+}
+
+div.participantDiv {
+  /* display: flex; */
+  margin: 2px;
+}
+
+div.participantMediaDiv {
+  display: flex;
+}
+
+div.audioContainer,
+div.videoContainer {
+  margin: 10px;
+  max-width: 400px;
+}
+
+div.audioContainer {
+  order: 1;
+  border: solid 1px red;
+}
+
+div.videoContainer {
+  order: 2;
+  border: solid 1px blue;
+}
+
+.trackName,
+.participantName,
+.participantSid {
+  background-color: rgba(0, 0, 0, 0.4);
+  color: white;
+  max-width: calc((100% - 16px) - 0.5em);
+  min-width: 100px;
+  margin: 0.25em;
+  border-radius: 4px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+/* div#remote-participants h6 {
+  background-color: rgba(0, 0, 0, 0.4);
+  color: white;
+  max-width: calc((100% - 16px) - 0.5em);
+  margin: 0.25em;
+  border-radius: 4px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+*/
+
+#roomName {
+  padding: 2px;
+  border: 1px solid black;
+  margin: 2px;
+}
+
+.labeledStat {
+  margin: 2px;
+}
+
+.enabled.enabled_false,
+.muted.muted_true {
+  background: yellow;
+}
+
+.readyState.readyState_live {
+  background: lightgreen;
+}
+
+.readyState.readyState_ended {
+  background: red;
+}
+
+.bytes {
+  background: lightgreen;
+}
+
+.bytes.bytes_0 {
+  background: gray;
+}
+
+canvas {
+  background-color: #aaa;
+}
+
+div#controls div#room-controls,
+div#controls div#preview div#log {
+  /* width: 16em; */
+  margin: 0 1.5em;
+  text-align: center;
+}
+
+div#control-options {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div#controls div#preview button#button-preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div#controls div#preview button#button-preview img#button-preview-image {
+  padding-right: 1em;
+  color: white;
+}
+
+div#controls p.instructions {
+  text-align: left;
+  margin-bottom: 1em;
+  font-size: 1.25em;
+  color: #777776;
+}
+
+button#button-preview {
+  width: 270px;
+}
+
+div#log {
+  border: 1px solid #686865;
+}
+
+div#room-controls {
+  order: 3;
+  display: flex;
+}
+
+div#room-controls input {
+  width: 100%;
+  height: 2.5em;
+  padding: 0.5em;
+  text-align: center;
+}
+
+div#controls div#room-controls > button#button-leave {
+  display: none;
+  text-align: center;
+  margin-top: 0;
+}
+
+div#room-controls > button {
+  text-align: center;
+}
+
+.log {
+  /* width: 25em; */
+  height: 15em;
+  min-height: 100%;
+  max-height: 100%;
+  margin-top: 3.125em;
+  text-align: left;
+  padding: 1.5em;
+  overflow-y: scroll;
+}
+
+.log p {
+  color: #686865;
+  font-family: 'Share Tech Mono', 'Courier New', Courier, fixed-width;
+  font-size: 1.25em;
+  line-height: 1.25em;
+  margin-left: 1em;
+  text-indent: -1.25em;
+  width: 90%;
+}
