@@ -24,7 +24,6 @@ export default function generateConnectionOptions(settings: Settings) {
       },
     },
     dominantSpeaker: true,
-    logLevel: 'debug',
     networkQuality: { local: 1, remote: 1 },
 
     // Comment this line if you are playing music.

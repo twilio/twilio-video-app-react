@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-'use strict';
 
 const CANVAS_HEIGHT = 150;
 const CANVAS_WIDTH = 300;
@@ -9,6 +8,8 @@ const AudioContext = window.AudioContext || window.webkitAudioContext; // Defaul
 if (!AudioContext) {
   console.error('AudioContext is not supported on this platform ');
 }
+const audioContext = new AudioContext();
+
 /**
  * @typedef {Object} WaveformOptions
  * @property {string} [height='100%'] - The CSS height to apply to the canvas, limiting the size
@@ -21,7 +22,8 @@ if (!AudioContext) {
  * Create a waveform element to attach to the DOM.
  * @param {WaveformOptions} [options]
  * @property {HTMLDivElement} element - The HTML element to add to the page.
- */ export function Waveform(options) {
+ */
+export function Waveform(options) {
   if (!(this instanceof Waveform)) {
     return new Waveform(options);
   }
@@ -55,7 +57,6 @@ if (!AudioContext) {
   canvasContext.strokeStyle = 'rgb(0, 0, 0)';
 
   // We will get the frequency data by using an AnalyserNode, a feature of the AudioContext APIs.
-  const audioContext = new AudioContext();
   const analyser = audioContext.createAnalyser();
 
   // The FFT (fast fourier transform) takes a size parameter, which determines how many frequency

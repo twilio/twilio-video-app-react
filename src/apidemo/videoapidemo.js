@@ -2,7 +2,6 @@
 /* eslint-disable require-atomic-updates */
 /* eslint-disable no-console */
 /* eslint-disable quotes */
-'use strict';
 
 import { Waveform } from './waveform.js';
 
