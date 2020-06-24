@@ -15,8 +15,8 @@ import theme from './theme';
 import './types';
 import { VideoProvider } from './components/VideoProvider';
 import Video from 'twilio-video';
-import { demo } from './demoapp/videoapidemo';
-import './demoapp/index.css';
+import { demo } from './apidemo/videoapidemo';
+import './apidemo/index.css';
 const VideoApp = () => {
   const { error, setError, settings } = useAppState();
   const connectionOptions = generateConnectionOptions(settings);
@@ -29,8 +29,7 @@ const VideoApp = () => {
   );
 };
 
-const apiDemo = window.location.search.includes('apidemo=true');
-if (apiDemo === true) {
+if (window.location.search.includes('apidemo=true')) {
   demo(Video, document.getElementById('root'));
 } else {
   ReactDOM.render(

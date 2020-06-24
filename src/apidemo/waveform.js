@@ -4,8 +4,7 @@
 const CANVAS_HEIGHT = 150;
 const CANVAS_WIDTH = 300;
 const FFT_SIZE = 512;
-const AudioContext =
-  window.AudioContext || window.webkitAudioContext; // Default // Safari and old versions of Chrome
+const AudioContext = window.AudioContext || window.webkitAudioContext; // Default // Safari and old versions of Chrome
 
 if (!AudioContext) {
   console.error('AudioContext is not supported on this platform ');
