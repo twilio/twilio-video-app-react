@@ -195,7 +195,7 @@ export function demo(Video, containerDiv) {
     waveform.setStream(audioElement.srcObject);
     const canvasContainer = createDiv(container, 'canvasContainer');
     canvasContainer.appendChild(waveform.element);
-    return audioElement;
+    return { audioElement, waveform };
   }
 
   // styleMap uses the values to decide the style.
@@ -370,6 +370,7 @@ export function demo(Video, containerDiv) {
     createButton('update', controlContainer, () => updateStats('update'));
 
     let mediaControls = null;
+    let waveform = null;
     const attachDetachBtn = createButton('attach', controlContainer, () => {
       if (mediaControls) {
         // track is already attached.
@@ -377,12 +378,16 @@ export function demo(Video, containerDiv) {
         mediaControls.remove();
         mediaControls = null;
         attachDetachBtn.text('attach');
+        if (waveform) {
+          waveform.unsetStream();
+          waveform = null;
+        }
       } else {
         // track is detached.
         mediaControls = createDiv(trackContainer, 'mediaControls');
         let audioVideoElement = null;
         if (track.kind === 'audio') {
-          audioVideoElement = attachAudioTrack(track, mediaControls);
+          ({ audioElement: audioVideoElement, waveform } = attachAudioTrack(track, mediaControls));
         } else {
           audioVideoElement = track.attach();
           mediaControls.appendChild(audioVideoElement);
