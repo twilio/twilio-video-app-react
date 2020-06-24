@@ -54,13 +54,14 @@ function createLabeledCheckbox(container, labelText, id) {
   return checkbox;
 }
 
-function createStaticHtml(div) {
-  const mainDiv = createDiv(div, 'main', 'main');
+export function demo(Video, containerDiv) {
+  // create html
+  const mainDiv = createDiv(containerDiv, 'main', 'main');
+  const logDiv = createDiv(containerDiv, 'outerLog', 'log');
   const twilioVideoVersion = createElement(mainDiv, { type: 'h1', id: 'twilioVideoVersion' });
   const localControls = createDiv(mainDiv, 'localControls', 'localControls');
   const localAudioTrackContainer = createDiv(localControls, 'audioTrackContainer', 'audioTrack');
   const localVideoTrackContainer = createDiv(localControls, 'videoTrackContainer', 'videoTrack');
-
   const btnPreviewAudio = createElement(localAudioTrackContainer, {
     type: 'button',
     id: 'button-preview-audio',
@@ -78,8 +79,8 @@ function createStaticHtml(div) {
   const roomControlsDiv = createDiv(localControls, 'room-controls', 'room-controls');
   const roomSid = createElement(roomControlsDiv, { type: 'h2', id: 'roomSid' });
   const localIdentity = createElement(roomControlsDiv, { type: 'h2', id: 'localIdentity' });
-  const roomName = createElement(roomControlsDiv, { type: 'input', id: 'room-name' });
-  roomName.placeholder = 'Enter room name';
+  const roomNameInput = createElement(roomControlsDiv, { type: 'input', id: 'room-name' });
+  roomNameInput.placeholder = 'Enter room name';
 
   const controlOptionsDiv = createDiv(roomControlsDiv, 'control-options', 'control-options');
 
@@ -101,35 +102,9 @@ function createStaticHtml(div) {
   btnLeave.innerHTML = 'Leave';
 
   const remoteParticipantsContainer = createDiv(mainDiv, 'remote-participants', 'remote-participants');
-
-  const logDiv = createDiv(div, 'outerlog', 'log');
-}
-
-export function demo(Video, containerDiv) {
-  if (containerDiv) {
-    createStaticHtml(containerDiv);
-  }
-
-  const remoteParticipantsContainer = document.getElementById('remote-participants');
-  const btnJoin = document.getElementById('button-join');
-  const btnLeave = document.getElementById('button-leave');
-  const logDiv = document.getElementById('log');
-
-  const localAudioTrackContainer = document.getElementById('audioTrack');
-  const localVideoTrackContainer = document.getElementById('videoTrack');
-  const btnPreviewAudio = document.getElementById('button-preview-audio');
-  const btnPreviewVideo = document.getElementById('button-preview-video');
-  const localIdentity = document.getElementById('localIdentity');
-  const autoPublish = document.getElementById('autoPublish');
-  const autoAttach = document.getElementById('autoAttach');
-  const autoJoin = document.getElementById('autoJoin');
-  const roomName = document.getElementById('room-name');
-  const twilioVideoVersion = document.getElementById('twilioVideoVersion');
   twilioVideoVersion.innerHTML = 'Twilio-Video@' + Video.version;
-  const roomSid = document.getElementById('roomSid');
 
   // process parameters.
-
   const { protocol, host, pathname } = window.location;
   console.log({ protocol, host, pathname });
   var urlParams = new URLSearchParams(window.location.search);
@@ -151,7 +126,7 @@ export function demo(Video, containerDiv) {
     window.history.replaceState(null, '', window.encodeURI(`${protocol}//${host}${pathname}?${urlParams}`));
   }
 
-  roomName.value = urlParams.get('room');
+  roomNameInput.value = urlParams.get('room');
   autoAttach.checked = !urlParams.has('noAutoAttach');
   autoPublish.checked = !urlParams.has('noAutoPublish');
   autoJoin.checked = urlParams.has('room') && urlParams.has('autoJoin');
@@ -497,7 +472,7 @@ export function demo(Video, containerDiv) {
   window.addEventListener('beforeunload', leaveRoomIfJoined);
 
   function joinRoom(token) {
-    var roomName = document.getElementById('room-name').value;
+    var roomName = roomNameInput.value;
     if (!roomName) {
       // eslint-disable-next-line no-alert
       alert('Please enter a room name.');
@@ -523,7 +498,7 @@ export function demo(Video, containerDiv) {
   function updateControls(connected) {
     roomSid.innerHTML = connected ? activeRoom.sid : 'Room: Not Joined';
     localIdentity.innerHTML = connected ? activeRoom.localParticipant.identity : 'Identity: Unknown';
-    document.getElementById('room-controls').style.display = 'block';
+    roomControlsDiv.style.display = 'block';
 
     [btnLeave].forEach(btn => {
       btn.disabled = connected === false;
@@ -635,7 +610,7 @@ export function demo(Video, containerDiv) {
             width: 1280,
             name: `camera-${Date.now()}`,
           })
-        : await Video.createLocalAudioTrack({ logLevel: 'debug' /*, workaroundWebKitBug1208516: true */ });
+        : await Video.createLocalAudioTrack({ logLevel: 'debug' /* , workaroundWebKitBug1208516: true */ });
 
       window.tracks.push(localTrack);
       const trackContainer = renderTrack(localTrack, container, true);

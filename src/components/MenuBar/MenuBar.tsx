@@ -94,15 +94,15 @@ export default function MenuBar() {
 
   const handleRedirect = () => {
     getToken(name, roomName).then(token => {
-      // const hostUrl = 'https://makarandp0.github.io/twilio/es6/';
       const { protocol, host, pathname } = window.location;
       console.log(protocol, host, pathname);
       const hostUrl = `${protocol}//${host}`;
       const params = new window.URLSearchParams({
+        apidemo: 'true',
+        autoJoin: 'true',
         token,
         name,
         room: roomName,
-        /* autoJoin: 'true', */ apidemo: 'true',
       });
       window.location.href = `${hostUrl}?${params}`;
     });
@@ -161,7 +161,7 @@ export default function MenuBar() {
         )}
         <div className={classes.rightButtonContainer}>
           <FlipCameraButton />
-          {/* <LocalAudioLevelIndicator /> */}
+          <LocalAudioLevelIndicator />
           <ToggleFullscreenButton />
           <Menu />
         </div>

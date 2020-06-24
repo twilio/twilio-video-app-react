@@ -7,7 +7,9 @@ export default function useLocalTracks() {
   const [isAcquiringLocalTracks, setIsAcquiringLocalTracks] = useState(false);
 
   const getLocalAudioTrack = useCallback((deviceId?: string) => {
-    const options: CreateLocalTrackOptions = {};
+    const options: CreateLocalTrackOptions = {
+      logLevel: 'debug',
+    };
 
     if (deviceId) {
       options.deviceId = { exact: deviceId };
@@ -28,6 +30,7 @@ export default function useLocalTracks() {
     const options: CreateLocalTrackOptions = {
       frameRate: 24,
       height: 720,
+      logLevel: 'debug',
       width: 1280,
       name: `camera-${Date.now()}`,
       ...newOptions,
