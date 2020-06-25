@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`the UnsupportedBrowserWarning component should render correctly when isSupported is false 1`] = `
+<WithStyles(ForwardRef(Container))>
+  <WithStyles(ForwardRef(Grid))
+    className="makeStyles-container-1"
+    container={true}
+    justify="center"
+  >
+    <WithStyles(ForwardRef(Grid))
+      item={true}
+      sm={6}
+      xs={12}
+    >
+      <WithStyles(ForwardRef(Paper))
+        className="makeStyles-paper-2"
+      >
+        <WithStyles(ForwardRef(Typography))
+          className="makeStyles-heading-3"
+          variant="h4"
+        >
+          Browser or context not supported
+        </WithStyles(ForwardRef(Typography))>
+        <WithStyles(ForwardRef(Typography))>
+          Please open this application in one of the
+           
+          <WithStyles(ForwardRef(Link))
+            href="https://www.twilio.com/docs/video/javascript#supported-browsers"
+            rel="noopener"
+            target="_blank"
+          >
+            supported browsers
+          </WithStyles(ForwardRef(Link))>
+          .
+          <br />
+          If you are using a supported browser, please ensure that this app is served over a
+           
+          <WithStyles(ForwardRef(Link))
+            href="https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts"
+            rel="noopener"
+            target="_blank"
+          >
+            secure context
+          </WithStyles(ForwardRef(Link))>
+           
+          (e.g. https or localhost).
+        </WithStyles(ForwardRef(Typography))>
+      </WithStyles(ForwardRef(Paper))>
+    </WithStyles(ForwardRef(Grid))>
+  </WithStyles(ForwardRef(Grid))>
+</WithStyles(ForwardRef(Container))>
+`;
