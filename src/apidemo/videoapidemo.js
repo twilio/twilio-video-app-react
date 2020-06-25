@@ -651,9 +651,11 @@ export function demo(Video, containerDiv) {
           if (roomChangeMonitor.room) {
             const videoTracks = [...roomChangeMonitor.room.localParticipant.videoTracks.values()];
             videoTracks.forEach(track => {
-              roomChangeMonitor.room.localParticipant.unpublishTrack(track.track);
-              track.track.stop();
-              unPublished = true;
+              if (track.isEnabled) {
+                roomChangeMonitor.room.localParticipant.unpublishTrack(track.track);
+                track.track.stop();
+                unPublished = true;
+              }
             });
           }
         } else {
