@@ -39,6 +39,13 @@ export default function useLocalTracks() {
     });
   }, []);
 
+  const removeLocalVideoTrack = useCallback(() => {
+    if (videoTrack) {
+      videoTrack.stop();
+      setVideoTrack(undefined);
+    }
+  }, [videoTrack]);
+
   useEffect(() => {
     setIsAcquiringLocalTracks(true);
     Video.createLocalTracks({
@@ -63,30 +70,10 @@ export default function useLocalTracks() {
       .finally(() => setIsAcquiringLocalTracks(false));
   }, []);
 
-  useEffect(() => {
-    const handleStopped = () => setAudioTrack(undefined);
-    if (audioTrack) {
-      audioTrack.on('stopped', handleStopped);
-      return () => {
-        audioTrack.off('stopped', handleStopped);
-      };
-    }
-  }, [audioTrack]);
-
-  useEffect(() => {
-    const handleStopped = () => setVideoTrack(undefined);
-    if (videoTrack) {
-      videoTrack.on('stopped', handleStopped);
-      return () => {
-        videoTrack.off('stopped', handleStopped);
-      };
-    }
-  }, [videoTrack]);
-
   const localTracks = [audioTrack, videoTrack].filter(track => track !== undefined) as (
     | LocalAudioTrack
     | LocalVideoTrack
   )[];
 
-  return { localTracks, getLocalVideoTrack, getLocalAudioTrack, isAcquiringLocalTracks };
+  return { localTracks, getLocalVideoTrack, getLocalAudioTrack, isAcquiringLocalTracks, removeLocalVideoTrack };
 }
