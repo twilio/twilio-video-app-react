@@ -39,6 +39,13 @@ export default function useLocalTracks() {
     });
   }, []);
 
+  const removeLocalVideoTrack = useCallback(() => {
+    if (videoTrack) {
+      videoTrack.stop();
+      setVideoTrack(undefined);
+    }
+  }, [videoTrack]);
+
   useEffect(() => {
     setIsAcquiringLocalTracks(true);
     Video.createLocalTracks({
@@ -68,5 +75,5 @@ export default function useLocalTracks() {
     | LocalVideoTrack
   )[];
 
-  return { localTracks, getLocalVideoTrack, getLocalAudioTrack, isAcquiringLocalTracks };
+  return { localTracks, getLocalVideoTrack, getLocalAudioTrack, isAcquiringLocalTracks, removeLocalVideoTrack };
 }
