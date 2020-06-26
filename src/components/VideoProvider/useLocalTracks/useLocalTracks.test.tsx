@@ -3,10 +3,6 @@ import useLocalTracks from './useLocalTracks';
 import Video from 'twilio-video';
 import { EventEmitter } from 'events';
 
-// mock enumerateDevices so that it behaves as if the user has already granted permissions to use local media.
-// @ts-ignore
-navigator.mediaDevices = { enumerateDevices: () => Promise.resolve([{ deviceId: 1, label: '1' }]) };
-
 describe('the useLocalTracks hook', () => {
   afterEach(jest.clearAllMocks);
 
@@ -33,14 +29,20 @@ describe('the useLocalTracks hook', () => {
     });
   });
 
-  it('should respond to "stopped" events from the local video track', async () => {
-    const { result, waitForNextUpdate } = renderHook(useLocalTracks);
-    await waitForNextUpdate();
-    expect(result.current.localTracks).toEqual([expect.any(EventEmitter), expect.any(EventEmitter)]);
-    act(() => {
-      result.current.localTracks[0].emit('stopped');
-      result.current.localTracks[1].emit('stopped');
+  describe('the removeLocalVideoTrack function', () => {
+    it('should call videoTrack.stop() and remove the videoTrack from state', async () => {
+      const { result, waitForNextUpdate } = renderHook(useLocalTracks);
+      await waitForNextUpdate();
+      const initialVideoTrack = result.current.localTracks.find(track => track.kind === 'video');
+      expect(initialVideoTrack!.stop).not.toHaveBeenCalled();
+      expect(initialVideoTrack).toBeTruthy();
+
+      act(() => {
+        result.current.removeLocalVideoTrack();
+      });
+
+      expect(result.current.localTracks.some(track => track.kind === 'video')).toBe(false);
+      expect(initialVideoTrack!.stop).toHaveBeenCalled();
     });
-    expect(result.current.localTracks).toEqual([]);
   });
 });
