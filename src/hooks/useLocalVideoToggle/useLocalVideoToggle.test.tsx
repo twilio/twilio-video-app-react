@@ -36,21 +36,19 @@ describe('the useLocalVideoToggle hook', () => {
     expect(result.current).toEqual([false, expect.any(Function)]);
   });
 
-  describe('toggleAudioEnabled function', () => {
-    it('should call track.stop when a localVideoTrack exists', () => {
-      const mockLocalTrack = {
-        name: 'camera-123456',
-        stop: jest.fn(),
-      };
+  describe('toggleVideoEnabled function', () => {
+    it('should call removeLocalVideoTrack when a localVideoTrack exists', () => {
+      const mockRemoveLocalVideoTrack = jest.fn();
 
       mockUseVideoContext.mockImplementation(() => ({
-        localTracks: [mockLocalTrack],
+        localTracks: [{ name: 'camera' }],
         room: { localParticipant: null },
+        removeLocalVideoTrack: mockRemoveLocalVideoTrack,
       }));
 
       const { result } = renderHook(useLocalVideoToggle);
       result.current[1]();
-      expect(mockLocalTrack.stop).toHaveBeenCalled();
+      expect(mockRemoveLocalVideoTrack).toHaveBeenCalled();
     });
 
     it('should call localParticipant.unpublishTrack when a localVideoTrack and localParticipant exists', () => {
@@ -65,6 +63,7 @@ describe('the useLocalVideoToggle hook', () => {
       mockUseVideoContext.mockImplementation(() => ({
         localTracks: [mockLocalTrack],
         room: { localParticipant: mockLocalParticipant },
+        removeLocalVideoTrack: () => {},
       }));
 
       const { result } = renderHook(useLocalVideoToggle);
@@ -132,8 +131,8 @@ describe('the useLocalVideoToggle hook', () => {
       await waitForNextUpdate();
     });
 
-    it('should not call onError when LocalParticipant throws an error', async () => {
-      const mockGetLocalVideoTrack = jest.fn(() => Promise.resolve('mocmockTrack'));
+    it('should call onError when publishTrack throws an error', async () => {
+      const mockGetLocalVideoTrack = jest.fn(() => Promise.resolve('mockTrack'));
       const mockOnError = jest.fn();
 
       const mockLocalParticipant = new EventEmitter() as LocalParticipant;

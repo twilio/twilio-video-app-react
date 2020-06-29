@@ -12,6 +12,7 @@ const mockRoom = new MockRoom();
 
 class MockTrack extends EventEmitter {
   kind = '';
+  stop = jest.fn();
 
   constructor(kind: string) {
     super();

@@ -7,6 +7,7 @@ export default function useLocalVideoToggle() {
     room: { localParticipant },
     localTracks,
     getLocalVideoTrack,
+    removeLocalVideoTrack,
     onError,
   } = useVideoContext();
   const videoTrack = localTracks.find(track => track.name.includes('camera')) as LocalVideoTrack;
@@ -18,7 +19,7 @@ export default function useLocalVideoToggle() {
         const localTrackPublication = localParticipant?.unpublishTrack(videoTrack);
         // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
         localParticipant?.emit('trackUnpublished', localTrackPublication);
-        videoTrack.stop();
+        removeLocalVideoTrack();
       } else {
         setIspublishing(true);
         getLocalVideoTrack()
@@ -27,7 +28,7 @@ export default function useLocalVideoToggle() {
           .finally(() => setIspublishing(false));
       }
     }
-  }, [videoTrack, localParticipant, getLocalVideoTrack, isPublishing, onError]);
+  }, [videoTrack, localParticipant, getLocalVideoTrack, isPublishing, onError, removeLocalVideoTrack]);
 
   return [!!videoTrack, toggleVideoEnabled] as const;
 }
