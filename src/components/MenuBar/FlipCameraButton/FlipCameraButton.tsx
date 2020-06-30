@@ -28,10 +28,11 @@ export default function FlipCameraButton() {
   }, [videoTrack, supportsFacingMode]);
 
   const toggleFacingMode = useCallback(() => {
-    const constraints = videoTrack.mediaStreamTrack.getSettings();
+    const currentFacingMode = videoTrack.mediaStreamTrack.getSettings().facingMode;
+    const constraints = videoTrack.mediaStreamTrack.getConstraints();
     delete constraints.deviceId;
-    const newFacingMode = constraints.facingMode === 'user' ? 'environment' : 'user';
-    console.log(newFacingMode, constraints);
+    const newFacingMode = currentFacingMode === 'user' ? 'environment' : 'user';
+    console.log(constraints);
     videoTrack.restart({ ...constraints, facingMode: newFacingMode });
   }, [videoTrack]);
 
