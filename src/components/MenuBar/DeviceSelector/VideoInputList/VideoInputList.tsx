@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormControl, MenuItem, Typography, Select } from '@material-ui/core';
 import { LocalVideoTrack } from 'twilio-video';
 import { makeStyles } from '@material-ui/core/styles';
@@ -19,10 +19,20 @@ export default function VideoInputList() {
   const { localTracks } = useVideoContext();
 
   const localVideoTrack = localTracks.find(track => track.kind === 'video') as LocalVideoTrack;
-  const localVideoInputDeviceId = localVideoTrack?.mediaStreamTrack.getSettings().deviceId;
+  const [localVideoInputDeviceId, setLocalVideoInputDeviceId] = useState(
+    localVideoTrack?.mediaStreamTrack.getSettings().deviceId
+  );
+
+  useEffect(() => {
+    const handleStarted = () => setLocalVideoInputDeviceId(localVideoTrack?.mediaStreamTrack.getSettings().deviceId);
+    localVideoTrack?.on('started', handleStarted);
+    return () => {
+      localVideoTrack?.on('started', handleStarted);
+    };
+  }, [localVideoTrack]);
 
   function replaceTrack(newDeviceId: string) {
-    const constraints = localVideoTrack.mediaStreamTrack.getSettings();
+    const constraints = localVideoTrack.mediaStreamTrack.getConstraints();
     delete constraints.facingMode;
     localVideoTrack.restart({ ...constraints, deviceId: { exact: newDeviceId } });
   }

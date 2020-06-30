@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormControl, MenuItem, Typography, Select } from '@material-ui/core';
 import LocalAudioLevelIndicator from '../LocalAudioLevelIndicator/LocalAudioLevelIndicator';
 import { makeStyles } from '@material-ui/core/styles';
@@ -16,26 +16,23 @@ const useStyles = makeStyles({
 export default function AudioInputList() {
   const classes = useStyles();
   const audioInputDevices = useAudioInputDevices();
-  const {
-    room: { localParticipant },
-    localTracks,
-    getLocalAudioTrack,
-  } = useVideoContext();
+  const { localTracks } = useVideoContext();
 
   const localAudioTrack = localTracks.find(track => track.kind === 'audio');
-  const localAudioInputDeviceId = localAudioTrack?.mediaStreamTrack.getSettings().deviceId;
+  const [localAudioInputDeviceId, setLocalAudioInputDeviceId] = useState(
+    localAudioTrack?.mediaStreamTrack.getSettings().deviceId
+  );
+
+  useEffect(() => {
+    const handleStarted = () => setLocalAudioInputDeviceId(localAudioTrack?.mediaStreamTrack.getSettings().deviceId);
+    localAudioTrack?.on('started', handleStarted);
+    return () => {
+      localAudioTrack?.on('started', handleStarted);
+    };
+  }, [localAudioTrack]);
 
   function replaceTrack(newDeviceId: string) {
-    localAudioTrack?.stop();
-    getLocalAudioTrack(newDeviceId).then(newTrack => {
-      if (localAudioTrack) {
-        const localTrackPublication = localParticipant?.unpublishTrack(localAudioTrack);
-        // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
-        localParticipant?.emit('trackUnpublished', localTrackPublication);
-      }
-
-      localParticipant?.publishTrack(newTrack);
-    });
+    localAudioTrack?.restart({ deviceId: { exact: newDeviceId } });
   }
 
   return (
