@@ -16,26 +16,15 @@ const useStyles = makeStyles({
 export default function VideoInputList() {
   const classes = useStyles();
   const videoInputDevices = useVideoInputDevices();
-  const {
-    room: { localParticipant },
-    localTracks,
-    getLocalVideoTrack,
-  } = useVideoContext();
+  const { localTracks } = useVideoContext();
 
   const localVideoTrack = localTracks.find(track => track.kind === 'video') as LocalVideoTrack;
   const localVideoInputDeviceId = localVideoTrack?.mediaStreamTrack.getSettings().deviceId;
 
   function replaceTrack(newDeviceId: string) {
-    localVideoTrack?.stop();
-    getLocalVideoTrack({ deviceId: { exact: newDeviceId } }).then(newTrack => {
-      if (localVideoTrack) {
-        const localTrackPublication = localParticipant?.unpublishTrack(localVideoTrack);
-        // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
-        localParticipant?.emit('trackUnpublished', localTrackPublication);
-      }
-
-      localParticipant?.publishTrack(newTrack);
-    });
+    const constraints = localVideoTrack.mediaStreamTrack.getSettings();
+    delete constraints.facingMode;
+    localVideoTrack.restart({ ...constraints, deviceId: { exact: newDeviceId } });
   }
 
   return (
