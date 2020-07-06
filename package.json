@@ -1,8 +1,9 @@
 {
-  "name": "twilio-video-app-react",
+  "name": "@alucio/video",
   "version": "0.1.0",
   "private": true,
   "license": "Apache-2.0",
+  "main": "lib/src/packages/video/src/main.js",
   "dependencies": {
     "@material-ui/core": "^4.9.1",
     "@material-ui/icons": "^4.9.1",
@@ -75,12 +76,6 @@
     "cypress:run": "cypress run --browser chrome",
     "cypress:ci": "cross-env CYPRESS_baseUrl=http://localhost:8081 start-server-and-test server http://localhost:8081 cypress:run",
     "deploy:twilio-cli": "cross-env REACT_APP_SET_AUTH=passcode npm run build && twilio rtc:apps:video:deploy --authentication=passcode --app-directory ./build"
-  },
-  "eslintConfig": {
-    "extends": "react-app",
-    "rules": {
-      "no-shadow": "warn"
-    }
   },
   "browserslist": {
     "production": [

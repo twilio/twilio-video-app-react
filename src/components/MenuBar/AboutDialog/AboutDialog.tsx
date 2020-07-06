@@ -6,6 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+// @ts-ignore
 import { version as appVersion } from '../../../../package.json';
 import Video from 'twilio-video';
 

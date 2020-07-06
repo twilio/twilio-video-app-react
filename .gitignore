@@ -30,3 +30,5 @@ yarn-error.log*
 
 test-reports
 junit.xml
+
+lib

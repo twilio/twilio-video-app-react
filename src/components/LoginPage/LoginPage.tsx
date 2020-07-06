@@ -5,10 +5,13 @@ import Button from '@material-ui/core/Button';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+// @ts-ignore
 import { ReactComponent as GoogleLogo } from './google-logo.svg';
+// @ts-ignore
 import { ReactComponent as TwilioLogo } from './twilio-logo.svg';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+// @ts-ignore
 import videoLogo from './video-logo.png';
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';

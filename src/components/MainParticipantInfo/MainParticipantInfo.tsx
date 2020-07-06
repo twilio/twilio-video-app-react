@@ -63,7 +63,7 @@ export default function MainParticipantInfo({ participant, children }: MainParti
     >
       <div className={classes.infoContainer}>
         <h4 className={classes.identity}>
-          {participant.identity}
+          {/* {participant.identity} */}
           {!isVideoEnabled && <VideocamOff />}
         </h4>
       </div>
