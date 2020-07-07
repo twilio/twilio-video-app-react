@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { FormControl, MenuItem, Typography, Select } from '@material-ui/core';
 import LocalAudioLevelIndicator from '../LocalAudioLevelIndicator/LocalAudioLevelIndicator';
 import { makeStyles } from '@material-ui/core/styles';
 import { useAudioInputDevices } from '../deviceHooks/deviceHooks';
+import useMediaStreamTrack from '../../../../hooks/useMediaStreamTrack/useMediaStreamTrack';
 import useVideoContext from '../../../../hooks/useVideoContext/useVideoContext';
 
 const useStyles = makeStyles({
@@ -19,17 +20,8 @@ export default function AudioInputList() {
   const { localTracks } = useVideoContext();
 
   const localAudioTrack = localTracks.find(track => track.kind === 'audio');
-  const [localAudioInputDeviceId, setLocalAudioInputDeviceId] = useState(
-    localAudioTrack?.mediaStreamTrack.getSettings().deviceId
-  );
-
-  useEffect(() => {
-    const handleStarted = () => setLocalAudioInputDeviceId(localAudioTrack?.mediaStreamTrack.getSettings().deviceId);
-    localAudioTrack?.on('started', handleStarted);
-    return () => {
-      localAudioTrack?.on('started', handleStarted);
-    };
-  }, [localAudioTrack]);
+  const mediaStreamTrack = useMediaStreamTrack(localAudioTrack);
+  const localAudioInputDeviceId = mediaStreamTrack?.getSettings().deviceId;
 
   function replaceTrack(newDeviceId: string) {
     localAudioTrack?.restart({ deviceId: { exact: newDeviceId } });

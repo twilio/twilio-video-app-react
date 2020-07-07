@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { FormControl, MenuItem, Typography, Select } from '@material-ui/core';
 import { LocalVideoTrack } from 'twilio-video';
 import { makeStyles } from '@material-ui/core/styles';
+import VideoTrack from '../../../VideoTrack/VideoTrack';
+import { VIDEO_TRACK_WIDTH, VIDEO_TRACK_HEIGHT, VIDEO_TRACK_FRAMERATE } from '../../../../constants';
+import useMediaStreamTrack from '../../../../hooks/useMediaStreamTrack/useMediaStreamTrack';
 import useVideoContext from '../../../../hooks/useVideoContext/useVideoContext';
 import { useVideoInputDevices } from '../deviceHooks/deviceHooks';
-import VideoTrack from '../../../VideoTrack/VideoTrack';
 
 const useStyles = makeStyles({
   preview: {
@@ -19,22 +21,16 @@ export default function VideoInputList() {
   const { localTracks } = useVideoContext();
 
   const localVideoTrack = localTracks.find(track => track.kind === 'video') as LocalVideoTrack;
-  const [localVideoInputDeviceId, setLocalVideoInputDeviceId] = useState(
-    localVideoTrack?.mediaStreamTrack.getSettings().deviceId
-  );
-
-  useEffect(() => {
-    const handleStarted = () => setLocalVideoInputDeviceId(localVideoTrack?.mediaStreamTrack.getSettings().deviceId);
-    localVideoTrack?.on('started', handleStarted);
-    return () => {
-      localVideoTrack?.on('started', handleStarted);
-    };
-  }, [localVideoTrack]);
+  const mediaStreamTrack = useMediaStreamTrack(localVideoTrack);
+  const localVideoInputDeviceId = mediaStreamTrack?.getSettings().deviceId;
 
   function replaceTrack(newDeviceId: string) {
-    const constraints = localVideoTrack.mediaStreamTrack.getConstraints();
-    delete constraints.facingMode;
-    localVideoTrack.restart({ ...constraints, deviceId: { exact: newDeviceId } });
+    localVideoTrack.restart({
+      width: VIDEO_TRACK_WIDTH,
+      height: VIDEO_TRACK_HEIGHT,
+      frameRate: VIDEO_TRACK_FRAMERATE,
+      deviceId: { exact: newDeviceId },
+    });
   }
 
   return (
