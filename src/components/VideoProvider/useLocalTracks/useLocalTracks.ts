@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import Video, { LocalVideoTrack, LocalAudioTrack, CreateLocalTrackOptions } from 'twilio-video';
+import { VIDEO_TRACK_HEIGHT, VIDEO_TRACK_FRAMERATE, VIDEO_TRACK_WIDTH } from '../../../constants';
 
 export default function useLocalTracks() {
   const [audioTrack, setAudioTrack] = useState<LocalAudioTrack>();
@@ -50,9 +51,9 @@ export default function useLocalTracks() {
     setIsAcquiringLocalTracks(true);
     Video.createLocalTracks({
       video: {
-        frameRate: 24,
-        height: 720,
-        width: 1280,
+        frameRate: VIDEO_TRACK_FRAMERATE,
+        height: VIDEO_TRACK_HEIGHT,
+        width: VIDEO_TRACK_WIDTH,
         name: `camera-${Date.now()}`,
       },
       audio: true,
