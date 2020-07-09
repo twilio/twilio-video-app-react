@@ -1,3 +1,5 @@
-export const VIDEO_TRACK_HEIGHT = 720;
-export const VIDEO_TRACK_WIDTH = 1280;
-export const VIDEO_TRACK_FRAMERATE = 24;
+export const DEFAULT_VIDEO_CONSTRAINTS: MediaStreamConstraints['video'] = {
+  width: 720,
+  height: 1280,
+  frameRate: 24,
+};

@@ -1,9 +1,9 @@
 import React from 'react';
+import { DEFAULT_VIDEO_CONSTRAINTS } from '../../../../constants';
 import { FormControl, MenuItem, Typography, Select } from '@material-ui/core';
 import { LocalVideoTrack } from 'twilio-video';
 import { makeStyles } from '@material-ui/core/styles';
 import VideoTrack from '../../../VideoTrack/VideoTrack';
-import { VIDEO_TRACK_WIDTH, VIDEO_TRACK_HEIGHT, VIDEO_TRACK_FRAMERATE } from '../../../../constants';
 import useMediaStreamTrack from '../../../../hooks/useMediaStreamTrack/useMediaStreamTrack';
 import useVideoContext from '../../../../hooks/useVideoContext/useVideoContext';
 import { useVideoInputDevices } from '../deviceHooks/deviceHooks';
@@ -26,9 +26,7 @@ export default function VideoInputList() {
 
   function replaceTrack(newDeviceId: string) {
     localVideoTrack.restart({
-      width: VIDEO_TRACK_WIDTH,
-      height: VIDEO_TRACK_HEIGHT,
-      frameRate: VIDEO_TRACK_FRAMERATE,
+      ...(DEFAULT_VIDEO_CONSTRAINTS as {}),
       deviceId: { exact: newDeviceId },
     });
   }

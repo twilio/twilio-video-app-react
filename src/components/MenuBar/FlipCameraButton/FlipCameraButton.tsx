@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { DEFAULT_VIDEO_CONSTRAINTS } from '../../../constants';
 import FlipCameraIosIcon from '@material-ui/icons/FlipCameraIos';
 import { IconButton } from '@material-ui/core';
 import { LocalVideoTrack } from 'twilio-video';
 import useMediaStreamTrack from '../../../hooks/useMediaStreamTrack/useMediaStreamTrack';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
-import { VIDEO_TRACK_HEIGHT, VIDEO_TRACK_FRAMERATE, VIDEO_TRACK_WIDTH } from '../../../constants';
 
 export default function FlipCameraButton() {
   const { localTracks } = useVideoContext();
@@ -27,10 +27,8 @@ export default function FlipCameraButton() {
   const toggleFacingMode = useCallback(() => {
     const newFacingMode = mediaStreamTrack?.getSettings().facingMode === 'user' ? 'environment' : 'user';
     videoTrack.restart({
+      ...(DEFAULT_VIDEO_CONSTRAINTS as {}),
       facingMode: newFacingMode,
-      width: VIDEO_TRACK_WIDTH,
-      height: VIDEO_TRACK_HEIGHT,
-      frameRate: VIDEO_TRACK_FRAMERATE,
     });
   }, [mediaStreamTrack, videoTrack]);
 
