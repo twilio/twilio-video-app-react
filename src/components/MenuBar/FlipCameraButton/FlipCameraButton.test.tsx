@@ -2,7 +2,9 @@ import React from 'react';
 import { act, render, fireEvent } from '@testing-library/react';
 import FlipCameraButton from './FlipCameraButton';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import { VIDEO_TRACK_WIDTH, VIDEO_TRACK_HEIGHT, VIDEO_TRACK_FRAMERATE } from '../../../constants';
 
+jest.mock('../../../hooks/useMediaStreamTrack/useMediaStreamTrack');
 jest.mock('../../../hooks/useVideoContext/useVideoContext');
 const mockUserVideoContext = useVideoContext as jest.Mock<any>;
 
@@ -20,6 +22,7 @@ const mockVideoTrack = {
     getSettings: () => mockStreamSettings,
   },
   stop: jest.fn(),
+  restart: jest.fn(),
 };
 
 const mockVideoContext = {
@@ -31,7 +34,7 @@ const mockVideoContext = {
 };
 
 describe('the FlipCameraButton', () => {
-  afterEach(jest.clearAllMocks);
+  beforeEach(jest.clearAllMocks);
 
   it('should render a button when a video track exists and has the facingMode setting', () => {
     mockUserVideoContext.mockImplementation(() => mockVideoContext);
@@ -64,17 +67,6 @@ describe('the FlipCameraButton', () => {
     expect(container.querySelector('button')).not.toBeTruthy();
   });
 
-  it('should unpublish the front facing video track and publish the rear facing track when clicked', async () => {
-    mockUserVideoContext.mockImplementation(() => mockVideoContext);
-    const { container } = render(<FlipCameraButton />);
-    fireEvent.click(container.querySelector('button')!);
-    expect(mockVideoTrack.stop).toHaveBeenCalled();
-    await expect(mockVideoContext.getLocalVideoTrack).toHaveBeenCalledWith({ facingMode: 'environment' });
-    expect(mockLocalParticipant.unpublishTrack).toHaveBeenCalledWith(mockVideoTrack);
-    expect(mockLocalParticipant.emit).toHaveBeenCalledWith('trackUnpublished', 'mockPublication');
-    expect(mockLocalParticipant.publishTrack).toHaveBeenCalledWith('newMockTrack', { priority: 'low' });
-  });
-
   it('should request the front facing video track when the current track is rear facing when clicked', async () => {
     mockUserVideoContext.mockImplementation(() => ({
       ...mockVideoContext,
@@ -89,6 +81,11 @@ describe('the FlipCameraButton', () => {
     }));
     const { container } = render(<FlipCameraButton />);
     fireEvent.click(container.querySelector('button')!);
-    expect(mockVideoContext.getLocalVideoTrack).toHaveBeenCalledWith({ facingMode: 'user' });
+    expect(mockVideoTrack.restart).toHaveBeenCalledWith({
+      facingMode: 'user',
+      width: VIDEO_TRACK_WIDTH,
+      height: VIDEO_TRACK_HEIGHT,
+      frameRate: VIDEO_TRACK_FRAMERATE,
+    });
   });
 });
