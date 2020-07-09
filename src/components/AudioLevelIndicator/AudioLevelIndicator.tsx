@@ -40,7 +40,7 @@ function AudioLevelIndicator({
   const mediaStreamTrack = useMediaStreamTrack(audioTrack);
 
   useEffect(() => {
-    if (mediaStreamTrack) {
+    if (audioTrack && mediaStreamTrack) {
       // Here we create a new MediaStream from a clone of the mediaStreamTrack.
       // A clone is created to allow multiple instances of this component for a single
       // AudioTrack on iOS Safari.
@@ -51,7 +51,7 @@ function AudioLevelIndicator({
       // all tracks when they are not in use. Browsers like Firefox don't let you create a new stream
       // from a new audio device while the active audio device still has active tracks.
       const stopAllMediaStreamTracks = () => newMediaStream.getTracks().forEach(track => track.stop());
-      audioTrack!.on('stopped', stopAllMediaStreamTracks);
+      audioTrack.on('stopped', stopAllMediaStreamTracks);
 
       const reinitializeAnalyser = () => {
         stopAllMediaStreamTracks();
@@ -68,7 +68,7 @@ function AudioLevelIndicator({
 
       return () => {
         window.removeEventListener('focus', reinitializeAnalyser);
-        audioTrack!.off('stopped', stopAllMediaStreamTracks);
+        audioTrack.off('stopped', stopAllMediaStreamTracks);
       };
     }
   }, [mediaStreamTrack, audioTrack]);
