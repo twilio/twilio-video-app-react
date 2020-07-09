@@ -1,8 +1,8 @@
 import React from 'react';
-import { act, render, fireEvent } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import FlipCameraButton from './FlipCameraButton';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
-import { VIDEO_TRACK_WIDTH, VIDEO_TRACK_HEIGHT, VIDEO_TRACK_FRAMERATE } from '../../../constants';
+import { DEFAULT_VIDEO_CONSTRAINTS } from '../../../constants';
 
 jest.mock('../../../hooks/useMediaStreamTrack/useMediaStreamTrack');
 jest.mock('../../../hooks/useVideoContext/useVideoContext');
@@ -72,10 +72,8 @@ describe('the FlipCameraButton', () => {
     const { container } = render(<FlipCameraButton />);
     fireEvent.click(container.querySelector('button')!);
     expect(mockVideoTrack.restart).toHaveBeenCalledWith({
+      ...(DEFAULT_VIDEO_CONSTRAINTS as {}),
       facingMode: 'user',
-      width: VIDEO_TRACK_WIDTH,
-      height: VIDEO_TRACK_HEIGHT,
-      frameRate: VIDEO_TRACK_FRAMERATE,
     });
   });
 });
