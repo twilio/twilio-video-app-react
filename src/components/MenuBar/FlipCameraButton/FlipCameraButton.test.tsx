@@ -8,12 +8,6 @@ jest.mock('../../../hooks/useMediaStreamTrack/useMediaStreamTrack');
 jest.mock('../../../hooks/useVideoContext/useVideoContext');
 const mockUserVideoContext = useVideoContext as jest.Mock<any>;
 
-const mockLocalParticipant = {
-  emit: jest.fn(),
-  publishTrack: jest.fn(),
-  unpublishTrack: jest.fn(() => 'mockPublication'),
-};
-
 const mockStreamSettings = { facingMode: 'user' };
 
 const mockVideoTrack = {
@@ -21,14 +15,10 @@ const mockVideoTrack = {
   mediaStreamTrack: {
     getSettings: () => mockStreamSettings,
   },
-  stop: jest.fn(),
   restart: jest.fn(),
 };
 
 const mockVideoContext = {
-  room: {
-    localParticipant: mockLocalParticipant,
-  },
   localTracks: [mockVideoTrack],
   getLocalVideoTrack: jest.fn(() => Promise.resolve('newMockTrack')),
 };
@@ -67,7 +57,7 @@ describe('the FlipCameraButton', () => {
     expect(container.querySelector('button')).not.toBeTruthy();
   });
 
-  it('should request the front facing video track when the current track is rear facing when clicked', async () => {
+  it('should call track.replace() with the correct facing mode when clicked', async () => {
     mockUserVideoContext.mockImplementation(() => ({
       ...mockVideoContext,
       localTracks: [
