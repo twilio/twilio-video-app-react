@@ -3,10 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "license": "Apache-2.0",
-  "main": "lib/src/packages/video/src/main.js",
+  "main": "lib/src/packages/video/alucioComponents/main.js",
   "dependencies": {
-    "@material-ui/core": "^4.9.1",
-    "@material-ui/icons": "^4.9.1",
     "@primer/octicons-react": "^9.4.0",
     "@types/d3-timer": "^1.0.9",
     "@types/fscreen": "^1.0.1",

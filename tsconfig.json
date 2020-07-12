@@ -25,6 +25,14 @@
     "outDir": "./lib",
   },
   "include": [
-    "src"
+    "alucioComponents",
+    "src/hooks",
+    "src/components/VideoProvider",
+    "src/utils",
+    "src/state",
+    "src/types.ts",
+    "src/__mocks__/twilio-video.ts",
+    "src/components/AudioTrack/AudioTrack.tsx"
   ],
+  "exclude": []
 }
