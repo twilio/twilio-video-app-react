@@ -61,9 +61,11 @@ function NetworkWrapper() {
 
 function ParticipantName() {
   const mainParticipant = useMainSpeaker();
+  // All Video Participant IDs are in the form <attendeeId>.<participantType>.<Name>
+  const name = mainParticipant.identity.split('.')[2];
   return (
     <Text style={styles.participantName} numberOfLines={1}>
-      {mainParticipant.identity}
+      {name}
     </Text>
   );
 }
@@ -75,7 +77,7 @@ function Presenter() {
     <View style={styles.participant}>
       {roomState === 'disconnected' ? <LocalVideoPreview /> : <CurrentUserParticipant />}
       <View style={styles.controls}>
-        <View style={styles.participantNameContainer}>{roomState !== 'disconnected' && <ParticipantName />}</View>
+        <View style={styles.participantNameContainer}>{roomState !== 'disconnected' ? <ParticipantName /> : <Text style={styles.participantName}>Connecting.....</Text>}</View>
         <View style={styles.mic}>
           <LocalAudioLevelIndicator />
         </View>

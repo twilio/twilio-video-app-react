@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { AudioTrack, LocalAudioTrack, RemoteAudioTrack } from 'twilio-video';
 import { interval } from 'd3-timer';
-// import MicOff from '@material-ui/icons/MicOff';
+import { Icon } from '@alucio/lux-ui';
 import useIsTrackEnabled from '../../../src/hooks/useIsTrackEnabled/useIsTrackEnabled';
 
 let clipId = 0;
@@ -104,7 +104,7 @@ function AudioLevelIndicator({
         </clipPath>
       </defs>
       <path
-        fill={background || 'rgba(255, 255, 255, 0.1)'}
+        fill={background || 'rgba(255, 255, 255, 0.2)'}
         d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"
       ></path>
       <path
@@ -113,14 +113,9 @@ function AudioLevelIndicator({
         d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"
       ></path>
     </svg>
-  ) : /* (
-    <MicOff
-      height={`${SIZE}px`}
-      width={`${SIZE}px`}
-      style={{ width: 'initial', height: 'initial' }}
-      data-cy-audio-mute-icon
-    />
-  ); */ null
+  ) : (
+    <Icon name="microphone-off" style={{width: SIZE, height: SIZE, color: 'rgba(255, 255, 255, 0.2)' }} />
+  ); 
 }
 
 export default React.memo(AudioLevelIndicator);
