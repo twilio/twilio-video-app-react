@@ -7,5 +7,5 @@ export default function LocalAudioLevelIndicator() {
   const { localTracks } = useVideoContext();
   const audioTrack = localTracks.find(track => track.kind === 'audio') as LocalAudioTrack;
 
-  return <AudioLevelIndicator size={30} audioTrack={audioTrack} />;
+  return <AudioLevelIndicator size={25} audioTrack={audioTrack} />;
 }
