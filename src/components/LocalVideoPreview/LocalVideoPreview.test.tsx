@@ -5,6 +5,7 @@ import { IVideoContext } from '../VideoProvider';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 jest.mock('../../hooks/useVideoContext/useVideoContext');
+jest.mock('../../hooks/useMediaStreamTrack/useMediaStreamTrack');
 
 const mockedVideoContext = useVideoContext as jest.Mock<IVideoContext>;
 

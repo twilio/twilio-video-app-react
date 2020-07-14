@@ -20,7 +20,7 @@ describe('the useIsTrackEnabled hook', () => {
     expect(result.current).toBe(false);
   });
 
-  it('should return respond to "subscribed" events', async () => {
+  it('should respond to "enabled" events', async () => {
     mockTrack.isEnabled = false;
     const { result } = renderHook(() => useIsTrackEnabled(mockTrack));
     act(() => {
@@ -29,7 +29,7 @@ describe('the useIsTrackEnabled hook', () => {
     expect(result.current).toBe(true);
   });
 
-  it('should return respond to "unsubscribed" events', async () => {
+  it('should respond to "disabled" events', async () => {
     mockTrack.isEnabled = true;
     const { result } = renderHook(() => useIsTrackEnabled(mockTrack));
     act(() => {

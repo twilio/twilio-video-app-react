@@ -1,17 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { DEFAULT_VIDEO_CONSTRAINTS } from '../../../constants';
 import FlipCameraIosIcon from '@material-ui/icons/FlipCameraIos';
 import { IconButton } from '@material-ui/core';
+import { LocalVideoTrack } from 'twilio-video';
+import useMediaStreamTrack from '../../../hooks/useMediaStreamTrack/useMediaStreamTrack';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
 export default function FlipCameraButton() {
-  const {
-    room: { localParticipant },
-    localTracks,
-    getLocalVideoTrack,
-  } = useVideoContext();
+  const { localTracks } = useVideoContext();
   const [supportsFacingMode, setSupportsFacingMode] = useState<Boolean | null>(null);
-  const videoTrack = localTracks.find(track => track.name.includes('camera'));
-  const facingMode = videoTrack?.mediaStreamTrack.getSettings().facingMode;
+  const videoTrack = localTracks.find(track => track.name.includes('camera')) as LocalVideoTrack;
+  const mediaStreamTrack = useMediaStreamTrack(videoTrack);
 
   useEffect(() => {
     // The 'supportsFacingMode' variable determines if this component is rendered
@@ -19,24 +18,19 @@ export default function FlipCameraButton() {
     // However, if facingMode is ever undefined again (when the user unpublishes video), we
     // won't set 'supportsFacingMode' to false. This prevents the icon from briefly
     // disappearing when the user switches their front/rear camera.
-    if (facingMode && supportsFacingMode === null) {
-      setSupportsFacingMode(Boolean(facingMode));
+    const currentFacingMode = mediaStreamTrack?.getSettings().facingMode;
+    if (currentFacingMode && supportsFacingMode === null) {
+      setSupportsFacingMode(true);
     }
-  }, [facingMode, supportsFacingMode]);
+  }, [mediaStreamTrack, supportsFacingMode]);
 
   const toggleFacingMode = useCallback(() => {
-    const newFacingMode = facingMode === 'user' ? 'environment' : 'user';
-
-    videoTrack!.stop();
-
-    getLocalVideoTrack({ facingMode: newFacingMode }).then(newVideoTrack => {
-      const localTrackPublication = localParticipant?.unpublishTrack(videoTrack!);
-      // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
-      localParticipant?.emit('trackUnpublished', localTrackPublication);
-
-      localParticipant?.publishTrack(newVideoTrack, { priority: 'low' });
+    const newFacingMode = mediaStreamTrack?.getSettings().facingMode === 'user' ? 'environment' : 'user';
+    videoTrack.restart({
+      ...(DEFAULT_VIDEO_CONSTRAINTS as {}),
+      facingMode: newFacingMode,
     });
-  }, [facingMode, getLocalVideoTrack, localParticipant, videoTrack]);
+  }, [mediaStreamTrack, videoTrack]);
 
   return supportsFacingMode ? (
     <IconButton onClick={toggleFacingMode} disabled={!videoTrack}>

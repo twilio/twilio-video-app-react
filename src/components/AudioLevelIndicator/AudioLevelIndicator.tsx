@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AudioTrack, LocalAudioTrack, RemoteAudioTrack } from 'twilio-video';
 import { interval } from 'd3-timer';
 import MicOff from '@material-ui/icons/MicOff';
 import useIsTrackEnabled from '../../hooks/useIsTrackEnabled/useIsTrackEnabled';
+import useMediaStreamTrack from '../../hooks/useMediaStreamTrack/useMediaStreamTrack';
 
 let clipId = 0;
 const getUniqueClipId = () => clipId++;
@@ -33,42 +34,49 @@ function AudioLevelIndicator({
   background?: string;
 }) {
   const SIZE = size || 24;
-  const ref = useRef<SVGRectElement>(null);
-  const mediaStreamRef = useRef<MediaStream>();
+  const SVGRectRef = useRef<SVGRectElement>(null);
+  const [analyser, setAnalyser] = useState<AnalyserNode>();
   const isTrackEnabled = useIsTrackEnabled(audioTrack as LocalAudioTrack | RemoteAudioTrack);
+  const mediaStreamTrack = useMediaStreamTrack(audioTrack);
 
   useEffect(() => {
-    // Here we listen for the 'stopped' event on the audioTrack. When the audioTrack is stopped,
-    // we stop the cloned track that is stored in mediaStreamRef. It is important that we stop
-    // all tracks when they are not in use. Browsers like Firefox don't let you create a stream
-    // from a new audio device while the active audio device still has active tracks.
-    const handleStopped = () => mediaStreamRef.current?.getTracks().forEach(track => track.stop());
-    audioTrack?.on('stopped', handleStopped);
-    return () => {
-      audioTrack?.off('stopped', handleStopped);
-    };
-  }, [audioTrack]);
-
-  useEffect(() => {
-    const SVGClipElement = ref.current;
-
-    if (audioTrack && isTrackEnabled && SVGClipElement) {
+    if (audioTrack && mediaStreamTrack) {
       // Here we create a new MediaStream from a clone of the mediaStreamTrack.
       // A clone is created to allow multiple instances of this component for a single
-      // AudioTrack on iOS Safari. It is stored in a ref so that the cloned track can be stopped
-      // when the original track is stopped.
-      mediaStreamRef.current = new MediaStream([audioTrack.mediaStreamTrack.clone()]);
-      let analyser = initializeAnalyser(mediaStreamRef.current);
+      // AudioTrack on iOS Safari.
+      let newMediaStream = new MediaStream([mediaStreamTrack.clone()]);
+
+      // Here we listen for the 'stopped' event on the audioTrack. When the audioTrack is stopped,
+      // we stop the cloned track that is stored in 'newMediaStream'. It is important that we stop
+      // all tracks when they are not in use. Browsers like Firefox don't let you create a new stream
+      // from a new audio device while the active audio device still has active tracks.
+      const stopAllMediaStreamTracks = () => newMediaStream.getTracks().forEach(track => track.stop());
+      audioTrack.on('stopped', stopAllMediaStreamTracks);
 
       const reinitializeAnalyser = () => {
-        analyser = initializeAnalyser(mediaStreamRef.current!);
+        stopAllMediaStreamTracks();
+        newMediaStream = new MediaStream([mediaStreamTrack.clone()]);
+        setAnalyser(initializeAnalyser(newMediaStream));
       };
+
+      setAnalyser(initializeAnalyser(newMediaStream));
 
       // Here we reinitialize the AnalyserNode on focus to avoid an issue in Safari
       // where the analysers stop functioning when the user switches to a new tab
       // and switches back to the app.
       window.addEventListener('focus', reinitializeAnalyser);
 
+      return () => {
+        window.removeEventListener('focus', reinitializeAnalyser);
+        audioTrack.off('stopped', stopAllMediaStreamTracks);
+      };
+    }
+  }, [mediaStreamTrack, audioTrack]);
+
+  useEffect(() => {
+    const SVGClipElement = SVGRectRef.current;
+
+    if (isTrackEnabled && SVGClipElement && analyser) {
       const sampleArray = new Uint8Array(analyser.frequencyBinCount);
 
       const timer = interval(() => {
@@ -88,10 +96,9 @@ function AudioLevelIndicator({
       return () => {
         SVGClipElement.setAttribute('y', '21');
         timer.stop();
-        window.removeEventListener('focus', reinitializeAnalyser);
       };
     }
-  }, [audioTrack, isTrackEnabled]);
+  }, [isTrackEnabled, analyser]);
 
   // Each instance of this component will need a unique HTML ID
   const clipPathId = `audio-level-clip-${getUniqueClipId()}`;
@@ -100,7 +107,7 @@ function AudioLevelIndicator({
     <svg focusable="false" viewBox="0 0 24 24" aria-hidden="true" height={`${SIZE}px`} width={`${SIZE}px`}>
       <defs>
         <clipPath id={clipPathId}>
-          <rect ref={ref} x="0" y="21" width="24" height="24" />
+          <rect ref={SVGRectRef} x="0" y="21" width="24" height="24" />
         </clipPath>
       </defs>
       <path

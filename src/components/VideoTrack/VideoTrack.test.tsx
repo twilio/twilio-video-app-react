@@ -2,6 +2,8 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import VideoTrack from './VideoTrack';
 
+jest.mock('../../hooks/useMediaStreamTrack/useMediaStreamTrack');
+
 describe('the VideoTrack component', () => {
   const mockTrack = {
     attach: jest.fn(),
