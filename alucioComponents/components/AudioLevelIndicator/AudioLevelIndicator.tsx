@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { AudioTrack, LocalAudioTrack, RemoteAudioTrack } from 'twilio-video';
 import { interval } from 'd3-timer';
-import { Icon } from '@alucio/lux-ui';
 import useIsTrackEnabled from '../../../src/hooks/useIsTrackEnabled/useIsTrackEnabled';
+import { Icon } from '@alucio/lux-ui';
+import { luxColors } from '@alucio/lux-ui/src/themes/colors';
 
 let clipId = 0;
 const getUniqueClipId = () => clipId++;
@@ -114,8 +115,8 @@ function AudioLevelIndicator({
       ></path>
     </svg>
   ) : (
-    <Icon name="microphone-off" style={{width: SIZE, height: SIZE, color: 'rgba(255, 255, 255, 0.2)' }} />
-  ); 
+      <Icon name="microphone-off" style={{ width: SIZE, height: SIZE, color: 'rgba(255, 255, 255, 0.2)' }} />
+    );
 }
 
 export default React.memo(AudioLevelIndicator);

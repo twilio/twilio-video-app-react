@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { luxColors } from '@alucio/lux-ui';
+import { luxColors, Iffy } from '@alucio/lux-ui';
 import {
   LocalVideoPreview,
   useMainSpeaker,
@@ -9,6 +9,7 @@ import {
   MainParticipant as CurrentUserParticipant,
   NetworkQualityLevel,
   LocalAudioLevelIndicator,
+  useVideoContext,
 } from '../main';
 
 const styles = StyleSheet.create({
@@ -54,15 +55,20 @@ const styles = StyleSheet.create({
 });
 
 function NetworkWrapper() {
-  const mainParticipant = useMainSpeaker();
-  const networkQualityLevel = useParticipantNetworkQualityLevel(mainParticipant);
+  const { room: { localParticipant } } = useVideoContext();
+
+  if(!localParticipant){
+    return null;
+  }
+
+  const networkQualityLevel = useParticipantNetworkQualityLevel(localParticipant);
   return <NetworkQualityLevel qualityLevel={networkQualityLevel || 3} />;
 }
 
 function ParticipantName() {
-  const mainParticipant = useMainSpeaker();
+  const { room: { localParticipant } } = useVideoContext();
   // All Video Participant IDs are in the form <attendeeId>.<participantType>.<Name>
-  const name = mainParticipant.identity.split('.')[2];
+  const name = localParticipant?.identity?.split('.')[2];
   return (
     <Text style={styles.participantName} numberOfLines={1}>
       {name}
@@ -70,21 +76,31 @@ function ParticipantName() {
   );
 }
 
-function Presenter() {
-  const roomState = useRoomState();
+type PresenterProps = {
+  styles?: any,
+  hideParticipantName?: boolean
+}
 
+function Presenter(props: PresenterProps) {
+  const roomState = useRoomState();
   return (
-    <View style={styles.participant}>
+    <View style={[styles.participant, props.styles]}>
       {roomState === 'disconnected' ? <LocalVideoPreview /> : <CurrentUserParticipant />}
-      <View style={styles.controls}>
-        <View style={styles.participantNameContainer}>{roomState !== 'disconnected' ? <ParticipantName /> : <Text style={styles.participantName}>Connecting.....</Text>}</View>
-        <View style={styles.mic}>
-          <LocalAudioLevelIndicator />
+      <Iffy is={props.hideParticipantName === false}>
+        <View style={styles.controls}>
+          <View style={styles.participantNameContainer}>{roomState !== 'disconnected' ? <ParticipantName /> : <Text style={styles.participantName}>Connecting.....</Text>}</View>
+          <View style={styles.mic}>
+            <LocalAudioLevelIndicator />
+          </View>
+          <View style={styles.network}>{roomState !== 'disconnected' && <NetworkWrapper />}</View>
         </View>
-        <View style={styles.network}>{roomState !== 'disconnected' && <NetworkWrapper />}</View>
-      </View>
+      </Iffy>
     </View>
   );
+}
+
+Presenter.defaultProps = {
+  hideParticipantName: false
 }
 
 export default Presenter;

@@ -1,6 +1,6 @@
 import React from 'react';
 import useTrack from '../../../src/hooks/useTrack/useTrack';
-import AudioTrack from '../../../src/components/AudioTrack/AudioTrack';
+import AudioTrack from '../AudioTrack/AudioTrack';
 import VideoTrack from '../VideoTrack/VideoTrack';
 
 import { IVideoTrack } from '../../../src/types';
