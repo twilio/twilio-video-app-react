@@ -41,5 +41,7 @@ export default function ParticipantTracks({
   const audioTrack = disableAudio ? undefined : (filteredTracks.find(track => track.kind === 'audio') as AudioTrack);
   const videoTrack = filteredTracks.find(track => track.kind === 'video') as IVideoTrack;
 
-  return <VideoTrack audioTrack={audioTrack} videoTrack={videoTrack} isLocal={isLocal} priority={videoPriority} />;
+  return audioTrack || videoTrack ? (
+    <VideoTrack audioTrack={audioTrack} videoTrack={videoTrack} isLocal={isLocal} priority={videoPriority} />
+  ) : null;
 }
