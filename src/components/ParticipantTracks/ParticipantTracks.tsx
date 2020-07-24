@@ -1,8 +1,9 @@
 import React from 'react';
-import { Participant, Track } from 'twilio-video';
-import Publication from '../Publication/Publication';
-import usePublications from '../../hooks/usePublications/usePublications';
+import { Participant, Track, AudioTrack } from 'twilio-video';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import useParticipantTracks from '../../hooks/useParticipantTracks/useParticipantTracks';
+import VideoTrack from '../VideoTrack/VideoTrack';
+import { IVideoTrack } from '../../types';
 
 interface ParticipantTracksProps {
   participant: Participant;
@@ -26,29 +27,19 @@ export default function ParticipantTracks({
   videoPriority,
 }: ParticipantTracksProps) {
   const { room } = useVideoContext();
-  const publications = usePublications(participant);
+  const tracks = useParticipantTracks(participant);
   const isLocal = participant === room.localParticipant;
 
-  let filteredPublications;
+  let filteredTracks;
 
-  if (enableScreenShare && publications.some(p => p.trackName.includes('screen'))) {
-    filteredPublications = publications.filter(p => !p.trackName.includes('camera'));
+  if (enableScreenShare && tracks.some(track => track.name.includes('screen'))) {
+    filteredTracks = tracks.filter(track => !track.name.includes('camera'));
   } else {
-    filteredPublications = publications.filter(p => !p.trackName.includes('screen'));
+    filteredTracks = tracks.filter(track => !track.name.includes('screen'));
   }
 
-  return (
-    <>
-      {filteredPublications.map(publication => (
-        <Publication
-          key={publication.kind}
-          publication={publication}
-          participant={participant}
-          isLocal={isLocal}
-          disableAudio={disableAudio}
-          videoPriority={videoPriority}
-        />
-      ))}
-    </>
-  );
+  const audioTrack = disableAudio ? undefined : (filteredTracks.find(track => track.kind === 'audio') as AudioTrack);
+  const videoTrack = filteredTracks.find(track => track.kind === 'video') as IVideoTrack;
+
+  return <VideoTrack audioTrack={audioTrack} videoTrack={videoTrack} isLocal={isLocal} priority={videoPriority} />;
 }

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { IVideoTrack } from '../../types';
 import { styled } from '@material-ui/core/styles';
-import { Track } from 'twilio-video';
+import { Track, AudioTrack } from 'twilio-video';
 import useMediaStreamTrack from '../../hooks/useMediaStreamTrack/useMediaStreamTrack';
 
 const Video = styled('video')({
@@ -11,30 +11,38 @@ const Video = styled('video')({
 });
 
 interface VideoTrackProps {
-  track: IVideoTrack;
+  audioTrack?: AudioTrack;
+  videoTrack?: IVideoTrack;
   isLocal?: boolean;
   priority?: Track.Priority | null;
 }
 
-export default function VideoTrack({ track, isLocal, priority }: VideoTrackProps) {
+export default function VideoTrack({ audioTrack, videoTrack, isLocal, priority }: VideoTrackProps) {
   const ref = useRef<HTMLVideoElement>(null!);
-  const mediaStreamTrack = useMediaStreamTrack(track);
+  const mediaStreamTrack = useMediaStreamTrack(videoTrack);
 
   useEffect(() => {
     const el = ref.current;
-    el.muted = true;
-    if (track.setPriority && priority) {
-      track.setPriority(priority);
-    }
-    track.attach(el);
+    audioTrack?.attach(el);
     return () => {
-      track.detach(el);
-      if (track.setPriority && priority) {
-        // Passing `null` to setPriority will set the track's priority to that which it was published with.
-        track.setPriority(null);
+      audioTrack?.detach(el);
+    };
+  }, [audioTrack]);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (videoTrack?.setPriority && priority) {
+      videoTrack?.setPriority(priority);
+    }
+    videoTrack?.attach(el);
+    return () => {
+      videoTrack?.detach(el);
+      if (videoTrack?.setPriority && priority) {
+        // Passing `null` to setPriority will set the videoTrack's priority to that which it was published with.
+        videoTrack?.setPriority(null);
       }
     };
-  }, [track, priority]);
+  }, [videoTrack, priority]);
 
   // The local video track is mirrored if it is not facing the environment.
   const isFrontFacing = mediaStreamTrack?.getSettings().facingMode !== 'environment';
