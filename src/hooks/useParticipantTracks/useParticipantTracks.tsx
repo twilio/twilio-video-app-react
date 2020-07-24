@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Participant, LocalTrackPublication, RemoteTrackPublication } from 'twilio-video';
+import { Participant, LocalTrackPublication, RemoteTrackPublication, RemoteTrack } from 'twilio-video';
+import useVideoContext from '../useVideoContext/useVideoContext';
 
 type Publication = LocalTrackPublication | RemoteTrackPublication;
 
@@ -10,24 +11,45 @@ function notNull<T>(value: T | null): value is T {
 const getTracks = (participant: Participant) => Array.from(participant.tracks.values()) as Publication[];
 
 export default function useParticipantTracks(participant: Participant) {
+  const {
+    room: { localParticipant },
+  } = useVideoContext();
   const [publications, setPublications] = useState(getTracks(participant));
 
   useEffect(() => {
     // Reset the track when the 'participant' variable changes.
     setPublications(getTracks(participant));
 
-    const handleTrackSubscribed = (publication: Publication) =>
+    const isLocalParticipant = participant === localParticipant;
+
+    const handleTrackPublished = (publication: LocalTrackPublication) =>
       setPublications(prevPublications => [...prevPublications, publication]);
-    const handleTrackUnsubscribed = (publication: Publication) =>
+    const handleTrackUnpublished = (publication: LocalTrackPublication) =>
       setPublications(prevPublications => prevPublications.filter(p => p !== publication));
 
-    participant.on('trackPublished', handleTrackSubscribed);
-    participant.on('trackUnpublished', handleTrackUnsubscribed);
+    const handleTrackSubscribed = (_: RemoteTrack, publication: RemoteTrackPublication) =>
+      setPublications(prevPublications => [...prevPublications, publication]);
+    const handleTrackUnsubscribed = (_: RemoteTrack, publication: RemoteTrackPublication) =>
+      setPublications(prevPublications => prevPublications.filter(p => p !== publication));
+
+    if (isLocalParticipant) {
+      participant.on('trackPublished', handleTrackPublished);
+      participant.on('trackUnpublished', handleTrackUnpublished);
+    } else {
+      participant.on('trackSubscribed', handleTrackSubscribed);
+      participant.on('trackUnsubscribed', handleTrackUnsubscribed);
+    }
+
     return () => {
-      participant.off('trackPublished', handleTrackSubscribed);
-      participant.off('trackUnpublished', handleTrackUnsubscribed);
+      if (isLocalParticipant) {
+        participant.off('trackPublished', handleTrackPublished);
+        participant.off('trackUnpublished', handleTrackUnpublished);
+      } else {
+        participant.off('trackSubscribed', handleTrackSubscribed);
+        participant.off('trackUnsubscribed', handleTrackUnsubscribed);
+      }
     };
-  }, [participant]);
+  }, [participant, localParticipant]);
 
   return publications.map(pub => pub.track).filter(notNull);
 }
