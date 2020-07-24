@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Participant, LocalTrackPublication, RemoteTrackPublication, RemoteTrack } from 'twilio-video';
+import { Participant, LocalTrackPublication, RemoteTrackPublication } from 'twilio-video';
 import useVideoContext from '../useVideoContext/useVideoContext';
 
 type Publication = LocalTrackPublication | RemoteTrackPublication;
@@ -22,15 +22,13 @@ export default function useParticipantTracks(participant: Participant) {
 
     const isLocalParticipant = participant === localParticipant;
 
-    const handleTrackPublished = (publication: LocalTrackPublication) =>
+    const handleTrackPublished = (publication: Publication) =>
       setPublications(prevPublications => [...prevPublications, publication]);
-    const handleTrackUnpublished = (publication: LocalTrackPublication) =>
+    const handleTrackUnpublished = (publication: Publication) =>
       setPublications(prevPublications => prevPublications.filter(p => p !== publication));
 
-    const handleTrackSubscribed = (_: RemoteTrack, publication: RemoteTrackPublication) =>
-      setPublications(prevPublications => [...prevPublications, publication]);
-    const handleTrackUnsubscribed = (_: RemoteTrack, publication: RemoteTrackPublication) =>
-      setPublications(prevPublications => prevPublications.filter(p => p !== publication));
+    const handleTrackSubscribed = (_: any, publication: Publication) => handleTrackPublished(publication);
+    const handleTrackUnsubscribed = (_: any, publication: Publication) => handleTrackUnpublished(publication);
 
     if (isLocalParticipant) {
       participant.on('trackPublished', handleTrackPublished);
