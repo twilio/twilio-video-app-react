@@ -70,8 +70,8 @@ interface LayoutProps {
   onDenyCall?: (attendeeId: string, name: string) => void,
   onEndCall: () => void,
   onHostConnected?: () => void,
-  onUserConnected?: (attendeeId: string, name: string) => void,
-  onUserDisconnected?: (attendeeId: string, name: string) => void,
+  onAttendeeConnected?: (attendeeId: string, name: string) => void,
+  onAttendeeDisconnected?: (attendeeId: string, name: string) => void,
   onRemoveFromCall?: (attendeeId: string, name: string) => void,
   showContentPanel?: () => void,
   virtual: virtualType,
@@ -83,7 +83,7 @@ interface AttendersProps {
   onAcceptCall?: (attendeeId: string, name: string) => void,
   onDenyCall?: (attendeeId: string, name: string) => void,
   onRemoveFromCall?: (attendeeId: string, name: string) => void,
-  onUserConnected?: (attendeeId: string, name: string) => void,
+  onAttendeeConnected?: (attendeeId: string, name: string) => void,
 }
 
 function Attenders(props: AttendersProps) {
@@ -129,7 +129,7 @@ function Attenders(props: AttendersProps) {
         onAcceptCall={props.onAcceptCall}
         onDenyCall={props.onDenyCall}
         onRemoveFromCall={props.onRemoveFromCall}
-        onUserConnected={props.onUserConnected}
+        onAttendeeConnected={props.onAttendeeConnected}
       />,
     )
 
@@ -142,8 +142,8 @@ function Layout(props: LayoutProps) {
     background,
     displayContentPanel,
     showContentPanel,
-    onUserConnected,
-    onUserDisconnected,
+    onAttendeeConnected,
+    onAttendeeDisconnected,
     currentUser,
     onDenyCall,
     onRemoveFromCall,
@@ -176,7 +176,7 @@ function Layout(props: LayoutProps) {
   useEffect(()=>{
     room.on('participantDisconnected', (e) => {
       const attendeeId = e.identity.split('.')[0];
-      onUserDisconnected && onUserDisconnected(attendeeId, e.identity);
+      onAttendeeDisconnected && onAttendeeDisconnected(attendeeId, e.identity);
     });
   }, [room]);
 
@@ -241,7 +241,7 @@ function Layout(props: LayoutProps) {
               onAcceptCall={onAcceptCall}
               onDenyCall={onDenyCall}
               onRemoveFromCall={onRemoveFromCall}
-              onUserConnected={onUserConnected}
+              onAttendeeConnected={onAttendeeConnected}
             />}
         </View>
         <ShareContent background={background} />

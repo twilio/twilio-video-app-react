@@ -68,7 +68,7 @@ interface AttendeeProps {
   onAcceptCall?: (attendeeId: string, name: string) => void,
   onDenyCall?: (attendeeId: string, name: string) => void,
   onRemoveFromCall?: (attendeeId: string, name: string) => void,
-  onUserConnected?: (attendeeId: string, name: string) => void,
+  onAttendeeConnected?: (attendeeId: string, name: string) => void,
   name: string,
   attendeeId: string,
   status: ATTENDEE_STATUS,
@@ -82,7 +82,7 @@ interface RightMenuProps {
 
 function connected(props:AttendeeProps) {
   if(props.visible){
-    props.onUserConnected && props.onUserConnected(props.attendeeId, props.name);
+    props.onAttendeeConnected && props.onAttendeeConnected(props.attendeeId, props.name);
   }
 }
 
