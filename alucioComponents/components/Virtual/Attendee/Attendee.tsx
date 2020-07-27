@@ -4,7 +4,6 @@ import { View, StyleSheet, Text } from 'react-native';
 import { MenuItem, OverflowMenu } from '@ui-kitten/components';
 import { ATTENDEE_STATUS } from '@alucio/aws-beacon-amplify/src/API';
 import { useVideoContext, useParticipants, Participant } from '../../../main';
-import {debounce} from '../../../util/dbounce';
 
 const styles = StyleSheet.create({
   accept: {
@@ -80,20 +79,6 @@ interface RightMenuProps {
   onRemoveFromCall?: () => void,
 }
 
-function removeUser(e: any, props: AttendeeProps, room:any) {
-  if (e.identity === props.name && props.status === ATTENDEE_STATUS.CONNECTED) {
-    // wait 5 sec to be sure the user is indeed disconnected
-    setTimeout(() => {
-      const currentParticipants = Array.from(room.participants.values());
-      const disconnectedUser = currentParticipants.find((e:any) => e.identity === props.name);
-      // When the user is discconecte will not be available in the room list,
-      // This should be revisited
-      if (!disconnectedUser) {
-        props.onDenyCall && props.onDenyCall(props.attendeeId, props.name);
-      }
-    }, 5000);
-  }
-}
 
 function connected(props:AttendeeProps) {
   if(props.visible){
@@ -101,8 +86,6 @@ function connected(props:AttendeeProps) {
   }
 }
 
-const removeUserDebounced = debounce(removeUser, 3000);
-const connectdDebounce = debounce(connected, 5000);
 
 function RightMenu(props:RightMenuProps) {
   const [visible, setVisible] = useState(false);
@@ -136,17 +119,10 @@ function Attendee(props: AttendeeProps) {
   const { room } = useVideoContext();
   const participants = useParticipants();
 
-  room.on('participantDisconnected', (e) => {
-    // There are an issue when the attendde tries to connect
-    // 1 the disconected event is fired couple of times when the user is connectd
-    // that is the reason of the timer
-    removeUserDebounced(e, props, room);
-  });
-
   const readyToShowVideo = participants.find(e => e.identity === props.name);
   // Change the user status when enters to the room, only when the user have benn in the room for 10 seconds
   // this is because the first time the user is trying to connect the event of disconnect it is fired couple of times
-  readyToShowVideo && connectdDebounce(props);
+  readyToShowVideo && connected(props);
 
   const acceptDenyContainer = (props.status === ATTENDEE_STATUS.PENDING
     ? <>

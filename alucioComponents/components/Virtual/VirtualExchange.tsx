@@ -63,34 +63,35 @@ interface LayoutProps {
   currentUser?: User,
   displayContentPanel?: boolean,
   headerBackground: ImageSourcePropType,
-  currentAttendees?: Record<string,any>,
+  currentAttendees?: Record<string, any>,
   mode: MODE_TYPE,
   myContentPanel: React.ReactNode,
-  onAcceptCall?: (attendeeId:string, name:string) => void,
-  onDenyCall?: (attendeeId:string, name:string) => void,
-  onEndCall: (id:string) => void,
+  onAcceptCall?: (attendeeId: string, name: string) => void,
+  onDenyCall?: (attendeeId: string, name: string) => void,
+  onEndCall: () => void,
   onHostConnected?: () => void,
-  onUserConnected?: (attendeeId:string, name:string) => void,
-  onRemoveFromCall?: (attendeeId:string, name:string) => void,
+  onUserConnected?: (attendeeId: string, name: string) => void,
+  onUserDisconnected?: (attendeeId: string, name: string) => void,
+  onRemoveFromCall?: (attendeeId: string, name: string) => void,
   showContentPanel?: () => void,
   virtual: virtualType,
 }
 
 interface AttendersProps {
-  currentAttendees: Record<string,any>;
+  currentAttendees: Record<string, any>;
   mode: MODE_TYPE,
-  onAcceptCall?: (attendeeId:string, name:string) => void,
-  onDenyCall?: (attendeeId:string, name:string) => void,
-  onRemoveFromCall?: (attendeeId:string, name:string) => void,
-  onUserConnected?: (attendeeId:string, name:string) => void,
+  onAcceptCall?: (attendeeId: string, name: string) => void,
+  onDenyCall?: (attendeeId: string, name: string) => void,
+  onRemoveFromCall?: (attendeeId: string, name: string) => void,
+  onUserConnected?: (attendeeId: string, name: string) => void,
 }
 
 function Attenders(props: AttendersProps) {
-  const {currentAttendees} = props;
+  const { currentAttendees } = props;
   const attenders = useParticipants();
 
   const attendersInTheMeeting = attenders.reduce((p, c) => {
-    if (props.mode === "Host" && 
+    if (props.mode === "Host" &&
       currentAttendees[c.identity] &&
       currentAttendees[c.identity].status === ATTENDEE_STATUS.CONNECTED
     ) {
@@ -101,7 +102,7 @@ function Attenders(props: AttendersProps) {
         status: ATTENDEE_STATUS.CONNECTED,
       };
     }
-    else if(props.mode === "Guest"){
+    else if (props.mode === "Guest") {
       // @ts-ignore
       p[c.identity] = {
         id: c.identity.split('.')[0],
@@ -137,38 +138,74 @@ function Attenders(props: AttendersProps) {
 
 function Layout(props: LayoutProps) {
   const {
-    onAcceptCall, 
-    background, 
+    onAcceptCall,
+    background,
     displayContentPanel,
     showContentPanel,
-    onUserConnected, 
-    currentUser, 
-    onDenyCall, 
+    onUserConnected,
+    onUserDisconnected,
+    currentUser,
+    onDenyCall,
     onRemoveFromCall,
-    headerBackground, 
-    mode, 
+    headerBackground,
+    mode,
     myContentPanel,
     onHostConnected,
-    currentAttendees, 
-    virtual, 
+    currentAttendees,
+    virtual,
   } = props;
 
-  const { connect } = useVideoContext();
+  const { connect, room, isConnecting } = useVideoContext();
   const roomState = useRoomState();
   const size = useWindowSize();
 
-  
+
   useEffect(() => {
     async function init() {
-      if (virtual && virtual.joinToken && roomState === 'disconnected') {
-          await connect(virtual.joinToken);
-          if (currentUser?.id && mode === 'Host') {
-            onHostConnected && onHostConnected();
-          }
+      if (virtual && virtual.joinToken && roomState === 'disconnected' && !isConnecting) {
+        await connect(virtual.joinToken);
+        if (currentUser?.id && mode === 'Host') {
+          onHostConnected && onHostConnected();
+        }
       }
     }
+
     init();
   }, [virtual])
+
+  useEffect(()=>{
+    room.on('participantDisconnected', (e) => {
+      const attendeeId = e.identity.split('.')[0];
+      onUserDisconnected && onUserDisconnected(attendeeId, e.identity);
+    });
+  }, [room]);
+
+  const handleEndCall = () => {
+    try {
+      const videoTracks = [...room.localParticipant.videoTracks.values()];
+      const audioTracks = [...room.localParticipant.audioTracks.values()];
+
+      videoTracks.forEach(trackPub => {
+        trackPub.unpublish()
+        trackPub.track.stop();
+        const mediaElements = trackPub.track.detach();
+        mediaElements.forEach(mediaElement => mediaElement.remove());
+      });
+      audioTracks.forEach(trackPub => {
+        trackPub.unpublish()
+        trackPub.track.stop();
+        const mediaElements = trackPub.track.detach();
+        mediaElements.forEach(mediaElement => mediaElement.remove());
+      });
+      room.disconnect();
+
+    } catch (e){
+      // eslint-disable-next-line no-throw-literal
+      throw (`Error ending the call ${JSON.stringify(e)}`);
+    }
+    props.onEndCall();
+  }
+
   return (
     <View style={[styles.mainContainer, { width: size.width, height: size.height }]}>
       <View style={styles.header}>
@@ -184,12 +221,12 @@ function Layout(props: LayoutProps) {
             />
           </View>
           <View style={styles.headBarContainer}>
-            <HeadBar 
+            <HeadBar
               virtual={virtual}
               mode={mode}
-              displayContentPanel={displayContentPanel || false} 
-              onShowContentPanel={showContentPanel} 
-              onCallEnd={props.onEndCall} 
+              displayContentPanel={displayContentPanel || false}
+              onShowContentPanel={showContentPanel}
+              onCallEnd={handleEndCall}
             />
           </View>
         </LinearGradient>
@@ -197,19 +234,19 @@ function Layout(props: LayoutProps) {
       <View style={styles.container}>
         <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
           <Presenter />
-          {roomState === 'connected' && 
-          <Attenders 
-            mode={mode} 
-            currentAttendees={currentAttendees || {}} 
-            onAcceptCall={onAcceptCall} 
-            onDenyCall={onDenyCall}
-            onRemoveFromCall={onRemoveFromCall}
-            onUserConnected={onUserConnected} 
-          />}
+          {roomState === 'connected' &&
+            <Attenders
+              mode={mode}
+              currentAttendees={currentAttendees || {}}
+              onAcceptCall={onAcceptCall}
+              onDenyCall={onDenyCall}
+              onRemoveFromCall={onRemoveFromCall}
+              onUserConnected={onUserConnected}
+            />}
         </View>
         <ShareContent background={background} />
       </View>
-        {myContentPanel}
+      {myContentPanel}
     </View>
   )
 }

@@ -98,7 +98,7 @@ function AudioLevelIndicator({
   const clipPathId = `audio-level-clip-${getUniqueClipId()}`;
 
   return isTrackEnabled ? (
-    <svg focusable="false" viewBox="0 0 24 24" aria-hidden="true" height={`${SIZE}px`} width={`${SIZE}px`}>
+    <svg focusable="false" viewBox="0 0 24 24" aria-hidden="true" style={{ paddingTop:1 }} height={`${SIZE}px`} width={`${SIZE}px`}>
       <defs>
         <clipPath id={clipPathId}>
           <rect ref={ref} x="0" y="21" width="24" height="24" />

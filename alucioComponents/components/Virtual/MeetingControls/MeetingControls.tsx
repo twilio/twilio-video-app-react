@@ -94,7 +94,7 @@ let PresentationMenuOptions: MenuOption[] = [
 interface HeadBarProps {
   mode: MODE_TYPE,
   displayContentPanel: boolean;
-  onCallEnd: (id:string) => void;
+  onCallEnd: () => void;
   onShowContentPanel?: () => void;
   virtual: virtualType;
 }
@@ -125,7 +125,7 @@ function MeetingControls(props: HeadBarProps) {
     room.once('disconnected', (_, c) => {
       // When the room is finished
       if(c && c.code && c.code === 53118){
-        props.onCallEnd(virtual?.session?.id);
+        props.onCallEnd();
       }
     });
   }, [room])
@@ -148,16 +148,7 @@ function MeetingControls(props: HeadBarProps) {
   }
 
   async function endCall() {
-    try {
-      props.onCallEnd(virtual?.session?.id);
-      if (roomState === 'connected') {
-        room.disconnect && room.disconnect();
-      }
-    }
-    catch (ex) {
-      // eslint-disable-next-line no-throw-literal
-      throw (`Error ending the call ${JSON.stringify(ex)}`)
-    }
+    props.onCallEnd();
   }
 
   return (<>
