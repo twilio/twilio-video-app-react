@@ -8,7 +8,7 @@ jest.mock('../../../src/hooks/usePublications/usePublications', () =>
   jest.fn(() => [
     { trackSid: 0, kind: 'video', trackName: '' },
     { trackSid: 1, kind: 'audio', trackName: '' },
-  ])
+  ]),
 );
 jest.mock('../../../src/hooks/useVideoContext/useVideoContext');
 
@@ -32,7 +32,7 @@ describe('the ParticipantTracks component', () => {
       wrapper
         .find('Publication')
         .first()
-        .prop('isLocal')
+        .prop('isLocal'),
     ).toEqual(true);
   });
 
@@ -48,7 +48,7 @@ describe('the ParticipantTracks component', () => {
       wrapper
         .find('Publication')
         .at(0)
-        .prop('publication')
+        .prop('publication'),
     ).toEqual({ trackName: 'camera-123456', trackSid: 1, kind: 'video' });
   });
 
@@ -65,7 +65,7 @@ describe('the ParticipantTracks component', () => {
         wrapper
           .find('Publication')
           .at(0)
-          .prop('publication')
+          .prop('publication'),
       ).toEqual({ trackName: 'screen', trackSid: 0, kind: 'video' });
     });
 
@@ -78,7 +78,7 @@ describe('the ParticipantTracks component', () => {
         wrapper
           .find('Publication')
           .at(0)
-          .prop('publication')
+          .prop('publication'),
       ).toEqual({ trackName: 'camera-123456', trackSid: 1, kind: 'video' });
     });
   });

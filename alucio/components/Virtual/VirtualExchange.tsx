@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     zIndex: 0,
   },
   container: {
-    zIndex: -1,
+    zIndex: -1, // Needed for Popover
     flexGrow: 1,
     backgroundColor: luxColors.basicBlack.primary,
   },
@@ -201,8 +201,7 @@ function Layout(props: LayoutProps) {
       });
       room.disconnect();
     } catch (e) {
-      // eslint-disable-next-line no-throw-literal
-      throw (`Error ending the call ${JSON.stringify(e)}`);
+      throw new Error(`Error ending the call ${JSON.stringify(e)}`);
     }
     props.onEndCall();
   }

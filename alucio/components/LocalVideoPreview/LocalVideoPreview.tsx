@@ -1,7 +1,7 @@
 import React from 'react';
 import { LocalVideoTrack } from 'twilio-video';
 import VideoTrack from '../VideoTrack/VideoTrack';
-import {useVideoContext} from '../../main';
+import { useVideoContext } from '../../main';
 
 export default function LocalVideoPreview() {
   const { localTracks } = useVideoContext();

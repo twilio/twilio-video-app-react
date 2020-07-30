@@ -6,7 +6,6 @@ import useIsTrackSwitchedOff from '../../../src/hooks/useIsTrackSwitchedOff/useI
 import usePublications from '../../../src/hooks/usePublications/usePublications';
 import useTrack from '../../../src/hooks/useTrack/useTrack';
 
-
 interface MainParticipantInfoProps {
   participant: Participant;
   children: React.ReactNode;
@@ -16,7 +15,6 @@ export default function MainParticipantInfo({ participant, children }: MainParti
   const publications = usePublications(participant);
   const videoPublication = publications.find(p => p.trackName.includes('camera'));
   const screenSharePublication = publications.find(p => p.trackName.includes('screen'));
-  const isVideoEnabled = Boolean(videoPublication);
 
   const videoTrack = useTrack(screenSharePublication || videoPublication);
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
@@ -24,12 +22,12 @@ export default function MainParticipantInfo({ participant, children }: MainParti
   return (
     <div
       data-cy-main-participant
-       style={{
-          position: 'relative',
-          display: 'flex',
-          alignItems: 'center',
-          gridArea: 'participantList',
-        }} 
+      style={{
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+        gridArea: 'participantList',
+      }}
     >
       <div style={{
         position: 'absolute',
@@ -37,8 +35,7 @@ export default function MainParticipantInfo({ participant, children }: MainParti
         height: '100%',
         padding: '0.4em',
         width: '100%',
-      }}>
-      </div>
+      }} />
       {isVideoSwitchedOff && <BandwidthWarning />}
       {children}
     </div>

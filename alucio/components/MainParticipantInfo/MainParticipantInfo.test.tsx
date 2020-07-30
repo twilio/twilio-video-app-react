@@ -19,7 +19,7 @@ describe('the MainParticipantInfo component', () => {
   it('should render a VideoCamOff icon when no camera tracks are published', () => {
     mockUsePublications.mockImplementation(() => []);
     const wrapper = shallow(
-      <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
+      <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>,
     );
     expect(wrapper.find('VideocamOffIcon').exists()).toEqual(true);
   });
@@ -27,7 +27,7 @@ describe('the MainParticipantInfo component', () => {
   it('should not render a VideoCamOff icon when a camera track is published', () => {
     mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
     const wrapper = shallow(
-      <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
+      <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>,
     );
     expect(wrapper.find('VideocamOffIcon').exists()).toEqual(false);
   });
@@ -35,7 +35,7 @@ describe('the MainParticipantInfo component', () => {
   it('should add isVideoSwitchedOff class to container div when video is switched off', () => {
     mockUseIsTrackSwitchedOff.mockImplementation(() => true);
     const wrapper = shallow(
-      <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
+      <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>,
     );
     expect(wrapper.find('.makeStyles-container-1').prop('className')).toContain('isVideoSwitchedOff');
   });
@@ -43,7 +43,7 @@ describe('the MainParticipantInfo component', () => {
   it('should not add isVideoSwitchedOff class to container div when video is not switched off', () => {
     mockUseIsTrackSwitchedOff.mockImplementation(() => false);
     const wrapper = shallow(
-      <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
+      <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>,
     );
     expect(wrapper.find('.makeStyles-container-1').prop('className')).not.toContain('isVideoSwitchedOff');
   });

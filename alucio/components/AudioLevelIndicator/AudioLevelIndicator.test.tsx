@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import AudioLevelIndicator from './AudioLevelIndicator';
-//import MicOff from '@material-ui/icons/MicOff';
+// import MicOff from '@material-ui/icons/MicOff';
 import useIsTrackEnabled from '../../../src/hooks/useIsTrackEnabled/useIsTrackEnabled';
 
 jest.mock('../../../src/hooks/useIsTrackEnabled/useIsTrackEnabled');

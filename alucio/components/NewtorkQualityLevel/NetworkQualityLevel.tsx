@@ -2,7 +2,7 @@ import React from 'react';
 
 const Container = {
   display: 'flex',
-  alignItems: 'flex-end'
+  alignItems: 'flex-end',
 };
 
 const STEP = 3;
@@ -20,9 +20,9 @@ export default function NetworkQualityLevel({ qualityLevel }: { qualityLevel: nu
             width: '2px',
             border: '1px solid black',
             boxSizing: 'content-box',
-            borderRight: 'none'
+            borderRight: 'none',
           }
-        }
+          }
         />
       ))}
     </div>

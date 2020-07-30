@@ -18,7 +18,7 @@ export default function Participant({
   enableScreenShare,
   onClick,
   isSelected,
-  menu
+  menu,
 }: ParticipantProps) {
   return (
     <ParticipantInfo participant={participant} menu={menu} onClick={onClick} isSelected={isSelected}>

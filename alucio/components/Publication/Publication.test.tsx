@@ -11,7 +11,7 @@ describe('the Publication component', () => {
     it('should render a VideoTrack', () => {
       mockUseTrack.mockImplementation(() => ({ kind: 'video', name: 'camera-123456' }));
       const wrapper = shallow(
-        <Publication isLocal publication={'mockPublication' as any} participant={'mockParticipant' as any} />
+        <Publication isLocal publication={'mockPublication' as any} participant={'mockParticipant' as any} />,
       );
       expect(useTrack).toHaveBeenCalledWith('mockPublication');
       expect(wrapper.find('VideoTrack').length).toBe(1);
@@ -20,7 +20,7 @@ describe('the Publication component', () => {
     it('should ignore the "isLocal" prop when track.name is not "camera"', () => {
       mockUseTrack.mockImplementation(() => ({ kind: 'video', name: 'screen-123456' }));
       const wrapper = shallow(
-        <Publication isLocal publication={'mockPublication' as any} participant={'mockParticipant' as any} />
+        <Publication isLocal publication={'mockPublication' as any} participant={'mockParticipant' as any} />,
       );
       expect(useTrack).toHaveBeenCalledWith('mockPublication');
       expect(wrapper.find({ isLocal: false }).length).toBe(1);
@@ -29,7 +29,7 @@ describe('the Publication component', () => {
     it('should use the "isLocal" prop when track.name is "camera"', () => {
       mockUseTrack.mockImplementation(() => ({ kind: 'video', name: 'camera-123456' }));
       const wrapper = shallow(
-        <Publication isLocal publication={'mockPublication' as any} participant={'mockParticipant' as any} />
+        <Publication isLocal publication={'mockPublication' as any} participant={'mockParticipant' as any} />,
       );
       expect(useTrack).toHaveBeenCalledWith('mockPublication');
       expect(wrapper.find({ isLocal: true }).length).toBe(1);
@@ -39,7 +39,7 @@ describe('the Publication component', () => {
     it('should render an AudioTrack', () => {
       mockUseTrack.mockImplementation(() => ({ kind: 'audio', name: '123456' }));
       const wrapper = shallow(
-        <Publication isLocal publication={'mockPublication' as any} participant={'mockParticipant' as any} />
+        <Publication isLocal publication={'mockPublication' as any} participant={'mockParticipant' as any} />,
       );
       expect(useTrack).toHaveBeenCalledWith('mockPublication');
       expect(wrapper.find('AudioTrack').length).toBe(1);
@@ -53,7 +53,7 @@ describe('the Publication component', () => {
           publication={'mockPublication' as any}
           participant={'mockParticipant' as any}
           disableAudio={true}
-        />
+        />,
       );
       expect(useTrack).toHaveBeenCalledWith('mockPublication');
       expect(wrapper.find('AudioTrack').length).toBe(0);
@@ -63,7 +63,7 @@ describe('the Publication component', () => {
   it('should render null when there is no track', () => {
     mockUseTrack.mockImplementation(() => null);
     const wrapper = shallow(
-      <Publication isLocal publication={'mockPublication' as any} participant={'mockParticipant' as any} />
+      <Publication isLocal publication={'mockPublication' as any} participant={'mockParticipant' as any} />,
     );
     expect(useTrack).toHaveBeenCalledWith('mockPublication');
     expect(wrapper.find('*').length).toBe(0);

@@ -3,7 +3,7 @@ import { Button, luxColors, Icon } from '@alucio/lux-ui';
 import { View, StyleSheet, Text } from 'react-native';
 import { MenuItem, OverflowMenu } from '@ui-kitten/components';
 import { ATTENDEE_STATUS } from '@alucio/aws-beacon-amplify/src/API';
-import { useVideoContext, useParticipants, Participant } from '../../../main';
+import { useParticipants, Participant } from '../../../main';
 
 const styles = StyleSheet.create({
   accept: {
@@ -79,13 +79,11 @@ interface RightMenuProps {
   onRemoveFromCall?: () => void,
 }
 
-
 function connected(props:AttendeeProps) {
-  if(props.visible){
+  if (props.visible) {
     props.onAttendeeConnected && props.onAttendeeConnected(props.attendeeId, props.name);
   }
 }
-
 
 function RightMenu(props:RightMenuProps) {
   const [visible, setVisible] = useState(false);
@@ -116,7 +114,6 @@ function RightMenu(props:RightMenuProps) {
 }
 
 function Attendee(props: AttendeeProps) {
-  const { room } = useVideoContext();
   const participants = useParticipants();
 
   const readyToShowVideo = participants.find(e => e.identity === props.name);
@@ -137,33 +134,30 @@ function Attendee(props: AttendeeProps) {
         Remove
       </Button.Kitten>
     </>
-    : 
-    <>
-    <Text style={styles.name}>Connecting...</Text>
+    : <>
+      <Text style={styles.name}>Connecting...</Text>
     </>)
 
   function onAccept() {
-    if(props.visible){
+    if (props.visible) {
       props.onAcceptCall && props.onAcceptCall(props.attendeeId, props.name);
     }
   }
 
   function onDeny() {
-    if(props.visible){
+    if (props.visible) {
       props.onDenyCall && props.onDenyCall(props.attendeeId, props.name);
     }
   }
 
-  function onRemoveFromCall(){
-    if(props.visible){
+  function onRemoveFromCall() {
+    if (props.visible) {
       props.onRemoveFromCall && props.onRemoveFromCall(props.attendeeId, props.name);
     }
   }
 
-  
-
-  function getName(name: string){
-    if(name.split('.').length > 1){
+  function getName(name: string) {
+    if (name.split('.').length > 1) {
       return name.split('.')[2];
     }
     return name;

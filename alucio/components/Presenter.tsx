@@ -3,7 +3,6 @@ import { View, StyleSheet, Text } from 'react-native';
 import { luxColors, Iffy } from '@alucio/lux-ui';
 import {
   LocalVideoPreview,
-  useMainSpeaker,
   useParticipantNetworkQualityLevel,
   useRoomState,
   MainParticipant as CurrentUserParticipant,
@@ -57,7 +56,7 @@ const styles = StyleSheet.create({
 function NetworkWrapper() {
   const { room: { localParticipant } } = useVideoContext();
 
-  if(!localParticipant){
+  if (!localParticipant) {
     return null;
   }
 
@@ -88,7 +87,13 @@ function Presenter(props: PresenterProps) {
       {roomState === 'disconnected' ? <LocalVideoPreview /> : <CurrentUserParticipant />}
       <Iffy is={props.hideParticipantName === false}>
         <View style={styles.controls}>
-          <View style={styles.participantNameContainer}>{roomState !== 'disconnected' ? <ParticipantName /> : <Text style={styles.participantName}>Connecting.....</Text>}</View>
+          <View style={styles.participantNameContainer}>
+            {
+              roomState !== 'disconnected'
+                ? <ParticipantName />
+                : <Text style={styles.participantName}>Connecting.....</Text>
+            }
+          </View>
           <View style={styles.mic}>
             <LocalAudioLevelIndicator />
           </View>
@@ -100,7 +105,7 @@ function Presenter(props: PresenterProps) {
 }
 
 Presenter.defaultProps = {
-  hideParticipantName: false
+  hideParticipantName: false,
 }
 
 export default Presenter;

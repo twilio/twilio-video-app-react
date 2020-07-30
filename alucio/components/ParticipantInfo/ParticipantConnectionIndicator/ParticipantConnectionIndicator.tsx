@@ -22,8 +22,8 @@ export default function ParticipantConnectionIndicator({ participant }: { partic
   return (
     <div title={isReconnecting ? 'Participant is reconnecting' : 'Participant is connected'}>
       <span
-        // @ts-ignore 
-        styles={classes.indicator}></span>
+        // @ts-ignore
+        styles={classes.indicator} />
     </div>
   );
 }

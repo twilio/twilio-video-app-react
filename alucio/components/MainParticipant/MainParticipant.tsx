@@ -12,7 +12,7 @@ export default function MainParticipant() {
         participant={localParticipant}
         disableAudio
         enableScreenShare
-        videoPriority={"high"}
+        videoPriority={'high'}
       />
     </MainParticipantInfo>
   );

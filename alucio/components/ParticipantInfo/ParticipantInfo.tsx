@@ -16,7 +16,7 @@ import { luxColors } from '@alucio/lux-ui';
 const useStyles = {
   controlsContainer: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   container: {
     position: 'relative',
@@ -37,7 +37,7 @@ const useStyles = {
       width: `${(theme.sidebarMobileHeight * 16) / 9}px`,
       marginRight: '3px',
       fontSize: '10px',
-    },*/
+    }, */
   },
   isVideoSwitchedOff: {
     /* '& video': {
@@ -66,13 +66,13 @@ const useStyles = {
     alignItems: 'center',
     fontSize: 12,
     fontWeight: 500,
-    fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif'
+    fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif',
   },
   infoRow: {
     display: 'flex',
     justifyContent: 'space-between',
     height: '100%',
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
   },
   infoRowContainer: {
     flex: 1,
@@ -82,8 +82,8 @@ const useStyles = {
     paddingRight: '1em',
     paddingBottom: '0.55em',
     paddingTop: '0.65em',
-    opacity: 0.8
-  }
+    opacity: 0.8,
+  },
 };
 
 interface ParticipantInfoProps {
@@ -95,18 +95,16 @@ interface ParticipantInfoProps {
 }
 
 export default function ParticipantInfo({ participant, onClick, isSelected, children, menu }: ParticipantInfoProps) {
-  if(!participant){
+  if (!participant) {
     return null;
   }
-  
+
   const publications = usePublications(participant);
 
   const audioPublication = publications.find(p => p.kind === 'audio');
   const videoPublication = publications.find(p => p.trackName.includes('camera'));
 
   const networkQualityLevel = useParticipantNetworkQualityLevel(participant);
-  const isVideoEnabled = Boolean(videoPublication);
-  const isScreenShareEnabled = publications.find(p => p.trackName.includes('screen'));
 
   const videoTrack = useTrack(videoPublication);
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
@@ -114,9 +112,9 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
   const audioTrack = useTrack(audioPublication) as LocalAudioTrack | RemoteAudioTrack;
 
   const classes = useStyles;
-  
-  function getName(name: string){
-    if(name.split('.').length > 1){
+
+  function getName(name: string) {
+    if (name.split('.').length > 1) {
       return name.split('.')[2];
     }
     return name;

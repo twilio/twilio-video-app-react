@@ -8,12 +8,13 @@ export function debounce<F extends Procedure>(
   func: F,
   waitMilliseconds = 50,
   options: Options = {
-    isImmediate: false
+    isImmediate: false,
   },
 ): (this: ThisParameterType<F>, ...args: Parameters<F>) => void {
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
   return function(this: ThisParameterType<F>, ...args: Parameters<F>) {
+    // eslint-disable-next-line consistent-this
     const context = this;
 
     const doLater = function() {

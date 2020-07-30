@@ -2,12 +2,6 @@ import React, { useRef, useEffect } from 'react';
 import { IVideoTrack } from '../../../src/types';
 import { Track } from 'twilio-video';
 
-const Video = {
-  width: '100%',
-  maxHeight: '100%',
-  objectFit: 'contain',
-};
-
 interface VideoTrackProps {
   track: IVideoTrack;
   isLocal?: boolean;
@@ -36,6 +30,6 @@ export default function VideoTrack({ track, isLocal, priority }: VideoTrackProps
   // The local video track is mirrored.
   const isFrontFacing = track.mediaStreamTrack.getSettings().facingMode !== 'environment';
   let style = isLocal && isFrontFacing ? { transform: 'rotateY(180deg)' } : {};
-  style = {...style, ...{objectFit: 'contain', width: '100%', maxHeight: '100%'} }
+  style = { ...style, ...{ objectFit: 'contain', width: '100%', maxHeight: '100%' } }
   return <video ref={ref} style={style} />;
 }

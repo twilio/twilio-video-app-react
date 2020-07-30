@@ -18,7 +18,7 @@ describe('the ParticipantInfo component', () => {
     const wrapper = shallow(
       <ParticipantInfo onClick={() => { }} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
         mock children
-      </ParticipantInfo>
+      </ParticipantInfo>,
     );
     expect(wrapper.find('ScreenShareIcon').exists()).toEqual(true);
   });
@@ -28,7 +28,7 @@ describe('the ParticipantInfo component', () => {
     const wrapper = shallow(
       <ParticipantInfo onClick={() => { }} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
         mock children
-      </ParticipantInfo>
+      </ParticipantInfo>,
     );
     expect(wrapper.find('ScreenShareIcon').exists()).toEqual(false);
   });
@@ -38,7 +38,7 @@ describe('the ParticipantInfo component', () => {
     const wrapper = shallow(
       <ParticipantInfo onClick={() => { }} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
         mock children
-      </ParticipantInfo>
+      </ParticipantInfo>,
     );
     expect(wrapper.find('.makeStyles-infoContainer-3').prop('className')).toContain('hideVideo');
   });
@@ -48,7 +48,7 @@ describe('the ParticipantInfo component', () => {
     const wrapper = shallow(
       <ParticipantInfo onClick={() => { }} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
         mock children
-      </ParticipantInfo>
+      </ParticipantInfo>,
     );
     expect(wrapper.find('.makeStyles-infoContainer-3').prop('className')).not.toContain('hideVideo');
   });
@@ -58,7 +58,7 @@ describe('the ParticipantInfo component', () => {
     const wrapper = shallow(
       <ParticipantInfo onClick={() => { }} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
         mock children
-      </ParticipantInfo>
+      </ParticipantInfo>,
     );
     expect(wrapper.find('VideocamOffIcon').exists()).toEqual(true);
   });
@@ -68,7 +68,7 @@ describe('the ParticipantInfo component', () => {
     const wrapper = shallow(
       <ParticipantInfo onClick={() => { }} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
         mock children
-      </ParticipantInfo>
+      </ParticipantInfo>,
     );
     expect(wrapper.find('VideocamOffIcon').exists()).toEqual(false);
   });
@@ -79,7 +79,7 @@ describe('the ParticipantInfo component', () => {
     const wrapper = shallow(
       <ParticipantInfo onClick={() => { }} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
         mock children
-      </ParticipantInfo>
+      </ParticipantInfo>,
     );
     expect(wrapper.find('.makeStyles-container-1').prop('className')).toContain('isVideoSwitchedOff');
   });
@@ -90,7 +90,7 @@ describe('the ParticipantInfo component', () => {
     const wrapper = shallow(
       <ParticipantInfo onClick={() => { }} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
         mock children
-      </ParticipantInfo>
+      </ParticipantInfo>,
     );
     expect(wrapper.find('.makeStyles-container-1').prop('className')).not.toContain('isVideoSwitchedOff');
   });
@@ -100,7 +100,7 @@ describe('the ParticipantInfo component', () => {
     const wrapper = shallow(
       <ParticipantInfo onClick={() => { }} isSelected={true} participant={{ identity: 'mockIdentity' } as any}>
         mock children
-      </ParticipantInfo>
+      </ParticipantInfo>,
     );
     expect(wrapper.exists(PinIcon)).toBe(true);
   });
@@ -110,7 +110,7 @@ describe('the ParticipantInfo component', () => {
     const wrapper = shallow(
       <ParticipantInfo onClick={() => { }} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
         mock children
-      </ParticipantInfo>
+      </ParticipantInfo>,
     );
     expect(wrapper.exists(PinIcon)).toBe(false);
   });
