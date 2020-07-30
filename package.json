@@ -45,6 +45,11 @@
     "server": "node server.js",
     "deploy:twilio-cli": "cross-env REACT_APP_SET_AUTH=passcode npm run build && twilio rtc:apps:video:deploy --authentication=passcode --app-directory ./build"
   },
+  "config": {
+    "commitizen": {
+      "path": "../../../node_modules/cz-conventional-changelog"
+    }
+  },
   "browserslist": {
     "production": [
       ">0.2%",

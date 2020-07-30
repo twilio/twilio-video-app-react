@@ -1,6 +1,13 @@
-import React, { ReactElement } from 'react';
+import React, { useState, ReactElement } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { Box, luxColors, Icon, util } from '@alucio/lux-ui';
+import DeviceSettings from '../../DeviceSettings/DeviceSettings'
+import {
+  Box,
+  luxColors,
+  Icon,
+  Popover,
+  util,
+} from '@alucio/lux-ui';
 
 const styles = StyleSheet.create({
   Content: {
@@ -89,14 +96,46 @@ function SideBarOption(props: SideBarOptionProps): ReactElement<View> {
 
 interface MenuProps {
   menuOptions: MenuOption[],
-  onSelectedOption: (menuOption: MenuOption) => void
+  audioFiles?: any[],
+  onSelectedOption: (menuOption: MenuOption) => void,
 }
 
+// [TODO] - Menu is a bit rigid, consider writing it explicitly
 function Menu(props: MenuProps) {
+  const { audioFiles } = props
+  const [settingsToggle, setSettingsToggle] = useState<boolean>(false)
+
   return (
     <Box style={[styles.optionsWrapper, { flexDirection: 'row' }]}>
       {props.menuOptions.map((menuOption, key) => (
-        <SideBarOption key={`sidebaroption_${key}`} menuOption={menuOption} onSelectedOption={props.onSelectedOption} />
+        menuOption.title === 'Settings'
+          ? <Popover
+            lazyMount
+            interactive
+            visible={settingsToggle}
+            type="menu"
+          >
+            <Popover.Anchor>
+              <SideBarOption
+                menuOption={menuOption}
+                onSelectedOption={(...args) => {
+                  setSettingsToggle(p => !p)
+                  props.onSelectedOption(...args)
+                }}
+              />
+            </Popover.Anchor>
+            <Popover.Content offset={12}>
+              <DeviceSettings
+                onDone={() => setSettingsToggle(false)}
+                audioFiles={audioFiles ?? []}
+              />
+            </Popover.Content>
+          </Popover>
+          : <SideBarOption
+            key={`sidebaroption_${key}`}
+            menuOption={menuOption}
+            onSelectedOption={props.onSelectedOption}
+          />
       ))}
     </Box>
   )

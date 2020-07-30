@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { Button, luxColors, util } from '@alucio/lux-ui';
+import { Button, Stack, luxColors, util } from '@alucio/lux-ui';
 import Menu, { MenuOption } from '../Menu/Menu';
-import { useLocalAudioToggle, useLocalVideoToggle, useVideoContext, useRoomState, MODE_TYPE } from '../../../main';
+import { useLocalAudioToggle, useLocalVideoToggle, useVideoContext, MODE_TYPE } from '../../../main';
 import { virtualType } from '../VirtualExchange';
 
 const styles = StyleSheet.create({
@@ -32,31 +32,31 @@ const styles = StyleSheet.create({
   mic: {
     flex: 1,
   },
-  name: {
-    flex: 1,
-    alignSelf: 'center',
-    marginLeft: 5,
-  },
   nameText: {
     color: luxColors.info.primary,
-    marginLeft: 20,
     opacity: 0.6,
     fontWeight: '500',
     fontSize: 16,
     lineHeight: 20,
     minWidth: 74,
+    paddingLeft: 16,
+  },
+  logoContainer: {
+    flex: 1,
+    height: '100%',
+    minWidth: 140,
+    maxWidth: 140,
+    paddingRight: 40,
+    overflow: 'hidden',
   },
   logo: {
     opacity: 0.1,
     backgroundColor: luxColors.thumbnailBorder.primary,
-    position: 'absolute',
-    width: 110,
-    height: 130,
-    top: '-80%',
-    left: '-10%',
-    transform: [
-      { rotate: '-24deg' },
-    ],
+    width: 210,
+    height: 200,
+    top: -30,
+    left: -40,
+    transform: [{ rotate: '-24deg' }],
   },
 })
 
@@ -93,10 +93,11 @@ let PresentationMenuOptions: MenuOption[] = [
 
 interface HeadBarProps {
   mode: MODE_TYPE,
-  displayContentPanel: boolean;
-  onCallEnd: () => void;
-  onShowContentPanel?: () => void;
-  virtual: virtualType;
+  displayContentPanel: boolean,
+  onCallEnd: () => void,
+  onShowContentPanel?: () => void,
+  virtual: virtualType,
+  audioFiles?: any[],
 }
 
 function toggleIcon(selected: MenuOption, tooltipText: string[], icon: string[]) {
@@ -106,25 +107,24 @@ function toggleIcon(selected: MenuOption, tooltipText: string[], icon: string[])
 }
 
 function MeetingControls(props: HeadBarProps) {
-  const { virtual, mode } = props;
+  const { mode, audioFiles } = props;
   PresentationMenuOptions[0].active = props.displayContentPanel;
-  const roomState = useRoomState();
   const { room } = useVideoContext();
   const [, toggleAudioEnabled] = useLocalAudioToggle();
   const [, toggleVideoEnabled] = useLocalVideoToggle();
   const exitButtonText = mode === 'Host' ? 'End' : 'Leave';
 
-  if(mode === 'Guest'){
+  if (mode === 'Guest') {
     // For the guest remove some options
-    PresentationMenuOptions = PresentationMenuOptions.filter((e)=> {
+    PresentationMenuOptions = PresentationMenuOptions.filter((e) => {
       return !(['My Content', 'News'].includes(e.title));
     })
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     room.once('disconnected', (_, c) => {
       // When the room is finished
-      if(c && c.code && c.code === 53118){
+      if (c && c.code && c.code === 53118) {
         props.onCallEnd();
       }
     });
@@ -152,23 +152,34 @@ function MeetingControls(props: HeadBarProps) {
   }
 
   return (<>
-    <View style={styles.name}>
-      <Text style={styles.nameText}>
-          Virtual Exchange
-      </Text>
-      <View style={styles.logo}/>
+    <View style={styles.logoContainer}>
+      <Stack anchor="center" alignSelf="center">
+        <Stack.Layer>
+          <View style={styles.logo}/>
+        </Stack.Layer>
+        <Stack.Layer>
+          <Text style={styles.nameText}>Virtual Exchange</Text>
+        </Stack.Layer>
+      </Stack>
     </View>
     <View style={styles.menu}>
       <View style={styles.menuPlayer}>
-        <Menu menuOptions={PlayerMenuOptions} onSelectedOption={onPlayerSelectedOption} />
+        <Menu
+          menuOptions={PlayerMenuOptions}
+          onSelectedOption={onPlayerSelectedOption}
+          audioFiles={audioFiles}
+        />
       </View>
-      <View style={util.mergeStyles(undefined, styles.menuActions, [{marginLeft: 120}, mode === 'Guest'])}>
-        <Menu menuOptions={PresentationMenuOptions} onSelectedOption={onPresentationSelectedOption} />
+      <View style={util.mergeStyles(undefined, styles.menuActions, [{ marginLeft: 120 }, mode === 'Guest'])}>
+        <Menu
+          menuOptions={PresentationMenuOptions}
+          onSelectedOption={onPresentationSelectedOption}
+        />
       </View>
     </View>
     <View style={styles.endCall}>
       <Button.Kitten style={styles.endCallButton} onPress={endCall} status="danger">
-          {exitButtonText}
+        {exitButtonText}
       </Button.Kitten>
     </View>
   </>

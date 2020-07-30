@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     zIndex: 0,
   },
   container: {
+    zIndex: -1,
     flexGrow: 1,
     backgroundColor: luxColors.basicBlack.primary,
   },
@@ -75,6 +76,7 @@ interface LayoutProps {
   onRemoveFromCall?: (attendeeId: string, name: string) => void,
   showContentPanel?: () => void,
   virtual: virtualType,
+  audioFiles?: any[],
 }
 
 interface AttendersProps {
@@ -91,7 +93,7 @@ function Attenders(props: AttendersProps) {
   const attenders = useParticipants();
 
   const attendersInTheMeeting = attenders.reduce((p, c) => {
-    if (props.mode === "Host" &&
+    if (props.mode === 'Host' &&
       currentAttendees[c.identity] &&
       currentAttendees[c.identity].status === ATTENDEE_STATUS.CONNECTED
     ) {
@@ -102,7 +104,7 @@ function Attenders(props: AttendersProps) {
         status: ATTENDEE_STATUS.CONNECTED,
       };
     }
-    else if (props.mode === "Guest") {
+    else if (props.mode === 'Guest') {
       // @ts-ignore
       p[c.identity] = {
         id: c.identity.split('.')[0],
@@ -124,7 +126,7 @@ function Attenders(props: AttendersProps) {
         key={`accept_deny_${e}`}
         status={attendees[e].status}
         attendeeId={attendees[e]?.id}
-        visible={props.mode === "Host"}
+        visible={props.mode === 'Host'}
         name={e}
         onAcceptCall={props.onAcceptCall}
         onDenyCall={props.onDenyCall}
@@ -153,12 +155,12 @@ function Layout(props: LayoutProps) {
     onHostConnected,
     currentAttendees,
     virtual,
+    audioFiles,
   } = props;
 
   const { connect, room, isConnecting } = useVideoContext();
   const roomState = useRoomState();
   const size = useWindowSize();
-
 
   useEffect(() => {
     async function init() {
@@ -173,7 +175,7 @@ function Layout(props: LayoutProps) {
     init();
   }, [virtual])
 
-  useEffect(()=>{
+  useEffect(() => {
     room.on('participantDisconnected', (e) => {
       const attendeeId = e.identity.split('.')[0];
       onAttendeeDisconnected && onAttendeeDisconnected(attendeeId, e.identity);
@@ -198,8 +200,7 @@ function Layout(props: LayoutProps) {
         mediaElements.forEach(mediaElement => mediaElement.remove());
       });
       room.disconnect();
-
-    } catch (e){
+    } catch (e) {
       // eslint-disable-next-line no-throw-literal
       throw (`Error ending the call ${JSON.stringify(e)}`);
     }
@@ -227,6 +228,7 @@ function Layout(props: LayoutProps) {
               displayContentPanel={displayContentPanel || false}
               onShowContentPanel={showContentPanel}
               onCallEnd={handleEndCall}
+              audioFiles={audioFiles}
             />
           </View>
         </LinearGradient>
