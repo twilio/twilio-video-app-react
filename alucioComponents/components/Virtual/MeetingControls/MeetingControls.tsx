@@ -60,21 +60,6 @@ const styles = StyleSheet.create({
   },
 })
 
-const PlayerMenuOptions: MenuOption[] = [
-  {
-    title: 'Mute',
-    icon: 'microphone',
-  },
-  {
-    title: 'Stop Video',
-    icon: 'video',
-  },
-  {
-    title: 'Settings',
-    icon:  'settings',
-  },
-];
-
 let PresentationMenuOptions: MenuOption[] = [
   {
     active: false,
@@ -99,44 +84,27 @@ interface HeadBarProps {
   virtual: virtualType;
 }
 
-function toggleIcon(selected: MenuOption, tooltipText: string[], icon: string[]) {
-  const item = PlayerMenuOptions.find((e) => (e.title === selected.title)) as MenuOption;
-  item.title = item.title === tooltipText[0] ? tooltipText[1] : tooltipText[0];
-  item.icon = item.icon === icon[0] ? icon[1] : icon[0];
-}
-
 function MeetingControls(props: HeadBarProps) {
   const { virtual, mode } = props;
   PresentationMenuOptions[0].active = props.displayContentPanel;
   const roomState = useRoomState();
   const { room } = useVideoContext();
-  const [, toggleAudioEnabled] = useLocalAudioToggle();
-  const [, toggleVideoEnabled] = useLocalVideoToggle();
+  const [isAudioEnabled, toggleAudioEnabled] = useLocalAudioToggle();
+  const [isVideoEnabled, toggleVideoEnabled] = useLocalVideoToggle();
   const exitButtonText = mode === 'Host' ? 'End' : 'Leave';
 
-  if(mode === 'Guest'){
+  if (mode === 'Guest') {
     // For the guest remove some options
-    PresentationMenuOptions = PresentationMenuOptions.filter((e)=> {
+    PresentationMenuOptions = PresentationMenuOptions.filter((e) => {
       return !(['My Content', 'News'].includes(e.title));
     })
   }
 
-  useEffect(()=>{
-    room.once('disconnected', (_, c) => {
-      // When the room is finished
-      if(c && c.code && c.code === 53118){
-        props.onCallEnd();
-      }
-    });
-  }, [room])
-
   function onPlayerSelectedOption(selected: MenuOption) {
     if (selected.title === 'Mute' || selected.title === 'Unmute') {
-      toggleIcon(selected, ['Mute', 'Unmute'], ['microphone', 'microphone-off']);
       toggleAudioEnabled();
     }
     else if (selected.title === 'Stop Video' || selected.title === 'Start Video') {
-      toggleIcon(selected, ['Stop Video', 'Start Video'], ['video', 'video-off']);
       toggleVideoEnabled();
     }
   }
@@ -146,29 +114,49 @@ function MeetingControls(props: HeadBarProps) {
       props.onShowContentPanel && props.onShowContentPanel();
     }
   }
-
-  async function endCall() {
-    props.onCallEnd();
+  const muteAudioOption: MenuOption = {
+    title: 'Mute',
+    icon: 'microphone',
+  };
+  if (!isAudioEnabled) {
+    muteAudioOption.title = 'Unmute'
+    muteAudioOption.icon = 'microphone-off'
   }
+  const muteVideoOption: MenuOption = {
+    title: 'Stop Video',
+    icon: 'video'
+  };
+  if (!isVideoEnabled) {
+    muteVideoOption.title = 'Start Video'
+    muteVideoOption.icon = 'video-off'
+  }
+  const playerMenuOptions = [
+    muteAudioOption,
+    muteVideoOption,
+    {
+      title: 'Settings',
+        icon: 'settings',
+    }
+  ];
 
   return (<>
     <View style={styles.name}>
       <Text style={styles.nameText}>
-          Virtual Exchange
+        Virtual Exchange
       </Text>
-      <View style={styles.logo}/>
+      <View style={styles.logo} />
     </View>
     <View style={styles.menu}>
       <View style={styles.menuPlayer}>
-        <Menu menuOptions={PlayerMenuOptions} onSelectedOption={onPlayerSelectedOption} />
+        <Menu menuOptions={playerMenuOptions} onSelectedOption={onPlayerSelectedOption} />
       </View>
-      <View style={util.mergeStyles(undefined, styles.menuActions, [{marginLeft: 120}, mode === 'Guest'])}>
+      <View style={util.mergeStyles(undefined, styles.menuActions, [{ marginLeft: 120 }, mode === 'Guest'])}>
         <Menu menuOptions={PresentationMenuOptions} onSelectedOption={onPresentationSelectedOption} />
       </View>
     </View>
     <View style={styles.endCall}>
-      <Button.Kitten style={styles.endCallButton} onPress={endCall} status="danger">
-          {exitButtonText}
+      <Button.Kitten style={styles.endCallButton} onPress={props.onCallEnd} status="danger">
+        {exitButtonText}
       </Button.Kitten>
     </View>
   </>

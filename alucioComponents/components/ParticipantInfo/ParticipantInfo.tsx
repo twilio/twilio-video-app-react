@@ -11,7 +11,8 @@ import useParticipantNetworkQualityLevel from '../../../src/hooks/useParticipant
 import usePublications from '../../../src/hooks/usePublications/usePublications';
 import useIsTrackSwitchedOff from '../../../src/hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
 import useTrack from '../../../src/hooks/useTrack/useTrack';
-import { luxColors } from '@alucio/lux-ui';
+import ParticipantPlaceholder from '../ParticipantInfo/ParticipantPlaceholder/ParticipantPlaceholder'
+import { luxColors, Iffy } from '@alucio/lux-ui';
 
 const useStyles = {
   controlsContainer: {
@@ -22,22 +23,11 @@ const useStyles = {
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
-    // height: `${(theme.sidebarWidth * 9) / 16}px`,
+    width: '100%',
+    height: '100%',
     overflow: 'hidden',
     cursor: 'pointer',
-    /* '& video': {
-      filter: 'none',
-    },
-    '& svg': {
-      stroke: 'black',
-      strokeWidth: '0.8px',
-    },
-    [theme.breakpoints.down('xs')]: {
-      height: theme.sidebarMobileHeight,
-      width: `${(theme.sidebarMobileHeight * 16) / 9}px`,
-      marginRight: '3px',
-      fontSize: '10px',
-    },*/
+    backgroundColor: luxColors.contentPanelBackground.primary,
   },
   isVideoSwitchedOff: {
     /* '& video': {
@@ -108,9 +98,9 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
   const isVideoEnabled = Boolean(videoPublication);
   const isScreenShareEnabled = publications.find(p => p.trackName.includes('screen'));
 
-  const videoTrack = useTrack(videoPublication);
+  const videoTrack = useTrack(videoPublication) as LocalVideoTrack | RemoteVideoTrack;
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
-
+  
   const audioTrack = useTrack(audioPublication) as LocalAudioTrack | RemoteAudioTrack;
 
   const classes = useStyles;
@@ -142,7 +132,7 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
               {getName(participant.identity)}
             </h4>
             <div style={classes.controlsContainer}>
-              <AudioLevelIndicator audioTrack={audioTrack} background="black" />
+              <AudioLevelIndicator audioTrack={audioTrack} />
               <NetworkQualityLevel qualityLevel={networkQualityLevel} />
             </div>
           </div>
@@ -154,7 +144,12 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
         </div>
       </div>
       {isVideoSwitchedOff && <BandwidthWarning />}
-      {children}
+      <Iffy is={videoTrack?.isEnabled && videoTrack?.isStarted}>
+        {children}
+      </Iffy>
+      <Iffy is={!(videoTrack?.isEnabled && videoTrack?.isStarted)}>
+        <ParticipantPlaceholder/>
+      </Iffy>
     </div>
   );
 }

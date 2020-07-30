@@ -9,6 +9,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import useWindowSize from './Util/useWindowSize';
 import { ATTENDEE_STATUS } from '@alucio/aws-beacon-amplify/src/API';
 import { User } from '@alucio/aws-beacon-amplify/src/models'
+import { RemoteParticipant, TwilioError, Room } from 'twilio-video';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -58,6 +59,12 @@ export type virtualType = {
   }
 }
 
+type InitialDeviceSettings = {
+  isAudioEnabled: boolean,
+  isVideoEnabled: boolean,
+  isPhoneAudio: boolean,
+}
+
 interface LayoutProps {
   background: ImageSourcePropType,
   currentUser?: User,
@@ -75,6 +82,7 @@ interface LayoutProps {
   onRemoveFromCall?: (attendeeId: string, name: string) => void,
   showContentPanel?: () => void,
   virtual: virtualType,
+  deviceSettings?: InitialDeviceSettings,
 }
 
 interface AttendersProps {
@@ -89,7 +97,6 @@ interface AttendersProps {
 function Attenders(props: AttendersProps) {
   const { currentAttendees } = props;
   const attenders = useParticipants();
-
   const attendersInTheMeeting = attenders.reduce((p, c) => {
     if (props.mode === "Host" &&
       currentAttendees[c.identity] &&
@@ -119,7 +126,7 @@ function Attenders(props: AttendersProps) {
   const attendees = Object.assign({ ...currentAttendees }, { ...attendersInTheMeeting });
   const participants = Object.keys(attendees)
     .filter(e => (attendees[e].status === ATTENDEE_STATUS.PENDING || attendees[e].status === ATTENDEE_STATUS.CONNECTED || attendees[e].status === ATTENDEE_STATUS.ACCEPTED))
-    .map((e) =>
+    .map((e) => 
       <Attendee
         key={`accept_deny_${e}`}
         status={attendees[e].status}
@@ -153,12 +160,25 @@ function Layout(props: LayoutProps) {
     onHostConnected,
     currentAttendees,
     virtual,
+    deviceSettings,
   } = props;
 
-  const { connect, room, isConnecting } = useVideoContext();
+  const { connect, room, isConnecting, localTracks } = useVideoContext();
   const roomState = useRoomState();
   const size = useWindowSize();
-
+  
+  // In attendee mode the user already selected if video/audio is enabled
+  useEffect(() => {
+    if(deviceSettings) {
+      localTracks.forEach((track:any) => {
+        if(track.kind === 'video'){
+          track.enable(deviceSettings.isVideoEnabled);
+        } else if (track.kind === 'audio'){
+          track.enable(deviceSettings.isAudioEnabled);
+        }
+      });
+    }
+  },[]);
 
   useEffect(() => {
     async function init() {
@@ -173,15 +193,33 @@ function Layout(props: LayoutProps) {
     init();
   }, [virtual])
 
+
+
   useEffect(()=>{
-    room.on('participantDisconnected', (e) => {
+    const handleParticipantDisconnected = (e:RemoteParticipant) => {
       const attendeeId = e.identity.split('.')[0];
       onAttendeeDisconnected && onAttendeeDisconnected(attendeeId, e.identity);
-    });
+    };
+
+    const handleRoomDisconnected = (_ : Room,e:TwilioError) => {
+      // When the room is finished
+      handleDisconnect();
+    }
+
+    room.on('participantDisconnected', handleParticipantDisconnected);
+    room.on('disconnected', handleRoomDisconnected);
+
+    return () => {
+      room
+        .off('participantDisconnected', handleParticipantDisconnected)
+        .off('disconnected', handleRoomDisconnected);
+    };
+
   }, [room]);
 
-  const handleEndCall = () => {
+  const handleDisconnect = () => {
     try {
+      console.log('handleDisconnect')
       const videoTracks = [...room.localParticipant.videoTracks.values()];
       const audioTracks = [...room.localParticipant.audioTracks.values()];
 
@@ -197,13 +235,17 @@ function Layout(props: LayoutProps) {
         const mediaElements = trackPub.track.detach();
         mediaElements.forEach(mediaElement => mediaElement.remove());
       });
-      room.disconnect();
 
     } catch (e){
       // eslint-disable-next-line no-throw-literal
       throw (`Error ending the call ${JSON.stringify(e)}`);
     }
     props.onEndCall();
+  }
+
+  const handleEndCall = () => {
+    //We call disconnect which triggers the disconnect process
+    room.disconnect();
   }
 
   return (

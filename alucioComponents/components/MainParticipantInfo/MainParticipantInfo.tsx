@@ -1,11 +1,12 @@
 import React from 'react';
 import { LocalVideoTrack, Participant, RemoteVideoTrack } from 'twilio-video';
+import { Iffy, luxColors } from '@alucio/lux-ui';
 
 import BandwidthWarning from '../BandwidthWarning/BandwidthWarning';
 import useIsTrackSwitchedOff from '../../../src/hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
 import usePublications from '../../../src/hooks/usePublications/usePublications';
 import useTrack from '../../../src/hooks/useTrack/useTrack';
-
+import ParticipantPlaceholder from '../ParticipantInfo/ParticipantPlaceholder/ParticipantPlaceholder'
 
 interface MainParticipantInfoProps {
   participant: Participant;
@@ -29,6 +30,9 @@ export default function MainParticipantInfo({ participant, children }: MainParti
           display: 'flex',
           alignItems: 'center',
           gridArea: 'participantList',
+          width: '100%',
+          height: '100%',
+          backgroundColor: luxColors.contentPanelBackground.primary,
         }} 
     >
       <div style={{
@@ -40,7 +44,12 @@ export default function MainParticipantInfo({ participant, children }: MainParti
       }}>
       </div>
       {isVideoSwitchedOff && <BandwidthWarning />}
-      {children}
+      <Iffy is={isVideoEnabled}>
+        {children}
+      </Iffy>
+      <Iffy is={!isVideoEnabled}>
+        <ParticipantPlaceholder/>
+      </Iffy>
     </div>
   );
 }
