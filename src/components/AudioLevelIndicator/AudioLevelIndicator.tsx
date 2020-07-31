@@ -40,7 +40,7 @@ function AudioLevelIndicator({
   const mediaStreamTrack = useMediaStreamTrack(audioTrack);
 
   useEffect(() => {
-    if (audioTrack && mediaStreamTrack) {
+    if (audioTrack && mediaStreamTrack && isTrackEnabled) {
       // Here we create a new MediaStream from a clone of the mediaStreamTrack.
       // A clone is created to allow multiple instances of this component for a single
       // AudioTrack on iOS Safari.
@@ -67,11 +67,12 @@ function AudioLevelIndicator({
       window.addEventListener('focus', reinitializeAnalyser);
 
       return () => {
+        stopAllMediaStreamTracks();
         window.removeEventListener('focus', reinitializeAnalyser);
         audioTrack.off('stopped', stopAllMediaStreamTracks);
       };
     }
-  }, [mediaStreamTrack, audioTrack]);
+  }, [isTrackEnabled, mediaStreamTrack, audioTrack]);
 
   useEffect(() => {
     const SVGClipElement = SVGRectRef.current;
