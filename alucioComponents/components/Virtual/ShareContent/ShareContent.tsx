@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   screenShare: {
     flexGrow: 1,
     alignSelf: 'center',
-    width: '70%',
+    width: '90%',
     marginTop: 20,
     marginBottom: 20,
   },

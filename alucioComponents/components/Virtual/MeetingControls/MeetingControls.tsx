@@ -71,7 +71,7 @@ let PresentationMenuOptions: MenuOption[] = [
     icon: 'chat',
   },
   {
-    title: 'News',
+    title: 'Notes',
     icon: 'note-text',
   },
 ];
@@ -80,6 +80,7 @@ interface HeadBarProps {
   mode: MODE_TYPE,
   displayContentPanel: boolean;
   onCallEnd: () => void;
+  toggleHostNotes?: () => void;
   onShowContentPanel?: () => void;
   virtual: virtualType;
 }
@@ -110,8 +111,14 @@ function MeetingControls(props: HeadBarProps) {
   }
 
   function onPresentationSelectedOption(selected: MenuOption): void {
-    if (selected.title === 'My Content') {
-      props.onShowContentPanel && props.onShowContentPanel();
+    switch(selected.title) {
+      case PresentationMenuOptions[0].title:
+        props.onShowContentPanel && props.onShowContentPanel();
+        break;
+
+      case PresentationMenuOptions[2].title:
+        props.toggleHostNotes && props.toggleHostNotes();
+        break;
     }
   }
   const muteAudioOption: MenuOption = {

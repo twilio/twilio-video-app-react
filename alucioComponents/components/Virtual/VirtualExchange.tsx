@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { View, Dimensions, StyleSheet, ImageBackground, ImageSourcePropType } from 'react-native';
-import { luxColors } from '@alucio/lux-ui';
+import { Iffy, luxColors } from '@alucio/lux-ui';
 import ShareContent from './ShareContent/ShareContent';
 import { Presenter, useVideoContext, useParticipants, useRoomState, MODE_TYPE } from '../../main';
 import HeadBar from './MeetingControls/MeetingControls';
@@ -23,8 +23,11 @@ const styles = StyleSheet.create({
     zIndex: 0,
   },
   container: {
-    flexGrow: 1,
-    backgroundColor: luxColors.basicBlack.primary,
+    flex: 10,
+  },
+  contentContainer: {
+    flex: 1,
+    flexDirection: 'row',
   },
   imageBackground: {
     display: 'flex',
@@ -36,6 +39,7 @@ const styles = StyleSheet.create({
   header: {
     height: 80,
     flexDirection: 'row',
+    overflow: 'hidden',
   },
   headBarContainer: {
     zIndex: 1,
@@ -43,8 +47,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   mainContainer: {
-    width: width,
+    backgroundColor: luxColors.virtual.background,
     height: height,
+    width: width,
+  },
+  presentationWrapper: {
+    alignSelf: 'center',
+    flex: 1,
+    marginTop: 20,
+    marginBottom: 20,
+    maxWidth: 1300,
+    minWidth: 900,
+    paddingLeft: 20,
+    paddingRight: 20,
+    width: '100%',
   },
   sideBarStyle: {
     flexDirection: 'row',
@@ -81,6 +97,11 @@ interface LayoutProps {
   onAttendeeDisconnected?: (attendeeId: string, name: string) => void,
   onRemoveFromCall?: (attendeeId: string, name: string) => void,
   showContentPanel?: () => void,
+  isHostPresenting?: boolean;
+  toggleHostNotes?: () => void;
+  leftSide?: ReactElement;
+  rightSide?: ReactElement;
+  presentation?: ReactElement;
   virtual: virtualType,
   deviceSettings?: InitialDeviceSettings,
 }
@@ -126,7 +147,7 @@ function Attenders(props: AttendersProps) {
   const attendees = Object.assign({ ...currentAttendees }, { ...attendersInTheMeeting });
   const participants = Object.keys(attendees)
     .filter(e => (attendees[e].status === ATTENDEE_STATUS.PENDING || attendees[e].status === ATTENDEE_STATUS.CONNECTED || attendees[e].status === ATTENDEE_STATUS.ACCEPTED))
-    .map((e) => 
+    .map((e) =>
       <Attendee
         key={`accept_deny_${e}`}
         status={attendees[e].status}
@@ -159,6 +180,11 @@ function Layout(props: LayoutProps) {
     myContentPanel,
     onHostConnected,
     currentAttendees,
+    leftSide = <View/>,
+    rightSide = <View/>,
+    presentation,
+    isHostPresenting,
+    toggleHostNotes,
     virtual,
     deviceSettings,
   } = props;
@@ -166,7 +192,8 @@ function Layout(props: LayoutProps) {
   const { connect, room, isConnecting, localTracks } = useVideoContext();
   const roomState = useRoomState();
   const size = useWindowSize();
-  
+  const isHost = mode === MODE_TYPE.HOST;
+
   // In attendee mode the user already selected if video/audio is enabled
   useEffect(() => {
     if(deviceSettings) {
@@ -184,7 +211,7 @@ function Layout(props: LayoutProps) {
     async function init() {
       if (virtual && virtual.joinToken && roomState === 'disconnected' && !isConnecting) {
         await connect(virtual.joinToken);
-        if (currentUser?.id && mode === 'Host') {
+        if (currentUser?.id && isHost) {
           onHostConnected && onHostConnected();
         }
       }
@@ -192,8 +219,6 @@ function Layout(props: LayoutProps) {
 
     init();
   }, [virtual])
-
-
 
   useEffect(()=>{
     const handleParticipantDisconnected = (e:RemoteParticipant) => {
@@ -268,15 +293,18 @@ function Layout(props: LayoutProps) {
               mode={mode}
               displayContentPanel={displayContentPanel || false}
               onShowContentPanel={showContentPanel}
+              toggleHostNotes={toggleHostNotes}
               onCallEnd={handleEndCall}
             />
           </View>
         </LinearGradient>
       </View>
-      <View style={styles.container}>
-        <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-          <Presenter />
-          {roomState === 'connected' &&
+      <View style={styles.contentContainer}>
+        {leftSide}
+        <View style={styles.container}>
+          <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+            <Presenter />
+            {roomState === 'connected' &&
             <Attenders
               mode={mode}
               currentAttendees={currentAttendees || {}}
@@ -285,8 +313,17 @@ function Layout(props: LayoutProps) {
               onRemoveFromCall={onRemoveFromCall}
               onAttendeeConnected={onAttendeeConnected}
             />}
+          </View>
+          <View style={styles.presentationWrapper}>
+            <Iffy is={isHostPresenting}>
+              {presentation}
+            </Iffy>
+            <Iffy is={!isHostPresenting}>
+              <ShareContent background={background} />
+            </Iffy>
+          </View>
         </View>
-        <ShareContent background={background} />
+        {rightSide}
       </View>
       {myContentPanel}
     </View>
