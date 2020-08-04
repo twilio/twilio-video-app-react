@@ -25,14 +25,15 @@
     "outDir": "./lib",
   },
   "include": [
-    "alucioComponents",
+    "alucio",
     "src/hooks",
     "src/components/VideoProvider",
+    "src/components/MenuBar/DeviceSelector/deviceHooks",
     "src/utils",
     "src/state",
     "src/types.ts",
     "src/__mocks__/twilio-video.ts",
     "src/components/AudioTrack/AudioTrack.tsx"
   ],
-  "exclude": []
+  "exclude": ["**/*.test.*"]
 }
