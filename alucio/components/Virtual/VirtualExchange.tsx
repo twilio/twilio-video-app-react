@@ -23,8 +23,6 @@ const styles = StyleSheet.create({
     zIndex: 0,
   },
   container: {
-    flexGrow: 1,
-    backgroundColor: luxColors.basicBlack.primary,
     flex: 10,
   },
   contentContainer: {
