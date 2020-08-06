@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 // @ts-ignore
 window.TwilioVideo = Video;
 
-export default function useRoom(localTracks: LocalTrack[], onError: Callback, options?: ConnectOptions) {
+export default function useRoom(localTracks:any, onError: Callback, options?: ConnectOptions) {
   const [room, setRoom] = useState<Room>(new EventEmitter() as Room);
   const [isConnecting, setIsConnecting] = useState(false);
   const localTracksRef = useRef<LocalTrack[]>([]);

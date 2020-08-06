@@ -4,7 +4,7 @@ import { MemoryRouter, Route } from 'react-router-dom';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useFullScreenToggle from '../../hooks/useFullScreenToggle/useFullScreenToggle';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
-import { IVideoContext } from '../VideoProvider';
+import { IVideoContext } from '../VideoProvider/VideoProvider';
 import { fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { useAppState } from '../../state';

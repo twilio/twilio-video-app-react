@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\public",
+    "\\src",
+    "\\src\\components",
+    "\\src\\components\\VideoProvider",
+    "\\src\\state"
+  ],
+  "SelectedNode": "\\src\\state\\index.tsx",
+  "PreviewInSolutionExplorer": false
+}

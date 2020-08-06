@@ -1,0 +1,5 @@
+{
+  "name": "LocalVideoPreview",
+  "version": "0.0.0",
+  "main": "./LocalVideoPreview.tsx"
+}

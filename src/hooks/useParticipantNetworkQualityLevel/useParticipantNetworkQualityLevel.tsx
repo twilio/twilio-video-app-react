@@ -9,9 +9,15 @@ export default function useParticipantNetworkQualityLevel(participant: Participa
       setNetworkQualityLevel(newNetworkQualityLevel);
 
     setNetworkQualityLevel(participant.networkQualityLevel);
-    participant.on('networkQualityLevelChanged', handleNewtorkQualityLevelChange);
+      participant.on(
+          'networkQualityLevelChanged',
+          handleNewtorkQualityLevelChange
+      );
     return () => {
-      participant.off('networkQualityLevelChanged', handleNewtorkQualityLevelChange);
+        participant.off(
+            'networkQualityLevelChanged',
+            handleNewtorkQualityLevelChange
+        );
     };
   }, [participant]);
 
