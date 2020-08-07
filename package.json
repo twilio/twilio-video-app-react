@@ -15,7 +15,7 @@
     "@types/react": "^16.9.19",
     "@types/react-dom": "^16.9.5",
     "@types/react-router-dom": "^5.1.3",
-    "@types/twilio-video": "^2.0.10",
+    "@types/twilio-video": "^2.7.0",
     "concurrently": "^5.1.0",
     "cross-env": "^7.0.2",
     "d3-timer": "^1.0.10",
@@ -32,7 +32,7 @@
     "react-scripts": "^3.4.1",
     "strip-color": "^0.1.0",
     "twilio": "^3.39.3",
-    "twilio-video": "^2.7.0",
+    "twilio-video": "^2.7.1",
     "typescript": "^3.8.3"
   },
   "devDependencies": {
