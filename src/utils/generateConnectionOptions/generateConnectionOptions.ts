@@ -1,5 +1,5 @@
 import { ConnectOptions } from 'twilio-video';
-import { isMobile, removeUndefineds } from '..';
+import { isMobile, removeUndefineds, getEnvironment } from '..';
 import { Settings } from '../../state/settings/settingsReducer';
 import { getResolution } from '../../state/settings/renderDimensions';
 
@@ -28,6 +28,8 @@ export default function generateConnectionOptions(settings: Settings) {
 
     // Comment this line if you are playing music.
     maxAudioBitrate: Number(settings.maxAudioBitrate),
+
+    environment: getEnvironment(),
 
     // VP8 simulcast enables the media server in a Small Group or Group Room
     // to adapt your encoded video quality for each RemoteParticipant based on

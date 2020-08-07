@@ -1,4 +1,5 @@
 import isPlainObject from 'is-plain-object';
+import { ConnectOptions } from 'twilio-video';
 
 export const isMobile = (() => {
   if (typeof navigator === 'undefined' || typeof navigator.userAgent !== 'string') {
@@ -37,4 +38,9 @@ export function removeUndefineds<T>(obj: T): T {
   }
 
   return target as T;
+}
+
+export function getEnvironment() {
+  const environmentMatch = window.location.search.match(/environment=(dev|stage|prod)/);
+  return environmentMatch ? (environmentMatch[1] as ConnectOptions['environment']) : undefined;
 }

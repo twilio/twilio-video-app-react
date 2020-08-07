@@ -23,6 +23,10 @@ declare module 'twilio-video' {
   interface VideoBandwidthProfileOptions {
     trackSwitchOffMode?: 'predicted' | 'detected' | 'disabled';
   }
+
+  interface ConnectOptions {
+    environment?: 'prod' | 'stage' | 'dev';
+  }
 }
 
 declare global {

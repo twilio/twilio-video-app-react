@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
+import { getEnvironment } from '../../utils';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -23,6 +24,11 @@ export default function useFirebaseAuth() {
 
       const endpoint = process.env.REACT_APP_TOKEN_ENDPOINT || '/token';
       const params = new window.URLSearchParams({ identity, roomName });
+
+      const environment = getEnvironment();
+      if (environment) {
+        params.set('environment', environment);
+      }
 
       return fetch(`${endpoint}?${params}`, { headers }).then(res => res.text());
     },

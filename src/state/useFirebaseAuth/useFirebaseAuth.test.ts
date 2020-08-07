@@ -50,8 +50,8 @@ describe('the useFirebaseAuth hook', () => {
     expect(result.current.user).toBe(mockUser);
   });
 
-  it('should include the users idToken in request to the video token server', async () => {
-    process.env.REACT_APP_TOKEN_ENDPOINT='http://test-endpoint.com/token'
+  it('should include the users idToken in the request to the video token server', async () => {
+    process.env.REACT_APP_TOKEN_ENDPOINT = 'http://test-endpoint.com/token';
     const { result, waitForNextUpdate } = renderHook(() => useFirebaseAuth());
     await waitForNextUpdate();
     result.current.signIn();
@@ -60,5 +60,26 @@ describe('the useFirebaseAuth hook', () => {
     expect(window.fetch).toHaveBeenCalledWith('http://test-endpoint.com/token?identity=testuser&roomName=testroom', {
       headers: { _headers: { authorization: ['idToken'] } },
     });
+  });
+
+  it('should include the environment in the request to the video token server', async () => {
+    delete window.location;
+    // @ts-ignore
+    window.location = {
+      search: '?environment=stage',
+    };
+
+    process.env.REACT_APP_TOKEN_ENDPOINT = 'http://test-endpoint.com/token';
+    const { result, waitForNextUpdate } = renderHook(() => useFirebaseAuth());
+    await waitForNextUpdate();
+    result.current.signIn();
+    await waitForNextUpdate();
+    await result.current.getToken('testuser', 'testroom');
+    expect(window.fetch).toHaveBeenCalledWith(
+      'http://test-endpoint.com/token?identity=testuser&roomName=testroom&environment=stage',
+      {
+        headers: { _headers: { authorization: ['idToken'] } },
+      }
+    );
   });
 });
