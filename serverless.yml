@@ -1,0 +1,103 @@
+service: escribers-twilio-video-app
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-finch
+  - serverless-stack-output
+
+provider:
+  name: aws
+  stage: ${opt:stage}
+  runtime: nodejs12.x
+  
+custom:
+  client:
+    manageResources: false
+    bucketName: escribers-videoapp-${opt:stage}
+    WebsitebucketName: escribers-videoapp-website-${opt:stage}
+    distributionFolder: build
+    domainName: escribers-videoapp-website-${opt:stage}.s3.amazonaws.com
+    originId: S3-escribers-videoapp-website-${opt:stage}
+  output:
+    file: stackOutput.json # toml, yaml, yml, and json format is available
+    
+resources:
+  Resources:
+    WebsiteBucket:
+      Type: 'AWS::S3::Bucket'
+      Properties:
+        AccessControl: PublicRead
+        BucketName:  ${self:custom.client.WebsitebucketName}
+        WebsiteConfiguration:
+          IndexDocument: index.html
+    BucketPolicies:
+      Type: 'AWS::S3::BucketPolicy'
+      Properties:
+        Bucket: !Ref WebsiteBucket
+        PolicyDocument:
+          Statement:
+            - Action:
+              - 's3:GetObject'
+              Effect: Allow
+              Principal: '*'
+              Resource: !Join 
+                - ''
+                - - 'arn:aws:s3:::'
+                  - !Ref WebsiteBucket
+                  - /*
+    CloudFrontOriginAccessIdentity:
+      Type: 'AWS::CloudFront::CloudFrontOriginAccessIdentity'
+      Properties:
+        CloudFrontOriginAccessIdentityConfig:
+            Comment: !Ref WebsiteBucket
+    CloudFrontDistribution:
+      Type: 'AWS::CloudFront::Distribution'
+      Properties:
+        DistributionConfig:
+          HttpVersion: http2
+          DefaultCacheBehavior:
+            AllowedMethods:
+              - GET
+              - HEAD
+              - OPTIONS
+            CachedMethods:
+              - GET
+              - HEAD
+            Compress: false
+            DefaultTTL: 3600 # in seconds
+            ForwardedValues:
+              Cookies:
+                Forward: none
+              QueryString: false
+            MaxTTL: 86400 # in seconds
+            MinTTL: 60 # in seconds
+            TargetOriginId: ${self:custom.client.originId}
+            ViewerProtocolPolicy: 'redirect-to-https'
+          DefaultRootObject: 'index.html'
+          Enabled: true
+          IPV6Enabled: true
+          Comment: ${opt:stage}
+          Origins:
+            - DomainName:  ${self:custom.client.domainName}
+              Id: ${self:custom.client.originId}
+              S3OriginConfig:
+                OriginAccessIdentity: !Join 
+                    - ''
+                    - - 'origin-access-identity/cloudfront/'
+                      - !Ref CloudFrontOriginAccessIdentity
+          PriceClass: 'PriceClass_100'
+          Restrictions:
+            GeoRestriction:
+              RestrictionType: none
+          ViewerCertificate:
+            MinimumProtocolVersion: TLSv1
+            CloudFrontDefaultCertificate: 'true'
+  Outputs:
+    CloudFrontDomainName:
+      Value:   !GetAtt
+      - 'CloudFrontDistribution'
+      - 'DomainName'
+          
+
+
+         
