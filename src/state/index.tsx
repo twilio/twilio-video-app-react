@@ -33,6 +33,13 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
 
   const reporterToken = window.location.hash.substr(1);
 
+  var endpoint = '';
+  fetch(`${process.env.PUBLIC_URL}/config.json`)
+    .then(r => r.json())
+    .then(data => {
+      endpoint = data.endPoint;
+    });
+
   let contextValue = ({
     error,
     setError,
@@ -46,10 +53,10 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     gridView,
     setGridView,
     getToken: async (caseNumber, partyType, partyName, pinNumber = '') => {
-      const endpoint = `${process.env.REACT_APP_API_URL}/token`;
+      const url = `${endpoint}/token`;
 
       const { data } = await axios({
-        url: endpoint,
+        url: url,
         method: 'POST',
         headers: {
           Authorization: reporterToken ? `Bearer ${reporterToken}` : '',
@@ -65,10 +72,10 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
       return data;
     },
     removeParticipant: async participantSid => {
-      const endpoint = `${process.env.REACT_APP_API_URL}/remove-participant`;
+      const url = `${endpoint}/remove-participant`;
 
       const { data } = await axios({
-        url: endpoint,
+        url: url,
         method: 'POST',
         headers: {
           Authorization: `Bearer ${userToken}`,
