@@ -79,7 +79,7 @@ interface ReporterToken {
 }
 export default function MenuBar() {
   const reporterToken: string = window.location.hash.substr(1);
-  let repoterInfo: any = useState(reporterToken ? jwt_decode(reporterToken) : '');
+  let repoterInfo: any = reporterToken ? jwt_decode(reporterToken) : '';
   const classes = useStyles();
 
   const { getToken, isFetching } = useAppState();
