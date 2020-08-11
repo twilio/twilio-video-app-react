@@ -32,7 +32,6 @@ export default function useLocalTracks() {
       name: `camera-${Date.now()}`,
       ...newOptions,
     };
-    console.log(`Local Device Options: ${JSON.stringify(options)}`)
     return Video.createLocalVideoTrack(options).then(newTrack => {
       setVideoTrack(newTrack);
       return newTrack;
