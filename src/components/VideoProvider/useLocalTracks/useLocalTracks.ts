@@ -27,12 +27,11 @@ export default function useLocalTracks() {
     // conflict.
     const options: CreateLocalTrackOptions = {
       frameRate: 24,
-      height: 720,
-      width: 1280,
+      height: 144,
+      width: 256,
       name: `camera-${Date.now()}`,
       ...newOptions,
     };
-
     return Video.createLocalVideoTrack(options).then(newTrack => {
       setVideoTrack(newTrack);
       return newTrack;
@@ -51,8 +50,8 @@ export default function useLocalTracks() {
     Video.createLocalTracks({
       video: {
         frameRate: 24,
-        height: 720,
-        width: 1280,
+        height: 144,
+        width: 256,
         name: `camera-${Date.now()}`,
       },
       audio: true,
