@@ -1,130 +1,76 @@
+import { DEFAULT_VIDEO_CONSTRAINTS } from '../../../constants';
 import { useCallback, useEffect, useState } from 'react';
-import Video from 'twilio-video';
-import useMediaDevices from '../../../hooks/useMediaDevices/useMediaDevices';
-import usePrevious from '../../../hooks/usePrevious/usePrevious';
-import { useAppState } from '../../../state';
-
-function isSameDevice(prevDefaultDevice: { deviceId: string; groupId: string; label: string; } | undefined, newDefaultDevice: { deviceId?: any; groupId?: any; label?: any; }) {
-    if (!prevDefaultDevice) return false;
-    return (
-        prevDefaultDevice.deviceId === newDefaultDevice.deviceId &&
-        prevDefaultDevice.groupId === newDefaultDevice.groupId &&
-        prevDefaultDevice.label === newDefaultDevice.label
-    );
-}
-
-export function useLocalAudioTrack() {
-    const [track, setTrack] = useState<any>();
-    const defaultDevice = useMediaDevices('audioinput') as any;
-    const prevDefaultDevice = usePrevious(defaultDevice as unknown as undefined);
-    const selectedAudioInputs = useAppState();
-
-    useEffect(() => {
-        if (!isSameDevice(prevDefaultDevice, defaultDevice )) {
-            console.log('auto', defaultDevice.label);
-        }
-         //* eslint-disable-next-line  react-hooks/exhaustive-deps*/
-    }, [defaultDevice]);
-   
-    useEffect(() => {
-        console.log('manual', selectedAudioInputs.label);
-    }, [selectedAudioInputs]);
-
-    useEffect(() => {
-        Video.createLocalAudioTrack({
-            deviceId: defaultDevice.deviceId,
-            groupId: defaultDevice.groupId,
-        })
-            .then((newTrack) => {
-                setTrack(newTrack as any);
-            })
-            .catch(() => {
-                console.log('No microphone attached.');
-            });
-    }, [defaultDevice]);
-
-    useEffect(() => {
-        Video.createLocalAudioTrack({
-            deviceId: selectedAudioInputs.deviceId,
-            groupId: selectedAudioInputs.groupId,
-        })
-            .then((newTrack: Video.LocalAudioTrack) => {
-                setTrack(newTrack as any);
-            })
-            .catch(() => {
-                console.log('No microphone attached.');
-            });
-    }, [selectedAudioInputs]);
-
-    useEffect(() => {
-        const handleStopped = () => setTrack(undefined);
-        if (track) {
-            track.on('stopped', handleStopped);
-            return () => {
-                track.off('stopped', handleStopped);
-            };
-        }
-    }, [track]);
-
-    return track;
-}
-
-export function useLocalVideoTrack() {
-    const [track, setTrack] = useState<any>();
-
-    const { selectedVideoInput } = useAppState();
-
-    const getLocalVideoTrack = useCallback(
-        () =>
-            Video.createLocalVideoTrack({
-                deviceId: selectedVideoInput.deviceId,
-                groupId: selectedVideoInput.groupId,
-                frameRate: 24,
-                height: 720,
-                width: 1280
-            })
-                .then((newTrack: any) => {
-                    setTrack(newTrack);
-                    return newTrack;
-                })
-                .catch((err) => {
-                    if (err.message === 'Requested device not found') {
-                        console.log('No camera attached.');
-                    }
-                }),
-        [selectedVideoInput]
-    );
-
-    useEffect(() => {
-        // We get a new local video track when the app loads.
-        getLocalVideoTrack();
-    }, [selectedVideoInput, getLocalVideoTrack]);
-
-    useEffect(() => {
-        console.log('manual', selectedVideoInput.label);
-    }, [selectedVideoInput]);
-
-
-    useEffect(() => {
-        const handleStopped = () => setTrack(undefined);
-        if (track) {
-            track.on('stopped', handleStopped);
-            return () => {
-                track.off('stopped', handleStopped);
-            };
-        }
-    }, [track]);
-
-    return [track, getLocalVideoTrack];
-}
+import Video, { LocalVideoTrack, LocalAudioTrack, CreateLocalTrackOptions } from 'twilio-video';
 
 export default function useLocalTracks() {
-    const audioTrack = useLocalAudioTrack();
-    const [videoTrack, getLocalVideoTrack] = useLocalVideoTrack();
+  const [audioTrack, setAudioTrack] = useState<LocalAudioTrack>();
+  const [videoTrack, setVideoTrack] = useState<LocalVideoTrack>();
+  const [isAcquiringLocalTracks, setIsAcquiringLocalTracks] = useState(false);
 
-    const localTracks = [audioTrack, videoTrack].filter(
-        (track) => track !== undefined
-    );
+  const getLocalAudioTrack = useCallback((deviceId?: string) => {
+    const options: CreateLocalTrackOptions = {};
 
-    return { localTracks, getLocalVideoTrack };
+    if (deviceId) {
+      options.deviceId = { exact: deviceId };
+    }
+
+    return Video.createLocalAudioTrack(options).then(newTrack => {
+      setAudioTrack(newTrack);
+      return newTrack;
+    });
+  }, []);
+
+  const getLocalVideoTrack = useCallback((newOptions?: CreateLocalTrackOptions) => {
+    // In the DeviceSelector and FlipCameraButton components, a new video track is created,
+    // then the old track is unpublished and the new track is published. Unpublishing the old
+    // track and publishing the new track at the same time sometimes causes a conflict when the
+    // track name is 'camera', so here we append a timestamp to the track name to avoid the
+    // conflict.
+    const options: CreateLocalTrackOptions = {
+      ...(DEFAULT_VIDEO_CONSTRAINTS as {}),
+      name: `camera-${Date.now()}`,
+      ...newOptions,
+    };
+
+    return Video.createLocalVideoTrack(options).then(newTrack => {
+      setVideoTrack(newTrack);
+      return newTrack;
+    });
+  }, []);
+
+  const removeLocalVideoTrack = useCallback(() => {
+    if (videoTrack) {
+      videoTrack.stop();
+      setVideoTrack(undefined);
+    }
+  }, [videoTrack]);
+
+  useEffect(() => {
+    setIsAcquiringLocalTracks(true);
+    Video.createLocalTracks({
+      video: {
+        ...(DEFAULT_VIDEO_CONSTRAINTS as {}),
+        name: `camera-${Date.now()}`,
+      },
+      audio: true,
+    })
+      .then(tracks => {
+        const videoTrack = tracks.find(track => track.kind === 'video');
+        const audioTrack = tracks.find(track => track.kind === 'audio');
+        if (videoTrack) {
+          setVideoTrack(videoTrack as LocalVideoTrack);
+        }
+        if (audioTrack) {
+          setAudioTrack(audioTrack as LocalAudioTrack);
+        }
+      })
+      .finally(() => setIsAcquiringLocalTracks(false));
+  }, []);
+
+  const localTracks = [audioTrack, videoTrack].filter(track => track !== undefined) as (
+    | LocalAudioTrack
+    | LocalVideoTrack
+  )[];
+
+  return { localTracks, getLocalVideoTrack, getLocalAudioTrack, isAcquiringLocalTracks, removeLocalVideoTrack };
 }
