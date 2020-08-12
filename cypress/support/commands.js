@@ -56,7 +56,7 @@ Cypress.Commands.add('shouldBeMakingSound', { prevSubject: 'element' }, subject 
         }
       );
     });
-    
+
   cy.window()
     .then(win => {
       const participantIdentity = subject.attr('data-cy-participant');
