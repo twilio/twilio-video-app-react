@@ -3,7 +3,8 @@
     "typeRoots": [
       "node_modules/@types",
       "../@types"
-    ],
+    ], 
+	"baseUrl": "./src",
     "target": "es6",
     "lib": [
       "dom",
