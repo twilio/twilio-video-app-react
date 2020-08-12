@@ -18,8 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function ToggleAudioButton(props: { disabled?: boolean }) {
   const classes = useStyles();
-  const [isAudioEnabled, toggleAudioEnabled] = useLocalAudioToggle();
-
+  let [isAudioEnabled, toggleAudioEnabled] = useLocalAudioToggle();
   return (
     <Tooltip
       title={isAudioEnabled ? 'Mute Audio' : 'Unmute Audio'}
