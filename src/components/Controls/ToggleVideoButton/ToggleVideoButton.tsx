@@ -49,7 +49,7 @@ export default function ToggleVideoButton(props: any) {
         className={classes.fab}
         onClick={() => {
           if (localParticipant && !isVideoEnabled) {
-            //    setDisabled(true);
+            setDisabled(true);
           }
           toggleVideoEnabled();
         }}
