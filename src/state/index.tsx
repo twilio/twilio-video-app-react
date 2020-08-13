@@ -14,7 +14,7 @@ export interface StateContextType {
   setSelectedSpeakerOutput: string;
   gridView: boolean;
   setGridView: any;
-  getToken(caseNumber, partyType, partyName, pinNumber): Promise<string>;
+  getToken(caseNumber, partyType, partyName): Promise<string>;
   removeParticipant: any;
 }
 
@@ -52,7 +52,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     setSelectedSpeakerOutput,
     gridView,
     setGridView,
-    getToken: async (caseNumber, partyType, partyName, pinNumber = '') => {
+    getToken: async (caseNumber, partyType, partyName) => {
       const url = `${endpoint}/token`;
 
       const { data } = await axios({
@@ -65,7 +65,6 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
           caseNumber,
           partyType,
           partyName,
-          pinNumber,
         },
       });
 
@@ -87,10 +86,10 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     },
   } as unknown) as StateContextType;
 
-  const getToken: StateContextType['getToken'] = (caseNumber, partyType, partyName, pinNumber = '') => {
+  const getToken: StateContextType['getToken'] = (caseNumber, partyType, partyName) => {
     setIsFetching(true);
     return contextValue
-      .getToken(caseNumber, partyType === 'Reporter' ? 'Other' : partyType, partyName, pinNumber)
+      .getToken(caseNumber, partyType === 'Reporter' ? 'Other' : partyType, partyName)
       .then((res: any) => {
         setIsFetching(false);
         setUserToken(res.token);
