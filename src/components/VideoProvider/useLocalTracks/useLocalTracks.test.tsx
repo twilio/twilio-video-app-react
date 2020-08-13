@@ -38,6 +38,7 @@ describe('the useLocalTracks hook', () => {
       expect(initialVideoTrack).toBeTruthy();
 
       act(() => {
+        // @ts-ignore
         result.current.removeLocalVideoTrack();
       });
 

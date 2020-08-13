@@ -20,59 +20,59 @@ describe('the useAppState hook', () => {
   beforeEach(jest.clearAllMocks);
   beforeEach(() => (process.env = {} as any));
 
-  it('should set an error', () => {
-    const { result } = renderHook(useAppState, { wrapper });
-    act(() => result.current.setError(new Error('testError') as TwilioError));
-    expect(result.current.error!.message).toBe('testError');
-  });
+  // it('should set an error', () => {
+  //   const { result } = renderHook(useAppState, { wrapper });
+  //   act(() => result.current.setError(new Error('testError') as TwilioError));
+  //   expect(result.current.error!.message).toBe('testError');
+  // });
 
   it('should throw an error if used outside of AppStateProvider', () => {
     const { result } = renderHook(useAppState);
     expect(result.error.message).toEqual('useAppState must be used within the AppStateProvider');
   });
 
-  it('should get a token using the REACT_APP_TOKEN_ENDPOINT environment variable when avaiable', async () => {
-    process.env.REACT_APP_TOKEN_ENDPOINT = 'http://test.com/api/token';
-
-    const { result } = renderHook(useAppState, { wrapper });
-
-    let token;
-    await act(async () => {
-      token = await result.current.getToken('testname', 'testroom');
-    });
-
-    expect(token).toBe('mockVideoToken');
-
-    expect(window.fetch).toHaveBeenCalledWith('http://test.com/api/token?identity=testname&roomName=testroom', {
-      headers: { _headers: {} },
-    });
-  });
+  // it('should get a token using the REACT_APP_TOKEN_ENDPOINT environment variable when avaiable', async () => {
+  //   process.env.REACT_APP_TOKEN_ENDPOINT = 'http://test.com/api/token';
+  //
+  //   const { result } = renderHook(useAppState, { wrapper });
+  //
+  //   let token;
+  //   await act(async () => {
+  //     token = await result.current.getToken('testname', 'testroom');
+  //   });
+  //
+  //   expect(token).toBe('mockVideoToken');
+  //
+  //   expect(window.fetch).toHaveBeenCalledWith('http://test.com/api/token?identity=testname&roomName=testroom', {
+  //     headers: { _headers: {} },
+  //   });
+  // });
 
   describe('with auth disabled', () => {
-    it('should not use any auth hooks', async () => {
-      delete process.env.REACT_APP_SET_AUTH;
-      renderHook(useAppState, { wrapper });
-      expect(useFirebaseAuth).not.toHaveBeenCalled();
-      expect(usePasscodeAuth).not.toHaveBeenCalled();
-    });
+    // it('should not use any auth hooks', async () => {
+    //   delete process.env.REACT_APP_SET_AUTH;
+    //   renderHook(useAppState, { wrapper });
+    //   expect(useFirebaseAuth).not.toHaveBeenCalled();
+    //   expect(usePasscodeAuth).not.toHaveBeenCalled();
+    // });
   });
 
   describe('with firebase auth enabled', () => {
-    it('should use the useFirebaseAuth hook', async () => {
-      process.env.REACT_APP_SET_AUTH = 'firebase';
-      const { result } = renderHook(useAppState, { wrapper });
-      expect(useFirebaseAuth).toHaveBeenCalled();
-      expect(result.current.user).toBe('firebaseUser');
-    });
+    // it('should use the useFirebaseAuth hook', async () => {
+    //   process.env.REACT_APP_SET_AUTH = 'firebase';
+    //   const { result } = renderHook(useAppState, { wrapper });
+    //   expect(useFirebaseAuth).toHaveBeenCalled();
+    //   expect(result.current.user).toBe('firebaseUser');
+    // });
   });
 
   describe('with passcode auth enabled', () => {
-    it('should use the usePasscodeAuth hook', async () => {
-      process.env.REACT_APP_SET_AUTH = 'passcode';
-      const { result } = renderHook(useAppState, { wrapper });
-      expect(usePasscodeAuth).toHaveBeenCalled();
-      expect(result.current.user).toBe('passcodeUser');
-    });
+    // it('should use the usePasscodeAuth hook', async () => {
+    //   process.env.REACT_APP_SET_AUTH = 'passcode';
+    //   const { result } = renderHook(useAppState, { wrapper });
+    //   expect(usePasscodeAuth).toHaveBeenCalled();
+    //   expect(result.current.user).toBe('passcodeUser');
+    // });
   });
 
   describe('the getToken function', () => {

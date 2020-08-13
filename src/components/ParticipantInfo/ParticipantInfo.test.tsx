@@ -16,7 +16,12 @@ describe('the ParticipantInfo component', () => {
   it('should display ScreenShare icon when participant has published a screen share track', () => {
     mockUsePublications.mockImplementation(() => [{ trackName: 'screen' }]);
     const wrapper = shallow(
-      <ParticipantInfo onClick={() => {}} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
+      <ParticipantInfo
+        onClick={() => {}}
+        isSelected={false}
+        gridView={true}
+        participant={{ identity: 'mockIdentity' } as any}
+      >
         mock children
       </ParticipantInfo>
     );
@@ -26,7 +31,12 @@ describe('the ParticipantInfo component', () => {
   it('should not display ScreenShare icon when participant has not published a screen share track', () => {
     mockUsePublications.mockImplementation(() => []);
     const wrapper = shallow(
-      <ParticipantInfo onClick={() => {}} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
+      <ParticipantInfo
+        onClick={() => {}}
+        isSelected={false}
+        gridView={true}
+        participant={{ identity: 'mockIdentity' } as any}
+      >
         mock children
       </ParticipantInfo>
     );
@@ -36,7 +46,12 @@ describe('the ParticipantInfo component', () => {
   it('should add hideVideoProp to InfoContainer component when no video tracks are published', () => {
     mockUsePublications.mockImplementation(() => []);
     const wrapper = shallow(
-      <ParticipantInfo onClick={() => {}} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
+      <ParticipantInfo
+        onClick={() => {}}
+        isSelected={false}
+        gridView={true}
+        participant={{ identity: 'mockIdentity' } as any}
+      >
         mock children
       </ParticipantInfo>
     );
@@ -46,7 +61,12 @@ describe('the ParticipantInfo component', () => {
   it('should not add hideVideoProp to InfoContainer component when a video track is published', () => {
     mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
     const wrapper = shallow(
-      <ParticipantInfo onClick={() => {}} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
+      <ParticipantInfo
+        onClick={() => {}}
+        isSelected={false}
+        gridView={true}
+        participant={{ identity: 'mockIdentity' } as any}
+      >
         mock children
       </ParticipantInfo>
     );
@@ -56,7 +76,12 @@ describe('the ParticipantInfo component', () => {
   it('should render a VideoCamOff icon when no video tracks are published', () => {
     mockUsePublications.mockImplementation(() => []);
     const wrapper = shallow(
-      <ParticipantInfo onClick={() => {}} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
+      <ParticipantInfo
+        onClick={() => {}}
+        isSelected={false}
+        gridView={true}
+        participant={{ identity: 'mockIdentity' } as any}
+      >
         mock children
       </ParticipantInfo>
     );
@@ -66,7 +91,12 @@ describe('the ParticipantInfo component', () => {
   it('should not render a VideoCamOff icon when a video track is published', () => {
     mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
     const wrapper = shallow(
-      <ParticipantInfo onClick={() => {}} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
+      <ParticipantInfo
+        onClick={() => {}}
+        isSelected={false}
+        gridView={true}
+        participant={{ identity: 'mockIdentity' } as any}
+      >
         mock children
       </ParticipantInfo>
     );
@@ -77,7 +107,12 @@ describe('the ParticipantInfo component', () => {
     mockUseIsTrackSwitchedOff.mockImplementation(() => true);
     mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
     const wrapper = shallow(
-      <ParticipantInfo onClick={() => {}} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
+      <ParticipantInfo
+        onClick={() => {}}
+        isSelected={false}
+        gridView={true}
+        participant={{ identity: 'mockIdentity' } as any}
+      >
         mock children
       </ParticipantInfo>
     );
@@ -88,7 +123,12 @@ describe('the ParticipantInfo component', () => {
     mockUseIsTrackSwitchedOff.mockImplementation(() => false);
     mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
     const wrapper = shallow(
-      <ParticipantInfo onClick={() => {}} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
+      <ParticipantInfo
+        onClick={() => {}}
+        isSelected={false}
+        gridView={true}
+        participant={{ identity: 'mockIdentity' } as any}
+      >
         mock children
       </ParticipantInfo>
     );
@@ -98,7 +138,12 @@ describe('the ParticipantInfo component', () => {
   it('should render the PinIcon component when the participant is selected', () => {
     mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
     const wrapper = shallow(
-      <ParticipantInfo onClick={() => {}} isSelected={true} participant={{ identity: 'mockIdentity' } as any}>
+      <ParticipantInfo
+        onClick={() => {}}
+        isSelected={true}
+        gridView={true}
+        participant={{ identity: 'mockIdentity' } as any}
+      >
         mock children
       </ParticipantInfo>
     );
@@ -108,7 +153,12 @@ describe('the ParticipantInfo component', () => {
   it('should not render the PinIcon component when the participant is not selected', () => {
     mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
     const wrapper = shallow(
-      <ParticipantInfo onClick={() => {}} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
+      <ParticipantInfo
+        onClick={() => {}}
+        isSelected={false}
+        gridView={true}
+        participant={{ identity: 'mockIdentity' } as any}
+      >
         mock children
       </ParticipantInfo>
     );
