@@ -29,7 +29,7 @@ export default function VideoTrack({ track, isLocal, priority }: VideoTrackProps
 
   // The local video track is mirrored.
   const isFrontFacing = track.mediaStreamTrack.getSettings().facingMode !== 'environment';
-  let style = isLocal && isFrontFacing ? { transform: 'rotateY(180deg)' } : {};
+  let style = isLocal && isFrontFacing ? { transform: 'scale(-1,1)' } : {};
   style = { ...style, ...{ objectFit: 'contain', width: '100%', maxHeight: '100%' } }
   return <video ref={ref} style={style} />;
 }
