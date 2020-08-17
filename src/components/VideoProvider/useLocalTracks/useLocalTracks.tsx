@@ -129,9 +129,6 @@ export default function useLocalTracks() {
     }
   }, [videoTrack]);
 
-  const localTracks = [getLocalAudioTrack, videoTrack].filter(track => track !== undefined) as (
-    | LocalAudioTrack
-    | LocalVideoTrack
-  )[];
+  const localTracks = [getLocalAudioTrack, videoTrack].filter(track => track !== undefined);
   return { localTracks, getLocalVideoTrack, getLocalAudioTrack, isAcquiringLocalTracks, removeLocalVideoTrack };
 }
