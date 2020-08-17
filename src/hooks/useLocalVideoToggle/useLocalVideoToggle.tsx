@@ -15,20 +15,25 @@ export default function useLocalVideoToggle() {
   const previousDeviceIdRef = useRef<string>();
 
   const toggleVideoEnabled = useCallback(() => {
-    if (!isPublishing) {
-      if (videoTrack) {
-        previousDeviceIdRef.current = videoTrack.mediaStreamTrack.getSettings().deviceId;
+    //if (!isPublishing) {
+    if (videoTrack) {
+      if (localParticipant) {
+        /*previousDeviceIdRef.current = videoTrack.mediaStreamTrack.getSettings().deviceId;
         const localTrackPublication = localParticipant?.unpublishTrack(videoTrack);
         // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
         localParticipant?.emit('trackUnpublished', localTrackPublication);
-        removeLocalVideoTrack();
-      } else {
-        setIspublishing(true);
-        getLocalVideoTrack({ deviceId: { exact: previousDeviceIdRef.current } })
-          .then((track: LocalVideoTrack) => localParticipant?.publishTrack(track, { priority: 'low' }))
-          .catch(onError)
-          .finally(() => setIspublishing(false));
+        removeLocalVideoTrack();*/
+        const localTrackPublication = localParticipant.unpublishTrack(videoTrack);
+        // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
+        localParticipant.emit('trackUnpublished', localTrackPublication);
       }
+      videoTrack!.stop();
+    } else {
+      setIspublishing(true);
+      getLocalVideoTrack({ deviceId: { exact: previousDeviceIdRef.current } })
+        .then((track: LocalVideoTrack) => localParticipant?.publishTrack(track, { priority: 'low' }))
+        .catch(onError)
+        .finally(() => setIspublishing(false));
     }
   }, [videoTrack, localParticipant, getLocalVideoTrack, isPublishing, onError]);
 

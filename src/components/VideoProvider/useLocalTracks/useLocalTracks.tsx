@@ -121,7 +121,7 @@ export default function useLocalTracks() {
   const getLocalAudioTrack = useLocalAudioTrack();
   const [videoTrack, getLocalVideoTrack] = useLocalVideoTrack();
   const [isAcquiringLocalTracks, setIsAcquiringLocalTracks] = useState(false);
-  const [Stat, setVideoTrack] = useState<LocalVideoTrack>();
+  const [Stat, setVideoTrack] = useState();
   const removeLocalVideoTrack = useCallback(() => {
     if (videoTrack) {
       videoTrack.stop();
@@ -129,6 +129,8 @@ export default function useLocalTracks() {
     }
   }, [videoTrack]);
 
-  const localTracks = [getLocalAudioTrack, videoTrack].filter(track => track !== undefined);
+  const localTracks: (LocalAudioTrack | LocalVideoTrack)[] = [getLocalAudioTrack, videoTrack].filter(
+    track => track !== undefined
+  );
   return { localTracks, getLocalVideoTrack, getLocalAudioTrack, isAcquiringLocalTracks, removeLocalVideoTrack };
 }
