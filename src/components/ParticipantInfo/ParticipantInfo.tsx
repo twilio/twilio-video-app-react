@@ -192,7 +192,6 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
         <div>
           <AudioLevelIndicator audioTrack={audioTrack} background="white" />
           {!isVideoEnabled && <VideocamOff />}
-          {isScreenShareEnabled && <ScreenShare />}
           {isSelected && <PinIcon />}
           {enableParticipantDropDown && <ParticipantDropDown participant={participant} />}
         </div>

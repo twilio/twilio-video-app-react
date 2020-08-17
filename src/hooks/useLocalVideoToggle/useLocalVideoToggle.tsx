@@ -10,7 +10,7 @@ export default function useLocalVideoToggle() {
     removeLocalVideoTrack,
     onError,
   } = useVideoContext();
-  const videoTrack = localTracks.find(track => track.name.includes('camera')) as LocalVideoTrack;
+  const videoTrack = localTracks.find(track => track.kind === 'video');
   const [isPublishing, setIspublishing] = useState(false);
   const previousDeviceIdRef = useRef<string>();
 
@@ -30,7 +30,7 @@ export default function useLocalVideoToggle() {
           .finally(() => setIspublishing(false));
       }
     }
-  }, [videoTrack, localParticipant, getLocalVideoTrack, isPublishing, onError, removeLocalVideoTrack]);
+  }, [videoTrack, localParticipant, getLocalVideoTrack, isPublishing, onError]);
 
   return [!!videoTrack, toggleVideoEnabled] as const;
 }

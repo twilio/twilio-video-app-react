@@ -16,12 +16,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-
-export default function ToggleVideoButton(props: any) {
+export default function ToggleVideoButton(props: { disabled?: boolean }) {
   const classes = useStyles();
   const [isVideoEnabled, toggleVideoEnabled] = useLocalVideoToggle();
   const [disabled, setDisabled] = useState(false);
-  //const lastClickTimeRef = useRef(0);
   const {
     room: { localParticipant },
   } = useVideoContext();
@@ -53,7 +51,7 @@ export default function ToggleVideoButton(props: any) {
           }
           toggleVideoEnabled();
         }}
-        disabled={props.disabled || disabled}
+        disabled={props.disabled}
       >
         {isVideoEnabled ? <Videocam /> : <VideocamOff />}
       </Fab>
