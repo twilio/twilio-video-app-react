@@ -1,12 +1,11 @@
-import generateConnectionOptions from './useConnectionOptions';
 import { Settings } from '../../state/settings/settingsReducer';
-import useConnectionOptions from './useConnectionOptions';
 import { useAppState } from '../../state';
+import useConnectionOptions from './useConnectionOptions';
 
 const mockUseAppState = useAppState as jest.Mock<any>;
 jest.mock('../../state');
 
-describe('the generateConnectionOptions function', () => {
+describe('the useConnectionOptions function', () => {
   it('should remove any undefined values from settings', () => {
     const settings: Settings = {
       trackSwitchOffMode: undefined,
@@ -33,7 +32,7 @@ describe('the generateConnectionOptions function', () => {
     };
 
     mockUseAppState.mockImplementationOnce(() => ({ settings }));
-    expect(generateConnectionOptions()).toEqual(result);
+    expect(useConnectionOptions()).toEqual(result);
   });
 
   it('should correctly generate settings', () => {
@@ -77,7 +76,7 @@ describe('the generateConnectionOptions function', () => {
     };
 
     mockUseAppState.mockImplementationOnce(() => ({ settings }));
-    expect(generateConnectionOptions()).toEqual(result);
+    expect(useConnectionOptions()).toEqual(result);
   });
 
   it('should disable simulcast when the room type is peer to peer', () => {
@@ -93,6 +92,6 @@ describe('the generateConnectionOptions function', () => {
     };
 
     mockUseAppState.mockImplementationOnce(() => ({ settings, roomType: 'peer-to-peer' }));
-    expect(generateConnectionOptions()).toMatchObject({ preferredVideoCodecs: [{ codec: 'VP8', simulcast: false }] });
+    expect(useConnectionOptions()).toMatchObject({ preferredVideoCodecs: [{ codec: 'VP8', simulcast: false }] });
   });
 });
