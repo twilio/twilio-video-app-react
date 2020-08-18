@@ -126,9 +126,12 @@ describe('the usePasscodeAuth hook', () => {
       window.sessionStorage.setItem('passcode', '123123');
       const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
       await waitForNextUpdate();
-      result.current.getToken('test-name', 'test-room').then(token => {
-        expect(token).toBe('mockVideoToken');
+
+      let token = '';
+      await act(async () => {
+        token = await result.current.getToken('test-name', 'test-room');
       });
+      expect(token).toBe('mockVideoToken');
     });
 
     it('should return a useful error message from the serverless function', async () => {
@@ -145,6 +148,7 @@ describe('the usePasscodeAuth hook', () => {
         // Return an error when the user tries to join a room
         Promise.resolve({ status: 401, json: () => Promise.resolve({ error: { message: 'passcode expired' } }) })
       );
+
       result.current.getToken('test-name', 'test-room').catch(err => {
         expect(err.message).toBe('Passcode has expired');
       });
@@ -204,7 +208,7 @@ describe('the verifyPasscode function', () => {
   it('should call the API with the correct parameters', async () => {
     await verifyPasscode('123456');
     expect(window.fetch).toHaveBeenLastCalledWith('/token', {
-      body: '{"user_identity":"temp-name","room_name":"temp-room","passcode":"123456"}',
+      body: '{"user_identity":"temp-name","room_name":"temp-room","passcode":"123456","create_room":false}',
       headers: { 'content-type': 'application/json' },
       method: 'POST',
     });
