@@ -1,5 +1,10 @@
-import generateConnectionOptions from './generateConnectionOptions';
+import generateConnectionOptions from './useConnectionOptions';
 import { Settings } from '../../state/settings/settingsReducer';
+import useConnectionOptions from './useConnectionOptions';
+import { useAppState } from '../../state';
+
+const mockUseAppState = useAppState as jest.Mock<any>;
+jest.mock('../../state');
 
 describe('the generateConnectionOptions function', () => {
   it('should remove any undefined values from settings', () => {
@@ -27,7 +32,8 @@ describe('the generateConnectionOptions function', () => {
       preferredVideoCodecs: [{ codec: 'VP8', simulcast: true }],
     };
 
-    expect(generateConnectionOptions(settings)).toEqual(result);
+    mockUseAppState.mockImplementationOnce(() => ({ settings }));
+    expect(generateConnectionOptions()).toEqual(result);
   });
 
   it('should correctly generate settings', () => {
@@ -70,6 +76,23 @@ describe('the generateConnectionOptions function', () => {
       preferredVideoCodecs: [{ codec: 'VP8', simulcast: true }],
     };
 
-    expect(generateConnectionOptions(settings)).toEqual(result);
+    mockUseAppState.mockImplementationOnce(() => ({ settings }));
+    expect(generateConnectionOptions()).toEqual(result);
+  });
+
+  it('should disable simulcast when the room type is peer to peer', () => {
+    const settings: Settings = {
+      trackSwitchOffMode: 'detected',
+      dominantSpeakerPriority: 'high',
+      bandwidthProfileMode: 'collaboration',
+      maxTracks: '100',
+      maxAudioBitrate: '0',
+      renderDimensionLow: 'low',
+      renderDimensionStandard: '960p',
+      renderDimensionHigh: 'wide1080p',
+    };
+
+    mockUseAppState.mockImplementationOnce(() => ({ settings, roomType: 'peer-to-peer' }));
+    expect(generateConnectionOptions()).toMatchObject({ preferredVideoCodecs: [{ codec: 'VP8', simulcast: false }] });
   });
 });
