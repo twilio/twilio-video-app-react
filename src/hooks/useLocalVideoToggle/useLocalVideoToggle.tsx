@@ -18,14 +18,12 @@ export default function useLocalVideoToggle() {
     //if (!isPublishing) {
     if (videoTrack) {
       if (localParticipant) {
-        /*previousDeviceIdRef.current = videoTrack.mediaStreamTrack.getSettings().deviceId;
-        const localTrackPublication = localParticipant?.unpublishTrack(videoTrack);
+        previousDeviceIdRef.current = videoTrack.mediaStreamTrack.getSettings().deviceId;
         // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
-        localParticipant?.emit('trackUnpublished', localTrackPublication);
-        removeLocalVideoTrack();*/
+
         const localTrackPublication = localParticipant.unpublishTrack(videoTrack);
-        // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
-        localParticipant.emit('trackUnpublished', localTrackPublication);
+        localParticipant?.emit('trackUnpublished', localTrackPublication);
+        // removeLocalVideoTrack();
       }
       videoTrack!.stop();
     } else {
