@@ -119,16 +119,16 @@ export default function MenuBar() {
   if (audioTrack) {
     selectedAudioDevice = {
       label: audioTrack.mediaStreamTrack.label,
-      deviceId: audioTrack.mediaStreamTrack.getSettings().deviceId,
-      groupdId: audioTrack.mediaStreamTrack.getSettings().groupId,
+      deviceId: audioTrack.mediaStreamTrack.getSettings().deviceId as string,
+      groupdId: audioTrack.mediaStreamTrack.getSettings().groupId as string,
     };
   }
 
   if (videoTrack) {
     selectedVideoDevice = {
       label: videoTrack.mediaStreamTrack.label,
-      deviceId: videoTrack.mediaStreamTrack.getSettings().deviceId?.toString(),
-      groupdId: videoTrack.mediaStreamTrack.getSettings().groupId,
+      deviceId: videoTrack.mediaStreamTrack.getSettings().deviceId as string,
+      groupdId: videoTrack.mediaStreamTrack.getSettings().groupId as string,
     };
   }
 

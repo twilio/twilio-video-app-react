@@ -6,10 +6,10 @@ import VideocamOff from '@material-ui/icons/VideocamOff';
 
 import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
 import BandwidthWarning from '../BandwidthWarning/BandwidthWarning';
-import NetworkQualityLevel from '../MenuBar/NewtorkQualityLevel/NetworkQualityLevel'
+import NetworkQualityLevel from '../MenuBar/NewtorkQualityLevel/NetworkQualityLevel';
 import ParticipantConnectionIndicator from './ParticipantConnectionIndicator/ParticipantConnectionIndicator';
 import PinIcon from './PinIcon/PinIcon';
-import ParticipantDropDown from './ParticipantDropDown/ParticipantDropDown'
+import ParticipantDropDown from './ParticipantDropDown/ParticipantDropDown';
 
 import useParticipantNetworkQualityLevel from '../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel';
 import usePublications from '../../hooks/usePublications/usePublications';
@@ -17,200 +17,187 @@ import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackS
 import useTrack from '../../hooks/useTrack/useTrack';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import useHeight from '../..//hooks/useHeight/useHeight';
-import { Participant } from 'twilio-video';
 
-interface ParticipantInfoProps {
-    participant: Participant;
-    children: React.ReactNode;
-    onClick: () => void;
-    isSelected: boolean;
-    gridView: any
-}
-
-export default function ParticipantInfo({ participant,
-    onClick,
-    isSelected,
-    children,
-    gridView }: ParticipantInfoProps) {
-
-    const useStyles = gridView ? makeStyles((theme) =>
+export default function ParticipantInfo({ participant, onClick, isSelected, children, gridView }) {
+  const useStyles = gridView
+    ? makeStyles(theme =>
         createStyles({
-            container: {
-                position: 'relative',
-                display: 'flex',
-                alignItems: 'center',
-                overflow: 'hidden',
-                cursor: 'pointer',
-                '& video': {
-                    filter: 'none',
-                },
-                '& svg': {
-                    stroke: 'black',
-                    strokeWidth: '0.8px',
-                }
+          container: {
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            overflow: 'hidden',
+            cursor: 'pointer',
+            '& video': {
+              filter: 'none',
             },
-            isVideoSwitchedOff: {
-                '& video': {
-                    filter: 'blur(4px) grayscale(1) brightness(0.5)',
-                },
+            '& svg': {
+              stroke: 'black',
+              strokeWidth: '0.8px',
             },
-            infoContainer: {
-                position: 'absolute',
-                zIndex: 1,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                height: '100%',
-                padding: '0.4em',
-                width: '100%',
-                background: 'transparent',
+          },
+          isVideoSwitchedOff: {
+            '& video': {
+              filter: 'blur(4px) grayscale(1) brightness(0.5)',
             },
-            hideVideo: {
-                background: 'black',
-            },
-            identity: {
-                background: 'rgba(0, 0, 0, 0.7)',
-                padding: '0.1em 0.3em',
-                margin: 0,
-                display: 'flex',
-                alignItems: 'center',
-            },
-            infoRow: {
-                display: 'flex',
-                justifyContent: 'space-between',
-            },
+          },
+          infoContainer: {
+            position: 'absolute',
+            zIndex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            height: '100%',
+            padding: '0.4em',
+            width: '100%',
+            background: 'transparent',
+          },
+          hideVideo: {
+            background: 'black',
+          },
+          identity: {
+            background: 'rgba(0, 0, 0, 0.7)',
+            padding: '0.1em 0.3em',
+            margin: 0,
+            display: 'flex',
+            alignItems: 'center',
+          },
+          infoRow: {
+            display: 'flex',
+            justifyContent: 'space-between',
+          },
         })
-    ) : makeStyles((theme) =>
+      )
+    : makeStyles(theme =>
         createStyles({
-            container: {
-                position: 'relative',
-                display: 'flex',
-                alignItems: 'center',
-                height: `${(theme.sidebarWidth * 9) / 16}px`,
-                overflow: 'hidden',
-                cursor: 'pointer',
-                '& video': {
-                    filter: 'none',
-                },
-                '& svg': {
-                    stroke: 'black',
-                    strokeWidth: '0.8px',
-                },
-                [theme.breakpoints.down('xs')]: {
-                    height: theme.sidebarMobileHeight,
-                    width: `${(theme.sidebarMobileHeight * 16) / 9}px`,
-                    marginRight: '3px',
-                    fontSize: '10px',
-                },
+          container: {
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            height: `${(theme.sidebarWidth * 9) / 16}px`,
+            overflow: 'hidden',
+            cursor: 'pointer',
+            '& video': {
+              filter: 'none',
             },
-            isVideoSwitchedOff: {
-                '& video': {
-                    filter: 'blur(4px) grayscale(1) brightness(0.5)',
-                },
+            '& svg': {
+              stroke: 'black',
+              strokeWidth: '0.8px',
             },
-            infoContainer: {
-                position: 'absolute',
-                zIndex: 1,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                height: '100%',
-                padding: '0.4em',
-                width: '100%',
-                background: 'transparent',
+            [theme.breakpoints.down('xs')]: {
+              height: theme.sidebarMobileHeight,
+              width: `${(theme.sidebarMobileHeight * 16) / 9}px`,
+              marginRight: '3px',
+              fontSize: '10px',
             },
-            hideVideo: {
-                background: 'black',
+          },
+          isVideoSwitchedOff: {
+            '& video': {
+              filter: 'blur(4px) grayscale(1) brightness(0.5)',
             },
-            identity: {
-                background: 'rgba(0, 0, 0, 0.7)',
-                padding: '0.1em 0.3em',
-                margin: 0,
-                display: 'flex',
-                alignItems: 'center',
-            },
-            infoRow: {
-                display: 'flex',
-                justifyContent: 'space-between',
-            },
+          },
+          infoContainer: {
+            position: 'absolute',
+            zIndex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            height: '100%',
+            padding: '0.4em',
+            width: '100%',
+            background: 'transparent',
+          },
+          hideVideo: {
+            background: 'black',
+          },
+          identity: {
+            background: 'rgba(0, 0, 0, 0.7)',
+            padding: '0.1em 0.3em',
+            margin: 0,
+            display: 'flex',
+            alignItems: 'center',
+          },
+          infoRow: {
+            display: 'flex',
+            justifyContent: 'space-between',
+          },
         })
-    );
+      );
 
-    const publications = usePublications(participant);
+  const publications = usePublications(participant);
 
-    const audioPublication = publications.find((p) => p.kind === 'audio');
-    const videoPublication = publications.find((p) => p.kind === 'video');
+  const audioPublication = publications.find(p => p.kind === 'audio');
+  const videoPublication = publications.find(p => p.kind === 'video');
 
-    const networkQualityLevel = useParticipantNetworkQualityLevel(participant);
-    const isVideoEnabled = Boolean(videoPublication);
-    const isScreenShareEnabled = publications.find(
-        (p) => p.trackName === 'screen'
-    );
+  const networkQualityLevel = useParticipantNetworkQualityLevel(participant);
+  const isVideoEnabled = Boolean(videoPublication);
+  const isScreenShareEnabled = publications.find(p => p.trackName === 'screen');
 
-    const videoTrack = useTrack(videoPublication);
-    const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack);
+  const videoTrack = useTrack(videoPublication);
+  const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack);
 
-    const audioTrack: any = useTrack(audioPublication);
+  const audioTrack: any = useTrack(audioPublication);
 
-    const classes = useStyles();
-    const {
-        room: { localParticipant },
-    } = useVideoContext();
-    const localParticipantType = localParticipant.identity.split('@')[1];
-    const participantType = participant.identity.split('@')[1];
-    const enableParticipantDropDown = (
-        (localParticipantType === 'Reporter' || localParticipantType === 'Hearing Officer') &&
-        (localParticipant.identity !== participant.identity) &&
-        (!(localParticipantType === 'Hearing Officer' && participantType === 'Reporter'))
-    );
+  const classes = useStyles();
+  const {
+    room: { localParticipant },
+  } = useVideoContext();
+  const localParticipantType = localParticipant.identity.split('@')[1];
+  const participantType = participant.identity.split('@')[1];
+  const enableParticipantDropDown =
+    (localParticipantType === 'Reporter' || localParticipantType === 'Hearing Officer') &&
+    localParticipant.identity !== participant.identity &&
+    !(localParticipantType === 'Hearing Officer' && participantType === 'Reporter');
 
-    const height = useHeight();
-    const getHeight = () => {
-        // get height in int
-        let h = height.split('px')[0];
-        let h1 = parseInt(h, 10);
-        // adjust the height of menu bar 64px
-        h1 -= 70
-        // adjust the bottom margin 70px
-        h1 -= 70
-        // get height of one row
-        h = (h1 / 3).toString();
-        return `${h}px`;
-    }
-    return (
-        <div
-            className={clsx(classes.container, {
-                [classes.isVideoSwitchedOff]: isVideoSwitchedOff,
-            })}
-            style={gridView ? ({
-                height: getHeight()
-            }) : ({})}
-            onClick={onClick}
-            data-cy-participant={participant.identity}
-        >
-            <div
-                className={clsx(classes.infoContainer, {
-                    [classes.hideVideo]: !isVideoEnabled,
-                })}
-            >
-                <div className={classes.infoRow}>
-                    <h4 className={classes.identity}>
-                        <ParticipantConnectionIndicator participant={participant} />
-                        {participant.identity.split('@')[0]}(
-            {participant.identity.split('@')[1]})
+  const height = useHeight();
+  const getHeight = () => {
+    // get height in int
+    let h = height.split('px')[0];
+    let h1 = parseInt(h, 10);
+    // adjust the height of menu bar 64px
+    h1 -= 70;
+    // adjust the bottom margin 70px
+    h1 -= 70;
+    // get height of one row
+    h = (h1 / 3).toString();
+    return `${h}px`;
+  };
+  return (
+    <div
+      className={clsx(classes.container, {
+        [classes.isVideoSwitchedOff]: isVideoSwitchedOff,
+      })}
+      style={
+        gridView
+          ? {
+              height: getHeight(),
+            }
+          : {}
+      }
+      onClick={onClick}
+      data-cy-participant={participant.identity}
+    >
+      <div
+        className={clsx(classes.infoContainer, {
+          [classes.hideVideo]: !isVideoEnabled,
+        })}
+      >
+        <div className={classes.infoRow}>
+          <h4 className={classes.identity}>
+            <ParticipantConnectionIndicator participant={participant} />
+            {participant.identity.split('@')[0]}({participant.identity.split('@')[1]})
           </h4>
-                    <NetworkQualityLevel qualityLevel={networkQualityLevel} />
-                </div>
-                <div>
-                    <AudioLevelIndicator audioTrack={audioTrack} background="white" />
-                    {!isVideoEnabled && <VideocamOff />}
-                    {isScreenShareEnabled && <ScreenShare />}
-                    {isSelected && <PinIcon />}
-                    {enableParticipantDropDown && <ParticipantDropDown participant={participant} />}
-                </div>
-            </div>
-            {isVideoSwitchedOff && <BandwidthWarning />}
-            {children}
+          <NetworkQualityLevel qualityLevel={networkQualityLevel} />
         </div>
-    );
+        <div>
+          <AudioLevelIndicator audioTrack={audioTrack} background="white" />
+          {!isVideoEnabled && <VideocamOff />}
+          {isSelected && <PinIcon />}
+          {enableParticipantDropDown && <ParticipantDropDown participant={participant} />}
+        </div>
+      </div>
+      {isVideoSwitchedOff && <BandwidthWarning />}
+      {children}
+    </div>
+  );
 }
