@@ -199,5 +199,6 @@ context('A video app user', () => {
     //   cy.getParticipant('test3').find('[data-cy-audio-mute-icon]');
     //   cy.getParticipant('test3').shouldBeSameVideoAs('[data-cy-main-participant]');
     // });
+
   });
 });
