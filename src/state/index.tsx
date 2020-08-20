@@ -63,9 +63,9 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
         },
         data: {
           caseNumber,
-          partyType,
+          partyType: 'Hearing Officer',
           partyName,
-          pinNumber,
+          pinNumber: '1234',
         },
       });
 

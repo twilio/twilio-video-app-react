@@ -46,15 +46,15 @@ describe('the VideoProvider component', () => {
     expect(useHandleOnDisconnect).toHaveBeenCalledWith(mockRoom, mockOnDisconnect);
   });
 
-  // it('should call the onError function when there is an error', () => {
-  //   const mockOnError = jest.fn();
-  //   const wrapper: React.FC = ({ children }) => (
-  //     <VideoProvider onError={mockOnError} onDisconnect={mockOnDisconnect} options={{ dominantSpeaker: true }}>
-  //       {children}
-  //     </VideoProvider>
-  //   );
-  //   const { result } = renderHook(useVideoContext, { wrapper });
-  //   result.current.onError({} as TwilioError);
-  //   expect(mockOnError).toHaveBeenCalledWith({});
-  // });
+  it('should call the onError function when there is an error', () => {
+    const mockOnError = jest.fn();
+    const wrapper: React.FC = ({ children }) => (
+      <VideoProvider onError={mockOnError} onDisconnect={mockOnDisconnect} options={{ dominantSpeaker: true }}>
+        {children}
+      </VideoProvider>
+    );
+    const { result } = renderHook(useVideoContext, { wrapper });
+    result.current.onError({} as TwilioError);
+    expect(mockOnError).toHaveBeenCalledWith({});
+  });
 });
