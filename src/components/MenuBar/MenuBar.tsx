@@ -91,11 +91,9 @@ export default function MenuBar() {
   const [partyName, setPartyName] = useState(reporterToken ? repoterInfo.reporterName : '');
   const [caseNumber, setCaseNumber] = useState(reporterToken ? repoterInfo.caseNumber : '');
 
-  const [pinNumber, setPinNumber] = useState('');
-
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    getToken(caseNumber, partyType, partyName, pinNumber).then((token: string) => connect(token));
+    getToken(caseNumber, partyType, partyName).then((token: string) => connect(token));
   };
 
   const getPartyTypes = () => {
@@ -156,18 +154,6 @@ export default function MenuBar() {
                 ))}
               </Select>
             </FormControl>
-            {partyType === 'Hearing Officer' && (
-              <TextField
-                autoComplete="off"
-                id="menu-name"
-                label="Pin Number"
-                className={classes.textField}
-                value={pinNumber}
-                onChange={e => setPinNumber(e.target.value)}
-                margin="dense"
-                disabled={!!reporterToken}
-              />
-            )}
             <TextField
               autoComplete="off"
               id="menu-name"
