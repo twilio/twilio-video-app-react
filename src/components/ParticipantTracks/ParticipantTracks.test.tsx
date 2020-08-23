@@ -52,34 +52,34 @@ describe('the ParticipantTracks component', () => {
     ).toEqual({ trackName: 'camera-123456', trackSid: 1, kind: 'video' });
   });
 
-  describe('with enableScreenShare prop', () => {
-    it('should filter out camera publications when a screen share publication is present', () => {
-      mockUseVideoContext.mockImplementation(() => ({ room: {} }));
-      mockUsePublications.mockImplementation(() => [
-        { trackName: 'screen', trackSid: 0, kind: 'video' },
-        { trackName: 'camera-123456', trackSid: 1, kind: 'video' },
-      ]);
-      const wrapper = shallow(<ParticipantTracks participant={'mockParticipant' as any} enableScreenShare />);
-      expect(wrapper.find('Publication').length).toBe(1);
-      expect(
-        wrapper
-          .find('Publication')
-          .at(0)
-          .prop('publication')
-      ).toEqual({ trackName: 'screen', trackSid: 0, kind: 'video' });
-    });
-
-    it('should render camera publications when a screen share publication is absent', () => {
-      mockUseVideoContext.mockImplementation(() => ({ room: {} }));
-      mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456', trackSid: 1, kind: 'video' }]);
-      const wrapper = shallow(<ParticipantTracks participant={'mockParticipant' as any} enableScreenShare />);
-      expect(wrapper.find('Publication').length).toBe(1);
-      expect(
-        wrapper
-          .find('Publication')
-          .at(0)
-          .prop('publication')
-      ).toEqual({ trackName: 'camera-123456', trackSid: 1, kind: 'video' });
-    });
-  });
+  // describe('with enableScreenShare prop', () => {
+  //   it('should filter out camera publications when a screen share publication is present', () => {
+  //     mockUseVideoContext.mockImplementation(() => ({ room: {} }));
+  //     mockUsePublications.mockImplementation(() => [
+  //       { trackName: 'screen', trackSid: 0, kind: 'video' },
+  //       { trackName: 'camera-123456', trackSid: 1, kind: 'video' },
+  //     ]);
+  //     const wrapper = shallow(<ParticipantTracks participant={'mockParticipant' as any} enableScreenShare />);
+  //     expect(wrapper.find('Publication').length).toBe(1);
+  //     expect(
+  //       wrapper
+  //         .find('Publication')
+  //         .at(0)
+  //         .prop('publication')
+  //     ).toEqual({ trackName: 'screen', trackSid: 0, kind: 'video' });
+  //   });
+  //
+  //   it('should render camera publications when a screen share publication is absent', () => {
+  //     mockUseVideoContext.mockImplementation(() => ({ room: {} }));
+  //     mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456', trackSid: 1, kind: 'video' }]);
+  //     const wrapper = shallow(<ParticipantTracks participant={'mockParticipant' as any} enableScreenShare />);
+  //     expect(wrapper.find('Publication').length).toBe(1);
+  //     expect(
+  //       wrapper
+  //         .find('Publication')
+  //         .at(0)
+  //         .prop('publication')
+  //     ).toEqual({ trackName: 'camera-123456', trackSid: 1, kind: 'video' });
+  //   });
+  // });
 });
