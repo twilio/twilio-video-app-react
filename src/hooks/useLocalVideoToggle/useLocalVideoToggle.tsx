@@ -1,6 +1,7 @@
 import { LocalVideoTrack } from 'twilio-video';
 import { useCallback, useRef, useState } from 'react';
 import useVideoContext from '../useVideoContext/useVideoContext';
+import { TRACK_TYPE } from '../../utils/displayStrings';
 
 export default function useLocalVideoToggle() {
   const {
@@ -10,7 +11,7 @@ export default function useLocalVideoToggle() {
     removeLocalVideoTrack,
     onError,
   } = useVideoContext();
-  const videoTrack = localTracks.find(track => track.kind === 'video');
+  const videoTrack = localTracks.find(track => track.kind === TRACK_TYPE.VIDEO);
   const [isPublishing, setIspublishing] = useState(false);
   const previousDeviceIdRef = useRef<string>();
 

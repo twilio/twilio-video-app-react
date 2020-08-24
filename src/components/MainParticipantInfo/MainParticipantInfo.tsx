@@ -8,6 +8,7 @@ import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackS
 import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
 import VideocamOff from '@material-ui/icons/VideocamOff';
+import { TRACK_TYPE } from '../../utils/displayStrings';
 
 const useStyles = makeStyles({
   container: {
@@ -49,8 +50,8 @@ export default function MainParticipantInfo({ participant, children }: MainParti
   const classes = useStyles();
 
   const publications = usePublications(participant);
-  const videoPublication = publications.find(p => p.trackName.includes('camera'));
-  const screenSharePublication = publications.find(p => p.trackName.includes('screen'));
+  const videoPublication = publications.find(p => p.trackName.includes(TRACK_TYPE.CAMERA));
+  const screenSharePublication = publications.find(p => p.trackName.includes(TRACK_TYPE.SCREEN));
   const isVideoEnabled = Boolean(videoPublication);
 
   const videoTrack = useTrack(screenSharePublication || videoPublication);

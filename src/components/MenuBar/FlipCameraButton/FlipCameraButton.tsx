@@ -5,11 +5,12 @@ import { IconButton } from '@material-ui/core';
 import { LocalVideoTrack } from 'twilio-video';
 import useMediaStreamTrack from '../../../hooks/useMediaStreamTrack/useMediaStreamTrack';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import { TRACK_TYPE } from '../../../utils/displayStrings';
 
 export default function FlipCameraButton() {
   const { localTracks } = useVideoContext();
   const [supportsFacingMode, setSupportsFacingMode] = useState<Boolean | null>(null);
-  const videoTrack = localTracks.find(track => track.name.includes('camera')) as LocalVideoTrack;
+  const videoTrack = localTracks.find(track => track.name.includes(TRACK_TYPE.CAMERA)) as LocalVideoTrack;
   const mediaStreamTrack = useMediaStreamTrack(videoTrack);
 
   useEffect(() => {

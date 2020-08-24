@@ -11,16 +11,19 @@ import Toolbar from '@material-ui/core/Toolbar';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import { Offline, Online } from 'react-detect-offline';
+import { TRACK_TYPE, PARTICIANT_TYPE, ROOMSTATE } from '../../utils/displayStrings';
 
 import LocalAudioLevelIndicator from './LocalAudioLevelIndicator/LocalAudioLevelIndicator';
 import ToggleFullscreenButton from './ToggleFullScreenButton/ToggleFullScreenButton';
 import ToggleGridViewButton from './ToggleGridViewButton/ToggleGridViewButton';
 import SettingsButton from './SettingsButton/SettingsButton';
-
+import { EROOR_MESSAGE } from '../../utils/displayStrings';
 import { useAppState } from '../../state';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
+const JOIN_ROOM = 'Join Room';
+const RETRY_ROOM = 'Retry';
 const useStyles = makeStyles(theme =>
   createStyles({
     container: {
@@ -73,6 +76,7 @@ const mobileAndTabletCheck = function() {
   })(navigator.userAgent || navigator.vendor || (window as any).MyNamespace); //window.opera);
   return check;
 };
+let submitButtonValue = JOIN_ROOM;
 interface ReporterToken {
   caseNumber: string;
   reporterName: string;
@@ -81,13 +85,11 @@ export default function MenuBar() {
   const reporterToken: string = window.location.hash.substr(1);
   let repoterInfo: any = reporterToken ? jwt_decode(reporterToken) : '';
   const classes = useStyles();
-
-  const { getToken, isFetching } = useAppState();
+  const { setError, getToken, isFetching } = useAppState();
   const { isConnecting, connect, room, localTracks } = useVideoContext();
-
   const roomState = useRoomState();
 
-  const [partyType, setPartyType] = useState(reporterToken ? 'Reporter' : '');
+  const [partyType, setPartyType] = useState(reporterToken ? PARTICIANT_TYPE.REPORTER : '');
   const [partyName, setPartyName] = useState(reporterToken ? repoterInfo.reporterName : '');
   const [caseNumber, setCaseNumber] = useState(reporterToken ? repoterInfo.caseNumber : '');
 
@@ -95,26 +97,41 @@ export default function MenuBar() {
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    getToken(caseNumber, partyType, partyName, pinNumber).then((token: string) => connect(token));
+    getToken(caseNumber, partyType, partyName, pinNumber)
+      .then(response => {
+        if (response == EROOR_MESSAGE.ROOM_NOT_FOUND) {
+          setError({ message: EROOR_MESSAGE.ROOM_NOT_FOUND });
+          submitButtonValue = RETRY_ROOM;
+        } else {
+          connect(response);
+          submitButtonValue = JOIN_ROOM;
+        }
+      })
+      .catch(err => {
+        if (err.response) setError({ message: err.response });
+        else setError({ message: EROOR_MESSAGE.NETWORK_ERROR });
+
+        submitButtonValue = JOIN_ROOM;
+      });
   };
 
   const getPartyTypes = () => {
     var types = [
-      'Hearing Officer',
-      'Parent',
-      'Parent Representative',
-      'District Representative',
-      'Interpreter',
-      'Other',
+      PARTICIANT_TYPE.HEARING_OFFICER,
+      PARTICIANT_TYPE.PARENT,
+      PARTICIANT_TYPE.PARENT_REPRESENTATIVE,
+      PARTICIANT_TYPE.DISTRICT_REPRESENTATIVE,
+      PARTICIANT_TYPE.INTERPRETER,
+      PARTICIANT_TYPE.OTHER,
     ];
-    if (reporterToken) types.push('Reporter');
+    if (reporterToken) types.push(PARTICIANT_TYPE.REPORTER);
     return types;
   };
 
   let selectedAudioDevice = { label: '', deviceId: '', groupdId: '' };
   let selectedVideoDevice = { label: '', deviceId: '', groupdId: '' };
-  const audioTrack = localTracks.find(x => x.kind === 'audio');
-  const videoTrack = localTracks.find(x => x.kind === 'video');
+  const audioTrack = localTracks.find(x => x.kind === TRACK_TYPE.AUDIO);
+  const videoTrack = localTracks.find(x => x.kind === TRACK_TYPE.VIDEO);
 
   if (audioTrack) {
     selectedAudioDevice = {
@@ -156,7 +173,7 @@ export default function MenuBar() {
                 ))}
               </Select>
             </FormControl>
-            {partyType === 'Hearing Officer' && (
+            {partyType === PARTICIANT_TYPE.HEARING_OFFICER && (
               <TextField
                 autoComplete="off"
                 id="menu-name"
@@ -197,7 +214,7 @@ export default function MenuBar() {
                 variant="contained"
                 disabled={isConnecting || !partyName || !caseNumber || isFetching}
               >
-                Join Room
+                {submitButtonValue}
               </Button>
             </Online>
             <Offline>

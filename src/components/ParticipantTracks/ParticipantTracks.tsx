@@ -3,6 +3,7 @@ import { Participant, Track } from 'twilio-video';
 import Publication from '../Publication/Publication';
 import usePublications from '../../hooks/usePublications/usePublications';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import { TRACK_TYPE } from '../../utils/displayStrings';
 
 interface ParticipantTracksProps {
   participant: Participant;
@@ -31,10 +32,10 @@ export default function ParticipantTracks({
 
   let filteredPublications;
 
-  if (enableScreenShare && publications.some(p => p.trackName === 'screen')) {
-    filteredPublications = publications.filter(p => p.trackName !== 'video');
+  if (enableScreenShare && publications.some(p => p.trackName === TRACK_TYPE.SCREEN)) {
+    filteredPublications = publications.filter(p => p.trackName !== TRACK_TYPE.VIDEO);
   } else {
-    filteredPublications = publications.filter(p => p.trackName !== 'screen');
+    filteredPublications = publications.filter(p => p.trackName !== TRACK_TYPE.SCREEN);
   }
 
   return (

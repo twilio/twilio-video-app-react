@@ -4,7 +4,7 @@ import { interval } from 'd3-timer';
 import MicOff from '@material-ui/icons/MicOff';
 import useIsTrackEnabled from '../../hooks/useIsTrackEnabled/useIsTrackEnabled';
 import useMediaStreamTrack from '../../hooks/useMediaStreamTrack/useMediaStreamTrack';
-
+import { PLAYER_STATE } from '../../utils/displayStrings';
 let clipId = 0;
 const getUniqueClipId = () => clipId++;
 
@@ -51,7 +51,7 @@ function AudioLevelIndicator({
       // all tracks when they are not in use. Browsers like Firefox don't let you create a new stream
       // from a new audio device while the active audio device still has active tracks.
       const stopAllMediaStreamTracks = () => newMediaStream.getTracks().forEach(track => track.stop());
-      audioTrack.on('stopped', stopAllMediaStreamTracks);
+      audioTrack.on(PLAYER_STATE.stopped, stopAllMediaStreamTracks);
 
       const reinitializeAnalyser = () => {
         stopAllMediaStreamTracks();
@@ -68,7 +68,7 @@ function AudioLevelIndicator({
 
       return () => {
         window.removeEventListener('focus', reinitializeAnalyser);
-        audioTrack.off('stopped', stopAllMediaStreamTracks);
+        audioTrack.off(PLAYER_STATE.stopped, stopAllMediaStreamTracks);
       };
     }
   }, [mediaStreamTrack, audioTrack]);

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Participant } from 'twilio-video';
+import { ROOMSTATE } from '../../utils/displayStrings';
 
 export default function useParticipantIsReconnecting(participant: Participant) {
   const [isReconnecting, setIsReconnecting] = useState(false);
@@ -8,11 +9,11 @@ export default function useParticipantIsReconnecting(participant: Participant) {
     const handleReconnecting = () => setIsReconnecting(true);
     const handleReconnected = () => setIsReconnecting(false);
 
-    participant.on('reconnecting', handleReconnecting);
-    participant.on('reconnected', handleReconnected);
+    participant.on(ROOMSTATE.RECONNECTING, handleReconnecting);
+    participant.on(ROOMSTATE.RE_CONNECTED, handleReconnected);
     return () => {
-      participant.off('reconnecting', handleReconnecting);
-      participant.off('reconnected', handleReconnected);
+      participant.off(ROOMSTATE.RECONNECTING, handleReconnecting);
+      participant.off(ROOMSTATE.RE_CONNECTED, handleReconnected);
     };
   }, [participant]);
 

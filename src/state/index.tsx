@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useReducer, useState } from 'react';
 import { TwilioError } from 'twilio-video';
+import { EROOR_MESSAGE, PARTICIANT_TYPE } from '../utils/displayStrings';
 import axios from 'axios';
 import * as jwt_decode from 'jwt-decode';
-
 export interface StateContextType {
   error: TwilioError | null;
   setError(error: TwilioError | null): void;
@@ -54,7 +54,6 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     setGridView,
     getToken: async (caseNumber, partyType, partyName, pinNumber = '') => {
       const url = `${endpoint}/token`;
-
       const { data } = await axios({
         url: url,
         method: 'POST',
@@ -90,24 +89,28 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const getToken: StateContextType['getToken'] = (caseNumber, partyType, partyName, pinNumber = '') => {
     setIsFetching(true);
     return contextValue
-      .getToken(caseNumber, partyType === 'Reporter' ? 'Other' : partyType, partyName, pinNumber)
+      .getToken(
+        caseNumber,
+        partyType === PARTICIANT_TYPE.REPORTER ? PARTICIANT_TYPE.OTHER : partyType,
+        partyName,
+        pinNumber
+      )
       .then((res: any) => {
         setIsFetching(false);
-        setUserToken(res.token);
-        const user = jwt_decode(res.token);
+        if (!res.roomExist && participantNotHearingOfficerOrReporter(partyType))
+          return Promise.resolve(EROOR_MESSAGE.ROOM_NOT_FOUND);
+
+        setUserToken(res.result);
+        const user = jwt_decode(res.result);
         setUser(user);
         return Promise.resolve(user.twilioToken);
       })
       .catch(err => {
-        setError(err.response ? err.response.data : { message: 'Network Error' });
-        setIsFetching(false);
         return Promise.reject(err);
       });
   };
-
   const removeParticipant: StateContextType['removeParticipant'] = participantSid => {
     return contextValue.removeParticipant(participantSid).catch(err => {
-      setError(err.response ? err.response.data : { message: 'Network Error' });
       return Promise.reject(err);
     });
   };
@@ -117,6 +120,10 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
       {props.children}
     </StateContext.Provider>
   );
+}
+
+function participantNotHearingOfficerOrReporter(partyType: string) {
+  return partyType != PARTICIANT_TYPE.REPORTER && partyType != PARTICIANT_TYPE.HEARING_OFFICER;
 }
 
 export function useAppState(): any {
