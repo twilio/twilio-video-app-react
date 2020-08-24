@@ -1,4 +1,4 @@
 {
-	"stage": "dev",
-	"endPoint": "https://digu74hvnk.execute-api.us-east-1.amazonaws.com/dev"
+	"stage": "qa",
+	"endPoint": "https://csohob873j.execute-api.us-east-1.amazonaws.com/qa"
 }

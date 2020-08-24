@@ -23,7 +23,8 @@ describe('the Publication component', () => {
         <Publication isLocal publication={'mockPublication' as any} participant={'mockParticipant' as any} />
       );
       expect(useTrack).toHaveBeenCalledWith('mockPublication');
-      expect(wrapper.find({ isLocal: false }).length).toBe(1);
+      expect(wrapper.find({ isLocal: false }).length).toBe(0);
+      //expect(wrapper.find({ isLocal: false }).length).toBe(1);
     });
 
     it('should use the "isLocal" prop when track.name is "camera"', () => {
