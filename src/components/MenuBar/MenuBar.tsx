@@ -78,20 +78,26 @@ interface ReporterToken {
   reporterName: string;
 }
 export default function MenuBar() {
-  const reporterToken: string = window.location.hash.substr(1);
-  let repoterInfo: any = reporterToken ? jwt_decode(reporterToken) : '';
+  const participantToken: string = window.location.hash.substr(1);
   const classes = useStyles();
 
-  const { getToken, isFetching } = useAppState();
+  const { getToken, isFetching, authoriseParticipant } = useAppState();
   const { isConnecting, connect, room, localTracks } = useVideoContext();
 
   const roomState = useRoomState();
 
-  const [partyType, setPartyType] = useState(reporterToken ? 'Reporter' : '');
-  const [partyName, setPartyName] = useState(reporterToken ? repoterInfo.reporterName : '');
-  const [caseNumber, setCaseNumber] = useState(reporterToken ? repoterInfo.caseNumber : '');
-
+  const [partyType, setPartyType] = useState(''); //useState(participantInfo ? participantInfo.partyType : '');
+  const [partyName, setPartyName] = useState(''); //useState(participantInfo ? participantInfo.username : '');
+  const [caseNumber, setCaseNumber] = useState(''); //useState(participantInfo ? participantInfo.caseReference : '');
   const [pinNumber, setPinNumber] = useState('');
+
+  authoriseParticipant(participantToken).then((participantInformation: any) => {
+    if (participantInformation) {
+      setPartyType(participantInformation.partyType);
+      setPartyName(participantInformation.username);
+      setCaseNumber(participantInformation.caseReference);
+    }
+  });
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -107,7 +113,7 @@ export default function MenuBar() {
       'Interpreter',
       'Other',
     ];
-    if (reporterToken) types.push('Reporter');
+    if (participantToken) types.push('Reporter');
     return types;
   };
 
@@ -147,7 +153,7 @@ export default function MenuBar() {
                 onChange={e => setPartyType(e.target.value as string)}
                 margin="dense"
                 placeholder="Party Type"
-                disabled={!!reporterToken}
+                disabled={!!participantToken}
               >
                 {getPartyTypes().map(type => (
                   <MenuItem key={type} value={type}>
@@ -165,7 +171,7 @@ export default function MenuBar() {
                 value={pinNumber}
                 onChange={e => setPinNumber(e.target.value)}
                 margin="dense"
-                disabled={!!reporterToken}
+                disabled={!!participantToken}
               />
             )}
             <TextField
@@ -176,7 +182,7 @@ export default function MenuBar() {
               value={partyName}
               onChange={e => setPartyName(e.target.value)}
               margin="dense"
-              disabled={!!reporterToken}
+              disabled={!!participantToken}
             />
 
             <TextField
@@ -187,7 +193,7 @@ export default function MenuBar() {
               value={caseNumber}
               onChange={e => setCaseNumber(e.target.value)}
               margin="dense"
-              disabled={!!reporterToken}
+              disabled={!!participantToken}
             />
             <Online>
               <Button

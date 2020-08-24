@@ -14,6 +14,7 @@ export interface StateContextType {
   setSelectedSpeakerOutput: string;
   gridView: boolean;
   setGridView: any;
+  authoriseParticipant(authToken): Promise<any>;
   getToken(caseNumber, partyType, partyName, pinNumber): Promise<string>;
   removeParticipant: any;
 }
@@ -23,6 +24,8 @@ export const StateContext = createContext<StateContextType>(null!);
 export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const [error, setError] = useState<TwilioError | null>(null);
   const [isFetching, setIsFetching] = useState(false);
+  const [hasTriedAuthorisation, setHasTriedAuthorisation] = useState(false);
+
   // eslint-disable-next-line no-unused-vars
   const [user, setUser] = useState(null);
   const [gridView, setGridView] = useState(true);
@@ -30,8 +33,9 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const [selectedAudioInput, setSelectedAudioInput] = useState({ deviceId: '' });
   const [selectedVideoInput, setSelectedVideoInput] = useState({ deviceId: '' });
   const [selectedSpeakerOutput, setSelectedSpeakerOutput] = useState({ deviceId: '' });
+  const [participantInfo, setParticipantInfo] = useState(null);
 
-  const reporterToken = window.location.hash.substr(1);
+  const participantToken = window.location.hash.substr(1);
 
   var endpoint = '';
   fetch(`${process.env.PUBLIC_URL}/config.json`)
@@ -52,6 +56,20 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     setSelectedSpeakerOutput,
     gridView,
     setGridView,
+    authoriseParticipant: async authToken => {
+      const url = `${endpoint}/authorise-participant`;
+
+      const { data } = await axios({
+        url: url,
+        method: 'POST',
+        headers: {
+          Authorization: authToken ? `Bearer ${authToken}` : '',
+        },
+        data: {},
+      });
+
+      return data;
+    },
     getToken: async (caseNumber, partyType, partyName, pinNumber = '') => {
       const url = `${endpoint}/token`;
 
@@ -59,7 +77,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
         url: url,
         method: 'POST',
         headers: {
-          Authorization: reporterToken ? `Bearer ${reporterToken}` : '',
+          Authorization: participantToken ? `Bearer ${participantToken}` : '',
         },
         data: {
           caseNumber,
@@ -87,10 +105,29 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     },
   } as unknown) as StateContextType;
 
+  const authoriseParticipant: StateContextType['authoriseParticipant'] = async authToken => {
+    if (hasTriedAuthorisation || endpoint === '') return participantInfo;
+
+    setIsFetching(true);
+
+    try {
+      const response: any = await contextValue.authoriseParticipant(authToken);
+      setHasTriedAuthorisation(true);
+      setIsFetching(false);
+      setParticipantInfo(response.participantInfo);
+      return response.participantInfo;
+    } catch (err) {
+      setHasTriedAuthorisation(true);
+      setError({ message: 'Unauthorised Access', code: 401, name: 'Authorization Error' });
+      setIsFetching(false);
+      return err;
+    }
+  };
+
   const getToken: StateContextType['getToken'] = (caseNumber, partyType, partyName, pinNumber = '') => {
     setIsFetching(true);
     return contextValue
-      .getToken(caseNumber, partyType === 'Reporter' ? 'Other' : partyType, partyName, pinNumber)
+      .getToken(caseNumber, partyType, partyName, pinNumber)
       .then((res: any) => {
         setIsFetching(false);
         setUserToken(res.token);
@@ -113,7 +150,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   };
 
   return (
-    <StateContext.Provider value={{ ...contextValue, getToken, removeParticipant }}>
+    <StateContext.Provider value={{ ...contextValue, getToken, removeParticipant, authoriseParticipant }}>
       {props.children}
     </StateContext.Provider>
   );
