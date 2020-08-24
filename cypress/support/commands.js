@@ -2,10 +2,11 @@ import detectSound from './detectSound';
 
 Cypress.Commands.add('joinRoom', (username, roomname) => {
   cy.visit('/');
+  // cy.get('#party-type').type(partyType);
   cy.get('#menu-name').type(username);
   cy.get('#menu-room').type(roomname);
   cy.get('[type="submit"]').click();
-  cy.get('[data-cy-main-participant]');
+  //cy.get('[data-cy-main-participant]');
 });
 
 Cypress.Commands.add('leaveRoom', () => {
