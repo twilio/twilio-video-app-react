@@ -63,7 +63,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
         },
         data: {
           caseNumber,
-          partyType: 'Hearing Officer',
+          partyType,
           partyName,
         },
       });
