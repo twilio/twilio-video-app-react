@@ -5,6 +5,7 @@ import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useFullScreenToggle from '../../hooks/useFullScreenToggle/useFullScreenToggle';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { VideoContext } from '../VideoProvider/VideoProvider';
+// Line below gave an error on IVideoContext and suggested using VideoContext, as above
 //import { IVideoContext } from '../VideoProvider/VideoProvider';
 import { fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
