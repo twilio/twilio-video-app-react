@@ -11,13 +11,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import { Offline, Online } from 'react-detect-offline';
-import { TRACK_TYPE, PARTICIANT_TYPE, ROOMSTATE } from '../../utils/displayStrings';
+import { TRACK_TYPE, PARTICIANT_TYPE, EROOR_MESSAGE } from '../../utils/displayStrings';
 
 import LocalAudioLevelIndicator from './LocalAudioLevelIndicator/LocalAudioLevelIndicator';
 import ToggleFullscreenButton from './ToggleFullScreenButton/ToggleFullScreenButton';
 import ToggleGridViewButton from './ToggleGridViewButton/ToggleGridViewButton';
 import SettingsButton from './SettingsButton/SettingsButton';
-import { EROOR_MESSAGE } from '../../utils/displayStrings';
 import { useAppState } from '../../state';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
@@ -93,11 +92,9 @@ export default function MenuBar() {
   const [partyName, setPartyName] = useState(reporterToken ? repoterInfo.reporterName : '');
   const [caseNumber, setCaseNumber] = useState(reporterToken ? repoterInfo.caseNumber : '');
 
-  const [pinNumber, setPinNumber] = useState('');
-
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    getToken(caseNumber, partyType, partyName, pinNumber)
+    getToken(caseNumber, partyType, partyName)
       .then(response => {
         if (response == EROOR_MESSAGE.ROOM_NOT_FOUND) {
           setError({ message: EROOR_MESSAGE.ROOM_NOT_FOUND });
@@ -173,18 +170,6 @@ export default function MenuBar() {
                 ))}
               </Select>
             </FormControl>
-            {partyType === PARTICIANT_TYPE.HEARING_OFFICER && (
-              <TextField
-                autoComplete="off"
-                id="menu-name"
-                label="Pin Number"
-                className={classes.textField}
-                value={pinNumber}
-                onChange={e => setPinNumber(e.target.value)}
-                margin="dense"
-                disabled={!!reporterToken}
-              />
-            )}
             <TextField
               autoComplete="off"
               id="menu-name"
