@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import { TRACK_TYPE } from '../utils/displayStrings';
 
 class MockRoom extends EventEmitter {
   state = 'connected';
@@ -22,7 +23,7 @@ class MockTrack extends EventEmitter {
 
 const twilioVideo = {
   connect: jest.fn(() => Promise.resolve(mockRoom)),
-  createLocalTracks: jest.fn(() => Promise.resolve([new MockTrack('video'), new MockTrack('audio')])),
+  createLocalTracks: jest.fn(() => Promise.resolve([new MockTrack(TRACK_TYPE.VIDEO), new MockTrack(TRACK_TYPE.AUDIO)])),
 };
 
 export { mockRoom };

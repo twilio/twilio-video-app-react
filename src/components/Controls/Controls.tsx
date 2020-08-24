@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import EndCallButton from './EndCallButton/EndCallButton';
 import ToggleAudioButton from './ToggleAudioButton/ToggleAudioButton';
 import ToggleVideoButton from './ToggleVideoButton/ToggleVideoButton';
-
+import { ROOMSTATE } from '../../utils/displayStrings';
 import useIsUserActive from './useIsUserActive/useIsUserActive';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 
@@ -38,15 +38,15 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function Controls() {
   const classes = useStyles();
   const roomState = useRoomState();
-  const isReconnecting = roomState === 'reconnecting';
+  const isReconnecting = roomState === ROOMSTATE.RECONNECTING;
   const isUserActive = useIsUserActive();
-  const showControls = isUserActive || roomState === 'disconnected';
+  const showControls = isUserActive || roomState === ROOMSTATE.DISCONNECTED;
 
   return (
     <div className={clsx(classes.container, { showControls })}>
       <ToggleAudioButton disabled={isReconnecting} />
       <ToggleVideoButton disabled={isReconnecting} />
-      {roomState !== 'disconnected' && (
+      {roomState !== ROOMSTATE.DISCONNECTED && (
         <>
           <EndCallButton />
         </>

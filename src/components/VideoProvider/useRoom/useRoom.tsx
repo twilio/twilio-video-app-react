@@ -3,11 +3,12 @@ import EventEmitter from 'events';
 import { isMobile } from '../../../utils';
 import Video, { ConnectOptions, LocalTrack, Room } from 'twilio-video';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { ROOMSTATE, TRACK_TYPE } from '../../../utils/displayStrings';
 
 // @ts-ignore
 window.TwilioVideo = Video;
 
-export default function useRoom(localTracks:any, onError: Callback, options?: ConnectOptions) {
+export default function useRoom(localTracks: any, onError: Callback, options?: ConnectOptions) {
   const [room, setRoom] = useState<Room>(new EventEmitter() as Room);
   const [isConnecting, setIsConnecting] = useState(false);
   const localTracksRef = useRef<LocalTrack[]>([]);
@@ -27,7 +28,7 @@ export default function useRoom(localTracks:any, onError: Callback, options?: Co
           setRoom(newRoom);
           const disconnect = () => newRoom.disconnect();
 
-          newRoom.once('disconnected', () => {
+          newRoom.once(ROOMSTATE.DISCONNECTED, () => {
             // Reset the room only after all other `disconnected` listeners have been called.
             setTimeout(() => setRoom(new EventEmitter() as Room));
             window.removeEventListener('beforeunload', disconnect);
@@ -46,7 +47,9 @@ export default function useRoom(localTracks:any, onError: Callback, options?: Co
             // All video tracks are published with 'low' priority. This works because the video
             // track that is displayed in the 'MainParticipant' component will have it's priority
             // set to 'high' via track.setPriority()
-            newRoom.localParticipant.publishTrack(track, { priority: track.kind === 'video' ? 'low' : 'standard' })
+            newRoom.localParticipant.publishTrack(track, {
+              priority: track.kind === TRACK_TYPE.VIDEO ? 'low' : 'standard',
+            })
           );
 
           setIsConnecting(false);
