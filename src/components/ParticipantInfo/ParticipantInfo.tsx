@@ -17,8 +17,8 @@ import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackS
 import useTrack from '../../hooks/useTrack/useTrack';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import useHeight from '../../hooks/useHeight/useHeight';
-import { TRACK_TYPE, PARTICIANT_TYPE } from '../../utils/displayStrings';
-
+import { TRACK_TYPE } from '../../utils/displayStrings';
+import { PARTICIANT_TYPES } from '../../utils/participantTypes';
 export default function ParticipantInfo({ participant, onClick, isSelected, children, gridView }) {
   const useStyles = gridView
     ? makeStyles(theme =>
@@ -146,9 +146,9 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
   const localParticipantType = localParticipant.identity.split('@')[1];
   const participantType = participant.identity.split('@')[1];
   const enableParticipantDropDown =
-    (localParticipantType === PARTICIANT_TYPE.REPORTER || localParticipantType === PARTICIANT_TYPE.HEARING_OFFICER) &&
+    (localParticipantType === PARTICIANT_TYPES.REPORTER || localParticipantType === PARTICIANT_TYPES.HEARING_OFFICER) &&
     localParticipant.identity !== participant.identity &&
-    !(localParticipantType === PARTICIANT_TYPE.HEARING_OFFICER && participantType === PARTICIANT_TYPE.REPORTER);
+    !(localParticipantType === PARTICIANT_TYPES.HEARING_OFFICER && participantType === PARTICIANT_TYPES.REPORTER);
 
   const height = useHeight();
   const getHeight = () => {

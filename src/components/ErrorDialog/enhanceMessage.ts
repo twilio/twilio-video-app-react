@@ -4,7 +4,7 @@ import { EROOR_MESSAGE } from '../../utils/displayStrings';
 export default function enhanceMessage(message = '', code?: number) {
   switch (code) {
     case 20101: // Invalid token error
-      return message + EROOR_MESSAGE.INVALIDE_CREDENTIALS;
+      return message + EROOR_MESSAGE.INVALID_CREDENTIALS;
     default:
       return message;
   }

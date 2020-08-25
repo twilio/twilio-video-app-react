@@ -6,14 +6,21 @@ import Video, { TwilioError } from 'twilio-video';
 import { CssBaseline } from '@material-ui/core';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { EROOR_MESSAGE } from 'utils/displayStrings';
-
+import { transitions, positions, Provider as AlertProvider } from 'react-alert';
+import AlertTemplate from 'react-alert-template-basic';
 import AppStateProvider, { useAppState } from './state';
 import { VideoProvider } from './components/VideoProvider/';
 import ErrorDialog from './components/ErrorDialog/ErrorDialog';
-
 import theme from './theme';
-
 import App from './App';
+const options = {
+  // you can also just use 'bottom center'
+  position: positions.BOTTOM_CENTER,
+  timeout: 10000,
+  offset: '30px',
+  // you can also just use 'scale'
+  transition: transitions.SCALE,
+};
 
 const connectionOptions = {
   bandwidthProfile: {
@@ -51,11 +58,14 @@ const VideoApp = () => {
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
     <CssBaseline />
+
     <Router>
       <AppStateProvider>
         <Switch>
           <Route exact path="/">
-            <VideoApp />
+            <AlertProvider template={AlertTemplate} {...options}>
+              <VideoApp />
+            </AlertProvider>
           </Route>
         </Switch>
       </AppStateProvider>

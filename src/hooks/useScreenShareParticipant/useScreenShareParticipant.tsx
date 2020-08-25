@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import useVideoContext from '../useVideoContext/useVideoContext';
-import { TRACK_TYPE, ROOMSTATE } from '../../utils/displayStrings';
+import { TRACK_TYPE, ROOM_STATE } from '../../utils/displayStrings';
 
 import { Participant, TrackPublication } from 'twilio-video';
 
@@ -13,7 +13,7 @@ export default function useScreenShareParticipant() {
   const [screenShareParticipant, setScreenShareParticipant] = useState<Participant>();
 
   useEffect(() => {
-    if (room.state === ROOMSTATE.CONNECTED) {
+    if (room.state === ROOM_STATE.CONNECTED) {
       const updateScreenShareParticipant = () => {
         setScreenShareParticipant(
           Array.from<Participant>(room.participants.values())

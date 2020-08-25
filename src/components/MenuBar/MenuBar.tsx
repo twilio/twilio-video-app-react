@@ -11,8 +11,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import { Offline, Online } from 'react-detect-offline';
-import { TRACK_TYPE, PARTICIANT_TYPE, EROOR_MESSAGE } from '../../utils/displayStrings';
-
+import { TRACK_TYPE, EROOR_MESSAGE } from '../../utils/displayStrings';
+import { PARTICIANT_TYPES } from '../../utils/participantTypes';
+import { useAlert } from 'react-alert';
 import LocalAudioLevelIndicator from './LocalAudioLevelIndicator/LocalAudioLevelIndicator';
 import ToggleFullscreenButton from './ToggleFullScreenButton/ToggleFullScreenButton';
 import ToggleGridViewButton from './ToggleGridViewButton/ToggleGridViewButton';
@@ -21,8 +22,8 @@ import { useAppState } from '../../state';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
-const JOIN_ROOM = 'Join Room';
-const RETRY_ROOM = 'Retry';
+const JOIN_ROOM_MESSAGE = 'Join Room';
+const RETRY_ROOM_MESSAGE = 'Retry';
 const useStyles = makeStyles(theme =>
   createStyles({
     container: {
@@ -59,6 +60,9 @@ const useStyles = makeStyles(theme =>
     },
   })
 );
+const getPartyTypes = () => {
+  return Object.values(PARTICIANT_TYPES);
+};
 
 const mobileAndTabletCheck = function() {
   let check = false;
@@ -75,7 +79,7 @@ const mobileAndTabletCheck = function() {
   })(navigator.userAgent || navigator.vendor || (window as any).MyNamespace); //window.opera);
   return check;
 };
-let submitButtonValue = JOIN_ROOM;
+let submitButtonValue = JOIN_ROOM_MESSAGE;
 interface ReporterToken {
   caseNumber: string;
   reporterName: string;
@@ -88,9 +92,10 @@ export default function MenuBar() {
   const { isConnecting, connect, room, localTracks } = useVideoContext();
   const roomState = useRoomState();
 
-  const [partyType, setPartyType] = useState(''); //useState(participantInfo ? participantInfo.partyType : '');
-  const [partyName, setPartyName] = useState(''); //useState(participantInfo ? participantInfo.username : '');
-  const [caseNumber, setCaseNumber] = useState(''); //useState(participantInfo ? participantInfo.caseReference : '');
+  const alert = useAlert();
+  const [partyType, setPartyType] = useState('');
+  const [partyName, setPartyName] = useState('');
+  const [caseNumber, setCaseNumber] = useState('');
 
   authoriseParticipant(participantToken).then((participantInformation: any) => {
     if (participantInformation) {
@@ -104,33 +109,20 @@ export default function MenuBar() {
     event.preventDefault();
     getToken(caseNumber, partyType, partyName)
       .then(response => {
-        if (response == EROOR_MESSAGE.ROOM_NOT_FOUND) {
-          setError({ message: EROOR_MESSAGE.ROOM_NOT_FOUND });
-          submitButtonValue = RETRY_ROOM;
+        if (response === EROOR_MESSAGE.ROOM_NOT_FOUND) {
+          submitButtonValue = RETRY_ROOM_MESSAGE;
+          return <div>{alert.show(EROOR_MESSAGE.ROOM_NOT_FOUND)}</div>;
         } else {
           connect(response);
-          submitButtonValue = JOIN_ROOM;
+          submitButtonValue = JOIN_ROOM_MESSAGE;
         }
       })
       .catch(err => {
         if (err.response) setError({ message: err.response });
         else setError({ message: EROOR_MESSAGE.NETWORK_ERROR });
 
-        submitButtonValue = JOIN_ROOM;
+        submitButtonValue = JOIN_ROOM_MESSAGE;
       });
-  };
-
-  const getPartyTypes = () => {
-    var types = [
-      PARTICIANT_TYPE.HEARING_OFFICER,
-      PARTICIANT_TYPE.PARENT,
-      PARTICIANT_TYPE.PARENT_REPRESENTATIVE,
-      PARTICIANT_TYPE.DISTRICT_REPRESENTATIVE,
-      PARTICIANT_TYPE.INTERPRETER,
-      PARTICIANT_TYPE.OTHER,
-    ];
-    if (participantToken) types.push(PARTICIANT_TYPE.REPORTER);
-    return types;
   };
 
   let selectedAudioDevice = { label: '', deviceId: '', groupdId: '' };

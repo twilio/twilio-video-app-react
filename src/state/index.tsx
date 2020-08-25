@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useReducer, useState } from 'react';
 import { TwilioError } from 'twilio-video';
-import { EROOR_MESSAGE, PARTICIANT_TYPE } from '../utils/displayStrings';
+import { EROOR_MESSAGE } from '../utils/displayStrings';
+import { PARTICIANT_TYPES } from '../utils/participantTypes';
 import axios from 'axios';
+
 import * as jwt_decode from 'jwt-decode';
 export interface StateContextType {
   error: TwilioError | null;
@@ -128,7 +130,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
       .getToken(caseNumber, partyType, partyName)
       .then((res: any) => {
         setIsFetching(false);
-        if (!res.roomExist && participantNotHearingOfficerOrReporter(partyType))
+        if (!res.roomExist && !participantIsMemberInHostRole(partyType))
           return Promise.resolve(EROOR_MESSAGE.ROOM_NOT_FOUND);
 
         setUserToken(res.result);
@@ -153,8 +155,8 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   );
 }
 
-function participantNotHearingOfficerOrReporter(partyType: string) {
-  return partyType !== PARTICIANT_TYPE.REPORTER && partyType !== PARTICIANT_TYPE.HEARING_OFFICER;
+function participantIsMemberInHostRole(partyType: string) {
+  return partyType === PARTICIANT_TYPES.REPORTER && partyType === PARTICIANT_TYPES.HEARING_OFFICER;
 }
 
 export function useAppState(): any {

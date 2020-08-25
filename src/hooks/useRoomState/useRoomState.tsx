@@ -1,23 +1,23 @@
 import { useEffect, useState } from 'react';
 import useVideoContext from '../useVideoContext/useVideoContext';
-import { ROOMSTATE } from '../../utils/displayStrings';
+import { ROOM_STATE } from '../../utils/displayStrings';
 
 export default function useRoomState() {
   const { room } = useVideoContext();
-  const [state, setState] = useState(ROOMSTATE.DISCONNECTED);
+  const [state, setState] = useState(ROOM_STATE.DISCONNECTED);
 
   useEffect(() => {
-    const setRoomState = () => setState(room.state || ROOMSTATE.DISCONNECTED);
+    const setRoomState = () => setState(room.state || ROOM_STATE.DISCONNECTED);
     setRoomState();
     room
-      .on(ROOMSTATE.DISCONNECTED, setRoomState)
-      .on(ROOMSTATE.RE_CONNECTED, setRoomState)
-      .on(ROOMSTATE.RECONNECTING, setRoomState);
+      .on(ROOM_STATE.DISCONNECTED, setRoomState)
+      .on(ROOM_STATE.RECONNECTED, setRoomState)
+      .on(ROOM_STATE.RECONNECTING, setRoomState);
     return () => {
       room
-        .off(ROOMSTATE.DISCONNECTED, setRoomState)
-        .off(ROOMSTATE.RE_CONNECTED, setRoomState)
-        .off(ROOMSTATE.RECONNECTING, setRoomState);
+        .off(ROOM_STATE.DISCONNECTED, setRoomState)
+        .off(ROOM_STATE.RECONNECTED, setRoomState)
+        .off(ROOM_STATE.RECONNECTING, setRoomState);
     };
   }, [room]);
 
