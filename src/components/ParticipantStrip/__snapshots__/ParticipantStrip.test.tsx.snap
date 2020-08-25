@@ -1,33 +1,79 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`the ParticipantStrip component should correctly render ParticipantInfo components 1`] = `
-<Styled(aside)>
-  <Styled(div)>
-    <Participant
-      isSelected={false}
-      onClick={[Function]}
-      participant="localParticipant"
-    />
-    <Participant
-      isSelected={false}
+<div
+  className="makeStyles-root-1"
+>
+  <WithStyles(ForwardRef(Grid))
+    container={true}
+    spacing={1}
+  >
+    <WithStyles(ForwardRef(Grid))
+      item={true}
+      lg={4}
+      md={4}
+      sm={4}
+      xs={4}
+    >
+      <WithStyles(ForwardRef(Paper))
+        className="makeStyles-paper-2"
+      >
+        <Participant
+          gridView={Object {}}
+          isSelected={false}
+          onClick={[Function]}
+          participant="localParticipant"
+        />
+      </WithStyles(ForwardRef(Paper))>
+    </WithStyles(ForwardRef(Grid))>
+    <WithStyles(ForwardRef(Grid))
+      item={true}
       key="0"
-      onClick={[Function]}
-      participant={
-        Object {
-          "sid": 0,
-        }
-      }
-    />
-    <Participant
-      isSelected={false}
+      lg={4}
+      md={4}
+      sm={4}
+      xs={4}
+    >
+      <WithStyles(ForwardRef(Paper))
+        className="makeStyles-paper-2"
+      >
+        <Participant
+          gridView={Object {}}
+          isSelected={false}
+          key="0"
+          onClick={[Function]}
+          participant={
+            Object {
+              "sid": 0,
+            }
+          }
+        />
+      </WithStyles(ForwardRef(Paper))>
+    </WithStyles(ForwardRef(Grid))>
+    <WithStyles(ForwardRef(Grid))
+      item={true}
       key="1"
-      onClick={[Function]}
-      participant={
-        Object {
-          "sid": 1,
-        }
-      }
-    />
-  </Styled(div)>
-</Styled(aside)>
+      lg={4}
+      md={4}
+      sm={4}
+      xs={4}
+    >
+      <WithStyles(ForwardRef(Paper))
+        className="makeStyles-paper-2"
+      >
+        <Participant
+          gridView={Object {}}
+          isSelected={false}
+          key="1"
+          onClick={[Function]}
+          participant={
+            Object {
+              "sid": 1,
+            }
+          }
+        />
+      </WithStyles(ForwardRef(Paper))>
+    </WithStyles(ForwardRef(Grid))>
+  </WithStyles(ForwardRef(Grid))>
+</div>
 `;
