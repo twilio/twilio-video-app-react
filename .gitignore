@@ -7,6 +7,9 @@
 node_modules
 .pnp
 .pnp.js
+.vs
+.sqlite
+slnx.sqlite
 # testing
 coverage
 
