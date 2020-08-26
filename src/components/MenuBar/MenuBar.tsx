@@ -11,7 +11,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import { Offline, Online } from 'react-detect-offline';
-import { TRACK_TYPE, EROOR_MESSAGE } from '../../utils/displayStrings';
+import { TRACK_TYPE, ERROR_MESSAGE } from '../../utils/displayStrings';
 import { PARTICIANT_TYPES } from '../../utils/participantTypes';
 import { useAlert } from 'react-alert';
 import LocalAudioLevelIndicator from './LocalAudioLevelIndicator/LocalAudioLevelIndicator';
@@ -99,9 +99,9 @@ export default function MenuBar() {
     event.preventDefault();
     getToken(caseNumber, partyType, partyName)
       .then(response => {
-        if (response == EROOR_MESSAGE.ROOM_NOT_FOUND) {
+        if (response == ERROR_MESSAGE.ROOM_NOT_FOUND) {
           submitButtonValue = RETRY_ROOM_MESSAGE;
-          return <div>{alert.show(EROOR_MESSAGE.ROOM_NOT_FOUND)}</div>;
+          return <div>{alert.show(ERROR_MESSAGE.ROOM_NOT_FOUND)}</div>;
         } else {
           connect(response);
           submitButtonValue = JOIN_ROOM_MESSAGE;
@@ -109,7 +109,7 @@ export default function MenuBar() {
       })
       .catch(err => {
         if (err.response) setError({ message: err.response.data });
-        else setError({ message: EROOR_MESSAGE.NETWORK_ERROR });
+        else setError({ message: ERROR_MESSAGE.NETWORK_ERROR });
 
         submitButtonValue = JOIN_ROOM_MESSAGE;
       });

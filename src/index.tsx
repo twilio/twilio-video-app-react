@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Video, { TwilioError } from 'twilio-video';
 import { CssBaseline } from '@material-ui/core';
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import { EROOR_MESSAGE } from 'utils/displayStrings';
+import { ERROR_MESSAGE } from 'utils/displayStrings';
 import { transitions, positions, Provider as AlertProvider } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
 import AppStateProvider, { useAppState } from './state';
@@ -44,7 +44,7 @@ const VideoApp = () => {
   const { error, setError } = useAppState();
   if (!Video.isSupported) {
     return (
-      <ErrorDialog dismissError={() => null} error={(EROOR_MESSAGE.UNSUPPORTED_MESSAGE as unknown) as TwilioError} />
+      <ErrorDialog dismissError={() => null} error={(ERROR_MESSAGE.UNSUPPORTED_MESSAGE as unknown) as TwilioError} />
     );
   }
   return (
