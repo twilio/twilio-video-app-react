@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { RoomType } from '../../types';
 
 export function getPasscode() {
   const match = window.location.search.match(/passcode=(.*)&?/);
@@ -7,18 +8,18 @@ export function getPasscode() {
   return passcode;
 }
 
-export function fetchToken(name: string, room: string, passcode: string) {
+export function fetchToken(name: string, room: string, passcode: string, create_room = true) {
   return fetch(`/token`, {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
     },
-    body: JSON.stringify({ user_identity: name, room_name: room, passcode }),
+    body: JSON.stringify({ user_identity: name, room_name: room, passcode, create_room }),
   });
 }
 
 export function verifyPasscode(passcode: string) {
-  return fetchToken('temp-name', 'temp-room', passcode).then(async res => {
+  return fetchToken('temp-name', 'temp-room', passcode, false /* create_room */).then(async res => {
     const jsonResponse = await res.json();
     if (res.status === 401) {
       return { isValid: false, error: jsonResponse.error?.message };
@@ -46,6 +47,7 @@ export default function usePasscodeAuth() {
 
   const [user, setUser] = useState<{ displayName: undefined; photoURL: undefined; passcode: string } | null>(null);
   const [isAuthReady, setIsAuthReady] = useState(false);
+  const [roomType, setRoomType] = useState<RoomType>();
 
   const getToken = useCallback(
     (name: string, room: string) => {
@@ -59,7 +61,10 @@ export default function usePasscodeAuth() {
           throw Error(errorMessage);
         })
         .then(res => res.json())
-        .then(res => res.token as string);
+        .then(res => {
+          setRoomType(res.room_type);
+          return res.token as string;
+        });
     },
     [user]
   );
@@ -99,5 +104,5 @@ export default function usePasscodeAuth() {
     return Promise.resolve();
   }, []);
 
-  return { user, isAuthReady, getToken, signIn, signOut };
+  return { user, isAuthReady, getToken, signIn, signOut, roomType };
 }

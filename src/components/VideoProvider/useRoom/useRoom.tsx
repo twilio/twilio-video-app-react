@@ -11,6 +11,7 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
   const [room, setRoom] = useState<Room>(new EventEmitter() as Room);
   const [isConnecting, setIsConnecting] = useState(false);
   const localTracksRef = useRef<LocalTrack[]>([]);
+  const optionsRef = useRef(options);
 
   useEffect(() => {
     // It can take a moment for Video.connect to connect to a room. During this time, the user may have enabled or disabled their
@@ -19,10 +20,16 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
     localTracksRef.current = localTracks;
   }, [localTracks]);
 
+  useEffect(() => {
+    // This allows the connect function to always access the most recent version of the options object. This allows us to
+    // reliably use the connect function at any time.
+    optionsRef.current = options;
+  }, [options]);
+
   const connect = useCallback(
     token => {
       setIsConnecting(true);
-      return Video.connect(token, { ...options, tracks: [] }).then(
+      return Video.connect(token, { ...optionsRef.current, tracks: [] }).then(
         newRoom => {
           setRoom(newRoom);
           const disconnect = () => newRoom.disconnect();
@@ -65,7 +72,7 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
         }
       );
     },
-    [options, onError]
+    [onError]
   );
 
   return { room, isConnecting, connect };
