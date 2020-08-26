@@ -108,7 +108,7 @@ export default function MenuBar() {
         }
       })
       .catch(err => {
-        if (err.response) setError({ message: err.response });
+        if (err.response) setError({ message: err.response.data });
         else setError({ message: EROOR_MESSAGE.NETWORK_ERROR });
 
         submitButtonValue = JOIN_ROOM_MESSAGE;

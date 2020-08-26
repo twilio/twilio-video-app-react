@@ -119,7 +119,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
 }
 
 function participantIsMemberInHostRole(partyType: string) {
-  return partyType == PARTICIANT_TYPES.REPORTER && partyType == PARTICIANT_TYPES.HEARING_OFFICER;
+  return partyType == PARTICIANT_TYPES.REPORTER || partyType == PARTICIANT_TYPES.HEARING_OFFICER;
 }
 
 export function useAppState(): any {
