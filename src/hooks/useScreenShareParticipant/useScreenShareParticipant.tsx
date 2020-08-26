@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import useVideoContext from '../useVideoContext/useVideoContext';
+import { TRACK_TYPE, ROOM_STATE } from '../../utils/displayStrings';
 
 import { Participant, TrackPublication } from 'twilio-video';
 
@@ -12,7 +13,7 @@ export default function useScreenShareParticipant() {
   const [screenShareParticipant, setScreenShareParticipant] = useState<Participant>();
 
   useEffect(() => {
-    if (room.state === 'connected') {
+    if (room.state === ROOM_STATE.CONNECTED) {
       const updateScreenShareParticipant = () => {
         setScreenShareParticipant(
           Array.from<Participant>(room.participants.values())
@@ -20,7 +21,7 @@ export default function useScreenShareParticipant() {
             .concat(room.localParticipant)
             .find((participant: Participant) =>
               Array.from<TrackPublication>(participant.tracks.values()).find(track =>
-                track.trackName.includes('screen')
+                track.trackName.includes(TRACK_TYPE.SCREEN)
               )
             )
         );

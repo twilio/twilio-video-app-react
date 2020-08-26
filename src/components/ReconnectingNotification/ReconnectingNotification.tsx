@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import InfoIcon from '@material-ui/icons/Info';
 import Snackbar from '@material-ui/core/Snackbar';
 import { SnackbarContent } from '@material-ui/core';
-
+import { ROOM_STATE } from '../../utils/displayStrings';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 
 const useStyles = makeStyles({
@@ -25,7 +25,7 @@ export default function ReconnectingNotification() {
   const roomState = useRoomState();
 
   return (
-    <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} open={roomState === 'reconnecting'}>
+    <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} open={roomState === ROOM_STATE.RECONNECTING}>
       <SnackbarContent
         className={classes.snackbar}
         message={

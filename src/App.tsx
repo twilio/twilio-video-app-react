@@ -6,6 +6,7 @@ import LocalVideoPreview from './components/LocalVideoPreview/LocalVideoPreview'
 import MenuBar from './components/MenuBar/MenuBar';
 import ReconnectingNotification from './components/ReconnectingNotification/ReconnectingNotification';
 import Room from './components/Room/Room';
+import { ROOM_STATE } from 'utils/displayStrings';
 
 import useHeight from './hooks/useHeight/useHeight';
 import useRoomState from './hooks/useRoomState/useRoomState';
@@ -33,7 +34,7 @@ export default function App() {
     <Container style={{ height }}>
       <MenuBar />
       <Main>
-        {roomState === 'disconnected' ? <LocalVideoPreview /> : <Room />}
+        {roomState === ROOM_STATE.DISCONNECTED ? <LocalVideoPreview /> : <Room />}
         <Controls />
       </Main>
       <ReconnectingNotification />

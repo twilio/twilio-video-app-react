@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import Video, { LocalVideoTrack, LocalAudioTrack, CreateLocalTrackOptions } from 'twilio-video';
 import useMediaDevices from '../../../hooks/useMediaDevices/useMediaDevices';
 import usePrevious from '../../../hooks/usePrevious/usePrevious';
+import { PLAYER_STATE } from '../../../utils/displayStrings';
 import { useAppState } from '../../../state';
 function isSameDevice(prevDefaultDevice, newDefaultDevice) {
   if (!prevDefaultDevice) return false;
@@ -59,9 +60,9 @@ export function useLocalAudioTrack() {
   useEffect(() => {
     const handleStopped = () => setTrack(undefined);
     if (track) {
-      track.on('stopped', handleStopped);
+      track.on(PLAYER_STATE.stopped, handleStopped);
       return () => {
-        track.off('stopped', handleStopped);
+        track.off(PLAYER_STATE.stopped, handleStopped);
       };
     }
   }, [track]);
@@ -107,9 +108,9 @@ export function useLocalVideoTrack() {
   useEffect(() => {
     const handleStopped = () => setTrack(undefined);
     if (track) {
-      track.on('stopped', handleStopped);
+      track.on(PLAYER_STATE.stopped, handleStopped);
       return () => {
-        track.off('stopped', handleStopped);
+        track.off(PLAYER_STATE.stopped, handleStopped);
       };
     }
   }, [track]);

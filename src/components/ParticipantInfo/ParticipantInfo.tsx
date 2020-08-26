@@ -16,8 +16,9 @@ import usePublications from '../../hooks/usePublications/usePublications';
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
 import useTrack from '../../hooks/useTrack/useTrack';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
-import useHeight from '../..//hooks/useHeight/useHeight';
-
+import useHeight from '../../hooks/useHeight/useHeight';
+import { TRACK_TYPE } from '../../utils/displayStrings';
+import { PARTICIANT_TYPES } from '../../utils/participantTypes';
 export default function ParticipantInfo({ participant, onClick, isSelected, children, gridView }) {
   const useStyles = gridView
     ? makeStyles(theme =>
@@ -126,12 +127,12 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
 
   const publications = usePublications(participant);
 
-  const audioPublication = publications.find(p => p.kind === 'audio');
-  const videoPublication = publications.find(p => p.kind === 'video');
+  const audioPublication = publications.find(p => p.kind === TRACK_TYPE.AUDIO);
+  const videoPublication = publications.find(p => p.kind === TRACK_TYPE.VIDEO);
 
   const networkQualityLevel = useParticipantNetworkQualityLevel(participant);
   const isVideoEnabled = Boolean(videoPublication);
-  const isScreenShareEnabled = publications.find(p => p.trackName === 'screen');
+  const isScreenShareEnabled = publications.find(p => p.trackName === TRACK_TYPE.SCREEN);
 
   const videoTrack = useTrack(videoPublication);
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack);
@@ -145,9 +146,9 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
   const localParticipantType = localParticipant.identity.split('@')[1];
   const participantType = participant.identity.split('@')[1];
   const enableParticipantDropDown =
-    (localParticipantType === 'Reporter' || localParticipantType === 'Hearing Officer') &&
+    (localParticipantType === PARTICIANT_TYPES.REPORTER || localParticipantType === PARTICIANT_TYPES.HEARING_OFFICER) &&
     localParticipant.identity !== participant.identity &&
-    !(localParticipantType === 'Hearing Officer' && participantType === 'Reporter');
+    !(localParticipantType === PARTICIANT_TYPES.HEARING_OFFICER && participantType === PARTICIANT_TYPES.REPORTER);
 
   const height = useHeight();
   const getHeight = () => {

@@ -3,6 +3,7 @@ import useDominantSpeaker from '../useDominantSpeaker/useDominantSpeaker';
 import useParticipants from '../useParticipants/useParticipants';
 import useScreenShareParticipant from '../useScreenShareParticipant/useScreenShareParticipant';
 import useSelectedParticipant from '../../components/VideoProvider/useSelectedParticipant/useSelectedParticipant';
+import { ROOM_STATE } from '../../utils/displayStrings';
 
 export default function useMainSpeaker() {
   const [selectedParticipant] = useSelectedParticipant();
@@ -15,10 +16,10 @@ export default function useMainSpeaker() {
 
   // The participant that is returned is displayed in the main video area. Changing the order of the following
   // variables will change the how the main speaker is determined.
-    return (
-        (selectedParticipant && selectedParticipant.state !== 'disconnected' ? selectedParticipant : null) ||
-        dominantSpeaker ||
-        participants[0] ||
-        localParticipant
-    );
+  return (
+    (selectedParticipant && selectedParticipant.state !== ROOM_STATE.DISCONNECTED ? selectedParticipant : null) ||
+    dominantSpeaker ||
+    participants[0] ||
+    localParticipant
+  );
 }

@@ -118,6 +118,12 @@ Now the local token server (see [server.js](server.js)) can dispense Access Toke
 
 ### Running the App locally
 
+Add config.json with endpoint and stage to public directory 
+for example:
+{
+     "endPoint":"https://digu74hvnk.execute-api.us-east-1.amazonaws.com/dev"
+}
+
 Run the app locally with
 
     $ npm start

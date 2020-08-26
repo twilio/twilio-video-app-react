@@ -4,8 +4,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-
-const options = ['Remove'];
+const REMOVE = 'Remove';
+const options = [REMOVE];
 const ITEM_HEIGHT = 48;
 
 export default function ParticipantDropDown({ participant }) {
@@ -19,14 +19,16 @@ export default function ParticipantDropDown({ participant }) {
   const handleClose = (event, option) => {
     event.stopPropagation();
     setAnchorEl(null);
-    if (option === 'Remove') {
+    if (option === REMOVE) {
       console.log(participant.sid);
       console.log(options.length);
-      removeParticipant(participant.sid);
+      removeParticipant(participant.sid).catch(err => {
+        setError({ message: err.response.data });
+      });
     }
   };
 
-  const { removeParticipant } = useAppState();
+  const { setError, removeParticipant } = useAppState();
 
   return (
     <div style={{ float: 'right' }}>

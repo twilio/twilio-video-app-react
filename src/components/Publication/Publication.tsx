@@ -2,7 +2,7 @@ import React from 'react';
 import useTrack from '../../hooks/useTrack/useTrack';
 import AudioTrack from '../AudioTrack/AudioTrack';
 import VideoTrack from '../VideoTrack/VideoTrack';
-
+import { TRACK_TYPE } from '../../utils/displayStrings';
 import { IVideoTrack } from '../../types';
 import {
   AudioTrack as IAudioTrack,
@@ -26,15 +26,15 @@ export default function Publication({ publication, isLocal, disableAudio, videoP
   if (!track) return null;
 
   switch (track.kind) {
-    case 'video':
+    case TRACK_TYPE.VIDEO:
       return (
         <VideoTrack
           track={track as IVideoTrack}
           priority={videoPriority}
-              isLocal={track.kind === 'video' && isLocal}
+          isLocal={track.kind === TRACK_TYPE.AUDIO && isLocal}
         />
       );
-    case 'audio':
+    case TRACK_TYPE.AUDIO:
       return disableAudio ? null : <AudioTrack track={track as IAudioTrack} />;
     default:
       return null;

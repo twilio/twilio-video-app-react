@@ -1,8 +1,10 @@
 import React, { createContext, useContext, useReducer, useState } from 'react';
 import { TwilioError } from 'twilio-video';
+import { ERROR_MESSAGE } from '../utils/displayStrings';
+import { PARTICIANT_TYPES } from '../utils/participantTypes';
 import axios from 'axios';
-import * as jwt_decode from 'jwt-decode';
 
+import * as jwt_decode from 'jwt-decode';
 export interface StateContextType {
   error: TwilioError | null;
   setError(error: TwilioError | null): void;
@@ -54,7 +56,6 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     setGridView,
     getToken: async (caseNumber, partyType, partyName) => {
       const url = `${endpoint}/token`;
-
       const { data } = await axios({
         url: url,
         method: 'POST',
@@ -89,24 +90,23 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const getToken: StateContextType['getToken'] = (caseNumber, partyType, partyName) => {
     setIsFetching(true);
     return contextValue
-      .getToken(caseNumber, partyType === 'Reporter' ? 'Other' : partyType, partyName)
+      .getToken(caseNumber, partyType === PARTICIANT_TYPES.REPORTER ? PARTICIANT_TYPES.OTHER : partyType, partyName)
       .then((res: any) => {
         setIsFetching(false);
-        setUserToken(res.token);
-        const user = jwt_decode(res.token);
+        if (!res.roomExist && !participantIsMemberInHostRole(partyType))
+          return Promise.resolve(ERROR_MESSAGE.ROOM_NOT_FOUND);
+
+        setUserToken(res.result);
+        const user = jwt_decode(res.result);
         setUser(user);
         return Promise.resolve(user.twilioToken);
       })
       .catch(err => {
-        setError(err.response ? err.response.data : { message: 'Network Error' });
-        setIsFetching(false);
         return Promise.reject(err);
       });
   };
-
   const removeParticipant: StateContextType['removeParticipant'] = participantSid => {
     return contextValue.removeParticipant(participantSid).catch(err => {
-      setError(err.response ? err.response.data : { message: 'Network Error' });
       return Promise.reject(err);
     });
   };
@@ -116,6 +116,10 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
       {props.children}
     </StateContext.Provider>
   );
+}
+
+function participantIsMemberInHostRole(partyType: string) {
+  return partyType == PARTICIANT_TYPES.REPORTER || partyType == PARTICIANT_TYPES.HEARING_OFFICER;
 }
 
 export function useAppState(): any {
