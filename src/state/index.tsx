@@ -36,7 +36,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const reporterToken = window.location.hash.substr(1);
 
   var endpoint = '';
-  fetch(`${process.env.PUBLIC_URL}/config_mt_intg_01_aws_us_east_1.json`)
+  fetch(`${process.env.PUBLIC_URL}/config.json`)
     .then(r => r.json())
     .then(data => {
       endpoint = data.endPoint;
