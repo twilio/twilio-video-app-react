@@ -8,6 +8,8 @@ node_modules
 .pnp
 .pnp.js
 .vs/
+.vs
+/.vs
 # testing
 coverage
 
