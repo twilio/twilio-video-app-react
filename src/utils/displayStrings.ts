@@ -1,4 +1,4 @@
-export const EROOR_MESSAGE = {
+export const ERROR_MESSAGE = {
   ROOM_NOT_FOUND:
     'The room has not been started. If your legal session is due to start please wait a minute and try again',
   INVALID_CREDENTIALS: '. Please make sure you are using the correct credentials.',
