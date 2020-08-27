@@ -37,7 +37,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const [selectedSpeakerOutput, setSelectedSpeakerOutput] = useState({ deviceId: '' });
   const [participantInfo, setParticipantInfo] = useState(null);
 
-  const participantToken = window.location.hash.substr(1);
+  const participantAuthToken = window.location.hash.substr(1);
 
   var endpoint = '';
   fetch(`${process.env.PUBLIC_URL}/config.json`)
@@ -58,33 +58,29 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     setSelectedSpeakerOutput,
     gridView,
     setGridView,
-    authoriseParticipant: async authToken => {
+    authoriseParticipant: async () => {
       const url = `${endpoint}/authorise-participant`;
 
       const { data } = await axios({
         url: url,
         method: 'POST',
         headers: {
-          Authorization: authToken ? `Bearer ${authToken}` : '',
+          Authorization: participantAuthToken ? `Bearer ${participantAuthToken}` : '',
         },
         data: {},
       });
 
       return data;
     },
-    getToken: async (caseNumber, partyType, partyName) => {
+    getToken: async () => {
       const url = `${endpoint}/token`;
       const { data } = await axios({
         url: url,
         method: 'POST',
         headers: {
-          Authorization: participantToken ? `Bearer ${participantToken}` : '',
+          Authorization: participantAuthToken ? `Bearer ${participantAuthToken}` : '',
         },
-        data: {
-          caseNumber,
-          partyType,
-          partyName,
-        },
+        data: {},
       });
 
       return data;

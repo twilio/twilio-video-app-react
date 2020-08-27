@@ -85,7 +85,6 @@ interface ReporterToken {
   reporterName: string;
 }
 export default function MenuBar() {
-  const participantToken: string = window.location.hash.substr(1);
   const classes = useStyles();
 
   const { setError, getToken, isFetching, authoriseParticipant } = useAppState();
@@ -95,19 +94,21 @@ export default function MenuBar() {
   const alert = useAlert();
   const [partyType, setPartyType] = useState('');
   const [partyName, setPartyName] = useState('');
-  const [caseNumber, setCaseNumber] = useState('');
+  const [caseReference, setCaseReference] = useState('');
+  //const [videoConferenceRoomName, setVideoConferenceRoomName] = useState('');
 
-  authoriseParticipant(participantToken).then((participantInformation: any) => {
+  authoriseParticipant().then((participantInformation: any) => {
     if (participantInformation) {
       setPartyType(participantInformation.partyType);
-      setPartyName(participantInformation.username);
-      setCaseNumber(participantInformation.caseReference);
+      setPartyName(participantInformation.displayName);
+      setCaseReference(participantInformation.caseReference);
+      //setVideoConferenceRoomName(participantInformation.videoConferenceRoomName)
     }
   });
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    getToken(caseNumber, partyType, partyName)
+    getToken()
       .then(response => {
         if (response === EROOR_MESSAGE.ROOM_NOT_FOUND) {
           submitButtonValue = RETRY_ROOM_MESSAGE;
@@ -161,7 +162,7 @@ export default function MenuBar() {
                 onChange={e => setPartyType(e.target.value as string)}
                 margin="dense"
                 placeholder="Party Type"
-                disabled={!!participantToken}
+                disabled={true}
               >
                 {getPartyTypes().map(type => (
                   <MenuItem key={type} value={type}>
@@ -179,18 +180,18 @@ export default function MenuBar() {
               value={partyName}
               onChange={e => setPartyName(e.target.value)}
               margin="dense"
-              disabled={!!participantToken}
+              disabled={true}
             />
 
             <TextField
               autoComplete="off"
               id="menu-room"
-              label="Case Number"
+              label="Case Reference"
               className={classes.textField}
-              value={caseNumber}
-              onChange={e => setCaseNumber(e.target.value)}
+              value={caseReference}
+              onChange={e => setCaseReference(e.target.value)}
               margin="dense"
-              disabled={!!participantToken}
+              disabled={true}
             />
             <Online>
               <Button
@@ -198,7 +199,7 @@ export default function MenuBar() {
                 type="submit"
                 color="primary"
                 variant="contained"
-                disabled={isConnecting || !partyName || !caseNumber || isFetching}
+                disabled={isConnecting || !partyName || !caseReference || isFetching}
               >
                 {submitButtonValue}
               </Button>
@@ -211,7 +212,7 @@ export default function MenuBar() {
             {(isConnecting || isFetching) && <CircularProgress className={classes.loadingSpinner} />}
           </form>
         ) : (
-          <h3 style={{ paddingLeft: '10px' }}>Case Number: {room.name}</h3>
+          <h3 style={{ paddingLeft: '10px' }}>Case Reference: {room.name}</h3>
         )}
         <div className={classes.rightButtonContainer}>
           <ToggleGridViewButton />
