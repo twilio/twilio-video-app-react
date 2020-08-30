@@ -5,6 +5,14 @@ import { PARTICIANT_TYPES } from '../utils/participantTypes';
 import axios from 'axios';
 
 import * as jwt_decode from 'jwt-decode';
+
+export interface ParticipantInformation {
+  caseReference: string;
+  displayName: string;
+  partyType: string;
+  videoConferenceRoomName: string;
+}
+
 export interface StateContextType {
   error: TwilioError | null;
   setError(error: TwilioError | null): void;
@@ -17,7 +25,7 @@ export interface StateContextType {
   gridView: boolean;
   setGridView: any;
   authoriseParticipant(authToken): Promise<any>;
-  getToken(caseNumber, partyType, partyName): Promise<string>;
+  getToken(participantInformation: ParticipantInformation): Promise<string>;
   removeParticipant: any;
 }
 
@@ -72,7 +80,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
 
       return data;
     },
-    getToken: async () => {
+    getToken: async (participantInformation: ParticipantInformation) => {
       const url = `${endpoint}/token`;
       const { data } = await axios({
         url: url,
@@ -80,7 +88,12 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
         headers: {
           Authorization: participantAuthToken ? `Bearer ${participantAuthToken}` : '',
         },
-        data: {},
+        data: {
+          caseReference: participantInformation.caseReference,
+          partyName: participantInformation.displayName,
+          partyType: participantInformation.partyType,
+          videoConferenceRoomName: participantInformation.videoConferenceRoomName,
+        },
       });
 
       return data;
@@ -104,37 +117,40 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const authoriseParticipant: StateContextType['authoriseParticipant'] = async authToken => {
     if (hasTriedAuthorisation || endpoint === '') return participantInfo;
 
-    setIsFetching(true);
+    //setIsFetching(true);
 
     try {
       const response: any = await contextValue.authoriseParticipant(authToken);
       setHasTriedAuthorisation(true);
-      setIsFetching(false);
+      //setIsFetching(false);
       setParticipantInfo(response.participantInfo);
       return response.participantInfo;
     } catch (err) {
       setHasTriedAuthorisation(true);
       setError({ message: 'Unauthorised Access', code: 401, name: 'Authorization Error' });
-      setIsFetching(false);
+      //setIsFetching(false);
       return err;
     }
   };
 
-  const getToken: StateContextType['getToken'] = (caseNumber, partyType, partyName) => {
+  const getToken: StateContextType['getToken'] = (participantInformation: ParticipantInformation) => {
     setIsFetching(true);
     return contextValue
-      .getToken(caseNumber, partyType, partyName)
+      .getToken(participantInformation)
       .then((res: any) => {
         setIsFetching(false);
-        if (!res.roomExist && !participantIsMemberInHostRole(partyType))
+
+        if (!res.roomExist && !participantIsMemberInHostRole(participantInformation.partyType))
           return Promise.resolve(ERROR_MESSAGE.ROOM_NOT_FOUND);
 
         setUserToken(res.result);
         const user = jwt_decode(res.result);
         setUser(user);
+
         return Promise.resolve(user.twilioToken);
       })
       .catch(err => {
+        setIsFetching(false);
         return Promise.reject(err);
       });
   };

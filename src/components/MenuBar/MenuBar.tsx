@@ -21,6 +21,7 @@ import SettingsButton from './SettingsButton/SettingsButton';
 import { useAppState } from '../../state';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import { ParticipantInformation } from '../../state/index';
 
 const JOIN_ROOM_MESSAGE = 'Join Room';
 const RETRY_ROOM_MESSAGE = 'Retry';
@@ -80,10 +81,7 @@ const mobileAndTabletCheck = function() {
   return check;
 };
 let submitButtonValue = JOIN_ROOM_MESSAGE;
-interface ReporterToken {
-  caseNumber: string;
-  reporterName: string;
-}
+
 export default function MenuBar() {
   const classes = useStyles();
 
@@ -95,20 +93,21 @@ export default function MenuBar() {
   const [partyType, setPartyType] = useState('');
   const [partyName, setPartyName] = useState('');
   const [caseReference, setCaseReference] = useState('');
-  //const [videoConferenceRoomName, setVideoConferenceRoomName] = useState('');
+  const [videoConferenceRoomName, setVideoConferenceRoomName] = useState('');
 
-  authoriseParticipant().then((participantInformation: any) => {
+  authoriseParticipant().then((participantInformation: ParticipantInformation) => {
     if (participantInformation) {
       setPartyType(participantInformation.partyType);
       setPartyName(participantInformation.displayName);
       setCaseReference(participantInformation.caseReference);
-      //setVideoConferenceRoomName(participantInformation.videoConferenceRoomName)
+      setVideoConferenceRoomName(participantInformation.videoConferenceRoomName);
     }
   });
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    getToken()
+    const participantInfo = { caseReference, displayName: partyName, partyType, videoConferenceRoomName };
+    getToken(participantInfo)
       .then(response => {
         if (response === ERROR_MESSAGE.ROOM_NOT_FOUND) {
           submitButtonValue = RETRY_ROOM_MESSAGE;
