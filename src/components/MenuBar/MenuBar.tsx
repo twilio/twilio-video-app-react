@@ -1,26 +1,32 @@
 import React, { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
-import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
-import ToggleFullscreenButton from './ToggleFullScreenButton/ToggleFullScreenButton';
-import Toolbar from '@material-ui/core/Toolbar';
 import Menu from './Menu/Menu';
 
 import { useAppState } from '../../state';
 import { useParams } from 'react-router-dom';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
-import { Typography } from '@material-ui/core';
-import FlipCameraButton from './FlipCameraButton/FlipCameraButton';
-import LocalAudioLevelIndicator from './DeviceSelector/LocalAudioLevelIndicator/LocalAudioLevelIndicator';
+import { Typography, Grid } from '@material-ui/core';
+import ToggleAudioButton from '../Controls/ToggleAudioButton/ToggleAudioButton';
+import ToggleVideoButton from '../Controls/ToggleVideoButton/ToggleVideoButton';
+import ToggleScreenShareButton from '../Controls/ToogleScreenShareButton/ToggleScreenShareButton';
+import EndCallButton from '../Controls/EndCallButton/EndCallButton';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
       backgroundColor: theme.palette.background.default,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      top: `calc(100% - ${theme.footerHeight}px)`,
+      position: 'fixed',
+      display: 'flex',
+      padding: '0 1em',
     },
     toolbar: {
       [theme.breakpoints.down('xs')]: {
@@ -65,6 +71,7 @@ export default function MenuBar() {
   const { user, getToken, isFetching } = useAppState();
   const { isConnecting, connect, isAcquiringLocalTracks } = useVideoContext();
   const roomState = useRoomState();
+  const isReconnecting = roomState === 'reconnecting';
 
   const [name, setName] = useState<string>(user?.displayName || '');
   const [roomName, setRoomName] = useState<string>('');
@@ -93,53 +100,60 @@ export default function MenuBar() {
   };
 
   return (
-    <AppBar className={classes.container} position="static">
-      <Toolbar className={classes.toolbar}>
-        {roomState === 'disconnected' ? (
-          <form className={classes.form} onSubmit={handleSubmit}>
-            {window.location.search.includes('customIdentity=true') || !user?.displayName ? (
-              <TextField
-                id="menu-name"
-                label="Name"
-                className={classes.textField}
-                value={name}
-                onChange={handleNameChange}
-                margin="dense"
-              />
-            ) : (
-              <Typography className={classes.displayName} variant="body1">
-                {user.displayName}
-              </Typography>
-            )}
+    <footer className={classes.container}>
+      {roomState === 'disconnected' ? (
+        <form className={classes.form} onSubmit={handleSubmit}>
+          {window.location.search.includes('customIdentity=true') || !user?.displayName ? (
             <TextField
-              id="menu-room"
-              label="Room"
+              id="menu-name"
+              label="Name"
               className={classes.textField}
-              value={roomName}
-              onChange={handleRoomNameChange}
+              value={name}
+              onChange={handleNameChange}
               margin="dense"
             />
-            <Button
-              className={classes.joinButton}
-              type="submit"
-              color="primary"
-              variant="contained"
-              disabled={isAcquiringLocalTracks || isConnecting || !name || !roomName || isFetching}
-            >
-              Join Room
-            </Button>
-            {(isConnecting || isFetching) && <CircularProgress className={classes.loadingSpinner} />}
-          </form>
-        ) : (
-          <h3>{roomName}</h3>
-        )}
-        <div className={classes.rightButtonContainer}>
-          <FlipCameraButton />
-          <LocalAudioLevelIndicator />
-          <ToggleFullscreenButton />
-          <Menu />
-        </div>
-      </Toolbar>
-    </AppBar>
+          ) : (
+            <Typography className={classes.displayName} variant="body1">
+              {user.displayName}
+            </Typography>
+          )}
+          <TextField
+            id="menu-room"
+            label="Room"
+            className={classes.textField}
+            value={roomName}
+            onChange={handleRoomNameChange}
+            margin="dense"
+          />
+          <Button
+            className={classes.joinButton}
+            type="submit"
+            color="primary"
+            variant="contained"
+            disabled={isAcquiringLocalTracks || isConnecting || !name || !roomName || isFetching}
+          >
+            Join Room
+          </Button>
+          {(isConnecting || isFetching) && <CircularProgress className={classes.loadingSpinner} />}
+        </form>
+      ) : (
+        <Grid container justify="space-around" alignItems="center">
+          <Grid style={{ flex: 1 }}>
+            <Typography variant="body1">{roomName}</Typography>
+          </Grid>
+          <Grid>
+            <ToggleAudioButton disabled={isReconnecting} />
+            <ToggleVideoButton disabled={isReconnecting} />
+            <ToggleScreenShareButton disabled={isReconnecting} />
+          </Grid>
+          <Grid style={{ flex: 1 }}>
+            <Grid container justify="flex-end">
+              <Menu />
+              <EndCallButton />
+            </Grid>
+          </Grid>
+        </Grid>
+      )}
+    </footer>
   );
 }

@@ -4,22 +4,50 @@ declare module '@material-ui/core/styles/createMuiTheme' {
   interface Theme {
     sidebarWidth: number;
     sidebarMobileHeight: number;
+    brand: string;
+    footerHeight: number;
   }
 
   // allow configuration using `createMuiTheme`
   interface ThemeOptions {
     sidebarWidth?: number;
     sidebarMobileHeight?: number;
+    brand: string;
+    footerHeight: number;
   }
 }
 
 export default createMuiTheme({
-  palette: {
-    type: 'dark',
-    primary: {
-      main: '#F22F46',
+  overrides: {
+    MuiButton: {
+      root: {
+        borderRadius: '4px',
+        textTransform: 'none',
+        color: 'rgb(40, 42, 43)',
+        fontSize: '0.9rem',
+      },
+      text: {
+        padding: '6px 14px',
+      },
+    },
+    MuiTypography: {
+      body1: {
+        color: 'rgb(40, 42, 43)',
+        fontSize: '0.9rem',
+      },
     },
   },
-  sidebarWidth: 260,
+  palette: {
+    background: {
+      paper: '#f8f8f9',
+      default: '#f8f8f9',
+    },
+  },
+  typography: {
+    fontFamily: 'Inter, sans-serif',
+  },
+  brand: '#F22F46',
+  footerHeight: 64,
+  sidebarWidth: 340,
   sidebarMobileHeight: 90,
 });
