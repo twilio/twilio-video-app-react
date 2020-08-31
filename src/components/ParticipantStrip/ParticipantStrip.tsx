@@ -4,10 +4,14 @@ import { styled } from '@material-ui/core/styles';
 import useParticipants from '../../hooks/useParticipants/useParticipants';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
+import useDominantSpeaker from '../../hooks/useDominantSpeaker/useDominantSpeaker';
 
 const Container = styled('aside')(({ theme }) => ({
   padding: '0.5em',
   overflowY: 'auto',
+  background: 'rgb(79, 83, 85)',
+  zIndex: 1,
+  position: 'relative',
   [theme.breakpoints.down('xs')]: {
     overflowY: 'initial',
     overflowX: 'auto',
@@ -27,6 +31,7 @@ export default function ParticipantStrip() {
     room: { localParticipant },
   } = useVideoContext();
   const participants = useParticipants();
+  const dominantSpeaker = useDominantSpeaker();
   const [selectedParticipant, setSelectedParticipant] = useSelectedParticipant();
 
   return (
@@ -41,7 +46,8 @@ export default function ParticipantStrip() {
           <Participant
             key={participant.sid}
             participant={participant}
-            isSelected={selectedParticipant === participant}
+            isSelected={participant === selectedParticipant}
+            isDominantSpeaker={participant === dominantSpeaker}
             onClick={() => setSelectedParticipant(participant)}
           />
         ))}
