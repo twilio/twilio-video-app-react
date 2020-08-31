@@ -26,7 +26,7 @@ const ScrollContainer = styled('div')(({ theme }) => ({
   },
 }));
 
-export default function ParticipantStrip() {
+export default function ParticipantList() {
   const {
     room: { localParticipant },
   } = useVideoContext();

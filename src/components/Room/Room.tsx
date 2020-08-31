@@ -1,5 +1,5 @@
 import React from 'react';
-import ParticipantStrip from '../ParticipantStrip/ParticipantStrip';
+import ParticipantList from '../ParticipantList/ParticipantList';
 import { styled } from '@material-ui/core/styles';
 import MainParticipant from '../MainParticipant/MainParticipant';
 
@@ -22,7 +22,7 @@ export default function Room() {
   return (
     <Container>
       <MainParticipant />
-      <ParticipantStrip />
+      <ParticipantList />
     </Container>
   );
 }
