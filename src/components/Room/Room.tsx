@@ -7,8 +7,8 @@ const Container = styled('div')(({ theme }) => ({
   position: 'relative',
   height: '100%',
   display: 'grid',
-  gridTemplateColumns: `${theme.sidebarWidth}px 1fr`,
-  gridTemplateAreas: '". participantList"',
+  gridTemplateColumns: `1fr ${theme.sidebarWidth}px`,
+  gridTemplateAreas: '"participantList ."',
   gridTemplateRows: '100%',
   [theme.breakpoints.down('xs')]: {
     gridTemplateAreas: '"participantList" "."',
@@ -21,8 +21,8 @@ const Container = styled('div')(({ theme }) => ({
 export default function Room() {
   return (
     <Container>
-      <ParticipantStrip />
       <MainParticipant />
+      <ParticipantStrip />
     </Container>
   );
 }

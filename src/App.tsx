@@ -1,7 +1,6 @@
 import React from 'react';
-import { styled } from '@material-ui/core/styles';
+import { styled, Theme } from '@material-ui/core/styles';
 
-import Controls from './components/Controls/Controls';
 import LocalVideoPreview from './components/LocalVideoPreview/LocalVideoPreview';
 import MenuBar from './components/MenuBar/MenuBar';
 import ReconnectingNotification from './components/ReconnectingNotification/ReconnectingNotification';
@@ -12,12 +11,14 @@ import useRoomState from './hooks/useRoomState/useRoomState';
 
 const Container = styled('div')({
   display: 'grid',
-  gridTemplateRows: 'auto 1fr',
+  gridTemplateRows: '1fr auto',
 });
 
-const Main = styled('main')({
+const Main = styled('main')(({ theme }: { theme: Theme }) => ({
   overflow: 'hidden',
-});
+  paddingBottom: `${theme.footerHeight}px`, // Leave some space for the footer
+  background: 'black',
+}));
 
 export default function App() {
   const roomState = useRoomState();
@@ -31,12 +32,9 @@ export default function App() {
 
   return (
     <Container style={{ height }}>
-      <MenuBar />
-      <Main>
-        {roomState === 'disconnected' ? <LocalVideoPreview /> : <Room />}
-        <Controls />
-      </Main>
       <ReconnectingNotification />
+      <Main>{roomState === 'disconnected' ? <LocalVideoPreview /> : <Room />}</Main>
+      <MenuBar />
     </Container>
   );
 }
