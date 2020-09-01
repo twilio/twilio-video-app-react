@@ -1,13 +1,14 @@
 import React, { useState, useRef, useCallback } from 'react';
 import AboutDialog from '../AboutDialog/AboutDialog';
+import Button from '@material-ui/core/Button';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MenuContainer from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import SettingsDialog from '../SettingsDialog/SettingsDialog';
+import Typography from '@material-ui/core/Typography';
 
 import { useAppState } from '../../../state';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
-import { Button } from '@material-ui/core';
 
 export default function Menu() {
   const { user, signOut } = useAppState();
@@ -33,9 +34,17 @@ export default function Menu() {
       </Button>
       <MenuContainer open={menuOpen} onClose={() => setMenuOpen(state => !state)} anchorEl={anchorRef.current}>
         {user?.displayName && <MenuItem disabled>{user.displayName}</MenuItem>}
-        <MenuItem onClick={() => setAboutOpen(true)}>About</MenuItem>
-        <MenuItem onClick={() => setSettingsOpen(true)}>Settings</MenuItem>
-        {user && <MenuItem onClick={handleSignOut}>Logout</MenuItem>}
+        <MenuItem onClick={() => setAboutOpen(true)}>
+          <Typography variant="body1">About</Typography>
+        </MenuItem>
+        <MenuItem onClick={() => setSettingsOpen(true)}>
+          <Typography variant="body1">Settings</Typography>
+        </MenuItem>
+        {user && (
+          <MenuItem onClick={handleSignOut}>
+            <Typography variant="body1">Logout</Typography>
+          </MenuItem>
+        )}
       </MenuContainer>
       <AboutDialog
         open={aboutOpen}
