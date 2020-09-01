@@ -24,12 +24,12 @@ const useStyles = makeStyles((theme: Theme) =>
       position: 'relative',
       display: 'flex',
       alignItems: 'center',
-      height: `${(theme.sidebarWidth * 9) / 16}px`,
-      margin: `${theme.sidebarWidth / 20}px`,
+      height: 0,
       overflow: 'hidden',
       cursor: 'pointer',
       '& video': {
         filter: 'none',
+        objectFit: 'contain !important',
       },
       '& svg': {
         stroke: 'black',
@@ -37,12 +37,21 @@ const useStyles = makeStyles((theme: Theme) =>
       },
       borderRadius: '4px',
       border: `${BORDER_SIZE}px solid rgb(245, 248, 255)`,
+      paddingTop: `calc(${(9 / 16) * 100}% - ${BORDER_SIZE}px)`,
+      background: 'black',
       [theme.breakpoints.down('xs')]: {
         height: theme.sidebarMobileHeight,
         width: `${(theme.sidebarMobileHeight * 16) / 9}px`,
         marginRight: '3px',
         fontSize: '10px',
       },
+    },
+    innerContainer: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
     },
     isDominantSpeaker: {
       border: `${BORDER_SIZE}px solid rgb(245, 248, 255)`,
@@ -61,6 +70,7 @@ const useStyles = makeStyles((theme: Theme) =>
       height: '100%',
       width: '100%',
       background: 'transparent',
+      top: 0,
     },
     hideVideo: {
       background: 'black',
@@ -157,8 +167,10 @@ export default function ParticipantInfo({
           {isSelected && <PinIcon />}
         </div>
       </div>
-      {isVideoSwitchedOff && <BandwidthWarning />}
-      {children}
+      <div className={classes.innerContainer}>
+        {isVideoSwitchedOff && <BandwidthWarning />}
+        {children}
+      </div>
     </div>
   );
 }

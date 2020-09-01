@@ -7,7 +7,7 @@ import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useS
 import useDominantSpeaker from '../../hooks/useDominantSpeaker/useDominantSpeaker';
 
 const Container = styled('aside')(({ theme }) => ({
-  padding: '0.5em',
+  padding: '2em',
   overflowY: 'auto',
   background: 'rgb(79, 83, 85)',
   zIndex: 1,
