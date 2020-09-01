@@ -10,6 +10,7 @@ import useTrack from '../../hooks/useTrack/useTrack';
 import VideocamOff from '@material-ui/icons/VideocamOff';
 import { Typography } from '@material-ui/core';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 
 const useStyles = makeStyles({
   container: {
@@ -39,6 +40,9 @@ const useStyles = makeStyles({
     height: '100%',
     width: '100%',
   },
+  fullWidth: {
+    gridArea: '1 / 1 / 1 / 3',
+  },
 });
 
 interface MainParticipantInfoProps {
@@ -52,6 +56,8 @@ export default function MainParticipantInfo({ participant, children }: MainParti
     room: { localParticipant },
   } = useVideoContext();
   const isLocal = localParticipant === participant;
+  const screenShareParticipant = useScreenShareParticipant();
+  const isRemoteParticipantScreenSharing = screenShareParticipant && screenShareParticipant !== localParticipant;
 
   const publications = usePublications(participant);
   const videoPublication = publications.find(p => p.trackName.includes('camera'));
@@ -64,7 +70,10 @@ export default function MainParticipantInfo({ participant, children }: MainParti
   return (
     <div
       data-cy-main-participant
-      className={clsx(classes.container, { [classes.isVideoSwitchedOff]: isVideoSwitchedOff })}
+      className={clsx(classes.container, {
+        [classes.isVideoSwitchedOff]: isVideoSwitchedOff,
+        [classes.fullWidth]: !isRemoteParticipantScreenSharing,
+      })}
     >
       <div className={classes.infoContainer}>
         <div className={classes.identity}>
