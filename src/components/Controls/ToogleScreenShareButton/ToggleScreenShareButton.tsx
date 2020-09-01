@@ -1,10 +1,10 @@
 import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import ScreenShareIcon from './ScreenShareIcon';
+import Tooltip from '@material-ui/core/Tooltip';
 
-import useScreenShareToggle from '../../../hooks/useScreenShareToggle/useScreenShareToggle';
 import useScreenShareParticipant from '../../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
@@ -27,21 +27,41 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function ToggleScreenShareButton(props: { disabled?: boolean }) {
   const classes = useStyles();
-  const [isScreenShared, toggleScreenShare] = useScreenShareToggle();
   const screenShareParticipant = useScreenShareParticipant();
-  const { room } = useVideoContext();
+  const { room, toggleScreenShare } = useVideoContext();
   const disableScreenShareButton = screenShareParticipant && screenShareParticipant !== room.localParticipant;
   const isScreenShareSupported = navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia;
   const isDisabled = props.disabled || disableScreenShareButton || !isScreenShareSupported;
 
+  let tooltipMessage = '';
+
+  if (disableScreenShareButton) {
+    tooltipMessage = SHARE_IN_PROGRESS_TEXT;
+  }
+
+  if (!isScreenShareSupported) {
+    tooltipMessage = SHARE_NOT_SUPPORTED_TEXT;
+  }
+
   return (
-    <Button
-      className={classes.button}
-      onClick={toggleScreenShare}
-      disabled={isDisabled}
-      startIcon={<ScreenShareIcon />}
+    <Tooltip
+      title={tooltipMessage}
+      placement="top"
+      PopperProps={{ disablePortal: true }}
+      style={{ cursor: isDisabled ? 'not-allowed' : 'pointer' }}
     >
-      {SCREEN_SHARE_TEXT}
-    </Button>
+      <span>
+        {/* The span element is needed because a disabled button will not emit hover events and we want to display
+          a tooltip when screen sharing is disabled */}
+        <Button
+          className={classes.button}
+          onClick={toggleScreenShare}
+          disabled={isDisabled}
+          startIcon={<ScreenShareIcon />}
+        >
+          {SCREEN_SHARE_TEXT}
+        </Button>
+      </span>
+    </Tooltip>
   );
 }

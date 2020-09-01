@@ -2,7 +2,7 @@ import { EventEmitter } from 'events';
 import React from 'react';
 import { shallow } from 'enzyme';
 import useScreenShareParticipant from '../../../hooks/useScreenShareParticipant/useScreenShareParticipant';
-import useScreenShareToggle from '../../../hooks/useScreenShareToggle/useScreenShareToggle';
+import useScreenShareToggle from '../../VideoProvider/useScreenShareToggle/useScreenShareToggle';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
 import ToggleScreenShareButton, {
