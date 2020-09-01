@@ -6,8 +6,7 @@ import useMediaStreamTrack from '../../hooks/useMediaStreamTrack/useMediaStreamT
 
 const Video = styled('video')({
   width: '100%',
-  maxHeight: '100%',
-  objectFit: 'contain',
+  height: '100%',
 });
 
 interface VideoTrackProps {
@@ -38,7 +37,10 @@ export default function VideoTrack({ track, isLocal, priority }: VideoTrackProps
 
   // The local video track is mirrored if it is not facing the environment.
   const isFrontFacing = mediaStreamTrack?.getSettings().facingMode !== 'environment';
-  const style = isLocal && isFrontFacing ? { transform: 'rotateY(180deg)' } : {};
+  const style = {
+    transform: isLocal && isFrontFacing ? 'rotateY(180deg)' : '',
+    objectFit: track.name.includes('screen') ? ('contain' as const) : ('cover' as const),
+  };
 
   return <Video ref={ref} style={style} />;
 }
