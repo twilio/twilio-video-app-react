@@ -67,7 +67,7 @@ function NetworkWrapper() {
 function ParticipantName() {
   const { room: { localParticipant } } = useVideoContext();
   // All Video Participant IDs are in the form <attendeeId>.<participantType>.<Name>
-  const name = localParticipant?.identity?.split('.')[2];
+  const name = localParticipant?.identity?.split('.').slice(2).join('.');
   return (
     <Text style={styles.participantName} numberOfLines={1}>
       {name}

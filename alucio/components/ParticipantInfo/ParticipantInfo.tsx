@@ -103,7 +103,7 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
 
   function getName(name: string) {
     if (name.split('.').length > 1) {
-      return name.split('.')[2];
+      return name.split('.').slice(2).join('.');
     }
     return name;
   }

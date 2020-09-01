@@ -1,6 +1,6 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { View, Dimensions, StyleSheet, ImageBackground, ImageSourcePropType } from 'react-native';
-import { Iffy, luxColors } from '@alucio/lux-ui';
+import { Iffy, luxColors, useInterval } from '@alucio/lux-ui';
 import ShareContent from './ShareContent/ShareContent';
 import { Presenter, useVideoContext, useParticipants, useRoomState, MODE_TYPE } from '../../main';
 import HeadBar from './MeetingControls/MeetingControls';
@@ -10,9 +10,11 @@ import useWindowSize from './Util/useWindowSize';
 import { ATTENDEE_STATUS } from '@alucio/aws-beacon-amplify/src/API';
 import { User } from '@alucio/aws-beacon-amplify/src/models'
 import { RemoteParticipant, Room } from 'twilio-video';
+import { subSeconds, isAfter, compareAsc } from 'date-fns'
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
+const MAX_ATTENDEES = 5;
 
 const styles = StyleSheet.create({
   backgroundImageContainer: {
@@ -107,7 +109,7 @@ interface LayoutProps {
   deviceSettings?: InitialDeviceSettings,
 }
 
-interface AttendersProps {
+interface AttendeesProps {
   currentAttendees: Record<string, any>;
   mode: MODE_TYPE,
   onAcceptCall?: (attendeeId: string, name: string) => void,
@@ -115,54 +117,103 @@ interface AttendersProps {
   onRemoveFromCall?: (attendeeId: string, name: string) => void,
   onAttendeeConnected?: (attendeeId: string, name: string) => void,
 }
-
-function Attenders(props: AttendersProps) {
+interface AttendeeRecord {
+  id: string,
+  identity: string,
+  status: ATTENDEE_STATUS,
+  name: string,
+  lastSeenAt?: string,
+  createdAt?: string,
+}
+function Attendees(props: AttendeesProps) {
   const { currentAttendees } = props;
-  const attenders = useParticipants();
-  const attendersInTheMeeting = attenders.reduce((p, c) => {
-    if (props.mode === 'Host' &&
-      currentAttendees[c.identity] &&
-      currentAttendees[c.identity].status === ATTENDEE_STATUS.CONNECTED
-    ) {
-      // @ts-ignore
-      p[c.identity] = {
-        id: c.identity.split('.')[0],
-        name: c.identity,
-        status: ATTENDEE_STATUS.CONNECTED,
-      };
+  const participants = useParticipants();
+  const [disconnectedAttendees, setDisconnectedAttendees] = useState<AttendeeRecord[]>([]);
+
+  // In Guest Mode all attendee information is derived from participants
+  const connectedAttendees = participants.map( (participant):AttendeeRecord => {
+    return {
+      id: participant.identity.split('.')[0],
+      identity: participant.identity,
+      status: ATTENDEE_STATUS.CONNECTED,
+      name: participant.identity.split('.').slice(2).join('.'),
     }
-    else if (props.mode === 'Guest') {
-      // @ts-ignore
-      p[c.identity] = {
-        id: c.identity.split('.')[0],
-        name: c.identity,
-        status: ATTENDEE_STATUS.CONNECTED,
+  });
+
+  const allPendingAttendees = Object.keys(currentAttendees).map( (identity):AttendeeRecord => {
+    return {
+      identity: identity,
+      ...currentAttendees[identity],
+    }
+  }).filter( (attendee) => attendee.status === ATTENDEE_STATUS.PENDING || attendee.status === ATTENDEE_STATUS.ACCEPTED );
+  const getConnectedDisconnectedAttendees = (attendee : AttendeeRecord[]) : AttendeeRecord[][] => {
+    const last7Seconds = subSeconds(new Date(), 7);
+    return attendee.reduce<AttendeeRecord[][]>( (acc, attendee) => {
+      if (attendee.lastSeenAt && isAfter(new Date(attendee.lastSeenAt), last7Seconds)) {
+        acc[0].push(attendee);
+      } else {
+        acc[1].push(attendee);
       }
+      return acc;
+    }, [[], []] as AttendeeRecord[][])
+  };
+
+  const [connectedPendingAttendees, disconnectedPendingAttendees] = getConnectedDisconnectedAttendees(allPendingAttendees);
+  useEffect( () => setDisconnectedAttendees(disconnectedPendingAttendees), [] )
+  const allAttendees = [...connectedAttendees, ...connectedPendingAttendees];
+  allAttendees.sort( (a, b) => {
+    if (a.id === 'host') {
+      return -1;
+    } else if (b.id === 'host') {
+      return 1;
+    } else if (a.status === ATTENDEE_STATUS.PENDING && b.status === ATTENDEE_STATUS.PENDING) {
+      return compareAsc(new Date(a?.createdAt ?? '1900-01-01'), new Date(b?.createdAt ?? '1900-01-01'));
+    } else if (a.status === ATTENDEE_STATUS.PENDING) {
+      return -1;
+    } else if (b.status === ATTENDEE_STATUS.PENDING) {
+      return 1;
+    } else {
+      return a.name.localeCompare(b.name);
     }
-    return p;
-  }, {});
+  });
 
-  // TODO: Revisit this
-  // When a user is connected the host goes to disconected, when he goes back the users on
-  // connected status arent in the store so we are loading that from the twilio api
-  const attendees = Object.assign({ ...currentAttendees }, { ...attendersInTheMeeting });
-  const participants = Object.keys(attendees)
-    .filter(e => (attendees[e].status === ATTENDEE_STATUS.PENDING || attendees[e].status === ATTENDEE_STATUS.CONNECTED || attendees[e].status === ATTENDEE_STATUS.ACCEPTED))
-    .map((e) =>
-      <Attendee
-        key={`accept_deny_${e}`}
-        status={attendees[e].status}
-        attendeeId={attendees[e]?.id}
-        visible={props.mode === 'Host'}
-        name={e}
-        onAcceptCall={props.onAcceptCall}
-        onDenyCall={props.onDenyCall}
-        onRemoveFromCall={props.onRemoveFromCall}
-        onAttendeeConnected={props.onAttendeeConnected}
-      />,
-    )
+  // Check on regular intervals to see if any attendees lastChangedAt has exceeded timeout window
+  useInterval(() => {
+    const disconnectedPendingAttendees = getConnectedDisconnectedAttendees(allPendingAttendees)[1];
+    const currAttendeeSet = new Set(disconnectedPendingAttendees.map((x) => x.id));
+    if ( currAttendeeSet.size !== disconnectedAttendees.length ||
+      !disconnectedAttendees.reduce( (allPresent:boolean, attendee:AttendeeRecord) : boolean => allPresent && currAttendeeSet.has(attendee.id), true )) {
+      // Setting state causes a re-render
+      setDisconnectedAttendees(disconnectedPendingAttendees);
+    }
+  }, 2000);
 
-  return (<>{participants}</>)
+  const connectedOrAccepted = allAttendees.filter((x) => x.status === ATTENDEE_STATUS.ACCEPTED || x.status === ATTENDEE_STATUS.CONNECTED)
+
+  const handleCallAccepted = (attendeeId: string, name: string) => {
+    if ( connectedOrAccepted.length >= MAX_ATTENDEES ) {
+      // TODO: Temporary Solution Pending Design
+      // eslint-disable-next-line no-alert
+      alert(`You have reached the limit of ${MAX_ATTENDEES}.`);
+    } else {
+      props.onAcceptCall && props.onAcceptCall(attendeeId, name);
+    }
+  }
+  const attendeeControls = allAttendees.map((e) =>
+    <Attendee
+      key={`accept_deny_${e.identity}`}
+      status={e.status}
+      attendeeId={e.id}
+      showHostControls={props.mode === 'Host'}
+      name={e.identity}
+      onAcceptCall={handleCallAccepted}
+      onDenyCall={props.onDenyCall}
+      onRemoveFromCall={props.onRemoveFromCall}
+      onAttendeeConnected={props.onAttendeeConnected}
+    />,
+  )
+
+  return (<>{attendeeControls}</>)
 }
 
 function Layout(props: LayoutProps) {
@@ -246,7 +297,6 @@ function Layout(props: LayoutProps) {
 
   const handleDisconnect = () => {
     try {
-      console.log('handleDisconnect')
       const videoTracks = [...room.localParticipant.videoTracks.values()];
       const audioTracks = [...room.localParticipant.audioTracks.values()];
 
@@ -306,7 +356,7 @@ function Layout(props: LayoutProps) {
           <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
             <Presenter />
             {roomState === 'connected' &&
-            <Attenders
+            <Attendees
               mode={mode}
               currentAttendees={currentAttendees || {}}
               onAcceptCall={onAcceptCall}

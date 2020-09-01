@@ -72,7 +72,7 @@ interface AttendeeProps {
   name: string,
   attendeeId: string,
   status: ATTENDEE_STATUS,
-  visible : boolean
+  showHostControls : boolean
 }
 
 interface RightMenuProps {
@@ -80,23 +80,24 @@ interface RightMenuProps {
 }
 
 function connected(props:AttendeeProps) {
-  if (props.visible) {
-    props.onAttendeeConnected && props.onAttendeeConnected(props.attendeeId, props.name);
-  }
+  props.onAttendeeConnected && props.onAttendeeConnected(props.attendeeId, props.name);
 }
 
 function RightMenu(props:RightMenuProps) {
-  const [visible, setVisible] = useState(false);
+  const [menuVisible, setMenuVisible] = useState(false);
 
-  function toggleVisibility() {
-    setVisible(visible => !visible);
+  function toggleMenu() {
+    setMenuVisible(visible => !visible);
   }
-
+  function handleRemovePressed() {
+    setMenuVisible(false);
+    props.onRemoveFromCall && props.onRemoveFromCall();
+  }
   const anchor = (<View style={styles.rightMenu}>
     <Button.Kitten
       size="tiny"
       style={styles.rightMenuButton}
-      onPress={toggleVisibility}
+      onPress={toggleMenu}
       appearance="ghost"
     >
       {/* TODO:  the accessoryLeft didnt work  */}
@@ -107,8 +108,8 @@ function RightMenu(props:RightMenuProps) {
     </Button.Kitten>
   </View>)
   return (
-    <OverflowMenu anchor={() => anchor} visible={visible} onBackdropPress={() => setVisible(false)} >
-      <MenuItem title={'Remove'} onPress={props.onRemoveFromCall} />
+    <OverflowMenu anchor={() => anchor} visible={menuVisible} onBackdropPress={() => setMenuVisible(false)} >
+      <MenuItem title={'Remove'} onPress={handleRemovePressed} />
     </OverflowMenu>
   )
 }
@@ -139,26 +140,26 @@ function Attendee(props: AttendeeProps) {
     </>)
 
   function onAccept() {
-    if (props.visible) {
+    if (props.showHostControls) {
       props.onAcceptCall && props.onAcceptCall(props.attendeeId, props.name);
     }
   }
 
   function onDeny() {
-    if (props.visible) {
+    if (props.showHostControls) {
       props.onDenyCall && props.onDenyCall(props.attendeeId, props.name);
     }
   }
 
   function onRemoveFromCall() {
-    if (props.visible) {
+    if (props.showHostControls) {
       props.onRemoveFromCall && props.onRemoveFromCall(props.attendeeId, props.name);
     }
   }
 
   function getName(name: string) {
     if (name.split('.').length > 1) {
-      return name.split('.')[2];
+      return name.split('.').slice(2).join('.');
     }
     return name;
   }
@@ -169,7 +170,7 @@ function Attendee(props: AttendeeProps) {
         <Participant
           key={readyToShowVideo.sid}
           participant={readyToShowVideo}
-          menu={props.visible ? <RightMenu onRemoveFromCall={onRemoveFromCall} /> : null}
+          menu={props.showHostControls ? <RightMenu onRemoveFromCall={onRemoveFromCall} /> : null}
           isSelected={false}
           onClick={() => { }}
         />
