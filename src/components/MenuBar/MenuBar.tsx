@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
       bottom: 0,
       left: 0,
       right: 0,
-      top: `calc(100% - ${theme.footerHeight}px)`,
+      height: `${theme.footerHeight}px`,
       position: 'fixed',
       display: 'flex',
       padding: '0 1em',
@@ -62,6 +62,24 @@ const useStyles = makeStyles((theme: Theme) =>
     joinButton: {
       margin: '1em',
     },
+    screenShareBanner: {
+      position: 'fixed',
+      zIndex: 1,
+      bottom: `${theme.footerHeight}px`,
+      left: 0,
+      right: 0,
+      height: '104px',
+      background: 'rgba(0, 0, 0, 0.5)',
+      '& h6': {
+        color: 'white',
+      },
+      '& button': {
+        background: 'white',
+        color: theme.brand,
+        border: `2px solid ${theme.brand}`,
+        margin: '0 2em',
+      },
+    },
   })
 );
 
@@ -69,7 +87,7 @@ export default function MenuBar() {
   const classes = useStyles();
   const { URLRoomName } = useParams();
   const { user, getToken, isFetching } = useAppState();
-  const { isConnecting, connect, isAcquiringLocalTracks } = useVideoContext();
+  const { isConnecting, connect, isAcquiringLocalTracks, isSharingScreen, toggleScreenShare } = useVideoContext();
   const roomState = useRoomState();
   const isReconnecting = roomState === 'reconnecting';
 
@@ -100,60 +118,68 @@ export default function MenuBar() {
   };
 
   return (
-    <footer className={classes.container}>
-      {roomState === 'disconnected' ? (
-        <form className={classes.form} onSubmit={handleSubmit}>
-          {window.location.search.includes('customIdentity=true') || !user?.displayName ? (
-            <TextField
-              id="menu-name"
-              label="Name"
-              className={classes.textField}
-              value={name}
-              onChange={handleNameChange}
-              margin="dense"
-            />
-          ) : (
-            <Typography className={classes.displayName} variant="body1">
-              {user.displayName}
-            </Typography>
-          )}
-          <TextField
-            id="menu-room"
-            label="Room"
-            className={classes.textField}
-            value={roomName}
-            onChange={handleRoomNameChange}
-            margin="dense"
-          />
-          <Button
-            className={classes.joinButton}
-            type="submit"
-            color="primary"
-            variant="contained"
-            disabled={isAcquiringLocalTracks || isConnecting || !name || !roomName || isFetching}
-          >
-            Join Room
-          </Button>
-          {(isConnecting || isFetching) && <CircularProgress className={classes.loadingSpinner} />}
-        </form>
-      ) : (
-        <Grid container justify="space-around" alignItems="center">
-          <Grid style={{ flex: 1 }}>
-            <Typography variant="body1">{roomName}</Typography>
-          </Grid>
-          <Grid>
-            <ToggleAudioButton disabled={isReconnecting} />
-            <ToggleVideoButton disabled={isReconnecting} />
-            <ToggleScreenShareButton disabled={isReconnecting} />
-          </Grid>
-          <Grid style={{ flex: 1 }}>
-            <Grid container justify="flex-end">
-              <Menu />
-              <EndCallButton />
-            </Grid>
-          </Grid>
+    <>
+      {isSharingScreen && (
+        <Grid container justify="center" alignItems="center" className={classes.screenShareBanner}>
+          <Typography variant="h6">You are sharing your screen</Typography>
+          <Button onClick={() => toggleScreenShare()}>Stop Sharing</Button>
         </Grid>
       )}
-    </footer>
+      <footer className={classes.container}>
+        {roomState === 'disconnected' ? (
+          <form className={classes.form} onSubmit={handleSubmit}>
+            {window.location.search.includes('customIdentity=true') || !user?.displayName ? (
+              <TextField
+                id="menu-name"
+                label="Name"
+                className={classes.textField}
+                value={name}
+                onChange={handleNameChange}
+                margin="dense"
+              />
+            ) : (
+              <Typography className={classes.displayName} variant="body1">
+                {user.displayName}
+              </Typography>
+            )}
+            <TextField
+              id="menu-room"
+              label="Room"
+              className={classes.textField}
+              value={roomName}
+              onChange={handleRoomNameChange}
+              margin="dense"
+            />
+            <Button
+              className={classes.joinButton}
+              type="submit"
+              color="primary"
+              variant="contained"
+              disabled={isAcquiringLocalTracks || isConnecting || !name || !roomName || isFetching}
+            >
+              Join Room
+            </Button>
+            {(isConnecting || isFetching) && <CircularProgress className={classes.loadingSpinner} />}
+          </form>
+        ) : (
+          <Grid container justify="space-around" alignItems="center">
+            <Grid style={{ flex: 1 }}>
+              <Typography variant="body1">{roomName}</Typography>
+            </Grid>
+            <Grid>
+              <ToggleAudioButton disabled={isReconnecting} />
+              <ToggleVideoButton disabled={isReconnecting} />
+              {!isSharingScreen && <ToggleScreenShareButton disabled={isReconnecting} />}
+            </Grid>
+            <Grid style={{ flex: 1 }}>
+              <Grid container justify="flex-end">
+                <Menu />
+                <EndCallButton />
+              </Grid>
+            </Grid>
+          </Grid>
+        )}
+      </footer>
+    </>
   );
 }
