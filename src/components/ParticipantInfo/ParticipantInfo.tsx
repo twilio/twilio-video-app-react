@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       height: 0,
       overflow: 'hidden',
+      marginBottom: '2em',
       cursor: 'pointer',
       '& video': {
         filter: 'none',
@@ -78,7 +79,7 @@ const useStyles = makeStyles((theme: Theme) =>
     identity: {
       background: 'rgba(0, 0, 0, 0.5)',
       color: 'white',
-      padding: '0.1em 0.3em',
+      padding: '0.18em 0.3em',
       margin: 0,
       display: 'flex',
       alignItems: 'center',
