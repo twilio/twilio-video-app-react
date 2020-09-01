@@ -2,8 +2,7 @@ import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import { Button } from '@material-ui/core';
-import ScreenShare from '@material-ui/icons/ScreenShare';
-import StopScreenShare from '@material-ui/icons/StopScreenShare';
+import ScreenShareIcon from './ScreenShareIcon';
 
 import useScreenShareToggle from '../../../hooks/useScreenShareToggle/useScreenShareToggle';
 import useScreenShareParticipant from '../../../hooks/useScreenShareParticipant/useScreenShareParticipant';
@@ -40,7 +39,7 @@ export default function ToggleScreenShareButton(props: { disabled?: boolean }) {
       className={classes.button}
       onClick={toggleScreenShare}
       disabled={isDisabled}
-      startIcon={isScreenShared ? <StopScreenShare /> : <ScreenShare />}
+      startIcon={<ScreenShareIcon />}
     >
       {SCREEN_SHARE_TEXT}
     </Button>

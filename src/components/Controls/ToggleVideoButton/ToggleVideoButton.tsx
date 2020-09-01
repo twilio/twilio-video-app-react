@@ -2,8 +2,8 @@ import React, { useCallback, useRef } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
-import Videocam from '@material-ui/icons/Videocam';
-import VideocamOff from '@material-ui/icons/VideocamOff';
+import VideoOffIcon from './VideoOffIcon';
+import VideoOnIcon from './VideoOnIcon';
 
 import useLocalVideoToggle from '../../../hooks/useLocalVideoToggle/useLocalVideoToggle';
 
@@ -32,7 +32,7 @@ export default function ToggleVideoButton(props: { disabled?: boolean }) {
       className={classes.button}
       onClick={toggleVideo}
       disabled={props.disabled}
-      startIcon={isVideoEnabled ? <Videocam /> : <VideocamOff />}
+      startIcon={isVideoEnabled ? <VideoOnIcon /> : <VideoOffIcon />}
     >
       {isVideoEnabled ? 'Stop Video' : 'Start Video'}
     </Button>
