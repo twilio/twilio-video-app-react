@@ -108,10 +108,6 @@ export default function MenuBar() {
     setRoomName(event.target.value);
   };
 
-  useEffect(() => {
-    getToken(Math.random().toString(), 'roomName-473sf4hTWCn6').then(token => connect(token));
-  }, []);
-
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // If this app is deployed as a twilio function, don't change the URL because routing isn't supported.
