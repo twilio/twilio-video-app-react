@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme: Theme) =>
       height: '100%',
     },
     isDominantSpeaker: {
-      border: `${BORDER_SIZE}px solid rgb(245, 248, 255)`,
+      border: `${BORDER_SIZE}px solid rgb(35, 191, 110)`,
     },
     isVideoSwitchedOff: {
       '& video': {
