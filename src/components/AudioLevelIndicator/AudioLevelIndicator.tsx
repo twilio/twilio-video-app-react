@@ -110,7 +110,7 @@ function AudioLevelIndicator({
           <rect ref={SVGRectRef} x="0" y="14" width="24" height="24" />
         </clipPath>
       </defs>
-      <g fill="none" fill-rule="evenodd" transform="translate(.5)">
+      <g fill="none" fillRule="evenodd" transform="translate(.5)">
         <rect
           clipPath={`url(#${clipPathId})`}
           width="5.2"
