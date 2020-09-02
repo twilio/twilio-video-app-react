@@ -45,7 +45,7 @@ export default function ParticipantList() {
   const isRemoteParticipantScreenSharing = screenShareParticipant && screenShareParticipant !== localParticipant;
 
   return (
-    <div
+    <aside
       className={clsx(classes.container, {
         [classes.transparentBackground]: !isRemoteParticipantScreenSharing,
       })}
@@ -66,6 +66,6 @@ export default function ParticipantList() {
           />
         ))}
       </div>
-    </div>
+    </aside>
   );
 }

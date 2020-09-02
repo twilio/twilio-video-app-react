@@ -48,6 +48,6 @@ export default createMuiTheme({
   },
   brand: '#F22F46',
   footerHeight: 64,
-  sidebarWidth: 340,
+  sidebarWidth: 355,
   sidebarMobileHeight: 90,
 });
