@@ -11,7 +11,7 @@ export default function VideoOffIcon() {
         />
         <path
           fill="red"
-          fill-rule="nonzero"
+          fillRule="nonzero"
           d="M13.06.144c.192-.192.503-.192.695 0 .171.17.19.436.057.627l-.057.068-12.29 12.29c-.192.193-.503.193-.695 0-.171-.17-.19-.435-.057-.626l.057-.069L13.06.144z"
           transform="translate(4 6)"
         />
