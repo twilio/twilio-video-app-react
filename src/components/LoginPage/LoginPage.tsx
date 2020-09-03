@@ -13,28 +13,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useLocation, useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles({
-  container: {
-    height: '100vh',
-    background: '#0D122B',
-  },
-  twilioLogo: {
-    width: '55%',
-    display: 'block',
-  },
-  videoLogo: {
-    width: '25%',
-    padding: '2.4em 0 2.1em',
-  },
-  paper: {
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'column',
-    maxWidth: '460px',
-    padding: '2em',
-    marginTop: '4em',
-    background: 'white',
-    color: 'black',
-  },
   googleButton: {
     background: 'white',
     color: 'rgb(0, 94, 166)',
@@ -115,29 +93,31 @@ export default function LoginPage() {
             <Typography variant="h5" className={classes.gutterBottom}>
               Enter passcode to join a room
             </Typography>
-            <Grid container justify="space-between">
-              <div>
-                <TextField
-                  id="input-passcode"
-                  label="Passcode"
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => setPasscode(e.target.value)}
-                  type="password"
-                />
+            <form onSubmit={handleSubmit}>
+              <Grid container justify="space-between">
                 <div>
-                  {authError && (
-                    <Typography variant="caption" className={classes.errorMessage}>
-                      <ErrorOutlineIcon />
-                      {authError.message}
-                    </Typography>
-                  )}
+                  <TextField
+                    id="input-passcode"
+                    label="Passcode"
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setPasscode(e.target.value)}
+                    type="password"
+                  />
+                  <div>
+                    {authError && (
+                      <Typography variant="caption" className={classes.errorMessage}>
+                        <ErrorOutlineIcon />
+                        {authError.message}
+                      </Typography>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div>
-                <Button variant="contained" color="primary" type="submit" disabled={!passcode.length}>
-                  Submit
-                </Button>
-              </div>
-            </Grid>
+                <div>
+                  <Button variant="contained" color="primary" type="submit" disabled={!passcode.length}>
+                    Submit
+                  </Button>
+                </div>
+              </Grid>
+            </form>
           </>
         </form>
       )}
