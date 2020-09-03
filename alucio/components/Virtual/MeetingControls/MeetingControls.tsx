@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   endCallButton: {
-    backgroundColor: luxColors.error.primary,
     borderRadius: 30,
     zIndex: 1,
   },
@@ -84,10 +83,11 @@ interface HeadBarProps {
   onShowContentPanel?: () => void,
   virtual: virtualType,
   audioFiles?: any[],
+  isConnected: boolean,
 }
 
 function MeetingControls(props: HeadBarProps) {
-  const { mode, audioFiles, onCallEnd } = props;
+  const { mode, audioFiles, onCallEnd, isConnected } = props;
   PresentationMenuOptions[0].active = props.displayContentPanel;
   const [isAudioEnabled, toggleAudioEnabled] = useLocalAudioToggle();
   const [isVideoEnabled, toggleVideoEnabled] = useLocalVideoToggle();
@@ -172,7 +172,12 @@ function MeetingControls(props: HeadBarProps) {
       </View>
     </View>
     <View style={styles.endCall}>
-      <Button.Kitten style={styles.endCallButton} onPress={onCallEnd} status="danger">
+      <Button.Kitten
+        style={styles.endCallButton}
+        onPress={onCallEnd}
+        status="danger"
+        disabled={!isConnected}
+      >
         {exitButtonText}
       </Button.Kitten>
     </View>

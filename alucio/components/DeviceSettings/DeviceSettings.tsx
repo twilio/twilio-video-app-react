@@ -107,11 +107,14 @@ const useAudioOutputTest = (audioFiles: any[]) => {
   }, [audioFiles, soundIdx, audioEl, isPlaying])
 
   useEffect(() => {
+    let ignore = false
     if (!audioEl) {
       const newAudioEl = new Audio(audioFiles[soundIdx])
       newAudioEl.addEventListener('ended', () => {
-        setSoundIdx(p => p < audioFiles.length - 1 ? p + 1 : 0)
-        setIsPlaying(false)
+        if (!ignore) {
+          setSoundIdx(p => p < audioFiles.length - 1 ? p + 1 : 0)
+          setIsPlaying(false)
+        }
       })
       newAudioEl.setSinkId?.(activeSinkId)
       document.body.appendChild(newAudioEl);
@@ -120,7 +123,10 @@ const useAudioOutputTest = (audioFiles: any[]) => {
       audioEl.src = audioFiles[soundIdx]
     }
 
-    return () => audioEl?.remove()
+    return () => {
+      ignore = true
+      audioEl?.remove()
+    }
   }, [audioFiles, soundIdx]);
 
   useEffect(() => {

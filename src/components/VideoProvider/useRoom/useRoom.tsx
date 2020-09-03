@@ -29,6 +29,9 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
 
           newRoom.once('disconnected', () => {
             // Reset the room only after all other `disconnected` listeners have been called.
+            
+            // [TODO]: This is causing an error as our VideoProvider unmounts so this setState is leaking
+            //  We might be able to rectify this from our end by only navigating away once the room has completely been cleared/all callbacks have finished
             setTimeout(() => setRoom(new EventEmitter() as Room));
             window.removeEventListener('beforeunload', disconnect);
 

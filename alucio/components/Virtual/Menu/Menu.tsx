@@ -110,6 +110,7 @@ function Menu(props: MenuProps) {
       {props.menuOptions.map((menuOption, key) => (
         menuOption.title === 'Settings'
           ? <Popover
+            key={menuOption.title}
             lazyMount
             interactive
             visible={settingsToggle}

@@ -346,6 +346,7 @@ function Layout(props: LayoutProps) {
               toggleHostNotes={toggleHostNotes}
               onCallEnd={handleEndCall}
               audioFiles={audioFiles}
+              isConnected={roomState === 'connected'}
             />
           </View>
         </LinearGradient>

@@ -20,7 +20,7 @@ export {
   useAudioInputDevices,
   useVideoInputDevices,
   useAudioOutputDevices,
-} from '../src/components/MenuBar/DeviceSelector/deviceHooks/deviceHooks';
+} from './hooks/deviceHooks';
 
 // Video
 export { default as LocalVideoPreview } from './components/LocalVideoPreview/LocalVideoPreview';
