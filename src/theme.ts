@@ -37,16 +37,10 @@ export default createMuiTheme({
       },
     },
   },
-  palette: {
-    background: {
-      paper: '#f8f8f9',
-      default: '#f8f8f9',
-    },
-  },
   typography: {
     fontFamily: 'Inter, sans-serif',
   },
-  brand: '#F22F46',
+  brand: '#E22525',
   footerHeight: 64,
   sidebarWidth: 355,
   sidebarMobileHeight: 90,

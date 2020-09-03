@@ -4,16 +4,15 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
 
 import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
+import { Avatar } from '../../icons/Avatar';
 import BandwidthWarning from '../BandwidthWarning/BandwidthWarning';
 import NetworkQualityLevel from '../NewtorkQualityLevel/NetworkQualityLevel';
 import PinIcon from './PinIcon/PinIcon';
-import ScreenShare from '@material-ui/icons/ScreenShare';
-import VideocamOff from '@material-ui/icons/VideocamOff';
+import Typography from '@material-ui/core/Typography';
 
-import usePublications from '../../hooks/usePublications/usePublications';
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
+import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
-import { Typography } from '@material-ui/core';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 const BORDER_SIZE = 2;
@@ -73,8 +72,12 @@ const useStyles = makeStyles((theme: Theme) =>
       background: 'transparent',
       top: 0,
     },
-    hideVideo: {
+    avatarContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
       background: 'black',
+      height: '100%',
     },
     identity: {
       background: 'rgba(0, 0, 0, 0.5)',
@@ -147,7 +150,7 @@ export default function ParticipantInfo({
       onClick={onClick}
       data-cy-participant={participant.identity}
     >
-      <div className={clsx(classes.infoContainer, { [classes.hideVideo]: !isVideoEnabled })}>
+      <div className={classes.infoContainer}>
         <div className={classes.infoRowTop}>
           <div className={classes.networkQualityContainer}>
             <NetworkQualityLevel participant={participant} />
@@ -162,13 +165,14 @@ export default function ParticipantInfo({
             </Typography>
           </span>
         </div>
-        <div>
-          {!isVideoEnabled && <VideocamOff />}
-          {isScreenShareEnabled && <ScreenShare />}
-          {isSelected && <PinIcon />}
-        </div>
+        <div>{isSelected && <PinIcon />}</div>
       </div>
       <div className={classes.innerContainer}>
+        {!isVideoEnabled && (
+          <div className={classes.avatarContainer}>
+            <Avatar />
+          </div>
+        )}
         {isVideoSwitchedOff && <BandwidthWarning />}
         {children}
       </div>

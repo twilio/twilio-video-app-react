@@ -3,14 +3,15 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { LocalVideoTrack, Participant, RemoteVideoTrack } from 'twilio-video';
 
+import { Avatar } from '../../icons/Avatar';
 import BandwidthWarning from '../BandwidthWarning/BandwidthWarning';
+import Typography from '@material-ui/core/Typography';
+
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
 import usePublications from '../../hooks/usePublications/usePublications';
-import useTrack from '../../hooks/useTrack/useTrack';
-import VideocamOff from '@material-ui/icons/VideocamOff';
-import { Typography } from '@material-ui/core';
-import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
+import useTrack from '../../hooks/useTrack/useTrack';
+import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 const useStyles = makeStyles({
   container: {
@@ -42,6 +43,17 @@ const useStyles = makeStyles({
   },
   fullWidth: {
     gridArea: '1 / 1 / 1 / 3',
+  },
+  avatarContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: 'black',
+    height: '100%',
+    width: '100%',
+    '& svg': {
+      transform: 'scale(2)',
+    },
   },
 });
 
@@ -81,10 +93,14 @@ export default function MainParticipantInfo({ participant, children }: MainParti
             {participant.identity}
             {isLocal && ' (You)'}
           </Typography>
-          {!isVideoEnabled && <VideocamOff />}
         </div>
       </div>
       {isVideoSwitchedOff && <BandwidthWarning />}
+      {!isVideoEnabled && (
+        <div className={classes.avatarContainer}>
+          <Avatar />
+        </div>
+      )}
       {children}
     </div>
   );
