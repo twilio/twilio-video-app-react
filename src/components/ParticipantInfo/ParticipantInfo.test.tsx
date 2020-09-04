@@ -1,4 +1,5 @@
 import React from 'react';
+import { Avatar } from '../../icons/Avatar';
 import ParticipantInfo from './ParticipantInfo';
 import PinIcon from './PinIcon/PinIcon';
 import { shallow } from 'enzyme';
@@ -20,7 +21,7 @@ describe('the ParticipantInfo component', () => {
         mock children
       </ParticipantInfo>
     );
-    expect(wrapper.find('.makeStyles-avatarContainer-6').exists()).toBe(true);
+    expect(wrapper.find(Avatar).exists()).toBe(true);
   });
 
   it('should not display the Avatar component when a video track is published', () => {
@@ -30,7 +31,7 @@ describe('the ParticipantInfo component', () => {
         mock children
       </ParticipantInfo>
     );
-    expect(wrapper.find('.makeStyles-avatarContainer-6').exists()).toBe(false);
+    expect(wrapper.find(Avatar).exists()).toBe(false);
   });
 
   it('should add isSwitchedOff prop to Container component when video is switched off', () => {

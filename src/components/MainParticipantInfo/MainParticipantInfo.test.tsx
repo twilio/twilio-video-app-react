@@ -1,35 +1,44 @@
 import React from 'react';
+import { Avatar } from '../../icons/Avatar';
 import MainParticipantInfo from './MainParticipantInfo';
 import { shallow } from 'enzyme';
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
 import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
+import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 jest.mock('../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel', () => () => 4);
 jest.mock('../../hooks/usePublications/usePublications');
 jest.mock('../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff');
 jest.mock('../../hooks/useTrack/useTrack');
+jest.mock('../../hooks/useVideoContext/useVideoContext');
 
 const mockUsePublications = usePublications as jest.Mock<any>;
 const mockUseIsTrackSwitchedOff = useIsTrackSwitchedOff as jest.Mock<any>;
 const mockUseTrack = useTrack as jest.Mock<any>;
+const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 
 describe('the MainParticipantInfo component', () => {
   beforeEach(jest.clearAllMocks);
-  it('should render a VideoCamOff icon when no camera tracks are published', () => {
+
+  beforeEach(() => {
+    mockUseVideoContext.mockImplementation(() => ({ room: { localParticipant: {} } }));
+  });
+
+  it('should the Avatar component when no video tracks are published', () => {
     mockUsePublications.mockImplementation(() => []);
     const wrapper = shallow(
       <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
     );
-    expect(wrapper.find('VideocamOffIcon').exists()).toEqual(true);
+    expect(wrapper.find(Avatar).exists()).toBe(true);
   });
 
-  it('should not render a VideoCamOff icon when a camera track is published', () => {
+  it('should not the Avatar component when no video tracks are published', () => {
     mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
     const wrapper = shallow(
       <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
     );
-    expect(wrapper.find('VideocamOffIcon').exists()).toEqual(false);
+    expect(wrapper.find(Avatar).exists()).toBe(false);
   });
 
   it('should add isVideoSwitchedOff class to container div when video is switched off', () => {
@@ -59,5 +68,21 @@ describe('the MainParticipantInfo component', () => {
     mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
     shallow(<MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>);
     expect(mockUseTrack).toHaveBeenCalledWith({ trackName: 'camera-123456' });
+  });
+
+  it('should add "(You)" to the participants identity when they are the localParticipant', () => {
+    const mockParticipant = { identity: 'mockIdentity' } as any;
+    mockUseVideoContext.mockImplementationOnce(() => ({ room: { localParticipant: mockParticipant } }));
+    mockUseIsTrackSwitchedOff.mockImplementation(() => false);
+    const wrapper = shallow(<MainParticipantInfo participant={mockParticipant}>mock children</MainParticipantInfo>);
+    expect(wrapper.text()).toContain('mockIdentity (You)');
+  });
+
+  it('should not add "(You)" to the participants identity when they are the localParticipant', () => {
+    mockUseIsTrackSwitchedOff.mockImplementation(() => false);
+    const wrapper = shallow(
+      <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
+    );
+    expect(wrapper.text()).not.toContain('mockIdentity (You)');
   });
 });
