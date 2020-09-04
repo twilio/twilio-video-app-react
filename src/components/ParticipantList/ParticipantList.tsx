@@ -55,6 +55,7 @@ export default function ParticipantList() {
           participant={localParticipant}
           isSelected={selectedParticipant === localParticipant}
           onClick={() => setSelectedParticipant(localParticipant)}
+          isLocalParticipant={true}
         />
         {participants.map(participant => (
           <Participant
