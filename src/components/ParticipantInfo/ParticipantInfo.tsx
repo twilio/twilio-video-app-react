@@ -13,7 +13,6 @@ import Typography from '@material-ui/core/Typography';
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
 import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
-import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 const BORDER_SIZE = 2;
 
@@ -112,6 +111,7 @@ interface ParticipantInfoProps {
   onClick: () => void;
   isSelected: boolean;
   isDominantSpeaker?: boolean;
+  isLocalParticipant?: boolean;
 }
 
 export default function ParticipantInfo({
@@ -120,12 +120,8 @@ export default function ParticipantInfo({
   isSelected,
   children,
   isDominantSpeaker,
+  isLocalParticipant,
 }: ParticipantInfoProps) {
-  const {
-    room: { localParticipant },
-  } = useVideoContext();
-  const isLocalParticipant = participant === localParticipant;
-
   const publications = usePublications(participant);
 
   const audioPublication = publications.find(p => p.kind === 'audio');
