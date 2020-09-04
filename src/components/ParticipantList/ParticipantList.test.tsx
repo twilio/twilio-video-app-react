@@ -61,4 +61,40 @@ describe('the ParticipantList component', () => {
         .prop('isSelected')
     ).toBe(true);
   });
+
+  it('should add the isDominantSpeaker prop to the participant that is the dominantSpeaker', () => {
+    const mockParticipant = { sid: 1, identity: 'mockDominantSpeaker' };
+    const mockRoom: any = new EventEmitter();
+    mockRoom.participants = new Map([
+      [0, { sid: 0, identity: 'localParticipant' }],
+      [1, mockParticipant],
+    ]);
+    mockRoom.localParticipant = 'localParticipant';
+    mockRoom.dominantSpeaker = mockParticipant;
+    mockedVideoContext.mockImplementation(() => ({ room: mockRoom }));
+    const wrapper = shallow(<ParticipantList />);
+
+    expect(
+      wrapper
+        .find('Participant')
+        .at(2)
+        .prop('isDominantSpeaker')
+    ).toBe(true);
+
+    expect(
+      wrapper
+        .find('Participant')
+        .at(1)
+        .prop('isDominantSpeaker')
+    ).toBe(false);
+  });
+
+  it('should not render anything when there are no remote particiants', () => {
+    const mockRoom: any = new EventEmitter();
+    mockRoom.participants = new Map([]);
+    mockRoom.localParticipant = 'localParticipant';
+    mockedVideoContext.mockImplementation(() => ({ room: mockRoom }));
+    const wrapper = shallow(<ParticipantList />);
+    expect(wrapper.getElement()).toBe(null);
+  });
 });
