@@ -13,64 +13,24 @@ const mockUsePublications = usePublications as jest.Mock<any>;
 const mockUseIsTrackSwitchedOff = useIsTrackSwitchedOff as jest.Mock<any>;
 
 describe('the ParticipantInfo component', () => {
-  it('should display ScreenShare icon when participant has published a screen share track', () => {
-    mockUsePublications.mockImplementation(() => [{ trackName: 'screen' }]);
-    const wrapper = shallow(
-      <ParticipantInfo onClick={() => {}} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
-        mock children
-      </ParticipantInfo>
-    );
-    expect(wrapper.find('ScreenShareIcon').exists()).toEqual(true);
-  });
-
-  it('should not display ScreenShare icon when participant has not published a screen share track', () => {
+  it('should the Avatar component when no video tracks are published', () => {
     mockUsePublications.mockImplementation(() => []);
     const wrapper = shallow(
       <ParticipantInfo onClick={() => {}} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
         mock children
       </ParticipantInfo>
     );
-    expect(wrapper.find('ScreenShareIcon').exists()).toEqual(false);
+    expect(wrapper.find('.makeStyles-avatarContainer-6').exists()).toBe(true);
   });
 
-  it('should add hideVideoProp to InfoContainer component when no video tracks are published', () => {
-    mockUsePublications.mockImplementation(() => []);
-    const wrapper = shallow(
-      <ParticipantInfo onClick={() => {}} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
-        mock children
-      </ParticipantInfo>
-    );
-    expect(wrapper.find('.makeStyles-infoContainer-3').prop('className')).toContain('hideVideo');
-  });
-
-  it('should not add hideVideoProp to InfoContainer component when a video track is published', () => {
+  it('should not display the Avatar component when a video track is published', () => {
     mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
     const wrapper = shallow(
       <ParticipantInfo onClick={() => {}} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
         mock children
       </ParticipantInfo>
     );
-    expect(wrapper.find('.makeStyles-infoContainer-3').prop('className')).not.toContain('hideVideo');
-  });
-
-  it('should render a VideoCamOff icon when no video tracks are published', () => {
-    mockUsePublications.mockImplementation(() => []);
-    const wrapper = shallow(
-      <ParticipantInfo onClick={() => {}} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
-        mock children
-      </ParticipantInfo>
-    );
-    expect(wrapper.find('VideocamOffIcon').exists()).toEqual(true);
-  });
-
-  it('should not render a VideoCamOff icon when a video track is published', () => {
-    mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
-    const wrapper = shallow(
-      <ParticipantInfo onClick={() => {}} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
-        mock children
-      </ParticipantInfo>
-    );
-    expect(wrapper.find('VideocamOffIcon').exists()).toEqual(false);
+    expect(wrapper.find('.makeStyles-avatarContainer-6').exists()).toBe(false);
   });
 
   it('should add isSwitchedOff prop to Container component when video is switched off', () => {
@@ -113,5 +73,48 @@ describe('the ParticipantInfo component', () => {
       </ParticipantInfo>
     );
     expect(wrapper.exists(PinIcon)).toBe(false);
+  });
+
+  it('should add "(You)" to the participants identity when they are the localParticipant', () => {
+    mockUseIsTrackSwitchedOff.mockImplementation(() => false);
+    mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
+    const wrapper = shallow(
+      <ParticipantInfo
+        onClick={() => {}}
+        isSelected={false}
+        participant={{ identity: 'mockIdentity' } as any}
+        isLocalParticipant
+      >
+        mock children
+      </ParticipantInfo>
+    );
+    expect(wrapper.text()).toContain('mockIdentity (You)');
+  });
+
+  it('should not add "(You)" to the participants identity when they are the localParticipant', () => {
+    mockUseIsTrackSwitchedOff.mockImplementation(() => false);
+    mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
+    const wrapper = shallow(
+      <ParticipantInfo onClick={() => {}} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
+        mock children
+      </ParticipantInfo>
+    );
+    expect(wrapper.text()).not.toContain('mockIdentity (You)');
+  });
+
+  it('should add the isDominantSpeaker class when the participant is not the dominant speaker', () => {
+    mockUseIsTrackSwitchedOff.mockImplementation(() => false);
+    mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
+    const wrapper = shallow(
+      <ParticipantInfo
+        onClick={() => {}}
+        isSelected={false}
+        participant={{ identity: 'mockIdentity' } as any}
+        isDominantSpeaker
+      >
+        mock children
+      </ParticipantInfo>
+    );
+    expect(wrapper.find('.makeStyles-container-1').prop('className')).toContain('isDominantSpeaker');
   });
 });
