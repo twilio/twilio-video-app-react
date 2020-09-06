@@ -18,9 +18,9 @@ export default function useScreenShareToggle() {
       .getDisplayMedia({
         audio: false,
         video: {
-          frameRate: 10,
-          height: 1080,
+          frameRate: 6,
           width: 1920,
+          height: 1080,
         },
       })
       .then(stream => {

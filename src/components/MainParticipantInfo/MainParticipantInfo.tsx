@@ -2,6 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { LocalVideoTrack, Participant, RemoteVideoTrack } from 'twilio-video';
+import useResizeObserver from 'use-resize-observer';
 
 import BandwidthWarning from '../BandwidthWarning/BandwidthWarning';
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
@@ -38,6 +39,15 @@ const useStyles = makeStyles({
     padding: '0.4em',
     width: '100%',
   },
+  stats: {
+    background: 'rgba(0, 0, 0, 0.7)',
+    padding: '0.1em 0.1em',
+    margin: 0,
+    display: 'flex',
+    alignItems: 'center',
+    fontSize: '11px',
+    fontFamily: 'monospace',
+  },
 });
 
 interface MainParticipantInfoProps {
@@ -47,6 +57,7 @@ interface MainParticipantInfoProps {
 
 export default function MainParticipantInfo({ participant, children }: MainParticipantInfoProps) {
   const classes = useStyles();
+  const { ref, width, height } = useResizeObserver<HTMLDivElement>();
 
   const publications = usePublications(participant);
   const videoPublication = publications.find(p => p.trackName.includes('camera'));
@@ -65,10 +76,16 @@ export default function MainParticipantInfo({ participant, children }: MainParti
         <h4 className={classes.identity}>
           {participant.identity}
           {!isVideoEnabled && <VideocamOff />}
+          <br />
         </h4>
       </div>
-      {isVideoSwitchedOff && <BandwidthWarning />}
-      {children}
+      <div ref={ref}>
+        <h4 className={classes.stats}>
+          ELT {width}x{height}
+        </h4>
+        {isVideoSwitchedOff && <BandwidthWarning />}
+        {children}
+      </div>
     </div>
   );
 }
