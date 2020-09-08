@@ -93,37 +93,37 @@ export default function MenuBar() {
 
   const [participantInfo, setParticipantInfo] = useState<any>(null);
 
-  function joinRoom(participantInformation) {
-    getToken(participantInformation)
-      .then(response => {
-        if (response === ERROR_MESSAGE.ROOM_NOT_FOUND) {
-          submitButtonValue = RETRY_ROOM_MESSAGE;
-          return <div>{alert.show(ERROR_MESSAGE.ROOM_NOT_FOUND)}</div>;
-        } else {
-          connect(response);
-          submitButtonValue = JOIN_ROOM_MESSAGE;
-        }
-      })
-      .catch(err => {
-        if (err.response) setError({ message: err.response.data });
-        else setError({ message: ERROR_MESSAGE.NETWORK_ERROR });
+  async function joinRoom(participantInformation) {
+    try {
+      const response = await getToken(participantInformation);
 
+      if (response === ERROR_MESSAGE.ROOM_NOT_FOUND) {
+        submitButtonValue = RETRY_ROOM_MESSAGE;
+        return <div>{alert.show(ERROR_MESSAGE.ROOM_NOT_FOUND)}</div>;
+      } else {
+        await connect(response);
         submitButtonValue = JOIN_ROOM_MESSAGE;
-      });
+      }
+    } catch (err) {
+      if (err.response) setError({ message: err.response.data });
+      else setError({ message: ERROR_MESSAGE.NETWORK_ERROR });
+
+      submitButtonValue = JOIN_ROOM_MESSAGE;
+    }
   }
 
   function authorise(currentParticipantInformation) {
-    if (currentParticipantInformation === null) {
-      authoriseParticipant().then((participantInformation: ParticipantInformation) => {
+    async function authoriseAsync() {
+      if (currentParticipantInformation === null) {
+        const participantInformation: ParticipantInformation = await authoriseParticipant();
+
         if (participantInformation && participantInformation.displayName !== '') {
           setParticipantInfo(participantInformation);
-          //joinRoom(participantInformation);
+          await joinRoom(participantInformation);
         }
-      });
-      // .then(()=>{
-
-      // });
+      }
     }
+    authoriseAsync();
   }
 
   useEffect(() => {

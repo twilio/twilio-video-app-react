@@ -115,7 +115,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
         console.log('managed to fetch endpoint: ' + endpoint);
         return true;
       }
-    }
+    } else return true;
   }
 
   let contextValue = ({
@@ -150,7 +150,8 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     },
     participantInfo,
     getToken: async (participantInformation: ParticipantInformation) => {
-      if (!(await ensureEndpointInitialised())) return null;
+      const endpointIsInitialised = await ensureEndpointInitialised();
+      if (!endpointIsInitialised) return null;
 
       const url = `${endpoint}/token`;
       const { data } = await axios({
@@ -207,26 +208,26 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     }
   };
 
-  const getToken: StateContextType['getToken'] = (participantInformation: ParticipantInformation) => {
+  const getToken: StateContextType['getToken'] = async (participantInformation: ParticipantInformation) => {
     setIsFetching(true);
-    return contextValue
-      .getToken(participantInformation)
-      .then((res: any) => {
-        setIsFetching(false);
 
-        if (!res.roomExist && !participantIsMemberInHostRole(participantInformation.partyType))
-          return Promise.resolve(ERROR_MESSAGE.ROOM_NOT_FOUND);
+    const res: any = await contextValue.getToken(participantInformation);
+    try {
+      setIsFetching(false);
 
-        setUserToken(res.result);
-        const user = jwt_decode(res.result);
-        setUser(user);
+      if (!res.roomExist && !participantIsMemberInHostRole(participantInformation.partyType))
+        return ERROR_MESSAGE.ROOM_NOT_FOUND;
 
-        return Promise.resolve(user.twilioToken);
-      })
-      .catch(err => {
-        setIsFetching(false);
-        return Promise.reject(err);
-      });
+      setUserToken(res.result);
+      const user = jwt_decode(res.result);
+      setUser(user);
+
+      return user.twilioToken;
+    } catch (err) {
+      setIsFetching(false);
+      console.log('error occured on getToken: ' + JSON.stringify(err));
+      return '';
+    }
   };
   const removeParticipant: StateContextType['removeParticipant'] = participantSid => {
     return contextValue.removeParticipant(participantSid).catch(err => {
