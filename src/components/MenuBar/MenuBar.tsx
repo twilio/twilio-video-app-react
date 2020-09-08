@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as jwt_decode from 'jwt-decode';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -90,24 +90,11 @@ export default function MenuBar() {
   const roomState = useRoomState();
 
   const alert = useAlert();
-  const [partyType, setPartyType] = useState('');
-  const [partyName, setPartyName] = useState('');
-  const [caseReference, setCaseReference] = useState('');
-  const [videoConferenceRoomName, setVideoConferenceRoomName] = useState('');
 
-  authoriseParticipant().then((participantInformation: ParticipantInformation) => {
-    if (participantInformation) {
-      setPartyType(participantInformation.partyType);
-      setPartyName(participantInformation.displayName);
-      setCaseReference(participantInformation.caseReference);
-      setVideoConferenceRoomName(participantInformation.videoConferenceRoomName);
-    }
-  });
+  const [participantInfo, setParticipantInfo] = useState<any>(null);
 
-  const handleSubmit = (event: { preventDefault: () => void }) => {
-    event.preventDefault();
-    const participantInfo = { caseReference, displayName: partyName, partyType, videoConferenceRoomName };
-    getToken(participantInfo)
+  function joinRoom(participantInformation) {
+    getToken(participantInformation)
       .then(response => {
         if (response === ERROR_MESSAGE.ROOM_NOT_FOUND) {
           submitButtonValue = RETRY_ROOM_MESSAGE;
@@ -123,6 +110,29 @@ export default function MenuBar() {
 
         submitButtonValue = JOIN_ROOM_MESSAGE;
       });
+  }
+
+  function authorise(currentParticipantInformation) {
+    if (currentParticipantInformation === null) {
+      authoriseParticipant().then((participantInformation: ParticipantInformation) => {
+        if (participantInformation && participantInformation.displayName !== '') {
+          setParticipantInfo(participantInformation);
+          //joinRoom(participantInformation);
+        }
+      });
+      // .then(()=>{
+
+      // });
+    }
+  }
+
+  useEffect(() => {
+    authorise(participantInfo);
+  }, [participantInfo]);
+
+  const handleSubmit = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+    joinRoom(participantInfo);
   };
 
   let selectedAudioDevice = { label: '', deviceId: '', groupdId: '' };
@@ -157,8 +167,7 @@ export default function MenuBar() {
               <Select
                 id="party-type"
                 label="Party Type"
-                value={partyType}
-                onChange={e => setPartyType(e.target.value as string)}
+                value={participantInfo ? participantInfo.partyType : ''}
                 margin="dense"
                 placeholder="Party Type"
                 disabled={true}
@@ -176,8 +185,7 @@ export default function MenuBar() {
               id="menu-name"
               label="Party Name"
               className={classes.textField}
-              value={partyName}
-              onChange={e => setPartyName(e.target.value)}
+              value={participantInfo ? participantInfo.displayName : ''}
               margin="dense"
               disabled={true}
             />
@@ -187,8 +195,7 @@ export default function MenuBar() {
               id="menu-room"
               label="Case Reference"
               className={classes.textField}
-              value={caseReference}
-              onChange={e => setCaseReference(e.target.value)}
+              value={participantInfo ? participantInfo.caseReference : ''}
               margin="dense"
               disabled={true}
             />
@@ -198,7 +205,7 @@ export default function MenuBar() {
                 type="submit"
                 color="primary"
                 variant="contained"
-                disabled={isConnecting || !partyName || !caseReference || isFetching}
+                disabled={isConnecting || !participantInfo || isFetching}
               >
                 {submitButtonValue}
               </Button>

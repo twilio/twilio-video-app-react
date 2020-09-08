@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useState } from 'react';
+import React, { createContext, useContext, useReducer, useState, useEffect } from 'react';
 import { TwilioError } from 'twilio-video';
 import { ERROR_MESSAGE } from '../utils/displayStrings';
 import { PARTICIANT_TYPES } from '../utils/participantTypes';
@@ -24,7 +24,8 @@ export interface StateContextType {
   setSelectedSpeakerOutput: string;
   gridView: boolean;
   setGridView: any;
-  authoriseParticipant(authToken): Promise<any>;
+  authoriseParticipant(): Promise<any>;
+  participantInfo: ParticipantInformation;
   getToken(participantInformation: ParticipantInformation): Promise<string>;
   removeParticipant: any;
 }
@@ -47,12 +48,75 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
 
   const participantAuthToken = window.location.hash.substr(1);
 
+  //const [endpoint, setEndpoint] = useState('');
   var endpoint = '';
-  fetch(`${process.env.PUBLIC_URL}/config.json`)
-    .then(r => r.json())
-    .then(data => {
-      endpoint = data.endPoint;
-    });
+
+  // fetch(`${process.env.PUBLIC_URL}/config.json`)
+  //   .then(r => r.json())
+  //   .then(data => {
+  //     //setEndpoint(data.endPoint);
+  //     endpoint = data.endPoint;
+  //   });
+
+  async function fetchEndpoint(endpointUrl) {
+    if (endpointUrl !== '') return;
+
+    console.log(
+      `fetching endpoint. process.env: ${
+        process.env ? 'process.env: ' + JSON.stringify(process.env) : 'not yet initialised'
+      }`
+    );
+    console.log(
+      `fetching endpoint. process.env.PUBLIC_URL: ${
+        process.env.PUBLIC_URL
+          ? 'process.env.PUBLIC_URL: ' + JSON.stringify(process.env.PUBLIC_URL)
+          : 'not yet initialised'
+      }`
+    );
+
+    await fetch(`${process.env.PUBLIC_URL}/config.json`)
+      .then(
+        response => {
+          console.log('response from fetch received');
+          return response.json();
+        },
+        err => {
+          console.log('failed to fetch url. err: ' + err);
+        }
+      )
+      .then(responseBodyAsJson => {
+        console.log('response body from fetch: ' + JSON.stringify(responseBodyAsJson));
+        //setEndpoint(responseBodyAsJson.endPoint);
+        endpoint = responseBodyAsJson.endPoint;
+      });
+  }
+  //fetchEndpoint(endpoint);
+
+  // useEffect(()=> {
+  //   async function fetchEndpointAsync() {
+  //     await fetchEndpoint(endpoint);
+  //   }
+  //   fetchEndpointAsync();
+  // }, [endpoint]);
+
+  // .then(async () =>
+  //   {await authoriseParticipant(participantAuthToken);}
+  // );
+
+  async function ensureEndpointInitialised() {
+    if (endpoint === '') {
+      console.log('ensureEndpointInitialised. endpoint not yet defined attempting to fetch now');
+      await fetchEndpoint(endpoint);
+      if (endpoint === '') {
+        //throw new Error('endpoint still not defined.');
+        console.log('warning: endpoint not defined');
+        return false;
+      } else {
+        console.log('managed to fetch endpoint: ' + endpoint);
+        return true;
+      }
+    }
+  }
 
   let contextValue = ({
     error,
@@ -67,7 +131,11 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     gridView,
     setGridView,
     authoriseParticipant: async () => {
+      if (!(await ensureEndpointInitialised())) return null;
+
       const url = `${endpoint}/authorise-participant`;
+
+      console.log('attempting authorise ' + new Date().toLocaleTimeString());
 
       const { data } = await axios({
         url: url,
@@ -80,7 +148,10 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
 
       return data;
     },
+    participantInfo,
     getToken: async (participantInformation: ParticipantInformation) => {
+      if (!(await ensureEndpointInitialised())) return null;
+
       const url = `${endpoint}/token`;
       const { data } = await axios({
         url: url,
@@ -114,22 +185,25 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     },
   } as unknown) as StateContextType;
 
-  const authoriseParticipant: StateContextType['authoriseParticipant'] = async authToken => {
-    if (hasTriedAuthorisation || endpoint === '') return participantInfo;
+  const authoriseParticipant: StateContextType['authoriseParticipant'] = async () => {
+    if (hasTriedAuthorisation) return participantInfo;
 
     //setIsFetching(true);
 
     try {
-      const response: any = await contextValue.authoriseParticipant(authToken);
-      setHasTriedAuthorisation(true);
+      const response: any = await contextValue.authoriseParticipant();
       //setIsFetching(false);
+      if (!response) return response;
       setParticipantInfo(response.participantInfo);
+      setHasTriedAuthorisation(true);
       return response.participantInfo;
     } catch (err) {
-      setHasTriedAuthorisation(true);
-      setError({ message: 'Unauthorised Access', code: 401, name: 'Authorization Error' });
+      //setHasTriedAuthorisation(true);
+      //setError({ message: 'Unauthorised Access', code: 401, name: 'Authorization Error' });
       //setIsFetching(false);
-      return err;
+      console.log('error authorising participant: ' + err);
+
+      return Promise.reject(err);
     }
   };
 
