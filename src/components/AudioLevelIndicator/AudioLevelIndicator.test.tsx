@@ -29,12 +29,10 @@ describe('the AudioLevelIndicator component', () => {
   });
 
   describe('when the audioTrack is enabled', () => {
-    mockUseIsTrackEnabled.mockImplementationOnce(() => true);
+    mockUseIsTrackEnabled.mockImplementation(() => true);
     const wrapper = shallow(<AudioLevelIndicator color="#123456" />);
 
     it('should render the audio level icon', () => {
-      mockUseIsTrackEnabled.mockImplementationOnce(() => true);
-      const wrapper = shallow(<AudioLevelIndicator />);
       expect(wrapper.exists(MicOff)).toBe(false);
       expect(wrapper.exists('[data-test-audio-indicator]')).toBe(true);
     });
