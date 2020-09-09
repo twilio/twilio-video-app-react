@@ -18,8 +18,10 @@ const useStyles = makeStyles((theme: Theme) =>
     button: {
       margin: theme.spacing(1),
       '&[disabled]': {
-        color: 'rgba(225, 225, 225, 0.8)',
-        backgroundColor: 'rgba(175, 175, 175, 0.6);',
+        color: '#bbb',
+        '& svg *': {
+          fill: '#bbb',
+        },
       },
     },
   })
