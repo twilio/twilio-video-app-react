@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme: Theme) =>
       overflowY: 'auto',
       background: 'rgb(79, 83, 85)',
       gridArea: '1 / 2 / 1 / 3',
+      zIndex: 1,
       [theme.breakpoints.down('xs')]: {
         overflowY: 'initial',
         overflowX: 'auto',
