@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar } from '../../icons/Avatar';
+import AvatarIcon from '../AvatarIcon/AvatarIcon';
 import ParticipantInfo from './ParticipantInfo';
 import PinIcon from './PinIcon/PinIcon';
 import { shallow } from 'enzyme';
@@ -14,24 +14,24 @@ const mockUsePublications = usePublications as jest.Mock<any>;
 const mockUseIsTrackSwitchedOff = useIsTrackSwitchedOff as jest.Mock<any>;
 
 describe('the ParticipantInfo component', () => {
-  it('should the Avatar component when no video tracks are published', () => {
+  it('should render the AvatarIcon component when no video tracks are published', () => {
     mockUsePublications.mockImplementation(() => []);
     const wrapper = shallow(
       <ParticipantInfo onClick={() => {}} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
         mock children
       </ParticipantInfo>
     );
-    expect(wrapper.find(Avatar).exists()).toBe(true);
+    expect(wrapper.find(AvatarIcon).exists()).toBe(true);
   });
 
-  it('should not display the Avatar component when a video track is published', () => {
+  it('should not display the AvatarIcon component when a video track is published', () => {
     mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
     const wrapper = shallow(
       <ParticipantInfo onClick={() => {}} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
         mock children
       </ParticipantInfo>
     );
-    expect(wrapper.find(Avatar).exists()).toBe(false);
+    expect(wrapper.find(AvatarIcon).exists()).toBe(false);
   });
 
   it('should add isSwitchedOff prop to Container component when video is switched off', () => {
