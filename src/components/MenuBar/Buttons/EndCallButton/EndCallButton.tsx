@@ -3,7 +3,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import { Button } from '@material-ui/core';
 
-import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import useVideoContext from '../../../../hooks/useVideoContext/useVideoContext';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
