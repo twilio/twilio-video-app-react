@@ -10,8 +10,8 @@ import { useVideoInputDevices } from '../deviceHooks/deviceHooks';
 
 const useStyles = makeStyles({
   preview: {
-    width: '150px',
-    margin: '0.5em 0',
+    width: '300px',
+    margin: '0.5em auto',
   },
 });
 
@@ -33,10 +33,21 @@ export default function VideoInputList() {
 
   return (
     <div>
+      {localVideoTrack && (
+        <div className={classes.preview}>
+          <VideoTrack isLocal track={localVideoTrack} />
+        </div>
+      )}
       {videoInputDevices.length > 1 ? (
         <FormControl>
-          <Typography variant="h6">Video Input:</Typography>
-          <Select onChange={e => replaceTrack(e.target.value as string)} value={localVideoInputDeviceId || ''}>
+          <Typography variant="subtitle2" gutterBottom>
+            Video Input
+          </Typography>
+          <Select
+            onChange={e => replaceTrack(e.target.value as string)}
+            value={localVideoInputDeviceId || ''}
+            variant="outlined"
+          >
             {videoInputDevices.map(device => (
               <MenuItem value={device.deviceId} key={device.deviceId}>
                 {device.label}
@@ -46,14 +57,11 @@ export default function VideoInputList() {
         </FormControl>
       ) : (
         <>
-          <Typography variant="h6">Video Input:</Typography>
+          <Typography variant="subtitle2" gutterBottom>
+            Video Input
+          </Typography>
           <Typography>{localVideoTrack?.mediaStreamTrack.label || 'No Local Video'}</Typography>
         </>
-      )}
-      {localVideoTrack && (
-        <div className={classes.preview}>
-          <VideoTrack isLocal track={localVideoTrack} />
-        </div>
       )}
     </div>
   );
