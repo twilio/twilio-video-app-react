@@ -33,7 +33,6 @@ export default function Menu() {
         <ExpandMoreIcon />
       </Button>
       <MenuContainer open={menuOpen} onClose={() => setMenuOpen(state => !state)} anchorEl={anchorRef.current}>
-        {user?.displayName && <MenuItem disabled>{user.displayName}</MenuItem>}
         <MenuItem onClick={() => setAboutOpen(true)}>
           <Typography variant="body1">About</Typography>
         </MenuItem>
