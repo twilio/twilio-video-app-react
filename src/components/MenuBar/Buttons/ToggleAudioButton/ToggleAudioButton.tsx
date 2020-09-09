@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import MicIcon from './MicIcon';
 import MicOffIcon from './MicOffIcon';
 
-import useLocalAudioToggle from '../../../hooks/useLocalAudioToggle/useLocalAudioToggle';
+import useLocalAudioToggle from '../../../../hooks/useLocalAudioToggle/useLocalAudioToggle';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

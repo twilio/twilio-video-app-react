@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import useLocalAudioToggle from '../../../hooks/useLocalAudioToggle/useLocalAudioToggle';
+import useLocalAudioToggle from '../../../../hooks/useLocalAudioToggle/useLocalAudioToggle';
 
 import ToggleAudioButton from './ToggleAudioButton';
 

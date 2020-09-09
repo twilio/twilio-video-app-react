@@ -4,7 +4,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
 
 import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
-import { Avatar } from '../../icons/Avatar';
+import AvatarIcon from '../AvatarIcon/AvatarIcon';
 import BandwidthWarning from '../BandwidthWarning/BandwidthWarning';
 import NetworkQualityLevel from '../NewtorkQualityLevel/NetworkQualityLevel';
 import PinIcon from './PinIcon/PinIcon';
@@ -132,7 +132,6 @@ export default function ParticipantInfo({
   const videoPublication = publications.find(p => p.trackName.includes('camera'));
 
   const isVideoEnabled = Boolean(videoPublication);
-  const isScreenShareEnabled = publications.find(p => p.trackName.includes('screen'));
 
   const videoTrack = useTrack(videoPublication);
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
@@ -158,7 +157,7 @@ export default function ParticipantInfo({
         </div>
         <div className={classes.infoRowBottom}>
           <span className={classes.identity}>
-            <AudioLevelIndicator audioTrack={audioTrack} background="white" />
+            <AudioLevelIndicator audioTrack={audioTrack} />
             <Typography variant="body1" color="inherit" component="span">
               {participant.identity}
               {isLocalParticipant && ' (You)'}
@@ -170,7 +169,7 @@ export default function ParticipantInfo({
       <div className={classes.innerContainer}>
         {!isVideoEnabled && (
           <div className={classes.avatarContainer}>
-            <Avatar />
+            <AvatarIcon />
           </div>
         )}
         {isVideoSwitchedOff && <BandwidthWarning />}

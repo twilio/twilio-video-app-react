@@ -36,6 +36,16 @@ export default createMuiTheme({
         fontSize: '0.9rem',
       },
     },
+    MuiInputBase: {
+      root: {
+        fontSize: '0.9rem',
+      },
+    },
+    MuiSelect: {
+      root: {
+        padding: '0.85em',
+      },
+    },
   },
   typography: {
     fontFamily: 'Inter, sans-serif',
