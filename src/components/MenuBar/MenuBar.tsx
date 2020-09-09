@@ -119,7 +119,6 @@ export default function MenuBar() {
 
         if (participantInformation && participantInformation.displayName !== '') {
           setParticipantInfo(participantInformation);
-          await joinRoom(participantInformation);
         }
       }
     }
