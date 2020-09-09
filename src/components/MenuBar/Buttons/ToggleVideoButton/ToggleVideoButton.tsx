@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import VideoOffIcon from './VideoOffIcon';
 import VideoOnIcon from './VideoOnIcon';
 
-import useLocalVideoToggle from '../../../hooks/useLocalVideoToggle/useLocalVideoToggle';
+import useLocalVideoToggle from '../../../../hooks/useLocalVideoToggle/useLocalVideoToggle';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

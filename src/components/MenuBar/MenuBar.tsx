@@ -11,10 +11,10 @@ import { useParams } from 'react-router-dom';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { Typography, Grid } from '@material-ui/core';
-import ToggleAudioButton from '../Controls/ToggleAudioButton/ToggleAudioButton';
-import ToggleVideoButton from '../Controls/ToggleVideoButton/ToggleVideoButton';
-import ToggleScreenShareButton from '../Controls/ToogleScreenShareButton/ToggleScreenShareButton';
-import EndCallButton from '../Controls/EndCallButton/EndCallButton';
+import ToggleAudioButton from './Buttons/ToggleAudioButton/ToggleAudioButton';
+import ToggleVideoButton from './Buttons/ToggleVideoButton/ToggleVideoButton';
+import ToggleScreenShareButton from './Buttons/ToogleScreenShareButton/ToggleScreenShareButton';
+import EndCallButton from './Buttons/EndCallButton/EndCallButton';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
