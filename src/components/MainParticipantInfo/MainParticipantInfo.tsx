@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { LocalVideoTrack, Participant, RemoteVideoTrack } from 'twilio-video';
 
-import { Avatar } from '../../icons/Avatar';
+import AvatarIcon from '../AvatarIcon/AvatarIcon';
 import BandwidthWarning from '../BandwidthWarning/BandwidthWarning';
 import Typography from '@material-ui/core/Typography';
 
@@ -98,7 +98,7 @@ export default function MainParticipantInfo({ participant, children }: MainParti
       {isVideoSwitchedOff && <BandwidthWarning />}
       {!isVideoEnabled && (
         <div className={classes.avatarContainer}>
-          <Avatar />
+          <AvatarIcon />
         </div>
       )}
       {children}
