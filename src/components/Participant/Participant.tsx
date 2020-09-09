@@ -18,15 +18,9 @@ export default function Participant({
   enableScreenShare,
   onClick,
   isSelected,
-  isDominantSpeaker,
 }: ParticipantProps) {
   return (
-    <ParticipantInfo
-      participant={participant}
-      onClick={onClick}
-      isSelected={isSelected}
-      isDominantSpeaker={isDominantSpeaker}
-    >
+    <ParticipantInfo participant={participant} onClick={onClick} isSelected={isSelected}>
       <ParticipantTracks participant={participant} disableAudio={disableAudio} enableScreenShare={enableScreenShare} />
     </ParticipantInfo>
   );
