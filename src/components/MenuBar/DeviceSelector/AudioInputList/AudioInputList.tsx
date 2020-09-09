@@ -1,6 +1,7 @@
 import React from 'react';
+import AudioLevelIndicator from '../../../AudioLevelIndicator/AudioLevelIndicator';
+import { LocalAudioTrack } from 'twilio-video';
 import { FormControl, MenuItem, Typography, Select } from '@material-ui/core';
-import LocalAudioLevelIndicator from '../LocalAudioLevelIndicator/LocalAudioLevelIndicator';
 import { makeStyles } from '@material-ui/core/styles';
 import { useAudioInputDevices } from '../deviceHooks/deviceHooks';
 import useMediaStreamTrack from '../../../../hooks/useMediaStreamTrack/useMediaStreamTrack';
@@ -19,7 +20,7 @@ export default function AudioInputList() {
   const audioInputDevices = useAudioInputDevices();
   const { localTracks } = useVideoContext();
 
-  const localAudioTrack = localTracks.find(track => track.kind === 'audio');
+  const localAudioTrack = localTracks.find(track => track.kind === 'audio') as LocalAudioTrack;
   const mediaStreamTrack = useMediaStreamTrack(localAudioTrack);
   const localAudioInputDeviceId = mediaStreamTrack?.getSettings().deviceId;
 
@@ -48,7 +49,7 @@ export default function AudioInputList() {
           </>
         )}
       </div>
-      <LocalAudioLevelIndicator />
+      <AudioLevelIndicator audioTrack={localAudioTrack} color="black" />
     </div>
   );
 }

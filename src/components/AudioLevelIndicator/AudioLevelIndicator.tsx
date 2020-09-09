@@ -23,16 +23,7 @@ export function initializeAnalyser(stream: MediaStream) {
   return analyser;
 }
 
-function AudioLevelIndicator({
-  size,
-  audioTrack,
-  background,
-}: {
-  size?: number;
-  audioTrack?: AudioTrack;
-  background?: string;
-}) {
-  const SIZE = size || 24;
+function AudioLevelIndicator({ audioTrack, color = 'white' }: { audioTrack?: AudioTrack; color?: string }) {
   const SVGRectRef = useRef<SVGRectElement>(null);
   const [analyser, setAnalyser] = useState<AnalyserNode>();
   const isTrackEnabled = useIsTrackEnabled(audioTrack as LocalAudioTrack | RemoteAudioTrack);
@@ -122,7 +113,7 @@ function AudioLevelIndicator({
           fill="#23BF6E"
         ></rect>
         <path
-          fill="white"
+          fill={color}
           strokeWidth="0"
           d="M17.389 10.667c.276 0 .5.224.5.5 0 3.114-2.396 5.67-5.445 5.923v2.632c0 .276-.223.5-.5.5-.245 0-.45-.177-.491-.41l-.009-.09V17.09C8.395 16.836 6 14.281 6 11.167c0-.276.224-.5.5-.5s.5.224.5.5c0 2.73 2.214 4.944 4.944 4.944 2.731 0 4.945-2.214 4.945-4.944 0-.276.224-.5.5-.5zM11.944 4c1.566 0 2.834 1.268 2.834 2.833v4.334c0 1.564-1.268 2.833-2.834 2.833-1.564 0-2.833-1.27-2.833-2.833V6.833C9.111 5.268 10.38 4 11.944 4zm0 1c-1.012 0-1.833.82-1.833 1.833v4.334c0 1.012.822 1.833 1.833 1.833 1.013 0 1.834-.82 1.834-1.833V6.833c0-1.013-.82-1.833-1.834-1.833z"
         />

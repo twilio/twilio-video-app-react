@@ -158,7 +158,7 @@ export default function ParticipantInfo({
         </div>
         <div className={classes.infoRowBottom}>
           <span className={classes.identity}>
-            <AudioLevelIndicator audioTrack={audioTrack} background="white" />
+            <AudioLevelIndicator audioTrack={audioTrack} />
             <Typography variant="body1" color="inherit" component="span">
               {participant.identity}
               {isLocalParticipant && ' (You)'}
