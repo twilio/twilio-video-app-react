@@ -3,8 +3,10 @@ import { shallow } from 'enzyme';
 import useLocalVideoToggle from '../../../../hooks/useLocalVideoToggle/useLocalVideoToggle';
 
 import ToggleVideoButton from './ToggleVideoButton';
+import VideoOffIcon from './VideoOffIcon';
+import VideoOnIcon from './VideoOnIcon';
 
-jest.mock('../../../hooks/useLocalVideoToggle/useLocalVideoToggle');
+jest.mock('../../../../hooks/useLocalVideoToggle/useLocalVideoToggle');
 
 const mockUseLocalVideoToggle = useLocalVideoToggle as jest.Mock<any>;
 
@@ -12,24 +14,22 @@ describe('the ToggleVideoButton component', () => {
   it('should render correctly when video is enabled', () => {
     mockUseLocalVideoToggle.mockImplementation(() => [true, () => {}]);
     const wrapper = shallow(<ToggleVideoButton />);
-    expect(wrapper.find('VideocamIcon').exists()).toBe(true);
-    expect(wrapper.find('VideocamOffIcon').exists()).toBe(false);
-    expect(wrapper.prop('title')).toBe('Mute Video');
+    expect(wrapper.prop('startIcon')).toEqual(<VideoOnIcon />);
+    expect(wrapper.text()).toBe('Stop Video');
   });
 
   it('should render correctly when video is disabled', () => {
     mockUseLocalVideoToggle.mockImplementation(() => [false, () => {}]);
     const wrapper = shallow(<ToggleVideoButton />);
-    expect(wrapper.find('VideocamIcon').exists()).toBe(false);
-    expect(wrapper.find('VideocamOffIcon').exists()).toBe(true);
-    expect(wrapper.prop('title')).toBe('Unmute Video');
+    expect(wrapper.prop('startIcon')).toEqual(<VideoOffIcon />);
+    expect(wrapper.text()).toBe('Start Video');
   });
 
   it('should call the correct toggle function when clicked', () => {
     const mockFn = jest.fn();
     mockUseLocalVideoToggle.mockImplementation(() => [false, mockFn]);
     const wrapper = shallow(<ToggleVideoButton />);
-    wrapper.find('WithStyles(ForwardRef(Fab))').simulate('click');
+    wrapper.simulate('click');
     expect(mockFn).toHaveBeenCalled();
   });
 
@@ -37,13 +37,12 @@ describe('the ToggleVideoButton component', () => {
     const mockFn = jest.fn();
     mockUseLocalVideoToggle.mockImplementation(() => [false, mockFn]);
     const wrapper = shallow(<ToggleVideoButton />);
-    const button = wrapper.find('WithStyles(ForwardRef(Fab))');
     Date.now = () => 100000;
-    button.simulate('click'); // Should register
+    wrapper.simulate('click'); // Should register
     Date.now = () => 100100;
-    button.simulate('click'); // Should be ignored
+    wrapper.simulate('click'); // Should be ignored
     Date.now = () => 100300;
-    button.simulate('click'); // Should register
+    wrapper.simulate('click'); // Should register
     expect(mockFn).toHaveBeenCalledTimes(2);
   });
 });

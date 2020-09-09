@@ -28,8 +28,8 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function ToggleScreenShareButton(props: { disabled?: boolean }) {
   const classes = useStyles();
   const screenShareParticipant = useScreenShareParticipant();
-  const { room, toggleScreenShare } = useVideoContext();
-  const disableScreenShareButton = screenShareParticipant && screenShareParticipant !== room.localParticipant;
+  const { toggleScreenShare } = useVideoContext();
+  const disableScreenShareButton = Boolean(screenShareParticipant);
   const isScreenShareSupported = navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia;
   const isDisabled = props.disabled || disableScreenShareButton || !isScreenShareSupported;
 
