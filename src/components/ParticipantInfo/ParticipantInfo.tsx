@@ -53,9 +53,6 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '100%',
       height: '100%',
     },
-    isDominantSpeaker: {
-      border: `${BORDER_SIZE}px solid rgb(35, 191, 110)`,
-    },
     isVideoSwitchedOff: {
       '& video': {
         filter: 'blur(4px) grayscale(1) brightness(0.5)',
@@ -114,13 +111,7 @@ interface ParticipantInfoProps {
   isDominantSpeaker?: boolean;
 }
 
-export default function ParticipantInfo({
-  participant,
-  onClick,
-  isSelected,
-  children,
-  isDominantSpeaker,
-}: ParticipantInfoProps) {
+export default function ParticipantInfo({ participant, onClick, isSelected, children }: ParticipantInfoProps) {
   const {
     room: { localParticipant },
   } = useVideoContext();
@@ -144,7 +135,6 @@ export default function ParticipantInfo({
     <div
       className={clsx(classes.container, {
         [classes.isVideoSwitchedOff]: isVideoSwitchedOff,
-        [classes.isDominantSpeaker]: isDominantSpeaker,
       })}
       onClick={onClick}
       data-cy-participant={participant.identity}
