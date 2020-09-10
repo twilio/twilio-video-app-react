@@ -3,6 +3,9 @@ import { makeStyles, Typography } from '@material-ui/core';
 import SwooshBackground from './SwooshBackground';
 import VideoLogo from './VideoLogo';
 import TwilioLogo from './TwilioLogo';
+import { useAppState } from '../../state';
+import UserMenu from './UserMenu/UserMenu';
+import { useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles({
   background: {
@@ -50,10 +53,13 @@ const useStyles = makeStyles({
 
 const IntroContainer: React.FC = props => {
   const classes = useStyles();
+  const { user } = useAppState();
+  const location = useLocation();
 
   return (
     <main className={classes.background}>
       <TwilioLogo className={classes.twilioLogo} />
+      {user && location.pathname !== '/login' && <UserMenu />}
       <div className={classes.container}>
         <div className={classes.swooshContainer}>
           <SwooshBackground />
