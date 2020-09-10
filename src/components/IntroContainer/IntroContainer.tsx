@@ -16,12 +16,16 @@ const useStyles = makeStyles({
     height: '100vh',
   },
   container: {
+    position: 'relative',
+  },
+  innerContainer: {
     display: 'flex',
     width: '888px',
     height: '379px',
     borderRadius: '8px',
     boxShadow: '0px 2px 4px 0px rgba(40, 42, 43, 0.3)',
     overflow: 'hidden',
+    position: 'relative',
   },
   swooshContainer: {
     position: 'relative',
@@ -49,30 +53,42 @@ const useStyles = makeStyles({
     color: 'white',
     margin: '1em 0 0',
   },
+  subContentContainer: {
+    position: 'absolute',
+    marginTop: '1em',
+  },
 });
 
-const IntroContainer: React.FC = props => {
+interface IntroContainerProps {
+  children: React.ReactNode;
+  subContent?: React.ReactNode;
+}
+
+const IntroContainer = (props: IntroContainerProps) => {
   const classes = useStyles();
   const { user } = useAppState();
   const location = useLocation();
 
   return (
-    <main className={classes.background}>
+    <div className={classes.background}>
       <TwilioLogo className={classes.twilioLogo} />
       {user && location.pathname !== '/login' && <UserMenu />}
       <div className={classes.container}>
-        <div className={classes.swooshContainer}>
-          <SwooshBackground />
-          <div className={classes.logoContainer}>
-            <VideoLogo />
-            <Typography variant="h6" className={classes.title}>
-              Twilio Programmable Video
-            </Typography>
+        <div className={classes.innerContainer}>
+          <div className={classes.swooshContainer}>
+            <SwooshBackground />
+            <div className={classes.logoContainer}>
+              <VideoLogo />
+              <Typography variant="h6" className={classes.title}>
+                Twilio Programmable Video
+              </Typography>
+            </div>
           </div>
+          <div className={classes.content}>{props.children}</div>
         </div>
-        <div className={classes.content}>{props.children}</div>
+        {props.subContent && <div className={classes.subContentContainer}>{props.subContent}</div>}
       </div>
-    </main>
+    </div>
   );
 };
 
