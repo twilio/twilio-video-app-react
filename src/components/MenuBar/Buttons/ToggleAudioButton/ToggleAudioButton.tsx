@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
@@ -15,13 +16,13 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function ToggleAudioButton(props: { disabled?: boolean }) {
+export default function ToggleAudioButton(props: { disabled?: boolean; className?: string }) {
   const classes = useStyles();
   const [isAudioEnabled, toggleAudioEnabled] = useLocalAudioToggle();
 
   return (
     <Button
-      className={classes.fab}
+      className={clsx(classes.fab, props.className)}
       onClick={toggleAudioEnabled}
       disabled={props.disabled}
       startIcon={isAudioEnabled ? <MicIcon /> : <MicOffIcon />}
