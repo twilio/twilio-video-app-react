@@ -186,7 +186,7 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
         <div className={classes.infoRow}>
           <h4 className={classes.identity}>
             <ParticipantConnectionIndicator participant={participant} />
-            {participant.identity.split('@')[0]}({participant.identity.split('@')[1]})
+            {participant.identity.split('@')[0]} ({participant.identity.split('@')[1]})
           </h4>
           <NetworkQualityLevel qualityLevel={networkQualityLevel} />
         </div>
