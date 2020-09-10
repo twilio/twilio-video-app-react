@@ -11,7 +11,7 @@ import { useAppState } from '../../../state';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
 export default function Menu() {
-  const { user, signOut } = useAppState();
+  const { signOut } = useAppState();
   const { room, localTracks } = useVideoContext();
 
   const [aboutOpen, setAboutOpen] = useState(false);
@@ -37,13 +37,8 @@ export default function Menu() {
           <Typography variant="body1">About</Typography>
         </MenuItem>
         <MenuItem onClick={() => setSettingsOpen(true)}>
-          <Typography variant="body1">Settings</Typography>
+          <Typography variant="body1">Audio and Video Settings</Typography>
         </MenuItem>
-        {user && (
-          <MenuItem onClick={handleSignOut}>
-            <Typography variant="body1">Logout</Typography>
-          </MenuItem>
-        )}
       </MenuContainer>
       <AboutDialog
         open={aboutOpen}
