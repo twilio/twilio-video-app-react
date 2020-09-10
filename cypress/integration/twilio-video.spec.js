@@ -8,197 +8,238 @@ const getRoomName = () =>
         .toString(36)
         .slice(2);
 
-context('A video app user', () => {
-  describe('before entering a room', () => {
+ context('Startup', () => {
 
-    it('should see their audio level indicator moving in the media device panel', () => {
-      cy.visit('/');
-      cy.get('clipPath rect')
-          .invoke('attr', 'y')
-          .should('be', 21);
-      cy.get('clipPath rect')
-          .invoke('attr', 'y')
-          .should('be.lessThan', 21);
-    });
-  });
+  before(() => { 
+                  cy.visit('http://ec2-54-172-8-58.compute-1.amazonaws.com/tabula/welcome/login/');
+         });
 
-  describe('when entering an empty room that one participant will join', () => {
-    const ROOM_NAME = getRoomName();
+          it('should fill login form and get error of "no active hearing for the case number"', () => {
 
-    before(() => {
-      cy.joinRoom('testuser', ROOM_NAME);
-      //cy.task('addParticipant', { name: 'test1', roomName: ROOM_NAME });
-    });
+            cy.get('[name="name"]').type('bhaidar').should('have.value', 'bhaidar');
+            
+            cy.get('[name="passPin"]').type('123$567').should('have.value', '123$567');
+            
+            cy.get('[name="legalCaseReference"]').type('1313').should('have.value', '1313');
+            
+            cy.get('form').submit();
 
-    after(() => {
-      cy.leaveRoom();
-    });
+           // cy.location('pathname', { timeout: 10000 }).should('eq', 'http://ec2-54-172-8-58.compute-1.amazonaws.com/tabula/welcome/login/prod/nohearing');
+           
+            //cy.title().should('eq', 'login');
+            cy.get('[class="alert alert-danger"]').should(($el) =>{
+            const text = $el.text()
+            expect(text).to.include('There is no active hearing for the case number you entered.')
+          })
+           
+          });
 
-    it('****WORKING TEST****: should be inside the correct room', () => {
 
-      cy.on('uncaught:exception', (err, runnable) => {
-        //expect(err.message).to.include('something about the error')
+          it('should fill login form and redirect to twilio video app', () => {
 
-        // using mocha's async done callback to finish
-        // this test so we prove that an uncaught exception was thrown
-        done()
+            cy.get('[name="name"]').type('bhaidar').should('have.value', 'bhaidar');
+            
+            cy.get('[name="passPin"]').type('123$567').should('have.value', '123$567');
+            
+            cy.get('[name="legalCaseReference"]').type('123503').should('have.value', '123503');
+            
+            cy.get('form').submit();
+            cy.location('pathname', { timeout: 10000 }).should('eq', 'http://ec2-54-172-8-58.compute-1.amazonaws.com/tabula/welcome/login/prod/nohearing');
+           
+          });
+        });       
+// context('A video app user', () => {
+ 
+//   describe('before entering a room', () => {
 
-        // return false to prevent the error from failing this test
-        console.log(err);
-        return false
-      })
-      cy.get('header').should('contain', ROOM_NAME);
-      cy.getParticipant('testuser@Hearing Officer').should('contain', 'testuser');
-    });
+//     it('should see their audio level indicator moving in the media device panel', () => {
+//       cy.visit('/');
+//       cy.get('clipPath rect')
+//           .invoke('attr', 'y')
+//           .should('be', 21);
+//       cy.get('clipPath rect')
+//           .invoke('attr', 'y')
+//           .should('be.lessThan', 21);
+//     });
+//   });
 
-    // it('should be able to see the other participant', () => {
-    //   cy.get('[data-cy-main-participant]').should('contain', 'test1');
-    //   cy.getParticipant('test1')
-    //     .should('contain', 'test1')
-    //     .shouldBeSameVideoAs('[data-cy-main-participant]');
-    // });
+//   describe('when entering an empty room that one participant will join', () => {
+//     const ROOM_NAME = getRoomName();
 
-    // it('should be able to hear the other participant', () => {
-    //   cy.getParticipant('test1').shouldBeMakingSound();
-    // });
+//     before(() => {
+//       cy.joinRoom('Hearing Officer','partyName' ,ROOM_NAME);
+//       cy.task('addParticipant', { name: 'test1', roomName: ROOM_NAME });
+//     });
 
-    // it('should see the participants audio level indicator moving', () => {
-    //   cy.getParticipant('test1')
-    //     .get('clipPath rect')
-    //     .invoke('attr', 'y')
-    //     .should('be', 21);
-    //   cy.get('clipPath rect')
-    //     .invoke('attr', 'y')
-    //     .should('be.lessThan', 21);
-    // });
+//     after(() => {
+//       cy.leaveRoom();
+//     });
 
-    // it('should see other participants disconnect when they close their browser', () => {
-    //   cy.task('participantCloseBrowser', 'test1');
-    //   cy.getParticipant('test1').should('not.exist');
-    //   cy.get('[data-cy-main-participant]').should('contain', 'testuser');
-    // });
-  });
+//     it('****WORKING TEST****: should be inside the correct room', () => {
 
-  describe('when entering a room with one participant', () => {
-    const ROOM_NAME = getRoomName();
+//       cy.on('uncaught:exception', (err, runnable) => {
+//         //expect(err.message).to.include('something about the error')
 
-    before(() => {
-      cy.task('addParticipant', { name: 'test1', roomName: ROOM_NAME });
-      cy.joinRoom('testuser', ROOM_NAME);
-    });
+//         // using mocha's async done callback to finish
+//         // this test so we prove that an uncaught exception was thrown
+//         done()
 
-    after(() => {
-      cy.leaveRoom();
-    });
+//         // return false to prevent the error from failing this test
+//         console.log(err);
+//         return false
+//       })
+//       cy.get('header').should('contain', ROOM_NAME);
+//       cy.getParticipant('testuser@Hearing Officer').should('contain', 'testuser');
+//     });
 
-    // it('should be able to see the other participant', () => {
-    //   cy.get('[data-cy-main-participant]').should('contain', 'test1');
-    //   cy.getParticipant('test1')
-    //       .should('contain', 'test1')
-    //       .shouldBeSameVideoAs('[data-cy-main-participant]');
-    // });
+//     // it('should be able to see the other participant', () => {
+//     //   cy.get('[data-cy-main-participant]').should('contain', 'test1');
+//     //   cy.getParticipant('test1')
+//     //     .should('contain', 'test1')
+//     //     .shouldBeSameVideoAs('[data-cy-main-participant]');
+//     // });
 
-    // it('should be able to hear the other participant', () => {
-    //   cy.getParticipant('test1').shouldBeMakingSound();
-    // });
-  });
+//     // it('should be able to hear the other participant', () => {
+//     //   cy.getParticipant('test1').shouldBeMakingSound();
+//     // });
 
-  describe('when entering an empty room that three participants will join', () => {
-    const ROOM_NAME = getRoomName();
+//     // it('should see the participants audio level indicator moving', () => {
+//     //   cy.getParticipant('test1')
+//     //     .get('clipPath rect')
+//     //     .invoke('attr', 'y')
+//     //     .should('be', 21);
+//     //   cy.get('clipPath rect')
+//     //     .invoke('attr', 'y')
+//     //     .should('be.lessThan', 21);
+//     // });
 
-    before(() => {
-      cy.joinRoom('testuser', ROOM_NAME);
-      cy.task('addParticipant', { name: 'test1', roomName: ROOM_NAME, color: 'red' });
-      cy.task('addParticipant', { name: 'test2', roomName: ROOM_NAME, color: 'blue' });
-      cy.task('addParticipant', { name: 'test3', roomName: ROOM_NAME, color: 'green' });
-    });
+//     // it('should see other participants disconnect when they close their browser', () => {
+//     //   cy.task('participantCloseBrowser', 'test1');
+//     //   cy.getParticipant('test1').should('not.exist');
+//     //   cy.get('[data-cy-main-participant]').should('contain', 'testuser');
+//     // });
+//   });
 
-    after(() => {
-      cy.leaveRoom();
-    });
+//   describe('when entering a room with one participant', () => {
+//     const ROOM_NAME = getRoomName();
 
-    // it('should be able to see the other participants', () => {
-    //   cy.getParticipant('test1')
-    //       .should('contain', 'test1')
-    //       .shouldBeColor('red');
-    //   cy.getParticipant('test2')
-    //       .should('contain', 'test2')
-    //       .shouldBeColor('blue');
-    //   cy.getParticipant('test3')
-    //       .should('contain', 'test3')
-    //       .shouldBeColor('green');
-    // });
+//     before(() => {
+//       cy.task('addParticipant', { name: 'test1', roomName: ROOM_NAME });
+//       cy.joinRoom('testuser', ROOM_NAME);
+//     });
 
-    // it('should be able to hear the other participants', () => {
-    //   cy.getParticipant('test1').shouldBeMakingSound();
-    //   cy.getParticipant('test2').shouldBeMakingSound();
-    //   cy.getParticipant('test3').shouldBeMakingSound();
-    // });
-  });
+//     after(() => {
+//       cy.leaveRoom();
+//     });
 
-  describe('when entering a room with three participants', () => {
-    const ROOM_NAME = getRoomName();
+//     // it('should be able to see the other participant', () => {
+//     //   cy.get('[data-cy-main-participant]').should('contain', 'test1');
+//     //   cy.getParticipant('test1')
+//     //       .should('contain', 'test1')
+//     //       .shouldBeSameVideoAs('[data-cy-main-participant]');
+//     // });
 
-    before(() => {
-      cy.task('addParticipant', { name: 'test1', roomName: ROOM_NAME, color: 'red' });
-      cy.task('addParticipant', { name: 'test2', roomName: ROOM_NAME, color: 'blue' });
-      cy.task('addParticipant', { name: 'test3', roomName: ROOM_NAME, color: 'green' });
-      cy.joinRoom('testuser', ROOM_NAME);
-    });
+//     // it('should be able to hear the other participant', () => {
+//     //   cy.getParticipant('test1').shouldBeMakingSound();
+//     // });
+//   });
 
-    after(() => {
-      cy.leaveRoom();
-    });
+//   describe('when entering an empty room that three participants will join', () => {
+//     const ROOM_NAME = getRoomName();
 
-    // it('should be able to see the other participants', () => {
-    //   cy.getParticipant('test1')
-    //       .should('contain', 'test1')
-    //       .shouldBeColor('red');
-    //   cy.getParticipant('test2')
-    //       .should('contain', 'test2')
-    //       .shouldBeColor('blue');
-    //   cy.getParticipant('test3')
-    //       .should('contain', 'test3')
-    //       .shouldBeColor('green');
-    // });
+//     before(() => {
+//       cy.joinRoom('testuser', ROOM_NAME);
+//       cy.task('addParticipant', { name: 'test1', roomName: ROOM_NAME, color: 'red' });
+//       cy.task('addParticipant', { name: 'test2', roomName: ROOM_NAME, color: 'blue' });
+//       cy.task('addParticipant', { name: 'test3', roomName: ROOM_NAME, color: 'green' });
+//     });
 
-    // it('should be able to hear the other participants', () => {
-    //   cy.getParticipant('test1').shouldBeMakingSound();
-    //   cy.getParticipant('test2').shouldBeMakingSound();
-    //   cy.getParticipant('test3').shouldBeMakingSound();
-    // });
+//     after(() => {
+//       cy.leaveRoom();
+//     });
 
-    // it('should see participant "test1" when they are the dominant speaker', () => {
-    //   cy.task('toggleParticipantAudio', 'test2');
-    //   cy.task('toggleParticipantAudio', 'test3');
-    //   cy.getParticipant('test2').find('[data-cy-audio-mute-icon]');
-    //   cy.getParticipant('test3').find('[data-cy-audio-mute-icon]');
-    //   cy.getParticipant('test1').shouldBeSameVideoAs('[data-cy-main-participant]');
-    // });
-    //
-    // it('should see participant "test2" when they are the dominant speaker', () => {
-    //   cy.task('toggleParticipantAudio', 'test1');
-    //   cy.task('toggleParticipantAudio', 'test2');
-    //   cy.getParticipant('test1').find('[data-cy-audio-mute-icon]');
-    //   cy.getParticipant('test3').find('[data-cy-audio-mute-icon]');
-    //   cy.getParticipant('test2').shouldBeSameVideoAs('[data-cy-main-participant]');
-    // });
-    //
-    // it('should see participant "test3" when they are the dominant speaker', () => {
-    //   cy.task('toggleParticipantAudio', 'test2');
-    //   cy.task('toggleParticipantAudio', 'test3');
-    //   cy.getParticipant('test1').find('[data-cy-audio-mute-icon]');
-    //   cy.getParticipant('test2').find('[data-cy-audio-mute-icon]');
-    //   cy.getParticipant('test3').shouldBeSameVideoAs('[data-cy-main-participant]');
-    // });
-    //
-    // it('should see participant "test3" when there is no dominant speaker', () => {
-    //   cy.task('toggleParticipantAudio', 'test3');
-    //   cy.getParticipant('test1').find('[data-cy-audio-mute-icon]');
-    //   cy.getParticipant('test2').find('[data-cy-audio-mute-icon]');
-    //   cy.getParticipant('test3').find('[data-cy-audio-mute-icon]');
-    //   cy.getParticipant('test3').shouldBeSameVideoAs('[data-cy-main-participant]');
-    // });
+//     // it('should be able to see the other participants', () => {
+//     //   cy.getParticipant('test1')
+//     //       .should('contain', 'test1')
+//     //       .shouldBeColor('red');
+//     //   cy.getParticipant('test2')
+//     //       .should('contain', 'test2')
+//     //       .shouldBeColor('blue');
+//     //   cy.getParticipant('test3')
+//     //       .should('contain', 'test3')
+//     //       .shouldBeColor('green');
+//     // });
 
-  });
-});
+//     // it('should be able to hear the other participants', () => {
+//     //   cy.getParticipant('test1').shouldBeMakingSound();
+//     //   cy.getParticipant('test2').shouldBeMakingSound();
+//     //   cy.getParticipant('test3').shouldBeMakingSound();
+//     // });
+//   });
+
+//   describe('when entering a room with three participants', () => {
+//     const ROOM_NAME = getRoomName();
+
+//     before(() => {
+//       cy.task('addParticipant', { name: 'test1', roomName: ROOM_NAME, color: 'red' });
+//       cy.task('addParticipant', { name: 'test2', roomName: ROOM_NAME, color: 'blue' });
+//       cy.task('addParticipant', { name: 'test3', roomName: ROOM_NAME, color: 'green' });
+//       cy.joinRoom('testuser', ROOM_NAME);
+//     });
+
+//     after(() => {
+//       cy.leaveRoom();
+//     });
+
+//     // it('should be able to see the other participants', () => {
+//     //   cy.getParticipant('test1')
+//     //       .should('contain', 'test1')
+//     //       .shouldBeColor('red');
+//     //   cy.getParticipant('test2')
+//     //       .should('contain', 'test2')
+//     //       .shouldBeColor('blue');
+//     //   cy.getParticipant('test3')
+//     //       .should('contain', 'test3')
+//     //       .shouldBeColor('green');
+//     // });
+
+//     // it('should be able to hear the other participants', () => {
+//     //   cy.getParticipant('test1').shouldBeMakingSound();
+//     //   cy.getParticipant('test2').shouldBeMakingSound();
+//     //   cy.getParticipant('test3').shouldBeMakingSound();
+//     // });
+
+//     // it('should see participant "test1" when they are the dominant speaker', () => {
+//     //   cy.task('toggleParticipantAudio', 'test2');
+//     //   cy.task('toggleParticipantAudio', 'test3');
+//     //   cy.getParticipant('test2').find('[data-cy-audio-mute-icon]');
+//     //   cy.getParticipant('test3').find('[data-cy-audio-mute-icon]');
+//     //   cy.getParticipant('test1').shouldBeSameVideoAs('[data-cy-main-participant]');
+//     // });
+//     //
+//     // it('should see participant "test2" when they are the dominant speaker', () => {
+//     //   cy.task('toggleParticipantAudio', 'test1');
+//     //   cy.task('toggleParticipantAudio', 'test2');
+//     //   cy.getParticipant('test1').find('[data-cy-audio-mute-icon]');
+//     //   cy.getParticipant('test3').find('[data-cy-audio-mute-icon]');
+//     //   cy.getParticipant('test2').shouldBeSameVideoAs('[data-cy-main-participant]');
+//     // });
+//     //
+//     // it('should see participant "test3" when they are the dominant speaker', () => {
+//     //   cy.task('toggleParticipantAudio', 'test2');
+//     //   cy.task('toggleParticipantAudio', 'test3');
+//     //   cy.getParticipant('test1').find('[data-cy-audio-mute-icon]');
+//     //   cy.getParticipant('test2').find('[data-cy-audio-mute-icon]');
+//     //   cy.getParticipant('test3').shouldBeSameVideoAs('[data-cy-main-participant]');
+//     // });
+//     //
+//     // it('should see participant "test3" when there is no dominant speaker', () => {
+//     //   cy.task('toggleParticipantAudio', 'test3');
+//     //   cy.getParticipant('test1').find('[data-cy-audio-mute-icon]');
+//     //   cy.getParticipant('test2').find('[data-cy-audio-mute-icon]');
+//     //   cy.getParticipant('test3').find('[data-cy-audio-mute-icon]');
+//     //   cy.getParticipant('test3').shouldBeSameVideoAs('[data-cy-main-participant]');
+//     // });
+
+//   });
+// });

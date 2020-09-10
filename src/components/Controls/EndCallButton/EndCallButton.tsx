@@ -20,7 +20,13 @@ export default function EndCallButton() {
   const { room } = useVideoContext();
 
   return (
-    <Tooltip title={'End Call'} onClick={() => room.disconnect()} placement="top" PopperProps={{ disablePortal: true }}>
+    <Tooltip
+      id="endCall"
+      title={'End Call'}
+      onClick={() => room.disconnect()}
+      placement="top"
+      PopperProps={{ disablePortal: true }}
+    >
       <Fab className={classes.fab} color="primary">
         <CallEnd />
       </Fab>
