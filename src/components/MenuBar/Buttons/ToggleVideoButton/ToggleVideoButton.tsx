@@ -4,8 +4,8 @@ import clsx from 'clsx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
-import VideoOffIcon from './VideoOffIcon';
-import VideoOnIcon from './VideoOnIcon';
+import VideoOffIcon from '../../../../icons/VideoOffIcon';
+import VideoOnIcon from '../../../../icons/VideoOnIcon';
 
 import useLocalVideoToggle from '../../../../hooks/useLocalVideoToggle/useLocalVideoToggle';
 
