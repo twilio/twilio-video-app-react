@@ -53,6 +53,7 @@ export type ErrorCallback = (error: TwilioError) => void;
 export type IVideoTrack = LocalVideoTrack | RemoteVideoTrack;
 
 export interface PreflightTestReport {
+  isTurnRequired: boolean;
   stats: {
     jitter: {
       min: number;
