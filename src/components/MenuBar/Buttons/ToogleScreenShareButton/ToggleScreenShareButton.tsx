@@ -2,7 +2,7 @@ import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
-import ScreenShareIcon from './ScreenShareIcon';
+import ScreenShareIcon from '../../../../icons/ScreenShareIcon';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import useScreenShareParticipant from '../../../../hooks/useScreenShareParticipant/useScreenShareParticipant';

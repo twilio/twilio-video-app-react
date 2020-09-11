@@ -3,8 +3,8 @@ import clsx from 'clsx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
-import MicIcon from './MicIcon';
-import MicOffIcon from './MicOffIcon';
+import MicIcon from '../../../../icons/MicIcon';
+import MicOffIcon from '../../../../icons/MicOffIcon';
 
 import useLocalAudioToggle from '../../../../hooks/useLocalAudioToggle/useLocalAudioToggle';
 
