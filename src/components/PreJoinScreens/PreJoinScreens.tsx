@@ -1,6 +1,7 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 import DeviceSelectionScreen from './DeviceSelectionScreen/DeviceSelectionScreen';
 import IntroContainer from '../IntroContainer/IntroContainer';
+import PreflightTestResult from './PreflightTest/PreflightTest';
 import RoomNameScreen from './RoomNameScreen/RoomNameScreen';
 import { useAppState } from '../../state';
 import { useParams } from 'react-router-dom';
@@ -34,7 +35,7 @@ export default function PreJoinScreens() {
   };
 
   return (
-    <IntroContainer>
+    <IntroContainer subContent={<PreflightTestResult />}>
       {step === Steps.roomNameStep && (
         <RoomNameScreen
           name={name}

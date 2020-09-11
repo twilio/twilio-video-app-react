@@ -56,6 +56,7 @@ const useStyles = makeStyles({
   subContentContainer: {
     position: 'absolute',
     marginTop: '1em',
+    width: '100%',
   },
 });
 
