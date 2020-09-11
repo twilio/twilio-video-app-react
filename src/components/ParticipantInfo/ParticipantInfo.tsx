@@ -4,7 +4,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
 
 import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
-import AvatarIcon from '../AvatarIcon/AvatarIcon';
+import AvatarIcon from '../../icons/AvatarIcon';
 import BandwidthWarning from '../BandwidthWarning/BandwidthWarning';
 import NetworkQualityLevel from '../NewtorkQualityLevel/NetworkQualityLevel';
 import PinIcon from './PinIcon/PinIcon';
