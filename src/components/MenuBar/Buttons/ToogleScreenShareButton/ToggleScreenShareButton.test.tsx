@@ -1,4 +1,3 @@
-import { EventEmitter } from 'events';
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import useScreenShareParticipant from '../../../../hooks/useScreenShareParticipant/useScreenShareParticipant';
@@ -9,7 +8,7 @@ import ToggleScreenShareButton, {
   SHARE_IN_PROGRESS_TEXT,
   SHARE_NOT_SUPPORTED_TEXT,
 } from './ToggleScreenShareButton';
-import ScreenShareIcon from './ScreenShareIcon';
+import ScreenShareIcon from '../../../../icons/ScreenShareIcon';
 import { Button, Tooltip } from '@material-ui/core';
 
 jest.mock('../../../../hooks/useScreenShareParticipant/useScreenShareParticipant');

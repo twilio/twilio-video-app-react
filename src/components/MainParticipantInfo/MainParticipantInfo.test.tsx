@@ -1,7 +1,7 @@
 import React from 'react';
 
 import MainParticipantInfo from './MainParticipantInfo';
-import AvatarIcon from '../AvatarIcon/AvatarIcon';
+import AvatarIcon from '../../icons/AvatarIcon';
 import { shallow } from 'enzyme';
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
 import usePublications from '../../hooks/usePublications/usePublications';

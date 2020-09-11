@@ -1,5 +1,5 @@
 import React from 'react';
-import AvatarIcon from '../AvatarIcon/AvatarIcon';
+import AvatarIcon from '../../icons/AvatarIcon';
 import ParticipantInfo from './ParticipantInfo';
 import PinIcon from './PinIcon/PinIcon';
 import { shallow } from 'enzyme';

@@ -3,8 +3,8 @@ import { shallow } from 'enzyme';
 import useLocalVideoToggle from '../../../../hooks/useLocalVideoToggle/useLocalVideoToggle';
 
 import ToggleVideoButton from './ToggleVideoButton';
-import VideoOffIcon from './VideoOffIcon';
-import VideoOnIcon from './VideoOnIcon';
+import VideoOffIcon from '../../../../icons/VideoOffIcon';
+import VideoOnIcon from '../../../../icons/VideoOnIcon';
 
 jest.mock('../../../../hooks/useLocalVideoToggle/useLocalVideoToggle');
 

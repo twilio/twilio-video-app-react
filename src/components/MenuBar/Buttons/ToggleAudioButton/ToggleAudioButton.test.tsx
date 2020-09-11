@@ -2,8 +2,8 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import useLocalAudioToggle from '../../../../hooks/useLocalAudioToggle/useLocalAudioToggle';
 
-import MicIcon from './MicIcon';
-import MicOffIcon from './MicOffIcon';
+import MicIcon from '../../../../icons/MicIcon';
+import MicOffIcon from '../../../../icons/MicOffIcon';
 import ToggleAudioButton from './ToggleAudioButton';
 
 jest.mock('../../../../hooks/useLocalAudioToggle/useLocalAudioToggle');
