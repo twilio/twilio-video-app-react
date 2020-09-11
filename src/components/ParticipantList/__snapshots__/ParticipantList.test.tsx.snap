@@ -14,7 +14,6 @@ exports[`the ParticipantList component should correctly render ParticipantInfo c
       participant="localParticipant"
     />
     <Participant
-      isDominantSpeaker={false}
       isSelected={false}
       key="0"
       onClick={[Function]}
@@ -25,7 +24,6 @@ exports[`the ParticipantList component should correctly render ParticipantInfo c
       }
     />
     <Participant
-      isDominantSpeaker={false}
       isSelected={false}
       key="1"
       onClick={[Function]}
