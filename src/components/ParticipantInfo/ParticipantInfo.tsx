@@ -4,10 +4,11 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
 
 import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
-import AvatarIcon from '../AvatarIcon/AvatarIcon';
+import AvatarIcon from '../../icons/AvatarIcon';
 import BandwidthWarning from '../BandwidthWarning/BandwidthWarning';
 import NetworkQualityLevel from '../NetworkQualityLevel/NetworkQualityLevel';
 import PinIcon from './PinIcon/PinIcon';
+import ScreenShareIcon from '../../icons/ScreenShareIcon';
 import Typography from '@material-ui/core/Typography';
 
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
@@ -30,10 +31,6 @@ const useStyles = makeStyles((theme: Theme) =>
         filter: 'none',
         objectFit: 'contain !important',
       },
-      '& svg': {
-        stroke: 'black',
-        strokeWidth: '0.8px',
-      },
       borderRadius: '4px',
       border: `${BORDER_SIZE}px solid rgb(245, 248, 255)`,
       paddingTop: `calc(${(9 / 16) * 100}% - ${BORDER_SIZE}px)`,
@@ -51,9 +48,6 @@ const useStyles = makeStyles((theme: Theme) =>
       left: 0,
       width: '100%',
       height: '100%',
-    },
-    isDominantSpeaker: {
-      border: `${BORDER_SIZE}px solid rgb(35, 191, 110)`,
     },
     isVideoSwitchedOff: {
       '& video': {
@@ -78,6 +72,15 @@ const useStyles = makeStyles((theme: Theme) =>
       background: 'black',
       height: '100%',
     },
+    screenShareIconContainer: {
+      background: 'rgba(0, 0, 0, 0.5)',
+      padding: '0.18em 0.3em',
+      marginRight: '0.3em',
+      display: 'flex',
+      '& path': {
+        fill: 'white',
+      },
+    },
     identity: {
       background: 'rgba(0, 0, 0, 0.5)',
       color: 'white',
@@ -86,7 +89,6 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       alignItems: 'center',
     },
-    infoRowTop: {},
     infoRowBottom: {
       display: 'flex',
       justifyContent: 'space-between',
@@ -119,7 +121,6 @@ export default function ParticipantInfo({
   onClick,
   isSelected,
   children,
-  isDominantSpeaker,
   isLocalParticipant,
 }: ParticipantInfoProps) {
   const publications = usePublications(participant);
@@ -128,6 +129,7 @@ export default function ParticipantInfo({
   const videoPublication = publications.find(p => p.trackName.includes('camera'));
 
   const isVideoEnabled = Boolean(videoPublication);
+  const isScreenShareEnabled = publications.find(p => p.trackName.includes('screen'));
 
   const videoTrack = useTrack(videoPublication);
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
@@ -140,18 +142,20 @@ export default function ParticipantInfo({
     <div
       className={clsx(classes.container, {
         [classes.isVideoSwitchedOff]: isVideoSwitchedOff,
-        [classes.isDominantSpeaker]: isDominantSpeaker,
       })}
       onClick={onClick}
       data-cy-participant={participant.identity}
     >
       <div className={classes.infoContainer}>
-        <div className={classes.infoRowTop}>
-          <div className={classes.networkQualityContainer}>
-            <NetworkQualityLevel participant={participant} />
-          </div>
+        <div className={classes.networkQualityContainer}>
+          <NetworkQualityLevel participant={participant} />
         </div>
         <div className={classes.infoRowBottom}>
+          {isScreenShareEnabled && (
+            <span className={classes.screenShareIconContainer}>
+              <ScreenShareIcon />
+            </span>
+          )}
           <span className={classes.identity}>
             <AudioLevelIndicator audioTrack={audioTrack} />
             <Typography variant="body1" color="inherit" component="span">

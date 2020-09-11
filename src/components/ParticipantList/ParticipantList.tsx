@@ -5,7 +5,6 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import useParticipants from '../../hooks/useParticipants/useParticipants';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
-import useDominantSpeaker from '../../hooks/useDominantSpeaker/useDominantSpeaker';
 import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -15,6 +14,7 @@ const useStyles = makeStyles((theme: Theme) =>
       overflowY: 'auto',
       background: 'rgb(79, 83, 85)',
       gridArea: '1 / 2 / 1 / 3',
+      zIndex: 1,
       [theme.breakpoints.down('xs')]: {
         overflowY: 'initial',
         overflowX: 'auto',
@@ -39,7 +39,6 @@ export default function ParticipantList() {
     room: { localParticipant },
   } = useVideoContext();
   const participants = useParticipants();
-  const dominantSpeaker = useDominantSpeaker();
   const [selectedParticipant, setSelectedParticipant] = useSelectedParticipant();
   const screenShareParticipant = useScreenShareParticipant();
   const isRemoteParticipantScreenSharing = screenShareParticipant && screenShareParticipant !== localParticipant;
@@ -64,7 +63,6 @@ export default function ParticipantList() {
             key={participant.sid}
             participant={participant}
             isSelected={participant === selectedParticipant}
-            isDominantSpeaker={participant === dominantSpeaker}
             onClick={() => setSelectedParticipant(participant)}
           />
         ))}
