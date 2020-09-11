@@ -112,7 +112,6 @@ interface ParticipantInfoProps {
   children: React.ReactNode;
   onClick: () => void;
   isSelected: boolean;
-  isDominantSpeaker?: boolean;
   isLocalParticipant?: boolean;
 }
 

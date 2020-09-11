@@ -102,20 +102,4 @@ describe('the ParticipantInfo component', () => {
     );
     expect(wrapper.text()).not.toContain('mockIdentity (You)');
   });
-
-  it('should add the isDominantSpeaker class when the participant is not the dominant speaker', () => {
-    mockUseIsTrackSwitchedOff.mockImplementation(() => false);
-    mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
-    const wrapper = shallow(
-      <ParticipantInfo
-        onClick={() => {}}
-        isSelected={false}
-        participant={{ identity: 'mockIdentity' } as any}
-        isDominantSpeaker
-      >
-        mock children
-      </ParticipantInfo>
-    );
-    expect(wrapper.find('.makeStyles-container-1').prop('className')).toContain('isDominantSpeaker');
-  });
 });
