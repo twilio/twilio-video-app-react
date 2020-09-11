@@ -5,6 +5,8 @@ import useGetPreflightTokens from './useGetPreflightTokens/useGetPreflightTokens
 import getNetworkCondition from './getNetworkCondition/getNetworkCondition';
 import ProgressIndicator from './ProgressIndicator/ProgressIndicator';
 import { SuccessIcon } from './icons/SuccessIcon';
+import WarningIcon from './icons/WarningIcon';
+import ErrorIcon from './icons/ErrorIcon';
 
 export const TEST_DURATION = 10000;
 
@@ -47,20 +49,20 @@ export function ResultComponent({
   testFailure?: Error;
 }) {
   if (tokenError || testFailure) {
-    return <Result icon={<SuccessIcon />}>There was a problem connecting to the network.</Result>;
+    return <Result icon={<ErrorIcon />}>There was a problem connecting to the network</Result>;
   }
 
   if (networkCondition === NetworkCondition.Red) {
     return (
-      <Result icon={<SuccessIcon />}>
-        Poor network conditions. You may experience severely degraded video performance.
+      <Result icon={<ErrorIcon />}>
+        Poor network conditions. You may experience poor call quality and reliability.
       </Result>
     );
   }
 
   if (networkCondition === NetworkCondition.Yellow) {
     return (
-      <Result icon={<SuccessIcon />}>Poor network conditions. You may experience degraded video performance.</Result>
+      <Result icon={<WarningIcon />}>Poor network conditions. You may experience degraded video performance.</Result>
     );
   }
 
