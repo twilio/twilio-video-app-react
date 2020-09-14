@@ -1,9 +1,14 @@
 import React from 'react';
 import AboutDialog from './AboutDialog';
 import { render } from '@testing-library/react';
+import { useAppState } from '../../../state';
 
 jest.mock('twilio-video', () => ({ version: '1.2', isSupported: true }));
 jest.mock('../../../../package.json', () => ({ version: '1.3' }));
+jest.mock('../../../state');
+
+const mockUseAppState = useAppState as jest.Mock<any>;
+mockUseAppState.mockImplementation(() => ({ roomType: undefined }));
 
 describe('the AboutDialog component', () => {
   it('should display Video.isSupported', () => {
@@ -19,6 +24,17 @@ describe('the AboutDialog component', () => {
   it('should display the package.json version', () => {
     const { getByText } = render(<AboutDialog open={true} onClose={() => {}} />);
     expect(getByText('App Version: 1.3')).toBeTruthy();
+  });
+
+  it('should not display the room type when it is unknown', () => {
+    const { queryByText } = render(<AboutDialog open={true} onClose={() => {}} />);
+    expect(queryByText('Room Type:')).not.toBeTruthy();
+  });
+
+  it('should display the room type', () => {
+    mockUseAppState.mockImplementationOnce(() => ({ roomType: 'group-small' }));
+    const { getByText } = render(<AboutDialog open={true} onClose={() => {}} />);
+    expect(getByText('Room Type: group-small')).toBeTruthy();
   });
 
   describe('when running locally', () => {
