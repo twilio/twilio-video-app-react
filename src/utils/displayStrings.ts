@@ -1,6 +1,6 @@
 export const ERROR_MESSAGE = {
   ROOM_NOT_FOUND:
-    'The room has not been started. If your legal session is due to start please wait a minute and try again',
+    'This room is not yet open.  If your session is due to start please wait one minute and try again.  If you continue to experience an inability to connect please confirm your hearing start time with the Impartial Hearing Office.',
   INVALID_CREDENTIALS: '. Please make sure you are using the correct credentials.',
   UNSUPPORTED_MESSAGE: 'This browser is not supported. Please change/upgrade your browser.',
   NETWORK_ERROR: 'Network Error',
