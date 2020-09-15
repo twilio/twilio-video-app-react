@@ -80,11 +80,10 @@ const mobileAndTabletCheck = function() {
   })(navigator.userAgent || navigator.vendor || (window as any).MyNamespace); //window.opera);
   return check;
 };
-let submitButtonValue = JOIN_ROOM_MESSAGE;
 
 export default function MenuBar() {
   const classes = useStyles();
-
+  const [submitButtonValue, setSubmitButtonValue] = useState<any>(JOIN_ROOM_MESSAGE);
   const { setError, getToken, isFetching, authoriseParticipant } = useAppState();
   const { isConnecting, connect, room, localTracks } = useVideoContext();
   const roomState = useRoomState();
@@ -98,17 +97,17 @@ export default function MenuBar() {
       const response = await getToken(participantInformation);
 
       if (response === ERROR_MESSAGE.ROOM_NOT_FOUND) {
-        submitButtonValue = RETRY_ROOM_MESSAGE;
+        setSubmitButtonValue(RETRY_ROOM_MESSAGE);
         return <div>{alert.show(ERROR_MESSAGE.ROOM_NOT_FOUND)}</div>;
       } else {
         await connect(response);
-        submitButtonValue = JOIN_ROOM_MESSAGE;
+        setSubmitButtonValue(JOIN_ROOM_MESSAGE);
       }
     } catch (err) {
       if (err.response) setError({ message: err.response.data });
       else setError({ message: ERROR_MESSAGE.NETWORK_ERROR });
 
-      submitButtonValue = JOIN_ROOM_MESSAGE;
+      setSubmitButtonValue(JOIN_ROOM_MESSAGE);
     }
   }
 
