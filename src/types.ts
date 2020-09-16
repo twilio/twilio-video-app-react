@@ -13,11 +13,6 @@ declare module 'twilio-video' {
   interface LocalVideoTrack {
     isSwitchedOff: undefined;
     setPriority: undefined;
-    restart: (constraints: MediaStreamConstraints['video']) => Promise<void>;
-  }
-
-  interface LocalAudioTrack {
-    restart: (constraints: MediaStreamConstraints['audio']) => Promise<void>;
   }
 
   interface RemoteVideoTrack {
@@ -51,3 +46,5 @@ export type Callback = (...args: any[]) => void;
 export type ErrorCallback = (error: TwilioError) => void;
 
 export type IVideoTrack = LocalVideoTrack | RemoteVideoTrack;
+
+export type RoomType = 'group' | 'group-small' | 'peer-to-peer';
