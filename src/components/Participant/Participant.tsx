@@ -10,6 +10,7 @@ interface ParticipantProps {
   onClick: () => void;
   isSelected: boolean;
   isDominantSpeaker?: boolean;
+  isLocalParticipant?: boolean;
 }
 
 export default function Participant({
@@ -18,9 +19,15 @@ export default function Participant({
   enableScreenShare,
   onClick,
   isSelected,
+  isLocalParticipant,
 }: ParticipantProps) {
   return (
-    <ParticipantInfo participant={participant} onClick={onClick} isSelected={isSelected}>
+    <ParticipantInfo
+      participant={participant}
+      onClick={onClick}
+      isSelected={isSelected}
+      isLocalParticipant={isLocalParticipant}
+    >
       <ParticipantTracks participant={participant} disableAudio={disableAudio} enableScreenShare={enableScreenShare} />
     </ParticipantInfo>
   );

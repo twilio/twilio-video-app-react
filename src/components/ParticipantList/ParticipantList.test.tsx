@@ -61,4 +61,13 @@ describe('the ParticipantList component', () => {
         .prop('isSelected')
     ).toBe(true);
   });
+
+  it('should not render anything when there are no remote particiants', () => {
+    const mockRoom: any = new EventEmitter();
+    mockRoom.participants = new Map([]);
+    mockRoom.localParticipant = 'localParticipant';
+    mockedVideoContext.mockImplementation(() => ({ room: mockRoom }));
+    const wrapper = shallow(<ParticipantList />);
+    expect(wrapper.getElement()).toBe(null);
+  });
 });
