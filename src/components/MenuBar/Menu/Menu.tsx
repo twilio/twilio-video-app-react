@@ -4,10 +4,13 @@ import Button from '@material-ui/core/Button';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MenuContainer from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import MoreIcon from '@material-ui/icons/MoreVert';
 import SettingsDialog from '../SettingsDialog/SettingsDialog';
 import Typography from '@material-ui/core/Typography';
+import { Theme, useMediaQuery } from '@material-ui/core';
 
 export default function Menu() {
+  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
   const [aboutOpen, setAboutOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -17,8 +20,14 @@ export default function Menu() {
   return (
     <>
       <Button onClick={() => setMenuOpen(state => !state)} ref={anchorRef}>
-        Settings
-        <ExpandMoreIcon />
+        {isMobile ? (
+          <MoreIcon />
+        ) : (
+          <>
+            Settings
+            <ExpandMoreIcon />
+          </>
+        )}
       </Button>
       <MenuContainer open={menuOpen} onClose={() => setMenuOpen(state => !state)} anchorEl={anchorRef.current}>
         <MenuItem onClick={() => setAboutOpen(true)}>

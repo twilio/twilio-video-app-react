@@ -42,6 +42,12 @@ const useStyles = makeStyles((theme: Theme) =>
         margin: '0 2em',
       },
     },
+    hideMobile: {
+      display: 'initial',
+      [theme.breakpoints.down('sm')]: {
+        display: 'none',
+      },
+    },
   })
 );
 
@@ -62,15 +68,17 @@ export default function MenuBar() {
       )}
       <footer className={classes.container}>
         <Grid container justify="space-around" alignItems="center">
-          <Grid style={{ flex: 1 }}>
+          <Grid style={{ flex: 1 }} className={classes.hideMobile}>
             <Typography variant="body1">{room.name}</Typography>
           </Grid>
-          <Grid>
-            <ToggleAudioButton disabled={isReconnecting} />
-            <ToggleVideoButton disabled={isReconnecting} />
-            {!isSharingScreen && <ToggleScreenShareButton disabled={isReconnecting} />}
+          <Grid item>
+            <Grid container justify="center">
+              <ToggleAudioButton disabled={isReconnecting} />
+              <ToggleVideoButton disabled={isReconnecting} />
+              {!isSharingScreen && <ToggleScreenShareButton disabled={isReconnecting} />}
+            </Grid>
           </Grid>
-          <Grid style={{ flex: 1 }}>
+          <Grid style={{ flex: 1 }} className={classes.hideMobile}>
             <Grid container justify="flex-end">
               <Menu />
               <EndCallButton />
