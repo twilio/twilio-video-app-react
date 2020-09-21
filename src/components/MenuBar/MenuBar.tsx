@@ -2,6 +2,8 @@ import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
+import EndCallButton from './Buttons/EndCallButton/EndCallButton';
+import FlipCameraButton from './FlipCameraButton/FlipCameraButton';
 import Menu from './Menu/Menu';
 
 import useRoomState from '../../hooks/useRoomState/useRoomState';
@@ -10,7 +12,6 @@ import { Typography, Grid } from '@material-ui/core';
 import ToggleAudioButton from './Buttons/ToggleAudioButton/ToggleAudioButton';
 import ToggleVideoButton from './Buttons/ToggleVideoButton/ToggleVideoButton';
 import ToggleScreenShareButton from './Buttons/ToogleScreenShareButton/ToggleScreenShareButton';
-import EndCallButton from './Buttons/EndCallButton/EndCallButton';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,6 +24,10 @@ const useStyles = makeStyles((theme: Theme) =>
       position: 'fixed',
       display: 'flex',
       padding: '0 1em',
+      zIndex: 1,
+      [theme.breakpoints.down('sm')]: {
+        padding: 0,
+      },
     },
     screenShareBanner: {
       position: 'fixed',
@@ -76,6 +81,7 @@ export default function MenuBar() {
               <ToggleAudioButton disabled={isReconnecting} />
               <ToggleVideoButton disabled={isReconnecting} />
               {!isSharingScreen && <ToggleScreenShareButton disabled={isReconnecting} />}
+              <FlipCameraButton />
             </Grid>
           </Grid>
           <Grid style={{ flex: 1 }} className={classes.hideMobile}>

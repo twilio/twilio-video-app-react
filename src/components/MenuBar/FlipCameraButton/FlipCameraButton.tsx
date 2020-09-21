@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { DEFAULT_VIDEO_CONSTRAINTS } from '../../../constants';
-import FlipCameraIosIcon from '@material-ui/icons/FlipCameraIos';
-import { IconButton } from '@material-ui/core';
+import FlipCameraIcon from './FlipCameraIcon';
+import { Button } from '@material-ui/core';
 import { LocalVideoTrack } from 'twilio-video';
 import useMediaStreamTrack from '../../../hooks/useMediaStreamTrack/useMediaStreamTrack';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
@@ -33,8 +33,8 @@ export default function FlipCameraButton() {
   }, [mediaStreamTrack, videoTrack]);
 
   return supportsFacingMode ? (
-    <IconButton onClick={toggleFacingMode} disabled={!videoTrack}>
-      <FlipCameraIosIcon />
-    </IconButton>
+    <Button onClick={toggleFacingMode} disabled={!videoTrack} startIcon={<FlipCameraIcon />}>
+      Flip Camera
+    </Button>
   ) : null;
 }
