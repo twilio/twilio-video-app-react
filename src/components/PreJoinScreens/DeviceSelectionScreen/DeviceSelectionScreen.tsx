@@ -44,15 +44,15 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
         Join {roomName}
       </Typography>
 
-      <Grid container spacing={2}>
-        <Grid item sm={7}>
+      <Grid container spacing={2} justify="center">
+        <Grid item sm={7} xs={10}>
           <LocalVideoPreview identity={name} />
           <Button onClick={() => setIsSettingsOpen(true)} startIcon={<SettingsIcon />} className={classes.marginTop}>
             Audio and Video Settings
           </Button>
           <SettingsDialog open={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
         </Grid>
-        <Grid item sm={5}>
+        <Grid item sm={5} xs={12}>
           <ToggleAudioButton className={classes.deviceButton} />
           <ToggleVideoButton className={classes.deviceButton} />
           <Grid container justify="space-between" style={{ margin: '0.9em 0.6em' }}>

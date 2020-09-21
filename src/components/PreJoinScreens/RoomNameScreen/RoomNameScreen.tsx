@@ -10,8 +10,8 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'space-between',
     margin: '1.5em 0',
-    '& > div': {
-      width: '48%',
+    '& div:not(:last-child)': {
+      marginRight: '0.5em',
     },
   },
 });
@@ -51,29 +51,26 @@ export default function RoomNameScreen({ name, roomName, setName, setRoomName, h
       <form onSubmit={handleSubmit}>
         <div className={classes.inputContainer}>
           {!hasUsername && (
-            <div>
-              <TextField
-                id="input-user-name"
-                label="Your Name"
-                variant="outlined"
-                fullWidth
-                size="small"
-                value={name}
-                onChange={handleNameChange}
-              />
-            </div>
-          )}
-          <div>
             <TextField
-              id="input-room-name"
-              label="Room Name"
+              id="input-user-name"
+              label="Your Name"
               variant="outlined"
               fullWidth
               size="small"
-              value={roomName}
-              onChange={handleRoomNameChange}
+              value={name}
+              onChange={handleNameChange}
             />
-          </div>
+          )}
+
+          <TextField
+            id="input-room-name"
+            label="Room Name"
+            variant="outlined"
+            fullWidth
+            size="small"
+            value={roomName}
+            onChange={handleRoomNameChange}
+          />
         </div>
         <Grid container justify="flex-end">
           <Button variant="contained" type="submit" color="primary" disabled={!name || !roomName}>
