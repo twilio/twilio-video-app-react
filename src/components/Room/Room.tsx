@@ -8,12 +8,10 @@ const Container = styled('div')(({ theme }) => ({
   height: '100%',
   display: 'grid',
   gridTemplateColumns: `1fr ${theme.sidebarWidth}px`,
-  gridTemplateAreas: '"participantList ."',
   gridTemplateRows: '100%',
-  [theme.breakpoints.down('xs')]: {
-    gridTemplateAreas: '"participantList" "."',
+  [theme.breakpoints.down('sm')]: {
     gridTemplateColumns: `auto`,
-    gridTemplateRows: `calc(100% - ${theme.sidebarMobileHeight + 12}px) ${theme.sidebarMobileHeight + 6}px`,
+    gridTemplateRows: `1fr ${theme.sidebarMobileHeight + theme.footerHeight + 6}px`,
     gridGap: '6px',
   },
 }));

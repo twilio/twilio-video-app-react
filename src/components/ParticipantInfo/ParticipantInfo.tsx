@@ -36,10 +36,11 @@ const useStyles = makeStyles((theme: Theme) =>
       border: `${BORDER_SIZE}px solid rgb(245, 248, 255)`,
       paddingTop: `calc(${(9 / 16) * 100}% - ${BORDER_SIZE}px)`,
       background: 'black',
-      [theme.breakpoints.down('xs')]: {
+      [theme.breakpoints.down('sm')]: {
         height: theme.sidebarMobileHeight,
         width: `${(theme.sidebarMobileHeight * 16) / 9}px`,
         marginRight: '3px',
+        marginBottom: '0',
         fontSize: '10px',
       },
     },
