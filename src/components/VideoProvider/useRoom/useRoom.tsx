@@ -1,7 +1,7 @@
 import { Callback } from '../../../types';
 import EventEmitter from 'events';
 import { isMobile } from '../../../utils';
-import Video, { ConnectOptions, LocalTrack, Room } from 'twilio-video';
+import Video, { ConnectOptions, LocalTrack, LocalTrackPublication, Room } from 'twilio-video';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 // @ts-ignore
@@ -29,7 +29,7 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
   const connect = useCallback(
     token => {
       setIsConnecting(true);
-      return Video.connect(token, { ...optionsRef.current, tracks: [] }).then(
+      return Video.connect(token, { ...optionsRef.current, tracks: localTracksRef.current }).then(
         newRoom => {
           setRoom(newRoom);
           const disconnect = () => newRoom.disconnect();
@@ -47,13 +47,11 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
           // @ts-ignore
           window.twilioRoom = newRoom;
 
-          localTracksRef.current.forEach(track =>
-            // Tracks can be supplied as arguments to the Video.connect() function and they will automatically be published.
-            // However, tracks must be published manually in order to set the priority on them.
-            // All video tracks are published with 'low' priority. This works because the video
-            // track that is displayed in the 'MainParticipant' component will have it's priority
+          newRoom.localParticipant.videoTracks.forEach(publication =>
+            // All video tracks are published with 'low' priority because the video track
+            // that is displayed in the 'MainParticipant' component will have it's priority
             // set to 'high' via track.setPriority()
-            newRoom.localParticipant.publishTrack(track, { priority: track.kind === 'video' ? 'low' : 'standard' })
+            publication.setPriority('low')
           );
 
           setIsConnecting(false);
