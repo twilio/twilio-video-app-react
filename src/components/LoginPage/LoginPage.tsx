@@ -88,38 +88,36 @@ export default function LoginPage() {
       )}
 
       {process.env.REACT_APP_SET_AUTH === 'passcode' && (
-        <form onSubmit={handleSubmit}>
-          <>
-            <Typography variant="h5" className={classes.gutterBottom}>
-              Enter passcode to join a room
-            </Typography>
-            <form onSubmit={handleSubmit}>
-              <Grid container justify="space-between">
+        <>
+          <Typography variant="h5" className={classes.gutterBottom}>
+            Enter passcode to join a room
+          </Typography>
+          <form onSubmit={handleSubmit}>
+            <Grid container justify="space-between">
+              <div>
+                <TextField
+                  id="input-passcode"
+                  label="Passcode"
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setPasscode(e.target.value)}
+                  type="password"
+                />
                 <div>
-                  <TextField
-                    id="input-passcode"
-                    label="Passcode"
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setPasscode(e.target.value)}
-                    type="password"
-                  />
-                  <div>
-                    {authError && (
-                      <Typography variant="caption" className={classes.errorMessage}>
-                        <ErrorOutlineIcon />
-                        {authError.message}
-                      </Typography>
-                    )}
-                  </div>
+                  {authError && (
+                    <Typography variant="caption" className={classes.errorMessage}>
+                      <ErrorOutlineIcon />
+                      {authError.message}
+                    </Typography>
+                  )}
                 </div>
-                <div>
-                  <Button variant="contained" color="primary" type="submit" disabled={!passcode.length}>
-                    Submit
-                  </Button>
-                </div>
-              </Grid>
-            </form>
-          </>
-        </form>
+              </div>
+              <div>
+                <Button variant="contained" color="primary" type="submit" disabled={!passcode.length}>
+                  Submit
+                </Button>
+              </div>
+            </Grid>
+          </form>
+        </>
       )}
     </IntroContainer>
   );
