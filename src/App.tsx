@@ -2,6 +2,7 @@ import React from 'react';
 import { styled, Theme } from '@material-ui/core/styles';
 
 import MenuBar from './components/MenuBar/MenuBar';
+import MobileTopMenuBar from './components/MobileTopMenuBar/MobileTopMenuBar';
 import PreJoinScreens from './components/PreJoinScreens/PreJoinScreens';
 import ReconnectingNotification from './components/ReconnectingNotification/ReconnectingNotification';
 import Room from './components/Room/Room';
@@ -38,6 +39,7 @@ export default function App() {
           <PreJoinScreens />
         ) : (
           <>
+            <MobileTopMenuBar />
             <Room />
             <MenuBar />
           </>
