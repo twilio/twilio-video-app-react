@@ -1,13 +1,14 @@
 import React from 'react';
 import { styled } from '@material-ui/core/styles';
+import { Participant } from 'twilio-video';
+import useParticipantNetworkQualityLevel from '../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel';
 
 const Container = styled('div')({
   display: 'flex',
   alignItems: 'flex-end',
   '& div': {
     width: '2px',
-    border: '1px solid black',
-    boxSizing: 'content-box',
+    marginRight: '1px',
     '&:not(:last-child)': {
       borderRight: 'none',
     },
@@ -15,17 +16,21 @@ const Container = styled('div')({
 });
 
 const STEP = 3;
+const BARS_ARRAY = [0, 1, 2, 3, 4];
 
-export default function NetworkQualityLevel({ qualityLevel }: { qualityLevel: number | null }) {
-  if (qualityLevel === null) return null;
+export default function NetworkQualityLevel({ participant }: { participant: Participant }) {
+  const networkQualityLevel = useParticipantNetworkQualityLevel(participant);
+
+  if (networkQualityLevel === null) return null;
+
   return (
     <Container>
-      {[0, 1, 2, 3, 4].map(level => (
+      {BARS_ARRAY.map(level => (
         <div
           key={level}
           style={{
             height: `${STEP * (level + 1)}px`,
-            background: qualityLevel > level ? '#0c0' : '#040',
+            background: networkQualityLevel > level ? 'white' : 'rgba(255, 255, 255, 0.2)',
           }}
         />
       ))}

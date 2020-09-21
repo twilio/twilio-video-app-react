@@ -3,11 +3,15 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { LocalVideoTrack, Participant, RemoteVideoTrack } from 'twilio-video';
 
+import AvatarIcon from '../../icons/AvatarIcon';
 import BandwidthWarning from '../BandwidthWarning/BandwidthWarning';
+import Typography from '@material-ui/core/Typography';
+
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
 import usePublications from '../../hooks/usePublications/usePublications';
+import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 import useTrack from '../../hooks/useTrack/useTrack';
-import VideocamOff from '@material-ui/icons/VideocamOff';
+import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 const useStyles = makeStyles({
   container: {
@@ -22,9 +26,9 @@ const useStyles = makeStyles({
     },
   },
   identity: {
-    background: 'rgba(0, 0, 0, 0.7)',
+    background: 'rgba(0, 0, 0, 0.5)',
+    color: 'white',
     padding: '0.1em 0.3em',
-    margin: '1em',
     fontSize: '1.2em',
     display: 'inline-flex',
     '& svg': {
@@ -35,8 +39,21 @@ const useStyles = makeStyles({
     position: 'absolute',
     zIndex: 1,
     height: '100%',
-    padding: '0.4em',
     width: '100%',
+  },
+  fullWidth: {
+    gridArea: '1 / 1 / 1 / 3',
+  },
+  avatarContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: 'black',
+    height: '100%',
+    width: '100%',
+    '& svg': {
+      transform: 'scale(2)',
+    },
   },
 });
 
@@ -47,6 +64,12 @@ interface MainParticipantInfoProps {
 
 export default function MainParticipantInfo({ participant, children }: MainParticipantInfoProps) {
   const classes = useStyles();
+  const {
+    room: { localParticipant },
+  } = useVideoContext();
+  const isLocal = localParticipant === participant;
+  const screenShareParticipant = useScreenShareParticipant();
+  const isRemoteParticipantScreenSharing = screenShareParticipant && screenShareParticipant !== localParticipant;
 
   const publications = usePublications(participant);
   const videoPublication = publications.find(p => p.trackName.includes('camera'));
@@ -59,15 +82,25 @@ export default function MainParticipantInfo({ participant, children }: MainParti
   return (
     <div
       data-cy-main-participant
-      className={clsx(classes.container, { [classes.isVideoSwitchedOff]: isVideoSwitchedOff })}
+      className={clsx(classes.container, {
+        [classes.isVideoSwitchedOff]: isVideoSwitchedOff,
+        [classes.fullWidth]: !isRemoteParticipantScreenSharing,
+      })}
     >
       <div className={classes.infoContainer}>
-        <h4 className={classes.identity}>
-          {participant.identity}
-          {!isVideoEnabled && <VideocamOff />}
-        </h4>
+        <div className={classes.identity}>
+          <Typography variant="body1" color="inherit">
+            {participant.identity}
+            {isLocal && ' (You)'}
+          </Typography>
+        </div>
       </div>
       {isVideoSwitchedOff && <BandwidthWarning />}
+      {!isVideoEnabled && (
+        <div className={classes.avatarContainer}>
+          <AvatarIcon />
+        </div>
+      )}
       {children}
     </div>
   );

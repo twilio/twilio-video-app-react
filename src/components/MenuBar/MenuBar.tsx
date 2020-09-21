@@ -1,26 +1,32 @@
 import React, { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
-import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
-import ToggleFullscreenButton from './ToggleFullScreenButton/ToggleFullScreenButton';
-import Toolbar from '@material-ui/core/Toolbar';
 import Menu from './Menu/Menu';
 
 import { useAppState } from '../../state';
 import { useParams } from 'react-router-dom';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
-import { Typography } from '@material-ui/core';
-import FlipCameraButton from './FlipCameraButton/FlipCameraButton';
-import LocalAudioLevelIndicator from './DeviceSelector/LocalAudioLevelIndicator/LocalAudioLevelIndicator';
+import { Typography, Grid } from '@material-ui/core';
+import ToggleAudioButton from './Buttons/ToggleAudioButton/ToggleAudioButton';
+import ToggleVideoButton from './Buttons/ToggleVideoButton/ToggleVideoButton';
+import ToggleScreenShareButton from './Buttons/ToogleScreenShareButton/ToggleScreenShareButton';
+import EndCallButton from './Buttons/EndCallButton/EndCallButton';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
       backgroundColor: theme.palette.background.default,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      height: `${theme.footerHeight}px`,
+      position: 'fixed',
+      display: 'flex',
+      padding: '0 1em',
     },
     toolbar: {
       [theme.breakpoints.down('xs')]: {
@@ -56,6 +62,24 @@ const useStyles = makeStyles((theme: Theme) =>
     joinButton: {
       margin: '1em',
     },
+    screenShareBanner: {
+      position: 'fixed',
+      zIndex: 1,
+      bottom: `${theme.footerHeight}px`,
+      left: 0,
+      right: 0,
+      height: '104px',
+      background: 'rgba(0, 0, 0, 0.5)',
+      '& h6': {
+        color: 'white',
+      },
+      '& button': {
+        background: 'white',
+        color: theme.brand,
+        border: `2px solid ${theme.brand}`,
+        margin: '0 2em',
+      },
+    },
   })
 );
 
@@ -63,8 +87,9 @@ export default function MenuBar() {
   const classes = useStyles();
   const { URLRoomName } = useParams();
   const { user, getToken, isFetching } = useAppState();
-  const { isConnecting, connect, isAcquiringLocalTracks } = useVideoContext();
+  const { isConnecting, connect, isAcquiringLocalTracks, isSharingScreen, toggleScreenShare } = useVideoContext();
   const roomState = useRoomState();
+  const isReconnecting = roomState === 'reconnecting';
 
   const [name, setName] = useState<string>(user?.displayName || '');
   const [roomName, setRoomName] = useState<string>('');
@@ -93,8 +118,14 @@ export default function MenuBar() {
   };
 
   return (
-    <AppBar className={classes.container} position="static">
-      <Toolbar className={classes.toolbar}>
+    <>
+      {isSharingScreen && (
+        <Grid container justify="center" alignItems="center" className={classes.screenShareBanner}>
+          <Typography variant="h6">You are sharing your screen</Typography>
+          <Button onClick={() => toggleScreenShare()}>Stop Sharing</Button>
+        </Grid>
+      )}
+      <footer className={classes.container}>
         {roomState === 'disconnected' ? (
           <form className={classes.form} onSubmit={handleSubmit}>
             {window.location.search.includes('customIdentity=true') || !user?.displayName ? (
@@ -131,15 +162,24 @@ export default function MenuBar() {
             {(isConnecting || isFetching) && <CircularProgress className={classes.loadingSpinner} />}
           </form>
         ) : (
-          <h3>{roomName}</h3>
+          <Grid container justify="space-around" alignItems="center">
+            <Grid style={{ flex: 1 }}>
+              <Typography variant="body1">{roomName}</Typography>
+            </Grid>
+            <Grid>
+              <ToggleAudioButton disabled={isReconnecting} />
+              <ToggleVideoButton disabled={isReconnecting} />
+              {!isSharingScreen && <ToggleScreenShareButton disabled={isReconnecting} />}
+            </Grid>
+            <Grid style={{ flex: 1 }}>
+              <Grid container justify="flex-end">
+                <Menu />
+                <EndCallButton />
+              </Grid>
+            </Grid>
+          </Grid>
         )}
-        <div className={classes.rightButtonContainer}>
-          <FlipCameraButton />
-          <LocalAudioLevelIndicator />
-          <ToggleFullscreenButton />
-          <Menu />
-        </div>
-      </Toolbar>
-    </AppBar>
+      </footer>
+    </>
   );
 }

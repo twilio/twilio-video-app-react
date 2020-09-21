@@ -4,20 +4,32 @@ import React from 'react';
 import useMainSpeaker from '../../hooks/useMainSpeaker/useMainSpeaker';
 import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
 import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
+import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 export default function MainParticipant() {
   const mainParticipant = useMainSpeaker();
+  const {
+    room: { localParticipant },
+  } = useVideoContext();
   const [selectedParticipant] = useSelectedParticipant();
   const screenShareParticipant = useScreenShareParticipant();
 
   const videoPriority =
-    mainParticipant === selectedParticipant || mainParticipant === screenShareParticipant ? 'high' : null;
+    (mainParticipant === selectedParticipant || mainParticipant === screenShareParticipant) &&
+    mainParticipant !== localParticipant
+      ? 'high'
+      : null;
 
   return (
     /* audio is disabled for this participant component because this participant's audio 
        is already being rendered in the <ParticipantStrip /> component.  */
     <MainParticipantInfo participant={mainParticipant}>
-      <ParticipantTracks participant={mainParticipant} disableAudio enableScreenShare videoPriority={videoPriority} />
+      <ParticipantTracks
+        participant={mainParticipant}
+        disableAudio
+        enableScreenShare={mainParticipant !== localParticipant}
+        videoPriority={videoPriority}
+      />
     </MainParticipantInfo>
   );
 }

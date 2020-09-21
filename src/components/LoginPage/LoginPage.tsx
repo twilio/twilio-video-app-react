@@ -11,7 +11,6 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import videoLogo from './video-logo.png';
 
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
 import { useLocation, useHistory } from 'react-router-dom';
 
@@ -55,12 +54,6 @@ const useStyles = makeStyles({
   },
 });
 
-const theme = createMuiTheme({
-  palette: {
-    type: 'light',
-  },
-});
-
 export default function LoginPage() {
   const classes = useStyles();
   const { signIn, user, isAuthReady } = useAppState();
@@ -94,43 +87,41 @@ export default function LoginPage() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <Grid container justify="center" alignItems="flex-start" className={classes.container}>
-        <Paper className={classes.paper} elevation={6}>
-          <TwilioLogo className={classes.twilioLogo} />
-          <img className={classes.videoLogo} src={videoLogo} alt="Video Logo"></img>
+    <Grid container justify="center" alignItems="flex-start" className={classes.container}>
+      <Paper className={classes.paper} elevation={6}>
+        <TwilioLogo className={classes.twilioLogo} />
+        <img className={classes.videoLogo} src={videoLogo} alt="Video Logo"></img>
 
-          {process.env.REACT_APP_SET_AUTH === 'firebase' && (
-            <Button variant="contained" className={classes.button} onClick={login} startIcon={<GoogleLogo />}>
-              Sign in with Google
-            </Button>
-          )}
+        {process.env.REACT_APP_SET_AUTH === 'firebase' && (
+          <Button variant="contained" className={classes.button} onClick={login} startIcon={<GoogleLogo />}>
+            Sign in with Google
+          </Button>
+        )}
 
-          {process.env.REACT_APP_SET_AUTH === 'passcode' && (
-            <form onSubmit={handleSubmit}>
-              <Grid container alignItems="center" direction="column">
-                <TextField
-                  id="input-passcode"
-                  label="Passcode"
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => setPasscode(e.target.value)}
-                  type="password"
-                />
-                <div>
-                  {authError && (
-                    <Typography variant="caption" className={classes.errorMessage}>
-                      <ErrorOutlineIcon />
-                      {authError.message}
-                    </Typography>
-                  )}
-                </div>
-                <Button variant="contained" className={classes.button} type="submit" disabled={!passcode.length}>
-                  Submit
-                </Button>
-              </Grid>
-            </form>
-          )}
-        </Paper>
-      </Grid>
-    </ThemeProvider>
+        {process.env.REACT_APP_SET_AUTH === 'passcode' && (
+          <form onSubmit={handleSubmit}>
+            <Grid container alignItems="center" direction="column">
+              <TextField
+                id="input-passcode"
+                label="Passcode"
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setPasscode(e.target.value)}
+                type="password"
+              />
+              <div>
+                {authError && (
+                  <Typography variant="caption" className={classes.errorMessage}>
+                    <ErrorOutlineIcon />
+                    {authError.message}
+                  </Typography>
+                )}
+              </div>
+              <Button variant="contained" className={classes.button} type="submit" disabled={!passcode.length}>
+                Submit
+              </Button>
+            </Grid>
+          </form>
+        )}
+      </Paper>
+    </Grid>
   );
 }

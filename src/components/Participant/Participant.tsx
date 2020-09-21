@@ -9,6 +9,7 @@ interface ParticipantProps {
   enableScreenShare?: boolean;
   onClick: () => void;
   isSelected: boolean;
+  isDominantSpeaker?: boolean;
 }
 
 export default function Participant({

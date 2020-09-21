@@ -1,14 +1,12 @@
 import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
-import Fab from '@material-ui/core/Fab';
-import ScreenShare from '@material-ui/icons/ScreenShare';
-import StopScreenShare from '@material-ui/icons/StopScreenShare';
+import Button from '@material-ui/core/Button';
+import ScreenShareIcon from '../../../../icons/ScreenShareIcon';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import useScreenShareToggle from '../../../hooks/useScreenShareToggle/useScreenShareToggle';
-import useScreenShareParticipant from '../../../hooks/useScreenShareParticipant/useScreenShareParticipant';
-import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import useScreenShareParticipant from '../../../../hooks/useScreenShareParticipant/useScreenShareParticipant';
+import useVideoContext from '../../../../hooks/useVideoContext/useVideoContext';
 
 export const SCREEN_SHARE_TEXT = 'Share Screen';
 export const STOP_SCREEN_SHARE_TEXT = 'Stop Sharing Screen';
@@ -17,11 +15,13 @@ export const SHARE_NOT_SUPPORTED_TEXT = 'Screen sharing is not supported with th
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    fab: {
+    button: {
       margin: theme.spacing(1),
       '&[disabled]': {
-        color: 'rgba(225, 225, 225, 0.8)',
-        backgroundColor: 'rgba(175, 175, 175, 0.6);',
+        color: '#bbb',
+        '& svg *': {
+          fill: '#bbb',
+        },
       },
     },
   })
@@ -29,18 +29,13 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function ToggleScreenShareButton(props: { disabled?: boolean }) {
   const classes = useStyles();
-  const [isScreenShared, toggleScreenShare] = useScreenShareToggle();
   const screenShareParticipant = useScreenShareParticipant();
-  const { room } = useVideoContext();
+  const { room, toggleScreenShare } = useVideoContext();
   const disableScreenShareButton = screenShareParticipant && screenShareParticipant !== room.localParticipant;
   const isScreenShareSupported = navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia;
   const isDisabled = props.disabled || disableScreenShareButton || !isScreenShareSupported;
 
-  let tooltipMessage = SCREEN_SHARE_TEXT;
-
-  if (isScreenShared) {
-    tooltipMessage = STOP_SCREEN_SHARE_TEXT;
-  }
+  let tooltipMessage = '';
 
   if (disableScreenShareButton) {
     tooltipMessage = SHARE_IN_PROGRESS_TEXT;
@@ -57,13 +52,18 @@ export default function ToggleScreenShareButton(props: { disabled?: boolean }) {
       PopperProps={{ disablePortal: true }}
       style={{ cursor: isDisabled ? 'not-allowed' : 'pointer' }}
     >
-      <div>
-        {/* The div element is needed because a disabled button will not emit hover events and we want to display
+      <span>
+        {/* The span element is needed because a disabled button will not emit hover events and we want to display
           a tooltip when screen sharing is disabled */}
-        <Fab className={classes.fab} onClick={toggleScreenShare} disabled={isDisabled}>
-          {isScreenShared ? <StopScreenShare /> : <ScreenShare />}
-        </Fab>
-      </div>
+        <Button
+          className={classes.button}
+          onClick={toggleScreenShare}
+          disabled={isDisabled}
+          startIcon={<ScreenShareIcon />}
+        >
+          {SCREEN_SHARE_TEXT}
+        </Button>
+      </span>
     </Tooltip>
   );
 }

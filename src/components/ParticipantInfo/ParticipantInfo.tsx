@@ -4,17 +4,19 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
 
 import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
+import AvatarIcon from '../../icons/AvatarIcon';
 import BandwidthWarning from '../BandwidthWarning/BandwidthWarning';
 import NetworkQualityLevel from '../NewtorkQualityLevel/NetworkQualityLevel';
-import ParticipantConnectionIndicator from './ParticipantConnectionIndicator/ParticipantConnectionIndicator';
 import PinIcon from './PinIcon/PinIcon';
-import ScreenShare from '@material-ui/icons/ScreenShare';
-import VideocamOff from '@material-ui/icons/VideocamOff';
+import Typography from '@material-ui/core/Typography';
 
-import useParticipantNetworkQualityLevel from '../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel';
-import usePublications from '../../hooks/usePublications/usePublications';
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
+import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
+import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import ScreenShareIcon from '../../icons/ScreenShareIcon';
+
+const BORDER_SIZE = 2;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,22 +24,31 @@ const useStyles = makeStyles((theme: Theme) =>
       position: 'relative',
       display: 'flex',
       alignItems: 'center',
-      height: `${(theme.sidebarWidth * 9) / 16}px`,
+      height: 0,
       overflow: 'hidden',
+      marginBottom: '2em',
       cursor: 'pointer',
       '& video': {
         filter: 'none',
+        objectFit: 'contain !important',
       },
-      '& svg': {
-        stroke: 'black',
-        strokeWidth: '0.8px',
-      },
+      borderRadius: '4px',
+      border: `${BORDER_SIZE}px solid rgb(245, 248, 255)`,
+      paddingTop: `calc(${(9 / 16) * 100}% - ${BORDER_SIZE}px)`,
+      background: 'black',
       [theme.breakpoints.down('xs')]: {
         height: theme.sidebarMobileHeight,
         width: `${(theme.sidebarMobileHeight * 16) / 9}px`,
         marginRight: '3px',
         fontSize: '10px',
       },
+    },
+    innerContainer: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
     },
     isVideoSwitchedOff: {
       '& video': {
@@ -51,23 +62,48 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: 'column',
       justifyContent: 'space-between',
       height: '100%',
-      padding: '0.4em',
       width: '100%',
       background: 'transparent',
+      top: 0,
     },
-    hideVideo: {
+    avatarContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
       background: 'black',
+      height: '100%',
+    },
+    screenShareIconContainer: {
+      background: 'rgba(0, 0, 0, 0.5)',
+      padding: '0.18em 0.3em',
+      marginRight: '0.3em',
+      display: 'flex',
+      '& path': {
+        fill: 'white',
+      },
     },
     identity: {
-      background: 'rgba(0, 0, 0, 0.7)',
-      padding: '0.1em 0.3em',
+      background: 'rgba(0, 0, 0, 0.5)',
+      color: 'white',
+      padding: '0.18em 0.3em',
       margin: 0,
       display: 'flex',
       alignItems: 'center',
     },
-    infoRow: {
+    infoRowBottom: {
       display: 'flex',
       justifyContent: 'space-between',
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+    },
+    networkQualityContainer: {
+      width: '28px',
+      height: '28px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: 'rgba(0, 0, 0, 0.5)',
     },
   })
 );
@@ -77,15 +113,20 @@ interface ParticipantInfoProps {
   children: React.ReactNode;
   onClick: () => void;
   isSelected: boolean;
+  isDominantSpeaker?: boolean;
 }
 
 export default function ParticipantInfo({ participant, onClick, isSelected, children }: ParticipantInfoProps) {
+  const {
+    room: { localParticipant },
+  } = useVideoContext();
+  const isLocalParticipant = participant === localParticipant;
+
   const publications = usePublications(participant);
 
   const audioPublication = publications.find(p => p.kind === 'audio');
   const videoPublication = publications.find(p => p.trackName.includes('camera'));
 
-  const networkQualityLevel = useParticipantNetworkQualityLevel(participant);
   const isVideoEnabled = Boolean(videoPublication);
   const isScreenShareEnabled = publications.find(p => p.trackName.includes('screen'));
 
@@ -104,23 +145,35 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
       onClick={onClick}
       data-cy-participant={participant.identity}
     >
-      <div className={clsx(classes.infoContainer, { [classes.hideVideo]: !isVideoEnabled })}>
-        <div className={classes.infoRow}>
-          <h4 className={classes.identity}>
-            <ParticipantConnectionIndicator participant={participant} />
-            {participant.identity}
-          </h4>
-          <NetworkQualityLevel qualityLevel={networkQualityLevel} />
+      <div className={classes.infoContainer}>
+        <div className={classes.networkQualityContainer}>
+          <NetworkQualityLevel participant={participant} />
         </div>
-        <div>
-          <AudioLevelIndicator audioTrack={audioTrack} background="white" />
-          {!isVideoEnabled && <VideocamOff />}
-          {isScreenShareEnabled && <ScreenShare />}
-          {isSelected && <PinIcon />}
+        <div className={classes.infoRowBottom}>
+          {isScreenShareEnabled && (
+            <span className={classes.screenShareIconContainer}>
+              <ScreenShareIcon />
+            </span>
+          )}
+          <span className={classes.identity}>
+            <AudioLevelIndicator audioTrack={audioTrack} />
+            <Typography variant="body1" color="inherit" component="span">
+              {participant.identity}
+              {isLocalParticipant && ' (You)'}
+            </Typography>
+          </span>
         </div>
+        <div>{isSelected && <PinIcon />}</div>
       </div>
-      {isVideoSwitchedOff && <BandwidthWarning />}
-      {children}
+      <div className={classes.innerContainer}>
+        {!isVideoEnabled && (
+          <div className={classes.avatarContainer}>
+            <AvatarIcon />
+          </div>
+        )}
+        {isVideoSwitchedOff && <BandwidthWarning />}
+        {children}
+      </div>
     </div>
   );
 }

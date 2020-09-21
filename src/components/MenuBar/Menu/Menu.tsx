@@ -1,11 +1,11 @@
 import React, { useState, useRef, useCallback } from 'react';
 import AboutDialog from '../AboutDialog/AboutDialog';
-import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MenuContainer from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import MoreIcon from '@material-ui/icons/MoreVert';
 import SettingsDialog from '../SettingsDialog/SettingsDialog';
-import UserAvatar from '../UserAvatar/UserAvatar';
+import Typography from '@material-ui/core/Typography';
 
 import { useAppState } from '../../../state';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
@@ -18,7 +18,7 @@ export default function Menu() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
-  const anchorRef = useRef<HTMLDivElement>(null);
+  const anchorRef = useRef<HTMLButtonElement>(null);
 
   const handleSignOut = useCallback(() => {
     room.disconnect?.();
@@ -27,15 +27,23 @@ export default function Menu() {
   }, [room.disconnect, localTracks, signOut]);
 
   return (
-    <div ref={anchorRef}>
-      <IconButton color="inherit" onClick={() => setMenuOpen(state => !state)}>
-        {user ? <UserAvatar user={user} /> : <MoreIcon />}
-      </IconButton>
+    <>
+      <Button onClick={() => setMenuOpen(state => !state)} ref={anchorRef}>
+        Settings
+        <ExpandMoreIcon />
+      </Button>
       <MenuContainer open={menuOpen} onClose={() => setMenuOpen(state => !state)} anchorEl={anchorRef.current}>
-        {user?.displayName && <MenuItem disabled>{user.displayName}</MenuItem>}
-        <MenuItem onClick={() => setAboutOpen(true)}>About</MenuItem>
-        <MenuItem onClick={() => setSettingsOpen(true)}>Settings</MenuItem>
-        {user && <MenuItem onClick={handleSignOut}>Logout</MenuItem>}
+        <MenuItem onClick={() => setAboutOpen(true)}>
+          <Typography variant="body1">About</Typography>
+        </MenuItem>
+        <MenuItem onClick={() => setSettingsOpen(true)}>
+          <Typography variant="body1">Settings</Typography>
+        </MenuItem>
+        {user && (
+          <MenuItem onClick={handleSignOut}>
+            <Typography variant="body1">Logout</Typography>
+          </MenuItem>
+        )}
       </MenuContainer>
       <AboutDialog
         open={aboutOpen}
@@ -51,6 +59,6 @@ export default function Menu() {
           setMenuOpen(false);
         }}
       />
-    </div>
+    </>
   );
 }

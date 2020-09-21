@@ -12,8 +12,9 @@ export default function useMainSpeaker() {
   const {
     room: { localParticipant },
   } = useVideoContext();
+  const remoteScreenShareParticipant = screenShareParticipant !== localParticipant ? screenShareParticipant : null;
 
   // The participant that is returned is displayed in the main video area. Changing the order of the following
   // variables will change the how the main speaker is determined.
-  return selectedParticipant || screenShareParticipant || dominantSpeaker || participants[0] || localParticipant;
+  return selectedParticipant || remoteScreenShareParticipant || dominantSpeaker || participants[0] || localParticipant;
 }
