@@ -37,13 +37,13 @@ const UserMenu: React.FC = () => {
   return (
     <div className={classes.userContainer}>
       <UserAvatar user={user} />
-      <Button onClick={() => setMenuOpen(state => !state)} ref={anchorRef} className={classes.userButton}>
+      <Button onClick={() => setMenuOpen(isOpen => !isOpen)} ref={anchorRef} className={classes.userButton}>
         {user!.displayName}
         <ExpandMoreIcon />
       </Button>
       <Menu
         open={menuOpen}
-        onClose={() => setMenuOpen(state => !state)}
+        onClose={() => setMenuOpen(isOpen => !isOpen)}
         anchorEl={anchorRef.current}
         getContentAnchorEl={null}
         anchorOrigin={{
