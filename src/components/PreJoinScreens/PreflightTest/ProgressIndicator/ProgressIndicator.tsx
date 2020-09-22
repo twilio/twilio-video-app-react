@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, Theme } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import { TEST_DURATION } from '../PreflightTest';
 
 const SIZE = 24;
@@ -8,7 +8,7 @@ const OUTER_RADIUS = SIZE / 2;
 const INNER_RADIUS = OUTER_RADIUS - THICKNESS;
 const INNER_CIRCUMFERENCE = 2 * Math.PI * INNER_RADIUS;
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   svg: {
     transform: 'rotate(-90deg)',
     marginRight: '0.6em',
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     stroke: 'rgb(200, 204, 207)',
   },
   circle: {
-    stroke: theme.brand,
+    stroke: '#027AC5',
     strokeDasharray: INNER_CIRCUMFERENCE,
     strokeDashoffset: '0px',
     animation: `${TEST_DURATION / 1000 + 1}s $progress linear`,
