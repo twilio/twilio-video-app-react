@@ -85,12 +85,22 @@ describe('the PreJoinScreens component', () => {
     expect(wrapper.find(DeviceSelectionScreen).exists()).toBe(true);
   });
 
-  it('should populate the Room name from the URL and switch to the DeviceSelectionScreen', () => {
+  it('should populate the room name from the URL and switch to the DeviceSelectionScreen when the displayName is present for the user', () => {
     const wrapper = mount(<PreJoinScreens />);
     const roomName = wrapper.find(DeviceSelectionScreen).prop('roomName');
     expect(roomName).toBe('testRoom');
 
     expect(wrapper.find(RoomNameScreen).exists()).toBe(false);
     expect(wrapper.find(DeviceSelectionScreen).exists()).toBe(true);
+  });
+
+  it('should populate the room name from the URL and stay on the RoomNameScreen when the displayName is not present for the user', () => {
+    mockUseAppState.mockImplementationOnce(() => ({ user: {} }));
+    const wrapper = mount(<PreJoinScreens />);
+    const roomName = wrapper.find(RoomNameScreen).prop('roomName');
+    expect(roomName).toBe('testRoom');
+
+    expect(wrapper.find(RoomNameScreen).exists()).toBe(true);
+    expect(wrapper.find(DeviceSelectionScreen).exists()).toBe(false);
   });
 });
