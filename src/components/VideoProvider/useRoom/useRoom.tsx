@@ -1,7 +1,7 @@
 import { Callback } from '../../../types';
 import EventEmitter from 'events';
 import { isMobile } from '../../../utils';
-import Video, { ConnectOptions, LocalTrack, LocalTrackPublication, Room } from 'twilio-video';
+import Video, { ConnectOptions, LocalTrack, Room } from 'twilio-video';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 // @ts-ignore
@@ -10,15 +10,7 @@ window.TwilioVideo = Video;
 export default function useRoom(localTracks: LocalTrack[], onError: Callback, options?: ConnectOptions) {
   const [room, setRoom] = useState<Room>(new EventEmitter() as Room);
   const [isConnecting, setIsConnecting] = useState(false);
-  const localTracksRef = useRef<LocalTrack[]>([]);
   const optionsRef = useRef(options);
-
-  useEffect(() => {
-    // It can take a moment for Video.connect to connect to a room. During this time, the user may have enabled or disabled their
-    // local audio or video tracks. If this happens, we store the localTracks in this ref, so that they are correctly published
-    // once the user is connected to the room.
-    localTracksRef.current = localTracks;
-  }, [localTracks]);
 
   useEffect(() => {
     // This allows the connect function to always access the most recent version of the options object. This allows us to
@@ -29,7 +21,7 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
   const connect = useCallback(
     token => {
       setIsConnecting(true);
-      return Video.connect(token, { ...optionsRef.current, tracks: localTracksRef.current }).then(
+      return Video.connect(token, { ...optionsRef.current, tracks: localTracks }).then(
         newRoom => {
           setRoom(newRoom);
           const disconnect = () => newRoom.disconnect();
