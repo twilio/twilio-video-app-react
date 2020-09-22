@@ -5,6 +5,7 @@ class MockRoom extends EventEmitter {
   disconnect = jest.fn();
   localParticipant = {
     publishTrack: jest.fn(),
+    videoTracks: [{ setPriority: jest.fn() }],
   };
 }
 
