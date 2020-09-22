@@ -23,15 +23,16 @@ jest.mock('react-router-dom', () => ({ useParams: jest.fn() }));
 const mockUseAppState = useAppState as jest.Mock<any>;
 const mockUseParams = useParams as jest.Mock<any>;
 
-mockUseAppState.mockImplementation(() => ({ user: { displayName: 'Test User' } }));
-mockUseParams.mockImplementation(() => ({ URLRoomName: 'testRoom' }));
-
 jest.mock('../IntroContainer/IntroContainer', () => ({ children }: { children: React.ReactNode }) => children);
 jest.mock('./RoomNameScreen/RoomNameScreen', () => () => null);
 jest.mock('./DeviceSelectionScreen/DeviceSelectionScreen', () => () => null);
 
 describe('the PreJoinScreens component', () => {
   beforeEach(jest.clearAllMocks);
+  beforeEach(() => {
+    mockUseAppState.mockImplementation(() => ({ user: { displayName: 'Test User' } }));
+    mockUseParams.mockImplementation(() => ({ URLRoomName: 'testRoom' }));
+  });
 
   it('should update the URL to include the room name on submit', () => {
     const wrapper = shallow(<PreJoinScreens />);
@@ -95,7 +96,7 @@ describe('the PreJoinScreens component', () => {
   });
 
   it('should populate the room name from the URL and stay on the RoomNameScreen when the displayName is not present for the user', () => {
-    mockUseAppState.mockImplementationOnce(() => ({ user: {} }));
+    mockUseAppState.mockImplementation(() => ({ user: {} }));
     const wrapper = mount(<PreJoinScreens />);
     const roomName = wrapper.find(RoomNameScreen).prop('roomName');
     expect(roomName).toBe('testRoom');

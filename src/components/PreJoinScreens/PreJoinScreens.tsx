@@ -22,11 +22,11 @@ export default function PreJoinScreens() {
   useEffect(() => {
     if (URLRoomName) {
       setRoomName(URLRoomName);
-      if (name) {
+      if (user?.displayName) {
         setStep(Steps.deviceSelectionStep);
       }
     }
-  }, [URLRoomName]);
+  }, [user, URLRoomName]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
