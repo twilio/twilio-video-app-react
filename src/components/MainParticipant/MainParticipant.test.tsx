@@ -64,6 +64,10 @@ describe('the MainParticipant component', () => {
     it('should set the enableScreenShare prop to false', () => {
       expect(wrapper.find(ParticipantTracks).prop('enableScreenShare')).toBe(false);
     });
+
+    it('should set the isLocalParticipant prop to true', () => {
+      expect(wrapper.find(ParticipantTracks).prop('isLocalParticipant')).toBe(true);
+    });
   });
 
   it('should set the videoPriority to null when the main participant is not the selected participant and they are not sharing their screen', () => {
