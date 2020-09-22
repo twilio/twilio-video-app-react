@@ -23,16 +23,15 @@ const useStyles = makeStyles({
 const UserMenu: React.FC = () => {
   const classes = useStyles();
   const { user, signOut } = useAppState();
-  const { room, localTracks } = useVideoContext();
+  const { localTracks } = useVideoContext();
 
   const [menuOpen, setMenuOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
 
   const handleSignOut = useCallback(() => {
-    room.disconnect?.();
     localTracks.forEach(track => track.stop());
     signOut?.();
-  }, [room.disconnect, localTracks, signOut]);
+  }, [localTracks, signOut]);
 
   return (
     <div className={classes.userContainer}>
