@@ -73,7 +73,7 @@ export function ResultComponent({
   return null;
 }
 
-export default function PreflightTestResult() {
+export default function PreflightTest() {
   const classes = useStyles();
 
   const { tokens, tokenError } = useGetPreflightTokens();

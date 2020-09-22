@@ -1,6 +1,7 @@
 import React from 'react';
 import DeviceSelectionScreen from './DeviceSelectionScreen/DeviceSelectionScreen';
 import { mount, shallow } from 'enzyme';
+import PreflightTest from './PreflightTest/PreflightTest';
 import PreJoinScreens from './PreJoinScreens';
 import RoomNameScreen from './RoomNameScreen/RoomNameScreen';
 import { useParams } from 'react-router-dom';
@@ -68,6 +69,19 @@ describe('the PreJoinScreens component', () => {
     handleSubmit({ preventDefault: () => {} } as any);
 
     expect(wrapper.find(RoomNameScreen).exists()).toBe(false);
+    expect(wrapper.find(DeviceSelectionScreen).exists()).toBe(true);
+  });
+
+  it('should render the PreflightTest component only while on the DeviceSelection step', () => {
+    const wrapper = shallow(<PreJoinScreens />);
+
+    expect(wrapper.prop('subContent')).toBe(false);
+    expect(wrapper.find(DeviceSelectionScreen).exists()).toBe(false);
+
+    const handleSubmit = wrapper.find(RoomNameScreen).prop('handleSubmit');
+    handleSubmit({ preventDefault: () => {} } as any);
+
+    expect(wrapper.prop('subContent')).toEqual(<PreflightTest />);
     expect(wrapper.find(DeviceSelectionScreen).exists()).toBe(true);
   });
 
