@@ -83,7 +83,7 @@ export default function PreflightTest() {
 
   return (
     <Grid container justify="center" alignItems="center">
-      {isTestRunning ? (
+      {!testFailure && !testReport ? (
         <>
           <ProgressIndicator />
           <Typography variant="subtitle2" className={classes.result}>
