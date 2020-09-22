@@ -216,7 +216,9 @@ export default function MenuBar() {
             {(isConnecting || isFetching) && <CircularProgress className={classes.loadingSpinner} />}
           </form>
         ) : (
-          <h3 style={{ paddingLeft: '10px' }}>Case Reference: {room.name}</h3>
+          <h3 style={{ paddingLeft: '10px' }}>
+            Case Reference: {participantInfo ? participantInfo.caseReference : ''}
+          </h3>
         )}
         <div className={classes.rightButtonContainer}>
           <ToggleGridViewButton />
