@@ -33,6 +33,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const { getToken, isFetching } = useAppState();
   const { connect, isAcquiringLocalTracks, isConnecting } = useVideoContext();
+  const disableToggles = isConnecting || isFetching;
 
   const handleJoin = () => {
     getToken(name, roomName).then(token => connect(token));
@@ -53,8 +54,8 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
           <SettingsDialog open={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
         </Grid>
         <Grid item sm={5}>
-          <ToggleAudioButton className={classes.deviceButton} />
-          <ToggleVideoButton className={classes.deviceButton} />
+          <ToggleAudioButton className={classes.deviceButton} disabled={disableToggles} />
+          <ToggleVideoButton className={classes.deviceButton} disabled={disableToggles} />
           <Grid container justify="space-between" style={{ margin: '0.9em 0.6em' }}>
             <div>
               <Button variant="contained" onClick={() => setStep(Steps.roomNameStep)}>
