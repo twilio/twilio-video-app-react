@@ -1,4 +1,6 @@
 import React, { useCallback, useRef } from 'react';
+import clsx from 'clsx';
+
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
@@ -15,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function ToggleVideoButton(props: { disabled?: boolean }) {
+export default function ToggleVideoButton(props: { disabled?: boolean; className?: string }) {
   const classes = useStyles();
   const [isVideoEnabled, toggleVideoEnabled] = useLocalVideoToggle();
   const lastClickTimeRef = useRef(0);
@@ -29,7 +31,7 @@ export default function ToggleVideoButton(props: { disabled?: boolean }) {
 
   return (
     <Button
-      className={classes.button}
+      className={clsx(classes.button, props.className)}
       onClick={toggleVideo}
       disabled={props.disabled}
       startIcon={isVideoEnabled ? <VideoOnIcon /> : <VideoOffIcon />}

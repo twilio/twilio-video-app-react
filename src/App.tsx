@@ -1,8 +1,8 @@
 import React from 'react';
 import { styled, Theme } from '@material-ui/core/styles';
 
-import LocalVideoPreview from './components/LocalVideoPreview/LocalVideoPreview';
 import MenuBar from './components/MenuBar/MenuBar';
+import PreJoinScreens from './components/PreJoinScreens/PreJoinScreens';
 import ReconnectingNotification from './components/ReconnectingNotification/ReconnectingNotification';
 import Room from './components/Room/Room';
 
@@ -33,8 +33,16 @@ export default function App() {
   return (
     <Container style={{ height }}>
       <ReconnectingNotification />
-      <Main>{roomState === 'disconnected' ? <LocalVideoPreview /> : <Room />}</Main>
-      <MenuBar />
+      <Main>
+        {roomState === 'disconnected' ? (
+          <PreJoinScreens />
+        ) : (
+          <>
+            <Room />
+            <MenuBar />
+          </>
+        )}
+      </Main>
     </Container>
   );
 }
