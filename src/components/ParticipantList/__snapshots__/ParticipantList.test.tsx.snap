@@ -1,9 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`the ParticipantStrip component should correctly render ParticipantInfo components 1`] = `
-<Styled(aside)>
-  <Styled(div)>
+exports[`the ParticipantList component should correctly render ParticipantInfo components 1`] = `
+<aside
+  className="makeStyles-container-1 makeStyles-transparentBackground-2"
+>
+  <div
+    className="makeStyles-scrollContainer-3"
+  >
     <Participant
+      isLocalParticipant={true}
       isSelected={false}
       onClick={[Function]}
       participant="localParticipant"
@@ -28,6 +33,6 @@ exports[`the ParticipantStrip component should correctly render ParticipantInfo 
         }
       }
     />
-  </Styled(div)>
-</Styled(aside)>
+  </div>
+</aside>
 `;

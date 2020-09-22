@@ -16,11 +16,11 @@ export default function Menu() {
 
   return (
     <>
-      <Button onClick={() => setMenuOpen(state => !state)} ref={anchorRef}>
+      <Button onClick={() => setMenuOpen(isOpen => !isOpen)} ref={anchorRef}>
         Settings
         <ExpandMoreIcon />
       </Button>
-      <MenuContainer open={menuOpen} onClose={() => setMenuOpen(state => !state)} anchorEl={anchorRef.current}>
+      <MenuContainer open={menuOpen} onClose={() => setMenuOpen(isOpen => !isOpen)} anchorEl={anchorRef.current}>
         <MenuItem onClick={() => setAboutOpen(true)}>
           <Typography variant="body1">About</Typography>
         </MenuItem>

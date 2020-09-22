@@ -6,15 +6,14 @@ import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, Remote
 import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
 import AvatarIcon from '../../icons/AvatarIcon';
 import BandwidthWarning from '../BandwidthWarning/BandwidthWarning';
-import NetworkQualityLevel from '../NewtorkQualityLevel/NetworkQualityLevel';
+import NetworkQualityLevel from '../NetworkQualityLevel/NetworkQualityLevel';
 import PinIcon from './PinIcon/PinIcon';
+import ScreenShareIcon from '../../icons/ScreenShareIcon';
 import Typography from '@material-ui/core/Typography';
 
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
 import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
-import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
-import ScreenShareIcon from '../../icons/ScreenShareIcon';
 
 const BORDER_SIZE = 2;
 
@@ -113,15 +112,16 @@ interface ParticipantInfoProps {
   children: React.ReactNode;
   onClick: () => void;
   isSelected: boolean;
-  isDominantSpeaker?: boolean;
+  isLocalParticipant?: boolean;
 }
 
-export default function ParticipantInfo({ participant, onClick, isSelected, children }: ParticipantInfoProps) {
-  const {
-    room: { localParticipant },
-  } = useVideoContext();
-  const isLocalParticipant = participant === localParticipant;
-
+export default function ParticipantInfo({
+  participant,
+  onClick,
+  isSelected,
+  children,
+  isLocalParticipant,
+}: ParticipantInfoProps) {
   const publications = usePublications(participant);
 
   const audioPublication = publications.find(p => p.kind === 'audio');

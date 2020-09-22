@@ -22,6 +22,7 @@ export default function PreJoinScreens() {
   useEffect(() => {
     if (URLRoomName) {
       setRoomName(URLRoomName);
+      setStep(Steps.deviceSelectionStep);
     }
   }, [URLRoomName]);
 

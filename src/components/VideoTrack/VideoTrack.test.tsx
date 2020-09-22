@@ -10,6 +10,7 @@ describe('the VideoTrack component', () => {
     detach: jest.fn(),
     setPriority: jest.fn(),
     mediaStreamTrack: { getSettings: () => ({}) },
+    name: 'camera',
   } as any;
 
   afterEach(jest.clearAllMocks);
@@ -18,6 +19,20 @@ describe('the VideoTrack component', () => {
     render(<VideoTrack track={mockTrack} />);
     expect(mockTrack.attach).toHaveBeenCalledWith(expect.any(window.HTMLVideoElement));
     expect(mockTrack.detach).not.toHaveBeenCalled();
+  });
+
+  it('should have "object-fit: cover" applied when the track is a camera track', () => {
+    const { container } = render(<VideoTrack track={mockTrack} />);
+    expect(container.querySelector('video')!.style).toMatchObject({ objectFit: 'cover' });
+  });
+
+  it('should have "object-fit: contain" applied when the track is a camera track', () => {
+    const mockTrack2 = {
+      ...mockTrack,
+      name: 'screen',
+    } as any;
+    const { container } = render(<VideoTrack track={mockTrack2} />);
+    expect(container.querySelector('video')!.style).toMatchObject({ objectFit: 'contain' });
   });
 
   it('it should call the detach method when the component unmounts', () => {
@@ -54,10 +69,7 @@ describe('the VideoTrack component', () => {
 
   it('should set the track priority to "null" when it is detached and set the priority of the new track', () => {
     const mockTrack2 = {
-      attach: jest.fn(),
-      detach: jest.fn(),
-      setPriority: jest.fn(),
-      mediaStreamTrack: { getSettings: () => ({}) },
+      ...mockTrack,
     } as any;
     const { rerender } = render(<VideoTrack track={mockTrack} priority="high" />);
     expect(mockTrack.setPriority).toHaveBeenCalledWith('high');

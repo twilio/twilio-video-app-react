@@ -95,7 +95,7 @@ function AudioLevelIndicator({ audioTrack, color = 'white' }: { audioTrack?: Aud
   const clipPathId = `audio-level-clip-${getUniqueClipId()}`;
 
   return isTrackEnabled ? (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" data-test-audio-indicator>
       <defs>
         <clipPath id={clipPathId}>
           <rect ref={SVGRectRef} x="0" y="14" width="24" height="24" />
@@ -126,7 +126,7 @@ function AudioLevelIndicator({ audioTrack, color = 'white' }: { audioTrack?: Aud
       height="24"
       viewBox="0 0 24 24"
       transform="translate(-0.5, 0)"
-      data-cy-audio-mute-icon
+      data-test-audio-mute-icon
     >
       <g fill="none" fillRule="evenodd">
         <path
