@@ -1,69 +1,70 @@
-# if you want to configure triggers for Azure CI see
-# https://docs.microsoft.com/en-us/azure/devops/pipelines/build/triggers?view=azure-devops&tabs=yaml#tags
+name: 'Cypress E2E Testing'
 
-jobs:
+trigger:
+- VA-161-Automated-Test-Login-Screen
 
-  # Example job that runs end-to-end tests using Cypress test runner
-  #   https://www.cypress.io/
+schedules:
+- cron: "0 6 * * *"
+  displayName: Each morning at 6am
+  branches:
+    include:
+    - VA-161-Automated-Test-Login-Screen
 
-  # Job names can contain alphanumeric characters and '_', cannot start with a number
-  - job: Cypress_e2e_tests
-    pool:
-      vmImage: 'ubuntu-16.04'
-    strategy:
-      parallel: 4
-    steps:
-      - task: NodeTool@0
-        inputs:
-          versionSpec: '12.x'
-          displayName: 'Install Node.js'
+variables:
+# - group: develop
+- name: npm_config_cache
+  value: $(Pipeline.Workspace)/.npm
+- name: cypress_cache_folder
+  value: $(Pipeline.Workspace)/.cache/Cypress
 
-      # NPM modules and Cypress binary should be cached
-      # otherwise the install will be too slow
-      # https://docs.microsoft.com/en-us/azure/devops/pipelines/caching/?view=azure-devops
-      # since the username / user home directory are not available via system variables
-      # (there is even an open question about it)
-      # https://docs.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops
-      # just use "/home/vsts" for now
-      - task: CacheBeta@1
-        inputs:
-          key: npm | $(Agent.OS) | package-lock.json
-          path: /home/vsts/.npm
-          restoreKeys: npm | $(Agent.OS) | package-lock.json
-        displayName: Cache NPM packages
-      - task: CacheBeta@1
-        inputs:
-          key: cypress | $(Agent.OS) | package-lock.json
-          path: /home/vsts/.cache/Cypress
-          restoreKeys: cypress | $(Agent.OS) | package-lock.json
-        displayName: Cache Cypress binary
-
-      # Install Node dependencies
-      - script: npm ci
-        displayName: 'Install NPM dependencies'
-      
-      - script: npm install cypress --save-dev
-        displayName: 'Install cypress'
-      
-      - script: npm run cy:verify
-        displayName: 'Cypress verify'
-
-      - script: npm run cy:info
-        displayName: 'Cypress info'
-
-      # The next command starts the server and runs Cypress end-to-end tests against it.
-      # The test artifacts (video, screenshots, test output) will be uploaded to Cypress dashboard.
-      # To record on Cypress dashboard we need to set CYPRESS_RECORD_KEY environment variable.
-      # For setting ci-build-id, BUILD_BUILDNUMBER is a good candidate
-      - script: |
-          npx print-env AGENT
-          npx print-env BUILD
-          npx print-env SYSTEM
-          npm run start:ci:windows &
-          npx cypress run --record --parallel --ci-build-id $BUILDID --group "Azure CI"
+stages:
+# - stage: e2e_testing_stage_edge
+#   displayName: 'Edge E2E Testing'
+#   dependsOn: []
+#   jobs:  
+#   - job: e2e_testing_job_edge
+#     displayName: 'Run E2E in Edge'
+#     pool:
+#       vmImage: windows-latest
+#     steps:
+#       - template: devops/e2e.testing.yml
+#         parameters:
+#           browserType: edge
           
-        displayName: 'Run Cypress tests'
-        env:
-          # avoid warnings about terminal
-          TERM: xterm
-          BUILDID: $(Build.BuildId)
+# - stage: e2e_testing_stage_electron
+#   displayName: 'Electron E2E Testing'
+#   dependsOn: []
+#   jobs:  
+#   - job: e2e_testing_job_electron
+#     displayName: 'Run E2E in Electron'
+#     pool:
+#       vmImage: windows-latest
+#     steps:
+#       - template: devops/e2e.testing.yml
+#         parameters:
+#           browserType: electron
+
+- stage: e2e_testing_stage_chrome
+  displayName: 'Chrome E2E Testing'
+  jobs:
+  - job: e2e_testing_job_chrome
+    displayName: 'Run E2E in Chrome'
+    pool:
+      vmImage: windows-latest
+    steps:
+      - template: e2e.testing.yml
+        parameters:
+          browserType: chrome
+
+# - stage: e2e_testing_stage_firefox
+#   displayName: 'Firefox E2E Testing'
+#   dependsOn: []
+#   jobs:
+#   - job: e2e_testing_job_firefox
+#     displayName: 'Run E2E in Firefox'
+#     pool:
+#       vmImage: windows-latest
+#     steps:
+#       - template: devops/e2e.testing.yml
+#         parameters:
+#           browserType: firefox
