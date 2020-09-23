@@ -42,26 +42,4 @@ steps:
     env:
       TERM: xterm
       BUILDID: $(Build.BuildId)
-  
-- task: PublishTestResults@2
-    displayName: 'Publish the test reports'
-    inputs:
-      testResultsFiles: '**/reports/junit.*.xml'
-    condition: succeededOrFailed()
-    continueOnError: true
-
-- task: PublishBuildArtifacts@1
-    displayName: 'Publish screenshots when there were issues'
-    inputs:
-      pathtoPublish: 'cypress/screenshots'
-      artifactName: screenshots-${{ parameters.browserType }}
-    condition: failed()
-    continueOnError: true
-
-- task: PublishBuildArtifacts@1
-    displayName: 'Publish videos'
-    inputs:
-      pathtoPublish: 'cypress/videos'
-      artifactName: videos-${{ parameters.browserType }}
-    condition: succeededOrFailed()
-    continueOnError: true
+ 
