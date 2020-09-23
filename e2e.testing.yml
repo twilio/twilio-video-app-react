@@ -1,17 +1,17 @@
 # if you want to configure triggers for Azure CI see
 # https://docs.microsoft.com/en-us/azure/devops/pipelines/build/triggers?view=azure-devops&tabs=yaml#tags
 
-jobs:
+# jobs:
 
-  # Example job that runs end-to-end tests using Cypress test runner
-  #   https://www.cypress.io/
+#   # Example job that runs end-to-end tests using Cypress test runner
+#   #   https://www.cypress.io/
 
-  # Job names can contain alphanumeric characters and '_', cannot start with a number
-  - job: Cypress_e2e_tests
-    pool:
-      vmImage: 'ubuntu-16.04'
-    strategy:
-      parallel: 4
+#   # Job names can contain alphanumeric characters and '_', cannot start with a number
+#   - job: Cypress_e2e_tests
+#     pool:
+#       vmImage: 'ubuntu-16.04'
+#     strategy:
+#       parallel: 4
     steps:
       - task: NodeTool@0
         inputs:
