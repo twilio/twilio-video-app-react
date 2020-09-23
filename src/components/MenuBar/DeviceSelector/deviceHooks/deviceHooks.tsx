@@ -1,14 +1,10 @@
 import { useState, useEffect } from 'react';
-import { ensureMediaPermissions } from '../../../../utils';
 
 export function useDevices() {
   const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
 
   useEffect(() => {
-    const getDevices = () =>
-      ensureMediaPermissions().then(() =>
-        navigator.mediaDevices.enumerateDevices().then(devices => setDevices(devices))
-      );
+    const getDevices = () => navigator.mediaDevices.enumerateDevices().then(devices => setDevices(devices));
     navigator.mediaDevices.addEventListener('devicechange', getDevices);
     getDevices();
 
