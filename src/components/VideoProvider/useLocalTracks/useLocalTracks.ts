@@ -1,11 +1,17 @@
 import { DEFAULT_VIDEO_CONSTRAINTS } from '../../../constants';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import Video, { LocalVideoTrack, LocalAudioTrack, CreateLocalTrackOptions } from 'twilio-video';
+import { useAudioInputDevices, useVideoInputDevices } from '../../MenuBar/DeviceSelector/deviceHooks/deviceHooks';
 
 export default function useLocalTracks() {
   const [audioTrack, setAudioTrack] = useState<LocalAudioTrack>();
   const [videoTrack, setVideoTrack] = useState<LocalVideoTrack>();
   const [isAcquiringLocalTracks, setIsAcquiringLocalTracks] = useState(false);
+  const audioDevices = useAudioInputDevices();
+  const videoDevices = useVideoInputDevices();
+
+  const hasAudio = audioDevices.length > 0;
+  const hasVideo = videoDevices.length > 0;
 
   const getLocalAudioTrack = useCallback((deviceId?: string) => {
     const options: CreateLocalTrackOptions = {};
@@ -45,14 +51,17 @@ export default function useLocalTracks() {
     }
   }, [videoTrack]);
 
-  useEffect(() => {
+  const getAudioAndVideoTracks = useCallback(() => {
+    if (!hasAudio && !hasVideo) return Promise.resolve();
+    if (audioTrack || videoTrack) return Promise.resolve();
+
     setIsAcquiringLocalTracks(true);
-    Video.createLocalTracks({
-      video: {
+    return Video.createLocalTracks({
+      video: hasVideo && {
         ...(DEFAULT_VIDEO_CONSTRAINTS as {}),
         name: `camera-${Date.now()}`,
       },
-      audio: true,
+      audio: hasAudio,
     })
       .then(tracks => {
         const videoTrack = tracks.find(track => track.kind === 'video');
@@ -65,12 +74,19 @@ export default function useLocalTracks() {
         }
       })
       .finally(() => setIsAcquiringLocalTracks(false));
-  }, []);
+  }, [hasAudio, hasVideo, audioTrack, videoTrack]);
 
   const localTracks = [audioTrack, videoTrack].filter(track => track !== undefined) as (
     | LocalAudioTrack
     | LocalVideoTrack
   )[];
 
-  return { localTracks, getLocalVideoTrack, getLocalAudioTrack, isAcquiringLocalTracks, removeLocalVideoTrack };
+  return {
+    localTracks,
+    getLocalVideoTrack,
+    getLocalAudioTrack,
+    isAcquiringLocalTracks,
+    removeLocalVideoTrack,
+    getAudioAndVideoTracks,
+  };
 }

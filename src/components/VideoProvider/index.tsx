@@ -38,6 +38,7 @@ export interface IVideoContext {
   removeLocalVideoTrack: () => void;
   isSharingScreen: boolean;
   toggleScreenShare: () => void;
+  getAudioAndVideoTracks: () => Promise<void>;
 }
 
 export const VideoContext = createContext<IVideoContext>(null!);
@@ -61,6 +62,7 @@ export function VideoProvider({ options, children, onError = () => {}, onDisconn
     getLocalAudioTrack,
     isAcquiringLocalTracks,
     removeLocalVideoTrack,
+    getAudioAndVideoTracks,
   } = useLocalTracks();
   const { room, isConnecting, connect } = useRoom(localTracks, onErrorCallback, options);
 
@@ -85,6 +87,7 @@ export function VideoProvider({ options, children, onError = () => {}, onDisconn
         removeLocalVideoTrack,
         isSharingScreen,
         toggleScreenShare,
+        getAudioAndVideoTracks,
       }}
     >
       <SelectedParticipantProvider room={room}>{children}</SelectedParticipantProvider>
