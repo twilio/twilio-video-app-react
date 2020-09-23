@@ -8,6 +8,7 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
+    "serve": "11.3.2",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@primer/octicons-react": "^9.4.0",
