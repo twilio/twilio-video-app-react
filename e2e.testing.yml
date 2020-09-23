@@ -32,14 +32,3 @@ steps:
      displayName: 'Cypress verify'
 
  
-
-- bash: |
-      eval "npx print-env AGENT"
-      eval "npx print-env BUILD"
-      eval "npx print-env SYSTEM"
-      eval "npm run start:ci:windows & npx cypress run --group ${{ parameters.browserType }} --browser ${{ parameters.browserType }} --record --parallel --key 5c38b32e-7e24-45b4-8955-e7216ec80cca --ci-build-id $BUILDID"
-    displayName: 'Run the cypress tests'
-    env:
-      TERM: xterm
-      BUILDID: $(Build.BuildId)
- 
