@@ -25,19 +25,19 @@
       # (there is even an open question about it)
       # https://docs.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops
       # just use "/home/vsts" for now
-      - task: CacheBeta@1
-        inputs:
-          key: npm | $(Agent.OS) | package-lock.json
-          path: /home/vsts/.npm
-          restoreKeys: npm | $(Agent.OS) | package-lock.json
-        displayName: Cache NPM packages
-      - task: CacheBeta@1
-        inputs:
-          key: cypress | $(Agent.OS) | package-lock.json
-          path: /home/vsts/.cache/Cypress
-          restoreKeys: cypress | $(Agent.OS) | package-lock.json
-        displayName: Cache Cypress binary
+     - task: CacheBeta@1
+      displayName: Cache NPM packages
+      inputs:
+        key: npm | $(Agent.OS) | package-lock.json
+        path: $(npm_config_cache)
+        restoreKeys: npm | $(Agent.OS) | package-lock.json
 
+    - task: CacheBeta@1
+      displayName: Cache Cypress binary
+      inputs:
+        key: cypress | $(Agent.OS) | package-lock.json
+        path: $(cypress_cache_folder)
+        restoreKeys: cypress | $(Agent.OS) | package-lock.json
       # Install Node dependencies
       - script: npm ci
         displayName: 'Install NPM dependencies'

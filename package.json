@@ -118,7 +118,7 @@
     "warn-only": "stop-only -f cypress/integration --warn",
     "ci:set-port": "node ./scripts/set-port",
     "semantic-release": "semantic-release"
-   },
+  },
   "eslintConfig": {
     "extends": "react-app",
     "rules": {
