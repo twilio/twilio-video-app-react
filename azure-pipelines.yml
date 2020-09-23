@@ -41,12 +41,15 @@ jobs:
       # Install Node dependencies
       - script: npm ci
         displayName: 'Install NPM dependencies'
+      
+      - script: npm install cypress --save-dev
+        displayName: 'Install cypress'
+      
+      - script: npm run cy:verify
+        displayName: 'Cypress verify'
 
-      #- script: npm run cy:verify
-       # displayName: 'Cypress verify'
-
-      #- script: npm run cy:info
-       # displayName: 'Cypress info'
+      - script: npm run cy:info
+        displayName: 'Cypress info'
 
       # The next command starts the server and runs Cypress end-to-end tests against it.
       # The test artifacts (video, screenshots, test output) will be uploaded to Cypress dashboard.
@@ -57,8 +60,10 @@ jobs:
           npx print-env BUILD
           npx print-env SYSTEM
           npm run start:ci:windows &
-          npx cypress run --record --parallel --ci-build-id $BUILD_BUILDNUMBER --group "Azure CI"
+          npx cypress run --record --parallel --ci-build-id $BUILDID --group "Azure CI"
+          
         displayName: 'Run Cypress tests'
         env:
           # avoid warnings about terminal
           TERM: xterm
+          BUILDID: $(Build.BuildId)
