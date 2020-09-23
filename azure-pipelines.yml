@@ -51,7 +51,7 @@ stages:
     pool:
       vmImage: windows-latest
     steps:
-      - template: ./e2e.testing.yml
+      - template: e2e.testing.yml
         parameters:
           browserType: chrome
 
