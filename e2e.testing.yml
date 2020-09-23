@@ -10,7 +10,7 @@ steps:
       path: $(npm_config_cache)
       restoreKeys: npm | $(Agent.OS) | package-lock.json
 
-  - task: CacheBeta@1
+- task: CacheBeta@1
     displayName: Cache Cypress binary
     inputs:
       key: cypress | $(Agent.OS) | package-lock.json
@@ -26,15 +26,15 @@ steps:
   #       npm
   #     path: $(npm_config_cache)
 
-  - script: npm ci
+- script: npm ci
     displayName: 'Install NPM dependencies'
 
-  - script: npm run cy:verify
+- script: npm run cy:verify
     displayName: 'Cypress verify'
 
  
 
-  - bash: |
+- bash: |
       eval "npx print-env AGENT"
       eval "npx print-env BUILD"
       eval "npx print-env SYSTEM"
@@ -44,14 +44,14 @@ steps:
       TERM: xterm
       BUILDID: $(Build.BuildId)
   
-  - task: PublishTestResults@2
+- task: PublishTestResults@2
     displayName: 'Publish the test reports'
     inputs:
       testResultsFiles: '**/reports/junit.*.xml'
     condition: succeededOrFailed()
     continueOnError: true
 
-  - task: PublishBuildArtifacts@1
+- task: PublishBuildArtifacts@1
     displayName: 'Publish screenshots when there were issues'
     inputs:
       pathtoPublish: 'cypress/screenshots'
@@ -59,7 +59,7 @@ steps:
     condition: failed()
     continueOnError: true
 
-  - task: PublishBuildArtifacts@1
+- task: PublishBuildArtifacts@1
     displayName: 'Publish videos'
     inputs:
       pathtoPublish: 'cypress/videos'
