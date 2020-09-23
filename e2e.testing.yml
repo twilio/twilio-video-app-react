@@ -33,8 +33,7 @@ steps:
   - script: npm run cy:verify
     displayName: 'Cypress verify'
 
-  - script: npm run cy:info
-    displayName: 'Cypress info'
+ 
 
   - bash: |
       eval "npx print-env AGENT"
