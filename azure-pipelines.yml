@@ -1,5 +1,4 @@
 name: 'Cypress E2E Testing'
-
 trigger:
 - VA-161-Automated-Test-Login-Screen
 
