@@ -30,18 +30,18 @@ stages:
 #         parameters:
 #           browserType: edge
           
-# - stage: e2e_testing_stage_electron
-#   displayName: 'Electron E2E Testing'
-#   dependsOn: []
-#   jobs:  
-#   - job: e2e_testing_job_electron
-#     displayName: 'Run E2E in Electron'
-#     pool:
-#       vmImage: windows-latest
-#     steps:
-#       - template: devops/e2e.testing.yml
-#         parameters:
-#           browserType: electron
+- stage: e2e_testing_stage_electron
+  displayName: 'Electron E2E Testing'
+  dependsOn: []
+  jobs:  
+  - job: e2e_testing_job_electron
+    displayName: 'Run E2E in Electron'
+    pool:
+      vmImage: windows-latest
+    steps:
+      - template: e2e.testing.yml
+        parameters:
+          browserType: electron
 
 - stage: e2e_testing_stage_chrome
   displayName: 'Chrome E2E Testing'
