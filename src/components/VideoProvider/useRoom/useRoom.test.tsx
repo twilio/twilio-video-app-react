@@ -29,28 +29,13 @@ describe('the useRoom hook', () => {
     expect(result.current.isConnecting).toBe(false);
   });
 
-  it('should publish video tracks with low priority', async () => {
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useRoom([{ kind: 'video' } as LocalTrack, { kind: 'audio' } as LocalTrack], () => {}, {})
-    );
+  it('should set the priority of video tracks to low', async () => {
+    const { result, waitForNextUpdate } = renderHook(() => useRoom([{ kind: 'video' } as LocalTrack], () => {}, {}));
     act(() => {
       result.current.connect('token');
     });
     await waitForNextUpdate();
-    expect(mockRoom.localParticipant.publishTrack).toHaveBeenCalledWith({ kind: 'video' }, { priority: 'low' });
-    expect(mockRoom.localParticipant.publishTrack).toHaveBeenCalledWith({ kind: 'audio' }, { priority: 'standard' });
-  });
-
-  it('should publish video tracks that are supplied in a rerender', async () => {
-    const { result, rerender, waitForNextUpdate } = renderHook(props => useRoom(props.tracks, () => {}, {}), {
-      initialProps: { tracks: [] as LocalTrack[] },
-    });
-    rerender({ tracks: [{ kind: 'video' } as LocalTrack] });
-    act(() => {
-      result.current.connect('token');
-    });
-    await waitForNextUpdate();
-    expect(mockRoom.localParticipant.publishTrack).toHaveBeenCalledWith({ kind: 'video' }, { priority: 'low' });
+    expect(mockRoom.localParticipant.videoTracks[0].setPriority).toHaveBeenCalledWith('low');
   });
 
   it('should return a room after connecting to a room', async () => {

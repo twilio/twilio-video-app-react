@@ -24,6 +24,7 @@
     "husky": "^3.1.0",
     "lint-staged": "^9.5.0",
     "lodash.throttle": "^4.1.1",
+    "nanoid": "^3.1.12",
     "prettier": "^1.19.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
@@ -31,7 +32,7 @@
     "react-scripts": "^3.4.3",
     "strip-color": "^0.1.0",
     "twilio": "^3.39.3",
-    "twilio-video": "^2.7.1",
+    "twilio-video": "https://github.com/charliesantos/twilio-video.js/archive/preflight-0.0.1.tar.gz",
     "typescript": "^3.8.3"
   },
   "devDependencies": {

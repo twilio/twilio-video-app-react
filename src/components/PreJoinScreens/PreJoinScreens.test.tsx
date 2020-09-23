@@ -1,6 +1,7 @@
 import React from 'react';
 import DeviceSelectionScreen from './DeviceSelectionScreen/DeviceSelectionScreen';
 import { mount, shallow } from 'enzyme';
+import PreflightTest from './PreflightTest/PreflightTest';
 import PreJoinScreens from './PreJoinScreens';
 import RoomNameScreen from './RoomNameScreen/RoomNameScreen';
 import { useParams } from 'react-router-dom';
@@ -22,15 +23,16 @@ jest.mock('react-router-dom', () => ({ useParams: jest.fn() }));
 const mockUseAppState = useAppState as jest.Mock<any>;
 const mockUseParams = useParams as jest.Mock<any>;
 
-mockUseAppState.mockImplementation(() => ({ user: { displayName: 'Test User' } }));
-mockUseParams.mockImplementation(() => ({ URLRoomName: 'testRoom' }));
-
 jest.mock('../IntroContainer/IntroContainer', () => ({ children }: { children: React.ReactNode }) => children);
 jest.mock('./RoomNameScreen/RoomNameScreen', () => () => null);
 jest.mock('./DeviceSelectionScreen/DeviceSelectionScreen', () => () => null);
 
 describe('the PreJoinScreens component', () => {
   beforeEach(jest.clearAllMocks);
+  beforeEach(() => {
+    mockUseAppState.mockImplementation(() => ({ user: { displayName: 'Test User' } }));
+    mockUseParams.mockImplementation(() => ({ URLRoomName: 'testRoom' }));
+  });
 
   it('should update the URL to include the room name on submit', () => {
     const wrapper = shallow(<PreJoinScreens />);
@@ -71,12 +73,35 @@ describe('the PreJoinScreens component', () => {
     expect(wrapper.find(DeviceSelectionScreen).exists()).toBe(true);
   });
 
-  it('should populate the Room name from the URL and switch to the DeviceSelectionScreen', () => {
+  it('should render the PreflightTest component only while on the DeviceSelection step', () => {
+    const wrapper = shallow(<PreJoinScreens />);
+
+    expect(wrapper.prop('subContent')).toBe(false);
+    expect(wrapper.find(DeviceSelectionScreen).exists()).toBe(false);
+
+    const handleSubmit = wrapper.find(RoomNameScreen).prop('handleSubmit');
+    handleSubmit({ preventDefault: () => {} } as any);
+
+    expect(wrapper.prop('subContent')).toEqual(<PreflightTest />);
+    expect(wrapper.find(DeviceSelectionScreen).exists()).toBe(true);
+  });
+
+  it('should populate the room name from the URL and switch to the DeviceSelectionScreen when the displayName is present for the user', () => {
     const wrapper = mount(<PreJoinScreens />);
     const roomName = wrapper.find(DeviceSelectionScreen).prop('roomName');
     expect(roomName).toBe('testRoom');
 
     expect(wrapper.find(RoomNameScreen).exists()).toBe(false);
     expect(wrapper.find(DeviceSelectionScreen).exists()).toBe(true);
+  });
+
+  it('should populate the room name from the URL and stay on the RoomNameScreen when the displayName is not present for the user', () => {
+    mockUseAppState.mockImplementation(() => ({ user: {} }));
+    const wrapper = mount(<PreJoinScreens />);
+    const roomName = wrapper.find(RoomNameScreen).prop('roomName');
+    expect(roomName).toBe('testRoom');
+
+    expect(wrapper.find(RoomNameScreen).exists()).toBe(true);
+    expect(wrapper.find(DeviceSelectionScreen).exists()).toBe(false);
   });
 });

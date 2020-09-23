@@ -4,6 +4,8 @@ import { shallow } from 'enzyme';
 import { Steps } from '../PreJoinScreens';
 import { useAppState } from '../../../state';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import ToggleVideoButton from '../../MenuBar/Buttons/ToggleVideoButton/ToggleVideoButton';
+import ToggleAudioButton from '../../MenuBar/Buttons/ToggleAudioButton/ToggleAudioButton';
 
 jest.mock('../../../hooks/useVideoContext/useVideoContext');
 jest.mock('../../../state');
@@ -22,27 +24,51 @@ mockUseVideoContext.mockImplementation(() => ({
 }));
 
 describe('the DeviceSelectionScreen component', () => {
-  it('should disable the Join Room button when connecting to a room', () => {
+  describe('when connecting to a room', () => {
     mockUseVideoContext.mockImplementationOnce(() => ({
       connect: mockConnect,
       isAcquiringLocalTracks: false,
       isConnecting: true,
     }));
+
     const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
-    expect(wrapper.find({ children: 'Join Room' }).prop('disabled')).toBe(true);
+
+    it('should disable the Join Room button', () => {
+      expect(wrapper.find({ children: 'Join Room' }).prop('disabled')).toBe(true);
+    });
+
+    it('should disable the toggle video button', () => {
+      expect(wrapper.find(ToggleVideoButton).prop('disabled')).toBe(true);
+    });
+
+    it('should disable the toggle audio button', () => {
+      expect(wrapper.find(ToggleAudioButton).prop('disabled')).toBe(true);
+    });
   });
 
-  it('should disable the Join Room button when acquiring local tracks', () => {
+  describe('when acquiring local tracks', () => {
     mockUseVideoContext.mockImplementationOnce(() => ({
       connect: mockConnect,
       isAcquiringLocalTracks: true,
       isConnecting: false,
     }));
+
     const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
-    expect(wrapper.find({ children: 'Join Room' }).prop('disabled')).toBe(true);
+
+    it('should disable the Join Room, toggle video, and toggle audio buttons', () => {
+      expect(wrapper.find({ children: 'Join Room' }).prop('disabled')).toBe(true);
+    });
+
+    it('should disable the toggle video button', () => {
+      expect(wrapper.find(ToggleVideoButton).prop('disabled')).toBe(true);
+    });
+
+    it('should disable the toggle audio button', () => {
+      expect(wrapper.find(ToggleAudioButton).prop('disabled')).toBe(true);
+    });
   });
 
-  it('should disable the Join Room button when fetching a token', () => {
+  describe('when fetching a token', () => {
     mockUseVideoContext.mockImplementationOnce(() => ({
       connect: mockConnect,
       isAcquiringLocalTracks: false,
@@ -50,7 +76,18 @@ describe('the DeviceSelectionScreen component', () => {
     }));
     mockUseAppState.mockImplementationOnce(() => ({ getToken: mockGetToken, isFetching: true }));
     const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
-    expect(wrapper.find({ children: 'Join Room' }).prop('disabled')).toBe(true);
+
+    it('should disable the Join Room button', () => {
+      expect(wrapper.find({ children: 'Join Room' }).prop('disabled')).toBe(true);
+    });
+
+    it('should disable the toggle video button', () => {
+      expect(wrapper.find(ToggleVideoButton).prop('disabled')).toBe(true);
+    });
+
+    it('should disable the toggle audio button', () => {
+      expect(wrapper.find(ToggleAudioButton).prop('disabled')).toBe(true);
+    });
   });
 
   it('should not disable the Join Room button by default', () => {
