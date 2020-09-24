@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as jwt_decode from 'jwt-decode';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -21,6 +21,7 @@ import SettingsButton from './SettingsButton/SettingsButton';
 import { useAppState } from '../../state';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import { ParticipantInformation } from '../../state/index';
 
 const JOIN_ROOM_MESSAGE = 'Join Room';
 const RETRY_ROOM_MESSAGE = 'Retry';
@@ -79,40 +80,57 @@ const mobileAndTabletCheck = function() {
   })(navigator.userAgent || navigator.vendor || (window as any).MyNamespace); //window.opera);
   return check;
 };
-let submitButtonValue = JOIN_ROOM_MESSAGE;
-interface ReporterToken {
-  caseNumber: string;
-  reporterName: string;
-}
+
 export default function MenuBar() {
-  const reporterToken: string = window.location.hash.substr(1);
-  let repoterInfo: any = reporterToken ? jwt_decode(reporterToken) : '';
   const classes = useStyles();
-  const { setError, getToken, isFetching } = useAppState();
+  const [submitButtonValue, setSubmitButtonValue] = useState<any>(JOIN_ROOM_MESSAGE);
+  const { setError, getToken, isFetching, authoriseParticipant } = useAppState();
   const { isConnecting, connect, room, localTracks } = useVideoContext();
   const roomState = useRoomState();
+
   const alert = useAlert();
-  const [partyType, setPartyType] = useState(reporterToken ? PARTICIANT_TYPES.REPORTER : '');
-  const [partyName, setPartyName] = useState(reporterToken ? repoterInfo.reporterName : '');
-  const [caseNumber, setCaseNumber] = useState(reporterToken ? repoterInfo.caseNumber : '');
+
+  const [participantInfo, setParticipantInfo] = useState<any>(null);
+
+  async function joinRoom(participantInformation) {
+    try {
+      const response = await getToken(participantInformation);
+
+      if (response === ERROR_MESSAGE.ROOM_NOT_FOUND) {
+        setSubmitButtonValue(RETRY_ROOM_MESSAGE);
+        return <div>{alert.show(ERROR_MESSAGE.ROOM_NOT_FOUND)}</div>;
+      } else {
+        await connect(response);
+        setSubmitButtonValue(JOIN_ROOM_MESSAGE);
+      }
+    } catch (err) {
+      if (err.response) setError({ message: err.response.data });
+      else setError({ message: ERROR_MESSAGE.NETWORK_ERROR });
+
+      setSubmitButtonValue(JOIN_ROOM_MESSAGE);
+    }
+  }
+
+  function authorise(currentParticipantInformation) {
+    async function authoriseAsync() {
+      if (currentParticipantInformation === null) {
+        const participantInformation: ParticipantInformation = await authoriseParticipant();
+
+        if (participantInformation && participantInformation.displayName !== '') {
+          setParticipantInfo(participantInformation);
+        }
+      }
+    }
+    authoriseAsync();
+  }
+
+  useEffect(() => {
+    authorise(participantInfo);
+  }, [participantInfo]);
+
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    getToken(caseNumber, partyType, partyName)
-      .then(response => {
-        if (response == ERROR_MESSAGE.ROOM_NOT_FOUND) {
-          submitButtonValue = RETRY_ROOM_MESSAGE;
-          return <div>{alert.show(ERROR_MESSAGE.ROOM_NOT_FOUND)}</div>;
-        } else {
-          connect(response);
-          submitButtonValue = JOIN_ROOM_MESSAGE;
-        }
-      })
-      .catch(err => {
-        if (err.response) setError({ message: err.response.data });
-        else setError({ message: ERROR_MESSAGE.NETWORK_ERROR });
-
-        submitButtonValue = JOIN_ROOM_MESSAGE;
-      });
+    joinRoom(participantInfo);
   };
 
   let selectedAudioDevice = { label: '', deviceId: '', groupdId: '' };
@@ -147,11 +165,10 @@ export default function MenuBar() {
               <Select
                 data-cy="select"
                 label="Party Type"
-                value={partyType}
-                onChange={e => setPartyType(e.target.value as string)}
+                value={participantInfo ? participantInfo.partyType : ''}
                 margin="dense"
                 placeholder="Party Type"
-                disabled={!!reporterToken}
+                disabled={true}
               >
                 {getPartyTypes().map(type => (
                   <MenuItem key={type} value={type} data-cy="menu-item">
@@ -160,15 +177,15 @@ export default function MenuBar() {
                 ))}
               </Select>
             </FormControl>
+
             <TextField
               autoComplete="off"
               id="party-name"
               label="Party Name"
               className={classes.textField}
-              value={partyName}
-              onChange={e => setPartyName(e.target.value)}
+              value={participantInfo ? participantInfo.displayName : ''}
               margin="dense"
-              disabled={!!reporterToken}
+              disabled={true}
             />
 
             <TextField
@@ -176,10 +193,9 @@ export default function MenuBar() {
               id="case-number"
               label="Case Number"
               className={classes.textField}
-              value={caseNumber}
-              onChange={e => setCaseNumber(e.target.value)}
+              value={participantInfo ? participantInfo.caseReference : ''}
               margin="dense"
-              disabled={!!reporterToken}
+              disabled={true}
             />
             <Online>
               <Button
@@ -187,7 +203,7 @@ export default function MenuBar() {
                 type="submit"
                 color="primary"
                 variant="contained"
-                disabled={isConnecting || !partyName || !caseNumber || isFetching}
+                disabled={isConnecting || !participantInfo || isFetching}
               >
                 {submitButtonValue}
               </Button>
@@ -200,7 +216,9 @@ export default function MenuBar() {
             {(isConnecting || isFetching) && <CircularProgress className={classes.loadingSpinner} />}
           </form>
         ) : (
-          <h3 style={{ paddingLeft: '10px' }}>Case Number: {room.name}</h3>
+          <h3 style={{ paddingLeft: '10px' }}>
+            Case Reference: {participantInfo ? participantInfo.caseReference : ''}
+          </h3>
         )}
         <div className={classes.rightButtonContainer}>
           <ToggleGridViewButton />
