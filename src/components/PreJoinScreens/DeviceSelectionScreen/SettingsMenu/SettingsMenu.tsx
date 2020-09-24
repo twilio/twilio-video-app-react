@@ -48,7 +48,19 @@ export default function SettingsMenu({ mobileButtonClass }: { mobileButtonClass?
           Settings
         </Button>
       )}
-      <MenuContainer open={menuOpen} onClose={() => setMenuOpen(isOpen => !isOpen)} anchorEl={anchorRef.current}>
+      <MenuContainer
+        open={menuOpen}
+        onClose={() => setMenuOpen(isOpen => !isOpen)}
+        anchorEl={anchorRef.current}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: isMobile ? 'left' : 'right',
+        }}
+        transformOrigin={{
+          vertical: isMobile ? -55 : -45,
+          horizontal: 'center',
+        }}
+      >
         <MenuItem onClick={() => setAboutOpen(true)}>
           <Typography variant="body1">About</Typography>
         </MenuItem>
