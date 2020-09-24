@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles, Theme, Typography } from '@material-ui/core';
-import SwooshSVG from './swoosh.svg';
+import Swoosh from './swoosh';
 import VideoLogo from './VideoLogo';
 import TwilioLogo from './TwilioLogo';
 import { useAppState } from '../../state';
@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     background: 'rgb(40, 42, 43)',
-    height: '100vh',
+    height: '100%',
   },
   container: {
     position: 'relative',
@@ -33,9 +33,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       height: 'auto',
       width: 'calc(100% - 40px)',
       margin: 'auto',
-      maxHeight: 'calc(100vh - 140px)',
       maxWidth: '400px',
-      overflow: 'scroll',
     },
   },
   swooshContainer: {
@@ -43,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundImage: `url(${SwooshSVG})`,
+    backgroundImage: Swoosh,
     backgroundSize: 'cover',
     width: '296px',
     [theme.breakpoints.down('sm')]: {
