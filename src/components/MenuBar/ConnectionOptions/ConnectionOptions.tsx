@@ -25,7 +25,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   container: {
     width: '600px',
     minHeight: '400px',
-    overflow: 'hidden',
     [theme.breakpoints.down('xs')]: {
       width: 'calc(100vw - 32px)',
     },
