@@ -4,6 +4,8 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  DialogTitle,
+  Divider,
   FormControl,
   Grid,
   InputLabel,
@@ -23,6 +25,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   container: {
     width: '600px',
     minHeight: '400px',
+    overflow: 'hidden',
     [theme.breakpoints.down('xs')]: {
       width: 'calc(100vw - 32px)',
     },
@@ -80,10 +83,11 @@ export default function ConnectionOptions({ open, onClose }: { open: boolean; on
 
   return (
     <Dialog open={open} onClose={onClose} classes={{ paper: classes.paper }}>
+      <DialogTitle>Connection Settings</DialogTitle>
+      <Divider />
       <DialogContent className={classes.container}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Typography variant="body2">Bandwidth Profile Settings:</Typography>
             <Typography hidden={!isDisabled} variant="body2">
               These settings cannot be changed when connected to a room.
             </Typography>
@@ -218,8 +222,9 @@ export default function ConnectionOptions({ open, onClose }: { open: boolean; on
           </Grid>
         </Grid>
       </DialogContent>
+      <Divider />
       <DialogActions>
-        <Button className={classes.button} onClick={onClose}>
+        <Button className={classes.button} color="primary" variant="contained" onClick={onClose}>
           Done
         </Button>
       </DialogActions>
