@@ -51,6 +51,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 export default function SnackBar({ headline, message, variant, open, handleClose }: SnackbarProps) {
   const classes = useStyles();
 
+  const handleOnClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    handleClose();
+  };
+
   return (
     <MUISnackBar
       anchorOrigin={{
@@ -59,7 +67,7 @@ export default function SnackBar({ headline, message, variant, open, handleClose
       }}
       open={open}
       autoHideDuration={600000}
-      onClose={handleClose}
+      onClose={handleOnClose}
     >
       <div
         className={clsx(classes.container, {
