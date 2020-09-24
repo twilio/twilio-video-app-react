@@ -20,7 +20,7 @@ function AboutDialog({ open, onClose }: PropsWithChildren<AboutDialogProps>) {
   const { roomType } = useAppState();
   return (
     <Dialog open={open} onClose={onClose} fullWidth={true} maxWidth="xs">
-      <DialogTitle>About:</DialogTitle>
+      <DialogTitle>About</DialogTitle>
       <Divider />
       <DialogContent>
         <DialogContentText>Browser supported: {String(Video.isSupported)}</DialogContentText>
