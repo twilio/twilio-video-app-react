@@ -12,8 +12,6 @@ jest.mock('react-router-dom', () => {
 });
 jest.mock('../../state');
 jest.mock('./google-logo.svg', () => ({ ReactComponent: () => null }));
-jest.mock('./twilio-logo.svg', () => ({ ReactComponent: () => null }));
-jest.mock('./video-logo.png', () => ({ ReactComponent: () => null }));
 
 const mockUseAppState = useAppState as jest.Mock<any>;
 const mockUseLocation = useLocation as jest.Mock<any>;
@@ -21,6 +19,7 @@ const mockUseHistory = useHistory as jest.Mock<any>;
 
 const mockReplace = jest.fn();
 mockUseHistory.mockImplementation(() => ({ replace: mockReplace }));
+mockUseLocation.mockImplementation(() => ({ pathname: '/login' }));
 
 describe('the LoginPage component', () => {
   beforeEach(jest.clearAllMocks);
@@ -102,13 +101,13 @@ describe('the LoginPage component', () => {
       act(() => {
         fireEvent.change(getByLabelText('Passcode'), { target: { value: '1234' } });
       });
-      
+
       act(() => {
         fireEvent.submit(getByText('Submit'));
       });
 
-      const element = await waitForElement(() => getByText('Test Error')) 
-      expect(element).toBeTruthy()
+      const element = await waitForElement(() => getByText('Test Error'));
+      expect(element).toBeTruthy();
     });
   });
 

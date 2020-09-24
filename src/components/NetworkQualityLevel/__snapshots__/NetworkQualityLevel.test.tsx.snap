@@ -7,7 +7,7 @@ exports[`the NetworkQualityLevel component should render correctly for level 0 1
   <div
     style={
       Object {
-        "background": "#040",
+        "background": "rgba(255, 255, 255, 0.2)",
         "height": "3px",
       }
     }
@@ -15,7 +15,7 @@ exports[`the NetworkQualityLevel component should render correctly for level 0 1
   <div
     style={
       Object {
-        "background": "#040",
+        "background": "rgba(255, 255, 255, 0.2)",
         "height": "6px",
       }
     }
@@ -23,7 +23,7 @@ exports[`the NetworkQualityLevel component should render correctly for level 0 1
   <div
     style={
       Object {
-        "background": "#040",
+        "background": "rgba(255, 255, 255, 0.2)",
         "height": "9px",
       }
     }
@@ -31,7 +31,7 @@ exports[`the NetworkQualityLevel component should render correctly for level 0 1
   <div
     style={
       Object {
-        "background": "#040",
+        "background": "rgba(255, 255, 255, 0.2)",
         "height": "12px",
       }
     }
@@ -39,7 +39,7 @@ exports[`the NetworkQualityLevel component should render correctly for level 0 1
   <div
     style={
       Object {
-        "background": "#040",
+        "background": "rgba(255, 255, 255, 0.2)",
         "height": "15px",
       }
     }
@@ -54,7 +54,7 @@ exports[`the NetworkQualityLevel component should render correctly for level 3 1
   <div
     style={
       Object {
-        "background": "#0c0",
+        "background": "white",
         "height": "3px",
       }
     }
@@ -62,7 +62,7 @@ exports[`the NetworkQualityLevel component should render correctly for level 3 1
   <div
     style={
       Object {
-        "background": "#0c0",
+        "background": "white",
         "height": "6px",
       }
     }
@@ -70,7 +70,7 @@ exports[`the NetworkQualityLevel component should render correctly for level 3 1
   <div
     style={
       Object {
-        "background": "#0c0",
+        "background": "white",
         "height": "9px",
       }
     }
@@ -78,7 +78,7 @@ exports[`the NetworkQualityLevel component should render correctly for level 3 1
   <div
     style={
       Object {
-        "background": "#040",
+        "background": "rgba(255, 255, 255, 0.2)",
         "height": "12px",
       }
     }
@@ -86,7 +86,7 @@ exports[`the NetworkQualityLevel component should render correctly for level 3 1
   <div
     style={
       Object {
-        "background": "#040",
+        "background": "rgba(255, 255, 255, 0.2)",
         "height": "15px",
       }
     }
@@ -101,7 +101,7 @@ exports[`the NetworkQualityLevel component should render correctly for level 5 1
   <div
     style={
       Object {
-        "background": "#0c0",
+        "background": "white",
         "height": "3px",
       }
     }
@@ -109,7 +109,7 @@ exports[`the NetworkQualityLevel component should render correctly for level 5 1
   <div
     style={
       Object {
-        "background": "#0c0",
+        "background": "white",
         "height": "6px",
       }
     }
@@ -117,7 +117,7 @@ exports[`the NetworkQualityLevel component should render correctly for level 5 1
   <div
     style={
       Object {
-        "background": "#0c0",
+        "background": "white",
         "height": "9px",
       }
     }
@@ -125,7 +125,7 @@ exports[`the NetworkQualityLevel component should render correctly for level 5 1
   <div
     style={
       Object {
-        "background": "#0c0",
+        "background": "white",
         "height": "12px",
       }
     }
@@ -133,7 +133,7 @@ exports[`the NetworkQualityLevel component should render correctly for level 5 1
   <div
     style={
       Object {
-        "background": "#0c0",
+        "background": "white",
         "height": "15px",
       }
     }

@@ -27,11 +27,12 @@ const useStyles = makeStyles({
   },
 });
 
-function Result({ children, icon }: { children: React.ReactNode; icon?: React.ReactNode }) {
+function ResultItem({ children, icon }: { children: React.ReactNode; icon: React.ReactNode }) {
   const classes = useStyles();
+
   return (
     <>
-      {icon && <div className={classes.iconContainer}>{icon}</div>}
+      <div className={classes.iconContainer}>{icon}</div>
       <Typography variant="subtitle2" className={classes.result}>
         {children}
       </Typography>
@@ -39,51 +40,45 @@ function Result({ children, icon }: { children: React.ReactNode; icon?: React.Re
   );
 }
 
-export function ResultComponent({
-  networkCondition,
-  tokenError,
-  testFailure,
-}: {
-  networkCondition?: NetworkCondition;
-  tokenError?: Error;
-  testFailure?: Error;
-}) {
-  if (tokenError || testFailure) {
-    return <Result icon={<ErrorIcon />}>There was a problem connecting to the network</Result>;
+export function Result({ networkCondition, error }: { networkCondition?: NetworkCondition; error?: Error }) {
+  if (error) {
+    return <ResultItem icon={<ErrorIcon />}>There was a problem connecting to the network</ResultItem>;
   }
 
   if (networkCondition === NetworkCondition.Red) {
     return (
-      <Result icon={<ErrorIcon />}>
+      <ResultItem icon={<ErrorIcon />}>
         Poor network conditions. You may experience poor call quality and reliability.
-      </Result>
+      </ResultItem>
     );
   }
 
   if (networkCondition === NetworkCondition.Yellow) {
     return (
-      <Result icon={<WarningIcon />}>Poor network conditions. You may experience degraded video performance.</Result>
+      <ResultItem icon={<WarningIcon />}>
+        Poor network conditions. You may experience degraded video performance.
+      </ResultItem>
     );
   }
 
   if (networkCondition === NetworkCondition.Green) {
-    return <Result icon={<SuccessIcon />}>Your Network Connection is Stable</Result>;
+    return <ResultItem icon={<SuccessIcon />}>Your Network Connection is Stable</ResultItem>;
   }
 
   return null;
 }
 
-export default function PreflightTestResult() {
+export default function PreflightTest() {
   const classes = useStyles();
 
   const { tokens, tokenError } = useGetPreflightTokens();
-  const { testFailure, testReport, isTestRunning } = usePreflightTest(tokens?.[0], tokens?.[1]);
+  const { testFailure, testReport } = usePreflightTest(tokens?.[0], tokens?.[1]);
 
   const networkCondition = getNetworkCondition(testReport);
 
   return (
     <Grid container justify="center" alignItems="center">
-      {isTestRunning ? (
+      {!testFailure && !testReport ? (
         <>
           <ProgressIndicator />
           <Typography variant="subtitle2" className={classes.result}>
@@ -91,7 +86,7 @@ export default function PreflightTestResult() {
           </Typography>
         </>
       ) : (
-        <ResultComponent networkCondition={networkCondition} tokenError={tokenError} testFailure={testFailure} />
+        <Result networkCondition={networkCondition} error={tokenError || testFailure} />
       )}
     </Grid>
   );

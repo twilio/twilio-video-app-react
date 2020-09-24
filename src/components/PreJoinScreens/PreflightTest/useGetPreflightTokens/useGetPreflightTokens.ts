@@ -14,7 +14,10 @@ export default function useGetPreflightTokens() {
 
       setIsFetching(true);
 
-      Promise.all([getToken(nanoid(), roomName), getToken(nanoid(), roomName)])
+      const publisherIdentity = 'participant-' + nanoid();
+      const subscriberIdentity = 'participant-' + nanoid();
+
+      Promise.all([getToken(publisherIdentity, roomName), getToken(subscriberIdentity, roomName)])
         .then(tokens => {
           setTokens(tokens);
           setIsFetching(false);

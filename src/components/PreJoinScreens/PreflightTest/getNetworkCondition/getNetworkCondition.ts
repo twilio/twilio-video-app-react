@@ -15,9 +15,13 @@ export function getSingleNetworkCondition(stat: number | undefined, yellowThresh
 export default function getNetworkCondition(testReport?: PreflightTestReport) {
   if (!testReport) return undefined;
 
+  const latency = testReport.stats.rtt?.average;
+  const jitter = testReport.stats.jitter.average;
+  const packetLoss = testReport.stats.packetLoss.average;
+
   return Math.min(
-    getSingleNetworkCondition(testReport.stats.rtt?.average, 200, 400),
-    getSingleNetworkCondition(testReport.stats.jitter.average, 30, 100),
-    getSingleNetworkCondition(testReport.stats.packetLoss.average, 3, 7)
+    getSingleNetworkCondition(latency, 200, 400),
+    getSingleNetworkCondition(jitter, 30, 100),
+    getSingleNetworkCondition(packetLoss, 3, 7)
   ) as NetworkCondition;
 }

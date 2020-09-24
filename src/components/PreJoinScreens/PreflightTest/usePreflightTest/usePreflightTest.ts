@@ -12,6 +12,7 @@ export default function usePreflightTest(publisherToken?: string, subscriberToke
 
   const preflightTestRef = useRef<PreflightTest>();
 
+  // This will stop the preflight test when the user connects to a room
   useEffect(() => {
     if (isConnecting) {
       preflightTestRef.current?.stop();
@@ -19,6 +20,15 @@ export default function usePreflightTest(publisherToken?: string, subscriberToke
       preflightTestRef.current?.removeAllListeners('failed');
     }
   }, [isConnecting]);
+
+  // This will stop the preflight test when the component is unmounted.
+  useEffect(() => {
+    return () => {
+      preflightTestRef.current?.stop();
+      preflightTestRef.current?.removeAllListeners('completed');
+      preflightTestRef.current?.removeAllListeners('failed');
+    };
+  }, []);
 
   useEffect(() => {
     if (publisherToken && subscriberToken && !testReport && !testFailure && !isTestRunning) {

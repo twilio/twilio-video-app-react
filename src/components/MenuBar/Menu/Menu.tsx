@@ -29,7 +29,7 @@ export default function Menu() {
           </>
         )}
       </Button>
-      <MenuContainer open={menuOpen} onClose={() => setMenuOpen(state => !state)} anchorEl={anchorRef.current}>
+      <MenuContainer open={menuOpen} onClose={() => setMenuOpen(isOpen => !isOpen)} anchorEl={anchorRef.current}>
         <MenuItem onClick={() => setAboutOpen(true)}>
           <Typography variant="body1">About</Typography>
         </MenuItem>
