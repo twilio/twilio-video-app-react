@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
       height: `${theme.footerHeight}px`,
       position: 'fixed',
       display: 'flex',
-      padding: '0 1em',
+      padding: '0 1.43em',
       zIndex: 1,
       [theme.breakpoints.down('sm')]: {
         padding: 0,
@@ -45,6 +45,11 @@ const useStyles = makeStyles((theme: Theme) =>
         color: theme.brand,
         border: `2px solid ${theme.brand}`,
         margin: '0 2em',
+        '&:hover': {
+          color: '#600101',
+          border: `2px solid #600101`,
+          background: '#FFE9E7',
+        },
       },
     },
     hideMobile: {
