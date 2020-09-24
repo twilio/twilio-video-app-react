@@ -30,3 +30,13 @@ export function useAudioOutputDevices() {
   const devices = useDevices();
   return devices.filter(device => device.kind === 'audiooutput');
 }
+
+export function useHasAudioInputDevices() {
+  const audioDevices = useAudioInputDevices();
+  return audioDevices.length > 0;
+}
+
+export function useHasVideoInputDevices() {
+  const videoDevices = useVideoInputDevices();
+  return videoDevices.length > 0;
+}
