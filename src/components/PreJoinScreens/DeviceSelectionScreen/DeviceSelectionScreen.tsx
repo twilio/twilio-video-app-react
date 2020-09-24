@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles, Typography, Grid, Button } from '@material-ui/core';
 import LocalVideoPreview from './LocalVideoPreview/LocalVideoPreview';
-import SettingsIcon from '../SettingsIcon';
-import SettingsDialog from '../../MenuBar/SettingsDialog/SettingsDialog';
+import SettingsMenu from './SettingsMenu/SettingsMenu';
 import { Steps } from '../PreJoinScreens';
 import ToggleAudioButton from '../../MenuBar/Buttons/ToggleAudioButton/ToggleAudioButton';
 import ToggleVideoButton from '../../MenuBar/Buttons/ToggleVideoButton/ToggleVideoButton';
@@ -21,9 +20,6 @@ const useStyles = makeStyles({
     border: '2px solid #aaa',
     margin: '1em 0',
   },
-  settingsButton: {
-    padding: '1.8em 0 0.7em',
-  },
   localPreviewContainer: {
     paddingRight: '2em',
   },
@@ -37,7 +33,6 @@ interface DeviceSelectionScreenProps {
 
 export default function DeviceSelectionScreen({ name, roomName, setStep }: DeviceSelectionScreenProps) {
   const classes = useStyles();
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const { getToken, isFetching } = useAppState();
   const { connect, isAcquiringLocalTracks, isConnecting } = useVideoContext();
   const disableButtons = isFetching || isAcquiringLocalTracks || isConnecting;
@@ -57,14 +52,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
           <div className={classes.localPreviewContainer}>
             <LocalVideoPreview identity={name} />
           </div>
-          <Button
-            onClick={() => setIsSettingsOpen(true)}
-            startIcon={<SettingsIcon />}
-            className={classes.settingsButton}
-          >
-            Settings
-          </Button>
-          <SettingsDialog open={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
+          <SettingsMenu />
         </Grid>
         <Grid item sm={5}>
           <Grid container direction="column" justify="space-between" style={{ height: '100%' }}>
