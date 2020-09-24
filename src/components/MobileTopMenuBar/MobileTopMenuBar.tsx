@@ -7,7 +7,9 @@ import Menu from '../MenuBar/Menu/Menu';
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
     background: 'white',
+    paddingLeft: '1em',
     display: 'none',
+    height: `${theme.mobileTopBarHeight}px`,
     [theme.breakpoints.down('sm')]: {
       display: 'flex',
     },
@@ -20,9 +22,11 @@ export default function MobileTopMenuBar() {
 
   return (
     <Grid container alignItems="center" justify="space-between" className={classes.container}>
-      <Menu />
       <Typography variant="subtitle1">{room.name}</Typography>
-      <EndCallButton />
+      <div>
+        <EndCallButton />
+        <Menu />
+      </div>
     </Grid>
   );
 }
