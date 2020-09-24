@@ -29,6 +29,7 @@ export default function MainParticipant() {
         disableAudio
         enableScreenShare={mainParticipant !== localParticipant}
         videoPriority={videoPriority}
+        isLocalParticipant={mainParticipant === localParticipant}
       />
     </MainParticipantInfo>
   );
