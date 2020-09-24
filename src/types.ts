@@ -56,7 +56,7 @@ export type ErrorCallback = (error: TwilioError) => void;
 
 export type IVideoTrack = LocalVideoTrack | RemoteVideoTrack;
 
-export type RoomType = 'group' | 'group-small' | 'peer-to-peer';
+export type RoomType = 'group' | 'group-small' | 'peer-to-peer' | 'go';
 
 export interface PreflightTestReport {
   isTurnRequired: boolean;
