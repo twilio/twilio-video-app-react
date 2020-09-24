@@ -21,12 +21,12 @@ describe('the ConnectionOptions component', () => {
   describe('when not connected to a room', () => {
     mockUseRoomState.mockImplementation(() => 'disconnected');
     it('should render correctly', () => {
-      const wrapper = shallow(<ConnectionOptions />);
+      const wrapper = shallow(<ConnectionOptions open={true} onClose={() => {}} />);
       expect(wrapper).toMatchSnapshot();
     });
 
     it('should dispatch settings changes', () => {
-      const wrapper = shallow(<ConnectionOptions />);
+      const wrapper = shallow(<ConnectionOptions open={true} onClose={() => {}} />);
       wrapper
         .find(Select)
         .find({ name: 'dominantSpeakerPriority' })
@@ -35,7 +35,7 @@ describe('the ConnectionOptions component', () => {
     });
 
     it('should not dispatch settings changes from a number field when there are non-digits in the value', () => {
-      const wrapper = shallow(<ConnectionOptions />);
+      const wrapper = shallow(<ConnectionOptions open={true} onClose={() => {}} />);
       wrapper
         .find(TextField)
         .find({ name: 'maxTracks' })
@@ -44,7 +44,7 @@ describe('the ConnectionOptions component', () => {
     });
 
     it('should dispatch settings changes from a number field when there are only digits in the value', () => {
-      const wrapper = shallow(<ConnectionOptions />);
+      const wrapper = shallow(<ConnectionOptions open={true} onClose={() => {}} />);
       wrapper
         .find(TextField)
         .find({ name: 'maxTracks' })
@@ -56,7 +56,7 @@ describe('the ConnectionOptions component', () => {
   describe('when connected to a room', () => {
     mockUseRoomState.mockImplementation(() => 'connected');
     it('should render correctly', () => {
-      const wrapper = shallow(<ConnectionOptions />);
+      const wrapper = shallow(<ConnectionOptions open={true} onClose={() => {}} />);
       expect(wrapper).toMatchSnapshot();
     });
   });

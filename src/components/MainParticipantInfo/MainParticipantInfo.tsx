@@ -18,7 +18,6 @@ const useStyles = makeStyles({
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
-    gridArea: 'participantList',
   },
   isVideoSwitchedOff: {
     '& video': {
@@ -42,7 +41,7 @@ const useStyles = makeStyles({
     width: '100%',
   },
   fullWidth: {
-    gridArea: '1 / 1 / 1 / 3',
+    gridArea: '1 / 1 / 3 / 3',
   },
   avatarContainer: {
     display: 'flex',

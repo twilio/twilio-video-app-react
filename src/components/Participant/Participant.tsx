@@ -28,7 +28,12 @@ export default function Participant({
       isSelected={isSelected}
       isLocalParticipant={isLocalParticipant}
     >
-      <ParticipantTracks participant={participant} disableAudio={disableAudio} enableScreenShare={enableScreenShare} />
+      <ParticipantTracks
+        participant={participant}
+        disableAudio={disableAudio}
+        enableScreenShare={enableScreenShare}
+        isLocalParticipant={isLocalParticipant}
+      />
     </ParticipantInfo>
   );
 }

@@ -62,7 +62,7 @@ export function Result({ networkCondition, error }: { networkCondition?: Network
   }
 
   if (networkCondition === NetworkCondition.Green) {
-    return <ResultItem icon={<SuccessIcon />}>Your Network Connection is Stable</ResultItem>;
+    return <ResultItem icon={<SuccessIcon />}>Your network connection is stable</ResultItem>;
   }
 
   return null;
@@ -77,7 +77,7 @@ export default function PreflightTest() {
   const networkCondition = getNetworkCondition(testReport);
 
   return (
-    <Grid container justify="center" alignItems="center">
+    <Grid container justify="center" alignItems="center" style={{ height: '35px', paddingBottom: '1.5em' }}>
       {!testFailure && !testReport ? (
         <>
           <ProgressIndicator />
