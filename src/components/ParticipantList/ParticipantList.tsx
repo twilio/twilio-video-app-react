@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
       gridArea: '1 / 2 / 1 / 3',
       zIndex: 1,
       [theme.breakpoints.down('sm')]: {
-        gridArea: '2 / 1 / 3 / 1',
+        gridArea: '2 / 1 / 3 / 3',
         overflowY: 'initial',
         overflowX: 'auto',
         padding: 0,

@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme: Theme) =>
         marginRight: '3px',
         marginBottom: '0',
         fontSize: '10px',
+        paddingTop: 0,
       },
     },
     innerContainer: {

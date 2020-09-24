@@ -11,7 +11,7 @@ const Container = styled('div')(({ theme }) => ({
   gridTemplateRows: '100%',
   [theme.breakpoints.down('sm')]: {
     gridTemplateColumns: `auto`,
-    gridTemplateRows: `1fr ${theme.sidebarMobileHeight + theme.footerHeight + 6}px`,
+    gridTemplateRows: `1fr ${theme.sidebarMobileHeight + 6}px`,
     gridGap: '6px',
   },
 }));
