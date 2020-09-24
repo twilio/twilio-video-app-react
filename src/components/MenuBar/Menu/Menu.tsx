@@ -9,7 +9,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import Typography from '@material-ui/core/Typography';
 import { Theme, useMediaQuery } from '@material-ui/core';
 
-export default function Menu() {
+export default function Menu(props: { buttonClassName?: string }) {
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
   const [aboutOpen, setAboutOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -19,7 +19,7 @@ export default function Menu() {
 
   return (
     <>
-      <Button onClick={() => setMenuOpen(isOpen => !isOpen)} ref={anchorRef}>
+      <Button onClick={() => setMenuOpen(isOpen => !isOpen)} ref={anchorRef} className={props.buttonClassName}>
         {isMobile ? (
           <MoreIcon />
         ) : (
@@ -35,10 +35,10 @@ export default function Menu() {
         anchorEl={anchorRef.current}
         anchorOrigin={{
           vertical: 'top',
-          horizontal: 'center',
+          horizontal: 'left',
         }}
         transformOrigin={{
-          vertical: 'bottom',
+          vertical: isMobile ? -55 : 'bottom',
           horizontal: 'center',
         }}
       >
