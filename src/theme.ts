@@ -25,6 +25,13 @@ const defaultTheme = createMuiTheme();
 
 export default createMuiTheme({
   overrides: {
+    MuiCssBaseline: {
+      '@global': {
+        'html, body, #root': {
+          height: '100%',
+        },
+      },
+    },
     MuiButton: {
       root: {
         borderRadius: '4px',
