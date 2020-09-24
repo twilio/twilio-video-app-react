@@ -11,7 +11,11 @@ import { useVideoInputDevices } from '../deviceHooks/deviceHooks';
 const useStyles = makeStyles({
   preview: {
     width: '300px',
+    maxHeight: '200px',
     margin: '0.5em auto',
+    '& video': {
+      maxHeight: '200px',
+    },
   },
 });
 
@@ -39,7 +43,7 @@ export default function VideoInputList() {
         </div>
       )}
       {videoInputDevices.length > 1 ? (
-        <FormControl>
+        <FormControl fullWidth>
           <Typography variant="subtitle2" gutterBottom>
             Video Input
           </Typography>
