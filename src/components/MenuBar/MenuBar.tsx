@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: '0 1.43em',
       zIndex: 1,
       [theme.breakpoints.down('sm')]: {
+        height: `${theme.mobileFooterHeight}px`,
         padding: 0,
       },
     },

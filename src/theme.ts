@@ -7,6 +7,7 @@ declare module '@material-ui/core/styles/createMuiTheme' {
     brand: string;
     footerHeight: number;
     mobileTopBarHeight: number;
+    mobileFooterHeight: number;
   }
 
   // allow configuration using `createMuiTheme`
@@ -16,6 +17,7 @@ declare module '@material-ui/core/styles/createMuiTheme' {
     brand: string;
     footerHeight: number;
     mobileTopBarHeight: number;
+    mobileFooterHeight: number;
   }
 }
 
@@ -73,6 +75,24 @@ export default createMuiTheme({
         padding: '16px',
       },
     },
+    MuiTextField: {
+      root: {
+        color: 'rgb(40, 42, 43)',
+      },
+    },
+    MuiInputLabel: {
+      root: {
+        color: 'rgb(40, 42, 43)',
+        fontSize: '1.1rem',
+        marginBottom: '0.2em',
+        fontWeight: 500,
+      },
+    },
+    MuiOutlinedInput: {
+      notchedOutline: {
+        borderColor: 'rgb(136, 140, 142)',
+      },
+    },
   },
   typography: {
     fontFamily: 'Inter, sans-serif',
@@ -84,6 +104,7 @@ export default createMuiTheme({
   },
   brand: '#E22525',
   footerHeight: 72,
+  mobileFooterHeight: 56,
   sidebarWidth: 355,
   sidebarMobileHeight: 90,
   mobileTopBarHeight: 52,

@@ -20,7 +20,7 @@ const Main = styled('main')(({ theme }: { theme: Theme }) => ({
   paddingBottom: `${theme.footerHeight}px`, // Leave some space for the footer
   background: 'black',
   [theme.breakpoints.down('sm')]: {
-    paddingBottom: `${theme.footerHeight + theme.mobileTopBarHeight}px`, // Leave some space for the mobile header and footer
+    paddingBottom: `${theme.mobileFooterHeight + theme.mobileTopBarHeight}px`, // Leave some space for the mobile header and footer
   },
 }));
 
