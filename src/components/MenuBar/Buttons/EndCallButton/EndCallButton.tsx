@@ -11,6 +11,9 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: theme.spacing(1),
       background: theme.brand,
       color: 'white',
+      '&:hover': {
+        background: '#600101',
+      },
     },
   })
 );
