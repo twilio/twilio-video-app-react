@@ -17,6 +17,8 @@ declare module '@material-ui/core/styles/createMuiTheme' {
   }
 }
 
+const defaultTheme = createMuiTheme();
+
 export default createMuiTheme({
   overrides: {
     MuiButton: {
@@ -25,6 +27,9 @@ export default createMuiTheme({
         textTransform: 'none',
         color: 'rgb(40, 42, 43)',
         fontSize: '0.9rem',
+        transition: defaultTheme.transitions.create(['background-color', 'box-shadow', 'border', 'color'], {
+          duration: defaultTheme.transitions.duration.short,
+        }),
       },
       text: {
         padding: '6px 14px',
@@ -59,6 +64,11 @@ export default createMuiTheme({
     MuiSelect: {
       root: {
         padding: '0.85em',
+      },
+    },
+    MuiDialogActions: {
+      root: {
+        padding: '16px',
       },
     },
   },
