@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import Grid from '@material-ui/core/Grid';
 import { ReactComponent as GoogleLogo } from './google-logo.svg';
+import { InputLabel, Theme } from '@material-ui/core';
 import IntroContainer from '../IntroContainer/IntroContainer';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
@@ -12,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useLocation, useHistory } from 'react-router-dom';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => ({
   googleButton: {
     background: 'white',
     color: 'rgb(0, 94, 166)',
@@ -22,6 +23,9 @@ const useStyles = makeStyles({
     textTransform: 'none',
     boxShadow: 'none',
     padding: '0.3em 1em',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
     '&:hover': {
       background: 'white',
       boxShadow: 'none',
@@ -39,7 +43,15 @@ const useStyles = makeStyles({
   gutterBottom: {
     marginBottom: '1em',
   },
-});
+  passcodeContainer: {
+    minHeight: '120px',
+  },
+  submitButton: {
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+  },
+}));
 
 export default function LoginPage() {
   const classes = useStyles();
@@ -94,12 +106,16 @@ export default function LoginPage() {
           </Typography>
           <form onSubmit={handleSubmit}>
             <Grid container justify="space-between">
-              <div>
+              <div className={classes.passcodeContainer}>
+                <InputLabel shrink htmlFor="input-passcode">
+                  Passcode
+                </InputLabel>
                 <TextField
                   id="input-passcode"
-                  label="Passcode"
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setPasscode(e.target.value)}
                   type="password"
+                  variant="outlined"
+                  size="small"
                 />
                 <div>
                   {authError && (
@@ -110,11 +126,17 @@ export default function LoginPage() {
                   )}
                 </div>
               </div>
-              <div>
-                <Button variant="contained" color="primary" type="submit" disabled={!passcode.length}>
-                  Submit
-                </Button>
-              </div>
+            </Grid>
+            <Grid container justify="flex-end">
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                disabled={!passcode.length}
+                className={classes.submitButton}
+              >
+                Submit
+              </Button>
             </Grid>
           </form>
         </>
