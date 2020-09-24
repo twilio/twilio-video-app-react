@@ -18,7 +18,14 @@ const useStyles = makeStyles({
   },
   deviceButton: {
     width: '100%',
-    border: '1px solid #aaa',
+    border: '2px solid #aaa',
+    margin: '1em 0',
+  },
+  settingsButton: {
+    padding: '1.8em 0 0.7em',
+  },
+  localPreviewContainer: {
+    paddingRight: '2em',
   },
 });
 
@@ -47,26 +54,32 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
 
       <Grid container spacing={2} justify="center">
         <Grid item sm={7} xs={10}>
-          <LocalVideoPreview identity={name} />
-          <Button onClick={() => setIsSettingsOpen(true)} startIcon={<SettingsIcon />} className={classes.marginTop}>
-            Audio and Video Settings
+          <div className={classes.localPreviewContainer}>
+            <LocalVideoPreview identity={name} />
+          </div>
+          <Button
+            onClick={() => setIsSettingsOpen(true)}
+            startIcon={<SettingsIcon />}
+            className={classes.settingsButton}
+          >
+            Settings
           </Button>
           <SettingsDialog open={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
         </Grid>
         <Grid item sm={5}>
-          <ToggleAudioButton className={classes.deviceButton} disabled={disableButtons} />
-          <ToggleVideoButton className={classes.deviceButton} disabled={disableButtons} />
-          <Grid container justify="space-between" style={{ margin: '0.9em 0.6em' }}>
+          <Grid container direction="column" justify="space-between" style={{ height: '100%' }}>
             <div>
-              <Button variant="contained" onClick={() => setStep(Steps.roomNameStep)}>
+              <ToggleAudioButton className={classes.deviceButton} disabled={disableButtons} />
+              <ToggleVideoButton className={classes.deviceButton} disabled={disableButtons} />
+            </div>
+            <Grid container justify="space-between">
+              <Button variant="outlined" color="primary" onClick={() => setStep(Steps.roomNameStep)}>
                 Cancel
               </Button>
-            </div>
-            <div>
               <Button variant="contained" color="primary" onClick={handleJoin} disabled={disableButtons}>
-                Join Room
+                Join Now
               </Button>
-            </div>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>

@@ -29,6 +29,21 @@ export default createMuiTheme({
       text: {
         padding: '6px 14px',
       },
+      contained: {
+        boxShadow: 'none',
+        '&:hover': {
+          boxShadow: 'none',
+        },
+      },
+      outlinedPrimary: {
+        border: '2px solid #027AC5',
+        '&:hover': {
+          border: '2px solid rgb(1, 85, 137)',
+        },
+      },
+      startIcon: {
+        marginRight: '6px',
+      },
     },
     MuiTypography: {
       body1: {
@@ -50,8 +65,13 @@ export default createMuiTheme({
   typography: {
     fontFamily: 'Inter, sans-serif',
   },
+  palette: {
+    primary: {
+      main: '#027AC5',
+    },
+  },
   brand: '#E22525',
-  footerHeight: 64,
+  footerHeight: 72,
   sidebarWidth: 355,
   sidebarMobileHeight: 90,
 });
