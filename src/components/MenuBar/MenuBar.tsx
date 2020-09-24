@@ -79,9 +79,11 @@ export default function MenuBar() {
       )}
       <footer className={classes.container}>
         <Grid container justify="space-around" alignItems="center">
-          <Grid style={{ flex: 1 }} className={classes.hideMobile}>
-            <Typography variant="body1">{room.name}</Typography>
-          </Grid>
+          <Hidden smDown>
+            <Grid style={{ flex: 1 }}>
+              <Typography variant="body1">{room.name}</Typography>
+            </Grid>
+          </Hidden>
           <Grid item>
             <Grid container justify="center">
               <ToggleAudioButton disabled={isReconnecting} />
@@ -90,12 +92,14 @@ export default function MenuBar() {
               <FlipCameraButton />
             </Grid>
           </Grid>
-          <Grid style={{ flex: 1 }} className={classes.hideMobile}>
-            <Grid container justify="flex-end">
-              <Menu />
-              <EndCallButton />
+          <Hidden smDown>
+            <Grid style={{ flex: 1 }}>
+              <Grid container justify="flex-end">
+                <Menu />
+                <EndCallButton />
+              </Grid>
             </Grid>
-          </Grid>
+          </Hidden>
         </Grid>
       </footer>
     </>

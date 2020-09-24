@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { Button } from '@material-ui/core';
 import { DEFAULT_VIDEO_CONSTRAINTS } from '../../../constants';
 import FlipCameraIcon from './FlipCameraIcon';
-import { Button } from '@material-ui/core';
 import { LocalVideoTrack } from 'twilio-video';
 import useMediaStreamTrack from '../../../hooks/useMediaStreamTrack/useMediaStreamTrack';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
