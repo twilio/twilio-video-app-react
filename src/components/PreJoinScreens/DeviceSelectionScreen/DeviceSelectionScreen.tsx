@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, Typography, Grid, Button } from '@material-ui/core';
+import { makeStyles, Typography, Grid, Button, Theme, Hidden } from '@material-ui/core';
 import LocalVideoPreview from './LocalVideoPreview/LocalVideoPreview';
 import SettingsMenu from './SettingsMenu/SettingsMenu';
 import { Steps } from '../PreJoinScreens';
@@ -8,7 +8,7 @@ import ToggleVideoButton from '../../MenuBar/Buttons/ToggleVideoButton/ToggleVid
 import { useAppState } from '../../../state';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => ({
   gutterBottom: {
     marginBottom: '1em',
   },
@@ -22,8 +22,33 @@ const useStyles = makeStyles({
   },
   localPreviewContainer: {
     paddingRight: '2em',
+    [theme.breakpoints.down('sm')]: {
+      padding: '0 2.5em',
+    },
   },
-});
+  joinButtons: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column-reverse',
+      width: '100%',
+      '& button': {
+        margin: '0.5em 0',
+      },
+    },
+  },
+  mobileButtonBar: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      margin: '1.5em 0 1em',
+    },
+  },
+  mobileButton: {
+    padding: '0.8em 0',
+    margin: 0,
+  },
+}));
 
 interface DeviceSelectionScreenProps {
   name: string;
@@ -47,27 +72,35 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
         Join {roomName}
       </Typography>
 
-      <Grid container spacing={2} justify="center">
-        <Grid item sm={7} xs={10}>
+      <Grid container justify="center">
+        <Grid item md={7} sm={12} xs={12}>
           <div className={classes.localPreviewContainer}>
             <LocalVideoPreview identity={name} />
           </div>
-          <SettingsMenu />
+          <div className={classes.mobileButtonBar}>
+            <Hidden mdUp>
+              <ToggleAudioButton className={classes.mobileButton} disabled={disableButtons} />
+              <ToggleVideoButton className={classes.mobileButton} disabled={disableButtons} />
+            </Hidden>
+            <SettingsMenu mobileButtonClass={classes.mobileButton} />
+          </div>
         </Grid>
-        <Grid item sm={5}>
+        <Grid item md={5} sm={12} xs={12}>
           <Grid container direction="column" justify="space-between" style={{ height: '100%' }}>
             <div>
-              <ToggleAudioButton className={classes.deviceButton} disabled={disableButtons} />
-              <ToggleVideoButton className={classes.deviceButton} disabled={disableButtons} />
+              <Hidden smDown>
+                <ToggleAudioButton className={classes.deviceButton} disabled={disableButtons} />
+                <ToggleVideoButton className={classes.deviceButton} disabled={disableButtons} />
+              </Hidden>
             </div>
-            <Grid container justify="space-between">
+            <div className={classes.joinButtons}>
               <Button variant="outlined" color="primary" onClick={() => setStep(Steps.roomNameStep)}>
                 Cancel
               </Button>
               <Button variant="contained" color="primary" onClick={handleJoin} disabled={disableButtons}>
                 Join Now
               </Button>
-            </Grid>
+            </div>
           </Grid>
         </Grid>
       </Grid>

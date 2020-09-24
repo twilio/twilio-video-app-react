@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import Button from '@material-ui/core/Button';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MenuContainer from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreIcon from '@material-ui/icons/MoreVert';
@@ -12,13 +11,13 @@ import ConnectionOptions from '../../../MenuBar/ConnectionOptions/ConnectionOpti
 import DeviceSelector from '../../../MenuBar/DeviceSelector/DeviceSelector';
 import SettingsIcon from '../../SettingsIcon';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => ({
   settingsButton: {
     margin: '1.8em 0 0',
   },
-});
+}));
 
-export default function SettingsMenu() {
+export default function SettingsMenu({ mobileButtonClass }: { mobileButtonClass?: string }) {
   const classes = useStyles();
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
   const [menuOpen, setMenuOpen] = useState(false);
@@ -30,14 +29,25 @@ export default function SettingsMenu() {
 
   return (
     <>
-      <Button
-        ref={anchorRef}
-        onClick={() => setMenuOpen(true)}
-        startIcon={<SettingsIcon />}
-        className={classes.settingsButton}
-      >
-        Settings
-      </Button>
+      {isMobile ? (
+        <Button
+          ref={anchorRef}
+          onClick={() => setMenuOpen(true)}
+          startIcon={<MoreIcon />}
+          className={mobileButtonClass}
+        >
+          More
+        </Button>
+      ) : (
+        <Button
+          ref={anchorRef}
+          onClick={() => setMenuOpen(true)}
+          startIcon={<SettingsIcon />}
+          className={classes.settingsButton}
+        >
+          Settings
+        </Button>
+      )}
       <MenuContainer open={menuOpen} onClose={() => setMenuOpen(isOpen => !isOpen)} anchorEl={anchorRef.current}>
         <MenuItem onClick={() => setAboutOpen(true)}>
           <Typography variant="body1">About</Typography>
