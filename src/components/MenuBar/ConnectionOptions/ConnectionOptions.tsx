@@ -1,5 +1,8 @@
 import React, { useCallback } from 'react';
 import {
+  Button,
+  Dialog,
+  DialogActions,
   DialogContent,
   FormControl,
   Grid,
@@ -7,6 +10,7 @@ import {
   MenuItem,
   Select,
   TextField,
+  Theme,
   Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -15,7 +19,25 @@ import { RenderDimensions } from '../../../state/settings/renderDimensions';
 import { useAppState } from '../../../state';
 import useRoomState from '../../../hooks/useRoomState/useRoomState';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => ({
+  container: {
+    width: '600px',
+    minHeight: '400px',
+    [theme.breakpoints.down('xs')]: {
+      width: 'calc(100vw - 32px)',
+    },
+    '& .inputSelect': {
+      width: 'calc(100% - 35px)',
+    },
+  },
+  button: {
+    float: 'right',
+  },
+  paper: {
+    [theme.breakpoints.down('xs')]: {
+      margin: '16px',
+    },
+  },
   formControl: {
     display: 'block',
     margin: '1.5em 0',
@@ -26,7 +48,7 @@ const useStyles = makeStyles({
   label: {
     width: '133%', // Labels have scale(0.75) applied to them, so this effectively makes the width 100%
   },
-});
+}));
 
 const withDefault = (val?: string) => (typeof val === 'undefined' ? 'default' : val);
 
@@ -36,7 +58,7 @@ const RenderDimensionItems = RenderDimensions.map(({ label, value }) => (
   </MenuItem>
 ));
 
-export default function ConnectionOptions({ className, hidden }: { className?: string; hidden?: boolean }) {
+export default function ConnectionOptions({ open, onClose }: { open: boolean; onClose: () => void }) {
   const classes = useStyles();
   const { settings, dispatchSetting } = useAppState();
   const roomState = useRoomState();
@@ -57,143 +79,150 @@ export default function ConnectionOptions({ className, hidden }: { className?: s
   );
 
   return (
-    <DialogContent className={className} hidden={hidden}>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Typography variant="body2">Bandwidth Profile Settings:</Typography>
-          <Typography hidden={!isDisabled} variant="body2">
-            These settings cannot be changed when connected to a room.
-          </Typography>
+    <Dialog open={open} onClose={onClose} classes={{ paper: classes.paper }}>
+      <DialogContent className={classes.container}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Typography variant="body2">Bandwidth Profile Settings:</Typography>
+            <Typography hidden={!isDisabled} variant="body2">
+              These settings cannot be changed when connected to a room.
+            </Typography>
+          </Grid>
+
+          <Grid item sm={6} xs={12}>
+            <FormControl className={classes.formControl}>
+              <InputLabel id={inputLabels.dominantSpeakerPriority}>Dominant Speaker Priority:</InputLabel>
+              <Select
+                fullWidth
+                disabled={isDisabled}
+                name={inputLabels.dominantSpeakerPriority}
+                label={inputLabels.dominantSpeakerPriority}
+                value={withDefault(settings.dominantSpeakerPriority)}
+                onChange={handleChange}
+              >
+                <MenuItem value="low">Low</MenuItem>
+                <MenuItem value="standard">Standard</MenuItem>
+                <MenuItem value="high">High</MenuItem>
+                <MenuItem value="default">Server Default</MenuItem>
+              </Select>
+            </FormControl>
+
+            <FormControl className={classes.formControl}>
+              <InputLabel id={inputLabels.trackSwitchOffMode}>Track Switch Off Mode:</InputLabel>
+              <Select
+                fullWidth
+                disabled={isDisabled}
+                name={inputLabels.trackSwitchOffMode}
+                label={inputLabels.trackSwitchOffMode}
+                value={withDefault(settings.trackSwitchOffMode)}
+                onChange={handleChange}
+              >
+                <MenuItem value="predicted">Predicted</MenuItem>
+                <MenuItem value="detected">Detected</MenuItem>
+                <MenuItem value="disabled">Disabled</MenuItem>
+                <MenuItem value="default">Server Default</MenuItem>
+              </Select>
+            </FormControl>
+
+            <FormControl className={classes.formControl}>
+              <InputLabel id={inputLabels.bandwidthProfileMode}>Mode:</InputLabel>
+              <Select
+                fullWidth
+                disabled={isDisabled}
+                name={inputLabels.bandwidthProfileMode}
+                label={inputLabels.bandwidthProfileMode}
+                value={withDefault(settings.bandwidthProfileMode)}
+                onChange={handleChange}
+              >
+                <MenuItem value="grid">Grid</MenuItem>
+                <MenuItem value="collaboration">Collaboration</MenuItem>
+                <MenuItem value="presentation">Presentation</MenuItem>
+                <MenuItem value="default">Server Default</MenuItem>
+              </Select>
+            </FormControl>
+
+            <FormControl className={classes.formControl}>
+              <TextField
+                disabled={isDisabled}
+                fullWidth
+                id={inputLabels.maxTracks}
+                label="Max Tracks"
+                placeholder="Leave blank for no limit"
+                name={inputLabels.maxTracks}
+                value={withDefault(settings.maxTracks)}
+                onChange={handleNumberChange}
+              />
+            </FormControl>
+
+            <FormControl className={classes.formControl}>
+              <TextField
+                disabled={isDisabled}
+                fullWidth
+                id={inputLabels.maxAudioBitrate}
+                label="Max Audio Bitrate"
+                placeholder="Leave blank for no limit"
+                name={inputLabels.maxAudioBitrate}
+                value={withDefault(settings.maxAudioBitrate)}
+                onChange={handleNumberChange}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <FormControl fullWidth className={classes.formControl}>
+              <InputLabel id={inputLabels.renderDimensionLow} className={classes.label}>
+                Render Dimension (Low Priority):
+              </InputLabel>
+              <Select
+                fullWidth
+                disabled={isDisabled}
+                name={inputLabels.renderDimensionLow}
+                label={inputLabels.renderDimensionLow}
+                value={withDefault(settings.renderDimensionLow)}
+                onChange={handleChange}
+              >
+                {RenderDimensionItems}
+              </Select>
+            </FormControl>
+
+            <FormControl fullWidth className={classes.formControl}>
+              <InputLabel id={inputLabels.renderDimensionStandard} className={classes.label}>
+                Render Dimension (Standard Priority):
+              </InputLabel>
+              <Select
+                fullWidth
+                disabled={isDisabled}
+                name={inputLabels.renderDimensionStandard}
+                label={inputLabels.renderDimensionStandard}
+                value={withDefault(settings.renderDimensionStandard)}
+                onChange={handleChange}
+              >
+                {RenderDimensionItems}
+              </Select>
+            </FormControl>
+
+            <FormControl fullWidth className={classes.formControl}>
+              <InputLabel id={inputLabels.renderDimensionHigh} className={classes.label}>
+                Render Dimension (High Priority):
+              </InputLabel>
+              <Select
+                fullWidth
+                disabled={isDisabled}
+                name={inputLabels.renderDimensionHigh}
+                label={inputLabels.renderDimensionHigh}
+                value={withDefault(settings.renderDimensionHigh)}
+                onChange={handleChange}
+              >
+                {RenderDimensionItems}
+              </Select>
+            </FormControl>
+          </Grid>
         </Grid>
-
-        <Grid item sm={6} xs={12}>
-          <FormControl className={classes.formControl}>
-            <InputLabel id={inputLabels.dominantSpeakerPriority}>Dominant Speaker Priority:</InputLabel>
-            <Select
-              fullWidth
-              disabled={isDisabled}
-              name={inputLabels.dominantSpeakerPriority}
-              label={inputLabels.dominantSpeakerPriority}
-              value={withDefault(settings.dominantSpeakerPriority)}
-              onChange={handleChange}
-            >
-              <MenuItem value="low">Low</MenuItem>
-              <MenuItem value="standard">Standard</MenuItem>
-              <MenuItem value="high">High</MenuItem>
-              <MenuItem value="default">Server Default</MenuItem>
-            </Select>
-          </FormControl>
-
-          <FormControl className={classes.formControl}>
-            <InputLabel id={inputLabels.trackSwitchOffMode}>Track Switch Off Mode:</InputLabel>
-            <Select
-              fullWidth
-              disabled={isDisabled}
-              name={inputLabels.trackSwitchOffMode}
-              label={inputLabels.trackSwitchOffMode}
-              value={withDefault(settings.trackSwitchOffMode)}
-              onChange={handleChange}
-            >
-              <MenuItem value="predicted">Predicted</MenuItem>
-              <MenuItem value="detected">Detected</MenuItem>
-              <MenuItem value="disabled">Disabled</MenuItem>
-              <MenuItem value="default">Server Default</MenuItem>
-            </Select>
-          </FormControl>
-
-          <FormControl className={classes.formControl}>
-            <InputLabel id={inputLabels.bandwidthProfileMode}>Mode:</InputLabel>
-            <Select
-              fullWidth
-              disabled={isDisabled}
-              name={inputLabels.bandwidthProfileMode}
-              label={inputLabels.bandwidthProfileMode}
-              value={withDefault(settings.bandwidthProfileMode)}
-              onChange={handleChange}
-            >
-              <MenuItem value="grid">Grid</MenuItem>
-              <MenuItem value="collaboration">Collaboration</MenuItem>
-              <MenuItem value="presentation">Presentation</MenuItem>
-              <MenuItem value="default">Server Default</MenuItem>
-            </Select>
-          </FormControl>
-
-          <FormControl className={classes.formControl}>
-            <TextField
-              disabled={isDisabled}
-              fullWidth
-              id={inputLabels.maxTracks}
-              label="Max Tracks"
-              placeholder="Leave blank for no limit"
-              name={inputLabels.maxTracks}
-              value={withDefault(settings.maxTracks)}
-              onChange={handleNumberChange}
-            />
-          </FormControl>
-
-          <FormControl className={classes.formControl}>
-            <TextField
-              disabled={isDisabled}
-              fullWidth
-              id={inputLabels.maxAudioBitrate}
-              label="Max Audio Bitrate"
-              placeholder="Leave blank for no limit"
-              name={inputLabels.maxAudioBitrate}
-              value={withDefault(settings.maxAudioBitrate)}
-              onChange={handleNumberChange}
-            />
-          </FormControl>
-        </Grid>
-        <Grid item sm={6} xs={12}>
-          <FormControl fullWidth className={classes.formControl}>
-            <InputLabel id={inputLabels.renderDimensionLow} className={classes.label}>
-              Render Dimension (Low Priority):
-            </InputLabel>
-            <Select
-              fullWidth
-              disabled={isDisabled}
-              name={inputLabels.renderDimensionLow}
-              label={inputLabels.renderDimensionLow}
-              value={withDefault(settings.renderDimensionLow)}
-              onChange={handleChange}
-            >
-              {RenderDimensionItems}
-            </Select>
-          </FormControl>
-
-          <FormControl fullWidth className={classes.formControl}>
-            <InputLabel id={inputLabels.renderDimensionStandard} className={classes.label}>
-              Render Dimension (Standard Priority):
-            </InputLabel>
-            <Select
-              fullWidth
-              disabled={isDisabled}
-              name={inputLabels.renderDimensionStandard}
-              label={inputLabels.renderDimensionStandard}
-              value={withDefault(settings.renderDimensionStandard)}
-              onChange={handleChange}
-            >
-              {RenderDimensionItems}
-            </Select>
-          </FormControl>
-
-          <FormControl fullWidth className={classes.formControl}>
-            <InputLabel id={inputLabels.renderDimensionHigh} className={classes.label}>
-              Render Dimension (High Priority):
-            </InputLabel>
-            <Select
-              fullWidth
-              disabled={isDisabled}
-              name={inputLabels.renderDimensionHigh}
-              label={inputLabels.renderDimensionHigh}
-              value={withDefault(settings.renderDimensionHigh)}
-              onChange={handleChange}
-            >
-              {RenderDimensionItems}
-            </Select>
-          </FormControl>
-        </Grid>
-      </Grid>
-    </DialogContent>
+      </DialogContent>
+      <DialogActions>
+        <Button className={classes.button} onClick={onClose}>
+          Done
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }
