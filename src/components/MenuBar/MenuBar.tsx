@@ -8,7 +8,7 @@ import Menu from './Menu/Menu';
 
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
-import { Typography, Grid } from '@material-ui/core';
+import { Typography, Grid, Hidden } from '@material-ui/core';
 import ToggleAudioButton from './Buttons/ToggleAudioButton/ToggleAudioButton';
 import ToggleVideoButton from './Buttons/ToggleVideoButton/ToggleVideoButton';
 import ToggleScreenShareButton from './Buttons/ToogleScreenShareButton/ToggleScreenShareButton';
@@ -85,7 +85,7 @@ export default function MenuBar() {
             <Grid container justify="center">
               <ToggleAudioButton disabled={isReconnecting} />
               <ToggleVideoButton disabled={isReconnecting} />
-              {!isSharingScreen && <ToggleScreenShareButton disabled={isReconnecting} />}
+              <Hidden smDown>{!isSharingScreen && <ToggleScreenShareButton disabled={isReconnecting} />}</Hidden>
               <FlipCameraButton />
             </Grid>
           </Grid>
