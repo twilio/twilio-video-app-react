@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react';
-import { makeStyles, Typography, Button, MenuItem } from '@material-ui/core';
+import { makeStyles, Typography, Button, MenuItem, Link } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useAppState } from '../../../state';
 import UserAvatar from './UserAvatar/UserAvatar';
@@ -18,6 +18,11 @@ const useStyles = makeStyles({
   userButton: {
     color: 'white',
   },
+  logoutLink: {
+    color: 'white',
+    cursor: 'pointer',
+    padding: '10px 20px',
+  },
 });
 
 const UserMenu: React.FC = () => {
@@ -33,33 +38,47 @@ const UserMenu: React.FC = () => {
     signOut?.();
   }, [localTracks, signOut]);
 
-  return (
-    <div className={classes.userContainer}>
-      <UserAvatar user={user} />
-      <Button onClick={() => setMenuOpen(isOpen => !isOpen)} ref={anchorRef} className={classes.userButton}>
-        {user!.displayName}
-        <ExpandMoreIcon />
-      </Button>
-      <Menu
-        open={menuOpen}
-        onClose={() => setMenuOpen(isOpen => !isOpen)}
-        anchorEl={anchorRef.current}
-        getContentAnchorEl={null}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-      >
-        <MenuItem onClick={handleSignOut}>
-          <Typography variant="body1">Logout</Typography>
-        </MenuItem>
-      </Menu>
-    </div>
-  );
+  if (process.env.REACT_APP_SET_AUTH === 'passcode') {
+    return (
+      <div className={classes.userContainer}>
+        <Link onClick={handleSignOut} className={classes.logoutLink}>
+          Logout
+        </Link>
+      </div>
+    );
+  }
+
+  if (process.env.REACT_APP_SET_AUTH === 'firebase') {
+    return (
+      <div className={classes.userContainer}>
+        <UserAvatar user={user} />
+        <Button onClick={() => setMenuOpen(isOpen => !isOpen)} ref={anchorRef} className={classes.userButton}>
+          {user!.displayName}
+          <ExpandMoreIcon />
+        </Button>
+        <Menu
+          open={menuOpen}
+          onClose={() => setMenuOpen(isOpen => !isOpen)}
+          anchorEl={anchorRef.current}
+          getContentAnchorEl={null}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+        >
+          <MenuItem onClick={handleSignOut}>
+            <Typography variant="body1">Logout</Typography>
+          </MenuItem>
+        </Menu>
+      </div>
+    );
+  }
+
+  return null;
 };
 
 export default UserMenu;
