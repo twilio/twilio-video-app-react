@@ -2,7 +2,7 @@ import React from 'react';
 import AudioOutputList from './AudioOutputList';
 import { Select, Typography } from '@material-ui/core';
 import { shallow } from 'enzyme';
-import { useAudioOutputDevices } from '../deviceHooks/deviceHooks';
+import { useAudioOutputDevices } from '../../../../hooks/deviceHooks/deviceHooks';
 import { useAppState } from '../../../../state';
 
 jest.mock('../../../../state');

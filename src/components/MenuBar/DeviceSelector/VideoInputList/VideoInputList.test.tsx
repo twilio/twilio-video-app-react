@@ -2,7 +2,7 @@ import React from 'react';
 import { Select, Typography } from '@material-ui/core';
 import { shallow } from 'enzyme';
 import useVideoContext from '../../../../hooks/useVideoContext/useVideoContext';
-import { useVideoInputDevices } from '../deviceHooks/deviceHooks';
+import { useVideoInputDevices } from '../../../../hooks/deviceHooks/deviceHooks';
 import VideoInputList from './VideoInputList';
 
 jest.mock('../../../../hooks/useVideoContext/useVideoContext');
