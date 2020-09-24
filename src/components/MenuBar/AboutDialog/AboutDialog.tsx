@@ -9,6 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { version as appVersion } from '../../../../package.json';
 import Video from 'twilio-video';
 import { useAppState } from '../../../state';
+import { Divider } from '@material-ui/core';
 
 interface AboutDialogProps {
   open: boolean;
@@ -20,6 +21,7 @@ function AboutDialog({ open, onClose }: PropsWithChildren<AboutDialogProps>) {
   return (
     <Dialog open={open} onClose={onClose} fullWidth={true} maxWidth="xs">
       <DialogTitle>About:</DialogTitle>
+      <Divider />
       <DialogContent>
         <DialogContentText>Browser supported: {String(Video.isSupported)}</DialogContentText>
         <DialogContentText>SDK Version: {Video.version}</DialogContentText>
@@ -28,8 +30,9 @@ function AboutDialog({ open, onClose }: PropsWithChildren<AboutDialogProps>) {
         <DialogContentText>Deployed Commit Hash: {process.env.REACT_APP_GIT_COMMIT || 'N/A'}</DialogContentText>
         {roomType && <DialogContentText>Room Type: {roomType}</DialogContentText>}
       </DialogContent>
+      <Divider />
       <DialogActions>
-        <Button onClick={onClose} color="primary" autoFocus>
+        <Button onClick={onClose} color="primary" variant="contained" autoFocus>
           OK
         </Button>
       </DialogActions>
