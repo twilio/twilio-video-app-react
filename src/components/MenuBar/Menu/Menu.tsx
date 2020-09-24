@@ -1,11 +1,11 @@
 import React, { useState, useRef } from 'react';
 import AboutDialog from '../AboutDialog/AboutDialog';
 import Button from '@material-ui/core/Button';
+import DeviceSelector from '../DeviceSelector/DeviceSelector';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MenuContainer from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import SettingsDialog from '../SettingsDialog/SettingsDialog';
 import Typography from '@material-ui/core/Typography';
 import { Theme, useMediaQuery } from '@material-ui/core';
 
@@ -19,7 +19,7 @@ export default function Menu() {
 
   return (
     <>
-      <Button onClick={() => setMenuOpen(state => !state)} ref={anchorRef}>
+      <Button onClick={() => setMenuOpen(isOpen => !isOpen)} ref={anchorRef}>
         {isMobile ? (
           <MoreIcon />
         ) : (
@@ -29,7 +29,19 @@ export default function Menu() {
           </>
         )}
       </Button>
-      <MenuContainer open={menuOpen} onClose={() => setMenuOpen(isOpen => !isOpen)} anchorEl={anchorRef.current}>
+      <MenuContainer
+        open={menuOpen}
+        onClose={() => setMenuOpen(isOpen => !isOpen)}
+        anchorEl={anchorRef.current}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+      >
         <MenuItem onClick={() => setAboutOpen(true)}>
           <Typography variant="body1">About</Typography>
         </MenuItem>
@@ -44,7 +56,7 @@ export default function Menu() {
           setMenuOpen(false);
         }}
       />
-      <SettingsDialog
+      <DeviceSelector
         open={settingsOpen}
         onClose={() => {
           setSettingsOpen(false);
