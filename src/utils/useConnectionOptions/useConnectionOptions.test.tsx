@@ -95,7 +95,7 @@ describe('the useConnectionOptions function', () => {
     expect(useConnectionOptions()).toMatchObject({ preferredVideoCodecs: [{ codec: 'VP8', simulcast: false }] });
   });
 
-  it('should disable simulcast when the room type is peer to peer', () => {
+  it('should disable simulcast when the room type is "go"', () => {
     const settings: Settings = {
       trackSwitchOffMode: 'detected',
       dominantSpeakerPriority: 'high',
