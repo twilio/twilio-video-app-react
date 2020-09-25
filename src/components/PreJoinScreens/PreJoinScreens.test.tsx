@@ -1,6 +1,7 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import DeviceSelectionScreen from './DeviceSelectionScreen/DeviceSelectionScreen';
+import MediaErrorSnackBar from './MediaErrorSnackBar/MediaErrorSnackBar';
 import { mount, shallow } from 'enzyme';
 import PreflightTest from './PreflightTest/PreflightTest';
 import PreJoinScreens from './PreJoinScreens';
@@ -8,7 +9,6 @@ import RoomNameScreen from './RoomNameScreen/RoomNameScreen';
 import { useParams } from 'react-router-dom';
 import { useAppState } from '../../state';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
-import MediaErrorSnackBar from './MediaErrorSnackBar/MediaErrorSnackBar';
 
 delete window.location;
 // @ts-ignore
