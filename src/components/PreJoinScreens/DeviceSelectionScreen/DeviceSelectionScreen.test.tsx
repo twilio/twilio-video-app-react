@@ -33,16 +33,16 @@ describe('the DeviceSelectionScreen component', () => {
 
     const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
 
-    it('should disable the Join Room button', () => {
-      expect(wrapper.find({ children: 'Join Room' }).prop('disabled')).toBe(true);
+    it('should disable the Join Now button', () => {
+      expect(wrapper.find({ children: 'Join Now' }).prop('disabled')).toBe(true);
     });
 
-    it('should disable the toggle video button', () => {
-      expect(wrapper.find(ToggleVideoButton).prop('disabled')).toBe(true);
+    it('should disable the desktop and mobile toggle video buttons', () => {
+      expect(wrapper.find(ToggleVideoButton).every({ disabled: true })).toBe(true);
     });
 
-    it('should disable the toggle audio button', () => {
-      expect(wrapper.find(ToggleAudioButton).prop('disabled')).toBe(true);
+    it('should disable the desktop and mobile toggle audio buttons', () => {
+      expect(wrapper.find(ToggleAudioButton).every({ disabled: true })).toBe(true);
     });
   });
 
@@ -55,16 +55,16 @@ describe('the DeviceSelectionScreen component', () => {
 
     const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
 
-    it('should disable the Join Room, toggle video, and toggle audio buttons', () => {
-      expect(wrapper.find({ children: 'Join Room' }).prop('disabled')).toBe(true);
+    it('should disable the Join Now, toggle video, and toggle audio buttons', () => {
+      expect(wrapper.find({ children: 'Join Now' }).prop('disabled')).toBe(true);
     });
 
-    it('should disable the toggle video button', () => {
-      expect(wrapper.find(ToggleVideoButton).prop('disabled')).toBe(true);
+    it('should disable the desktop and mobile toggle video buttons', () => {
+      expect(wrapper.find(ToggleVideoButton).every({ disabled: true })).toBe(true);
     });
 
-    it('should disable the toggle audio button', () => {
-      expect(wrapper.find(ToggleAudioButton).prop('disabled')).toBe(true);
+    it('should disable the desktop and mobile toggle audio buttons', () => {
+      expect(wrapper.find(ToggleAudioButton).every({ disabled: true })).toBe(true);
     });
   });
 
@@ -77,22 +77,22 @@ describe('the DeviceSelectionScreen component', () => {
     mockUseAppState.mockImplementationOnce(() => ({ getToken: mockGetToken, isFetching: true }));
     const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
 
-    it('should disable the Join Room button', () => {
-      expect(wrapper.find({ children: 'Join Room' }).prop('disabled')).toBe(true);
+    it('should disable the Join Now button', () => {
+      expect(wrapper.find({ children: 'Join Now' }).prop('disabled')).toBe(true);
     });
 
-    it('should disable the toggle video button', () => {
-      expect(wrapper.find(ToggleVideoButton).prop('disabled')).toBe(true);
+    it('should disable the desktop and mobile toggle video buttons', () => {
+      expect(wrapper.find(ToggleVideoButton).every({ disabled: true })).toBe(true);
     });
 
-    it('should disable the toggle audio button', () => {
-      expect(wrapper.find(ToggleAudioButton).prop('disabled')).toBe(true);
+    it('should disable the desktop and mobile toggle audio buttons', () => {
+      expect(wrapper.find(ToggleAudioButton).every({ disabled: true })).toBe(true);
     });
   });
 
-  it('should not disable the Join Room button by default', () => {
+  it('should not disable the Join Now button by default', () => {
     const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
-    expect(wrapper.find({ children: 'Join Room' }).prop('disabled')).toBe(false);
+    expect(wrapper.find({ children: 'Join Now' }).prop('disabled')).toBe(false);
   });
 
   it('should go back to the RoomNameScreen when the Cancel button is clicked', () => {
@@ -102,9 +102,9 @@ describe('the DeviceSelectionScreen component', () => {
     expect(mockSetStep).toHaveBeenCalledWith(Steps.roomNameStep);
   });
 
-  it('should fetch a token and connect to a room when the Join Room button is clicked', done => {
+  it('should fetch a token and connect to a room when the Join Now button is clicked', done => {
     const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
-    wrapper.find({ children: 'Join Room' }).simulate('click');
+    wrapper.find({ children: 'Join Now' }).simulate('click');
 
     expect(mockGetToken).toHaveBeenCalledWith('test name', 'test room name');
     setImmediate(() => {

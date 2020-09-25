@@ -15,7 +15,8 @@ const useStyles = makeStyles((theme: Theme) =>
       background: 'rgb(79, 83, 85)',
       gridArea: '1 / 2 / 1 / 3',
       zIndex: 1,
-      [theme.breakpoints.down('xs')]: {
+      [theme.breakpoints.down('sm')]: {
+        gridArea: '2 / 1 / 3 / 3',
         overflowY: 'initial',
         overflowX: 'auto',
         padding: 0,
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
       background: 'transparent',
     },
     scrollContainer: {
-      [theme.breakpoints.down('xs')]: {
+      [theme.breakpoints.down('sm')]: {
         display: 'flex',
       },
     },

@@ -2,6 +2,7 @@ import React from 'react';
 import { styled, Theme } from '@material-ui/core/styles';
 
 import MenuBar from './components/MenuBar/MenuBar';
+import MobileTopMenuBar from './components/MobileTopMenuBar/MobileTopMenuBar';
 import PreJoinScreens from './components/PreJoinScreens/PreJoinScreens';
 import ReconnectingNotification from './components/ReconnectingNotification/ReconnectingNotification';
 import Room from './components/Room/Room';
@@ -18,6 +19,9 @@ const Main = styled('main')(({ theme }: { theme: Theme }) => ({
   overflow: 'hidden',
   paddingBottom: `${theme.footerHeight}px`, // Leave some space for the footer
   background: 'black',
+  [theme.breakpoints.down('sm')]: {
+    paddingBottom: `${theme.mobileFooterHeight + theme.mobileTopBarHeight}px`, // Leave some space for the mobile header and footer
+  },
 }));
 
 export default function App() {
@@ -32,17 +36,16 @@ export default function App() {
 
   return (
     <Container style={{ height }}>
-      <ReconnectingNotification />
-      <Main>
-        {roomState === 'disconnected' ? (
-          <PreJoinScreens />
-        ) : (
-          <>
-            <Room />
-            <MenuBar />
-          </>
-        )}
-      </Main>
+      {roomState === 'disconnected' ? (
+        <PreJoinScreens />
+      ) : (
+        <Main>
+          <ReconnectingNotification />
+          <MobileTopMenuBar />
+          <Room />
+          <MenuBar />
+        </Main>
+      )}
     </Container>
   );
 }

@@ -1,8 +1,13 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import VideoTrack from './VideoTrack';
+import useVideoTrackDimensions from '../../hooks/useVideoTrackDimensions/useVideoTrackDimensions';
 
 jest.mock('../../hooks/useMediaStreamTrack/useMediaStreamTrack');
+
+jest.mock('../../hooks/useVideoTrackDimensions/useVideoTrackDimensions');
+const mockUseVideoTrackDimensions = useVideoTrackDimensions as jest.Mock<any>;
+mockUseVideoTrackDimensions.mockImplementation(() => ({ width: 200, height: 100 }));
 
 describe('the VideoTrack component', () => {
   const mockTrack = {
@@ -26,12 +31,18 @@ describe('the VideoTrack component', () => {
     expect(container.querySelector('video')!.style).toMatchObject({ objectFit: 'cover' });
   });
 
-  it('should have "object-fit: contain" applied when the track is a camera track', () => {
+  it('should have "object-fit: contain" applied when the track is a screen track', () => {
     const mockTrack2 = {
       ...mockTrack,
       name: 'screen',
     } as any;
     const { container } = render(<VideoTrack track={mockTrack2} />);
+    expect(container.querySelector('video')!.style).toMatchObject({ objectFit: 'contain' });
+  });
+
+  it('should have "object-fit: contain" applied when the track is a camera track in portrait orientation', () => {
+    mockUseVideoTrackDimensions.mockImplementationOnce(() => ({ width: 100, height: 200 }));
+    const { container } = render(<VideoTrack track={mockTrack} />);
     expect(container.querySelector('video')!.style).toMatchObject({ objectFit: 'contain' });
   });
 

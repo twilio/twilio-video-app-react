@@ -4,7 +4,7 @@ exports[`the Result component should render correctly when the network condition
 <ResultItem
   icon={<SuccessIcon />}
 >
-  Your Network Connection is Stable
+  Your network connection is stable
 </ResultItem>
 `;
 
