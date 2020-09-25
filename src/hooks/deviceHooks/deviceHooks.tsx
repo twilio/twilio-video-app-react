@@ -1,14 +1,10 @@
 import { useState, useEffect } from 'react';
-import { ensureMediaPermissions } from '../../../../utils';
 
 export function useDevices() {
   const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
 
   useEffect(() => {
-    const getDevices = () =>
-      ensureMediaPermissions().then(() =>
-        navigator.mediaDevices.enumerateDevices().then(devices => setDevices(devices))
-      );
+    const getDevices = () => navigator.mediaDevices.enumerateDevices().then(devices => setDevices(devices));
     navigator.mediaDevices.addEventListener('devicechange', getDevices);
     getDevices();
 
@@ -33,4 +29,14 @@ export function useVideoInputDevices() {
 export function useAudioOutputDevices() {
   const devices = useDevices();
   return devices.filter(device => device.kind === 'audiooutput');
+}
+
+export function useHasAudioInputDevices() {
+  const audioDevices = useAudioInputDevices();
+  return audioDevices.length > 0;
+}
+
+export function useHasVideoInputDevices() {
+  const videoDevices = useVideoInputDevices();
+  return videoDevices.length > 0;
 }

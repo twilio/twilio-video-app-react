@@ -2,7 +2,7 @@ import React from 'react';
 import AudioLevelIndicator from '../../../AudioLevelIndicator/AudioLevelIndicator';
 import { LocalAudioTrack } from 'twilio-video';
 import { FormControl, MenuItem, Typography, Select, Grid } from '@material-ui/core';
-import { useAudioInputDevices } from '../deviceHooks/deviceHooks';
+import { useAudioInputDevices } from '../../../../hooks/deviceHooks/deviceHooks';
 import useMediaStreamTrack from '../../../../hooks/useMediaStreamTrack/useMediaStreamTrack';
 import useVideoContext from '../../../../hooks/useVideoContext/useVideoContext';
 
