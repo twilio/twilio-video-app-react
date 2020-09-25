@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
       position: 'fixed',
       display: 'flex',
       padding: '0 1.43em',
-      zIndex: 1,
+      zIndex: 10,
       [theme.breakpoints.down('sm')]: {
         height: `${theme.mobileFooterHeight}px`,
         padding: 0,
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     screenShareBanner: {
       position: 'fixed',
-      zIndex: 1,
+      zIndex: 10,
       bottom: `${theme.footerHeight}px`,
       left: 0,
       right: 0,

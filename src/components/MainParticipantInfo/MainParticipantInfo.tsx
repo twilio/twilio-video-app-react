@@ -48,7 +48,7 @@ const useStyles = makeStyles({
     zIndex: 1,
   },
   fullWidth: {
-    gridArea: '1 / 1 / 3 / 3',
+    gridArea: '1 / 1 / 2 / 3',
   },
   avatarContainer: {
     display: 'flex',
@@ -106,7 +106,7 @@ export default function MainParticipantInfo({ participant, children }: MainParti
           <AvatarIcon />
         </div>
       )}
-      {isParticipantReconnecting && (
+      {true && (
         <div className={classes.reconnectingContainer}>
           <Typography variant="body1" style={{ color: 'white' }}>
             Reconnecting...
