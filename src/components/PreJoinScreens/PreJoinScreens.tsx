@@ -1,7 +1,7 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 import DeviceSelectionScreen from './DeviceSelectionScreen/DeviceSelectionScreen';
 import IntroContainer from '../IntroContainer/IntroContainer';
-import MediaErrorSnackBar from './MediaErrorSnackBar/MediaErrorSnackBar';
+import MediaErrorSnackbar from './MediaErrorSnackbar/MediaErrorSnackbar';
 import PreflightTest from './PreflightTest/PreflightTest';
 import RoomNameScreen from './RoomNameScreen/RoomNameScreen';
 import { useAppState } from '../../state';
@@ -56,7 +56,7 @@ export default function PreJoinScreens() {
   const SubContent = (
     <>
       {Video.testPreflight && <PreflightTest />}
-      <MediaErrorSnackBar error={mediaError} />
+      <MediaErrorSnackbar error={mediaError} />
     </>
   );
 

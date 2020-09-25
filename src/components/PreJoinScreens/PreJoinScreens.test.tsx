@@ -1,7 +1,7 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import DeviceSelectionScreen from './DeviceSelectionScreen/DeviceSelectionScreen';
-import MediaErrorSnackBar from './MediaErrorSnackBar/MediaErrorSnackBar';
+import MediaErrorSnackbar from './MediaErrorSnackbar/MediaErrorSnackbar';
 import { mount, shallow } from 'enzyme';
 import PreflightTest from './PreflightTest/PreflightTest';
 import PreJoinScreens from './PreJoinScreens';
@@ -91,7 +91,7 @@ describe('the PreJoinScreens component', () => {
     expect(wrapper.prop('subContent')).toEqual(
       <>
         <PreflightTest />
-        <MediaErrorSnackBar />
+        <MediaErrorSnackbar />
       </>
     );
     expect(wrapper.find(DeviceSelectionScreen).exists()).toBe(true);
@@ -116,7 +116,7 @@ describe('the PreJoinScreens component', () => {
     expect(wrapper.find(DeviceSelectionScreen).exists()).toBe(false);
   });
 
-  it('should capture errors from getAudioAndVideoTracks and pass them to the MediaErrorSnackBar component', async () => {
+  it('should capture errors from getAudioAndVideoTracks and pass them to the MediaErrorSnackbar component', async () => {
     mockUseVideoContext.mockImplementation(() => ({ getAudioAndVideoTracks: () => Promise.reject('testError') }));
 
     const wrapper = mount(<PreJoinScreens />);

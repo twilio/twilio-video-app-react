@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import CloseIcon from '@material-ui/icons/Close';
 import ErrorIcon from '../PreJoinScreens/PreflightTest/icons/ErrorIcon';
 import { IconButton, makeStyles, Theme, Typography } from '@material-ui/core';
-import MUISnackBar from '@material-ui/core/Snackbar';
+import MUISnackbar from '@material-ui/core/Snackbar';
 import WarningIcon from '../PreJoinScreens/PreflightTest/icons/WarningIcon';
 
 interface SnackbarProps {
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export default function SnackBar({ headline, message, variant, open, handleClose }: SnackbarProps) {
+export default function Snackbar({ headline, message, variant, open, handleClose }: SnackbarProps) {
   const classes = useStyles();
 
   const handleOnClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
@@ -60,7 +60,7 @@ export default function SnackBar({ headline, message, variant, open, handleClose
   };
 
   return (
-    <MUISnackBar
+    <MUISnackbar
       anchorOrigin={{
         vertical: 'top',
         horizontal: 'right',
@@ -96,6 +96,6 @@ export default function SnackBar({ headline, message, variant, open, handleClose
           </IconButton>
         </div>
       </div>
-    </MUISnackBar>
+    </MUISnackbar>
   );
 }

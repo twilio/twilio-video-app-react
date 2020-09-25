@@ -1,5 +1,5 @@
 import React from 'react';
-import MediaErrorSnackBar, { getSnackBarContent } from './MediaErrorSnackBar';
+import MediaErrorSnackBar, { getSnackbarContent } from './MediaErrorSnackbar';
 import { shallow } from 'enzyme';
 import { useHasAudioInputDevices, useHasVideoInputDevices } from '../../../hooks/deviceHooks/deviceHooks';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
@@ -54,9 +54,9 @@ describe('the MediaErrorSnackBar', () => {
   });
 });
 
-describe('the getSnackBarContent function', () => {
+describe('the getSnackbarContent function', () => {
   it('return empty strings by default', () => {
-    const results = getSnackBarContent(true, true);
+    const results = getSnackbarContent(true, true);
     expect(results).toMatchInlineSnapshot(`
       Object {
         "headline": "",
@@ -66,7 +66,7 @@ describe('the getSnackBarContent function', () => {
   });
 
   it('should return the correct content when there are no audio devices', () => {
-    const results = getSnackBarContent(false, true);
+    const results = getSnackbarContent(false, true);
     expect(results).toMatchInlineSnapshot(`
       Object {
         "headline": "No Microphone Detected:",
@@ -76,7 +76,7 @@ describe('the getSnackBarContent function', () => {
   });
 
   it('should return the correct content when there are no video devices', () => {
-    const results = getSnackBarContent(true, false);
+    const results = getSnackbarContent(true, false);
     expect(results).toMatchInlineSnapshot(`
       Object {
         "headline": "No Camera Detected:",
@@ -86,7 +86,7 @@ describe('the getSnackBarContent function', () => {
   });
 
   it('should return the correct content when there are no audio or video devices', () => {
-    const results = getSnackBarContent(false, false);
+    const results = getSnackbarContent(false, false);
     expect(results).toMatchInlineSnapshot(`
       Object {
         "headline": "No Camera or Microphone Detected:",
@@ -98,7 +98,7 @@ describe('the getSnackBarContent function', () => {
   it('should return the correct content when there is a NotAllowedError', () => {
     const error = new Error();
     error.name = 'NotAllowedError';
-    const results = getSnackBarContent(true, true, error);
+    const results = getSnackbarContent(true, true, error);
     expect(results).toMatchInlineSnapshot(`
       Object {
         "headline": "Unable to Access Media:",
@@ -110,7 +110,7 @@ describe('the getSnackBarContent function', () => {
   it('should return the correct content when there is a NotAllowedError with "Permission denied by syste" message', () => {
     const error = new Error('Permission denied by system');
     error.name = 'NotAllowedError';
-    const results = getSnackBarContent(true, true, error);
+    const results = getSnackbarContent(true, true, error);
     expect(results).toMatchInlineSnapshot(`
       Object {
         "headline": "Unable to Access Media:",
@@ -122,7 +122,7 @@ describe('the getSnackBarContent function', () => {
   it('should return the correct content when there is a NotFoundError', () => {
     const error = new Error();
     error.name = 'NotFoundError';
-    const results = getSnackBarContent(true, true, error);
+    const results = getSnackbarContent(true, true, error);
     expect(results).toMatchInlineSnapshot(`
       Object {
         "headline": "Cannot Find Microphone or Camera:",
@@ -134,7 +134,7 @@ describe('the getSnackBarContent function', () => {
   it('should return the correct content when there is any other kind of error', () => {
     const error = new Error('Any other device errors');
     error.name = 'OtherDeviceError';
-    const results = getSnackBarContent(true, true, error);
+    const results = getSnackbarContent(true, true, error);
     expect(results).toMatchInlineSnapshot(`
       Object {
         "headline": "Error Acquiring Media:",
