@@ -1,4 +1,5 @@
 import { shallow } from 'enzyme';
+import CloseIcon from '@material-ui/icons/Close';
 import React from 'react';
 import Snackbar from './Snackbar';
 
@@ -14,6 +15,11 @@ describe('the Snackbar component', () => {
     const wrapper = shallow(
       <Snackbar variant="error" headline="Test Headline" message="Test Message" handleClose={() => {}} open={true} />
     );
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should render correctly with no handleClose function provided', () => {
+    const wrapper = shallow(<Snackbar variant="error" headline="Test Headline" message="Test Message" open={true} />);
     expect(wrapper).toMatchSnapshot();
   });
 
