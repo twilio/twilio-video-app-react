@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
 import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
+import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
 
 const BORDER_SIZE = 2;
 
@@ -51,7 +52,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     infoContainer: {
       position: 'absolute',
-      zIndex: 1,
+      zIndex: 2,
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
@@ -66,6 +67,18 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'center',
       background: 'black',
       height: '100%',
+    },
+    reconnectingContainer: {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: 'rgba(40, 42, 43, 0.75)',
+      zIndex: 1,
     },
     screenShareIconContainer: {
       background: 'rgba(0, 0, 0, 0.5)',
@@ -99,6 +112,12 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'center',
       background: 'rgba(0, 0, 0, 0.5)',
     },
+    typeography: {
+      color: 'white',
+      [theme.breakpoints.down('sm')]: {
+        fontSize: '0.75rem',
+      },
+    },
   })
 );
 
@@ -129,6 +148,7 @@ export default function ParticipantInfo({
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
 
   const audioTrack = useTrack(audioPublication) as LocalAudioTrack | RemoteAudioTrack;
+  const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
   const classes = useStyles();
 
@@ -146,7 +166,7 @@ export default function ParticipantInfo({
           )}
           <span className={classes.identity}>
             <AudioLevelIndicator audioTrack={audioTrack} />
-            <Typography variant="body1" color="inherit" component="span">
+            <Typography variant="body1" className={classes.typeography} component="span">
               {participant.identity}
               {isLocalParticipant && ' (You)'}
             </Typography>
@@ -158,6 +178,13 @@ export default function ParticipantInfo({
         {(!isVideoEnabled || isVideoSwitchedOff) && (
           <div className={classes.avatarContainer}>
             <AvatarIcon />
+          </div>
+        )}
+        {isParticipantReconnecting && (
+          <div className={classes.reconnectingContainer}>
+            <Typography variant="body1" className={classes.typeography}>
+              Reconnecting...
+            </Typography>
           </div>
         )}
         {children}

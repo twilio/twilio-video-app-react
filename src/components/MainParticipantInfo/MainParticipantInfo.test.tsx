@@ -6,6 +6,7 @@ import { shallow } from 'enzyme';
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
 import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
+import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 jest.mock('../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel', () => () => 4);
@@ -13,11 +14,13 @@ jest.mock('../../hooks/usePublications/usePublications');
 jest.mock('../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff');
 jest.mock('../../hooks/useTrack/useTrack');
 jest.mock('../../hooks/useVideoContext/useVideoContext');
+jest.mock('../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting');
 
 const mockUsePublications = usePublications as jest.Mock<any>;
 const mockUseIsTrackSwitchedOff = useIsTrackSwitchedOff as jest.Mock<any>;
 const mockUseTrack = useTrack as jest.Mock<any>;
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
+const mockUseParticipantIsReconnecting = useParticipantIsReconnecting as jest.Mock<boolean>;
 
 describe('the MainParticipantInfo component', () => {
   beforeEach(jest.clearAllMocks);
@@ -59,6 +62,24 @@ describe('the MainParticipantInfo component', () => {
       <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
     );
     expect(wrapper.find(AvatarIcon).exists()).toBe(true);
+  });
+
+  it('should not render the reconnecting UI when the user is connected', () => {
+    mockUseParticipantIsReconnecting.mockImplementationOnce(() => false);
+    mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
+    const wrapper = shallow(
+      <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
+    );
+    expect(wrapper.text()).not.toContain('Reconnecting...');
+  });
+
+  it('should render the reconnecting UI when the user is reconnecting', () => {
+    mockUseParticipantIsReconnecting.mockImplementationOnce(() => true);
+    mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
+    const wrapper = shallow(
+      <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
+    );
+    expect(wrapper.text()).toContain('Reconnecting...');
   });
 
   it('should use the switchOff status of the screen share track when it is available', () => {

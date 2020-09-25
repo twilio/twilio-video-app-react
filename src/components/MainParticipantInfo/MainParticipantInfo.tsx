@@ -11,6 +11,7 @@ import usePublications from '../../hooks/usePublications/usePublications';
 import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 import useTrack from '../../hooks/useTrack/useTrack';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
 
 const useStyles = makeStyles({
   container: {
@@ -30,9 +31,21 @@ const useStyles = makeStyles({
   },
   infoContainer: {
     position: 'absolute',
-    zIndex: 1,
+    zIndex: 2,
     height: '100%',
     width: '100%',
+  },
+  reconnectingContainer: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: 'rgba(40, 42, 43, 0.75)',
+    zIndex: 1,
   },
   fullWidth: {
     gridArea: '1 / 1 / 3 / 3',
@@ -70,6 +83,7 @@ export default function MainParticipantInfo({ participant, children }: MainParti
   const videoTrack = useTrack(screenSharePublication || videoPublication);
   const isVideoEnabled = Boolean(videoTrack);
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
+  const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
   return (
     <div
@@ -90,6 +104,13 @@ export default function MainParticipantInfo({ participant, children }: MainParti
       {(!isVideoEnabled || isVideoSwitchedOff) && (
         <div className={classes.avatarContainer}>
           <AvatarIcon />
+        </div>
+      )}
+      {isParticipantReconnecting && (
+        <div className={classes.reconnectingContainer}>
+          <Typography variant="body1" style={{ color: 'white' }}>
+            Reconnecting...
+          </Typography>
         </div>
       )}
       {children}
