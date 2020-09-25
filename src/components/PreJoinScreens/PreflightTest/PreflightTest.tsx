@@ -77,7 +77,7 @@ export default function PreflightTest() {
   const networkCondition = getNetworkCondition(testReport);
 
   return (
-    <Grid container justify="center" alignItems="center" style={{ height: '35px', paddingBottom: '1.5em' }}>
+    <Grid container justify="center" alignItems="center" style={{ height: '55px', paddingBottom: '1.5em' }}>
       {!testFailure && !testReport ? (
         <>
           <ProgressIndicator />
