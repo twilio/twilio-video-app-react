@@ -102,7 +102,7 @@ describe('the getSnackbarContent function', () => {
     expect(results).toMatchInlineSnapshot(`
       Object {
         "headline": "Unable to Access Media:",
-        "message": "User has denied permission to use audio and video. Please grant the browser permission to access the microphone and camera.",
+        "message": "The user has denied permission to use audio and video. Please grant permission to the browser to access the microphone and camera.",
       }
     `);
   });
@@ -114,7 +114,7 @@ describe('the getSnackbarContent function', () => {
     expect(results).toMatchInlineSnapshot(`
       Object {
         "headline": "Unable to Access Media:",
-        "message": "The operating system doesn't allow the browser to access the microphone or camera. Please check your operating system settings.",
+        "message": "The operating system has blocked the browser from accessing the microphone or camera. Please check your operating system settings.",
       }
     `);
   });

@@ -15,10 +15,10 @@ export function getSnackbarContent(hasAudio: boolean, hasVideo: boolean, error?:
       if (error!.message === 'Permission denied by system') {
         // Chrome only
         message =
-          "The operating system doesn't allow the browser to access the microphone or camera. Please check your operating system settings.";
+          'The operating system has blocked the browser from accessing the microphone or camera. Please check your operating system settings.';
       } else {
         message =
-          'User has denied permission to use audio and video. Please grant the browser permission to access the microphone and camera.';
+          'The user has denied permission to use audio and video. Please grant permission to the browser to access the microphone and camera.';
       }
 
       break;
