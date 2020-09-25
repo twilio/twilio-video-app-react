@@ -29,9 +29,11 @@ declare module 'twilio-video' {
     trackSwitchOffMode?: 'predicted' | 'detected' | 'disabled';
   }
 
-  interface Video {
-    testPreflight: (subscriberToken: string, publisherToken: string) => PreflightTest;
-  }
+  function testPreflight(
+    subscriberToken: string,
+    publisherToken: string,
+    options?: { duration?: number }
+  ): PreflightTest;
 }
 
 declare global {

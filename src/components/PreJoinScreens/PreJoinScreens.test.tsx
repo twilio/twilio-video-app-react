@@ -1,11 +1,14 @@
 import React from 'react';
+import { act } from 'react-dom/test-utils';
 import DeviceSelectionScreen from './DeviceSelectionScreen/DeviceSelectionScreen';
+import MediaErrorSnackbar from './MediaErrorSnackbar/MediaErrorSnackbar';
 import { mount, shallow } from 'enzyme';
 import PreflightTest from './PreflightTest/PreflightTest';
 import PreJoinScreens from './PreJoinScreens';
 import RoomNameScreen from './RoomNameScreen/RoomNameScreen';
 import { useParams } from 'react-router-dom';
 import { useAppState } from '../../state';
+import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 delete window.location;
 // @ts-ignore
@@ -20,8 +23,10 @@ Object.defineProperty(window.history, 'replaceState', { value: mockReplaceState 
 
 jest.mock('../../state');
 jest.mock('react-router-dom', () => ({ useParams: jest.fn() }));
+jest.mock('../../hooks/useVideoContext/useVideoContext');
 const mockUseAppState = useAppState as jest.Mock<any>;
 const mockUseParams = useParams as jest.Mock<any>;
+const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 
 jest.mock('../IntroContainer/IntroContainer', () => ({ children }: { children: React.ReactNode }) => children);
 jest.mock('./RoomNameScreen/RoomNameScreen', () => () => null);
@@ -32,6 +37,7 @@ describe('the PreJoinScreens component', () => {
   beforeEach(() => {
     mockUseAppState.mockImplementation(() => ({ user: { displayName: 'Test User' } }));
     mockUseParams.mockImplementation(() => ({ URLRoomName: 'testRoom' }));
+    mockUseVideoContext.mockImplementation(() => ({ getAudioAndVideoTracks: () => Promise.resolve() }));
   });
 
   it('should update the URL to include the room name on submit', () => {
@@ -82,7 +88,12 @@ describe('the PreJoinScreens component', () => {
     const handleSubmit = wrapper.find(RoomNameScreen).prop('handleSubmit');
     handleSubmit({ preventDefault: () => {} } as any);
 
-    expect(wrapper.prop('subContent')).toEqual(<PreflightTest />);
+    expect(wrapper.prop('subContent')).toEqual(
+      <>
+        <PreflightTest />
+        <MediaErrorSnackbar />
+      </>
+    );
     expect(wrapper.find(DeviceSelectionScreen).exists()).toBe(true);
   });
 
@@ -103,5 +114,20 @@ describe('the PreJoinScreens component', () => {
 
     expect(wrapper.find(RoomNameScreen).exists()).toBe(true);
     expect(wrapper.find(DeviceSelectionScreen).exists()).toBe(false);
+  });
+
+  it('should capture errors from getAudioAndVideoTracks and pass them to the MediaErrorSnackbar component', async () => {
+    mockUseVideoContext.mockImplementation(() => ({ getAudioAndVideoTracks: () => Promise.reject('testError') }));
+
+    const wrapper = mount(<PreJoinScreens />);
+
+    // This may look odd, but it prevents 'An update to PreJoinScreens inside a test was not wrapped in act(...)' warning.
+    await act(async () => {
+      await new Promise(setImmediate);
+      wrapper.update();
+    });
+
+    const error = wrapper.children().prop('subContent').props.children[1].props.error;
+    expect(error).toBe('testError');
   });
 });

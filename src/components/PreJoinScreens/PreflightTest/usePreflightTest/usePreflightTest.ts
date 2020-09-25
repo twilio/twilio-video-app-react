@@ -9,7 +9,6 @@ export default function usePreflightTest(publisherToken?: string, subscriberToke
   const [testReport, setTestReport] = useState<PreflightTestReport>();
   const [testFailure, setTestFailure] = useState<Error>();
   const [isTestRunning, setIsTestRunning] = useState(false);
-
   const preflightTestRef = useRef<PreflightTest>();
 
   // This will stop the preflight test when the user connects to a room
@@ -34,7 +33,6 @@ export default function usePreflightTest(publisherToken?: string, subscriberToke
     if (publisherToken && subscriberToken && !testReport && !testFailure && !isTestRunning) {
       setIsTestRunning(true);
 
-      // @ts-ignore
       preflightTestRef.current = Video.testPreflight(publisherToken, subscriberToken, { duration: TEST_DURATION });
 
       preflightTestRef
