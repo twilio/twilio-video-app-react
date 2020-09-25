@@ -1,11 +1,9 @@
 import React from 'react';
-import clsx from 'clsx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
 
 import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
 import AvatarIcon from '../../icons/AvatarIcon';
-import BandwidthWarning from '../BandwidthWarning/BandwidthWarning';
 import NetworkQualityLevel from '../NetworkQualityLevel/NetworkQualityLevel';
 import PinIcon from './PinIcon/PinIcon';
 import ScreenShareIcon from '../../icons/ScreenShareIcon';
@@ -14,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
 import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
+import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
 
 const BORDER_SIZE = 2;
 
@@ -51,14 +50,9 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '100%',
       height: '100%',
     },
-    isVideoSwitchedOff: {
-      '& video': {
-        filter: 'blur(4px) grayscale(1) brightness(0.5)',
-      },
-    },
     infoContainer: {
       position: 'absolute',
-      zIndex: 1,
+      zIndex: 2,
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
@@ -73,6 +67,18 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'center',
       background: 'black',
       height: '100%',
+    },
+    reconnectingContainer: {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: 'rgba(40, 42, 43, 0.75)',
+      zIndex: 1,
     },
     screenShareIconContainer: {
       background: 'rgba(0, 0, 0, 0.5)',
@@ -106,6 +112,12 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'center',
       background: 'rgba(0, 0, 0, 0.5)',
     },
+    typeography: {
+      color: 'white',
+      [theme.breakpoints.down('sm')]: {
+        fontSize: '0.75rem',
+      },
+    },
   })
 );
 
@@ -136,17 +148,12 @@ export default function ParticipantInfo({
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
 
   const audioTrack = useTrack(audioPublication) as LocalAudioTrack | RemoteAudioTrack;
+  const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
   const classes = useStyles();
 
   return (
-    <div
-      className={clsx(classes.container, {
-        [classes.isVideoSwitchedOff]: isVideoSwitchedOff,
-      })}
-      onClick={onClick}
-      data-cy-participant={participant.identity}
-    >
+    <div className={classes.container} onClick={onClick} data-cy-participant={participant.identity}>
       <div className={classes.infoContainer}>
         <div className={classes.networkQualityContainer}>
           <NetworkQualityLevel participant={participant} />
@@ -159,7 +166,7 @@ export default function ParticipantInfo({
           )}
           <span className={classes.identity}>
             <AudioLevelIndicator audioTrack={audioTrack} />
-            <Typography variant="body1" color="inherit" component="span">
+            <Typography variant="body1" className={classes.typeography} component="span">
               {participant.identity}
               {isLocalParticipant && ' (You)'}
             </Typography>
@@ -168,12 +175,18 @@ export default function ParticipantInfo({
         <div>{isSelected && <PinIcon />}</div>
       </div>
       <div className={classes.innerContainer}>
-        {!isVideoEnabled && (
+        {(!isVideoEnabled || isVideoSwitchedOff) && (
           <div className={classes.avatarContainer}>
             <AvatarIcon />
           </div>
         )}
-        {isVideoSwitchedOff && <BandwidthWarning />}
+        {isParticipantReconnecting && (
+          <div className={classes.reconnectingContainer}>
+            <Typography variant="body1" className={classes.typeography}>
+              Reconnecting...
+            </Typography>
+          </div>
+        )}
         {children}
       </div>
     </div>

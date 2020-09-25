@@ -3,15 +3,18 @@ import AvatarIcon from '../../icons/AvatarIcon';
 import ParticipantInfo from './ParticipantInfo';
 import PinIcon from './PinIcon/PinIcon';
 import { shallow } from 'enzyme';
-import usePublications from '../../hooks/usePublications/usePublications';
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
+import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
+import usePublications from '../../hooks/usePublications/usePublications';
 
 jest.mock('../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel', () => () => 4);
 jest.mock('../../hooks/usePublications/usePublications');
 jest.mock('../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff');
+jest.mock('../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting');
 
 const mockUsePublications = usePublications as jest.Mock<any>;
 const mockUseIsTrackSwitchedOff = useIsTrackSwitchedOff as jest.Mock<any>;
+const mockUseParticipantIsReconnecting = useParticipantIsReconnecting as jest.Mock<boolean>;
 
 describe('the ParticipantInfo component', () => {
   it('should render the AvatarIcon component when no video tracks are published', () => {
@@ -34,7 +37,7 @@ describe('the ParticipantInfo component', () => {
     expect(wrapper.find(AvatarIcon).exists()).toBe(false);
   });
 
-  it('should add isSwitchedOff prop to Container component when video is switched off', () => {
+  it('should render the AvatarIcon component when the video track is switchedOff', () => {
     mockUseIsTrackSwitchedOff.mockImplementation(() => true);
     mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
     const wrapper = shallow(
@@ -42,7 +45,29 @@ describe('the ParticipantInfo component', () => {
         mock children
       </ParticipantInfo>
     );
-    expect(wrapper.find('.makeStyles-container-1').prop('className')).toContain('isVideoSwitchedOff');
+    expect(wrapper.find(AvatarIcon).exists()).toBe(true);
+  });
+
+  it('should not render the reconnecting UI when the user is connected', () => {
+    mockUseParticipantIsReconnecting.mockImplementationOnce(() => false);
+    mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
+    const wrapper = shallow(
+      <ParticipantInfo onClick={() => {}} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
+        mock children
+      </ParticipantInfo>
+    );
+    expect(wrapper.text()).not.toContain('Reconnecting...');
+  });
+
+  it('should render the reconnecting UI when the user is reconnecting', () => {
+    mockUseParticipantIsReconnecting.mockImplementationOnce(() => true);
+    mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
+    const wrapper = shallow(
+      <ParticipantInfo onClick={() => {}} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
+        mock children
+      </ParticipantInfo>
+    );
+    expect(wrapper.text()).toContain('Reconnecting...');
   });
 
   it('should not add isSwitchedOff prop to Container component when video is not switched off', () => {

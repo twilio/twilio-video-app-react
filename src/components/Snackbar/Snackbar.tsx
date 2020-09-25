@@ -11,7 +11,7 @@ interface SnackbarProps {
   message: string;
   variant?: 'error' | 'warning';
   open: boolean;
-  handleClose: () => void;
+  handleClose?: () => void;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -56,7 +56,7 @@ export default function Snackbar({ headline, message, variant, open, handleClose
       return;
     }
 
-    handleClose();
+    handleClose?.();
   };
 
   return (
@@ -66,7 +66,6 @@ export default function Snackbar({ headline, message, variant, open, handleClose
         horizontal: 'right',
       }}
       open={open}
-      autoHideDuration={15000}
       onClose={handleOnClose}
     >
       <div
@@ -91,9 +90,11 @@ export default function Snackbar({ headline, message, variant, open, handleClose
           </div>
         </div>
         <div>
-          <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
+          {handleClose && (
+            <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          )}
         </div>
       </div>
     </MUISnackbar>

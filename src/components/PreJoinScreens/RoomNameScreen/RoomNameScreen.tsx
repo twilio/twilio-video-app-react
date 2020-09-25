@@ -81,6 +81,7 @@ export default function RoomNameScreen({ name, roomName, setName, setRoomName, h
               Room Name
             </InputLabel>
             <TextField
+              autoCapitalize="false"
               id="input-room-name"
               variant="outlined"
               fullWidth
