@@ -1,11 +1,9 @@
 import React from 'react';
-import clsx from 'clsx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
 
 import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
 import AvatarIcon from '../../icons/AvatarIcon';
-import BandwidthWarning from '../BandwidthWarning/BandwidthWarning';
 import NetworkQualityLevel from '../NetworkQualityLevel/NetworkQualityLevel';
 import PinIcon from './PinIcon/PinIcon';
 import ScreenShareIcon from '../../icons/ScreenShareIcon';
@@ -50,11 +48,6 @@ const useStyles = makeStyles((theme: Theme) =>
       left: 0,
       width: '100%',
       height: '100%',
-    },
-    isVideoSwitchedOff: {
-      '& video': {
-        filter: 'blur(4px) grayscale(1) brightness(0.5)',
-      },
     },
     infoContainer: {
       position: 'absolute',
@@ -140,13 +133,7 @@ export default function ParticipantInfo({
   const classes = useStyles();
 
   return (
-    <div
-      className={clsx(classes.container, {
-        [classes.isVideoSwitchedOff]: isVideoSwitchedOff,
-      })}
-      onClick={onClick}
-      data-cy-participant={participant.identity}
-    >
+    <div className={classes.container} onClick={onClick} data-cy-participant={participant.identity}>
       <div className={classes.infoContainer}>
         <div className={classes.networkQualityContainer}>
           <NetworkQualityLevel participant={participant} />
@@ -168,12 +155,11 @@ export default function ParticipantInfo({
         <div>{isSelected && <PinIcon />}</div>
       </div>
       <div className={classes.innerContainer}>
-        {!isVideoEnabled && (
+        {(!isVideoEnabled || isVideoSwitchedOff) && (
           <div className={classes.avatarContainer}>
             <AvatarIcon />
           </div>
         )}
-        {isVideoSwitchedOff && <BandwidthWarning />}
         {children}
       </div>
     </div>
