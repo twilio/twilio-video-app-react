@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export default function Snackbar({ headline, message, variant, open, handleClose }: SnackbarProps) {
   const classes = useStyles();
 
-  const handleOnClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
+  const handleOnClose = (_: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -66,7 +66,7 @@ export default function Snackbar({ headline, message, variant, open, handleClose
         horizontal: 'right',
       }}
       open={open}
-      autoHideDuration={600000}
+      autoHideDuration={15000}
       onClose={handleOnClose}
     >
       <div
