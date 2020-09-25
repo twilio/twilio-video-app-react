@@ -6,7 +6,7 @@ import { useAudioOutputDevices } from '../../../../hooks/deviceHooks/deviceHooks
 import { useAppState } from '../../../../state';
 
 jest.mock('../../../../state');
-jest.mock('../deviceHooks/deviceHooks');
+jest.mock('../../../../hooks/deviceHooks/deviceHooks');
 
 const mockUseAppState = useAppState as jest.Mock<any>;
 const mockUseAudioOutputDevices = useAudioOutputDevices as jest.Mock<any>;

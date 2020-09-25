@@ -6,7 +6,7 @@ import { useVideoInputDevices } from '../../../../hooks/deviceHooks/deviceHooks'
 import VideoInputList from './VideoInputList';
 
 jest.mock('../../../../hooks/useVideoContext/useVideoContext');
-jest.mock('../deviceHooks/deviceHooks');
+jest.mock('../../../../hooks/deviceHooks/deviceHooks');
 
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 const mockUseVideoInputDevices = useVideoInputDevices as jest.Mock<any>;
