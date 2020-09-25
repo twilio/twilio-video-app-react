@@ -4,7 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { LocalVideoTrack, Participant, RemoteVideoTrack } from 'twilio-video';
 
 import AvatarIcon from '../../icons/AvatarIcon';
-import BandwidthWarning from '../BandwidthWarning/BandwidthWarning';
 import Typography from '@material-ui/core/Typography';
 
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
@@ -18,11 +17,6 @@ const useStyles = makeStyles({
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
-  },
-  isVideoSwitchedOff: {
-    '& video': {
-      filter: 'blur(4px) grayscale(1) brightness(0.5)',
-    },
   },
   identity: {
     background: 'rgba(0, 0, 0, 0.5)',
@@ -73,16 +67,14 @@ export default function MainParticipantInfo({ participant, children }: MainParti
   const publications = usePublications(participant);
   const videoPublication = publications.find(p => p.trackName.includes('camera'));
   const screenSharePublication = publications.find(p => p.trackName.includes('screen'));
-  const isVideoEnabled = Boolean(videoPublication);
-
   const videoTrack = useTrack(screenSharePublication || videoPublication);
+  const isVideoEnabled = Boolean(videoTrack);
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
 
   return (
     <div
       data-cy-main-participant
       className={clsx(classes.container, {
-        [classes.isVideoSwitchedOff]: isVideoSwitchedOff,
         [classes.fullWidth]: !isRemoteParticipantScreenSharing,
       })}
     >
@@ -91,11 +83,11 @@ export default function MainParticipantInfo({ participant, children }: MainParti
           <Typography variant="body1" color="inherit">
             {participant.identity}
             {isLocal && ' (You)'}
+            {screenSharePublication && ' - Screen'}
           </Typography>
         </div>
       </div>
-      {isVideoSwitchedOff && <BandwidthWarning />}
-      {!isVideoEnabled && (
+      {(!isVideoEnabled || isVideoSwitchedOff) && (
         <div className={classes.avatarContainer}>
           <AvatarIcon />
         </div>

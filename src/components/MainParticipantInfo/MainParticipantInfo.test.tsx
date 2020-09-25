@@ -24,49 +24,51 @@ describe('the MainParticipantInfo component', () => {
 
   beforeEach(() => {
     mockUseVideoContext.mockImplementation(() => ({ room: { localParticipant: {} } }));
+    mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
+    mockUseTrack.mockImplementation((track: any) => track);
+    mockUseIsTrackSwitchedOff.mockImplementation(() => false);
   });
 
   it('should render the AvatarIcon component when no video tracks are published', () => {
-    mockUsePublications.mockImplementation(() => []);
+    mockUsePublications.mockImplementationOnce(() => []);
     const wrapper = shallow(
       <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
     );
     expect(wrapper.find(AvatarIcon).exists()).toBe(true);
   });
 
-  it('should render not the AvatarIcon component when no video tracks are published', () => {
-    mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
+  it('should not render the AvatarIcon component when video tracks are published', () => {
+    mockUsePublications.mockImplementationOnce(() => [{ trackName: 'camera-123456' }]);
     const wrapper = shallow(
       <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
     );
     expect(wrapper.find(AvatarIcon).exists()).toBe(false);
   });
 
-  it('should add isVideoSwitchedOff class to container div when video is switched off', () => {
-    mockUseIsTrackSwitchedOff.mockImplementation(() => true);
+  it('should not render the AvatarIcon component when the user has disabled their video and is sharing their screen', () => {
+    mockUsePublications.mockImplementationOnce(() => [{ trackName: 'screen-123456' }]);
     const wrapper = shallow(
       <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
     );
-    expect(wrapper.find('.makeStyles-container-1').prop('className')).toContain('isVideoSwitchedOff');
+    expect(wrapper.find(AvatarIcon).exists()).toBe(false);
   });
 
-  it('should not add isVideoSwitchedOff class to container div when video is not switched off', () => {
-    mockUseIsTrackSwitchedOff.mockImplementation(() => false);
+  it('should render the AvatarIcon component when video is switched off', () => {
+    mockUseIsTrackSwitchedOff.mockImplementationOnce(() => true);
     const wrapper = shallow(
       <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
     );
-    expect(wrapper.find('.makeStyles-container-1').prop('className')).not.toContain('isVideoSwitchedOff');
+    expect(wrapper.find(AvatarIcon).exists()).toBe(true);
   });
 
   it('should use the switchOff status of the screen share track when it is available', () => {
-    mockUsePublications.mockImplementation(() => [{ trackName: 'screen' }, { trackName: 'camera-123456' }]);
+    mockUsePublications.mockImplementationOnce(() => [{ trackName: 'screen' }, { trackName: 'camera-123456' }]);
     shallow(<MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>);
     expect(mockUseTrack).toHaveBeenCalledWith({ trackName: 'screen' });
   });
 
   it('should use the switchOff status of the camera track when the screen share track is not available', () => {
-    mockUseIsTrackSwitchedOff.mockImplementation(() => false);
-    mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
+    mockUsePublications.mockImplementationOnce(() => [{ trackName: 'camera-123456' }]);
     shallow(<MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>);
     expect(mockUseTrack).toHaveBeenCalledWith({ trackName: 'camera-123456' });
   });
@@ -74,16 +76,22 @@ describe('the MainParticipantInfo component', () => {
   it('should add "(You)" to the participants identity when they are the localParticipant', () => {
     const mockParticipant = { identity: 'mockIdentity' } as any;
     mockUseVideoContext.mockImplementationOnce(() => ({ room: { localParticipant: mockParticipant } }));
-    mockUseIsTrackSwitchedOff.mockImplementation(() => false);
     const wrapper = shallow(<MainParticipantInfo participant={mockParticipant}>mock children</MainParticipantInfo>);
     expect(wrapper.text()).toContain('mockIdentity (You)');
   });
 
   it('should not add "(You)" to the participants identity when they are the localParticipant', () => {
-    mockUseIsTrackSwitchedOff.mockImplementation(() => false);
     const wrapper = shallow(
       <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
     );
     expect(wrapper.text()).not.toContain('mockIdentity (You)');
+  });
+
+  it('should add "- Screen" to the participants identity when they are screen sharing', () => {
+    mockUsePublications.mockImplementationOnce(() => [{ trackName: 'screen' }, { trackName: 'camera-123456' }]);
+    const wrapper = shallow(
+      <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
+    );
+    expect(wrapper.text()).toContain('mockIdentity - Screen');
   });
 });
