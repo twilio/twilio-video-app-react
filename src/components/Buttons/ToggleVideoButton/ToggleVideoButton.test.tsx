@@ -1,14 +1,14 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import useLocalVideoToggle from '../../../../hooks/useLocalVideoToggle/useLocalVideoToggle';
+import useLocalVideoToggle from '../../../hooks/useLocalVideoToggle/useLocalVideoToggle';
 
 import ToggleVideoButton from './ToggleVideoButton';
-import VideoOffIcon from '../../../../icons/VideoOffIcon';
-import VideoOnIcon from '../../../../icons/VideoOnIcon';
-import { useHasVideoInputDevices } from '../../../../hooks/deviceHooks/deviceHooks';
+import VideoOffIcon from '../../../icons/VideoOffIcon';
+import VideoOnIcon from '../../../icons/VideoOnIcon';
+import { useHasVideoInputDevices } from '../../../hooks/deviceHooks/deviceHooks';
 
-jest.mock('../../../../hooks/deviceHooks/deviceHooks');
-jest.mock('../../../../hooks/useLocalVideoToggle/useLocalVideoToggle');
+jest.mock('../../../hooks/deviceHooks/deviceHooks');
+jest.mock('../../../hooks/useLocalVideoToggle/useLocalVideoToggle');
 
 const mockUseLocalVideoToggle = useLocalVideoToggle as jest.Mock<any>;
 const mockUseHasVideoInputDevices = useHasVideoInputDevices as jest.Mock<any>;

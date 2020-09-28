@@ -2,9 +2,9 @@ import React from 'react';
 import { Button, Grid, Typography } from '@material-ui/core';
 import MenuBar from './MenuBar';
 import { shallow } from 'enzyme';
-import ToggleAudioButton from './Buttons/ToggleAudioButton/ToggleAudioButton';
-import ToggleScreenShareButton from './Buttons/ToogleScreenShareButton/ToggleScreenShareButton';
-import ToggleVideoButton from './Buttons/ToggleVideoButton/ToggleVideoButton';
+import ToggleAudioButton from '../Buttons/ToggleAudioButton/ToggleAudioButton';
+import ToggleScreenShareButton from '../Buttons/ToogleScreenShareButton/ToggleScreenShareButton';
+import ToggleVideoButton from '../Buttons/ToggleVideoButton/ToggleVideoButton';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 

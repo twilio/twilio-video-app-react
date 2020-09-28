@@ -1,14 +1,14 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import useLocalAudioToggle from '../../../../hooks/useLocalAudioToggle/useLocalAudioToggle';
+import useLocalAudioToggle from '../../../hooks/useLocalAudioToggle/useLocalAudioToggle';
 
-import MicIcon from '../../../../icons/MicIcon';
-import MicOffIcon from '../../../../icons/MicOffIcon';
+import MicIcon from '../../../icons/MicIcon';
+import MicOffIcon from '../../../icons/MicOffIcon';
 import ToggleAudioButton from './ToggleAudioButton';
-import useVideoContext from '../../../../hooks/useVideoContext/useVideoContext';
+import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
-jest.mock('../../../../hooks/useLocalAudioToggle/useLocalAudioToggle');
-jest.mock('../../../../hooks/useVideoContext/useVideoContext');
+jest.mock('../../../hooks/useLocalAudioToggle/useLocalAudioToggle');
+jest.mock('../../../hooks/useVideoContext/useVideoContext');
 const mockUseLocalAudioToggle = useLocalAudioToggle as jest.Mock<any>;
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 

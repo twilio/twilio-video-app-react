@@ -4,8 +4,8 @@ import { shallow } from 'enzyme';
 import { Steps } from '../PreJoinScreens';
 import { useAppState } from '../../../state';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
-import ToggleVideoButton from '../../MenuBar/Buttons/ToggleVideoButton/ToggleVideoButton';
-import ToggleAudioButton from '../../MenuBar/Buttons/ToggleAudioButton/ToggleAudioButton';
+import ToggleVideoButton from '../../Buttons/ToggleVideoButton/ToggleVideoButton';
+import ToggleAudioButton from '../../Buttons/ToggleAudioButton/ToggleAudioButton';
 
 jest.mock('../../../hooks/useVideoContext/useVideoContext');
 jest.mock('../../../state');

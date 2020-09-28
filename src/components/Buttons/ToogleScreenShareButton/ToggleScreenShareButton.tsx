@@ -2,11 +2,11 @@ import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
-import ScreenShareIcon from '../../../../icons/ScreenShareIcon';
+import ScreenShareIcon from '../../../icons/ScreenShareIcon';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import useScreenShareParticipant from '../../../../hooks/useScreenShareParticipant/useScreenShareParticipant';
-import useVideoContext from '../../../../hooks/useVideoContext/useVideoContext';
+import useScreenShareParticipant from '../../../hooks/useScreenShareParticipant/useScreenShareParticipant';
+import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
 export const SCREEN_SHARE_TEXT = 'Share Screen';
 export const STOP_SCREEN_SHARE_TEXT = 'Stop Sharing Screen';

@@ -76,7 +76,7 @@ describe('the ParticipantInfo component', () => {
         onClick={() => {}}
         isSelected={false}
         participant={{ identity: 'mockIdentity' } as any}
-        hidePariticpant={true}
+        hideParticipant={true}
       >
         mock children
       </ParticipantInfo>
@@ -90,7 +90,7 @@ describe('the ParticipantInfo component', () => {
         onClick={() => {}}
         isSelected={false}
         participant={{ identity: 'mockIdentity' } as any}
-        hidePariticpant={false}
+        hideParticipant={false}
       >
         mock children
       </ParticipantInfo>

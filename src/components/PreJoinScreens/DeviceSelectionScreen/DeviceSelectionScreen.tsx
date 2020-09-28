@@ -3,8 +3,8 @@ import { makeStyles, Typography, Grid, Button, Theme, Hidden } from '@material-u
 import LocalVideoPreview from './LocalVideoPreview/LocalVideoPreview';
 import SettingsMenu from './SettingsMenu/SettingsMenu';
 import { Steps } from '../PreJoinScreens';
-import ToggleAudioButton from '../../MenuBar/Buttons/ToggleAudioButton/ToggleAudioButton';
-import ToggleVideoButton from '../../MenuBar/Buttons/ToggleVideoButton/ToggleVideoButton';
+import ToggleAudioButton from '../../Buttons/ToggleAudioButton/ToggleAudioButton';
+import ToggleVideoButton from '../../Buttons/ToggleVideoButton/ToggleVideoButton';
 import { useAppState } from '../../../state';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 

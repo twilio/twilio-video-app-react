@@ -1,18 +1,18 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import useScreenShareParticipant from '../../../../hooks/useScreenShareParticipant/useScreenShareParticipant';
-import useVideoContext from '../../../../hooks/useVideoContext/useVideoContext';
+import useScreenShareParticipant from '../../../hooks/useScreenShareParticipant/useScreenShareParticipant';
+import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
 import ToggleScreenShareButton, {
   SCREEN_SHARE_TEXT,
   SHARE_IN_PROGRESS_TEXT,
   SHARE_NOT_SUPPORTED_TEXT,
 } from './ToggleScreenShareButton';
-import ScreenShareIcon from '../../../../icons/ScreenShareIcon';
+import ScreenShareIcon from '../../../icons/ScreenShareIcon';
 import { Button, Tooltip } from '@material-ui/core';
 
-jest.mock('../../../../hooks/useScreenShareParticipant/useScreenShareParticipant');
-jest.mock('../../../../hooks/useVideoContext/useVideoContext');
+jest.mock('../../../hooks/useScreenShareParticipant/useScreenShareParticipant');
+jest.mock('../../../hooks/useVideoContext/useVideoContext');
 
 const mockUseScreenShareParticipant = useScreenShareParticipant as jest.Mock<any>;
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
