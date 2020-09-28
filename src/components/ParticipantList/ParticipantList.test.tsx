@@ -2,18 +2,18 @@ import EventEmitter from 'events';
 import React from 'react';
 import ParticipantList from './ParticipantList';
 import { shallow } from 'enzyme';
-import useMainSpeaker from '../../hooks/useMainSpeaker/useMainSpeaker';
+import useMainParticipant from '../../hooks/useMainParticipant/useMainParticipant';
 import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 jest.mock('../../hooks/useVideoContext/useVideoContext');
 jest.mock('../VideoProvider/useSelectedParticipant/useSelectedParticipant');
-jest.mock('../../hooks/useMainSpeaker/useMainSpeaker');
+jest.mock('../../hooks/useMainParticipant/useMainParticipant');
 jest.mock('../../hooks/useScreenShareParticipant/useScreenShareParticipant');
 const mockedVideoContext = useVideoContext as jest.Mock<any>;
 const mockUseSelectedParticipant = useSelectedParticipant as jest.Mock<any>;
-const mockUseMainParticipant = useMainSpeaker as jest.Mock<any>;
+const mockUseMainParticipant = useMainParticipant as jest.Mock<any>;
 const mockUseScreenShareParticipant = useScreenShareParticipant as jest.Mock<any>;
 
 describe('the ParticipantList component', () => {

@@ -4,7 +4,7 @@ import useParticipants from '../useParticipants/useParticipants';
 import useScreenShareParticipant from '../useScreenShareParticipant/useScreenShareParticipant';
 import useSelectedParticipant from '../../components/VideoProvider/useSelectedParticipant/useSelectedParticipant';
 
-export default function useMainSpeaker() {
+export default function useMainParticipant() {
   const [selectedParticipant] = useSelectedParticipant();
   const screenShareParticipant = useScreenShareParticipant();
   const dominantSpeaker = useDominantSpeaker();
