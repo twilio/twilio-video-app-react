@@ -1,10 +1,10 @@
 import React from 'react';
 import clsx from 'clsx';
 import CloseIcon from '@material-ui/icons/Close';
-import ErrorIcon from '../PreJoinScreens/PreflightTest/icons/ErrorIcon';
+import ErrorIcon from '../../icons/ErrorIcon';
 import { IconButton, makeStyles, Theme, Typography } from '@material-ui/core';
 import MUISnackbar from '@material-ui/core/Snackbar';
-import WarningIcon from '../PreJoinScreens/PreflightTest/icons/WarningIcon';
+import WarningIcon from '../../icons/WarningIcon';
 
 interface SnackbarProps {
   headline: string;

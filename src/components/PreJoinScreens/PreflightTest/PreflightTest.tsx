@@ -4,9 +4,9 @@ import { makeStyles, Typography, Grid } from '@material-ui/core';
 import useGetPreflightTokens from './useGetPreflightTokens/useGetPreflightTokens';
 import getNetworkCondition from './getNetworkCondition/getNetworkCondition';
 import ProgressIndicator from './ProgressIndicator/ProgressIndicator';
-import { SuccessIcon } from './icons/SuccessIcon';
-import WarningIcon from './icons/WarningIcon';
-import ErrorIcon from './icons/ErrorIcon';
+import { SuccessIcon } from '../../../icons/SuccessIcon';
+import WarningIcon from '../../../icons/WarningIcon';
+import ErrorIcon from '../../../icons/ErrorIcon';
 
 export const TEST_DURATION = 10000;
 
