@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
 
@@ -25,7 +26,6 @@ const useStyles = makeStyles((theme: Theme) =>
       height: 0,
       overflow: 'hidden',
       marginBottom: '2em',
-      cursor: 'pointer',
       '& video': {
         filter: 'none',
         objectFit: 'contain !important',
@@ -118,15 +118,22 @@ const useStyles = makeStyles((theme: Theme) =>
         fontSize: '0.75rem',
       },
     },
+    hideParticipant: {
+      display: 'none',
+    },
+    cursorPointer: {
+      cursor: 'pointer',
+    },
   })
 );
 
 interface ParticipantInfoProps {
   participant: Participant;
   children: React.ReactNode;
-  onClick: () => void;
-  isSelected: boolean;
+  onClick?: () => void;
+  isSelected?: boolean;
   isLocalParticipant?: boolean;
+  hideParticipant?: boolean;
 }
 
 export default function ParticipantInfo({
@@ -135,6 +142,7 @@ export default function ParticipantInfo({
   isSelected,
   children,
   isLocalParticipant,
+  hideParticipant,
 }: ParticipantInfoProps) {
   const publications = usePublications(participant);
 
@@ -153,7 +161,14 @@ export default function ParticipantInfo({
   const classes = useStyles();
 
   return (
-    <div className={classes.container} onClick={onClick} data-cy-participant={participant.identity}>
+    <div
+      className={clsx(classes.container, {
+        [classes.hideParticipant]: hideParticipant,
+        [classes.cursorPointer]: Boolean(onClick),
+      })}
+      onClick={onClick}
+      data-cy-participant={participant.identity}
+    >
       <div className={classes.infoContainer}>
         <div className={classes.networkQualityContainer}>
           <NetworkQualityLevel participant={participant} />
