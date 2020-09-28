@@ -6,10 +6,10 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, Theme, useMediaQuery } from '@material-ui/core';
 
-import AboutDialog from '../../../MenuBar/AboutDialog/AboutDialog';
-import ConnectionOptions from '../../../MenuBar/ConnectionOptions/ConnectionOptions';
-import DeviceSelector from '../../../MenuBar/DeviceSelector/DeviceSelector';
-import SettingsIcon from '../../SettingsIcon';
+import AboutDialog from '../../../AboutDialog/AboutDialog';
+import ConnectionOptionsDialog from '../../../ConnectionOptionsDialog/ConnectionOptionsDialog';
+import DeviceSelectionDialog from '../../../DeviceSelectionDialog/DeviceSelectionDialog';
+import SettingsIcon from '../../../../icons/SettingsIcon';
 
 const useStyles = makeStyles((theme: Theme) => ({
   settingsButton: {
@@ -78,14 +78,14 @@ export default function SettingsMenu({ mobileButtonClass }: { mobileButtonClass?
           setMenuOpen(false);
         }}
       />
-      <DeviceSelector
+      <DeviceSelectionDialog
         open={deviceSettingsOpen}
         onClose={() => {
           setDeviceSettingsOpen(false);
           setMenuOpen(false);
         }}
       />
-      <ConnectionOptions
+      <ConnectionOptionsDialog
         open={connectionSettingsOpen}
         onClose={() => {
           setConnectionSettingsOpen(false);

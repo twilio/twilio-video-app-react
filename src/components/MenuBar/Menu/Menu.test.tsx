@@ -1,7 +1,7 @@
 import React from 'react';
-import AboutDialog from '../AboutDialog/AboutDialog';
+import AboutDialog from '../../AboutDialog/AboutDialog';
 import { Button, MenuItem } from '@material-ui/core';
-import DeviceSelector from '../DeviceSelector/DeviceSelector';
+import DeviceSelectionDialog from '../../DeviceSelectionDialog/DeviceSelectionDialog';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Menu from './Menu';
 import MenuContainer from '@material-ui/core/Menu';
@@ -35,14 +35,14 @@ describe('the Menu component', () => {
       expect(wrapper.find(AboutDialog).prop('open')).toBe(true);
     });
 
-    it('should open the DeviceSelector when the Settings button is clicked', () => {
+    it('should open the DeviceSelectionDialog when the Settings button is clicked', () => {
       const wrapper = shallow(<Menu />);
-      expect(wrapper.find(DeviceSelector).prop('open')).toBe(false);
+      expect(wrapper.find(DeviceSelectionDialog).prop('open')).toBe(false);
       wrapper
         .find(MenuItem)
         .at(1)
         .simulate('click');
-      expect(wrapper.find(DeviceSelector).prop('open')).toBe(true);
+      expect(wrapper.find(DeviceSelectionDialog).prop('open')).toBe(true);
     });
 
     it('should render the correct icon', () => {

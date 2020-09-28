@@ -1,8 +1,8 @@
 import React from 'react';
-import AboutDialog from '../../../MenuBar/AboutDialog/AboutDialog';
+import AboutDialog from '../../../AboutDialog/AboutDialog';
 import { Button, MenuItem } from '@material-ui/core';
-import ConnectionOptions from '../../../MenuBar/ConnectionOptions/ConnectionOptions';
-import DeviceSelector from '../../../MenuBar/DeviceSelector/DeviceSelector';
+import ConnectionOptionsDialog from '../../../ConnectionOptionsDialog/ConnectionOptionsDialog';
+import DeviceSelectionDialog from '../../../DeviceSelectionDialog/DeviceSelectionDialog';
 import Menu from './SettingsMenu';
 import MenuContainer from '@material-ui/core/Menu';
 import { shallow } from 'enzyme';
@@ -34,24 +34,24 @@ describe('the SettingsMenu component', () => {
       expect(wrapper.find(AboutDialog).prop('open')).toBe(true);
     });
 
-    it('should open the DeviceSelector when the Settings button is clicked', () => {
+    it('should open the DeviceSelectionDialog when the Settings button is clicked', () => {
       const wrapper = shallow(<Menu />);
-      expect(wrapper.find(DeviceSelector).prop('open')).toBe(false);
+      expect(wrapper.find(DeviceSelectionDialog).prop('open')).toBe(false);
       wrapper
         .find(MenuItem)
         .at(1)
         .simulate('click');
-      expect(wrapper.find(DeviceSelector).prop('open')).toBe(true);
+      expect(wrapper.find(DeviceSelectionDialog).prop('open')).toBe(true);
     });
 
-    it('should open the ConnectionOptions dialog when the Settings button is clicked', () => {
+    it('should open the ConnectionOptionsDialog when the Settings button is clicked', () => {
       const wrapper = shallow(<Menu />);
-      expect(wrapper.find(ConnectionOptions).prop('open')).toBe(false);
+      expect(wrapper.find(ConnectionOptionsDialog).prop('open')).toBe(false);
       wrapper
         .find(MenuItem)
         .at(2)
         .simulate('click');
-      expect(wrapper.find(ConnectionOptions).prop('open')).toBe(true);
+      expect(wrapper.find(ConnectionOptionsDialog).prop('open')).toBe(true);
     });
 
     it('should render the correct button', () => {

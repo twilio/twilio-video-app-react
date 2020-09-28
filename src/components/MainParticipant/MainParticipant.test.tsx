@@ -2,17 +2,17 @@ import React from 'react';
 import MainParticipant from './MainParticipant';
 import ParticipantTracks from '../ParticipantTracks/ParticipantTracks';
 import { shallow } from 'enzyme';
-import useMainSpeaker from '../../hooks/useMainSpeaker/useMainSpeaker';
+import useMainParticipant from '../../hooks/useMainParticipant/useMainParticipant';
 import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
 import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
-jest.mock('../../hooks/useMainSpeaker/useMainSpeaker');
+jest.mock('../../hooks/useMainParticipant/useMainParticipant');
 jest.mock('../VideoProvider/useSelectedParticipant/useSelectedParticipant');
 jest.mock('../../hooks/useScreenShareParticipant/useScreenShareParticipant');
 jest.mock('../../hooks/useVideoContext/useVideoContext');
 
-const mockUseMainSpeaker = useMainSpeaker as jest.Mock<any>;
+const mockuseMainParticipant = useMainParticipant as jest.Mock<any>;
 const mockUseSelectedParticipant = useSelectedParticipant as jest.Mock<any>;
 const mockUseScreenShareParticipant = useScreenShareParticipant as jest.Mock<any>;
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
@@ -28,7 +28,7 @@ describe('the MainParticipant component', () => {
 
   it('should set the videoPriority to high when the main participant is the selected participant', () => {
     const mockParticipant = {};
-    mockUseMainSpeaker.mockImplementationOnce(() => mockParticipant);
+    mockuseMainParticipant.mockImplementationOnce(() => mockParticipant);
     mockUseSelectedParticipant.mockImplementationOnce(() => [mockParticipant]);
     mockUseScreenShareParticipant.mockImplementationOnce(() => ({}));
     const wrapper = shallow(<MainParticipant />);
@@ -37,7 +37,7 @@ describe('the MainParticipant component', () => {
 
   it('should set the videoPriority to high when the main participant is sharing their screen', () => {
     const mockParticipant = {};
-    mockUseMainSpeaker.mockImplementationOnce(() => mockParticipant);
+    mockuseMainParticipant.mockImplementationOnce(() => mockParticipant);
     mockUseSelectedParticipant.mockImplementationOnce(() => [{}]);
     mockUseScreenShareParticipant.mockImplementationOnce(() => mockParticipant);
     const wrapper = shallow(<MainParticipant />);
@@ -46,7 +46,7 @@ describe('the MainParticipant component', () => {
 
   describe('when the main participant is the localParticipant', () => {
     const mockParticipant = {};
-    mockUseMainSpeaker.mockImplementation(() => mockParticipant);
+    mockuseMainParticipant.mockImplementation(() => mockParticipant);
     mockUseSelectedParticipant.mockImplementation(() => [{}]);
     mockUseScreenShareParticipant.mockImplementation(() => mockParticipant);
     mockUseVideoContext.mockImplementation(() => ({
@@ -72,7 +72,7 @@ describe('the MainParticipant component', () => {
 
   it('should set the videoPriority to null when the main participant is not the selected participant and they are not sharing their screen', () => {
     const mockParticipant = {};
-    mockUseMainSpeaker.mockImplementationOnce(() => mockParticipant);
+    mockuseMainParticipant.mockImplementationOnce(() => mockParticipant);
     mockUseSelectedParticipant.mockImplementationOnce(() => [{}]);
     mockUseScreenShareParticipant.mockImplementationOnce(() => ({}));
     const wrapper = shallow(<MainParticipant />);

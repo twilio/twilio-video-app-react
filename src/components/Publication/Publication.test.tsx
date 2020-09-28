@@ -45,14 +45,14 @@ describe('the Publication component', () => {
       expect(wrapper.find('AudioTrack').length).toBe(1);
     });
 
-    it('should render null when disableAudio is true', () => {
+    it('should render null when videoOnly is true', () => {
       mockUseTrack.mockImplementation(() => ({ kind: 'audio' }));
       const wrapper = shallow(
         <Publication
           isLocalParticipant
           publication={'mockPublication' as any}
           participant={'mockParticipant' as any}
-          disableAudio={true}
+          videoOnly={true}
         />
       );
       expect(useTrack).toHaveBeenCalledWith('mockPublication');
