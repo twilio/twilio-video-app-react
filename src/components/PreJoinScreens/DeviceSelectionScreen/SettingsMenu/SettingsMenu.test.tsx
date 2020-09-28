@@ -6,10 +6,15 @@ import DeviceSelectionDialog from '../../../DeviceSelectionDialog/DeviceSelectio
 import Menu from './SettingsMenu';
 import MenuContainer from '@material-ui/core/Menu';
 import { shallow } from 'enzyme';
+import { useAppState } from '../../../../state';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 jest.mock('@material-ui/core/useMediaQuery');
 const mockUseMediaQuery = useMediaQuery as jest.Mock<boolean>;
+
+jest.mock('../../../../state');
+const mockUseAppState = useAppState as jest.Mock<any>;
+mockUseAppState.mockImplementation(() => ({ roomType: 'group' }));
 
 describe('the SettingsMenu component', () => {
   describe('on desktop devices', () => {
@@ -57,6 +62,23 @@ describe('the SettingsMenu component', () => {
     it('should render the correct button', () => {
       const wrapper = shallow(<Menu />);
       expect(wrapper.find(Button).text()).toBe('Settings');
+    });
+
+    it('should render the "Connection Settings" button when the roomType is "group"', () => {
+      const wrapper = shallow(<Menu />);
+      expect(wrapper.find({ children: 'Connection Settings' }).exists()).toBe(true);
+    });
+
+    it('should not render the "Connection Settings" button when the roomType is "go"', () => {
+      mockUseAppState.mockImplementationOnce(() => ({ roomType: 'go' }));
+      const wrapper = shallow(<Menu />);
+      expect(wrapper.find({ children: 'Connection Settings' }).exists()).toBe(false);
+    });
+
+    it('should not render the "Connection Settings" button when the roomType is "peer-to-peer"', () => {
+      mockUseAppState.mockImplementationOnce(() => ({ roomType: 'peer-to-peer' }));
+      const wrapper = shallow(<Menu />);
+      expect(wrapper.find({ children: 'Connection Settings' }).exists()).toBe(false);
     });
   });
 

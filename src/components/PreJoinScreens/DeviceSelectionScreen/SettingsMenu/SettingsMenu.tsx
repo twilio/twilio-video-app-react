@@ -10,6 +10,7 @@ import AboutDialog from '../../../AboutDialog/AboutDialog';
 import ConnectionOptionsDialog from '../../../ConnectionOptionsDialog/ConnectionOptionsDialog';
 import DeviceSelectionDialog from '../../../DeviceSelectionDialog/DeviceSelectionDialog';
 import SettingsIcon from '../../../../icons/SettingsIcon';
+import { useAppState } from '../../../../state';
 
 const useStyles = makeStyles((theme: Theme) => ({
   settingsButton: {
@@ -19,6 +20,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default function SettingsMenu({ mobileButtonClass }: { mobileButtonClass?: string }) {
   const classes = useStyles();
+  const { roomType } = useAppState();
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
   const [menuOpen, setMenuOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
@@ -67,9 +69,11 @@ export default function SettingsMenu({ mobileButtonClass }: { mobileButtonClass?
         <MenuItem onClick={() => setDeviceSettingsOpen(true)}>
           <Typography variant="body1">Audio and Video Settings</Typography>
         </MenuItem>
-        <MenuItem onClick={() => setConnectionSettingsOpen(true)}>
-          <Typography variant="body1">Connection Settings</Typography>
-        </MenuItem>
+        {roomType !== 'peer-to-peer' && roomType !== 'go' && (
+          <MenuItem onClick={() => setConnectionSettingsOpen(true)}>
+            <Typography variant="body1">Connection Settings</Typography>
+          </MenuItem>
+        )}
       </MenuContainer>
       <AboutDialog
         open={aboutOpen}
