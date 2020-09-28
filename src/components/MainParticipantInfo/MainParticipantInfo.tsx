@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalVideoTrack, Participant, RemoteVideoTrack } from 'twilio-video';
 
 import AvatarIcon from '../../icons/AvatarIcon';
@@ -13,7 +13,7 @@ import useTrack from '../../hooks/useTrack/useTrack';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => ({
   container: {
     position: 'relative',
     display: 'flex',
@@ -49,6 +49,9 @@ const useStyles = makeStyles({
   },
   fullWidth: {
     gridArea: '1 / 1 / 2 / 3',
+    [theme.breakpoints.down('sm')]: {
+      gridArea: '1 / 1 / 3 / 3',
+    },
   },
   avatarContainer: {
     display: 'flex',
@@ -61,7 +64,7 @@ const useStyles = makeStyles({
       transform: 'scale(2)',
     },
   },
-});
+}));
 
 interface MainParticipantInfoProps {
   participant: Participant;
@@ -74,14 +77,17 @@ export default function MainParticipantInfo({ participant, children }: MainParti
     room: { localParticipant },
   } = useVideoContext();
   const isLocal = localParticipant === participant;
+
   const screenShareParticipant = useScreenShareParticipant();
   const isRemoteParticipantScreenSharing = screenShareParticipant && screenShareParticipant !== localParticipant;
 
   const publications = usePublications(participant);
   const videoPublication = publications.find(p => p.trackName.includes('camera'));
   const screenSharePublication = publications.find(p => p.trackName.includes('screen'));
+
   const videoTrack = useTrack(screenSharePublication || videoPublication);
   const isVideoEnabled = Boolean(videoTrack);
+
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
   const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 

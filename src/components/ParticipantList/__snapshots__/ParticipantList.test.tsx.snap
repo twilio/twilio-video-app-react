@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`the ParticipantList component should correctly render ParticipantInfo components 1`] = `
+exports[`the ParticipantList component should correctly render Participant components 1`] = `
 <aside
   className="makeStyles-container-1 makeStyles-transparentBackground-2"
 >
@@ -9,11 +9,10 @@ exports[`the ParticipantList component should correctly render ParticipantInfo c
   >
     <Participant
       isLocalParticipant={true}
-      isSelected={false}
-      onClick={[Function]}
       participant="localParticipant"
     />
     <Participant
+      hideParticipant={false}
       isSelected={false}
       key="0"
       onClick={[Function]}
@@ -24,12 +23,24 @@ exports[`the ParticipantList component should correctly render ParticipantInfo c
       }
     />
     <Participant
+      hideParticipant={false}
       isSelected={false}
       key="1"
       onClick={[Function]}
       participant={
         Object {
           "sid": 1,
+        }
+      }
+    />
+    <Participant
+      hideParticipant={false}
+      isSelected={true}
+      key="2"
+      onClick={[Function]}
+      participant={
+        Object {
+          "sid": 2,
         }
       }
     />

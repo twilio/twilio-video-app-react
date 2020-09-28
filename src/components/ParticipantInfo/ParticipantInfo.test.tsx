@@ -70,15 +70,50 @@ describe('the ParticipantInfo component', () => {
     expect(wrapper.text()).toContain('Reconnecting...');
   });
 
-  it('should not add isSwitchedOff prop to Container component when video is not switched off', () => {
-    mockUseIsTrackSwitchedOff.mockImplementation(() => false);
-    mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
+  it('should add hideParticipant class to container component when hideParticipant prop is true', () => {
     const wrapper = shallow(
-      <ParticipantInfo onClick={() => {}} isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
+      <ParticipantInfo
+        onClick={() => {}}
+        isSelected={false}
+        participant={{ identity: 'mockIdentity' } as any}
+        hideParticipant={true}
+      >
         mock children
       </ParticipantInfo>
     );
-    expect(wrapper.find('.makeStyles-container-1').prop('className')).not.toContain('isVideoSwitchedOff');
+    expect(wrapper.prop('className')).toContain('hideParticipant');
+  });
+
+  it('should not add hideParticipant class to container component when hideParticipant prop is false', () => {
+    const wrapper = shallow(
+      <ParticipantInfo
+        onClick={() => {}}
+        isSelected={false}
+        participant={{ identity: 'mockIdentity' } as any}
+        hideParticipant={false}
+      >
+        mock children
+      </ParticipantInfo>
+    );
+    expect(wrapper.prop('className')).not.toContain('hideParticipant');
+  });
+
+  it('should add cursorPointer class to container component when onClick prop is present', () => {
+    const wrapper = shallow(
+      <ParticipantInfo isSelected={false} participant={{ identity: 'mockIdentity' } as any} onClick={() => {}}>
+        mock children
+      </ParticipantInfo>
+    );
+    expect(wrapper.prop('className')).toContain('cursorPointer');
+  });
+
+  it('should not add cursorPointer class to container component when onClick prop is not present', () => {
+    const wrapper = shallow(
+      <ParticipantInfo isSelected={false} participant={{ identity: 'mockIdentity' } as any}>
+        mock children
+      </ParticipantInfo>
+    );
+    expect(wrapper.prop('className')).not.toContain('cursorPointer');
   });
 
   it('should render the PinIcon component when the participant is selected', () => {

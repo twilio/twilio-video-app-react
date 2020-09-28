@@ -2,6 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import Participant from '../Participant/Participant';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import useMainSpeaker from '../../hooks/useMainSpeaker/useMainSpeaker';
 import useParticipants from '../../hooks/useParticipants/useParticipants';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
@@ -14,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
       overflowY: 'auto',
       background: 'rgb(79, 83, 85)',
       gridArea: '1 / 2 / 1 / 3',
-      zIndex: 1,
+      zIndex: 5,
       [theme.breakpoints.down('sm')]: {
         gridArea: '2 / 1 / 3 / 3',
         overflowY: 'initial',
@@ -42,6 +43,7 @@ export default function ParticipantList() {
   const participants = useParticipants();
   const [selectedParticipant, setSelectedParticipant] = useSelectedParticipant();
   const screenShareParticipant = useScreenShareParticipant();
+  const mainParticipant = useMainSpeaker();
   const isRemoteParticipantScreenSharing = screenShareParticipant && screenShareParticipant !== localParticipant;
 
   if (participants.length === 0) return null; // Don't render this component if there are no remote participants.
@@ -53,20 +55,21 @@ export default function ParticipantList() {
       })}
     >
       <div className={classes.scrollContainer}>
-        <Participant
-          participant={localParticipant}
-          isSelected={selectedParticipant === localParticipant}
-          onClick={() => setSelectedParticipant(localParticipant)}
-          isLocalParticipant={true}
-        />
-        {participants.map(participant => (
-          <Participant
-            key={participant.sid}
-            participant={participant}
-            isSelected={participant === selectedParticipant}
-            onClick={() => setSelectedParticipant(participant)}
-          />
-        ))}
+        <Participant participant={localParticipant} isLocalParticipant={true} />
+        {participants.map(participant => {
+          const isSelected = participant === selectedParticipant;
+          const hideParticipant =
+            participant === mainParticipant && participant !== screenShareParticipant && !isSelected;
+          return (
+            <Participant
+              key={participant.sid}
+              participant={participant}
+              isSelected={participant === selectedParticipant}
+              onClick={() => setSelectedParticipant(participant)}
+              hideParticipant={hideParticipant}
+            />
+          );
+        })}
       </div>
     </aside>
   );
