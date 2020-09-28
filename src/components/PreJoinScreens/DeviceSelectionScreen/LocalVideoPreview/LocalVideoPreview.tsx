@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles, Typography } from '@material-ui/core';
-import LocalAudioLevelIndicator from '../../../MenuBar/DeviceSelector/LocalAudioLevelIndicator/LocalAudioLevelIndicator';
+import LocalAudioLevelIndicator from '../../../DeviceSelectionDialog/LocalAudioLevelIndicator/LocalAudioLevelIndicator';
 import { LocalVideoTrack } from 'twilio-video';
 import VideoTrack from '../../../VideoTrack/VideoTrack';
 import useVideoContext from '../../../../hooks/useVideoContext/useVideoContext';

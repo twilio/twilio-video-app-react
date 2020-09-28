@@ -1,12 +1,12 @@
 import React from 'react';
 import { Select, Typography } from '@material-ui/core';
 import { shallow } from 'enzyme';
-import useVideoContext from '../../../../hooks/useVideoContext/useVideoContext';
-import { useVideoInputDevices } from '../../../../hooks/deviceHooks/deviceHooks';
+import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import { useVideoInputDevices } from '../../../hooks/deviceHooks/deviceHooks';
 import VideoInputList from './VideoInputList';
 
-jest.mock('../../../../hooks/useVideoContext/useVideoContext');
-jest.mock('../../../../hooks/deviceHooks/deviceHooks');
+jest.mock('../../../hooks/useVideoContext/useVideoContext');
+jest.mock('../../../hooks/deviceHooks/deviceHooks');
 
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 const mockUseVideoInputDevices = useVideoInputDevices as jest.Mock<any>;

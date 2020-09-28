@@ -16,10 +16,10 @@ import {
   Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { inputLabels, Settings } from '../../../state/settings/settingsReducer';
-import { RenderDimensions } from '../../../state/settings/renderDimensions';
-import { useAppState } from '../../../state';
-import useRoomState from '../../../hooks/useRoomState/useRoomState';
+import { inputLabels, Settings } from '../../state/settings/settingsReducer';
+import { RenderDimensions } from '../../state/settings/renderDimensions';
+import { useAppState } from '../../state';
+import useRoomState from '../../hooks/useRoomState/useRoomState';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -60,7 +60,7 @@ const RenderDimensionItems = RenderDimensions.map(({ label, value }) => (
   </MenuItem>
 ));
 
-export default function ConnectionOptions({ open, onClose }: { open: boolean; onClose: () => void }) {
+export default function ConnectionOptionsDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
   const classes = useStyles();
   const { settings, dispatchSetting } = useAppState();
   const roomState = useRoomState();

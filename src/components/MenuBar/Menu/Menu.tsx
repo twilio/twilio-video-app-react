@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
-import AboutDialog from '../AboutDialog/AboutDialog';
+import AboutDialog from '../../AboutDialog/AboutDialog';
 import Button from '@material-ui/core/Button';
-import DeviceSelector from '../DeviceSelector/DeviceSelector';
+import DeviceSelectionDialog from '../../DeviceSelectionDialog/DeviceSelectionDialog';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MenuContainer from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -56,7 +56,7 @@ export default function Menu(props: { buttonClassName?: string }) {
           setMenuOpen(false);
         }}
       />
-      <DeviceSelector
+      <DeviceSelectionDialog
         open={settingsOpen}
         onClose={() => {
           setSettingsOpen(false);

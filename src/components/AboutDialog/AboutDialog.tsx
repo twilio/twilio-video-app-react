@@ -7,9 +7,9 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Divider from '@material-ui/core/Divider';
 
-import { version as appVersion } from '../../../../package.json';
+import { version as appVersion } from '../../../package.json';
 import Video from 'twilio-video';
-import { useAppState } from '../../../state';
+import { useAppState } from '../../state';
 
 interface AboutDialogProps {
   open: boolean;

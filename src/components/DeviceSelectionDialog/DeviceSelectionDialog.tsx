@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export default function DeviceSelector({ open, onClose }: { open: boolean; onClose: () => void }) {
+export default function DeviceSelectionDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
   const classes = useStyles();
 
   return (

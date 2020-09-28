@@ -1,13 +1,13 @@
 import React from 'react';
-import ConnectionOptions from './ConnectionOptions';
-import { initialSettings } from '../../../state/settings/settingsReducer';
+import ConnectionOptionsDialog from './ConnectionOptionsDialog';
+import { initialSettings } from '../../state/settings/settingsReducer';
 import { Select, TextField } from '@material-ui/core';
 import { shallow } from 'enzyme';
-import { useAppState } from '../../../state';
-import useRoomState from '../../../hooks/useRoomState/useRoomState';
+import { useAppState } from '../../state';
+import useRoomState from '../../hooks/useRoomState/useRoomState';
 
-jest.mock('../../../hooks/useRoomState/useRoomState');
-jest.mock('../../../state');
+jest.mock('../../hooks/useRoomState/useRoomState');
+jest.mock('../../state');
 
 const mockUseAppState = useAppState as jest.Mock<any>;
 const mockUseRoomState = useRoomState as jest.Mock<any>;
@@ -15,18 +15,18 @@ const mockUseRoomState = useRoomState as jest.Mock<any>;
 const mockDispatchSetting = jest.fn();
 mockUseAppState.mockImplementation(() => ({ settings: initialSettings, dispatchSetting: mockDispatchSetting }));
 
-describe('the ConnectionOptions component', () => {
+describe('the ConnectionOptionsDialog component', () => {
   afterEach(jest.clearAllMocks);
 
   describe('when not connected to a room', () => {
     mockUseRoomState.mockImplementation(() => 'disconnected');
     it('should render correctly', () => {
-      const wrapper = shallow(<ConnectionOptions open={true} onClose={() => {}} />);
+      const wrapper = shallow(<ConnectionOptionsDialog open={true} onClose={() => {}} />);
       expect(wrapper).toMatchSnapshot();
     });
 
     it('should dispatch settings changes', () => {
-      const wrapper = shallow(<ConnectionOptions open={true} onClose={() => {}} />);
+      const wrapper = shallow(<ConnectionOptionsDialog open={true} onClose={() => {}} />);
       wrapper
         .find(Select)
         .find({ name: 'dominantSpeakerPriority' })
@@ -35,7 +35,7 @@ describe('the ConnectionOptions component', () => {
     });
 
     it('should not dispatch settings changes from a number field when there are non-digits in the value', () => {
-      const wrapper = shallow(<ConnectionOptions open={true} onClose={() => {}} />);
+      const wrapper = shallow(<ConnectionOptionsDialog open={true} onClose={() => {}} />);
       wrapper
         .find(TextField)
         .find({ name: 'maxTracks' })
@@ -44,7 +44,7 @@ describe('the ConnectionOptions component', () => {
     });
 
     it('should dispatch settings changes from a number field when there are only digits in the value', () => {
-      const wrapper = shallow(<ConnectionOptions open={true} onClose={() => {}} />);
+      const wrapper = shallow(<ConnectionOptionsDialog open={true} onClose={() => {}} />);
       wrapper
         .find(TextField)
         .find({ name: 'maxTracks' })
@@ -56,7 +56,7 @@ describe('the ConnectionOptions component', () => {
   describe('when connected to a room', () => {
     mockUseRoomState.mockImplementation(() => 'connected');
     it('should render correctly', () => {
-      const wrapper = shallow(<ConnectionOptions open={true} onClose={() => {}} />);
+      const wrapper = shallow(<ConnectionOptionsDialog open={true} onClose={() => {}} />);
       expect(wrapper).toMatchSnapshot();
     });
   });

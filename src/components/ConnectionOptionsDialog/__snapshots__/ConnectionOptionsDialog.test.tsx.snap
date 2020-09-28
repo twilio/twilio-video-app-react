@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`the ConnectionOptions component when connected to a room should render correctly 1`] = `
+exports[`the ConnectionOptionsDialog component when connected to a room should render correctly 1`] = `
 <WithStyles(ForwardRef(Dialog))
   classes={
     Object {
@@ -442,7 +442,7 @@ exports[`the ConnectionOptions component when connected to a room should render 
 </WithStyles(ForwardRef(Dialog))>
 `;
 
-exports[`the ConnectionOptions component when not connected to a room should render correctly 1`] = `
+exports[`the ConnectionOptionsDialog component when not connected to a room should render correctly 1`] = `
 <WithStyles(ForwardRef(Dialog))
   classes={
     Object {

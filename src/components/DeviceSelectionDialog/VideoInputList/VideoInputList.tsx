@@ -1,12 +1,12 @@
 import React from 'react';
-import { DEFAULT_VIDEO_CONSTRAINTS } from '../../../../constants';
+import { DEFAULT_VIDEO_CONSTRAINTS } from '../../../constants';
 import { FormControl, MenuItem, Typography, Select } from '@material-ui/core';
 import { LocalVideoTrack } from 'twilio-video';
 import { makeStyles } from '@material-ui/core/styles';
-import VideoTrack from '../../../VideoTrack/VideoTrack';
-import useMediaStreamTrack from '../../../../hooks/useMediaStreamTrack/useMediaStreamTrack';
-import useVideoContext from '../../../../hooks/useVideoContext/useVideoContext';
-import { useVideoInputDevices } from '../../../../hooks/deviceHooks/deviceHooks';
+import VideoTrack from '../../VideoTrack/VideoTrack';
+import useMediaStreamTrack from '../../../hooks/useMediaStreamTrack/useMediaStreamTrack';
+import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import { useVideoInputDevices } from '../../../hooks/deviceHooks/deviceHooks';
 
 const useStyles = makeStyles({
   preview: {

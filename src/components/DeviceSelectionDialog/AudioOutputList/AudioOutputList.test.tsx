@@ -2,11 +2,11 @@ import React from 'react';
 import AudioOutputList from './AudioOutputList';
 import { Select, Typography } from '@material-ui/core';
 import { shallow } from 'enzyme';
-import { useAudioOutputDevices } from '../../../../hooks/deviceHooks/deviceHooks';
-import { useAppState } from '../../../../state';
+import { useAudioOutputDevices } from '../../../hooks/deviceHooks/deviceHooks';
+import { useAppState } from '../../../state';
 
-jest.mock('../../../../state');
-jest.mock('../../../../hooks/deviceHooks/deviceHooks');
+jest.mock('../../../state');
+jest.mock('../../../hooks/deviceHooks/deviceHooks');
 
 const mockUseAppState = useAppState as jest.Mock<any>;
 const mockUseAudioOutputDevices = useAudioOutputDevices as jest.Mock<any>;
