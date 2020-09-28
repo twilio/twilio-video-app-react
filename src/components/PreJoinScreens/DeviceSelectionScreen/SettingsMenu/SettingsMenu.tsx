@@ -9,7 +9,7 @@ import { makeStyles, Theme, useMediaQuery } from '@material-ui/core';
 import AboutDialog from '../../../AboutDialog/AboutDialog';
 import ConnectionOptionsDialog from '../../../ConnectionOptionsDialog/ConnectionOptionsDialog';
 import DeviceSelectionDialog from '../../../DeviceSelectionDialog/DeviceSelectionDialog';
-import SettingsIcon from '../../SettingsIcon';
+import SettingsIcon from '../../../../icons/SettingsIcon';
 
 const useStyles = makeStyles((theme: Theme) => ({
   settingsButton: {
