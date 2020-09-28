@@ -26,7 +26,7 @@ export default function MainParticipant() {
     <MainParticipantInfo participant={mainParticipant}>
       <ParticipantTracks
         participant={mainParticipant}
-        disableAudio
+        videoOnly
         enableScreenShare={mainParticipant !== localParticipant}
         videoPriority={videoPriority}
         isLocalParticipant={mainParticipant === localParticipant}

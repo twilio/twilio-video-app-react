@@ -5,7 +5,7 @@ import usePublications from '../../hooks/usePublications/usePublications';
 
 interface ParticipantTracksProps {
   participant: Participant;
-  disableAudio?: boolean;
+  videoOnly?: boolean;
   enableScreenShare?: boolean;
   videoPriority?: Track.Priority | null;
   isLocalParticipant?: boolean;
@@ -21,7 +21,7 @@ interface ParticipantTracksProps {
 
 export default function ParticipantTracks({
   participant,
-  disableAudio,
+  videoOnly,
   enableScreenShare,
   videoPriority,
   isLocalParticipant,
@@ -44,7 +44,7 @@ export default function ParticipantTracks({
           publication={publication}
           participant={participant}
           isLocalParticipant={isLocalParticipant}
-          disableAudio={disableAudio}
+          videoOnly={videoOnly}
           videoPriority={videoPriority}
         />
       ))}
