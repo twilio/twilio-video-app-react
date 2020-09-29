@@ -1,6 +1,10 @@
-import { LocalVideoTrack, RemoteVideoTrack, TwilioError } from 'twilio-video';
+import { LocalVideoTrack, RemoteVideoTrack, Track, TwilioError } from 'twilio-video';
 
 declare module 'twilio-video' {
+  interface LocalDataTrackOptions {
+    name?: string;
+  }
+
   interface LocalParticipant {
     setBandwidthProfile: (bandwidthProfile: BandwidthProfileOptions) => void;
     publishTrack(track: LocalTrack, options?: { priority: Track.Priority }): Promise<LocalTrackPublication>;
@@ -17,7 +21,12 @@ declare module 'twilio-video' {
 
   interface RemoteVideoTrack {
     isSwitchedOff: boolean;
+    priority: Track.Priority | null;
     setPriority: (priority: Track.Priority | null) => void;
+  }
+
+  interface RemoteVideoTrackPublication {
+    publishPriority: Track.Priority;
   }
 
   interface VideoBandwidthProfileOptions {

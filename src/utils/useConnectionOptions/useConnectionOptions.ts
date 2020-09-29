@@ -16,7 +16,7 @@ export default function useConnectionOptions() {
     bandwidthProfile: {
       video: {
         mode: settings.bandwidthProfileMode,
-        dominantSpeakerPriority: settings.dominantSpeakerPriority,
+        dominantSpeakerPriority: 'high', // settings.dominantSpeakerPriority,
         renderDimensions: {
           low: getResolution(settings.renderDimensionLow),
           standard: getResolution(settings.renderDimensionStandard),
