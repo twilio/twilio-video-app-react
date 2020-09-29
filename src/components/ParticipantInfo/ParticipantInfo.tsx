@@ -37,10 +37,10 @@ const useStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.down('sm')]: {
         height: theme.sidebarMobileHeight,
         width: `${(theme.sidebarMobileHeight * 16) / 9}px`,
-        marginRight: '3px',
+        marginRight: '8px',
         marginBottom: '0',
         fontSize: '10px',
-        paddingTop: 0,
+        paddingTop: `${theme.sidebarMobileHeight - 2}px`,
       },
     },
     innerContainer: {
@@ -66,7 +66,17 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       justifyContent: 'center',
       background: 'black',
-      height: '100%',
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      zIndex: 1,
+      [theme.breakpoints.down('sm')]: {
+        '& svg': {
+          transform: 'scale(0.7)',
+        },
+      },
     },
     reconnectingContainer: {
       position: 'absolute',
