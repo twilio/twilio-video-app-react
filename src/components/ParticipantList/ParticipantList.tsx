@@ -20,8 +20,8 @@ const useStyles = makeStyles((theme: Theme) =>
         gridArea: '2 / 1 / 3 / 3',
         overflowY: 'initial',
         overflowX: 'auto',
-        padding: 0,
         display: 'flex',
+        padding: '8px',
       },
     },
     transparentBackground: {

@@ -3,6 +3,7 @@ import LocalVideoPreview from './LocalVideoPreview';
 import { IVideoContext } from '../../../VideoProvider';
 import { shallow } from 'enzyme';
 import useVideoContext from '../../../../hooks/useVideoContext/useVideoContext';
+import AvatarIcon from '../../../../icons/AvatarIcon';
 
 jest.mock('../../../../hooks/useVideoContext/useVideoContext');
 jest.mock('../../../../hooks/useMediaStreamTrack/useMediaStreamTrack');
@@ -27,13 +28,13 @@ describe('the LocalVideoPreview component', () => {
     expect(wrapper.find('VideoTrack').exists()).toEqual(true);
   });
 
-  it('should render null when there are no "camera" tracks', () => {
+  it('should render the AvatarIcon when there are no "camera" tracks', () => {
     mockedVideoContext.mockImplementation(() => {
       return {
         localTracks: [{ name: 'microphone', attach: jest.fn(), detach: jest.fn() }],
       } as any;
     });
     const wrapper = shallow(<LocalVideoPreview identity="Test User" />);
-    expect(wrapper.find('VideoTrack').exists()).toEqual(false);
+    expect(wrapper.find(AvatarIcon).exists()).toEqual(true);
   });
 });

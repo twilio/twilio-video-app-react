@@ -10,9 +10,8 @@ const Container = styled('div')(({ theme }) => ({
   gridTemplateColumns: `1fr ${theme.sidebarWidth}px`,
   gridTemplateRows: '100%',
   [theme.breakpoints.down('sm')]: {
-    gridTemplateColumns: `auto`,
-    gridTemplateRows: `1fr ${theme.sidebarMobileHeight + 6}px`,
-    gridGap: '6px',
+    gridTemplateColumns: `100%`,
+    gridTemplateRows: `1fr ${theme.sidebarMobileHeight + 16}px`,
   },
 }));
 
