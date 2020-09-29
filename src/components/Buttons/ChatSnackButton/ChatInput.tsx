@@ -32,14 +32,14 @@ export default function ChatInput() {
   };
 
   return (
-    <form style={{ display: 'flex' }} onSubmit={handleSubmit}>
+    <form autoComplete="off" style={{ display: 'flex', alignItems: 'center' }} onSubmit={handleSubmit}>
       <FormControl>
         <label htmlFor="chat-snack-input" style={{ color: 'black' }}>
           Say something:
         </label>
         <TextField value={message} autoFocus={true} onChange={handleChange} id="chat-snack-input" size="small" />
       </FormControl>
-      <Button type="submit" color="primary" variant="contained" style={{ marginLeft: '0.8em' }} size="small">
+      <Button type="submit" color="primary" variant="contained" style={{ marginLeft: '0.8em' }}>
         Send
       </Button>
     </form>
