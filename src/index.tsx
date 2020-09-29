@@ -40,7 +40,7 @@ ReactDOM.render(
         vertical: 'bottom',
         horizontal: 'left',
       }}
-      autoHideDuration={8000}
+      autoHideDuration={10000}
       variant="info"
     >
       <Router>

@@ -13,5 +13,5 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
     };
   }, [track, enqueueSnackbar]);
 
-  return null;
+  return null; // This component does not return any HTML, so we will return 'null' instead.
 }
