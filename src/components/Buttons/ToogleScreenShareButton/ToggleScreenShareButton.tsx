@@ -60,6 +60,7 @@ export default function ToggleScreenShareButton(props: { disabled?: boolean }) {
           onClick={toggleScreenShare}
           disabled={isDisabled}
           startIcon={<ScreenShareIcon />}
+          data-cy-share-screen
         >
           {SCREEN_SHARE_TEXT}
         </Button>
