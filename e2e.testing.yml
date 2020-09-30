@@ -42,7 +42,7 @@ steps:
           npx print-env BUILD
           npx print-env SYSTEM
           npm run start:ci:windows &
-         npx cypress run --record --key 05e2cbc4-6e38-4f6b-9c00-3ca618c5038b --ci-build-id $BUILDID --parallel --group "Azure CI" --browser ${{ parameters.browserType }}   
+         npx cypress run  --ci-build-id $BUILDID --parallel --group "Azure CI" --browser ${{ parameters.browserType }} --record --key 05e2cbc4-6e38-4f6b-9c00-3ca618c5038b
     displayName: 'Run the cypress tests'
     env:
       TERM: xterm
