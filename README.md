@@ -10,7 +10,7 @@ This application demonstrates a multi-party video application built with [twilio
 * No other infrastructure is required
 * No code changes are required before your first deploy
 * There is no cost associated with deploying the app
-* When using the app, you will be charged [$0.01 / video participant minute](https://www.twilio.com/video/pricing).
+* Go Rooms usage is free, however [standard usage charges](https://www.twilio.com/video/pricing) apply when using the app with all other Room types.
 
 ![App Preview](https://user-images.githubusercontent.com/12685223/94631109-cfca1c80-0284-11eb-8b72-c97276cf34e4.png)
 
