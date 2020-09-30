@@ -12,7 +12,7 @@ This application demonstrates a multi-party video application built with [twilio
 * There is no cost associated with deploying the app
 * When using the app, you will be charged [$0.01 / video participant minute](https://www.twilio.com/video/pricing).
 
-![App Preview](https://user-images.githubusercontent.com/12685223/76361972-c035b700-62e5-11ea-8f9d-0bb24bd73fd4.png)
+![App Preview](https://user-images.githubusercontent.com/12685223/94631109-cfca1c80-0284-11eb-8b72-c97276cf34e4.png)
 
 ## Prerequisites
 
