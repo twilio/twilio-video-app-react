@@ -1,0 +1,155 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`the Snackbar component should render correctly with "error" variant 1`] = `
+<WithStyles(ForwardRef(Snackbar))
+  anchorOrigin={
+    Object {
+      "horizontal": "right",
+      "vertical": "top",
+    }
+  }
+  onClose={[Function]}
+  open={true}
+>
+  <div
+    className="makeStyles-container-1 makeStyles-error-5"
+  >
+    <div
+      className="makeStyles-contentContainer-2"
+    >
+      <div
+        className="makeStyles-iconContainer-3"
+      >
+        <ErrorIcon />
+      </div>
+      <div>
+        <WithStyles(ForwardRef(Typography))
+          className="makeStyles-headline-4"
+          component="span"
+          variant="body1"
+        >
+          Test Headline
+        </WithStyles(ForwardRef(Typography))>
+        <WithStyles(ForwardRef(Typography))
+          component="span"
+          variant="body1"
+        >
+           
+          Test Message
+        </WithStyles(ForwardRef(Typography))>
+      </div>
+    </div>
+    <div>
+      <WithStyles(ForwardRef(IconButton))
+        aria-label="close"
+        color="inherit"
+        onClick={[Function]}
+        size="small"
+      >
+        <CloseIcon
+          fontSize="small"
+        />
+      </WithStyles(ForwardRef(IconButton))>
+    </div>
+  </div>
+</WithStyles(ForwardRef(Snackbar))>
+`;
+
+exports[`the Snackbar component should render correctly with "warning" variant 1`] = `
+<WithStyles(ForwardRef(Snackbar))
+  anchorOrigin={
+    Object {
+      "horizontal": "right",
+      "vertical": "top",
+    }
+  }
+  onClose={[Function]}
+  open={true}
+>
+  <div
+    className="makeStyles-container-1 makeStyles-warning-6"
+  >
+    <div
+      className="makeStyles-contentContainer-2"
+    >
+      <div
+        className="makeStyles-iconContainer-3"
+      >
+        <WarningIcon />
+      </div>
+      <div>
+        <WithStyles(ForwardRef(Typography))
+          className="makeStyles-headline-4"
+          component="span"
+          variant="body1"
+        >
+          Test Headline
+        </WithStyles(ForwardRef(Typography))>
+        <WithStyles(ForwardRef(Typography))
+          component="span"
+          variant="body1"
+        >
+           
+          Test Message
+        </WithStyles(ForwardRef(Typography))>
+      </div>
+    </div>
+    <div>
+      <WithStyles(ForwardRef(IconButton))
+        aria-label="close"
+        color="inherit"
+        onClick={[Function]}
+        size="small"
+      >
+        <CloseIcon
+          fontSize="small"
+        />
+      </WithStyles(ForwardRef(IconButton))>
+    </div>
+  </div>
+</WithStyles(ForwardRef(Snackbar))>
+`;
+
+exports[`the Snackbar component should render correctly with no handleClose function provided 1`] = `
+<WithStyles(ForwardRef(Snackbar))
+  anchorOrigin={
+    Object {
+      "horizontal": "right",
+      "vertical": "top",
+    }
+  }
+  onClose={[Function]}
+  open={true}
+>
+  <div
+    className="makeStyles-container-1 makeStyles-error-5"
+  >
+    <div
+      className="makeStyles-contentContainer-2"
+    >
+      <div
+        className="makeStyles-iconContainer-3"
+      >
+        <ErrorIcon />
+      </div>
+      <div>
+        <WithStyles(ForwardRef(Typography))
+          className="makeStyles-headline-4"
+          component="span"
+          variant="body1"
+        >
+          Test Headline
+        </WithStyles(ForwardRef(Typography))>
+        <WithStyles(ForwardRef(Typography))
+          component="span"
+          variant="body1"
+        >
+           
+          Test Message
+        </WithStyles(ForwardRef(Typography))>
+      </div>
+    </div>
+    <div />
+  </div>
+</WithStyles(ForwardRef(Snackbar))>
+`;

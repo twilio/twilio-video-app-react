@@ -8,7 +8,7 @@ const participants = {};
 module.exports = (on, config) => {
   const participantFunctions = {
     addParticipant: async ({ name, roomName, color }) => {
-      const args = ['--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream'];
+      const args = ['--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream', `--window-size=1920,1080`];
 
       if (color) {
         args.push(`--use-file-for-fake-video-capture=cypress/fixtures/${color}.y4m`);
@@ -20,28 +20,27 @@ module.exports = (on, config) => {
       });
       const page = (participants[name] = await browser.newPage()); // keep track of this participant for future use
       await page.goto(config.baseUrl);
-      await page.type('#menu-name', name);
-      await page.type('#menu-room', roomName);
+      await page.type('#input-user-name', name);
+      await page.type('#input-room-name', roomName);
       await page.click('[type="submit"]');
+      await page.waitForSelector('[data-cy-join-now]:not([disabled])');
+      await page.click('[data-cy-join-now]');
       await page.waitForSelector('[data-cy-main-participant] video');
       return Promise.resolve(null);
     },
     toggleParticipantAudio: async name => {
       const page = participants[name];
-      await page.click('body'); // To make controls reappear
       await page.click('[data-cy-audio-toggle]');
       return Promise.resolve(null);
     },
     shareParticipantScreen: async name => {
       const page = participants[name];
-      await page.click('body');
-      await page.click('[title="Share Screen"]');
+      await page.click('[data-cy-share-screen]');
       return Promise.resolve(null);
     },
     removeParticipant: async name => {
       const page = participants[name];
-      await page.click('body');
-      await page.click('[title="End Call"]');
+      await page.click('[data-cy-disconnect]');
       await page.close();
       delete participants[name];
       return Promise.resolve(null);

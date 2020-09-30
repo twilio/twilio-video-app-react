@@ -18,7 +18,7 @@
         </filter>
         <rect id="path-2" x="0" y="0" width="40" height="40" rx="2"></rect>
     </defs>
-    <g id="Google-Button" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Google-Button" stroke="none" stroke-width="1" fill="none" fillRule="evenodd">
         <g id="9-PATCH" transform="translate(-608.000000, -160.000000)"></g>
         <g id="btn_google_light_normal" transform="translate(-1.000000, -1.000000)">
             <g id="logo_googleg_48dp" transform="translate(15.000000, 15.000000)">

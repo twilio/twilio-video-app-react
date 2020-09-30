@@ -10,15 +10,7 @@ window.TwilioVideo = Video;
 export default function useRoom(localTracks: LocalTrack[], onError: Callback, options?: ConnectOptions) {
   const [room, setRoom] = useState<Room>(new EventEmitter() as Room);
   const [isConnecting, setIsConnecting] = useState(false);
-  const localTracksRef = useRef<LocalTrack[]>([]);
   const optionsRef = useRef(options);
-
-  useEffect(() => {
-    // It can take a moment for Video.connect to connect to a room. During this time, the user may have enabled or disabled their
-    // local audio or video tracks. If this happens, we store the localTracks in this ref, so that they are correctly published
-    // once the user is connected to the room.
-    localTracksRef.current = localTracks;
-  }, [localTracks]);
 
   useEffect(() => {
     // This allows the connect function to always access the most recent version of the options object. This allows us to
@@ -29,10 +21,14 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
   const connect = useCallback(
     token => {
       setIsConnecting(true);
-      return Video.connect(token, { ...optionsRef.current, tracks: [] }).then(
+      return Video.connect(token, { ...optionsRef.current, tracks: localTracks }).then(
         newRoom => {
           setRoom(newRoom);
           const disconnect = () => newRoom.disconnect();
+
+          // This app can add up to 13 'participantDisconnected' listeners to the room object, which can trigger
+          // a warning from the EventEmitter object. Here we increase the max listeners to suppress the warning.
+          newRoom.setMaxListeners(15);
 
           newRoom.once('disconnected', () => {
             // Reset the room only after all other `disconnected` listeners have been called.
@@ -47,13 +43,11 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
           // @ts-ignore
           window.twilioRoom = newRoom;
 
-          localTracksRef.current.forEach(track =>
-            // Tracks can be supplied as arguments to the Video.connect() function and they will automatically be published.
-            // However, tracks must be published manually in order to set the priority on them.
-            // All video tracks are published with 'low' priority. This works because the video
-            // track that is displayed in the 'MainParticipant' component will have it's priority
+          newRoom.localParticipant.videoTracks.forEach(publication =>
+            // All video tracks are published with 'low' priority because the video track
+            // that is displayed in the 'MainParticipant' component will have it's priority
             // set to 'high' via track.setPriority()
-            newRoom.localParticipant.publishTrack(track, { priority: track.kind === 'video' ? 'low' : 'standard' })
+            publication.setPriority('low')
           );
 
           setIsConnecting(false);
@@ -72,7 +66,7 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
         }
       );
     },
-    [onError]
+    [localTracks, onError]
   );
 
   return { room, isConnecting, connect };

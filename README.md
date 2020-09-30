@@ -10,9 +10,9 @@ This application demonstrates a multi-party video application built with [twilio
 * No other infrastructure is required
 * No code changes are required before your first deploy
 * There is no cost associated with deploying the app
-* When using the app, you will be charged [$0.01 / video participant minute](https://www.twilio.com/video/pricing).
+* Go Rooms usage is free, however [standard usage charges](https://www.twilio.com/video/pricing) apply when using the app with all other Room types.
 
-![App Preview](https://user-images.githubusercontent.com/12685223/76361972-c035b700-62e5-11ea-8f9d-0bb24bd73fd4.png)
+![App Preview](https://user-images.githubusercontent.com/12685223/94631109-cfca1c80-0284-11eb-8b72-c97276cf34e4.png)
 
 ## Prerequisites
 
@@ -80,6 +80,20 @@ If any errors occur after running a [Twilio CLI RTC Plugin](https://github.com/t
 1. Run `twilio plugins:update` to update the rtc plugin to the latest version.
 1. Run `twilio rtc:apps:video:delete` to delete any existing video apps.
 1. Run `npm run deploy:twilio-cli` to deploy a new video app.
+
+## App Behavior with Different Room Types
+
+After running the command [to deploy a Twilio Access Token Server](https://github.com/twilio/twilio-video-app-android#deploy-twilio-access-token-server), the room type will be returned in the command line output. Each room type provides a different video experience. More details about these room types can be found [here](https://www.twilio.com/docs/video/tutorials/understanding-video-rooms). The rest of this section explains how these room types affect the behavior of the video app.
+
+*Group* - The Group room type allows up to fifty participants to join a video room in the app. The Network Quality Level (NQL) indicators and dominant speaker are demonstrated with this room type. Also, the VP8 video codec with simulcast enabled along with a bandwidth profile are set by default in order to provide an optimal group video app experience.
+
+*Small Group* - The Small Group room type provides an identical group video app experience except for a smaller limit of four participants.
+
+*Peer-to-peer* - Although up to ten participants can join a room using the Peer-to-peer (P2P) room type, it is ideal for a one to one video experience. The NQL indicators, bandwidth profiles, and dominant speaker cannot be used with this room type. Thus, they are not demonstrated in the video app. Also, the VP8 video codec with simulcast disabled and 720p minimum video capturing dimensions are also set by default in order to provide an optimal one to one video app experience. If more than ten participants join a room with this room type, then the video app will present an error.
+
+*Go* - The Go room type provides a similar Peer-to-peer video app experience except for a smaller limit of two participants. If more than two participants join a room with this room type, then the video app will present an error.
+
+If the max number of participants is exceeded, then the video app will present an error for all room types.
 
 ## Features
 
