@@ -39,7 +39,7 @@ steps:
       eval "npx print-env AGENT"
       eval "npx print-env BUILD"
       eval "npx print-env SYSTEM"
-      eval "npm run start:ci:windows & npx cypress run --group ${{ parameters.browserType }} --browser ${{ parameters.browserType }}  --parallel  --ci-build-id $BUILDID"
+      eval "npm run start:ci:windows & npx cypress run --group ${{ parameters.browserType }} --browser ${{ parameters.browserType }}  --parallel --record --key 05e2cbc4-6e38-4f6b-9c00-3ca618c5038b --ci-build-id $BUILDID"
     displayName: 'Run the cypress tests'
     env:
       TERM: xterm

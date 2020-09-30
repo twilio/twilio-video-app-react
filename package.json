@@ -86,17 +86,17 @@
     ]
   },
   "scripts": {
-    "build": "npm run lint && npm run types && npm run stop-only",
+    "dev": "react-scripts start",
+    "build": "node ./scripts/build.js",
+    "test": "jest",
+    "eject": "react-scripts eject",
+    "lint": "eslint src/**/*.{ts,tsx}",
+    "server": "node server.js",
     "start": "serve --listen ${PORT:-8080}",
     "start:ci": "serve --no-clipboard --listen ${PORT:-8080}",
     "start:ci:windows": "serve --no-clipboard --listen 8080",
-    "dev": "npm start",
     "types": "tsc --noEmit",
-    "test": "npm start & cypress run",
-    "pretest": "npm run lint && npm run types",
     "print-env": "print-env",
-    "lint": "eslint --fix cypress/**/*.js app/assets/js/scripts.js",
-    "lint:yaml": "yamllint '*.yml' 'basic/*.yml' .buildkite/pipeline.yml .semaphore/semaphore.yml '.github/workflows/*.yml'",
     "colon:names": "colon-names",
     "e2e": "cypress run",
     "e2e:chrome": "cypress run --browser chrome",
@@ -116,10 +116,9 @@
     "local:open": "start-test 8080 cy:open",
     "local:run": "start-test 8080 cy:run",
     "local:run:record": "start-test 8080 cy:run:record",
-    "stop-only": "stop-only -f cypress/integration",
-    "warn-only": "stop-only -f cypress/integration --warn",
     "ci:set-port": "node ./scripts/set-port",
-    "semantic-release": "semantic-release"
+    "deploy:twilio-cli": "cross-env REACT_APP_SET_AUTH=passcode npm run build && twilio rtc:apps:video:deploy --authentication=passcode --app-directory ./build"
+
   },
   "eslintConfig": {
     "extends": "react-app",
