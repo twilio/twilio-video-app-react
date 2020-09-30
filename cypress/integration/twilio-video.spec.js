@@ -12,12 +12,17 @@ context('A video app user', () => {
   describe('before entering a room', () => {
     it('should see their audio level indicator moving in the media device panel', () => {
       cy.visit('/');
+
+      cy.get('#input-user-name').type('testuser');
+      cy.get('#input-room-name').type(getRoomName());
+      cy.get('[type="submit"]').click();
+
       cy.get('clipPath rect')
         .invoke('attr', 'y')
-        .should('be', 21);
+        .should('be', 14);
       cy.get('clipPath rect')
         .invoke('attr', 'y')
-        .should('be.lessThan', 21);
+        .should('be.lessThan', 14);
     });
   });
 
@@ -34,7 +39,7 @@ context('A video app user', () => {
     });
 
     it('should be inside the correct room', () => {
-      cy.get('header').should('contain', ROOM_NAME);
+      cy.get('footer').should('contain', ROOM_NAME);
       cy.getParticipant('testuser').should('contain', 'testuser');
     });
 
@@ -53,10 +58,10 @@ context('A video app user', () => {
       cy.getParticipant('test1')
         .get('clipPath rect')
         .invoke('attr', 'y')
-        .should('be', 21);
+        .should('be', 14);
       cy.get('clipPath rect')
         .invoke('attr', 'y')
-        .should('be.lessThan', 21);
+        .should('be.lessThan', 14);
     });
 
     it('should see other participants disconnect when they close their browser', () => {
@@ -158,32 +163,32 @@ context('A video app user', () => {
     it('should see participant "test1" when they are the dominant speaker', () => {
       cy.task('toggleParticipantAudio', 'test2');
       cy.task('toggleParticipantAudio', 'test3');
-      cy.getParticipant('test2').find('[data-cy-audio-mute-icon]');
-      cy.getParticipant('test3').find('[data-cy-audio-mute-icon]');
+      cy.getParticipant('test2').find('[data-test-audio-mute-icon]');
+      cy.getParticipant('test3').find('[data-test-audio-mute-icon]');
       cy.getParticipant('test1').shouldBeSameVideoAs('[data-cy-main-participant]');
     });
 
     it('should see participant "test2" when they are the dominant speaker', () => {
       cy.task('toggleParticipantAudio', 'test1');
       cy.task('toggleParticipantAudio', 'test2');
-      cy.getParticipant('test1').find('[data-cy-audio-mute-icon]');
-      cy.getParticipant('test3').find('[data-cy-audio-mute-icon]');
+      cy.getParticipant('test1').find('[data-test-audio-mute-icon]');
+      cy.getParticipant('test3').find('[data-test-audio-mute-icon]');
       cy.getParticipant('test2').shouldBeSameVideoAs('[data-cy-main-participant]');
     });
 
     it('should see participant "test3" when they are the dominant speaker', () => {
       cy.task('toggleParticipantAudio', 'test2');
       cy.task('toggleParticipantAudio', 'test3');
-      cy.getParticipant('test1').find('[data-cy-audio-mute-icon]');
-      cy.getParticipant('test2').find('[data-cy-audio-mute-icon]');
+      cy.getParticipant('test1').find('[data-test-audio-mute-icon]');
+      cy.getParticipant('test2').find('[data-test-audio-mute-icon]');
       cy.getParticipant('test3').shouldBeSameVideoAs('[data-cy-main-participant]');
     });
 
     it('should see participant "test3" when there is no dominant speaker', () => {
       cy.task('toggleParticipantAudio', 'test3');
-      cy.getParticipant('test1').find('[data-cy-audio-mute-icon]');
-      cy.getParticipant('test2').find('[data-cy-audio-mute-icon]');
-      cy.getParticipant('test3').find('[data-cy-audio-mute-icon]');
+      cy.getParticipant('test1').find('[data-test-audio-mute-icon]');
+      cy.getParticipant('test2').find('[data-test-audio-mute-icon]');
+      cy.getParticipant('test3').find('[data-test-audio-mute-icon]');
       cy.getParticipant('test3').shouldBeSameVideoAs('[data-cy-main-participant]');
     });
   });
