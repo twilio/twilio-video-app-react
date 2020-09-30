@@ -33,13 +33,16 @@ steps:
   - script: npm run cy:verify
     displayName: 'Cypress verify'
 
- 
+ npx print-env AGENT
+          npx print-env BUILD
+          npx print-env SYSTEM
 
-  - bash: |
-      eval "npx print-env AGENT"
-      eval "npx print-env BUILD"
-      eval "npx print-env SYSTEM"
-      eval "npm run start:ci:windows & npx cypress run --group ${{ parameters.browserType }} --browser ${{ parameters.browserType }}  --parallel --record --key 05e2cbc4-6e38-4f6b-9c00-3ca618c5038b --ci-build-id $BUILDID"
+ - script: |
+          npx print-env AGENT
+          npx print-env BUILD
+          npx print-env SYSTEM
+          npm run start:ci:windows &
+         npx cypress run --record --key 05e2cbc4-6e38-4f6b-9c00-3ca618c5038b --ci-build-id $BUILDID --parallel --group "Azure CI" --browser ${{ parameters.browserType }}   
     displayName: 'Run the cypress tests'
     env:
       TERM: xterm
