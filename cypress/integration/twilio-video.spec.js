@@ -1,53 +1,58 @@
 /// <reference types="Cypress" />
 
 // If you are on MacOS and have many popups about Chromium when these tests run, please see: https://stackoverflow.com/questions/54545193/puppeteer-chromium-on-mac-chronically-prompting-accept-incoming-network-connect
-
-// Creates a random string like 'ft68eyjn8i'
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min); 
+}
+const baseLoginUrl = "http://tabula-mt-intg-01.escribers.io/tabula/welcome";
+const baseConferenceUrl = "http://tabula-mt-intg-01.escribers.io/tabula/conference/newconference";
 const getRoomName = () =>
     Math.random()
         .toString(36)
         .slice(2);
+const uuid = () => Cypress._.random(0, 1e6)
+const statusValues = ['In_progress','Completed','Scheduled'];
+const providers = ['Twilio Video','Twilio Telephone'];
+const roles = ['Parent','Parent Representative','District Representative','Other','Interpreter'];
+const caseRef = uuid();
+
 
  context('Startup', () => {
+      before(() => { 
+                  cy.tabulaLogin(baseConferenceUrl,'yehuda','CleanCode18%');
+                  const nowDate = Cypress.moment();
+                  cy.createNewConference(baseConferenceUrl,caseRef,`caseName-${caseRef}`,nowDate.format('yyyy-MM-DD') ,
+                  nowDate.format('HH:mm:ss'), nowDate.add(1000000).format('HH:mm:ss'),providers[0],
+                  statusValues[ getRandomInt(0,statusValues.length - 1)],`reporter-${caseRef}`,
+                  getRandomInt(48,90).toString());
+                });
 
-  before(() => { 
-                  cy.visit('http://ec2-54-172-8-58.compute-1.amazonaws.com/tabula/welcome/login/');
-         });
+      beforeEach(() => {  
+                   cy.visit(`${baseLoginUrl}/login/`);
+                });
+     
+      it('should fill login form and get error of "no active hearing for the case number"', () => {
 
-          it('should fill login form and get error of "no active hearing for the case number"', () => {
+            cy.fillLoginPage('abfhg','123$567','1313');
 
-            cy.get('[name="name"]').type('bhaidar').should('have.value', 'bhaidar');
-            
-            cy.get('[name="passPin"]').type('123$567').should('have.value', '123$567');
-            
-            cy.get('[name="legalCaseReference"]').type('1313').should('have.value', '1313');
-            
+            cy.url().should('eq', `${baseLoginUrl}/login/nohearing`);
+            cy.get('p').contains('There is no active hearing for the case number you entered.').should('be.visible');
+          })
+      
+      it('should fill login form and redirect to twilio video app', () => {
+
+            cy.fillLoginPage('bhaidar','123$567',caseRef);
+            cy.url().should('eq', `${baseLoginUrl}/chooseRole`);
+            cy.get('select[name="roleId"]').select(roles[getRandomInt(0,statusValues.length - 1)]);
             cy.get('form').submit();
 
-           // cy.location('pathname', { timeout: 10000 }).should('eq', 'http://ec2-54-172-8-58.compute-1.amazonaws.com/tabula/welcome/login/prod/nohearing');
+            cy.url().should('include', '.cloudfront.net/');
+            cy.log("url" + cy.url());
+      })
            
-            //cy.title().should('eq', 'login');
-            cy.get('[class="alert alert-danger"]').should(($el) =>{
-            const text = $el.text()
-            expect(text).to.include('There is no active hearing for the case number you entered.')
-          })
-           
-          });
-
-
-          it('should fill login form and redirect to twilio video app', () => {
-
-            cy.get('[name="name"]').type('bhaidar').should('have.value', 'bhaidar');
-            
-            cy.get('[name="passPin"]').type('123$567').should('have.value', '123$567');
-            
-            cy.get('[name="legalCaseReference"]').type('123503').should('have.value', '123503');
-            
-            //cy.get('form').submit();
-        // cy.location('pathname', { timeout: 10000 }).should('eq', 'http://ec2-54-172-8-58.compute-1.amazonaws.com/tabula/welcome/login/prod/nohearing');
-           
-          });
-        });       
+    }); 
 // context('A video app user', () => {
  
 //   describe('before entering a room', () => {

@@ -1,9 +1,10 @@
 {
-  "projectId": "4b7344",
   "video": false,
   "defaultCommandTimeout": 10000,
+  "chromeWebSecurity": false,
   "reporter": "cypress-multi-reporters",
   "reporterOptions": {
     "configFile": "cypress/reporter-config.json"
-  }
+  },
+  "projectId": "zq99ct"
 }
