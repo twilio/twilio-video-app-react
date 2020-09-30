@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { LocalVideoTrack, Participant, RemoteVideoTrack } from 'twilio-video';
+import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
 
 import AvatarIcon from '../../icons/AvatarIcon';
 import Typography from '@material-ui/core/Typography';
@@ -12,6 +12,7 @@ import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/use
 import useTrack from '../../hooks/useTrack/useTrack';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
+import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   identity: {
     background: 'rgba(0, 0, 0, 0.5)',
     color: 'white',
-    padding: '0.1em 0.3em',
+    padding: '0.1em 0.3em 0.1em 0',
     fontSize: '1.2em',
     display: 'inline-flex',
     '& svg': {
@@ -92,18 +93,23 @@ export default function MainParticipantInfo({ participant, children }: MainParti
   const videoTrack = useTrack(screenSharePublication || videoPublication);
   const isVideoEnabled = Boolean(videoTrack);
 
+  const audioPublication = publications.find(p => p.kind === 'audio');
+  const audioTrack = useTrack(audioPublication) as LocalAudioTrack | RemoteAudioTrack | undefined;
+
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
   const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
   return (
     <div
       data-cy-main-participant
+      data-cy-participant={participant.identity}
       className={clsx(classes.container, {
         [classes.fullWidth]: !isRemoteParticipantScreenSharing,
       })}
     >
       <div className={classes.infoContainer}>
         <div className={classes.identity}>
+          <AudioLevelIndicator audioTrack={audioTrack} />
           <Typography variant="body1" color="inherit">
             {participant.identity}
             {isLocal && ' (You)'}
