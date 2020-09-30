@@ -19,7 +19,7 @@ export default function ChatSnackButton() {
     <ClickAwayListener onClickAway={() => setIsOpen(false)}>
       <LightTooltip title={<ChatInput />} interactive placement="top" arrow={true} open={isOpen}>
         <Button onClick={() => setIsOpen(isOpen => !isOpen)} startIcon={<ChatIcon />}>
-          Chat Snack
+          Snack Chat
         </Button>
       </LightTooltip>
     </ClickAwayListener>
