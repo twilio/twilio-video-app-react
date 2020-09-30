@@ -34,9 +34,9 @@ steps:
     displayName: 'Cypress verify'
   
   - script: |
-          npx print-env AGENT
-          npx print-env BUILD
-          npx print-env SYSTEM
+          npm print-env AGENT
+          npm print-env BUILD
+          npm print-env SYSTEM
           npm run start:ci:windows &
           npx cypress run --record  --key 05e2cbc4-6e38-4f6b-9c00-3ca618c5038b --parallel --ci-build-id $BUILDID --group "Azure CI"  --browser $parameters.browserType 
     displayName: 'Run Cypress tests'
