@@ -31,7 +31,7 @@ export default function ReconnectingNotification() {
         message={
           <span className={classes.message}>
             <InfoIcon className={classes.icon} />
-            Reconnecting&hellip;
+            Reconectando&hellip;
           </span>
         }
       />

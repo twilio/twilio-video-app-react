@@ -1,12 +1,14 @@
 import { DEFAULT_VIDEO_CONSTRAINTS } from '../../../constants';
 import { useCallback, useEffect, useState } from 'react';
 import Video, { LocalVideoTrack, LocalAudioTrack, CreateLocalTrackOptions } from 'twilio-video';
+import { useAppState } from '../../../state';
+import updateParticipantFailed from '../../../utils/ParticipantStatus/updateParticipantFailed';
 
 export default function useLocalTracks() {
+  const { setError, appointmentID, user } = useAppState();
   const [audioTrack, setAudioTrack] = useState<LocalAudioTrack>();
   const [videoTrack, setVideoTrack] = useState<LocalVideoTrack>();
   const [isAcquiringLocalTracks, setIsAcquiringLocalTracks] = useState(false);
-
   const getLocalAudioTrack = useCallback((deviceId?: string) => {
     const options: CreateLocalTrackOptions = {};
 
@@ -63,8 +65,11 @@ export default function useLocalTracks() {
         if (audioTrack) {
           setAudioTrack(audioTrack as LocalAudioTrack);
         }
-      })
-      .finally(() => setIsAcquiringLocalTracks(false));
+        setIsAcquiringLocalTracks(false)
+      }, ((error) => {
+        updateParticipantFailed(appointmentID, user.participantID, error);
+        setError(error);
+      }))
   }, []);
 
   const localTracks = [audioTrack, videoTrack].filter(track => track !== undefined) as (

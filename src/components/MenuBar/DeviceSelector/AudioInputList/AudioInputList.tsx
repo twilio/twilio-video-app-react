@@ -32,7 +32,7 @@ export default function AudioInputList() {
       <div className="inputSelect">
         {audioInputDevices.length > 1 ? (
           <FormControl fullWidth>
-            <Typography variant="h6">Audio Input:</Typography>
+            <Typography variant="h6">Entrada de audio:</Typography>
             <Select onChange={e => replaceTrack(e.target.value as string)} value={localAudioInputDeviceId || ''}>
               {audioInputDevices.map(device => (
                 <MenuItem value={device.deviceId} key={device.deviceId}>
@@ -43,7 +43,7 @@ export default function AudioInputList() {
           </FormControl>
         ) : (
           <>
-            <Typography variant="h6">Audio Input:</Typography>
+            <Typography variant="h6">Entrada de audio:</Typography>
             <Typography>{localAudioTrack?.mediaStreamTrack.label || 'No Local Audio'}</Typography>
           </>
         )}

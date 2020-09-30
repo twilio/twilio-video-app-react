@@ -5,6 +5,7 @@ import { IconButton } from '@material-ui/core';
 import { LocalVideoTrack } from 'twilio-video';
 import useMediaStreamTrack from '../../../hooks/useMediaStreamTrack/useMediaStreamTrack';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import Tooltip from '@material-ui/core/Tooltip';
 
 export default function FlipCameraButton() {
   const { localTracks } = useVideoContext();
@@ -33,8 +34,10 @@ export default function FlipCameraButton() {
   }, [mediaStreamTrack, videoTrack]);
 
   return supportsFacingMode ? (
-    <IconButton onClick={toggleFacingMode} disabled={!videoTrack}>
-      <FlipCameraIosIcon />
-    </IconButton>
+    <Tooltip title={'Cambiar camara'} placement="bottom" PopperProps={{ disablePortal: true }}>
+      <IconButton onClick={toggleFacingMode} disabled={!videoTrack}>
+        <FlipCameraIosIcon />
+      </IconButton>
+    </Tooltip>
   ) : null;
 }

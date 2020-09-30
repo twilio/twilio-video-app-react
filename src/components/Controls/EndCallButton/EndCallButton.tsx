@@ -5,6 +5,7 @@ import CallEnd from '@material-ui/icons/CallEnd';
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 
+import useRoomState from '../../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -15,12 +16,24 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+const handleClick = (room, roomState) => {
+  return function () {
+    if (roomState === 'disconnected') {
+      const url = window.location.href
+      window.location.href = url.substring(0, url.lastIndexOf('/'));
+    } else {
+      room.disconnect();
+    }
+  }
+};
+
 export default function EndCallButton() {
   const classes = useStyles();
   const { room } = useVideoContext();
+  const roomState = useRoomState();
 
   return (
-    <Tooltip title={'End Call'} onClick={() => room.disconnect()} placement="top" PopperProps={{ disablePortal: true }}>
+    <Tooltip title={'Salir'} onClick={handleClick(room, roomState)} placement="top" PopperProps={{ disablePortal: true }}>
       <Fab className={classes.fab} color="primary">
         <CallEnd />
       </Fab>

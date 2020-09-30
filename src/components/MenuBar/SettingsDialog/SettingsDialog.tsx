@@ -45,7 +45,7 @@ export default function SettingsDialog({ open, onClose }: { open: boolean; onClo
       <ConnectionOptions className={classes.container} hidden={selectedTab !== 1} />
       <DialogActions>
         <Button className={classes.button} onClick={onClose}>
-          Done
+          Cerrar
         </Button>
       </DialogActions>
     </Dialog>

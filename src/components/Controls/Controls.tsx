@@ -9,6 +9,7 @@ import ToggleScreenShareButton from './ToogleScreenShareButton/ToggleScreenShare
 
 import useIsUserActive from './useIsUserActive/useIsUserActive';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
+import { isMobile } from '../../utils';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -47,10 +48,10 @@ export default function Controls() {
     <div className={clsx(classes.container, { showControls })}>
       <ToggleAudioButton disabled={isReconnecting} />
       <ToggleVideoButton disabled={isReconnecting} />
-      {roomState !== 'disconnected' && (
+      <EndCallButton />
+      {(roomState !== 'disconnected' && !isMobile) && (
         <>
           <ToggleScreenShareButton disabled={isReconnecting} />
-          <EndCallButton />
         </>
       )}
     </div>

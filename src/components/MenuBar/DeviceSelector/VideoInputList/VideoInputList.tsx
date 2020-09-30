@@ -35,7 +35,7 @@ export default function VideoInputList() {
     <div>
       {videoInputDevices.length > 1 ? (
         <FormControl>
-          <Typography variant="h6">Video Input:</Typography>
+          <Typography variant="h6">Entrada de vídeo:</Typography>
           <Select onChange={e => replaceTrack(e.target.value as string)} value={localVideoInputDeviceId || ''}>
             {videoInputDevices.map(device => (
               <MenuItem value={device.deviceId} key={device.deviceId}>
@@ -46,7 +46,7 @@ export default function VideoInputList() {
         </FormControl>
       ) : (
         <>
-          <Typography variant="h6">Video Input:</Typography>
+          <Typography variant="h6">Entrada de vídeo:</Typography>
           <Typography>{localVideoTrack?.mediaStreamTrack.label || 'No Local Video'}</Typography>
         </>
       )}

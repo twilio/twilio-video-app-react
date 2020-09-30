@@ -26,6 +26,7 @@ const useStyles = makeStyles({
     padding: '0.1em 0.3em',
     margin: '1em',
     fontSize: '1.2em',
+    color: 'white',
     display: 'inline-flex',
     '& svg': {
       marginLeft: '0.3em',
@@ -63,7 +64,7 @@ export default function MainParticipantInfo({ participant, children }: MainParti
     >
       <div className={classes.infoContainer}>
         <h4 className={classes.identity}>
-          {participant.identity}
+          {participant.identity.split('-')[0]}
           {!isVideoEnabled && <VideocamOff />}
         </h4>
       </div>
