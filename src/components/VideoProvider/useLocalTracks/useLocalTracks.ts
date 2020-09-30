@@ -1,11 +1,15 @@
 import { DEFAULT_VIDEO_CONSTRAINTS } from '../../../constants';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import Video, { LocalVideoTrack, LocalAudioTrack, CreateLocalTrackOptions } from 'twilio-video';
+import { useHasAudioInputDevices, useHasVideoInputDevices } from '../../../hooks/deviceHooks/deviceHooks';
 
 export default function useLocalTracks() {
   const [audioTrack, setAudioTrack] = useState<LocalAudioTrack>();
   const [videoTrack, setVideoTrack] = useState<LocalVideoTrack>();
   const [isAcquiringLocalTracks, setIsAcquiringLocalTracks] = useState(false);
+
+  const hasAudio = useHasAudioInputDevices();
+  const hasVideo = useHasVideoInputDevices();
 
   const getLocalAudioTrack = useCallback((deviceId?: string) => {
     const options: CreateLocalTrackOptions = {};
@@ -21,11 +25,6 @@ export default function useLocalTracks() {
   }, []);
 
   const getLocalVideoTrack = useCallback((newOptions?: CreateLocalTrackOptions) => {
-    // In the DeviceSelector and FlipCameraButton components, a new video track is created,
-    // then the old track is unpublished and the new track is published. Unpublishing the old
-    // track and publishing the new track at the same time sometimes causes a conflict when the
-    // track name is 'camera', so here we append a timestamp to the track name to avoid the
-    // conflict.
     const options: CreateLocalTrackOptions = {
       ...(DEFAULT_VIDEO_CONSTRAINTS as {}),
       name: `camera-${Date.now()}`,
@@ -45,14 +44,17 @@ export default function useLocalTracks() {
     }
   }, [videoTrack]);
 
-  useEffect(() => {
+  const getAudioAndVideoTracks = useCallback(() => {
+    if (!hasAudio && !hasVideo) return Promise.resolve();
+    if (audioTrack || videoTrack) return Promise.resolve();
+
     setIsAcquiringLocalTracks(true);
-    Video.createLocalTracks({
-      video: {
+    return Video.createLocalTracks({
+      video: hasVideo && {
         ...(DEFAULT_VIDEO_CONSTRAINTS as {}),
         name: `camera-${Date.now()}`,
       },
-      audio: true,
+      audio: hasAudio,
     })
       .then(tracks => {
         const videoTrack = tracks.find(track => track.kind === 'video');
@@ -65,12 +67,19 @@ export default function useLocalTracks() {
         }
       })
       .finally(() => setIsAcquiringLocalTracks(false));
-  }, []);
+  }, [hasAudio, hasVideo, audioTrack, videoTrack]);
 
   const localTracks = [audioTrack, videoTrack].filter(track => track !== undefined) as (
     | LocalAudioTrack
     | LocalVideoTrack
   )[];
 
-  return { localTracks, getLocalVideoTrack, getLocalAudioTrack, isAcquiringLocalTracks, removeLocalVideoTrack };
+  return {
+    localTracks,
+    getLocalVideoTrack,
+    getLocalAudioTrack,
+    isAcquiringLocalTracks,
+    removeLocalVideoTrack,
+    getAudioAndVideoTracks,
+  };
 }

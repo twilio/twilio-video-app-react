@@ -2,18 +2,19 @@ import detectSound from './detectSound';
 
 Cypress.Commands.add('joinRoom', (username, roomname) => {
   cy.visit('/');
-  cy.get('#menu-name').type(username);
-  cy.get('#menu-room').type(roomname);
+  cy.get('#input-user-name').type(username);
+  cy.get('#input-room-name').type(roomname);
   cy.get('[type="submit"]').click();
+  cy.get('[data-cy-join-now]').click();
   cy.get('[data-cy-main-participant]');
 });
 
 Cypress.Commands.add('leaveRoom', () => {
   cy.wait(500);
   cy.get('body').click(); // Makes controls reappear
-  cy.get('[title="End Call"]').click();
+  cy.get('footer [data-cy-disconnect]').click();
   cy.task('removeAllParticipants');
-  cy.get('#menu-room');
+  cy.get('[type="submit"]');
 });
 
 Cypress.Commands.add('shouldBeColor', { prevSubject: 'element' }, (subject, color) => {
@@ -56,7 +57,7 @@ Cypress.Commands.add('shouldBeMakingSound', { prevSubject: 'element' }, subject 
         }
       );
     });
-    
+
   cy.window()
     .then(win => {
       const participantIdentity = subject.attr('data-cy-participant');

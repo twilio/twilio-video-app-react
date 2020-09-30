@@ -1,81 +1,66 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import AboutDialog from '../../AboutDialog/AboutDialog';
+import { Button, MenuItem } from '@material-ui/core';
+import DeviceSelectionDialog from '../../DeviceSelectionDialog/DeviceSelectionDialog';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Menu from './Menu';
+import MenuContainer from '@material-ui/core/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import UserAvatar from '../UserAvatar/UserAvatar';
-import { useAppState } from '../../../state';
-import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
-import { MenuItem } from '@material-ui/core';
+import { shallow } from 'enzyme';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-jest.mock('../../../state');
-jest.mock('../../../hooks/useVideoContext/useVideoContext');
-
-const mockUseAppState = useAppState as jest.Mock<any>;
-const mockUseVideoContext = useVideoContext as jest.Mock<any>;
+jest.mock('@material-ui/core/useMediaQuery');
+const mockUseMediaQuery = useMediaQuery as jest.Mock<boolean>;
 
 describe('the Menu component', () => {
-  const mockDisconnect = jest.fn();
-  const mockTrack = { stop: jest.fn() };
-  mockUseVideoContext.mockImplementation(() => ({ room: { disconnect: mockDisconnect }, localTracks: [mockTrack] }));
-
-  describe('when there is a user', () => {
-    it('should render the UserAvatar component', () => {
-      mockUseAppState.mockImplementation(() => ({ user: {}, signOut: jest.fn() }));
-      const wrapper = shallow(<Menu />);
-      expect(wrapper.exists(UserAvatar)).toBe(true);
+  describe('on desktop devices', () => {
+    beforeAll(() => {
+      mockUseMediaQuery.mockImplementation(() => false);
     });
 
-    it('should include the logout button in the menu', () => {
-      mockUseAppState.mockImplementation(() => ({ user: { displayName: 'Test User' }, signOut: jest.fn() }));
+    it('should open the Menu when the Button is clicked', () => {
       const wrapper = shallow(<Menu />);
-      expect(wrapper.contains('Logout')).toBe(true);
+      expect(wrapper.find(MenuContainer).prop('open')).toBe(false);
+      wrapper.find(Button).simulate('click');
+      expect(wrapper.find(MenuContainer).prop('open')).toBe(true);
     });
 
-    it('should display the user name in the menu', () => {
-      mockUseAppState.mockImplementation(() => ({ user: { displayName: 'Test User' }, signOut: jest.fn() }));
+    it('should open the AboutDialog when the About button is clicked', () => {
       const wrapper = shallow(<Menu />);
-      expect(wrapper.contains('Test User')).toBe(true);
-    });
-
-    it('should disconnect from the room and stop all tracks on signout', () => {
-      const mockSignOut = jest.fn(() => Promise.resolve());
-      mockUseAppState.mockImplementation(() => ({
-        user: { displayName: 'Test User' },
-        signOut: mockSignOut,
-      }));
-      const wrapper = shallow(<Menu />);
+      expect(wrapper.find(AboutDialog).prop('open')).toBe(false);
       wrapper
         .find(MenuItem)
-        .last()
+        .at(0)
         .simulate('click');
-      expect(mockDisconnect).toHaveBeenCalled();
-      expect(mockTrack.stop).toHaveBeenCalled();
-      expect(mockSignOut).toHaveBeenCalled();
+      expect(wrapper.find(AboutDialog).prop('open')).toBe(true);
+    });
+
+    it('should open the DeviceSelectionDialog when the Settings button is clicked', () => {
+      const wrapper = shallow(<Menu />);
+      expect(wrapper.find(DeviceSelectionDialog).prop('open')).toBe(false);
+      wrapper
+        .find(MenuItem)
+        .at(1)
+        .simulate('click');
+      expect(wrapper.find(DeviceSelectionDialog).prop('open')).toBe(true);
+    });
+
+    it('should render the correct icon', () => {
+      const wrapper = shallow(<Menu />);
+      expect(wrapper.find(ExpandMoreIcon).exists()).toBe(true);
+      expect(wrapper.find(MoreIcon).exists()).toBe(false);
     });
   });
 
-  describe('when there is not a user', () => {
-    it('should render the "More" icon', () => {
-      mockUseAppState.mockImplementation(() => ({ user: null, signOut: jest.fn() }));
-      const wrapper = shallow(<Menu />);
-      expect(wrapper.exists(MoreIcon)).toBe(true);
+  describe('on mobile devices', () => {
+    beforeAll(() => {
+      mockUseMediaQuery.mockImplementation(() => true);
     });
 
-    it('should not display the user name in the menu', () => {
-      mockUseAppState.mockImplementation(() => ({ user: { displayName: undefined }, signOut: jest.fn() }));
+    it('should render the correct icon', () => {
       const wrapper = shallow(<Menu />);
-      expect(
-        wrapper
-          .find(MenuItem)
-          .find({ disabled: true })
-          .exists()
-      ).toBe(false);
-    });
-
-    it('should not include the logout button in the menu', () => {
-      mockUseAppState.mockImplementation(() => ({ user: null }));
-      const wrapper = shallow(<Menu />);
-      expect(wrapper.contains('Logout')).toBe(false);
+      expect(wrapper.find(ExpandMoreIcon).exists()).toBe(false);
+      expect(wrapper.find(MoreIcon).exists()).toBe(true);
     });
   });
 });

@@ -94,4 +94,20 @@ describe('the useConnectionOptions function', () => {
     mockUseAppState.mockImplementationOnce(() => ({ settings, roomType: 'peer-to-peer' }));
     expect(useConnectionOptions()).toMatchObject({ preferredVideoCodecs: [{ codec: 'VP8', simulcast: false }] });
   });
+
+  it('should disable simulcast when the room type is "go"', () => {
+    const settings: Settings = {
+      trackSwitchOffMode: 'detected',
+      dominantSpeakerPriority: 'high',
+      bandwidthProfileMode: 'collaboration',
+      maxTracks: '100',
+      maxAudioBitrate: '0',
+      renderDimensionLow: 'low',
+      renderDimensionStandard: '960p',
+      renderDimensionHigh: 'wide1080p',
+    };
+
+    mockUseAppState.mockImplementationOnce(() => ({ settings, roomType: 'go' }));
+    expect(useConnectionOptions()).toMatchObject({ preferredVideoCodecs: [{ codec: 'VP8', simulcast: false }] });
+  });
 });
