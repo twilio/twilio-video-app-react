@@ -33,19 +33,7 @@ steps:
   - script: npm run cy:verify
     displayName: 'Cypress verify'
 
-  - script: |
-          npx print-env AGENT
-          npx print-env BUILD
-          npx print-env SYSTEM
-          npm run start:ci:windows &
-          npx cypress run --record --parallel --ci-build-id $BUILDID --group "Azure CI"
-        displayName: 'Run Cypress tests'
-        env:
-          # avoid warnings about terminal
-          TERM: xterm
-          BUILDID: $(Build.BuildId)
-  
-  
+   
   - task: PublishTestResults@2
     displayName: 'Publish the test reports'
     inputs:
