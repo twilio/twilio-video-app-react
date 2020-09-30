@@ -12,7 +12,7 @@ This application demonstrates a multi-party video application built with [twilio
 * There is no cost associated with deploying the app
 * When using the app, you will be charged [$0.01 / video participant minute](https://www.twilio.com/video/pricing).
 
-![App Preview](https://user-images.githubusercontent.com/12685223/76361972-c035b700-62e5-11ea-8f9d-0bb24bd73fd4.png)
+![App Preview](https://user-images.githubusercontent.com/12685223/94631109-cfca1c80-0284-11eb-8b72-c97276cf34e4.png)
 
 ## Prerequisites
 
@@ -90,6 +90,8 @@ After running the command [to deploy a Twilio Access Token Server](https://githu
 *Small Group* - The Small Group room type provides an identical group video app experience except for a smaller limit of four participants.
 
 *Peer-to-peer* - Although up to ten participants can join a room using the Peer-to-peer (P2P) room type, it is ideal for a one to one video experience. The NQL indicators, bandwidth profiles, and dominant speaker cannot be used with this room type. Thus, they are not demonstrated in the video app. Also, the VP8 video codec with simulcast disabled and 720p minimum video capturing dimensions are also set by default in order to provide an optimal one to one video app experience. If more than ten participants join a room with this room type, then the video app will present an error.
+
+*Go* - The Go room type provides a similar Peer-to-peer video app experience except for a smaller limit of two participants. If more than two participants join a room with this room type, then the video app will present an error.
 
 If the max number of participants is exceeded, then the video app will present an error for all room types.
 
