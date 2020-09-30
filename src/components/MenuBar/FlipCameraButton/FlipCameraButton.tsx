@@ -33,8 +33,10 @@ export default function FlipCameraButton() {
   }, [mediaStreamTrack, videoTrack]);
 
   return supportsFacingMode ? (
-    <IconButton onClick={toggleFacingMode} disabled={!videoTrack}>
-      <FlipCameraIosIcon />
-    </IconButton>
+    <Tooltip title={'Cambiar camara'} placement="bottom" PopperProps={{ disablePortal: true }}>
+      <IconButton onClick={toggleFacingMode} disabled={!videoTrack}>
+        <FlipCameraIosIcon />
+      </IconButton>
+    </Tooltip>
   ) : null;
 }

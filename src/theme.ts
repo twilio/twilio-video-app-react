@@ -14,10 +14,24 @@ declare module '@material-ui/core/styles/createMuiTheme' {
 }
 
 export default createMuiTheme({
+  overrides: {
+    MuiTooltip: {
+      tooltip: {
+        fontSize: "1em",
+      }
+    }
+  },
+  typography: {
+    fontFamily: [
+      'Lato',
+      'Muli'
+    ].join(','),
+    htmlFontSize: 12,
+  },
   palette: {
     type: 'dark',
     primary: {
-      main: '#F22F46',
+      main: '#0099da',
     },
   },
   sidebarWidth: 260,

@@ -64,6 +64,8 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: 0,
       display: 'flex',
       alignItems: 'center',
+      fontSize: '1.2em',
+      color: 'white',
     },
     infoRow: {
       display: 'flex',
@@ -108,7 +110,7 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
         <div className={classes.infoRow}>
           <h4 className={classes.identity}>
             <ParticipantConnectionIndicator participant={participant} />
-            {participant.identity}
+            {participant.identity.split('-')[0]}
           </h4>
           <NetworkQualityLevel qualityLevel={networkQualityLevel} />
         </div>

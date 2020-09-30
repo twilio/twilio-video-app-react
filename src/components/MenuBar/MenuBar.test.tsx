@@ -1,6 +1,5 @@
 import React from 'react';
 import MenuBar from './MenuBar';
-import { MemoryRouter, Route } from 'react-router-dom';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useFullScreenToggle from '../../hooks/useFullScreenToggle/useFullScreenToggle';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
@@ -30,9 +29,7 @@ window.location = {
   origin: '',
 };
 const renderComponent = () => (
-  <MemoryRouter>
     <MenuBar />
-  </MemoryRouter>
 );
 
 // delete window.location;
@@ -165,11 +162,7 @@ describe('the MenuBar component', () => {
     mockedUseRoomState.mockImplementation(() => 'disconnected');
     mockedUseVideoContext.mockImplementation(() => ({ isConnecting: false, room: {}, localTracks: [] } as any));
     const { getByLabelText } = render(
-      <MemoryRouter initialEntries={['/room/test']}>
-        <Route path="/room/:URLRoomName">
           <MenuBar />
-        </Route>
-      </MemoryRouter>
     );
     expect(getByLabelText('Room').getAttribute('value')).toEqual('test');
   });

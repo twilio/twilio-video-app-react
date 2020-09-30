@@ -3,11 +3,11 @@ import { act, renderHook } from '@testing-library/react-hooks';
 import { TwilioError } from 'twilio-video';
 
 import AppStateProvider, { useAppState } from './index';
-import useFirebaseAuth from './useFirebaseAuth/useFirebaseAuth';
-import usePasscodeAuth from './usePasscodeAuth/usePasscodeAuth';
-
-jest.mock('./useFirebaseAuth/useFirebaseAuth', () => jest.fn(() => ({ user: 'firebaseUser' })));
-jest.mock('./usePasscodeAuth/usePasscodeAuth', () => jest.fn(() => ({ user: 'passcodeUser' })));
+// import useFirebaseAuth from './useFirebaseAuth/useFirebaseAuth';
+// import usePasscodeAuth from './usePasscodeAuth/usePasscodeAuth';
+//
+// jest.mock('./useFirebaseAuth/useFirebaseAuth', () => jest.fn(() => ({ user: 'firebaseUser' })));
+// jest.mock('./usePasscodeAuth/usePasscodeAuth', () => jest.fn(() => ({ user: 'passcodeUser' })));
 
 const mockUsePasscodeAuth = usePasscodeAuth as jest.Mock<any>;
 

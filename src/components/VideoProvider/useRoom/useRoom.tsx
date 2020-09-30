@@ -3,12 +3,15 @@ import EventEmitter from 'events';
 import { isMobile } from '../../../utils';
 import Video, { ConnectOptions, LocalTrack, Room } from 'twilio-video';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useAppState } from '../../../state';
+import updateParticipantFailed from '../../../utils/ParticipantStatus/updateParticipantFailed';
 
 // @ts-ignore
 window.TwilioVideo = Video;
 
 export default function useRoom(localTracks: LocalTrack[], onError: Callback, options?: ConnectOptions) {
   const [room, setRoom] = useState<Room>(new EventEmitter() as Room);
+  const { roomName, appointmentID, user } = useAppState();
   const [isConnecting, setIsConnecting] = useState(false);
   const localTracksRef = useRef<LocalTrack[]>([]);
   const optionsRef = useRef(options);
@@ -42,6 +45,9 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
             if (isMobile) {
               window.removeEventListener('pagehide', disconnect);
             }
+            // Hard redirect to appointment view
+            const url = window.location.href
+            window.location.href = url.substring(0, url.lastIndexOf('/'));
           });
 
           // @ts-ignore
@@ -68,6 +74,7 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
         },
         error => {
           onError(error);
+          updateParticipantFailed(appointmentID, user.participantID, error);
           setIsConnecting(false);
         }
       );

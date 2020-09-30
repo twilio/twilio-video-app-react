@@ -12,7 +12,7 @@ export default function AudioOutputList() {
     <div className="inputSelect">
       {audioOutputDevices.length > 1 ? (
         <FormControl fullWidth>
-          <Typography variant="h6">Audio Output:</Typography>
+          <Typography variant="h6">Salida de audio:</Typography>
           <Select onChange={e => setActiveSinkId(e.target.value as string)} value={activeSinkId}>
             {audioOutputDevices.map(device => (
               <MenuItem value={device.deviceId} key={device.deviceId}>
@@ -23,7 +23,7 @@ export default function AudioOutputList() {
         </FormControl>
       ) : (
         <>
-          <Typography variant="h6">Audio Output:</Typography>
+          <Typography variant="h6">Salida de audio:</Typography>
           <Typography>{activeOutputLabel || 'System Default Audio Output'}</Typography>
         </>
       )}
