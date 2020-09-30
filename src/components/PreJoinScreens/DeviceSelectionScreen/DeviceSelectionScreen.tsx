@@ -97,7 +97,13 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
               <Button variant="outlined" color="primary" onClick={() => setStep(Steps.roomNameStep)}>
                 Cancel
               </Button>
-              <Button variant="contained" color="primary" onClick={handleJoin} disabled={disableButtons}>
+              <Button
+                variant="contained"
+                color="primary"
+                data-cy-join-now
+                onClick={handleJoin}
+                disabled={disableButtons}
+              >
                 Join Now
               </Button>
             </div>

@@ -165,7 +165,7 @@ export default function ParticipantInfo({
   const videoTrack = useTrack(videoPublication);
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
 
-  const audioTrack = useTrack(audioPublication) as LocalAudioTrack | RemoteAudioTrack;
+  const audioTrack = useTrack(audioPublication) as LocalAudioTrack | RemoteAudioTrack | undefined;
   const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
   const classes = useStyles();
