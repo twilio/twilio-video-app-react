@@ -6,6 +6,7 @@ function getRandomInt(min, max) {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min) + min); 
 }
+
 const baseLoginUrl = "http://tabula-mt-intg-01.escribers.io/tabula/welcome";
 const baseConferenceUrl = "http://tabula-mt-intg-01.escribers.io/tabula/conference/newconference";
 const getRoomName = () =>
@@ -18,8 +19,8 @@ const providers = ['Twilio Video','Twilio Telephone'];
 const roles = ['Parent','Parent Representative','District Representative','Other','Interpreter'];
 const caseRef = uuid();
 
-
  context('Startup', () => {
+    
       before(() => { 
                   cy.tabulaLogin(baseConferenceUrl,'yehuda','CleanCode18%');
                   const nowDate = Cypress.moment();
@@ -53,7 +54,11 @@ const caseRef = uuid();
       })
            
     }); 
-// context('A video app user', () => {
+
+
+
+
+    // context('A video app user', () => {
  
 //   describe('before entering a room', () => {
 
