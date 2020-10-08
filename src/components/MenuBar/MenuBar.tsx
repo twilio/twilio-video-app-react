@@ -16,7 +16,6 @@ import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { Typography } from '@material-ui/core';
 import FlipCameraButton from './FlipCameraButton/FlipCameraButton';
 import LocalAudioLevelIndicator from './DeviceSelector/LocalAudioLevelIndicator/LocalAudioLevelIndicator';
-import FinishAppointmentButton from './FinishAppointmentButton/FinishAppointmentButton';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -75,7 +74,7 @@ export default function MenuBar() {
       <Toolbar className={classes.toolbar}>
         {roomState === 'disconnected' ? (
           <div className={classes.form}>
-            <Typography>Sala de prueba.</Typography>
+            <Typography className={classes.loadingSpinner}>Sala de prueba.</Typography>
             <Button
               className={classes.joinButton}
               type="button"
@@ -90,7 +89,6 @@ export default function MenuBar() {
           </div>
         ) : <div className={classes.form}><Countdown /></div> }
         <div className={classes.rightButtonContainer}>
-          <FinishAppointmentButton />
           <FlipCameraButton />
           <ToggleFullscreenButton />
           <LocalAudioLevelIndicator />

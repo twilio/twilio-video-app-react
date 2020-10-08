@@ -40,14 +40,13 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
           newRoom.once('disconnected', () => {
             // Reset the room only after all other `disconnected` listeners have been called.
             setTimeout(() => setRoom(new EventEmitter() as Room));
-            window.removeEventListener('beforeunload', disconnect);
+            document.removeEventListener('turbolinks:before-cache', disconnect);
 
             if (isMobile) {
               window.removeEventListener('pagehide', disconnect);
             }
             // Hard redirect to appointment view
-            const url = window.location.href
-            window.location.href = url.substring(0, url.lastIndexOf('/'));
+            window.location.href = window.location.href.replace('/room', '')
           });
 
           // @ts-ignore
@@ -63,9 +62,9 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
           );
 
           setIsConnecting(false);
-
+          // turbolinks
+          window.addEventListener('turbolinks:before-cache', disconnect)
           // Add a listener to disconnect from the room when a user closes their browser
-          window.addEventListener('beforeunload', disconnect);
 
           if (isMobile) {
             // Add a listener to disconnect from the room when a mobile user closes their browser

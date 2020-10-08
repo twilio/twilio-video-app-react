@@ -65,7 +65,7 @@ export function VideoProvider({ options, children, onError = () => {}, onDisconn
   useHandleRoomDisconnectionErrors(room, onError);
   useHandleTrackPublicationFailed(room, onError);
   useHandleOnDisconnect(room, onDisconnect);
-
+  document.addEventListener('turbolinks:before-cache', removeLocalVideoTrack);
   return (
     <VideoContext.Provider
       value={{

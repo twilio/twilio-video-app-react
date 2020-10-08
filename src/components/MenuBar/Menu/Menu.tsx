@@ -11,7 +11,7 @@ import { useAppState } from '../../../state';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
 export default function Menu() {
-  const { user } = useAppState();
+  const { user, appointmentID } = useAppState();
   const { room, localTracks } = useVideoContext();
 
   const [aboutOpen, setAboutOpen] = useState(false);
@@ -20,6 +20,15 @@ export default function Menu() {
 
   const anchorRef = useRef<HTMLDivElement>(null);
 
+  const finishAppointment = () => {
+    if (window.confirm('¿Estas seguro de terminar esta sesión?')) {
+      $.ajax(`/appointments/${appointmentID}`, {
+        type: 'PATCH',
+        data: { appointment: { completed: true } }
+      })
+    }
+  };
+
   return (
     <div ref={anchorRef}>
       <IconButton color="inherit" onClick={() => setMenuOpen(state => !state)}>
@@ -27,6 +36,7 @@ export default function Menu() {
       </IconButton>
       <MenuContainer open={menuOpen} onClose={() => setMenuOpen(state => !state)} anchorEl={anchorRef.current}>
         {user?.displayName && <MenuItem disabled>{user.displayName}</MenuItem>}
+        { user.userType === 'Doctor' ? ( <MenuItem onClick={finishAppointment}>Terminar cita</MenuItem> ) : null }
         <MenuItem onClick={() => setAboutOpen(true)}>Nosotros</MenuItem>
         <MenuItem onClick={() => setSettingsOpen(true)}>Configuración</MenuItem>
       </MenuContainer>

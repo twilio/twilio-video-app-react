@@ -38,8 +38,7 @@ const browserErrorMessage = () => {
 
 const handleClick = () => {
   return function () {
-    const url = window.location.href
-    window.location.href = url.substring(0, url.lastIndexOf('/'));
+    window.location.href = window.location.href.replace('/room', '')
   }
 };
 

@@ -19,8 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const handleClick = (room, roomState) => {
   return function () {
     if (roomState === 'disconnected') {
-      const url = window.location.href
-      window.location.href = url.substring(0, url.lastIndexOf('/'));
+      window.location.href = window.location.href.replace('/room', '')
     } else {
       room.disconnect();
     }
