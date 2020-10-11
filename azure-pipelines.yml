@@ -17,18 +17,6 @@ variables:
   value: $(Pipeline.Workspace)/.cache/Cypress
 
 stages:
-# - stage: e2e_testing_stage_edge
-#   displayName: 'Edge E2E Testing'
-#   dependsOn: []
-#   jobs:  
-#   - job: e2e_testing_job_edge
-#     displayName: 'Run E2E in Edge'
-#     pool:
-#       vmImage: windows-latest
-#     steps:
-#       - template: devops/e2e.testing.yml
-#         parameters:
-#           browserType: edge
           
 - stage: e2e_testing_stage_electron
   displayName: 'Electron E2E Testing'
@@ -55,15 +43,4 @@ stages:
         parameters:
           browserType: chrome
 
-# - stage: e2e_testing_stage_firefox
-#   displayName: 'Firefox E2E Testing'
-#   dependsOn: []
-#   jobs:
-#   - job: e2e_testing_job_firefox
-#     displayName: 'Run E2E in Firefox'
-#     pool:
-#       vmImage: windows-latest
-#     steps:
-#       - template: devops/e2e.testing.yml
-#         parameters:
-#           browserType: firefox
+
