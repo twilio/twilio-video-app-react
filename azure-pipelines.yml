@@ -2,12 +2,7 @@ name: 'Cypress E2E Testing'
 trigger:
 - VA-161-Automated-Test-Login-Screen
 
-schedules:
-- cron: "0 6 * * *"
-  displayName: Each morning at 6am
-  branches:
-    include:
-    - VA-161-Automated-Test-Login-Screen
+
 
 variables:
 # - group: develop
@@ -20,7 +15,6 @@ stages:
           
 - stage: e2e_testing_stage_electron
   displayName: 'Electron E2E Testing'
-  dependsOn: []
   jobs:  
   - job: e2e_testing_job_electron
     displayName: 'Run E2E in Electron'
@@ -30,17 +24,3 @@ stages:
       - template: e2e.testing.yml
         parameters:
           browserType: electron
-
-- stage: e2e_testing_stage_chrome
-  displayName: 'Chrome E2E Testing'
-  jobs:
-  - job: e2e_testing_job_chrome
-    displayName: 'Run E2E in Chrome'
-    pool:
-      vmImage: windows-latest
-    steps:
-      - template: e2e.testing.yml
-        parameters:
-          browserType: chrome
-
-
