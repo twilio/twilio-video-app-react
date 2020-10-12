@@ -4,7 +4,6 @@
   "chromeWebSecurity": false,
   "reporter": "cypress-multi-reporters",
   "baseUrl": "http://tabula-mt-intg-01.escribers.io/tabula",
-  "tabulaPort": "",
   "reporterOptions": {
     "configFile": "cypress/reporter-config.json"
   },
