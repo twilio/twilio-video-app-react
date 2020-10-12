@@ -87,16 +87,15 @@
     ]
   },
   "scripts": {
+    "start": "concurrently npm:server npm:dev",
     "dev": "react-scripts start",
+    "server": "node server.js",
     "build": "node ./scripts/build.js",
     "test": "jest",
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.{ts,tsx}",
-    "server": "node server.js",
-    "start": "serve --listen ${PORT:-8080}",
     "start:ci": "serve --no-clipboard --listen ${PORT:-8080}",
     "start:ci:windows": "serve --no-clipboard --listen 8080",
-    "types": "tsc --noEmit",
     "print-env": "print-env",
     "colon:names": "colon-names",
     "e2e": "cypress run",
