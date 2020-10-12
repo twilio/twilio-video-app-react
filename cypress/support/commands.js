@@ -4,8 +4,9 @@ Cypress.Commands.add('tabulaLogin', (conferenceUrl,userName, password) => {
        cy.visit(conferenceUrl);
        cy.get('input[id="username"]').type(userName).should('have.value', userName);
        cy.get('input[id="password"]').type(password).should('have.value', password);
+      
        cy.get('[id="loginform"]').submit();
-       cy.url().should('eq', conferenceUrl);
+       cy.url().should('include', conferenceUrl);
            
 });
 
@@ -20,13 +21,14 @@ Cypress.Commands.add('createNewConference', (conferenceUrl,caseRef,caseName,hear
   cy.get('[id="status_id"]').select(status);
   cy.get('input[id="hearing_officer"]').type(hearingOfficer).should('have.value', hearingOfficer);
   cy.get('[id="reporter_person_id"]').select(reporterPerson);
+ 
   cy.get('div[id="newconference"]').find('form').submit();
   cy.get('p').contains('Conference created OK.').should('be.visible');
   cy.url().should('include', conferenceUrl);
         
 });
 
-Cypress.Commands.add('fillLoginPage', (userName,pass, caseNumber) => {
+Cypress.Commands.add('fillConferenceLoginPage', (userName,pass, caseNumber) => {
 
   cy.get('[name="name"]').type(userName).should('have.value', userName);
   cy.get('[name="passPin"]').type(pass).should('have.value', pass);

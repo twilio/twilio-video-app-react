@@ -7,8 +7,8 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min) + min); 
 }
 
-const baseLoginUrl = "http://tabula-mt-intg-01.escribers.io/tabula/welcome";
-const baseConferenceUrl = "http://tabula-mt-intg-01.escribers.io/tabula/conference/newconference";
+const loginUrlPath = "/welcome";
+const conferenceUrlPath = "/conference/newconference";
 const getRoomName = () =>
     Math.random()
         .toString(36)
@@ -22,30 +22,30 @@ const caseRef = uuid();
  context('Startup', () => {
     
       before(() => { 
-                  cy.tabulaLogin(baseConferenceUrl,'yehuda','CleanCode18%');
+                  cy.tabulaLogin(conferenceUrlPath,Cypress.env('login_user_name'),Cypress.env('login_user_password'));
                   const nowDate = Cypress.moment();
-                  cy.createNewConference(baseConferenceUrl,caseRef,`caseName-${caseRef}`,nowDate.format('yyyy-MM-DD') ,
+                  cy.createNewConference(conferenceUrlPath,caseRef,`caseName-${caseRef}`,nowDate.format('yyyy-MM-DD') ,
                   nowDate.format('HH:mm:ss'), nowDate.add(1000000).format('HH:mm:ss'),providers[0],
                   statusValues[ getRandomInt(0,statusValues.length - 1)],`reporter-${caseRef}`,
                   getRandomInt(48,90).toString());
                 });
 
       beforeEach(() => {  
-                   cy.visit(`${baseLoginUrl}/login/`);
+                   cy.visit(`${loginUrlPath}/login/`);
                 });
      
       it('should fill login form and get error of "no active hearing for the case number"', () => {
 
-            cy.fillLoginPage('abfhg','123$567','1313');
+            cy.fillConferenceLoginPage('abfhg','123$567','1313');
 
-            cy.url().should('eq', `${baseLoginUrl}/login/nohearing`);
+            cy.url().should('include', `${loginUrlPath}/login/nohearing`);
             cy.get('p').contains('There is no active hearing for the case number you entered.').should('be.visible');
           })
       
       it('should fill login form and redirect to twilio video app', () => {
 
-            cy.fillLoginPage('bhaidar','123$567',caseRef);
-            cy.url().should('eq', `${baseLoginUrl}/chooseRole`);
+            cy.fillConferenceLoginPage('bhaidar','123$567',caseRef);
+            cy.url().should('include', `${loginUrlPath}/chooseRole`);
             cy.get('select[name="roleId"]').select(roles[getRandomInt(0,statusValues.length - 1)]);
             cy.get('form').submit();
 
