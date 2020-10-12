@@ -29,3 +29,5 @@ yarn-error.log*
 .vscode
 
 test-reports
+junit.xml
+public/config.json
