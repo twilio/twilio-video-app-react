@@ -29,4 +29,3 @@ yarn-error.log*
 .vscode
 
 test-reports
-junit.xml
