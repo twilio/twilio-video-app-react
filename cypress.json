@@ -1,9 +1,15 @@
 {
   "video": false,
   "defaultCommandTimeout": 10000,
-  "baseUrl": "http://localhost:3000",
+  "chromeWebSecurity": false,
   "reporter": "cypress-multi-reporters",
+  "baseUrl": "http://tabula-mt-intg-01.escribers.io/tabula",
   "reporterOptions": {
     "configFile": "cypress/reporter-config.json"
-  }
+  },
+  "env": {
+    "login_user_name": "yehuda",
+    "login_user_password": "CleanCode18%"
+  },
+  "projectId": "zq99ct"
 }

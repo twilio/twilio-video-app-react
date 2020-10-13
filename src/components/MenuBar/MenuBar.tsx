@@ -161,9 +161,9 @@ export default function MenuBar() {
         {roomState === 'disconnected' ? (
           <form className={classes.form} onSubmit={handleSubmit}>
             <FormControl className={classes.textField}>
-              <InputLabel htmlFor="party-type">Party Type</InputLabel>
+              <InputLabel>Party Type</InputLabel>
               <Select
-                id="party-type"
+                data-cy="select"
                 label="Party Type"
                 value={participantInfo ? participantInfo.partyType : ''}
                 margin="dense"
@@ -171,7 +171,7 @@ export default function MenuBar() {
                 disabled={true}
               >
                 {getPartyTypes().map(type => (
-                  <MenuItem key={type} value={type}>
+                  <MenuItem key={type} value={type} data-cy="menu-item">
                     {type}
                   </MenuItem>
                 ))}
@@ -180,7 +180,7 @@ export default function MenuBar() {
 
             <TextField
               autoComplete="off"
-              id="menu-name"
+              id="party-name"
               label="Party Name"
               className={classes.textField}
               value={participantInfo ? participantInfo.displayName : ''}
@@ -190,8 +190,8 @@ export default function MenuBar() {
 
             <TextField
               autoComplete="off"
-              id="menu-room"
-              label="Case Reference"
+              id="case-number"
+              label="Case Number"
               className={classes.textField}
               value={participantInfo ? participantInfo.caseReference : ''}
               margin="dense"
