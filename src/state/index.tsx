@@ -171,6 +171,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
       return data;
     },
     removeParticipant: async participantSid => {
+      if (!(await ensureEndpointInitialised())) return null;
       const url = `${endpoint}/remove-participant`;
 
       const { data } = await axios({
