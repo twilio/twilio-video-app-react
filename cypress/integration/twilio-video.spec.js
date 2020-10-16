@@ -62,15 +62,19 @@ context('A video app user', () => {
     });
 
     it('should see the participants audio level indicator moving', () => {
-      cy.get('clipPath rect').should($rect => {
-        const y = $rect.attr('y');
-        expect(Number(y)).to.equal(14);
-      });
+      cy.getParticipant('test1')
+        .get('clipPath rect')
+        .should($rect => {
+          const y = $rect.attr('y');
+          expect(Number(y)).to.equal(14);
+        });
 
-      cy.get('clipPath rect').should($rect => {
-        const y = $rect.attr('y');
-        expect(Number(y)).to.be.lessThan(14);
-      });
+      cy.getParticipant('test1')
+        .get('clipPath rect')
+        .should($rect => {
+          const y = $rect.attr('y');
+          expect(Number(y)).to.be.lessThan(14);
+        });
     });
 
     it('should see other participants disconnect when they close their browser', () => {
