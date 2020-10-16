@@ -14,9 +14,7 @@ jobs:
             - v1-deps-{{ .Branch }}
             - v1-deps
 
-      - run:
-          name: 'Install node dependencies'
-          command: '[ ! -d node_modules ] && npm ci || echo package-lock.json unchanged. Using cache.'
+      - run: npm ci
 
       - save_cache:
           key: v1-deps-{{ .Branch }}-{{ checksum "package-lock.json" }}
