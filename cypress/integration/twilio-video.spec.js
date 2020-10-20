@@ -1,6 +1,6 @@
 /// <reference types="Cypress" />
 
-// If you are on MacOS and have many popups about Chromium when these tests run, please see: https://stackoverflow.com/questions/54545193/puppeteer-chromium-on-mac-chronically-prompting-accept-incoming-network-connect
+// If you are on MacOS and have many popups about Chromium when these tests run, please see: https://github.com/puppeteer/puppeteer/issues/4752
 
 // Creates a random string like 'ft68eyjn8i'
 const getRoomName = () =>
@@ -17,12 +17,19 @@ context('A video app user', () => {
       cy.get('#input-room-name').type(getRoomName());
       cy.get('[type="submit"]').click();
 
-      cy.get('clipPath rect')
-        .invoke('attr', 'y')
-        .should('be', 14);
-      cy.get('clipPath rect')
-        .invoke('attr', 'y')
-        .should('be.lessThan', 14);
+      // When the 'y' attribute is 14, it means that the audio indicator icon is showing that there is no sound.
+      cy.get('clipPath rect').should($rect => {
+        const y = $rect.attr('y');
+        expect(Number(y)).to.equal(14);
+      });
+
+      // When the 'y' attribute is less than 14, it means that the audio indicator icon is showing that there is sound.
+      // Since the indicator should be moving up and down with the audible beeps, 'y' should be 14 and less than 14 at
+      // different points of time. Cypress will continuously retry these assertions until they pass or timeout.
+      cy.get('clipPath rect').should($rect => {
+        const y = $rect.attr('y');
+        expect(Number(y)).to.be.lessThan(14);
+      });
     });
   });
 
@@ -57,11 +64,17 @@ context('A video app user', () => {
     it('should see the participants audio level indicator moving', () => {
       cy.getParticipant('test1')
         .get('clipPath rect')
-        .invoke('attr', 'y')
-        .should('be', 14);
-      cy.get('clipPath rect')
-        .invoke('attr', 'y')
-        .should('be.lessThan', 14);
+        .should($rect => {
+          const y = $rect.attr('y');
+          expect(Number(y)).to.equal(14);
+        });
+
+      cy.getParticipant('test1')
+        .get('clipPath rect')
+        .should($rect => {
+          const y = $rect.attr('y');
+          expect(Number(y)).to.be.lessThan(14);
+        });
     });
 
     it('should see other participants disconnect when they close their browser', () => {
