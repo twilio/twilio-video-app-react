@@ -16,6 +16,7 @@ export interface StateContextType {
   settings: Settings;
   dispatchSetting: React.Dispatch<SettingsAction>;
   roomType?: RoomType;
+  test: boolean;
 }
 
 export const StateContext = createContext<StateContextType>(null!);

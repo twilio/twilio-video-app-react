@@ -7,6 +7,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 import useRoomState from '../../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import redirectRootPath from '../../../utils/redirectRootPath'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const handleClick = (room, roomState) => {
   return function () {
     if (roomState === 'disconnected') {
-      window.location.href = window.location.href.replace('/room', '')
+      redirectRootPath();
     } else {
       room.disconnect();
     }

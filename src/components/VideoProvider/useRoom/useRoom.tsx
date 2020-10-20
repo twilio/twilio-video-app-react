@@ -5,6 +5,7 @@ import Video, { ConnectOptions, LocalTrack, Room } from 'twilio-video';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAppState } from '../../../state';
 import updateParticipantFailed from '../../../utils/ParticipantStatus/updateParticipantFailed';
+import redirectRootPath from '../../../utils/redirectRootPath'
 
 // @ts-ignore
 window.TwilioVideo = Video;
@@ -46,7 +47,7 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
               window.removeEventListener('pagehide', disconnect);
             }
             // Hard redirect to appointment view
-            window.location.href = window.location.href.replace('/room', '')
+            redirectRootPath();
           });
 
           // @ts-ignore

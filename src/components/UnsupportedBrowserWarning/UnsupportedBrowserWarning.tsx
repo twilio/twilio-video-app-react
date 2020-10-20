@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { isMobile, mobileOperatingSystem } from '../../utils/'
 import { useAppState } from '../../state';
 import updateParticipantFailed from '../../utils/ParticipantStatus/updateParticipantFailed'
+import redirectRootPath from '../../utils/redirectRootPath'
 
 const useStyles = makeStyles({
   container: {
@@ -38,7 +39,7 @@ const browserErrorMessage = () => {
 
 const handleClick = () => {
   return function () {
-    window.location.href = window.location.href.replace('/room', '')
+    redirectRootPath();
   }
 };
 
