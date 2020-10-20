@@ -1,21 +1,73 @@
 import { act, renderHook } from '@testing-library/react-hooks';
+import { SELECTED_AUDIO_INPUT_KEY, SELECTED_VIDEO_INPUT_KEY } from '../../../constants';
 import useLocalTracks from './useLocalTracks';
 import Video from 'twilio-video';
-import { useHasAudioInputDevices, useHasVideoInputDevices } from '../../../hooks/deviceHooks/deviceHooks';
+import { useAudioInputDevices, useVideoInputDevices } from '../../../hooks/deviceHooks/deviceHooks';
 
 jest.mock('../../../hooks/deviceHooks/deviceHooks');
-const mockUseHasVideoInputDevices = useHasVideoInputDevices as jest.Mock<any>;
-const mockUseHasAudioInputDevices = useHasAudioInputDevices as jest.Mock<any>;
-
-mockUseHasAudioInputDevices.mockImplementation(() => true);
-mockUseHasVideoInputDevices.mockImplementation(() => true);
+const mockUseAudioInputDevices = useAudioInputDevices as jest.Mock<any>;
+const mockUseVideoInputDevices = useVideoInputDevices as jest.Mock<any>;
 
 describe('the useLocalTracks hook', () => {
+  beforeEach(() => {
+    Date.now = () => 123456;
+    mockUseAudioInputDevices.mockImplementation(() => [{ deviceId: 'mockAudioDeviceId' }]);
+    mockUseVideoInputDevices.mockImplementation(() => [{ deviceId: 'mockVideoDeviceId' }]);
+  });
   afterEach(jest.clearAllMocks);
+  afterEach(() => window.localStorage.clear());
 
   describe('the getAudioAndVideoTracks function', () => {
     it('should create local audio and video tracks', async () => {
-      Date.now = () => 123456;
+      const { result, waitForNextUpdate } = renderHook(useLocalTracks);
+
+      await act(async () => {
+        result.current.getAudioAndVideoTracks();
+        await waitForNextUpdate();
+      });
+
+      expect(Video.createLocalTracks).toHaveBeenCalledWith({
+        audio: true,
+        video: {
+          frameRate: 24,
+          width: 1280,
+          height: 720,
+          name: 'camera-123456',
+        },
+      });
+    });
+
+    it('should correctly create local audio and video tracks when selected device IDs are available in localStorage', async () => {
+      window.localStorage.setItem(SELECTED_VIDEO_INPUT_KEY, 'mockVideoDeviceId');
+      window.localStorage.setItem(SELECTED_AUDIO_INPUT_KEY, 'mockAudioDeviceId');
+      const { result, waitForNextUpdate } = renderHook(useLocalTracks);
+
+      await act(async () => {
+        result.current.getAudioAndVideoTracks();
+        await waitForNextUpdate();
+      });
+
+      expect(Video.createLocalTracks).toHaveBeenCalledWith({
+        audio: {
+          deviceId: {
+            exact: 'mockAudioDeviceId',
+          },
+        },
+        video: {
+          frameRate: 24,
+          width: 1280,
+          height: 720,
+          name: 'camera-123456',
+          deviceId: {
+            exact: 'mockVideoDeviceId',
+          },
+        },
+      });
+    });
+
+    it('should correctly create local audio and video tracks when selected devices IDs are available in localStorage, but do not correspond to actual devices', async () => {
+      window.localStorage.setItem(SELECTED_VIDEO_INPUT_KEY, 'otherMockVideoDeviceId');
+      window.localStorage.setItem(SELECTED_AUDIO_INPUT_KEY, 'otherMockAudioDeviceId');
       const { result, waitForNextUpdate } = renderHook(useLocalTracks);
 
       await act(async () => {
@@ -35,7 +87,7 @@ describe('the useLocalTracks hook', () => {
     });
 
     it('should create a local audio track when no video devices are present', async () => {
-      mockUseHasVideoInputDevices.mockImplementationOnce(() => false);
+      mockUseVideoInputDevices.mockImplementation(() => []);
 
       const { result, waitForNextUpdate } = renderHook(useLocalTracks);
 
@@ -51,7 +103,7 @@ describe('the useLocalTracks hook', () => {
     });
 
     it('should create a local video track when no audio devices are present', async () => {
-      mockUseHasAudioInputDevices.mockImplementationOnce(() => false);
+      mockUseAudioInputDevices.mockImplementation(() => []);
 
       const { result, waitForNextUpdate } = renderHook(useLocalTracks);
 
@@ -72,8 +124,8 @@ describe('the useLocalTracks hook', () => {
     });
 
     it('should not create any tracks when no input devices are present', async () => {
-      mockUseHasAudioInputDevices.mockImplementationOnce(() => false);
-      mockUseHasVideoInputDevices.mockImplementationOnce(() => false);
+      mockUseAudioInputDevices.mockImplementation(() => []);
+      mockUseVideoInputDevices.mockImplementation(() => []);
 
       const { result } = renderHook(useLocalTracks);
 

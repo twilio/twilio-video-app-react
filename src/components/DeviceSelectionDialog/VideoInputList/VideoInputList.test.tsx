@@ -1,4 +1,5 @@
 import React from 'react';
+import { DEFAULT_VIDEO_CONSTRAINTS, SELECTED_VIDEO_INPUT_KEY } from '../../../constants';
 import { Select, Typography } from '@material-ui/core';
 import { shallow } from 'enzyme';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
@@ -23,6 +24,7 @@ const mockLocalTrack = {
     label: 'mock local video track',
     getSettings: () => ({ deviceId: '234' }),
   },
+  restart: jest.fn(),
 };
 
 mockUseVideoContext.mockImplementation(() => ({
@@ -32,6 +34,11 @@ mockUseVideoContext.mockImplementation(() => ({
 }));
 
 describe('the VideoInputList component', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+    window.localStorage.clear();
+  });
+
   describe('with only one video input device', () => {
     it('should not display a Select menu and instead display the name of the local video track', () => {
       mockUseVideoInputDevices.mockImplementation(() => [mockDevice]);
@@ -72,5 +79,23 @@ describe('the VideoInputList component', () => {
         .at(1)
         .exists()
     ).toBe(false);
+  });
+
+  it('should save the deviceId in localStorage when the video input device is changed', () => {
+    mockUseVideoInputDevices.mockImplementation(() => [mockDevice, mockDevice]);
+    const wrapper = shallow(<VideoInputList />);
+    expect(window.localStorage.getItem(SELECTED_VIDEO_INPUT_KEY)).toBe(undefined);
+    wrapper.find(Select).simulate('change', { target: { value: 'mockDeviceID' } });
+    expect(window.localStorage.getItem(SELECTED_VIDEO_INPUT_KEY)).toBe('mockDeviceID');
+  });
+
+  it('should call track.restart with the new deviceId when the video input device is changed', () => {
+    mockUseVideoInputDevices.mockImplementation(() => [mockDevice, mockDevice]);
+    const wrapper = shallow(<VideoInputList />);
+    wrapper.find(Select).simulate('change', { target: { value: 'mockDeviceID' } });
+    expect(mockLocalTrack.restart).toHaveBeenCalledWith({
+      ...(DEFAULT_VIDEO_CONSTRAINTS as {}),
+      deviceId: { exact: 'mockDeviceID' },
+    });
   });
 });
