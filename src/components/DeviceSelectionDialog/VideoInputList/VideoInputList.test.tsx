@@ -1,5 +1,5 @@
-import { DEFAULT_VIDEO_CONSTRAINTS, SELECTED_VIDEO_INPUT_KEY } from '../../../constants';
 import React from 'react';
+import { DEFAULT_VIDEO_CONSTRAINTS, SELECTED_VIDEO_INPUT_KEY } from '../../../constants';
 import { Select, Typography } from '@material-ui/core';
 import { shallow } from 'enzyme';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
@@ -89,7 +89,7 @@ describe('the VideoInputList component', () => {
     expect(window.localStorage.getItem(SELECTED_VIDEO_INPUT_KEY)).toBe('mockDeviceID');
   });
 
-  it('should call track.restart with the new deviceId', () => {
+  it('should call track.restart with the new deviceId when the video input device is changed', () => {
     mockUseVideoInputDevices.mockImplementation(() => [mockDevice, mockDevice]);
     const wrapper = shallow(<VideoInputList />);
     wrapper.find(Select).simulate('change', { target: { value: 'mockDeviceID' } });

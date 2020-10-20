@@ -8,6 +8,7 @@ import usePasscodeAuth from './usePasscodeAuth/usePasscodeAuth';
 
 jest.mock('./useFirebaseAuth/useFirebaseAuth', () => jest.fn(() => ({ user: 'firebaseUser' })));
 jest.mock('./usePasscodeAuth/usePasscodeAuth', () => jest.fn(() => ({ user: 'passcodeUser' })));
+jest.mock('./useActiveSinkId/useActiveSinkId.ts', () => () => ['default', () => {}]);
 
 const mockUsePasscodeAuth = usePasscodeAuth as jest.Mock<any>;
 
