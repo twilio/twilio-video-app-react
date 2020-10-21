@@ -18,7 +18,7 @@ This application demonstrates a multi-party video application built with [twilio
 
 You must have the following installed:
 
-* [Node.js v10+](https://nodejs.org/en/download/)
+* [Node.js v12+](https://nodejs.org/en/download/)
 * NPM v6+ (comes installed with newer Node versions)
 
 ## Install Dependencies
