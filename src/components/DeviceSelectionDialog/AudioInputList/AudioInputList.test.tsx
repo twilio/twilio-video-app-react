@@ -1,5 +1,6 @@
 import React from 'react';
 import AudioInputList from './AudioInputList';
+import { DEFAULT_VIDEO_CONSTRAINTS, SELECTED_AUDIO_INPUT_KEY } from '../../../constants';
 import { Select, Typography } from '@material-ui/core';
 import { shallow } from 'enzyme';
 import { useAudioInputDevices } from '../../../hooks/deviceHooks/deviceHooks';
@@ -23,6 +24,7 @@ const mockLocalTrack = {
     label: 'mock local audio track',
     getSettings: () => ({ deviceId: '234' }),
   },
+  restart: jest.fn(),
 };
 
 mockUseVideoContext.mockImplementation(() => ({
@@ -70,5 +72,22 @@ describe('the AudioInputList component', () => {
         .at(1)
         .exists()
     ).toBe(false);
+  });
+
+  it('should save the deviceId in localStorage when the audio input device is changed', () => {
+    mockUseAudioInputDevices.mockImplementation(() => [mockDevice, mockDevice]);
+    const wrapper = shallow(<AudioInputList />);
+    expect(window.localStorage.getItem(SELECTED_AUDIO_INPUT_KEY)).toBe(undefined);
+    wrapper.find(Select).simulate('change', { target: { value: 'mockDeviceID' } });
+    expect(window.localStorage.getItem(SELECTED_AUDIO_INPUT_KEY)).toBe('mockDeviceID');
+  });
+
+  it('should call track.restart with the new deviceId when the audio input device is changed', () => {
+    mockUseAudioInputDevices.mockImplementation(() => [mockDevice, mockDevice]);
+    const wrapper = shallow(<AudioInputList />);
+    wrapper.find(Select).simulate('change', { target: { value: 'mockDeviceID' } });
+    expect(mockLocalTrack.restart).toHaveBeenCalledWith({
+      deviceId: { exact: 'mockDeviceID' },
+    });
   });
 });

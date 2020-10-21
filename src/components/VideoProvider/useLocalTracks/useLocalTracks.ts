@@ -1,15 +1,18 @@
-import { DEFAULT_VIDEO_CONSTRAINTS } from '../../../constants';
+import { DEFAULT_VIDEO_CONSTRAINTS, SELECTED_AUDIO_INPUT_KEY, SELECTED_VIDEO_INPUT_KEY } from '../../../constants';
 import { useCallback, useState } from 'react';
 import Video, { LocalVideoTrack, LocalAudioTrack, CreateLocalTrackOptions } from 'twilio-video';
-import { useHasAudioInputDevices, useHasVideoInputDevices } from '../../../hooks/deviceHooks/deviceHooks';
+import { useAudioInputDevices, useVideoInputDevices } from '../../../hooks/deviceHooks/deviceHooks';
 
 export default function useLocalTracks() {
   const [audioTrack, setAudioTrack] = useState<LocalAudioTrack>();
   const [videoTrack, setVideoTrack] = useState<LocalVideoTrack>();
   const [isAcquiringLocalTracks, setIsAcquiringLocalTracks] = useState(false);
 
-  const hasAudio = useHasAudioInputDevices();
-  const hasVideo = useHasVideoInputDevices();
+  const localAudioDevices = useAudioInputDevices();
+  const localVideoDevices = useVideoInputDevices();
+
+  const hasAudio = localAudioDevices.length > 0;
+  const hasVideo = localVideoDevices.length > 0;
 
   const getLocalAudioTrack = useCallback((deviceId?: string) => {
     const options: CreateLocalTrackOptions = {};
@@ -49,13 +52,27 @@ export default function useLocalTracks() {
     if (audioTrack || videoTrack) return Promise.resolve();
 
     setIsAcquiringLocalTracks(true);
-    return Video.createLocalTracks({
+
+    const selectedAudioDeviceId = window.localStorage.getItem(SELECTED_AUDIO_INPUT_KEY);
+    const selectedVideoDeviceId = window.localStorage.getItem(SELECTED_VIDEO_INPUT_KEY);
+
+    const hasSelectedAudioDevice = localAudioDevices.some(
+      device => selectedAudioDeviceId && device.deviceId === selectedAudioDeviceId
+    );
+    const hasSelectedVideoDevice = localVideoDevices.some(
+      device => selectedVideoDeviceId && device.deviceId === selectedVideoDeviceId
+    );
+
+    const localTrackConstraints = {
       video: hasVideo && {
         ...(DEFAULT_VIDEO_CONSTRAINTS as {}),
         name: `camera-${Date.now()}`,
+        ...(hasSelectedVideoDevice && { deviceId: { exact: selectedVideoDeviceId! } }),
       },
-      audio: hasAudio,
-    })
+      audio: hasSelectedAudioDevice ? { deviceId: { exact: selectedAudioDeviceId! } } : hasAudio,
+    };
+
+    return Video.createLocalTracks(localTrackConstraints)
       .then(tracks => {
         const videoTrack = tracks.find(track => track.kind === 'video');
         const audioTrack = tracks.find(track => track.kind === 'audio');
@@ -67,7 +84,7 @@ export default function useLocalTracks() {
         }
       })
       .finally(() => setIsAcquiringLocalTracks(false));
-  }, [hasAudio, hasVideo, audioTrack, videoTrack]);
+  }, [hasAudio, hasVideo, audioTrack, videoTrack, localAudioDevices, localVideoDevices]);
 
   const localTracks = [audioTrack, videoTrack].filter(track => track !== undefined) as (
     | LocalAudioTrack
