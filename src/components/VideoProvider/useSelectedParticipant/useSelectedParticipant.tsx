@@ -22,9 +22,14 @@ export function SelectedParticipantProvider({ room, children }: SelectedParticip
 
   useEffect(() => {
     const onDisconnect = () => _setSelectedParticipant(null);
+    const handleParticipantDisconnected = (participant: Participant) =>
+      _setSelectedParticipant(prevParticipant => (prevParticipant === participant ? null : prevParticipant));
+
     room.on('disconnected', onDisconnect);
+    room.on('participantDisconnected', handleParticipantDisconnected);
     return () => {
       room.off('disconnected', onDisconnect);
+      room.off('participantDisconnected', handleParticipantDisconnected);
     };
   }, [room]);
 
