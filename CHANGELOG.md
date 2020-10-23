@@ -2,7 +2,7 @@
 
 ## New Features
 
-- Devices that are selected in the "Audio and Video Settings" modal will not be reset when the page is reloaded. Device IDs are stored in local storage so that the same input and output devices will be used for each session. ((#333)[https://github.com/twilio/twilio-video-app-react/pull/333])
+- Devices that are selected in the "Audio and Video Settings" modal will not be reset when the page is reloaded. Device IDs are stored in local storage so that the same input and output devices will be used for each session. ([#333](https://github.com/twilio/twilio-video-app-react/pull/333))
 
 ### Bug Fixes
 
@@ -13,8 +13,8 @@
 ### Dependency Upgrades
 
 - `react-scripts` has been upgraded from 3.4.3 to 3.4.4. ([#337](https://github.com/twilio/twilio-video-app-react/pull/337))
-- `firebase` has been upgraded from 7.8.0 to 7.24.0 ((#335)[https://github.com/twilio/twilio-video-app-react/pull/335])
-- `twilio-video` has been upgraded from 2.8.0-beta.1 to 2.8.0-beta.2. This is to include a bug fix where an iOS 14 Safari Participant is not heard by others in a Room after handling an incoming phone call. ((#344)[https://github.com/twilio/twilio-video-app-react/pull/344])
+- `firebase` has been upgraded from 7.8.0 to 7.24.0 ([#335](https://github.com/twilio/twilio-video-app-react/pull/335))
+- `twilio-video` has been upgraded from 2.8.0-beta.1 to 2.8.0-beta.2. This is to include a bug fix where an iOS 14 Safari Participant is not heard by others in a Room after handling an incoming phone call. ([#344](https://github.com/twilio/twilio-video-app-react/pull/344))
 
 ## 0.2.0
 
