@@ -1,12 +1,12 @@
 ## 0.2.1
 
-## New Features
+### New Features
 
 - Devices that are selected in the "Audio and Video Settings" modal will not be reset when the page is reloaded. Device IDs are stored in local storage so that the same input and output devices will be used for each session. ([#333](https://github.com/twilio/twilio-video-app-react/pull/333))
 
 ### Bug Fixes
 
-- A pinned participant will no longer be pinned after the disconnect from a room ([#339](https://github.com/twilio/twilio-video-app-react/pull/339))
+- A pinned participant will no longer be pinned after they disconnect from a room. ([#339](https://github.com/twilio/twilio-video-app-react/pull/339))
 - The throttle interval in the `VideoToggleButton` component has been incresased to avoid duplicate track publication when the button is pressed rapidly. ([#336](https://github.com/twilio/twilio-video-app-react/pull/336))
 - Cypress tests have been updated to improve reliability. ([#332](https://github.com/twilio/twilio-video-app-react/pull/332))
 
