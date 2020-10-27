@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
         overflowY: 'initial',
         overflowX: 'auto',
         display: 'flex',
-        padding: '8px',
+        padding: `${theme.sidebarMobilePadding}px`,
       },
     },
     transparentBackground: {
@@ -46,7 +46,7 @@ export default function ParticipantList() {
   const mainParticipant = useMainParticipant();
   const isRemoteParticipantScreenSharing = screenShareParticipant && screenShareParticipant !== localParticipant;
 
-  if (participants.length === 0) return null; // Don't render this component if there are no remote participants.
+  // if (participants.length === 0) return null; // Don't render this component if there are no remote participants.
 
   return (
     <aside
@@ -56,6 +56,12 @@ export default function ParticipantList() {
     >
       <div className={classes.scrollContainer}>
         <Participant participant={localParticipant} isLocalParticipant={true} />
+        <Participant participant={localParticipant} isLocalParticipant={true} />
+
+        <Participant participant={localParticipant} isLocalParticipant={true} />
+
+        <Participant participant={localParticipant} isLocalParticipant={true} />
+
         {participants.map(participant => {
           const isSelected = participant === selectedParticipant;
           const hideParticipant =
