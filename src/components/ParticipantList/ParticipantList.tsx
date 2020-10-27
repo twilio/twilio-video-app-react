@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
         overflowY: 'initial',
         overflowX: 'auto',
         display: 'flex',
-        padding: '8px',
+        padding: `${theme.sidebarMobilePadding}px`,
       },
     },
     transparentBackground: {
