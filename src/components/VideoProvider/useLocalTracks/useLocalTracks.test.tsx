@@ -124,8 +124,6 @@ describe('the useLocalTracks hook', () => {
     });
 
     it('should set isAcquiringLocalTracks to true while acquiring tracks', async () => {
-      mockUseAudioInputDevices.mockImplementation(() => []);
-
       const { result, waitForNextUpdate } = renderHook(useLocalTracks);
 
       expect(result.current.isAcquiringLocalTracks).toBe(false);
@@ -144,8 +142,6 @@ describe('the useLocalTracks hook', () => {
     });
 
     it('should ignore calls to getAudioAndVideoTracks while isAcquiringLocalTracks is true', async () => {
-      mockUseAudioInputDevices.mockImplementation(() => []);
-
       const { result, waitForNextUpdate } = renderHook(useLocalTracks);
 
       act(() => {
