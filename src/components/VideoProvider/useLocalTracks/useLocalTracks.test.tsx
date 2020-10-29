@@ -123,6 +123,46 @@ describe('the useLocalTracks hook', () => {
       });
     });
 
+    it('should set isAcquiringLocalTracks to true while acquiring tracks', async () => {
+      mockUseAudioInputDevices.mockImplementation(() => []);
+
+      const { result, waitForNextUpdate } = renderHook(useLocalTracks);
+
+      expect(result.current.isAcquiringLocalTracks).toBe(false);
+
+      act(() => {
+        result.current.getAudioAndVideoTracks();
+      });
+
+      expect(result.current.isAcquiringLocalTracks).toBe(true);
+
+      await act(async () => {
+        await waitForNextUpdate();
+      });
+
+      expect(result.current.isAcquiringLocalTracks).toBe(false);
+    });
+
+    it('should ignore calls to getAudioAndVideoTracks while isAcquiringLocalTracks is true', async () => {
+      mockUseAudioInputDevices.mockImplementation(() => []);
+
+      const { result, waitForNextUpdate } = renderHook(useLocalTracks);
+
+      act(() => {
+        expect(result.current.isAcquiringLocalTracks).toBe(false);
+        result.current.getAudioAndVideoTracks(); // This call is not ignored
+      });
+
+      expect(result.current.isAcquiringLocalTracks).toBe(true);
+      result.current.getAudioAndVideoTracks(); // This call is ignored
+
+      await act(async () => {
+        await waitForNextUpdate();
+      });
+
+      expect(Video.createLocalTracks).toHaveBeenCalledTimes(1);
+    });
+
     it('should not create any tracks when no input devices are present', async () => {
       mockUseAudioInputDevices.mockImplementation(() => []);
       mockUseVideoInputDevices.mockImplementation(() => []);
