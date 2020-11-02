@@ -14,14 +14,19 @@ export enum Steps {
   deviceSelectionStep,
 }
 
-export default function PreJoinScreens() {
+interface PreJoinScreensProps {
+  startUserName: string;
+  startRoomName: string;
+}
+
+export default function PreJoinScreens({ startUserName, startRoomName }: PreJoinScreensProps) {
   const { user } = useAppState();
   const { getAudioAndVideoTracks } = useVideoContext();
   const { URLRoomName } = useParams();
   const [step, setStep] = useState(Steps.roomNameStep);
 
-  const [name, setName] = useState<string>(user?.displayName || '');
-  const [roomName, setRoomName] = useState<string>('');
+  const [name, setName] = useState<string>(startUserName || user?.displayName || '');
+  const [roomName, setRoomName] = useState<string>(startRoomName || '');
 
   const [mediaError, setMediaError] = useState<Error>();
 
@@ -44,14 +49,21 @@ export default function PreJoinScreens() {
     }
   }, [getAudioAndVideoTracks, step]);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // If this app is deployed as a twilio function, don't change the URL because routing isn't supported.
-    if (!window.location.origin.includes('twil.io')) {
-      window.history.replaceState(null, '', window.encodeURI(`/room/${roomName}${window.location.search || ''}`));
+  const handleSubmit = (event?: FormEvent<HTMLFormElement>) => {
+    if (event) {
+      event.preventDefault();
     }
+
+    // If this app is deployed as a twilio function, don't change the URL because routing isn't supported.
+    // if (!window.location.origin.includes('twil.io')) {
+    //  window.history.replaceState(null, '', window.encodeURI(`/room/${roomName}${window.location.search || ''}`));
+    //}
     setStep(Steps.deviceSelectionStep);
   };
+
+  if (step === Steps.roomNameStep && startUserName && startRoomName) {
+    handleSubmit();
+  }
 
   const SubContent = (
     <>

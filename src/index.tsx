@@ -16,6 +16,10 @@ import { VideoProvider } from './components/VideoProvider';
 import useConnectionOptions from './utils/useConnectionOptions/useConnectionOptions';
 import UnsupportedBrowserWarning from './components/UnsupportedBrowserWarning/UnsupportedBrowserWarning';
 
+// todo: temp to test in here, but App component will have it passed into it
+const roomName = 'fwegiomdqwiv90ikokm';
+const userName = 'John Smith';
+
 const VideoApp = () => {
   const { error, setError } = useAppState();
   const connectionOptions = useConnectionOptions();
@@ -24,7 +28,7 @@ const VideoApp = () => {
     <UnsupportedBrowserWarning>
       <VideoProvider options={connectionOptions} onError={setError}>
         <ErrorDialog dismissError={() => setError(null)} error={error} />
-        <App />
+        <App userName={userName} roomName={roomName} />
       </VideoProvider>
     </UnsupportedBrowserWarning>
   );
