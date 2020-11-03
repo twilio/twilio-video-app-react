@@ -11,9 +11,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import { Offline, Online } from 'react-detect-offline';
-import { TRACK_TYPE, ERROR_MESSAGE } from '../../utils/displayStrings';
+import { TRACK_TYPE, NOTIFICATION_MESSAGE, ERROR_MESSAGE } from '../../utils/displayStrings';
 import { PARTICIANT_TYPES } from '../../utils/participantTypes';
-import { useAlert } from 'react-alert';
 import LocalAudioLevelIndicator from './LocalAudioLevelIndicator/LocalAudioLevelIndicator';
 import ToggleFullscreenButton from './ToggleFullScreenButton/ToggleFullScreenButton';
 import ToggleGridViewButton from './ToggleGridViewButton/ToggleGridViewButton';
@@ -84,11 +83,9 @@ const mobileAndTabletCheck = function() {
 export default function MenuBar() {
   const classes = useStyles();
   const [submitButtonValue, setSubmitButtonValue] = useState<any>(JOIN_ROOM_MESSAGE);
-  const { setError, getToken, isFetching, authoriseParticipant } = useAppState();
+  const { setError, getToken, isFetching, authoriseParticipant, setNotification } = useAppState();
   const { isConnecting, connect, room, localTracks } = useVideoContext();
   const roomState = useRoomState();
-
-  const alert = useAlert();
 
   const [participantInfo, setParticipantInfo] = useState<any>(null);
 
@@ -96,9 +93,9 @@ export default function MenuBar() {
     try {
       const response = await getToken(participantInformation);
 
-      if (response === ERROR_MESSAGE.ROOM_NOT_FOUND) {
+      if (response === NOTIFICATION_MESSAGE.ROOM_NOT_FOUND) {
         setSubmitButtonValue(RETRY_ROOM_MESSAGE);
-        return <div>{alert.show(ERROR_MESSAGE.ROOM_NOT_FOUND)}</div>;
+        setNotification({ message: NOTIFICATION_MESSAGE.ROOM_NOT_FOUND });
       } else {
         await connect(response);
         setSubmitButtonValue(JOIN_ROOM_MESSAGE);

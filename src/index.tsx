@@ -11,6 +11,7 @@ import AlertTemplate from 'react-alert-template-basic';
 import AppStateProvider, { useAppState } from './state';
 import { VideoProvider } from './components/VideoProvider/';
 import ErrorDialog from './components/ErrorDialog/ErrorDialog';
+import NotificationDialog from './components/NotificationDialog/NotificationDialog';
 import theme from './theme';
 import App from './App';
 const options = {
@@ -42,14 +43,16 @@ const connectionOptions = {
 
 const VideoApp = () => {
   const { error, setError } = useAppState();
+  const { notification, setNotification } = useAppState();
   if (!Video.isSupported) {
     return (
       <ErrorDialog dismissError={() => null} error={(ERROR_MESSAGE.UNSUPPORTED_MESSAGE as unknown) as TwilioError} />
     );
   }
   return (
-    <VideoProvider options={connectionOptions} onError={setError}>
+    <VideoProvider options={connectionOptions} onError={setError} onNotification={setNotification}>
       <ErrorDialog dismissError={() => setError(null)} error={error} />
+      <NotificationDialog dismissNotification={() => setNotification(null)} notification={notification} />
       <App />
     </VideoProvider>
   );

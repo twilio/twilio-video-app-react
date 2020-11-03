@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer, useState, useEffect } from 'react';
 import { TwilioError } from 'twilio-video';
-import { ERROR_MESSAGE } from '../utils/displayStrings';
+import { NOTIFICATION_MESSAGE } from '../utils/displayStrings';
 import { PARTICIANT_TYPES } from '../utils/participantTypes';
 import axios from 'axios';
 
@@ -16,6 +16,8 @@ export interface ParticipantInformation {
 export interface StateContextType {
   error: TwilioError | null;
   setError(error: TwilioError | null): void;
+  notification: string | null;
+  setNotification(notification: string | null): void;
   isFetching: boolean;
   setSelectedAudioInput: string;
   selectedVideoInput: string;
@@ -34,6 +36,7 @@ export const StateContext = createContext<StateContextType>(null!);
 
 export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const [error, setError] = useState<TwilioError | null>(null);
+  const [notification, setNotification] = useState(null);
   const [isFetching, setIsFetching] = useState(false);
   const [hasTriedAuthorisation, setHasTriedAuthorisation] = useState(false);
 
@@ -121,6 +124,8 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   let contextValue = ({
     error,
     setError,
+    notification,
+    setNotification,
     isFetching,
     selectedAudioInput,
     setSelectedAudioInput,
@@ -217,7 +222,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
       setIsFetching(false);
 
       if (!res.roomExist && !participantIsMemberInHostRole(participantInformation.partyType))
-        return ERROR_MESSAGE.ROOM_NOT_FOUND;
+        return NOTIFICATION_MESSAGE.ROOM_NOT_FOUND;
 
       setUserToken(res.result);
       const user = jwt_decode(res.result);
