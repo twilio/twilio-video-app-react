@@ -24,12 +24,12 @@ const Main = styled('main')(({ theme }: { theme: Theme }) => ({
   },
 }));
 
-interface PreJoinScreensProps {
-  userName: string;
-  roomName: string;
+interface AppProps {
+  userName?: string;
+  roomName?: string;
 }
 
-export default function App({ userName, roomName }: PreJoinScreensProps) {
+export default function App({ userName, roomName }: AppProps) {
   const roomState = useRoomState();
 
   // Here we would like the height of the main container to be the height of the viewport.

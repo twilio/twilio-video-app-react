@@ -1,3 +1,16 @@
+# Torch
+
+Run `npm run bundle` to bundle the dist file which can be referenced in consuming app package.json.
+
+Note: make sure `noEmit` remains false in tsconfig.json
+
+
+
+
+
+
+
+
 # Twilio Video React App
 
 [![CircleCI](https://circleci.com/gh/twilio/twilio-video-app-react.svg?style=svg)](https://circleci.com/gh/twilio/twilio-video-app-react)

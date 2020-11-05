@@ -15,8 +15,8 @@ export enum Steps {
 }
 
 interface PreJoinScreensProps {
-  startUserName: string;
-  startRoomName: string;
+  startUserName?: string;
+  startRoomName?: string;
 }
 
 export default function PreJoinScreens({ startUserName, startRoomName }: PreJoinScreensProps) {
