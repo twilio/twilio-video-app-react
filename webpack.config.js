@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  entry: ['./index'],
+  entry: ['./index.tsx'],
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'twilio-video-app-react.js',
