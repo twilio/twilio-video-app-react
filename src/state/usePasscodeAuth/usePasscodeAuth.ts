@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { RoomType } from '../../types';
 
 export function getPasscode() {
@@ -43,8 +42,6 @@ export function getErrorMessage(message: string) {
 }
 
 export default function usePasscodeAuth() {
-  const history = useHistory();
-
   const [user, setUser] = useState<{ displayName: undefined; photoURL: undefined; passcode: string } | null>(null);
   const [isAuthReady, setIsAuthReady] = useState(false);
   const [roomType, setRoomType] = useState<RoomType>();
@@ -78,14 +75,13 @@ export default function usePasscodeAuth() {
           if (verification?.isValid) {
             setUser({ passcode } as any);
             window.sessionStorage.setItem('passcode', passcode);
-            history.replace(window.location.pathname);
           }
         })
         .then(() => setIsAuthReady(true));
     } else {
       setIsAuthReady(true);
     }
-  }, [history]);
+  });
 
   const signIn = useCallback((passcode: string) => {
     return verifyPasscode(passcode).then(verification => {

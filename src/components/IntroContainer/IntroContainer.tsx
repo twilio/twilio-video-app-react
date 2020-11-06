@@ -5,7 +5,6 @@ import VideoLogo from './VideoLogo';
 import TwilioLogo from './TwilioLogo';
 import { useAppState } from '../../state';
 import UserMenu from './UserMenu/UserMenu';
-import { useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) => ({
   background: {
@@ -102,12 +101,11 @@ interface IntroContainerProps {
 const IntroContainer = (props: IntroContainerProps) => {
   const classes = useStyles();
   const { user } = useAppState();
-  const location = useLocation();
 
   return (
     <div className={classes.background}>
       <TwilioLogo className={classes.twilioLogo} />
-      {user && location.pathname !== '/login' && <UserMenu />}
+      {user && <UserMenu />}
       <div className={classes.container}>
         <div className={classes.innerContainer}>
           <div className={classes.swooshContainer}>
