@@ -1,8 +1,8 @@
 'use strict';
-import { VideoApp, AppStateProvider } from './dist/twilio-video-app-react';
+import TwilioVideoApp from './dist/twilio-video-app-react';
 
 // this file loads the module in consuming web app
 export default {
-  VideoApp,
-  AppStateProvider,
+  VideoApp: TwilioVideoApp.VideoApp,
+  AppStateProvider: TwilioVideoApp.AppStateProvider,
 };

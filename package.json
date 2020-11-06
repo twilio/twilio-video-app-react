@@ -58,8 +58,7 @@
     "ts-loader": "^8.0.9",
     "typescript": "^3.9.7",
     "webpack": "^4.29.6",
-    "webpack-cli": "^3.3.12",
-    "webpack-node-externals": "^2.5.2"
+    "webpack-cli": "^3.3.12"
   },
   "peerDependencies": {},
   "lint-staged": {
