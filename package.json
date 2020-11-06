@@ -43,6 +43,7 @@
     "lint-staged": "^9.5.0",
     "lodash.throttle": "^4.1.1",
     "nanoid": "^3.1.12",
+    "notistack": "^1.0.0",
     "prettier": "^1.19.1",
     "react-router-dom": "^5.1.2",
     "strip-color": "^0.1.0",
