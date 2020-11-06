@@ -5,7 +5,6 @@ import MediaErrorSnackbar from './MediaErrorSnackbar/MediaErrorSnackbar';
 import PreflightTest from './PreflightTest/PreflightTest';
 import RoomNameScreen from './RoomNameScreen/RoomNameScreen';
 import { useAppState } from '../../state';
-import { useParams } from 'react-router-dom';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import Video from 'twilio-video';
 
@@ -22,22 +21,12 @@ interface PreJoinScreensProps {
 export default function PreJoinScreens({ startUserName, startRoomName }: PreJoinScreensProps) {
   const { user } = useAppState();
   const { getAudioAndVideoTracks } = useVideoContext();
-  const { URLRoomName } = useParams();
   const [step, setStep] = useState(Steps.roomNameStep);
 
   const [name, setName] = useState<string>(startUserName || user?.displayName || '');
   const [roomName, setRoomName] = useState<string>(startRoomName || '');
 
   const [mediaError, setMediaError] = useState<Error>();
-
-  useEffect(() => {
-    if (URLRoomName) {
-      setRoomName(URLRoomName);
-      if (user?.displayName) {
-        setStep(Steps.deviceSelectionStep);
-      }
-    }
-  }, [user, URLRoomName]);
 
   useEffect(() => {
     if (step === Steps.deviceSelectionStep) {
