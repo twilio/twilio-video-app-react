@@ -30,7 +30,6 @@ module.exports = {
         root: "ReactDOM"      
     },
     'react-router-dom': 'react-router-dom',
-    'react-scripts': 'react-scripts',
   },
   module: {
     rules: [
