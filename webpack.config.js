@@ -1,6 +1,7 @@
 const path = require('path');
 
 module.exports = {
+  mode: 'development',
   entry: {
     'twilio-video-app-react': './src/module.ts',
   },
@@ -19,6 +20,7 @@ module.exports = {
       'react-router-dom': path.resolve(__dirname, './node_modules/react-router-dom'),
     },
   },
+  devtool: 'source-map',
   externals: {
     react: {          
         commonjs: "react",          
