@@ -73,6 +73,7 @@
     "webpack-cli": "^3.3.12"
   },
   "peerDependencies": {},
+  "proxy": "http://localhost:8081/",
   "browserslist": {
     "production": [
       ">0.2%",
