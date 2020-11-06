@@ -1,20 +1,23 @@
 const path = require('path');
 
 module.exports = {
-  entry: ['./index.tsx'],
+  entry: {
+    'twilio-video-app-react': './src/module.ts',
+  },
   output: {
-    path: path.join(__dirname, 'dist'),
-    filename: 'twilio-video-app-react.js',
-    library: 'twilio-video-app-react',      
+    path: path.join(__dirname, 'lib'),
+    filename: 'index.js',
     libraryTarget: 'umd',
-    umdNamedDefine: true,
+    library: 'twilio-video-app-react',
+    umdNamedDefine: true
   },
   resolve: {
     extensions: [ '.ts', '.tsx', '.js' ],
     alias: {
       'react': path.resolve(__dirname, './node_modules/react'),
-      'react-dom': path.resolve(__dirname, './node_modules/react-dom'),      
-    } 
+      'react-dom': path.resolve(__dirname, './node_modules/react-dom'),
+      'react-router-dom': path.resolve(__dirname, './node_modules/react-router-dom'),
+    },
   },
   externals: {
     react: {          

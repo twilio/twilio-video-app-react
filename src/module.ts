@@ -1,6 +1,6 @@
 'use strict';
-import AppStateProvider from './src/state';
-import VideoApp from './src/VideoApp';
+import AppStateProvider from './state';
+import VideoApp from './VideoApp';
 
 // this file builds the dist package
 export default {
