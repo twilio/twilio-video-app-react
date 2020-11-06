@@ -1,6 +1,6 @@
 import React from 'react';
-// todo: need this somewhere import { CssBaseline } from '@material-ui/core';
-
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import theme from './theme';
 import App from './App';
 import { useAppState } from './state';
 import ErrorDialog from './components/ErrorDialog/ErrorDialog';
@@ -18,11 +18,13 @@ export default function VideoApp({ userName, roomName }: VideoAppProps) {
   const connectionOptions = useConnectionOptions();
 
   return (
-    <UnsupportedBrowserWarning>
-      <VideoProvider options={connectionOptions} onError={setError}>
-        <ErrorDialog dismissError={() => setError(null)} error={error} />
-        <App userName={userName} roomName={roomName} />
-      </VideoProvider>
-    </UnsupportedBrowserWarning>
+    <MuiThemeProvider theme={theme}>
+      <UnsupportedBrowserWarning>
+        <VideoProvider options={connectionOptions} onError={setError}>
+          <ErrorDialog dismissError={() => setError(null)} error={error} />
+          <App userName={userName} roomName={roomName} />
+        </VideoProvider>
+      </UnsupportedBrowserWarning>
+    </MuiThemeProvider>
   );
 }
