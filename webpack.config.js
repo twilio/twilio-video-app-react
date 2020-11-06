@@ -1,4 +1,5 @@
 const path = require('path');
+const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
   entry: ['./index.tsx'],
@@ -16,20 +17,7 @@ module.exports = {
       'react-dom': path.resolve(__dirname, './node_modules/react-dom'),      
     } 
   },
-  externals: {
-    react: {          
-        commonjs: "react",          
-        commonjs2: "react",          
-        amd: "React",          
-        root: "React"      
-    },      
-    "react-dom": {          
-        commonjs: "react-dom",          
-        commonjs2: "react-dom",          
-        amd: "ReactDOM",          
-        root: "ReactDOM"      
-    },
-  },
+  externals: [nodeExternals()], // in order to ignore all modules in node_modules folder
   module: {
     rules: [
       {

@@ -2,7 +2,7 @@ import React from 'react';
 // todo: need this somewhere import { CssBaseline } from '@material-ui/core';
 
 import App from './App';
-import AppStateProvider, { useAppState } from './state';
+import { useAppState } from './state';
 import ErrorDialog from './components/ErrorDialog/ErrorDialog';
 import { VideoProvider } from './components/VideoProvider';
 import useConnectionOptions from './utils/useConnectionOptions/useConnectionOptions';
@@ -19,12 +19,10 @@ export default function VideoApp({ userName, roomName }: VideoAppProps) {
 
   return (
     <UnsupportedBrowserWarning>
-      <AppStateProvider>
-        <VideoProvider options={connectionOptions} onError={setError}>
-          <ErrorDialog dismissError={() => setError(null)} error={error} />
-          <App userName={userName} roomName={roomName} />
-        </VideoProvider>
-      </AppStateProvider>
+      <VideoProvider options={connectionOptions} onError={setError}>
+        <ErrorDialog dismissError={() => setError(null)} error={error} />
+        <App userName={userName} roomName={roomName} />
+      </VideoProvider>
     </UnsupportedBrowserWarning>
   );
 }
