@@ -2,6 +2,7 @@ import React from 'react';
 import { CssBaseline } from '@material-ui/core';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import App from './App';
+import { useAppState } from './state';
 import ErrorDialog from './components/ErrorDialog/ErrorDialog';
 import { VideoProvider } from './components/VideoProvider';
 import useConnectionOptions from './utils/useConnectionOptions/useConnectionOptions';
