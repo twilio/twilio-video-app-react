@@ -1,16 +1,26 @@
 {
   "name": "twilio-video-app-react",
-  "version": "0.2.0",
+  "version": "0.0.1",
   "private": true,
   "author": "torch.io",
   "license": "MIT",
-  "main": "./lib/index.js",
+  "main": "lib/index.js",
   "files": [
     "/lib"
   ],
+  "scripts": {
+    "build": "webpack --config webpack.config.js"
+  },
   "dependencies": {
     "@material-ui/core": "^4.9.1",
     "@material-ui/icons": "^4.9.1",
+    "@types/twilio-video": "^2.7.0",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
+    "twilio": "^3.39.3",
+    "twilio-video": "2.8.0-beta.1"
+  },
+  "devDependencies": {
     "@types/d3-timer": "^1.0.9",
     "@types/fscreen": "^1.0.1",
     "@types/jest": "^24.9.1",
@@ -31,14 +41,8 @@
     "lodash.throttle": "^4.1.1",
     "nanoid": "^3.1.12",
     "prettier": "^1.19.1",
-    "react": "16.8.6",
-    "react-dom": "16.8.6",
     "react-router-dom": "^5.1.2",
     "strip-color": "^0.1.0",
-    "twilio": "^3.39.3",
-    "twilio-video": "2.8.0-beta.1"
-  },
-  "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/react-hooks": "^3.2.1",
@@ -64,46 +68,5 @@
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.12"
   },
-  "peerDependencies": {},
-  "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --write",
-      "git add"
-    ]
-  },
-  "scripts": {
-    "build": "webpack --config webpack.config.js",
-    "start": "concurrently npm:server npm:dev",
-    "test": "jest",
-    "lint": "eslint src/**/*.{ts,tsx}"
-  },
-  "eslintConfig": {
-    "extends": "react-app",
-    "rules": {
-      "no-shadow": "warn"
-    }
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "proxy": "http://localhost:8081/",
-  "jest": {
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ]
-  }
+  "peerDependencies": {}
 }

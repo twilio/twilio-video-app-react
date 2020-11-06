@@ -1,13 +1,9 @@
 # Torch
 
-Run `npm run build` to bundle the dist file which can be referenced in consuming app package.json.
 
-Note: make sure `noEmit` remains false in tsconfig.json
-
-
-
-
-
+To bundle the dist file which can be referenced in consuming app...
+`$ npm install`
+`$ npm run build`
 
 
 
