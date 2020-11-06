@@ -2,7 +2,6 @@ import React from 'react';
 import { CssBaseline } from '@material-ui/core';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import App from './App';
-import AppStateProvider, { useAppState } from './state';
 import ErrorDialog from './components/ErrorDialog/ErrorDialog';
 import { VideoProvider } from './components/VideoProvider';
 import useConnectionOptions from './utils/useConnectionOptions/useConnectionOptions';
@@ -33,14 +32,12 @@ export default function VideoApp({ userName, roomName }: VideoAppProps) {
         autoHideDuration={10000}
         variant="info"
       >
-        <AppStateProvider>
-          <UnsupportedBrowserWarning>
-            <VideoProvider options={connectionOptions} onError={setError}>
-              <ErrorDialog dismissError={() => setError(null)} error={error} />
-              <App userName={userName} roomName={roomName} />
-            </VideoProvider>
-          </UnsupportedBrowserWarning>
-        </AppStateProvider>
+        <UnsupportedBrowserWarning>
+          <VideoProvider options={connectionOptions} onError={setError}>
+            <ErrorDialog dismissError={() => setError(null)} error={error} />
+            <App userName={userName} roomName={roomName} />
+          </VideoProvider>
+        </UnsupportedBrowserWarning>
       </SnackbarProvider>
     </MuiThemeProvider>
   );
