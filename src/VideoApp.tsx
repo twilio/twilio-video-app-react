@@ -21,10 +21,7 @@ interface VideoAppProps {
 export default function VideoApp({ tokenEndpoint, userName, roomName }: VideoAppProps) {
   const { error, setError, setTokenEndpoint } = useAppState();
   const connectionOptions = useConnectionOptions();
-
-  if (tokenEndpoint) {
-    setTokenEndpoint(tokenEndpoint);
-  }
+  setTokenEndpoint(tokenEndpoint || '');
 
   return (
     <MuiThemeProvider theme={theme}>

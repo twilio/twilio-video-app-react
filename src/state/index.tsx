@@ -5,6 +5,7 @@ import { settingsReducer, initialSettings, Settings, SettingsAction } from './se
 import useActiveSinkId from './useActiveSinkId/useActiveSinkId';
 import useFirebaseAuth from './useFirebaseAuth/useFirebaseAuth';
 import usePasscodeAuth from './usePasscodeAuth/usePasscodeAuth';
+import useTokenEndpoint from './useTokenEndpoint/useTokenEndpoint';
 import { User } from 'firebase';
 
 export interface StateContextType {
@@ -40,7 +41,9 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const [error, setError] = useState<TwilioError | null>(null);
   const [isFetching, setIsFetching] = useState(false);
   const [activeSinkId, setActiveSinkId] = useActiveSinkId();
-  const [tokenEndpoint, setTokenEndpoint] = useState('');
+  
+  const [tokenEndpoint, setTokenEndpoint] = useTokenEndpoint();
+
   const [settings, dispatchSetting] = useReducer(settingsReducer, initialSettings);
 
   let contextValue = {
@@ -70,6 +73,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
       ...contextValue,
       getToken: async (identity, roomName) => {
         const headers = new window.Headers();
+        const tokenEndpoint = window.localStorage.TOKEN_URL_KEY || '';
         const endpoint = tokenEndpoint || process.env.REACT_APP_TOKEN_ENDPOINT || '/token';
         const params = new window.URLSearchParams({ identity, roomName });
 
