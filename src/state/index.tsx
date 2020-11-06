@@ -18,6 +18,8 @@ export interface StateContextType {
   isFetching: boolean;
   activeSinkId: string;
   setActiveSinkId(sinkId: string): void;
+  tokenEndpoint: string;
+  setTokenEndpoint(tokenEndpoint: string): void;
   settings: Settings;
   dispatchSetting: React.Dispatch<SettingsAction>;
   roomType?: RoomType;
@@ -38,6 +40,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const [error, setError] = useState<TwilioError | null>(null);
   const [isFetching, setIsFetching] = useState(false);
   const [activeSinkId, setActiveSinkId] = useActiveSinkId();
+  const [tokenEndpoint, setTokenEndpoint] = useState('');
   const [settings, dispatchSetting] = useReducer(settingsReducer, initialSettings);
 
   let contextValue = {
@@ -46,6 +49,8 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     isFetching,
     activeSinkId,
     setActiveSinkId,
+    tokenEndpoint,
+    setTokenEndpoint,
     settings,
     dispatchSetting,
   } as StateContextType;
@@ -65,7 +70,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
       ...contextValue,
       getToken: async (identity, roomName) => {
         const headers = new window.Headers();
-        const endpoint = process.env.REACT_APP_TOKEN_ENDPOINT || '/token';
+        const endpoint = tokenEndpoint || process.env.REACT_APP_TOKEN_ENDPOINT || '/token';
         const params = new window.URLSearchParams({ identity, roomName });
 
         return fetch(`${endpoint}?${params}`, { headers }).then(res => res.text());

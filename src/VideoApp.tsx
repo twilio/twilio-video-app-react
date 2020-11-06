@@ -15,11 +15,16 @@ import './types';
 interface VideoAppProps {
   userName?: string;
   roomName?: string;
+  tokenEndpoint?: string;
 }
 
-export default function VideoApp({ userName, roomName }: VideoAppProps) {
-  const { error, setError } = useAppState();
+export default function VideoApp({ tokenEndpoint, userName, roomName }: VideoAppProps) {
+  const { error, setError, setTokenEndpoint } = useAppState();
   const connectionOptions = useConnectionOptions();
+
+  if (tokenEndpoint) {
+    setTokenEndpoint(tokenEndpoint);
+  }
 
   return (
     <MuiThemeProvider theme={theme}>
