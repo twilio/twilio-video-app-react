@@ -23,12 +23,14 @@ module.exports = {
         amd: "React",          
         root: "React"      
     },      
-    "react-dom": {          
+    'react-dom': {          
         commonjs: "react-dom",          
         commonjs2: "react-dom",          
         amd: "ReactDOM",          
         root: "ReactDOM"      
     },
+    'react-router-dom': 'react-router-dom',
+    'react-scripts': 'react-scripts',
   },
   module: {
     rules: [
