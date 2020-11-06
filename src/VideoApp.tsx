@@ -18,13 +18,13 @@ export default function VideoApp({ userName, roomName }: VideoAppProps) {
   const connectionOptions = useConnectionOptions();
 
   return (
-    <AppStateProvider>
-      <UnsupportedBrowserWarning>
+    <UnsupportedBrowserWarning>
+      <AppStateProvider>
         <VideoProvider options={connectionOptions} onError={setError}>
           <ErrorDialog dismissError={() => setError(null)} error={error} />
           <App userName={userName} roomName={roomName} />
         </VideoProvider>
-      </UnsupportedBrowserWarning>
-    </AppStateProvider>
+      </AppStateProvider>
+    </UnsupportedBrowserWarning>
   );
 }
