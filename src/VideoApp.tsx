@@ -1,12 +1,14 @@
 import React from 'react';
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import theme from './theme';
 import App from './App';
 import { useAppState } from './state';
 import ErrorDialog from './components/ErrorDialog/ErrorDialog';
 import { VideoProvider } from './components/VideoProvider';
 import useConnectionOptions from './utils/useConnectionOptions/useConnectionOptions';
 import UnsupportedBrowserWarning from './components/UnsupportedBrowserWarning/UnsupportedBrowserWarning';
+
+import theme from './theme';
+import './types';
 
 interface VideoAppProps {
   userName?: string;
