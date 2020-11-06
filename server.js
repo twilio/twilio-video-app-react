@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const path = require('path');
 const AccessToken = require('twilio').jwt.AccessToken;
@@ -10,6 +11,7 @@ const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
 const twilioApiKeySID = process.env.TWILIO_API_KEY_SID;
 const twilioApiKeySecret = process.env.TWILIO_API_KEY_SECRET;
 
+app.use(cors());
 app.use(express.static(path.join(__dirname, 'build')));
 
 app.get('/token', (req, res) => {
