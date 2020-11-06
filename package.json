@@ -9,6 +9,9 @@
     "/lib"
   ],
   "scripts": {
+    "start": "concurrently npm:server npm:dev",
+    "dev": "react-scripts start",
+    "server": "node server.js",
     "build": "webpack --config webpack.config.js"
   },
   "dependencies": {
@@ -65,8 +68,20 @@
     "ts-jest": "^24.3.0",
     "ts-loader": "^8.0.9",
     "typescript": "^3.9.7",
-    "webpack": "^4.29.6",
+    "webpack": "4.40.2",
     "webpack-cli": "^3.3.12"
   },
-  "peerDependencies": {}
+  "peerDependencies": {},
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
