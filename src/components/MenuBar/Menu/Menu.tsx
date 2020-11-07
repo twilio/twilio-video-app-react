@@ -7,7 +7,6 @@ import MenuContainer from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Typography from '@material-ui/core/Typography';
-import { Theme } from '@material-ui/core';
 
 export default function Menu(props: { buttonClassName?: string }) {
   const isMobile = window.screen.width <= 600;

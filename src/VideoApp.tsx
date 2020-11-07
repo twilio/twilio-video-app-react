@@ -15,18 +15,14 @@ import './types';
 interface VideoAppProps {
   userName?: string;
   roomName?: string;
-  tokenEndpoint?: string;
   onCancel?: () => void;
   doGetToken?: (name: string, room: string) => Promise<string>;
 }
 
-// todo: turn off preflight request if we pass in token to be used ...
-// so pass in token instead of tokenEndpoint ?
 
-export default function VideoApp({ doGetToken, onCancel, tokenEndpoint, userName, roomName }: VideoAppProps) {
-  const { error, setError, setTokenEndpoint } = useAppState();
+export default function VideoApp({ doGetToken, onCancel, userName, roomName }: VideoAppProps) {
+  const { error, setError } = useAppState();
   const connectionOptions = useConnectionOptions();
-  setTokenEndpoint(tokenEndpoint || '');
 
   return (
     <MuiThemeProvider theme={theme}>

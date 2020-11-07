@@ -54,11 +54,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default function LoginPage() {
   const classes = useStyles();
-  const { signIn, user, isAuthReady } = useAppState();
+  const { signIn, isAuthReady } = useAppState();
   const [passcode, setPasscode] = useState('');
   const [authError, setAuthError] = useState<Error | null>(null);
-
-  const isAuthEnabled = Boolean(process.env.REACT_APP_SET_AUTH);
 
   const login = () => {
     setAuthError(null);
