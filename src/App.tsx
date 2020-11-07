@@ -27,9 +27,10 @@ const Main = styled('main')(({ theme }: { theme: Theme }) => ({
 interface AppProps {
   userName?: string;
   roomName?: string;
+  onCancel?: () => void;
 }
 
-export default function App({ userName, roomName }: AppProps) {
+export default function App({ onCancel, userName, roomName }: AppProps) {
   const roomState = useRoomState();
 
   // Here we would like the height of the main container to be the height of the viewport.
@@ -42,7 +43,7 @@ export default function App({ userName, roomName }: AppProps) {
   return (
     <Container style={{ height }}>
       {roomState === 'disconnected' ? (
-        <PreJoinScreens startUserName={userName} startRoomName={roomName} />
+        <PreJoinScreens onCancel={onCancel} startUserName={userName} startRoomName={roomName} />
       ) : (
         <Main>
           <ReconnectingNotification />

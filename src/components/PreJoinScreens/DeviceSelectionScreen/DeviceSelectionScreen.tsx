@@ -53,10 +53,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface DeviceSelectionScreenProps {
   name: string;
   roomName: string;
+  onCancel?: () => void;
   setStep: (step: Steps) => void;
 }
 
-export default function DeviceSelectionScreen({ name, roomName, setStep }: DeviceSelectionScreenProps) {
+export default function DeviceSelectionScreen({ onCancel, name, roomName, setStep }: DeviceSelectionScreenProps) {
   const classes = useStyles();
   const { getToken, isFetching } = useAppState();
   const { connect, isAcquiringLocalTracks, isConnecting } = useVideoContext();
@@ -94,7 +95,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
               </Hidden>
             </div>
             <div className={classes.joinButtons}>
-              <Button variant="outlined" color="primary" onClick={() => setStep(Steps.roomNameStep)}>
+              <Button variant="outlined" color="primary" onClick={() => onCancel ? onCancel() : setStep(Steps.roomNameStep)}>
                 Cancel
               </Button>
               <Button

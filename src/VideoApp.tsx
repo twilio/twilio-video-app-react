@@ -16,9 +16,10 @@ interface VideoAppProps {
   userName?: string;
   roomName?: string;
   tokenEndpoint?: string;
+  onCancel?: () => void;
 }
 
-export default function VideoApp({ tokenEndpoint, userName, roomName }: VideoAppProps) {
+export default function VideoApp({ onCancel, tokenEndpoint, userName, roomName }: VideoAppProps) {
   const { error, setError, setTokenEndpoint } = useAppState();
   const connectionOptions = useConnectionOptions();
   setTokenEndpoint(tokenEndpoint || '');
@@ -38,7 +39,7 @@ export default function VideoApp({ tokenEndpoint, userName, roomName }: VideoApp
         <UnsupportedBrowserWarning>
           <VideoProvider options={connectionOptions} onError={setError}>
             <ErrorDialog dismissError={() => setError(null)} error={error} />
-            <App userName={userName} roomName={roomName} />
+            <App onCancel={onCancel} userName={userName} roomName={roomName} />
           </VideoProvider>
         </UnsupportedBrowserWarning>
       </SnackbarProvider>

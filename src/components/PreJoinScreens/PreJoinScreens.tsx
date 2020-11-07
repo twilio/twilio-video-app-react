@@ -16,9 +16,10 @@ export enum Steps {
 interface PreJoinScreensProps {
   startUserName?: string;
   startRoomName?: string;
+  onCancel?: () => void;
 }
 
-export default function PreJoinScreens({ startUserName, startRoomName }: PreJoinScreensProps) {
+export default function PreJoinScreens({ onCancel, startUserName, startRoomName }: PreJoinScreensProps) {
   const { user } = useAppState();
   const { getAudioAndVideoTracks } = useVideoContext();
   const [step, setStep] = useState(Steps.roomNameStep);
@@ -74,7 +75,7 @@ export default function PreJoinScreens({ startUserName, startRoomName }: PreJoin
       )}
 
       {step === Steps.deviceSelectionStep && (
-        <DeviceSelectionScreen name={name} roomName={roomName} setStep={setStep} />
+        <DeviceSelectionScreen onCancel={onCancel} name={name} roomName={roomName} setStep={setStep} />
       )}
     </IntroContainer>
   );
