@@ -38,7 +38,6 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const [error, setError] = useState<TwilioError | null>(null);
   const [isFetching, setIsFetching] = useState(false);
   const [activeSinkId, setActiveSinkId] = useActiveSinkId();
-
   const [settings, dispatchSetting] = useReducer(settingsReducer, initialSettings);
 
   let contextValue = {
