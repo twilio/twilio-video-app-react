@@ -17,9 +17,13 @@ interface VideoAppProps {
   roomName?: string;
   tokenEndpoint?: string;
   onCancel?: () => void;
+  doGetToken?: (name: string, room: string) => Promise<string>;
 }
 
-export default function VideoApp({ onCancel, tokenEndpoint, userName, roomName }: VideoAppProps) {
+// todo: turn off preflight request if we pass in token to be used ...
+// so pass in token instead of tokenEndpoint ?
+
+export default function VideoApp({ doGetToken, onCancel, tokenEndpoint, userName, roomName }: VideoAppProps) {
   const { error, setError, setTokenEndpoint } = useAppState();
   const connectionOptions = useConnectionOptions();
   setTokenEndpoint(tokenEndpoint || '');
@@ -39,7 +43,7 @@ export default function VideoApp({ onCancel, tokenEndpoint, userName, roomName }
         <UnsupportedBrowserWarning>
           <VideoProvider options={connectionOptions} onError={setError}>
             <ErrorDialog dismissError={() => setError(null)} error={error} />
-            <App onCancel={onCancel} userName={userName} roomName={roomName} />
+            <App doGetToken={doGetToken} onCancel={onCancel} userName={userName} roomName={roomName} />
           </VideoProvider>
         </UnsupportedBrowserWarning>
       </SnackbarProvider>

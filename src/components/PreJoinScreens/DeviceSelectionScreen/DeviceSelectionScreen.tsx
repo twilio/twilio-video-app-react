@@ -54,17 +54,22 @@ interface DeviceSelectionScreenProps {
   name: string;
   roomName: string;
   onCancel?: () => void;
+  doGetToken?: (name: string, room: string) => Promise<string>;
   setStep: (step: Steps) => void;
 }
 
-export default function DeviceSelectionScreen({ onCancel, name, roomName, setStep }: DeviceSelectionScreenProps) {
+export default function DeviceSelectionScreen({ doGetToken, onCancel, name, roomName, setStep }: DeviceSelectionScreenProps) {
   const classes = useStyles();
   const { getToken, isFetching } = useAppState();
   const { connect, isAcquiringLocalTracks, isConnecting } = useVideoContext();
   const disableButtons = isFetching || isAcquiringLocalTracks || isConnecting;
 
   const handleJoin = () => {
-    getToken(name, roomName).then(token => connect(token));
+    if (doGetToken) {
+      doGetToken(name, roomName).then(token => connect(token));
+    } else {
+      getToken(name, roomName).then(token => connect(token));
+    }
   };
 
   return (
