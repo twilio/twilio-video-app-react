@@ -2,17 +2,19 @@ import { useEffect, useState } from 'react';
 import { RemoteParticipant } from 'twilio-video';
 import useDominantSpeaker from '../useDominantSpeaker/useDominantSpeaker';
 import useVideoContext from '../useVideoContext/useVideoContext';
+import { PARTICIANT_TYPES } from '../../utils/participantTypes';
+import toggleAudioButton from '../../components/Controls/ToggleAudioButton/ToggleAudioButton';
 
 export default function useParticipants() {
   const { room } = useVideoContext();
   const dominantSpeaker = useDominantSpeaker();
-  const [useDominantSpeakerEffect] = useState(false);
   const [participants, setParticipants] = useState(Array.from(room.participants.values()));
+  const [isHostIn, setIsHostIn] = useState(false);
+  const [useDominantSpeakerEffect] = useState(false);
 
   // When the dominant speaker changes, they are moved to the front of the participants array.
   // This means that the most recent dominant speakers will always be near the top of the
   // ParticipantStrip component.
-
   useEffect(() => {
     if (dominantSpeaker && useDominantSpeakerEffect) {
       console.log(useDominantSpeakerEffect);
@@ -24,10 +26,34 @@ export default function useParticipants() {
   }, [dominantSpeaker, useDominantSpeakerEffect]);
 
   useEffect(() => {
-    const participantConnected = (participant: RemoteParticipant) =>
+    const participantConnected = (participant: RemoteParticipant) => {
+      if (participant.identity.split('@')[1] === PARTICIANT_TYPES.REPORTER) {
+        setIsHostIn(true);
+      }
+      if (isHostIn) {
+        room.localParticipant.audioTracks.forEach(function(audioTrack) {
+          audioTrack.track.enable();
+        });
+      } else if (!isHostIn) {
+        console.log('i got here');
+        //  toggleAudioButton({ disabled: true });
+        alert('waiting for reporter to join');
+      }
       setParticipants(prevParticipants => [...prevParticipants, participant]);
-    const participantDisconnected = (participant: RemoteParticipant) =>
+    };
+
+    const participantDisconnected = (participant: RemoteParticipant) => {
+      if (participant.identity.split('@')[1] === PARTICIANT_TYPES.REPORTER) {
+        setIsHostIn(false);
+        room.localParticipant.audioTracks.forEach(function(audioTrack) {
+          audioTrack.track.disable();
+        });
+        // toggleAudioButton({ disabled: true });
+        alert('waiting for reporter to join');
+      }
       setParticipants(prevParticipants => prevParticipants.filter(p => p !== participant));
+    };
+
     room.on('participantConnected', participantConnected);
     room.on('participantDisconnected', participantDisconnected);
     return () => {

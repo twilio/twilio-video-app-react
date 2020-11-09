@@ -4,6 +4,8 @@ import { isMobile } from '../../../utils';
 import Video, { ConnectOptions, LocalTrack, Room } from 'twilio-video';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ROOM_STATE, TRACK_TYPE } from '../../../utils/displayStrings';
+import { PARTICIANT_TYPES } from '../../../utils/participantTypes';
+import toggleAudioButton from '../../../components/Controls/ToggleAudioButton/ToggleAudioButton';
 
 // @ts-ignore
 window.TwilioVideo = Video;
@@ -52,6 +54,13 @@ export default function useRoom(localTracks: any, onError: Callback, options?: C
             })
           );
 
+          var localParticipant = newRoom.localParticipant;
+          if (localParticipant.identity.split('@')[1] !== PARTICIANT_TYPES.REPORTER) {
+            localParticipant.audioTracks.forEach(audioTrack => audioTrack.track.disable());
+            localParticipant.videoTracks.forEach(videoTrack => videoTrack.track.disable());
+            console.info('use room');
+            toggleAudioButton({ disabled: true });
+          }
           setIsConnecting(false);
 
           // Add a listener to disconnect from the room when a user closes their browser
