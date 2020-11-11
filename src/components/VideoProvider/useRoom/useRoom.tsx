@@ -39,6 +39,10 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
           setRoom(newRoom);
           const disconnect = () => newRoom.disconnect();
 
+          // This app can add up to 13 'participantDisconnected' listeners to the room object, which can trigger
+          // a warning from the EventEmitter object. Here we increase the max listeners to suppress the warning.
+          newRoom.setMaxListeners(15);
+
           newRoom.once('disconnected', () => {
             // Reset the room only after all other `disconnected` listeners have been called.
             setTimeout(() => setRoom(new EventEmitter() as Room));
@@ -60,11 +64,9 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
           updateVideoSubscription();
           /********************************************************************************************/
 
-          newRoom.localParticipant.videoTracks.forEach((publication: any) =>
-            // Tracks can be supplied as arguments to the Video.connect() function and they will automatically be published.
-            // However, tracks must be published manually in order to set the priority on them.
-            // All video tracks are published with 'low' priority. This works because the video
-            // track that is displayed in the 'MainParticipant' component will have it's priority
+          newRoom.localParticipant.videoTracks.forEach(publication =>
+            // All video tracks are published with 'low' priority because the video track
+            // that is displayed in the 'MainParticipant' component will have it's priority
             // set to 'high' via track.setPriority()
             publication.setPriority('low')
           );
@@ -274,7 +276,7 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
         }
       );
     },
-    [onError, localTracks]
+    [localTracks, onError]
   );
 
   return { room, isConnecting, connect };

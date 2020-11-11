@@ -34,8 +34,8 @@ export default function useConnectionOptions() {
     // VP8 simulcast enables the media server in a Small Group or Group Room
     // to adapt your encoded video quality for each RemoteParticipant based on
     // their individual bandwidth constraints. Simulcast should be disabled if
-    // you are using Peer-to-Peer Rooms.
-    preferredVideoCodecs: [{ codec: 'VP8', simulcast: roomType !== 'peer-to-peer' }],
+    // you are using Peer-to-Peer or 'Go' Rooms.
+    preferredVideoCodecs: [{ codec: 'VP8', simulcast: roomType !== 'peer-to-peer' && roomType !== 'go' }],
   };
 
   // For mobile browsers, limit the maximum incoming video bitrate to 2.5 Mbps.

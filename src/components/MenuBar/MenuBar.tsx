@@ -1,145 +1,107 @@
-import React, { ChangeEvent, FormEvent, useState, useEffect } from 'react';
+import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
-import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import TextField from '@material-ui/core/TextField';
-import ToggleFullscreenButton from './ToggleFullScreenButton/ToggleFullScreenButton';
-import Toolbar from '@material-ui/core/Toolbar';
+import EndCallButton from '../Buttons/EndCallButton/EndCallButton';
+import FlipCameraButton from './FlipCameraButton/FlipCameraButton';
 import Menu from './Menu/Menu';
 
-import { useAppState } from '../../state';
-import { useParams } from 'react-router-dom';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
-import { Typography } from '@material-ui/core';
-import FlipCameraButton from './FlipCameraButton/FlipCameraButton';
-import LocalAudioLevelIndicator from './DeviceSelector/LocalAudioLevelIndicator/LocalAudioLevelIndicator';
+import { Typography, Grid, Hidden } from '@material-ui/core';
+import ToggleAudioButton from '../Buttons/ToggleAudioButton/ToggleAudioButton';
+import ToggleVideoButton from '../Buttons/ToggleVideoButton/ToggleVideoButton';
+import ToggleScreenShareButton from '../Buttons/ToogleScreenShareButton/ToggleScreenShareButton';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
       backgroundColor: theme.palette.background.default,
-    },
-    toolbar: {
-      [theme.breakpoints.down('xs')]: {
+      bottom: 0,
+      left: 0,
+      right: 0,
+      height: `${theme.footerHeight}px`,
+      position: 'fixed',
+      display: 'flex',
+      padding: '0 1.43em',
+      zIndex: 10,
+      [theme.breakpoints.down('sm')]: {
+        height: `${theme.mobileFooterHeight}px`,
         padding: 0,
       },
     },
-    rightButtonContainer: {
-      display: 'flex',
-      alignItems: 'center',
-      marginLeft: 'auto',
-    },
-    form: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      alignItems: 'center',
-      [theme.breakpoints.up('md')]: {
-        marginLeft: '2.2em',
+    screenShareBanner: {
+      position: 'fixed',
+      zIndex: 10,
+      bottom: `${theme.footerHeight}px`,
+      left: 0,
+      right: 0,
+      height: '104px',
+      background: 'rgba(0, 0, 0, 0.5)',
+      '& h6': {
+        color: 'white',
+      },
+      '& button': {
+        background: 'white',
+        color: theme.brand,
+        border: `2px solid ${theme.brand}`,
+        margin: '0 2em',
+        '&:hover': {
+          color: '#600101',
+          border: `2px solid #600101`,
+          background: '#FFE9E7',
+        },
       },
     },
-    textField: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
-      maxWidth: 200,
-    },
-    loadingSpinner: {
-      marginLeft: '1em',
-    },
-    displayName: {
-      margin: '1.1em 0.6em',
-      minWidth: '200px',
-      fontWeight: 600,
-    },
-    joinButton: {
-      margin: '1em',
+    hideMobile: {
+      display: 'initial',
+      [theme.breakpoints.down('sm')]: {
+        display: 'none',
+      },
     },
   })
 );
 
 export default function MenuBar() {
   const classes = useStyles();
-  const { URLRoomName } = useParams();
-  const { user, getToken, isFetching } = useAppState();
-  const { isConnecting, connect, isAcquiringLocalTracks } = useVideoContext();
+  const { isSharingScreen, toggleScreenShare } = useVideoContext();
   const roomState = useRoomState();
-
-  const [name, setName] = useState<string>(user?.displayName || '');
-  const [roomName, setRoomName] = useState<string>('');
-
-  useEffect(() => {
-    if (URLRoomName) {
-      setRoomName(URLRoomName);
-    }
-  }, [URLRoomName]);
-
-  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
-
-  const handleRoomNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setRoomName(event.target.value);
-  };
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // If this app is deployed as a twilio function, don't change the URL because routing isn't supported.
-    if (!window.location.origin.includes('twil.io')) {
-      window.history.replaceState(null, '', window.encodeURI(`/room/${roomName}${window.location.search || ''}`));
-    }
-    getToken(name, roomName).then(token => connect(token));
-  };
+  const isReconnecting = roomState === 'reconnecting';
+  const { room } = useVideoContext();
 
   return (
-    <AppBar className={classes.container} position="static">
-      <Toolbar className={classes.toolbar}>
-        {roomState === 'disconnected' ? (
-          <form className={classes.form} onSubmit={handleSubmit}>
-            {window.location.search.includes('customIdentity=true') || !user?.displayName ? (
-              <TextField
-                id="menu-name"
-                label="Name"
-                className={classes.textField}
-                value={name}
-                onChange={handleNameChange}
-                margin="dense"
-              />
-            ) : (
-              <Typography className={classes.displayName} variant="body1">
-                {user.displayName}
-              </Typography>
-            )}
-            <TextField
-              id="menu-room"
-              label="Room"
-              className={classes.textField}
-              value={roomName}
-              onChange={handleRoomNameChange}
-              margin="dense"
-            />
-            <Button
-              className={classes.joinButton}
-              type="submit"
-              color="primary"
-              variant="contained"
-              disabled={isAcquiringLocalTracks || isConnecting || !name || !roomName || isFetching}
-            >
-              Join Room
-            </Button>
-            {(isConnecting || isFetching) && <CircularProgress className={classes.loadingSpinner} />}
-          </form>
-        ) : (
-          <h3>{roomName}</h3>
-        )}
-        <div className={classes.rightButtonContainer}>
-          <FlipCameraButton />
-          <LocalAudioLevelIndicator />
-          <ToggleFullscreenButton />
-          <Menu />
-        </div>
-      </Toolbar>
-    </AppBar>
+    <>
+      {isSharingScreen && (
+        <Grid container justify="center" alignItems="center" className={classes.screenShareBanner}>
+          <Typography variant="h6">You are sharing your screen</Typography>
+          <Button onClick={() => toggleScreenShare()}>Stop Sharing</Button>
+        </Grid>
+      )}
+      <footer className={classes.container}>
+        <Grid container justify="space-around" alignItems="center">
+          <Hidden smDown>
+            <Grid style={{ flex: 1 }}>
+              <Typography variant="body1">{room.name}</Typography>
+            </Grid>
+          </Hidden>
+          <Grid item>
+            <Grid container justify="center">
+              <ToggleAudioButton disabled={isReconnecting} />
+              <ToggleVideoButton disabled={isReconnecting} />
+              <Hidden smDown>{!isSharingScreen && <ToggleScreenShareButton disabled={isReconnecting} />}</Hidden>
+              <FlipCameraButton />
+            </Grid>
+          </Grid>
+          <Hidden smDown>
+            <Grid style={{ flex: 1 }}>
+              <Grid container justify="flex-end">
+                <Menu />
+                <EndCallButton />
+              </Grid>
+            </Grid>
+          </Hidden>
+        </Grid>
+      </footer>
+    </>
   );
 }

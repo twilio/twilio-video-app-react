@@ -4,45 +4,32 @@ import { useAppState } from '../../state';
 import Button from '@material-ui/core/Button';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import { ReactComponent as GoogleLogo } from './google-logo.svg';
-import { ReactComponent as TwilioLogo } from './twilio-logo.svg';
+import { InputLabel, Theme } from '@material-ui/core';
+import IntroContainer from '../IntroContainer/IntroContainer';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import videoLogo from './video-logo.png';
 
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
 import { useLocation, useHistory } from 'react-router-dom';
 
-const useStyles = makeStyles({
-  container: {
-    height: '100vh',
-    background: '#0D122B',
-  },
-  twilioLogo: {
-    width: '55%',
-    display: 'block',
-  },
-  videoLogo: {
-    width: '25%',
-    padding: '2.4em 0 2.1em',
-  },
-  paper: {
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'column',
-    maxWidth: '460px',
-    padding: '2em',
-    marginTop: '4em',
+const useStyles = makeStyles((theme: Theme) => ({
+  googleButton: {
     background: 'white',
-    color: 'black',
-  },
-  button: {
-    color: 'black',
-    background: 'white',
-    margin: '0.8em 0 0.7em',
+    color: 'rgb(0, 94, 166)',
+    borderRadius: '4px',
+    border: '2px solid rgb(2, 122, 197)',
+    margin: '1.8em 0 0.7em',
     textTransform: 'none',
+    boxShadow: 'none',
+    padding: '0.3em 1em',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+    '&:hover': {
+      background: 'white',
+      boxShadow: 'none',
+    },
   },
   errorMessage: {
     color: 'red',
@@ -53,13 +40,18 @@ const useStyles = makeStyles({
       marginRight: '0.4em',
     },
   },
-});
-
-const theme = createMuiTheme({
-  palette: {
-    type: 'light',
+  gutterBottom: {
+    marginBottom: '1em',
   },
-});
+  passcodeContainer: {
+    minHeight: '120px',
+  },
+  submitButton: {
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+  },
+}));
 
 export default function LoginPage() {
   const classes = useStyles();
@@ -94,26 +86,36 @@ export default function LoginPage() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <Grid container justify="center" alignItems="flex-start" className={classes.container}>
-        <Paper className={classes.paper} elevation={6}>
-          <TwilioLogo className={classes.twilioLogo} />
-          <img className={classes.videoLogo} src={videoLogo} alt="Video Logo"></img>
+    <IntroContainer>
+      {process.env.REACT_APP_SET_AUTH === 'firebase' && (
+        <>
+          <Typography variant="h5" className={classes.gutterBottom}>
+            Sign in to join a room
+          </Typography>
+          <Typography variant="body1">Sign in using your Twilio Google Account</Typography>
+          <Button variant="contained" className={classes.googleButton} onClick={login} startIcon={<GoogleLogo />}>
+            Sign in with Google
+          </Button>
+        </>
+      )}
 
-          {process.env.REACT_APP_SET_AUTH === 'firebase' && (
-            <Button variant="contained" className={classes.button} onClick={login} startIcon={<GoogleLogo />}>
-              Sign in with Google
-            </Button>
-          )}
-
-          {process.env.REACT_APP_SET_AUTH === 'passcode' && (
-            <form onSubmit={handleSubmit}>
-              <Grid container alignItems="center" direction="column">
+      {process.env.REACT_APP_SET_AUTH === 'passcode' && (
+        <>
+          <Typography variant="h5" className={classes.gutterBottom}>
+            Enter passcode to join a room
+          </Typography>
+          <form onSubmit={handleSubmit}>
+            <Grid container justify="space-between">
+              <div className={classes.passcodeContainer}>
+                <InputLabel shrink htmlFor="input-passcode">
+                  Passcode
+                </InputLabel>
                 <TextField
                   id="input-passcode"
-                  label="Passcode"
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setPasscode(e.target.value)}
                   type="password"
+                  variant="outlined"
+                  size="small"
                 />
                 <div>
                   {authError && (
@@ -123,14 +125,22 @@ export default function LoginPage() {
                     </Typography>
                   )}
                 </div>
-                <Button variant="contained" className={classes.button} type="submit" disabled={!passcode.length}>
-                  Submit
-                </Button>
-              </Grid>
-            </form>
-          )}
-        </Paper>
-      </Grid>
-    </ThemeProvider>
+              </div>
+            </Grid>
+            <Grid container justify="flex-end">
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                disabled={!passcode.length}
+                className={classes.submitButton}
+              >
+                Submit
+              </Button>
+            </Grid>
+          </form>
+        </>
+      )}
+    </IntroContainer>
   );
 }

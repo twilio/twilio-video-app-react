@@ -2,13 +2,13 @@ import React from 'react';
 import { Participant, Track } from 'twilio-video';
 import Publication from '../Publication/Publication';
 import usePublications from '../../hooks/usePublications/usePublications';
-import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 interface ParticipantTracksProps {
   participant: Participant;
-  disableAudio?: boolean;
+  videoOnly?: boolean;
   enableScreenShare?: boolean;
   videoPriority?: Track.Priority | null;
+  isLocalParticipant?: boolean;
 }
 
 /*
@@ -21,13 +21,12 @@ interface ParticipantTracksProps {
 
 export default function ParticipantTracks({
   participant,
-  disableAudio,
+  videoOnly,
   enableScreenShare,
   videoPriority,
+  isLocalParticipant,
 }: ParticipantTracksProps) {
-  const { room } = useVideoContext();
   const publications = usePublications(participant);
-  const isLocal = participant === room.localParticipant;
 
   let filteredPublications;
 
@@ -44,8 +43,8 @@ export default function ParticipantTracks({
           key={publication.kind}
           publication={publication}
           participant={participant}
-          isLocal={isLocal}
-          disableAudio={disableAudio}
+          isLocalParticipant={isLocalParticipant}
+          videoOnly={videoOnly}
           videoPriority={videoPriority}
         />
       ))}
