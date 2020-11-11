@@ -5,8 +5,7 @@ import Video, { ConnectOptions, LocalTrack, Room } from 'twilio-video';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ROOM_STATE, TRACK_TYPE } from '../../../utils/displayStrings';
 import { PARTICIANT_TYPES } from '../../../utils/participantTypes';
-import toggleAudioButton from '../../../components/Controls/ToggleAudioButton/ToggleAudioButton';
-
+import useIsHostIn from '../../../hooks/useIsHosetIn/useIsHostIn';
 // @ts-ignore
 window.TwilioVideo = Video;
 
@@ -14,6 +13,7 @@ export default function useRoom(localTracks: any, onError: Callback, options?: C
   const [room, setRoom] = useState<Room>(new EventEmitter() as Room);
   const [isConnecting, setIsConnecting] = useState(false);
   const localTracksRef = useRef<LocalTrack[]>([]);
+  const [isHostIn, setIsHostIn] = useState(false);
 
   useEffect(() => {
     // It can take a moment for Video.connect to connect to a room. During this time, the user may have enabled or disabled their
@@ -55,12 +55,20 @@ export default function useRoom(localTracks: any, onError: Callback, options?: C
           );
 
           var localParticipant = newRoom.localParticipant;
-          if (localParticipant.identity.split('@')[1] !== PARTICIANT_TYPES.REPORTER) {
+          /* if (localParticipant.identity.split('@')[1] === PARTICIANT_TYPES.REPORTER) {
+           // setIsHostIn(true);
+          }*/
+
+          /*  if(!useIsHostIn(newRoom) && localParticipant.identity.split('@')[1] !== PARTICIANT_TYPES.REPORTER)
+          {
+            console.log('')
             localParticipant.audioTracks.forEach(audioTrack => audioTrack.track.disable());
-            localParticipant.videoTracks.forEach(videoTrack => videoTrack.track.disable());
+         //   localParticipant.videoTracks.forEach(videoTrack => videoTrack.track.disable());
             console.info('use room');
+            alert('waiting for reporter to join');
             toggleAudioButton({ disabled: true });
-          }
+          }*/
+
           setIsConnecting(false);
 
           // Add a listener to disconnect from the room when a user closes their browser

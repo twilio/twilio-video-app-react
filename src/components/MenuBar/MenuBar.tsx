@@ -21,6 +21,8 @@ import { useAppState } from '../../state';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { ParticipantInformation } from '../../state/index';
+import useIsHostIn from '../../hooks/useIsHosetIn/useIsHostIn';
+import { ROOM_STATE } from 'utils/displayStrings';
 
 const JOIN_ROOM_MESSAGE = 'Join Room';
 const RETRY_ROOM_MESSAGE = 'Retry';
@@ -129,7 +131,6 @@ export default function MenuBar() {
     event.preventDefault();
     joinRoom(participantInfo);
   };
-
   let selectedAudioDevice = { label: '', deviceId: '', groupdId: '' };
   let selectedVideoDevice = { label: '', deviceId: '', groupdId: '' };
   const audioTrack = localTracks.find(x => x.kind === TRACK_TYPE.AUDIO);
@@ -149,6 +150,16 @@ export default function MenuBar() {
       deviceId: videoTrack.mediaStreamTrack.getSettings().deviceId as string,
       groupdId: videoTrack.mediaStreamTrack.getSettings().groupId as string,
     };
+  }
+
+  if (roomState !== ROOM_STATE.DISCONNECTED) {
+    if (!useIsHostIn()) {
+      console.log('use room');
+      audioTrack?.disable();
+      videoTrack?.disable();
+      alert('waiting for reporter to join');
+      // toggleAudioButton({ disabled: true });
+    }
   }
 
   return (

@@ -19,6 +19,7 @@ export interface StateContextType {
   notification: string | null;
   setNotification(notification: string | null): void;
   isFetching: boolean;
+  isHostIn: Boolean;
   setSelectedAudioInput: string;
   selectedVideoInput: string;
   setSelectedVideoInput: string;
@@ -39,6 +40,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const [notification, setNotification] = useState(null);
   const [isFetching, setIsFetching] = useState(false);
   const [hasTriedAuthorisation, setHasTriedAuthorisation] = useState(false);
+  const [isHostIn, setIsHostIn] = useState(false);
 
   // eslint-disable-next-line no-unused-vars
   const [user, setUser] = useState(null);
@@ -127,6 +129,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     notification,
     setNotification,
     isFetching,
+    isHostIn,
     selectedAudioInput,
     setSelectedAudioInput,
     selectedVideoInput,
@@ -223,6 +226,10 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
 
       if (!res.roomExist && !participantIsMemberInHostRole(participantInformation.partyType))
         return NOTIFICATION_MESSAGE.ROOM_NOT_FOUND;
+
+      if (participantInformation.partyType === PARTICIANT_TYPES.REPORTER) {
+        setIsHostIn(true);
+      }
 
       setUserToken(res.result);
       const user = jwt_decode(res.result);
