@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import * as jwt_decode from 'jwt-decode';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
@@ -22,8 +21,8 @@ import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { ParticipantInformation } from '../../state/index';
 
-const JOIN_ROOM_MESSAGE = 'Join Room';
-const RETRY_ROOM_MESSAGE = 'Retry';
+const JOIN_ROOM_MESSAGE = 'Enter Hearing Room';
+const RETRY_ROOM_MESSAGE = 'Retry Entering Hearing Room';
 const useStyles = makeStyles(theme =>
   createStyles({
     container: {
@@ -83,27 +82,48 @@ const mobileAndTabletCheck = function() {
 export default function MenuBar() {
   const classes = useStyles();
   const [submitButtonValue, setSubmitButtonValue] = useState<any>(JOIN_ROOM_MESSAGE);
-  const { setError, getToken, isFetching, authoriseParticipant, setNotification } = useAppState();
+  const {
+    setError,
+    getToken,
+    isFetching,
+    authoriseParticipant,
+    setNotification,
+    isAutoRetryingToJoinRoom,
+    setWaitingNotification,
+  } = useAppState();
   const { isConnecting, connect, room, localTracks } = useVideoContext();
   const roomState = useRoomState();
 
   const [participantInfo, setParticipantInfo] = useState<any>(null);
+  const [retryJoinRoomAttemptTimerId, setRetryJoinRoomAttemptTimerId] = useState<NodeJS.Timeout>(null as any);
+  const RETRY_INTERVAL = 15000;
+
+  if (isAutoRetryingToJoinRoom === false) {
+    clearTimeout(retryJoinRoomAttemptTimerId);
+  }
 
   async function joinRoom(participantInformation) {
+    var response = null as any;
     try {
-      const response = await getToken(participantInformation);
-
-      if (response === NOTIFICATION_MESSAGE.ROOM_NOT_FOUND) {
-        setSubmitButtonValue(RETRY_ROOM_MESSAGE);
-        setNotification({ message: NOTIFICATION_MESSAGE.ROOM_NOT_FOUND });
-      } else {
-        await connect(response);
-        setSubmitButtonValue(JOIN_ROOM_MESSAGE);
-      }
+      response = await getToken(participantInformation);
     } catch (err) {
       if (err.response) setError({ message: err.response.data });
       else setError({ message: ERROR_MESSAGE.NETWORK_ERROR });
 
+      setSubmitButtonValue(JOIN_ROOM_MESSAGE);
+    }
+
+    if (response === NOTIFICATION_MESSAGE.ROOM_NOT_FOUND) {
+      setSubmitButtonValue(RETRY_ROOM_MESSAGE);
+      if (isAutoRetryingToJoinRoom) {
+        setWaitingNotification(NOTIFICATION_MESSAGE.AUTO_RETRYING_TO_JOIN_ROOM);
+        setRetryJoinRoomAttemptTimerId(setTimeout(joinRoom, RETRY_INTERVAL, participantInformation));
+      } else {
+        setNotification({ message: NOTIFICATION_MESSAGE.ROOM_NOT_FOUND });
+      }
+    } else {
+      setWaitingNotification(null);
+      await connect(response);
       setSubmitButtonValue(JOIN_ROOM_MESSAGE);
     }
   }

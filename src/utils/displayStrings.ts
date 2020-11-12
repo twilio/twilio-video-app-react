@@ -6,7 +6,8 @@ export const ERROR_MESSAGE = {
 
 export const NOTIFICATION_MESSAGE = {
   ROOM_NOT_FOUND:
-    'This room is not yet open.  If your session is due to start please wait one minute and try again.  If you continue to experience an inability to connect please confirm your hearing start time with the Impartial Hearing Office.',
+    'Waiting for host to join. Please retry again to join in a few minutes. If you do not manage please contact the Impartial Hearing Office',
+  AUTO_RETRYING_TO_JOIN_ROOM: 'Waiting for host to join.',
   ROOM_COMPLETED: 'Conference ended since the host left the call',
 };
 export const PLAYER_STATE = {

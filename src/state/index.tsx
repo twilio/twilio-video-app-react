@@ -18,6 +18,10 @@ export interface StateContextType {
   setError(error: TwilioError | null): void;
   notification: string | null;
   setNotification(notification: string | null): void;
+  isAutoRetryingToJoinRoom: boolean;
+  setIsAutoRetryingToJoinRoom(isAutoRetrying: boolean): void;
+  waitingNotification: string;
+  setWaitingNotification(waitingNotification: string | null): void;
   isFetching: boolean;
   setSelectedAudioInput: string;
   selectedVideoInput: string;
@@ -39,6 +43,8 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const [notification, setNotification] = useState(null);
   const [isFetching, setIsFetching] = useState(false);
   const [hasTriedAuthorisation, setHasTriedAuthorisation] = useState(false);
+  const [isAutoRetryingToJoinRoom, setIsAutoRetryingToJoinRoom] = useState(true);
+  const [waitingNotification, setWaitingNotification] = useState(null);
 
   // eslint-disable-next-line no-unused-vars
   const [user, setUser] = useState(null);
@@ -126,6 +132,10 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     setError,
     notification,
     setNotification,
+    isAutoRetryingToJoinRoom,
+    setIsAutoRetryingToJoinRoom,
+    waitingNotification,
+    setWaitingNotification,
     isFetching,
     selectedAudioInput,
     setSelectedAudioInput,
