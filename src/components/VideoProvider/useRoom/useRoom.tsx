@@ -60,7 +60,7 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
           );
 
           /*** Initially, don't send any video bytes until at least one Participant joins the Room. ***/
-          let videoSubscriptionPriorities: any = {};
+          let videoSubscriptionResolutions: any = {};
           updateVideoSubscription();
           /********************************************************************************************/
 
@@ -102,14 +102,14 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
 
           newRoom.on('trackUnsubscribed', (track, publication, participant) => {
             if (track.kind === 'data' && track.name === 'video_subscription_signaling') {
-              delete videoSubscriptionPriorities[participant.identity];
+              delete videoSubscriptionResolutions[participant.identity];
               videoSubscriptionSignalings.delete(participant);
             } else if (track.kind === 'video') {
               sendVideoSubscriptionUpdate();
             }
           });
 
-          newRoom.on('dominantSpeakerChanged', sendVideoSubscriptionUpdate);
+          newRoom.on('dominantSpeakerChanged', () => setTimeout(sendVideoSubscriptionUpdate, 1000));
           newRoom.on('trackSwitchedOff', track => track.kind === 'video' && sendVideoSubscriptionUpdate());
           newRoom.on('trackSwitchedOn', track => track.kind === 'video' && sendVideoSubscriptionUpdate());
           /**************************************************************************************************/
@@ -135,8 +135,8 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
               const json = JSON.parse(message);
               if (newRoom.localParticipant.identity in json) {
                 console.log('Incoming:', { [participant.identity]: json[newRoom.localParticipant.identity] });
-                const { priority, resolution } = json[newRoom.localParticipant.identity];
-                updateVideoSubscription(participant.identity, priority, resolution);
+                const { resolution } = json[newRoom.localParticipant.identity];
+                updateVideoSubscription(participant.identity, resolution);
               }
             });
           }
@@ -146,41 +146,32 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
           function sendVideoSubscriptionUpdate() {
             let update: any = {};
             videoSubscriptionSignalings.forEach((signaling, participant) => {
-              const [{ publishPriority, track }] = [...participant.videoTracks.values()];
-              let priority;
+              const [{ track }] = [...participant.videoTracks.values()];
               if (!track || track.isSwitchedOff) {
-                priority = 'off';
                 update = {
                   [participant.identity]: {
                     resolution: { width: 0, height: 0 },
                   },
                   ...update,
                 };
-              } else if (track.priority) {
-                priority = track.priority;
-              } else if (participant === newRoom.dominantSpeaker) {
-                priority = optionsRef.current!.bandwidthProfile!.video!.dominantSpeakerPriority || 'standard';
               } else {
-                priority = publishPriority;
-              }
-              update[participant.identity] = {
-                ...update[participant.identity],
-                priority,
-              };
-
-              if (track && !track.isSwitchedOff) {
                 const videoEls = track
                   ._getAllAttachedElements()
                   .sort(
                     (el1: any, el2: any) => el2.clientWidth * el2.clientHeight - el1.clientWidth * el1.clientHeight - 1
                   );
-                console.log(videoEls.map((el: any) => `${el.clientWidth}x${el.clientWidth}`));
-                update[participant.identity].resolution = videoEls[0]
-                  ? {
-                      width: videoEls[0].clientWidth,
-                      height: videoEls[0].clientHeight,
-                    }
-                  : { width: 0, height: 0 };
+
+                update[participant.identity] = {
+                  resolution: videoEls[0]
+                    ? {
+                        width: videoEls[0].clientWidth,
+                        height: videoEls[0].clientHeight,
+                      }
+                    : {
+                        width: 0,
+                        height: 0,
+                      },
+                };
               }
             });
             console.log('Outgoing:', update);
@@ -189,32 +180,18 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
           /************************************************************************************************/
 
           /********************* Update the encodings based on subscription info. ******************************/
-          function updateVideoSubscription(
-            participantIdentity?: string,
-            priority?: string,
-            resolution: any = { width: 0, height: 0 }
-          ) {
+          function updateVideoSubscription(participantIdentity?: string, resolution: any = { width: 0, height: 0 }) {
             if (participantIdentity) {
-              videoSubscriptionPriorities[participantIdentity] = { priority, resolution };
+              videoSubscriptionResolutions[participantIdentity] = { ...resolution };
             }
 
-            console.log('Priorities and Resolutions:', Object.values(videoSubscriptionPriorities));
-
-            const { maxPriority, maxResolution }: any = Object.values(videoSubscriptionPriorities).reduce(
-              (maxPriorityAndResolution: any, { priority, resolution }: any) => {
-                const rank = ['off', 'low', 'standard', 'high'];
-                const maxPriority =
-                  rank.indexOf(maxPriorityAndResolution.maxPriority as string) < rank.indexOf(priority as string)
-                    ? (priority as string)
-                    : (maxPriorityAndResolution.maxPriority as string);
-                const maxResolution =
-                  maxPriorityAndResolution.maxResolution.width * maxPriorityAndResolution.maxResolution.height >
-                  resolution.width * resolution.height
-                    ? maxPriorityAndResolution.maxResolution
-                    : resolution;
-                return { maxPriority, maxResolution };
+            const maxResolution: any = Object.values(videoSubscriptionResolutions).reduce(
+              (currentMaxResolution: any, { width, height }: any) => {
+                return currentMaxResolution.width * currentMaxResolution.height > width * height
+                  ? currentMaxResolution
+                  : { width, height };
               },
-              { maxPriority: 'off', maxResolution: { width: 0, height: 0 } }
+              { width: 0, height: 0 }
             );
 
             const onSignalingStateStable = () => {
@@ -225,39 +202,27 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
               videoSenders.forEach((sender: any) => {
                 const params = sender.getParameters();
                 const { height } = sender.track.getSettings();
-                console.log(`Scale down: ${height}/${maxResolution.height} = ${height / maxResolution.height}`);
                 const scaleDownFactor = Math.max(1.0, height / maxResolution.height);
+                const layerMaxIdx = params.encodings.length - 1;
 
-                if (maxPriority === 'off' && window.location.search.includes('applySimLayerSuspension=true')) {
-                  params.encodings.forEach((encoding: any) => (encoding.active = false));
-                } else {
-                  const layerIdx = window.location.search.includes('applySimLayerSuspension=true')
-                    ? ['low', 'standard', 'high'].indexOf(maxPriority)
-                    : params.encodings.length - 1;
-                  params.encodings.forEach((encoding: any, i: number) => {
-                    encoding.active = i <= layerIdx || scaleDownFactor !== Infinity;
-                    if (
-                      encoding.active &&
-                      window.location.search.includes('applyContentHints=true') &&
-                      scaleDownFactor !== Infinity
-                    ) {
-                      encoding.scaleResolutionDownBy = (1 << (layerIdx - i)) * scaleDownFactor;
-                    } else {
-                      delete encoding.scaleResolutionDownBy;
-                    }
-                  });
-                }
+                const layerIdx =
+                  scaleDownFactor >= Infinity
+                    ? -1
+                    : scaleDownFactor < 0
+                    ? layerMaxIdx
+                    : Math.round(Math.max(0, Math.min(layerMaxIdx, layerMaxIdx - Math.log2(scaleDownFactor))));
+
+                params.encodings.forEach((encoding: any, i: number) => {
+                  encoding.active = i <= layerIdx;
+                });
 
                 console.log(
                   'Encodings:',
-                  maxPriority,
-                  params.encodings.map(
-                    ({ active, scaleResolutionDownBy }: { active: boolean; scaleResolutionDownBy: number }) => ({
-                      active,
-                      scaleResolutionDownBy,
-                    })
-                  )
+                  scaleDownFactor,
+                  layerIdx,
+                  params.encodings.map(({ active }: { active: boolean }) => ({ active }))
                 );
+
                 sender.setParameters(params);
               });
             };
