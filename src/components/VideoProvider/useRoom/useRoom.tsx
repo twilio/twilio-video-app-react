@@ -5,8 +5,10 @@ import Video, {
   ConnectOptions,
   LocalDataTrack,
   LocalTrack,
+  LocalVideoTrackPublication,
   RemoteDataTrackPublication,
   RemoteParticipant,
+  RemoteVideoTrackPublication,
   Room,
 } from 'twilio-video';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -97,6 +99,20 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
               videoSubscriptionSignalingSubscribed(publication, participant);
             } else if (track.kind === 'video') {
               sendVideoSubscriptionUpdate();
+              const origAttach = track.attach;
+              const origDetach = track.detach;
+
+              track.attach = function attach() {
+                const ret = origAttach.apply(this, arguments);
+                setTimeout(sendVideoSubscriptionUpdate, 100);
+                return ret;
+              };
+
+              track.detach = function detach() {
+                const ret = origDetach.apply(this, arguments);
+                setTimeout(sendVideoSubscriptionUpdate, 100);
+                return ret;
+              };
             }
           });
 
@@ -104,12 +120,12 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
             if (track.kind === 'data' && track.name === 'video_subscription_signaling') {
               delete videoSubscriptionResolutions[participant.identity];
               videoSubscriptionSignalings.delete(participant);
+              updateVideoSubscription();
             } else if (track.kind === 'video') {
               sendVideoSubscriptionUpdate();
             }
           });
 
-          newRoom.on('dominantSpeakerChanged', () => setTimeout(sendVideoSubscriptionUpdate, 1000));
           newRoom.on('trackSwitchedOff', track => track.kind === 'video' && sendVideoSubscriptionUpdate());
           newRoom.on('trackSwitchedOn', track => track.kind === 'video' && sendVideoSubscriptionUpdate());
           /**************************************************************************************************/
@@ -135,8 +151,8 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
               const json = JSON.parse(message);
               if (newRoom.localParticipant.identity in json) {
                 console.log('Incoming:', { [participant.identity]: json[newRoom.localParticipant.identity] });
-                const { resolution } = json[newRoom.localParticipant.identity];
-                updateVideoSubscription(participant.identity, resolution);
+                const { resolutions } = json[newRoom.localParticipant.identity];
+                updateVideoSubscription(participant.identity, resolutions);
               }
             });
           }
@@ -146,33 +162,26 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
           function sendVideoSubscriptionUpdate() {
             let update: any = {};
             videoSubscriptionSignalings.forEach((signaling, participant) => {
-              const [{ track }] = [...participant.videoTracks.values()];
-              if (!track || track.isSwitchedOff) {
-                update = {
-                  [participant.identity]: {
-                    resolution: { width: 0, height: 0 },
-                  },
-                  ...update,
-                };
-              } else {
-                const videoEls = track
-                  ._getAllAttachedElements()
-                  .sort(
-                    (el1: any, el2: any) => el2.clientWidth * el2.clientHeight - el1.clientWidth * el1.clientHeight - 1
-                  );
+              update[participant.identity] = {};
+              participant.videoTracks.forEach((publication: RemoteVideoTrackPublication) => {
+                const { track }: any = publication;
+                if (track && !track.isSwitchedOff) {
+                  const videoEls = track
+                    ._getAllAttachedElements()
+                    .sort(
+                      (el1: any, el2: any) =>
+                        el2.clientWidth * el2.clientHeight - el1.clientWidth * el1.clientHeight - 1
+                    );
 
-                update[participant.identity] = {
-                  resolution: videoEls[0]
-                    ? {
-                        width: videoEls[0].clientWidth,
-                        height: videoEls[0].clientHeight,
-                      }
-                    : {
-                        width: 0,
-                        height: 0,
-                      },
-                };
-              }
+                  update[participant.identity].resolutions = update[participant.identity].resolutions || {};
+                  update[participant.identity].resolutions[publication.trackSid] = videoEls[0]
+                    ? { width: videoEls[0].clientWidth, height: videoEls[0].clientHeight }
+                    : { width: 0, height: 0 };
+                } else {
+                  update[participant.identity].resolutions = update[participant.identity].resolutions || {};
+                  update[participant.identity].resolutions[publication.trackSid] = { width: 0, height: 0 };
+                }
+              });
             });
             console.log('Outgoing:', update);
             videoSubscriptionSignaling.send(JSON.stringify(update));
@@ -180,28 +189,51 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
           /************************************************************************************************/
 
           /********************* Update the encodings based on subscription info. ******************************/
-          function updateVideoSubscription(participantIdentity?: string, resolution: any = { width: 0, height: 0 }) {
+          function updateVideoSubscription(participantIdentity?: string, resolutions: any = {}) {
             if (participantIdentity) {
-              videoSubscriptionResolutions[participantIdentity] = { ...resolution };
+              videoSubscriptionResolutions[participantIdentity] = { ...resolutions };
             }
+            console.log('Subscription resolutions:', JSON.stringify(videoSubscriptionResolutions, null, 2));
 
-            const maxResolution: any = Object.values(videoSubscriptionResolutions).reduce(
-              (currentMaxResolution: any, { width, height }: any) => {
-                return currentMaxResolution.width * currentMaxResolution.height > width * height
-                  ? currentMaxResolution
-                  : { width, height };
-              },
-              { width: 0, height: 0 }
-            );
+            const maxResolutions: any = {};
+
+            newRoom.localParticipant.videoTracks.forEach((publication: LocalVideoTrackPublication) => {
+              const resolutions: any = Object.values(videoSubscriptionResolutions).reduce(
+                (curResolutions: any, resolutions: any) => {
+                  if (resolutions[publication.trackSid]) {
+                    curResolutions.push(resolutions[publication.trackSid]);
+                  }
+                  return curResolutions;
+                },
+                []
+              );
+              const maxResolution = resolutions.reduce(
+                (currentMaxResolution: any, { width, height }: any) => {
+                  return currentMaxResolution.width * currentMaxResolution.height > width * height
+                    ? currentMaxResolution
+                    : { width, height };
+                },
+                { width: 0, height: 0 }
+              );
+              maxResolutions[publication.trackSid] = maxResolution;
+            });
 
             const onSignalingStateStable = () => {
-              const videoSenders = pc
-                .getSenders()
-                .filter(({ track }: { track: any }) => track && track.kind === 'video');
+              // No need to listen to signaling state changes anymore.
+              pc.onsignalingstatechange = null;
 
-              videoSenders.forEach((sender: any) => {
-                const params = sender.getParameters();
-                const { height } = sender.track.getSettings();
+              // If Room is disconnected, do nothing.
+              if (newRoom.state === 'disconnected') {
+                return;
+              }
+
+              newRoom.localParticipant.videoTracks.forEach((publication: any) => {
+                const { track, trackSid } = publication;
+                const clonedTrackSender: any = Array.from(track._trackSender._clones)[0];
+                const rtpSender: any = Array.from(clonedTrackSender._senders)[0];
+                const params = rtpSender.getParameters();
+                const { height } = rtpSender.track.getSettings();
+                const maxResolution = maxResolutions[trackSid] || { width: 0, height: 0 };
                 const scaleDownFactor = Math.max(1.0, height / maxResolution.height);
                 const layerMaxIdx = params.encodings.length - 1;
 
@@ -218,12 +250,13 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
 
                 console.log(
                   'Encodings:',
+                  trackSid,
                   scaleDownFactor,
                   layerIdx,
                   params.encodings.map(({ active }: { active: boolean }) => ({ active }))
                 );
 
-                sender.setParameters(params);
+                rtpSender.setParameters(params);
               });
             };
 
