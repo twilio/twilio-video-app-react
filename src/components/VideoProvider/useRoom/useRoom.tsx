@@ -13,6 +13,12 @@ import Video, {
 } from 'twilio-video';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+declare class ResizeObserver {
+  constructor(callback: (entries: any) => void);
+  observe(el: any): void;
+  unobserve(el: any): void;
+}
+
 // @ts-ignore
 window.TwilioVideo = Video;
 
@@ -99,18 +105,49 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
               videoSubscriptionSignalingSubscribed(publication, participant);
             } else if (track.kind === 'video') {
               sendVideoSubscriptionUpdate();
+
+              const intersectionObserver = new IntersectionObserver(
+                (entries: any) => {
+                  let shouldUpdate = false;
+                  entries.forEach((entry: any) => {
+                    if (entry.target.isIntersecting !== entry.isIntersecting) {
+                      entry.target.isIntersecting = entry.isIntersecting;
+                      shouldUpdate = true;
+                    }
+                  });
+                  if (shouldUpdate) {
+                    setTimeout(sendVideoSubscriptionUpdate, 100);
+                  }
+                },
+                {
+                  threshold: 0.5,
+                }
+              );
+
+              const resizeObserver = new ResizeObserver(() => {
+                setTimeout(sendVideoSubscriptionUpdate, 100);
+              });
+
+              track._getAllAttachedElements().forEach((el: any) => {
+                intersectionObserver.observe(el);
+                resizeObserver.observe(el);
+              });
+
               const origAttach = track.attach;
               const origDetach = track.detach;
 
               track.attach = function attach() {
                 const ret = origAttach.apply(this, arguments);
-                setTimeout(sendVideoSubscriptionUpdate, 100);
+                intersectionObserver.observe(ret);
+                resizeObserver.observe(ret);
                 return ret;
               };
 
               track.detach = function detach() {
                 const ret = origDetach.apply(this, arguments);
-                setTimeout(sendVideoSubscriptionUpdate, 100);
+                delete ret.isIntersecting;
+                intersectionObserver.unobserve(ret);
+                resizeObserver.unobserve(ret);
                 return ret;
               };
             }
@@ -168,6 +205,7 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
                 if (track && !track.isSwitchedOff) {
                   const videoEls = track
                     ._getAllAttachedElements()
+                    .filter((el: any) => el.isIntersecting)
                     .sort(
                       (el1: any, el2: any) =>
                         el2.clientWidth * el2.clientHeight - el1.clientWidth * el1.clientHeight - 1
@@ -232,9 +270,10 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
                 const clonedTrackSender: any = Array.from(track._trackSender._clones)[0];
                 const rtpSender: any = Array.from(clonedTrackSender._senders)[0];
                 const params = rtpSender.getParameters();
-                const { height } = rtpSender.track.getSettings();
+                const { height, width, aspectRatio = width / height } = rtpSender.track.getSettings();
                 const maxResolution = maxResolutions[trackSid] || { width: 0, height: 0 };
-                const scaleDownFactor = Math.max(1.0, height / maxResolution.height);
+                const effectiveMaxHeight = Math.sqrt((maxResolution.width * maxResolution.height) / aspectRatio);
+                const scaleDownFactor = Math.max(1.0, height / effectiveMaxHeight);
                 const layerMaxIdx = params.encodings.length - 1;
 
                 const layerIdx =
