@@ -20,6 +20,7 @@ import { useAppState } from '../../state';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { ParticipantInformation } from '../../state/index';
+import useIsHostIn from '../../hooks/useIsHostIn/useIsHostIn';
 
 const JOIN_ROOM_MESSAGE = 'Enter Hearing Room';
 const RETRY_ROOM_MESSAGE = 'Retry Entering Hearing Room';
@@ -91,12 +92,15 @@ export default function MenuBar() {
     isAutoRetryingToJoinRoom,
     setWaitingNotification,
   } = useAppState();
-  const { isConnecting, connect, room, localTracks } = useVideoContext();
+  const { isConnecting, connect, localTracks } = useVideoContext();
   const roomState = useRoomState();
 
   const [participantInfo, setParticipantInfo] = useState<any>(null);
   const [retryJoinRoomAttemptTimerId, setRetryJoinRoomAttemptTimerId] = useState<NodeJS.Timeout>(null as any);
   const RETRY_INTERVAL = 15000;
+
+  const isHostIn = useIsHostIn();
+  const [isHostInState, setIsHostInState] = useState(isHostIn);
 
   if (isAutoRetryingToJoinRoom === false) {
     clearTimeout(retryJoinRoomAttemptTimerId);
@@ -169,6 +173,17 @@ export default function MenuBar() {
       deviceId: videoTrack.mediaStreamTrack.getSettings().deviceId as string,
       groupdId: videoTrack.mediaStreamTrack.getSettings().groupId as string,
     };
+  }
+
+  if (isHostIn !== isHostInState) {
+    if (isHostIn) {
+      setNotification({ message: NOTIFICATION_MESSAGE.REPORTER_HAS_JOINED });
+      setIsHostInState(isHostIn);
+    } else {
+      audioTrack?.disable();
+      setNotification({ message: NOTIFICATION_MESSAGE.WAITING_FOR_REPORTER });
+      setIsHostInState(isHostIn);
+    }
   }
 
   return (

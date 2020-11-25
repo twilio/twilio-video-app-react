@@ -8,6 +8,7 @@ import ToggleVideoButton from './ToggleVideoButton/ToggleVideoButton';
 import { ROOM_STATE } from '../../utils/displayStrings';
 import useIsUserActive from './useIsUserActive/useIsUserActive';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
+import useIsHostIn from '../../hooks/useIsHostIn/useIsHostIn';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -35,16 +36,19 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function Controls() {
+export default function Controls(props: { disabled?: boolean }) {
   const classes = useStyles();
   const roomState = useRoomState();
   const isReconnecting = roomState === ROOM_STATE.RECONNECTING;
+  const isdisconnected = roomState === ROOM_STATE.DISCONNECTED;
   const isUserActive = useIsUserActive();
+  const isHostIn = useIsHostIn();
   const showControls = isUserActive || roomState === ROOM_STATE.DISCONNECTED;
+  const disableButtons = isReconnecting ? isReconnecting : isdisconnected ? false : !isHostIn;
 
   return (
     <div className={clsx(classes.container, { showControls })}>
-      <ToggleAudioButton disabled={isReconnecting} />
+      <ToggleAudioButton disabled={disableButtons} />
       <ToggleVideoButton disabled={isReconnecting} />
       {roomState !== ROOM_STATE.DISCONNECTED && (
         <>

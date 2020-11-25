@@ -73,6 +73,7 @@
     "enzyme-to-json": "^3.4.4",
     "eslint-import-resolver-typescript": "^2.2.0",
     "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "isomorphic-fetch": "^2.2.1",
     "jest-junit": "^9.0.0",
     "mocha": "^6.2.2",

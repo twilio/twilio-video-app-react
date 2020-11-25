@@ -9,6 +9,8 @@ export const NOTIFICATION_MESSAGE = {
     'Waiting for host to join. Please retry again to join in a few minutes. If you do not manage please contact the Impartial Hearing Office',
   AUTO_RETRYING_TO_JOIN_ROOM: 'Waiting for host to join.',
   ROOM_COMPLETED: 'Conference ended since the host left the call',
+  WAITING_FOR_REPORTER: 'waiting for reporter to join',
+  REPORTER_HAS_JOINED: 'Reporter has joined please unmute your microphone',
 };
 export const PLAYER_STATE = {
   stopped: 'stopped',
