@@ -44,7 +44,10 @@ export default function useIsHostIn() {
           flag = true;
         }
       });
-      if (room.localParticipant.identity.split('@')[1] === PARTICIANT_TYPES.REPORTER) {
+      if (
+        room.localParticipant.identity.split('@')[1] === PARTICIANT_TYPES.REPORTER ||
+        room.localParticipant.identity.split('@')[1] === PARTICIANT_TYPES.HEARING_OFFICER
+      ) {
         flag = true;
       }
 
