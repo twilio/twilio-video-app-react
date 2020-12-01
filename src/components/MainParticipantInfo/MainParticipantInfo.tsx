@@ -3,16 +3,17 @@ import clsx from 'clsx';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
 
+import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
 import AvatarIcon from '../../icons/AvatarIcon';
 import Typography from '@material-ui/core/Typography';
 
+import useIsRecording from '../../hooks/useIsRecording/useIsRecording';
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
+import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
 import usePublications from '../../hooks/usePublications/usePublications';
 import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 import useTrack from '../../hooks/useTrack/useTrack';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
-import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
-import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: 'rgba(0, 0, 0, 0.5)',
     color: 'white',
     padding: '0.1em 0.3em 0.1em 0',
-    fontSize: '1.2em',
+    fontSize: '1.2rem',
     display: 'inline-flex',
     '& svg': {
       marginLeft: '0.3em',
@@ -69,6 +70,38 @@ const useStyles = makeStyles((theme: Theme) => ({
       transform: 'scale(2)',
     },
   },
+  recordingIndicator: {
+    position: 'absolute',
+    bottom: 0,
+    display: 'flex',
+    alignItems: 'center',
+    background: 'rgba(0, 0, 0, 0.5)',
+    color: 'white',
+    padding: '0.1em 0.3em 0.1em 0',
+    fontSize: '1.2rem',
+    height: '28px',
+    [theme.breakpoints.down('sm')]: {
+      bottom: 'auto',
+      right: 0,
+      top: 0,
+    },
+  },
+  circle: {
+    height: '10px',
+    width: '10px',
+    background: 'red',
+    borderRadius: '100%',
+    margin: '0 0.6em',
+    animation: `4s $progress cubic-bezier(0, 1.22, 0, 1.03) infinite`,
+  },
+  '@keyframes progress': {
+    '0%, 100%': {
+      background: `#f00`,
+    },
+    '50%': {
+      background: '#a00',
+    },
+  },
 }));
 
 interface MainParticipantInfoProps {
@@ -99,6 +132,8 @@ export default function MainParticipantInfo({ participant, children }: MainParti
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
   const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
+  const isRecording = useIsRecording();
+
   return (
     <div
       data-cy-main-participant
@@ -116,6 +151,14 @@ export default function MainParticipantInfo({ participant, children }: MainParti
             {screenSharePublication && ' - Screen'}
           </Typography>
         </div>
+        {isRecording && (
+          <div className={classes.recordingIndicator}>
+            <div className={classes.circle}></div>
+            <Typography variant="body1" color="inherit">
+              Recording
+            </Typography>
+          </div>
+        )}
       </div>
       {(!isVideoEnabled || isVideoSwitchedOff) && (
         <div className={classes.avatarContainer}>
