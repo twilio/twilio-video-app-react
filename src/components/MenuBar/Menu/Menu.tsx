@@ -6,6 +6,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MenuContainer from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import RecordingButton from '../RecordingButton/RecordingButton';
 import Typography from '@material-ui/core/Typography';
 import { Theme, useMediaQuery } from '@material-ui/core';
 
@@ -24,7 +25,7 @@ export default function Menu(props: { buttonClassName?: string }) {
           <MoreIcon />
         ) : (
           <>
-            Settings
+            More
             <ExpandMoreIcon />
           </>
         )}
@@ -48,6 +49,7 @@ export default function Menu(props: { buttonClassName?: string }) {
         <MenuItem onClick={() => setSettingsOpen(true)}>
           <Typography variant="body1">Audio and Video Settings</Typography>
         </MenuItem>
+        <RecordingButton />
       </MenuContainer>
       <AboutDialog
         open={aboutOpen}
