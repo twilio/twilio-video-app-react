@@ -9,7 +9,7 @@ import InfoIcon from '../../icons/InfoIcon';
 
 interface SnackbarProps {
   headline: string;
-  message: string;
+  message: string | React.ReactNode;
   variant?: 'error' | 'warning' | 'info';
   open: boolean;
   handleClose?: () => void;
