@@ -3,7 +3,7 @@ import AboutDialog from '../../AboutDialog/AboutDialog';
 import Button from '@material-ui/core/Button';
 import DeviceSelectionDialog from '../../DeviceSelectionDialog/DeviceSelectionDialog';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import InfoIcon from '../../../icons/InfoIcon';
+import InfoIconOutlined from '../../../icons/InfoIconOutlined';
 import { Link, styled, Theme, useMediaQuery } from '@material-ui/core';
 import MenuContainer from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -14,7 +14,10 @@ import Snackbar from '../../Snackbar/Snackbar';
 import Typography from '@material-ui/core/Typography';
 
 export const IconContainer = styled('div')({
-  width: '1em',
+  display: 'flex',
+  justifyContent: 'center',
+  width: '1.5em',
+  marginRight: '0.3em',
 });
 
 export default function Menu(props: { buttonClassName?: string }) {
@@ -51,19 +54,21 @@ export default function Menu(props: { buttonClassName?: string }) {
           horizontal: 'center',
         }}
       >
-        <MenuItem onClick={() => setAboutOpen(true)}>
-          <IconContainer>
-            <InfoIcon color="#707578" />
-          </IconContainer>
-          <Typography variant="body1">About</Typography>
-        </MenuItem>
+        <RecordingButton onClick={() => setMenuOpen(false)} setIsRecordingSnackbarOpen={setIsRecordingSnackbarOpen} />
+
         <MenuItem onClick={() => setSettingsOpen(true)}>
           <IconContainer>
             <SettingsIcon />
           </IconContainer>
           <Typography variant="body1">Conference Settings</Typography>
         </MenuItem>
-        <RecordingButton onClick={() => setMenuOpen(false)} setIsRecordingSnackbarOpen={setIsRecordingSnackbarOpen} />
+
+        <MenuItem onClick={() => setAboutOpen(true)}>
+          <IconContainer>
+            <InfoIconOutlined />
+          </IconContainer>
+          <Typography variant="body1">About</Typography>
+        </MenuItem>
       </MenuContainer>
       <AboutDialog
         open={aboutOpen}
