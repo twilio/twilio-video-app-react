@@ -1,6 +1,7 @@
+import { RoomType } from '../../types';
+import { TwilioError } from 'twilio-video';
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { RoomType } from '../../types';
 
 export function getPasscode() {
   const match = window.location.search.match(/passcode=(.*)&?/);
@@ -69,6 +70,32 @@ export default function usePasscodeAuth() {
     [user]
   );
 
+  const updateRecordingRules = useCallback(
+    async (room_sid, rules) => {
+      return fetch('/recordingrules', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ room_sid, rules, passcode: user?.passcode }),
+        method: 'POST',
+      }).then(async res => {
+        const jsonResponse = await res.json();
+
+        if (!res.ok) {
+          const error = new Error(
+            jsonResponse.error?.message || 'There was an error updating recording rules'
+          ) as TwilioError;
+          error.code = jsonResponse.error?.code;
+
+          return Promise.reject(error);
+        }
+
+        return jsonResponse;
+      });
+    },
+    [user]
+  );
+
   useEffect(() => {
     const passcode = getPasscode();
 
@@ -104,5 +131,5 @@ export default function usePasscodeAuth() {
     return Promise.resolve();
   }, []);
 
-  return { user, isAuthReady, getToken, signIn, signOut, roomType };
+  return { user, isAuthReady, getToken, signIn, signOut, roomType, updateRecordingRules };
 }
