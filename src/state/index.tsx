@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useReducer, useState, useEffect } from 'react';
 import { TwilioError } from 'twilio-video';
 import { NOTIFICATION_MESSAGE } from '../utils/displayStrings';
-import { PARTICIANT_TYPES } from '../utils/participantTypes';
 import axios from 'axios';
 
 import * as jwt_decode from 'jwt-decode';
+import isModerator from '../utils/rbac/roleChecker';
 
 export interface ParticipantInformation {
   caseReference: string;
@@ -99,18 +99,6 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
         endpoint = responseBodyAsJson.endPoint;
       });
   }
-  //fetchEndpoint(endpoint);
-
-  // useEffect(()=> {
-  //   async function fetchEndpointAsync() {
-  //     await fetchEndpoint(endpoint);
-  //   }
-  //   fetchEndpointAsync();
-  // }, [endpoint]);
-
-  // .then(async () =>
-  //   {await authoriseParticipant(participantAuthToken);}
-  // );
 
   async function ensureEndpointInitialised() {
     if (endpoint === '') {
@@ -231,8 +219,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     try {
       setIsFetching(false);
 
-      if (!res.roomExist && !participantIsMemberInHostRole(participantInformation.partyType))
-        return NOTIFICATION_MESSAGE.ROOM_NOT_FOUND;
+      if (!res.roomExist && !isModerator(participantInformation.partyType)) return NOTIFICATION_MESSAGE.ROOM_NOT_FOUND;
 
       setUserToken(res.result);
       const user = jwt_decode(res.result);
@@ -256,10 +243,6 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
       {props.children}
     </StateContext.Provider>
   );
-}
-
-function participantIsMemberInHostRole(partyType: string) {
-  return partyType === PARTICIANT_TYPES.REPORTER || partyType === PARTICIANT_TYPES.HEARING_OFFICER;
 }
 
 export function useAppState(): any {

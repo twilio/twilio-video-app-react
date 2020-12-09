@@ -19,6 +19,7 @@ import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import useHeight from '../../hooks/useHeight/useHeight';
 import { TRACK_TYPE } from '../../utils/displayStrings';
 import { PARTICIANT_TYPES } from '../../utils/participantTypes';
+import { ParticipantIdentity } from '../../utils/participantIdentity';
 export default function ParticipantInfo({ participant, onClick, isSelected, children, gridView }) {
   const useStyles = gridView
     ? makeStyles(theme =>
@@ -143,8 +144,8 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
   const {
     room: { localParticipant },
   } = useVideoContext();
-  const localParticipantType = localParticipant.identity.split('@')[1];
-  const participantType = participant.identity.split('@')[1];
+  const localParticipantType = ParticipantIdentity.Parse(localParticipant.identity).partyType;
+  const participantType = ParticipantIdentity.Parse(participant.identity).partyType;
   const enableParticipantDropDown =
     (localParticipantType === PARTICIANT_TYPES.REPORTER || localParticipantType === PARTICIANT_TYPES.HEARING_OFFICER) &&
     localParticipant.identity !== participant.identity &&
@@ -163,6 +164,7 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
     h = (h1 / 3).toString();
     return `${h}px`;
   };
+  var participantIdentity = ParticipantIdentity.Parse(participant.identity);
   return (
     <div
       className={clsx(classes.container, {
@@ -186,7 +188,8 @@ export default function ParticipantInfo({ participant, onClick, isSelected, chil
         <div className={classes.infoRow}>
           <h4 className={classes.identity}>
             <ParticipantConnectionIndicator participant={participant} />
-            {participant.identity.split('@')[0]} ({participant.identity.split('@')[1]})
+            {participantIdentity.partyName} ({participantIdentity.partyType}
+            {participantIdentity.isRegisteredUser ? '*' : ''})
           </h4>
           <NetworkQualityLevel qualityLevel={networkQualityLevel} />
         </div>

@@ -1,7 +1,8 @@
 import { PARTICIANT_TYPES } from '../../utils/participantTypes';
 import useVideoContext from '../useVideoContext/useVideoContext';
 import { useEffect, useState } from 'react';
-import { RemoteParticipant } from 'twilio-video';
+import { RemoteParticipant, Room } from 'twilio-video';
+import { ParticipantIdentity } from '../../utils/participantIdentity';
 
 export default function useIsHostIn() {
   const { room } = useVideoContext();
@@ -15,13 +16,16 @@ export default function useIsHostIn() {
 
   useEffect(() => {
     const participantConnected = (participant: RemoteParticipant) => {
-      if (participant.identity.split('@')[1] === PARTICIANT_TYPES.REPORTER) {
+      if (ParticipantIdentity.Parse(participant.identity).partyType === PARTICIANT_TYPES.REPORTER) {
         setIsHostIn(true);
       }
     };
 
     const participantDisconnected = (participant: RemoteParticipant) => {
-      if (participant.identity.split('@')[1] === PARTICIANT_TYPES.REPORTER && !checkIsHostIn(room)) {
+      if (
+        ParticipantIdentity.Parse(participant.identity).partyType === PARTICIANT_TYPES.REPORTER &&
+        !checkIsHostIn(room)
+      ) {
         setIsHostIn(false);
       }
     };
@@ -36,17 +40,17 @@ export default function useIsHostIn() {
 
   return isHostIn;
 
-  function checkIsHostIn(room) {
-    if (room !== null && typeof room.participants !== 'undefined') {
+  function checkIsHostIn(theRoom: Room) {
+    if (theRoom !== null && typeof theRoom.participants !== 'undefined') {
       let flag = false;
-      room.participants.forEach(participant => {
-        if (participant.identity.split('@')[1] === PARTICIANT_TYPES.REPORTER) {
+      theRoom.participants.forEach(participant => {
+        if (ParticipantIdentity.Parse(participant.identity).partyType === PARTICIANT_TYPES.REPORTER) {
           flag = true;
         }
       });
       if (
-        room.localParticipant.identity.split('@')[1] === PARTICIANT_TYPES.REPORTER ||
-        room.localParticipant.identity.split('@')[1] === PARTICIANT_TYPES.HEARING_OFFICER
+        ParticipantIdentity.Parse(theRoom.localParticipant.identity).partyType === PARTICIANT_TYPES.REPORTER ||
+        ParticipantIdentity.Parse(theRoom.localParticipant.identity).partyType === PARTICIANT_TYPES.HEARING_OFFICER
       ) {
         flag = true;
       }
