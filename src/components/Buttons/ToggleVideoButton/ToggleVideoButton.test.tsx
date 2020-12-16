@@ -55,9 +55,9 @@ describe('the ToggleVideoButton component', () => {
     const wrapper = shallow(<ToggleVideoButton />);
     Date.now = () => 100000;
     wrapper.simulate('click'); // Should register
-    Date.now = () => 100100;
+    Date.now = () => 100500;
     wrapper.simulate('click'); // Should be ignored
-    Date.now = () => 100300;
+    Date.now = () => 100501;
     wrapper.simulate('click'); // Should register
     expect(mockFn).toHaveBeenCalledTimes(2);
   });

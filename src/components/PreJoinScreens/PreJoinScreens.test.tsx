@@ -143,7 +143,8 @@ describe('the PreJoinScreens component', () => {
   });
 
   it('should capture errors from getAudioAndVideoTracks and pass them to the MediaErrorSnackbar component', async () => {
-    mockUseVideoContext.mockImplementation(() => ({ getAudioAndVideoTracks: () => Promise.reject('testError') }));
+    const mockGetAudioAndVideoTracks = jest.fn(() => Promise.reject('testError'));
+    mockUseVideoContext.mockImplementation(() => ({ getAudioAndVideoTracks: mockGetAudioAndVideoTracks }));
 
     const wrapper = mount(<PreJoinScreens />);
 
@@ -155,5 +156,6 @@ describe('the PreJoinScreens component', () => {
 
     const error = wrapper.children().prop('subContent').props.children[1].props.error;
     expect(error).toBe('testError');
+    expect(mockGetAudioAndVideoTracks).toHaveBeenCalledTimes(1); // This makes sure that 'getAudioAndVideoTracks' isn't called repeatedly
   });
 });

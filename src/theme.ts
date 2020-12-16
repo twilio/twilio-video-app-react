@@ -8,6 +8,8 @@ declare module '@material-ui/core/styles/createMuiTheme' {
     footerHeight: number;
     mobileTopBarHeight: number;
     mobileFooterHeight: number;
+    sidebarMobilePadding: number;
+    participantBorderWidth: number;
   }
 
   // allow configuration using `createMuiTheme`
@@ -18,6 +20,8 @@ declare module '@material-ui/core/styles/createMuiTheme' {
     footerHeight: number;
     mobileTopBarHeight: number;
     mobileFooterHeight: number;
+    sidebarMobilePadding: number;
+    participantBorderWidth: number;
   }
 }
 
@@ -114,5 +118,7 @@ export default createMuiTheme({
   mobileFooterHeight: 56,
   sidebarWidth: 355,
   sidebarMobileHeight: 90,
+  sidebarMobilePadding: 8,
+  participantBorderWidth: 2,
   mobileTopBarHeight: 52,
 });
