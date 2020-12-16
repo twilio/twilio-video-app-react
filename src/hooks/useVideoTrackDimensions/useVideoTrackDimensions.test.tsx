@@ -30,6 +30,20 @@ describe('the useVideoTrackDimensions hook', () => {
     expect(result.current).toEqual({ height: 300, width: 600 });
   });
 
+  it('should return a new object reference on "dimensionsChanged" event', () => {
+    mockTrack.dimensions = { height: 123, width: 456 };
+    const { result } = renderHook(() => useVideoTrackDimensions(mockTrack));
+
+    act(() => {
+      mockTrack.dimensions.height = 300;
+      mockTrack.dimensions.width = 600;
+      mockTrack.emit('dimensionsChanged', mockTrack);
+    });
+
+    expect(result.current).toEqual({ height: 300, width: 600 });
+    expect(result.current).not.toBe(mockTrack.dimensions);
+  });
+
   it('should clean up listeners on unmount', () => {
     const { unmount } = renderHook(() => useVideoTrackDimensions(mockTrack));
     unmount();
