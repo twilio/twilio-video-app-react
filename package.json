@@ -31,7 +31,7 @@
     "react-scripts": "^3.4.4",
     "strip-color": "^0.1.0",
     "twilio": "^3.39.3",
-    "twilio-video": "https://github.com/twilio/twilio-video.js/archive/2.11.0-rc1.tar.gz",
+    "twilio-video": "https://github.com/twilio/twilio-video.js/archive/2.11.0-rc2.tar.gz",
     "typescript": "^3.8.3"
   },
   "devDependencies": {

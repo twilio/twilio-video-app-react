@@ -8,10 +8,6 @@ declare module 'twilio-video' {
     setPriority: undefined;
   }
 
-  interface VideoCodecSettings {
-    simulcast?: boolean;
-  }
-
   function testPreflight(
     subscriberToken: string,
     publisherToken: string,
