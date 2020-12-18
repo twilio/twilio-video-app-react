@@ -87,19 +87,22 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   circle: {
-    height: '10px',
-    width: '10px',
+    height: '12px',
+    width: '12px',
     background: 'red',
     borderRadius: '100%',
     margin: '0 0.6em',
-    animation: `4s $progress cubic-bezier(0, 1.22, 0, 1.03) infinite`,
+    animation: `1.25s $pulsate ease-out infinite`,
   },
-  '@keyframes progress': {
-    '0%, 100%': {
-      background: `#f00`,
+  '@keyframes pulsate': {
+    '0%': {
+      background: `#A90000`,
     },
     '50%': {
-      background: '#a00',
+      background: '#f00',
+    },
+    '100%': {
+      background: '#A90000',
     },
   },
 }));
