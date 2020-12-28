@@ -57,7 +57,7 @@ export default function useScreenShareToggle(room: Room, onError: ErrorCallback)
 
   const toggleScreenShare = useCallback(() => {
     !isSharing ? shareScreen() : stopScreenShareRef.current();
-  }, [isSharing, shareScreen, stopScreenShareRef]);
+  }, [isSharing, shareScreen]);
 
   return [isSharing, toggleScreenShare] as const;
 }
