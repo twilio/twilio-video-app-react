@@ -5,6 +5,7 @@ import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, Remote
 
 import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
 import AvatarIcon from '../../icons/AvatarIcon';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 
 import useIsRecording from '../../hooks/useIsRecording/useIsRecording';
@@ -155,12 +156,17 @@ export default function MainParticipantInfo({ participant, children }: MainParti
           </Typography>
         </div>
         {isRecording && (
-          <div className={classes.recordingIndicator}>
-            <div className={classes.circle}></div>
-            <Typography variant="body1" color="inherit">
-              Recording
-            </Typography>
-          </div>
+          <Tooltip
+            title="All participants' audio and video is currently being recorded. Visit the app settings to stop recording."
+            placement="top"
+          >
+            <div className={classes.recordingIndicator}>
+              <div className={classes.circle}></div>
+              <Typography variant="body1" color="inherit">
+                Recording
+              </Typography>
+            </div>
+          </Tooltip>
         )}
       </div>
       {(!isVideoEnabled || isVideoSwitchedOff) && (
