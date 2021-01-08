@@ -1,17 +1,28 @@
 import React, { useState, useRef } from 'react';
 import AboutDialog from '../../AboutDialog/AboutDialog';
-import Button from '@material-ui/core/Button';
+import ConfirmRecordingDialog from './ConfirmRecordingDialog/ConfirmRecordingDialog';
 import DeviceSelectionDialog from '../../DeviceSelectionDialog/DeviceSelectionDialog';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import InfoIconOutlined from '../../../icons/InfoIconOutlined';
-import { Link, styled, Theme, useMediaQuery } from '@material-ui/core';
-import MenuContainer from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import RecordingButton from './RecordingButton/RecordingButton';
+import StartRecordingIcon from '../../../icons/StartRecordingIcon';
+import StopRecordingIcon from '../../../icons/StopRecordingIcon';
 import SettingsIcon from '../../../icons/SettingsIcon';
 import Snackbar from '../../Snackbar/Snackbar';
-import Typography from '@material-ui/core/Typography';
+import {
+  Button,
+  Link,
+  styled,
+  Theme,
+  useMediaQuery,
+  Menu as MenuContainer,
+  MenuItem,
+  Typography,
+} from '@material-ui/core';
+
+import { useAppState } from '../../../state';
+import useIsRecording from '../../../hooks/useIsRecording/useIsRecording';
+import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
 export const IconContainer = styled('div')({
   display: 'flex',
@@ -22,10 +33,16 @@ export const IconContainer = styled('div')({
 
 export default function Menu(props: { buttonClassName?: string }) {
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
+
   const [aboutOpen, setAboutOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [recordingConfirmDialogOpen, setRecordingConfirmDialogOpen] = useState(false);
   const [isRecordingSnackbarOpen, setIsRecordingSnackbarOpen] = useState(false);
+
+  const { isFetching, updateRecordingRules } = useAppState();
+  const { room } = useVideoContext();
+  const isRecording = useIsRecording();
 
   const anchorRef = useRef<HTMLButtonElement>(null);
 
@@ -54,7 +71,22 @@ export default function Menu(props: { buttonClassName?: string }) {
           horizontal: 'center',
         }}
       >
-        <RecordingButton onClick={() => setMenuOpen(false)} setIsRecordingSnackbarOpen={setIsRecordingSnackbarOpen} />
+        <MenuItem
+          disabled={isFetching}
+          onClick={() => {
+            setMenuOpen(false);
+            if (isRecording) {
+              updateRecordingRules(room.sid, [{ type: 'exclude', all: true }]).then(() =>
+                setIsRecordingSnackbarOpen(true)
+              );
+            } else {
+              setRecordingConfirmDialogOpen(true);
+            }
+          }}
+        >
+          <IconContainer>{isRecording ? <StopRecordingIcon /> : <StartRecordingIcon />}</IconContainer>
+          <Typography variant="body1">{isRecording ? 'Stop' : 'Start'} Recording</Typography>
+        </MenuItem>
 
         <MenuItem onClick={() => setSettingsOpen(true)}>
           <IconContainer>
@@ -99,6 +131,16 @@ export default function Menu(props: { buttonClassName?: string }) {
         variant="info"
         handleClose={() => setIsRecordingSnackbarOpen(false)}
       ></Snackbar>
+
+      <ConfirmRecordingDialog
+        open={recordingConfirmDialogOpen}
+        handleClose={() => setRecordingConfirmDialogOpen(false)}
+        handleContinue={() => {
+          setRecordingConfirmDialogOpen(false);
+          setIsRecordingSnackbarOpen(false);
+          updateRecordingRules(room.sid, [{ type: 'include', all: true }]);
+        }}
+      />
     </>
   );
 }
