@@ -60,7 +60,7 @@ export default function SettingsMenu({ mobileButtonClass }: { mobileButtonClass?
           horizontal: isMobile ? 'left' : 'right',
         }}
         transformOrigin={{
-          vertical: isMobile ? -55 : -45,
+          vertical: 0,
           horizontal: 'center',
         }}
       >
