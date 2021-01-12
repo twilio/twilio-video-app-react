@@ -1,16 +1,15 @@
 import React from 'react';
 import AboutDialog from '../../AboutDialog/AboutDialog';
-import { Button, MenuItem, Typography } from '@material-ui/core';
+import { Button, MenuItem } from '@material-ui/core';
 import DeviceSelectionDialog from '../../DeviceSelectionDialog/DeviceSelectionDialog';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Menu from './Menu';
 import MenuContainer from '@material-ui/core/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import { render, fireEvent, waitForElementToBeRemoved, act, waitForElement } from '@testing-library/react';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useAppState } from '../../../state';
-import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 import useIsRecording from '../../../hooks/useIsRecording/useIsRecording';
 
 jest.mock('@material-ui/core/useMediaQuery');
