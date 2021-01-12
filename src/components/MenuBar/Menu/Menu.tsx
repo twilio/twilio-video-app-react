@@ -92,7 +92,7 @@ export default function Menu(props: { buttonClassName?: string }) {
           <IconContainer>
             <SettingsIcon />
           </IconContainer>
-          <Typography variant="body1">Conference Settings</Typography>
+          <Typography variant="body1">Audio and Video Settings</Typography>
         </MenuItem>
 
         <MenuItem onClick={() => setAboutOpen(true)}>
