@@ -8,6 +8,8 @@ import ToggleVideoButton from '../../Buttons/ToggleVideoButton/ToggleVideoButton
 import { useAppState } from '../../../state';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
+import watchRTC from '@testrtc/watchrtc-sdk';
+
 const useStyles = makeStyles((theme: Theme) => ({
   gutterBottom: {
     marginBottom: '1em',
@@ -63,6 +65,8 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
   const disableButtons = isFetching || isAcquiringLocalTracks || isConnecting;
 
   const handleJoin = () => {
+    watchRTC.init({ rtcApiKey: process.env.REACT_APP_RTC_API_KEY as string, rtcRoomId: roomName, rtcPeerId: name });
+
     getToken(name, roomName).then(token => connect(token));
   };
 

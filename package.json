@@ -1,11 +1,12 @@
 {
   "name": "twilio-video-app-react",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": true,
   "license": "Apache-2.0",
   "dependencies": {
     "@material-ui/core": "^4.9.1",
     "@material-ui/icons": "^4.9.1",
+    "@testrtc/watchrtc-sdk": "1.27.3",
     "@types/d3-timer": "^1.0.9",
     "@types/fscreen": "^1.0.1",
     "@types/jest": "^24.9.1",
@@ -36,25 +37,25 @@
     "typescript": "^3.8.3"
   },
   "devDependencies": {
-    "mocha": "^6.2.2",
-    "react-test-renderer": "^16.12.0",
-    "start-server-and-test": "^1.10.8",
-    "ts-jest": "^24.3.0",
-    "puppeteer": "^5.3.1",
-    "mocha-junit-reporter": "^1.23.3",
-    "pixelmatch": "^5.1.0",
-    "isomorphic-fetch": "^2.2.1",
-    "jest-junit": "^9.0.0",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.4.0",
+    "@testing-library/react-hooks": "^3.2.1",
+    "@types/enzyme": "^3.10.4",
+    "@types/enzyme-adapter-react-16": "^1.0.5",
     "cypress": "^5.4.0",
     "cypress-multi-reporters": "^1.4.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "enzyme-to-json": "^3.4.4",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.4.0",
-    "@testing-library/react-hooks": "^3.2.1",
-    "@types/enzyme": "^3.10.4",
-    "@types/enzyme-adapter-react-16": "^1.0.5"
+    "isomorphic-fetch": "^2.2.1",
+    "jest-junit": "^9.0.0",
+    "mocha": "^6.2.2",
+    "mocha-junit-reporter": "^1.23.3",
+    "pixelmatch": "^5.1.0",
+    "puppeteer": "^5.3.1",
+    "react-test-renderer": "^16.12.0",
+    "start-server-and-test": "^1.10.8",
+    "ts-jest": "^24.3.0"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [

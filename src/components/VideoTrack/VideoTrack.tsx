@@ -33,7 +33,7 @@ export default function VideoTrack({ track, isLocal, priority }: VideoTrackProps
       track.detach(el);
       if (track.setPriority && priority) {
         // Passing `null` to setPriority will set the track's priority to that which it was published with.
-        track.setPriority(null);
+        track.setPriority('high');
       }
     };
   }, [track, priority]);

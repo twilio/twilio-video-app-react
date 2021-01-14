@@ -1,16 +1,34 @@
-# Twilio Video React App
+# Twilio Video React App with watchRTC SDK
 
 [![CircleCI](https://circleci.com/gh/twilio/twilio-video-app-react.svg?style=svg)](https://circleci.com/gh/twilio/twilio-video-app-react)
+
+## Quick Setup
+
+- yarn install
+- paste your values in .env file
+- yarn start
+
+## watchRTC SDK usage
+
+![Code injection Preview](./watchRTC-injection.png)
+
+- start sample
+- join a Room
+- duplicate tab
+- join a Room with another Name
+- stop call for all the tabs
+
+Results will appear in watchRTC section in main app
 
 ## What is it
 
 This application demonstrates a multi-party video application built with [twilio-video.js](https://github.com/twilio/twilio-video.js) and [Create React App](https://github.com/facebook/create-react-app).
 
-* Deploy to [Twilio Serverless](https://www.twilio.com/docs/runtime/functions-assets-api) in just a few minutes
-* No other infrastructure is required
-* No code changes are required before your first deploy
-* There is no cost associated with deploying the app
-* Go Rooms usage is free, however [standard usage charges](https://www.twilio.com/video/pricing) apply when using the app with all other Room types.
+- Deploy to [Twilio Serverless](https://www.twilio.com/docs/runtime/functions-assets-api) in just a few minutes
+- No other infrastructure is required
+- No code changes are required before your first deploy
+- There is no cost associated with deploying the app
+- Go Rooms usage is free, however [standard usage charges](https://www.twilio.com/video/pricing) apply when using the app with all other Room types.
 
 ![App Preview](https://user-images.githubusercontent.com/12685223/94631109-cfca1c80-0284-11eb-8b72-c97276cf34e4.png)
 
@@ -18,8 +36,8 @@ This application demonstrates a multi-party video application built with [twilio
 
 You must have the following installed:
 
-* [Node.js v12+](https://nodejs.org/en/download/)
-* NPM v6+ (comes installed with newer Node versions)
+- [Node.js v12+](https://nodejs.org/en/download/)
+- NPM v6+ (comes installed with newer Node versions)
 
 ## Install Dependencies
 
@@ -43,19 +61,19 @@ This app requires an additional plugin. Install the CLI plugin with:
 
 ## Deploy the app to Twilio
 
-Before deploying the app, make sure you are using the correct account on the Twilio CLI (using the command `twilio profiles:list` to check). 
+Before deploying the app, make sure you are using the correct account on the Twilio CLI (using the command `twilio profiles:list` to check).
 The app is deployed to Twilio with a single command:
 
     $ npm run deploy:twilio-cli
 
 This performs the following steps:
 
-* Builds the React app in the `src` directory
-* Generates a random code used to access the Video app
-* Deploys the React app and token server function as a Twilio Serverless service.
-* Prints the URL for the app and the passcode.
+- Builds the React app in the `src` directory
+- Generates a random code used to access the Video app
+- Deploys the React app and token server function as a Twilio Serverless service.
+- Prints the URL for the app and the passcode.
 
-**NOTE:** The Twilio Function that provides access tokens via a passcode should *NOT* be used in a production environment. This token server supports seamlessly getting started with the collaboration app, and while convenient, the passcode is not secure enough for production environments. You should use an authentication provider to securely provide access tokens to your client applications. You can find more information about Programmable Video access tokens [in this tutorial](https://www.twilio.com/docs/video/tutorials/user-identity-access-tokens). **As a precaution, the passcode will expire after one week**. To generate a new passcode, redeploy the app:
+**NOTE:** The Twilio Function that provides access tokens via a passcode should _NOT_ be used in a production environment. This token server supports seamlessly getting started with the collaboration app, and while convenient, the passcode is not secure enough for production environments. You should use an authentication provider to securely provide access tokens to your client applications. You can find more information about Programmable Video access tokens [in this tutorial](https://www.twilio.com/docs/video/tutorials/user-identity-access-tokens). **As a precaution, the passcode will expire after one week**. To generate a new passcode, redeploy the app:
 
     $ npm run deploy:twilio-cli -- --override
 
@@ -85,13 +103,13 @@ If any errors occur after running a [Twilio CLI RTC Plugin](https://github.com/t
 
 After running the command [to deploy a Twilio Access Token Server](https://github.com/twilio/twilio-video-app-android#deploy-twilio-access-token-server), the room type will be returned in the command line output. Each room type provides a different video experience. More details about these room types can be found [here](https://www.twilio.com/docs/video/tutorials/understanding-video-rooms). The rest of this section explains how these room types affect the behavior of the video app.
 
-*Group* - The Group room type allows up to fifty participants to join a video room in the app. The Network Quality Level (NQL) indicators and dominant speaker are demonstrated with this room type. Also, the VP8 video codec with simulcast enabled along with a bandwidth profile are set by default in order to provide an optimal group video app experience.
+_Group_ - The Group room type allows up to fifty participants to join a video room in the app. The Network Quality Level (NQL) indicators and dominant speaker are demonstrated with this room type. Also, the VP8 video codec with simulcast enabled along with a bandwidth profile are set by default in order to provide an optimal group video app experience.
 
-*Small Group* - The Small Group room type provides an identical group video app experience except for a smaller limit of four participants.
+_Small Group_ - The Small Group room type provides an identical group video app experience except for a smaller limit of four participants.
 
-*Peer-to-peer* - Although up to ten participants can join a room using the Peer-to-peer (P2P) room type, it is ideal for a one to one video experience. The NQL indicators, bandwidth profiles, and dominant speaker cannot be used with this room type. Thus, they are not demonstrated in the video app. Also, the VP8 video codec with simulcast disabled and 720p minimum video capturing dimensions are also set by default in order to provide an optimal one to one video app experience. If more than ten participants join a room with this room type, then the video app will present an error.
+_Peer-to-peer_ - Although up to ten participants can join a room using the Peer-to-peer (P2P) room type, it is ideal for a one to one video experience. The NQL indicators, bandwidth profiles, and dominant speaker cannot be used with this room type. Thus, they are not demonstrated in the video app. Also, the VP8 video codec with simulcast disabled and 720p minimum video capturing dimensions are also set by default in order to provide an optimal one to one video app experience. If more than ten participants join a room with this room type, then the video app will present an error.
 
-*Go* - The Go room type provides a similar Peer-to-peer video app experience except for a smaller limit of two participants. If more than two participants join a room with this room type, then the video app will present an error.
+_Go_ - The Go room type provides a similar Peer-to-peer video app experience except for a smaller limit of two participants. If more than two participants join a room with this room type, then the video app will present an error.
 
 If the max number of participants is exceeded, then the video app will present an error for all room types.
 
@@ -233,7 +251,7 @@ This application dynamically changes the priority of remote video tracks to prov
 
 ### Google Authentication using Firebase (optional)
 
-This application can be configured to authenticate users before they use the app. Once users have signed into the app with their Google credentials, their Firebase ID Token will be included in the Authorization header of the HTTP request that is used to obtain an access token. The Firebase ID Token can then be [verified](https://firebase.google.com/docs/auth/admin/verify-id-tokens) by the server that dispenses access tokens for connecting to a room. 
+This application can be configured to authenticate users before they use the app. Once users have signed into the app with their Google credentials, their Firebase ID Token will be included in the Authorization header of the HTTP request that is used to obtain an access token. The Firebase ID Token can then be [verified](https://firebase.google.com/docs/auth/admin/verify-id-tokens) by the server that dispenses access tokens for connecting to a room.
 
 See [.env.example](.env.example) for an explanation of the environment variables that must be set to enable Google authentication.
 
