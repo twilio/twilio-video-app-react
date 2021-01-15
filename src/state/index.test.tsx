@@ -106,7 +106,7 @@ describe('the useAppState hook', () => {
       });
     });
 
-    it('should set isFetching to true after getToken is called, and false after getToken succeeds', async () => {
+    it('should set isFetching to true after getToken is called, and false after getToken fails', async () => {
       process.env.REACT_APP_SET_AUTH = 'passcode';
       mockUsePasscodeAuth.mockImplementation(() => {
         return {

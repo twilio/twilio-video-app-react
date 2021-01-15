@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const AccessToken = require('twilio').jwt.AccessToken;
+const Twilio = require('twilio');
+
+const AccessToken = Twilio.jwt.AccessToken;
 const VideoGrant = AccessToken.VideoGrant;
 require('dotenv').config();
 
@@ -10,7 +12,10 @@ const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
 const twilioApiKeySID = process.env.TWILIO_API_KEY_SID;
 const twilioApiKeySecret = process.env.TWILIO_API_KEY_SECRET;
 
+const client = Twilio(twilioApiKeySID, twilioApiKeySecret, { accountSid: twilioAccountSid });
+
 app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.json());
 
 app.get('/token', (req, res) => {
   const { identity, roomName } = req.query;
@@ -22,6 +27,19 @@ app.get('/token', (req, res) => {
   token.addGrant(videoGrant);
   res.send(token.toJwt());
   console.log(`issued token for ${identity} in room ${roomName}`);
+});
+
+app.post('/recordingrules', async (req, res) => {
+  const { room_sid, rules } = req.body;
+
+  try {
+    const recordingRulesResponse = await client.video.rooms(room_sid).recordingRules.update({ rules });
+    res.json(recordingRulesResponse);
+    console.log('updated recording rules for room SID: ' + room_sid);
+    console.log('rules: ' + JSON.stringify(rules));
+  } catch (err) {
+    res.status(500).json({ error: { message: err.message, code: err.code } });
+  }
 });
 
 app.get('*', (_, res) => res.sendFile(path.join(__dirname, 'build/index.html')));

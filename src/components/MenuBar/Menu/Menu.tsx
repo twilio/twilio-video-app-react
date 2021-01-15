@@ -1,19 +1,48 @@
 import React, { useState, useRef } from 'react';
 import AboutDialog from '../../AboutDialog/AboutDialog';
-import Button from '@material-ui/core/Button';
+import ConfirmRecordingDialog from './ConfirmRecordingDialog/ConfirmRecordingDialog';
 import DeviceSelectionDialog from '../../DeviceSelectionDialog/DeviceSelectionDialog';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MenuContainer from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import InfoIconOutlined from '../../../icons/InfoIconOutlined';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import Typography from '@material-ui/core/Typography';
-import { Theme, useMediaQuery } from '@material-ui/core';
+import StartRecordingIcon from '../../../icons/StartRecordingIcon';
+import StopRecordingIcon from '../../../icons/StopRecordingIcon';
+import SettingsIcon from '../../../icons/SettingsIcon';
+import Snackbar from '../../Snackbar/Snackbar';
+import {
+  Button,
+  Link,
+  styled,
+  Theme,
+  useMediaQuery,
+  Menu as MenuContainer,
+  MenuItem,
+  Typography,
+} from '@material-ui/core';
+
+import { useAppState } from '../../../state';
+import useIsRecording from '../../../hooks/useIsRecording/useIsRecording';
+import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+
+export const IconContainer = styled('div')({
+  display: 'flex',
+  justifyContent: 'center',
+  width: '1.5em',
+  marginRight: '0.3em',
+});
 
 export default function Menu(props: { buttonClassName?: string }) {
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
+
   const [aboutOpen, setAboutOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [recordingConfirmDialogOpen, setRecordingConfirmDialogOpen] = useState(false);
+  const [isRecordingSnackbarOpen, setIsRecordingSnackbarOpen] = useState(false);
+
+  const { isFetching, updateRecordingRules } = useAppState();
+  const { room } = useVideoContext();
+  const isRecording = useIsRecording();
 
   const anchorRef = useRef<HTMLButtonElement>(null);
 
@@ -24,7 +53,7 @@ export default function Menu(props: { buttonClassName?: string }) {
           <MoreIcon />
         ) : (
           <>
-            Settings
+            More
             <ExpandMoreIcon />
           </>
         )}
@@ -42,11 +71,35 @@ export default function Menu(props: { buttonClassName?: string }) {
           horizontal: 'center',
         }}
       >
-        <MenuItem onClick={() => setAboutOpen(true)}>
-          <Typography variant="body1">About</Typography>
+        <MenuItem
+          disabled={isFetching}
+          onClick={() => {
+            setMenuOpen(false);
+            if (isRecording) {
+              updateRecordingRules(room.sid, [{ type: 'exclude', all: true }]).then(() =>
+                setIsRecordingSnackbarOpen(true)
+              );
+            } else {
+              setRecordingConfirmDialogOpen(true);
+            }
+          }}
+        >
+          <IconContainer>{isRecording ? <StopRecordingIcon /> : <StartRecordingIcon />}</IconContainer>
+          <Typography variant="body1">{isRecording ? 'Stop' : 'Start'} Recording</Typography>
         </MenuItem>
+
         <MenuItem onClick={() => setSettingsOpen(true)}>
+          <IconContainer>
+            <SettingsIcon />
+          </IconContainer>
           <Typography variant="body1">Audio and Video Settings</Typography>
+        </MenuItem>
+
+        <MenuItem onClick={() => setAboutOpen(true)}>
+          <IconContainer>
+            <InfoIconOutlined />
+          </IconContainer>
+          <Typography variant="body1">About</Typography>
         </MenuItem>
       </MenuContainer>
       <AboutDialog
@@ -61,6 +114,31 @@ export default function Menu(props: { buttonClassName?: string }) {
         onClose={() => {
           setSettingsOpen(false);
           setMenuOpen(false);
+        }}
+      />
+      <Snackbar
+        open={isRecordingSnackbarOpen}
+        headline="Recording Complete"
+        message={
+          <>
+            You can view the recording in the{' '}
+            <Link target="_blank" rel="noopener" href="https://www.twilio.com/console/video/logs/recordings">
+              Twilio Console
+            </Link>
+            . Recordings will be available once this room has ended.
+          </>
+        }
+        variant="info"
+        handleClose={() => setIsRecordingSnackbarOpen(false)}
+      ></Snackbar>
+
+      <ConfirmRecordingDialog
+        open={recordingConfirmDialogOpen}
+        handleClose={() => setRecordingConfirmDialogOpen(false)}
+        handleContinue={() => {
+          setRecordingConfirmDialogOpen(false);
+          setIsRecordingSnackbarOpen(false);
+          updateRecordingRules(room.sid, [{ type: 'include', all: true }]);
         }}
       />
     </>

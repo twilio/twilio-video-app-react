@@ -60,6 +60,15 @@ export type IVideoTrack = LocalVideoTrack | RemoteVideoTrack;
 
 export type RoomType = 'group' | 'group-small' | 'peer-to-peer' | 'go';
 
+export type RecordingRule = {
+  type: 'include' | 'exclude';
+  all?: boolean;
+  kind?: 'audio' | 'video';
+  publisher?: string;
+};
+
+export type RecordingRules = RecordingRule[];
+
 export interface PreflightTestReport {
   isTurnRequired: boolean;
   stats: {

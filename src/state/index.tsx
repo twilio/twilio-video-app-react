@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useState } from 'react';
-import { RoomType } from '../types';
+import { RecordingRules, RoomType } from '../types';
 import { TwilioError } from 'twilio-video';
 import { settingsReducer, initialSettings, Settings, SettingsAction } from './settings/settingsReducer';
 import useActiveSinkId from './useActiveSinkId/useActiveSinkId';
@@ -21,6 +21,7 @@ export interface StateContextType {
   settings: Settings;
   dispatchSetting: React.Dispatch<SettingsAction>;
   roomType?: RoomType;
+  updateRecordingRules(room_sid: string, rules: RecordingRules): Promise<object>;
 }
 
 export const StateContext = createContext<StateContextType>(null!);
@@ -70,6 +71,29 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
 
         return fetch(`${endpoint}?${params}`, { headers }).then(res => res.text());
       },
+      updateRecordingRules: async (room_sid, rules) => {
+        const endpoint = process.env.REACT_APP_TOKEN_ENDPOINT || '/recordingrules';
+
+        return fetch(endpoint, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ room_sid, rules }),
+          method: 'POST',
+        }).then(async res => {
+          const jsonResponse = await res.json();
+
+          if (!res.ok) {
+            const error = new Error(
+              jsonResponse.error?.message || 'There was an error updating recording rules'
+            ) as TwilioError;
+            error.code = jsonResponse.error?.code;
+            return Promise.reject(error);
+          }
+
+          return jsonResponse;
+        });
+      },
     };
   }
 
@@ -88,7 +112,26 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
       });
   };
 
-  return <StateContext.Provider value={{ ...contextValue, getToken }}>{props.children}</StateContext.Provider>;
+  const updateRecordingRules: StateContextType['updateRecordingRules'] = (room_sid, rules) => {
+    setIsFetching(true);
+    return contextValue
+      .updateRecordingRules(room_sid, rules)
+      .then(res => {
+        setIsFetching(false);
+        return res;
+      })
+      .catch(err => {
+        setError(err);
+        setIsFetching(false);
+        return Promise.reject(err);
+      });
+  };
+
+  return (
+    <StateContext.Provider value={{ ...contextValue, getToken, updateRecordingRules }}>
+      {props.children}
+    </StateContext.Provider>
+  );
 }
 
 export function useAppState() {
