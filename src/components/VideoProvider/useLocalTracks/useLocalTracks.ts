@@ -1,15 +1,16 @@
 import { DEFAULT_VIDEO_CONSTRAINTS, SELECTED_AUDIO_INPUT_KEY, SELECTED_VIDEO_INPUT_KEY } from '../../../constants';
 import { useCallback, useState } from 'react';
 import Video, { LocalVideoTrack, LocalAudioTrack, CreateLocalTrackOptions } from 'twilio-video';
-import { useAudioInputDevices, useVideoInputDevices } from '../../../hooks/deviceHooks/deviceHooks';
+import { useDevices } from '../../../hooks/deviceHooks/deviceHooks';
 
 export default function useLocalTracks() {
   const [audioTrack, setAudioTrack] = useState<LocalAudioTrack>();
   const [videoTrack, setVideoTrack] = useState<LocalVideoTrack>();
   const [isAcquiringLocalTracks, setIsAcquiringLocalTracks] = useState(false);
 
-  const localAudioDevices = useAudioInputDevices();
-  const localVideoDevices = useVideoInputDevices();
+  const localDevices = useDevices();
+  const localAudioDevices = localDevices.filter(device => device.kind === 'audioinput');
+  const localVideoDevices = localDevices.filter(device => device.kind === 'videoinput');
 
   const hasAudio = localAudioDevices.length > 0;
   const hasVideo = localVideoDevices.length > 0;
@@ -39,6 +40,13 @@ export default function useLocalTracks() {
       return newTrack;
     });
   }, []);
+
+  const removeLocalAudioTrack = useCallback(() => {
+    if (audioTrack) {
+      audioTrack.stop();
+      setAudioTrack(undefined);
+    }
+  }, [audioTrack]);
 
   const removeLocalVideoTrack = useCallback(() => {
     if (videoTrack) {
@@ -96,6 +104,7 @@ export default function useLocalTracks() {
     getLocalVideoTrack,
     getLocalAudioTrack,
     isAcquiringLocalTracks,
+    removeLocalAudioTrack,
     removeLocalVideoTrack,
     getAudioAndVideoTracks,
   };
