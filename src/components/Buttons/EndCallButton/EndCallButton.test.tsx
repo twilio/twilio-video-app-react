@@ -3,13 +3,60 @@ import { shallow } from 'enzyme';
 
 import EndCallButton from './EndCallButton';
 
-const mockRoom: any = { disconnect: jest.fn() };
-jest.mock('../../../hooks/useVideoContext/useVideoContext', () => () => ({ room: mockRoom }));
+const mockVideoContext = {
+  room: {
+    disconnect: jest.fn(),
+  },
+  isSharingScreen: false,
+  toggleScreenShare: jest.fn(),
+  removeLocalAudioTrack: jest.fn(),
+  removeLocalVideoTrack: jest.fn(),
+};
+
+jest.mock('../../../hooks/useVideoContext/useVideoContext', () => () => mockVideoContext);
 
 describe('End Call button', () => {
-  it('should disconnect from the room when clicked', () => {
-    const wrapper = shallow(<EndCallButton />);
-    wrapper.simulate('click');
-    expect(mockRoom.disconnect).toHaveBeenCalled();
+  describe('when it is clicked', () => {
+    describe('while sharing screen', () => {
+      let wrapper;
+
+      beforeAll(() => {
+        jest.clearAllMocks();
+        mockVideoContext.isSharingScreen = true;
+        wrapper = shallow(<EndCallButton />);
+        wrapper.simulate('click');
+      });
+
+      it('should stop local audio tracks', () => {
+        expect(mockVideoContext.removeLocalAudioTrack).toHaveBeenCalled();
+      });
+
+      it('should stop local video tracks', () => {
+        expect(mockVideoContext.removeLocalVideoTrack).toHaveBeenCalled();
+      });
+
+      it('should toggle screen sharing off', () => {
+        expect(mockVideoContext.toggleScreenShare).toHaveBeenCalled();
+      });
+
+      it('should disconnect from the room ', () => {
+        expect(mockVideoContext.room.disconnect).toHaveBeenCalled();
+      });
+    });
+
+    describe('while not sharing screen', () => {
+      let wrapper;
+
+      beforeAll(() => {
+        jest.clearAllMocks();
+        mockVideoContext.isSharingScreen = false;
+        wrapper = shallow(<EndCallButton />);
+        wrapper.simulate('click');
+      });
+
+      it('should not toggle screen sharing', () => {
+        expect(mockVideoContext.toggleScreenShare).not.toHaveBeenCalled();
+      });
+    });
   });
 });
