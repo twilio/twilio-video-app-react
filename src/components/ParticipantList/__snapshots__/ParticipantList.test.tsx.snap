@@ -7,43 +7,47 @@ exports[`the ParticipantList component should correctly render Participant compo
   <div
     className="makeStyles-scrollContainer-3"
   >
-    <Participant
-      isLocalParticipant={true}
-      participant="localParticipant"
-    />
-    <Participant
-      hideParticipant={false}
-      isSelected={false}
-      key="0"
-      onClick={[Function]}
-      participant={
-        Object {
-          "sid": 0,
+    <div
+      className="makeStyles-innerScrollContainer-4"
+    >
+      <Participant
+        isLocalParticipant={true}
+        participant="localParticipant"
+      />
+      <Participant
+        hideParticipant={false}
+        isSelected={false}
+        key="0"
+        onClick={[Function]}
+        participant={
+          Object {
+            "sid": 0,
+          }
         }
-      }
-    />
-    <Participant
-      hideParticipant={false}
-      isSelected={false}
-      key="1"
-      onClick={[Function]}
-      participant={
-        Object {
-          "sid": 1,
+      />
+      <Participant
+        hideParticipant={false}
+        isSelected={false}
+        key="1"
+        onClick={[Function]}
+        participant={
+          Object {
+            "sid": 1,
+          }
         }
-      }
-    />
-    <Participant
-      hideParticipant={false}
-      isSelected={true}
-      key="2"
-      onClick={[Function]}
-      participant={
-        Object {
-          "sid": 2,
+      />
+      <Participant
+        hideParticipant={false}
+        isSelected={true}
+        key="2"
+        onClick={[Function]}
+        participant={
+          Object {
+            "sid": 2,
+          }
         }
-      }
-    />
+      />
+    </div>
   </div>
 </aside>
 `;
