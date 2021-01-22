@@ -6,7 +6,7 @@
   "dependencies": {
     "@material-ui/core": "^4.9.1",
     "@material-ui/icons": "^4.9.1",
-    "@testrtc/watchrtc-sdk": "1.27.3",
+    "@testrtc/watchrtc-sdk": "1.27.4",
     "@types/d3-timer": "^1.0.9",
     "@types/fscreen": "^1.0.1",
     "@types/jest": "^24.9.1",
@@ -64,13 +64,11 @@
     ]
   },
   "scripts": {
-    "start": "concurrently npm:server npm:dev",
-    "dev": "react-scripts start",
-    "build": "node ./scripts/build.js",
+    "start-dev": "netlify dev",
+    "start:app": "react-scripts start",
     "test": "jest",
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.{ts,tsx}",
-    "server": "node server.js",
     "test:ci": "jest --ci --runInBand --reporters=default --reporters=jest-junit --coverage",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --browser chrome",
@@ -100,7 +98,6 @@
       "pre-commit": "lint-staged"
     }
   },
-  "proxy": "http://localhost:8081/",
   "jest": {
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
