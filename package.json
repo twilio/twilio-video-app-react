@@ -65,7 +65,8 @@
   },
   "scripts": {
     "start-dev": "netlify dev",
-    "start:app": "react-scripts start",
+    "start": "react-scripts start",
+    "build": "node ./scripts/build.js",
     "test": "jest",
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.{ts,tsx}",
