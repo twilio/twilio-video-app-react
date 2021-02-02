@@ -20,10 +20,19 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function EndCallButton(props: { className?: string }) {
   const classes = useStyles();
-  const { room } = useVideoContext();
+  const { room, isSharingScreen, toggleScreenShare, removeLocalAudioTrack, removeLocalVideoTrack } = useVideoContext();
+
+  const handleClick = () => {
+    if (isSharingScreen) {
+      toggleScreenShare();
+    }
+    removeLocalAudioTrack();
+    removeLocalVideoTrack();
+    room.disconnect();
+  };
 
   return (
-    <Button onClick={() => room.disconnect()} className={clsx(classes.button, props.className)} data-cy-disconnect>
+    <Button onClick={handleClick} className={clsx(classes.button, props.className)} data-cy-disconnect>
       Disconnect
     </Button>
   );

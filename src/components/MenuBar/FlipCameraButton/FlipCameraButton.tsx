@@ -3,16 +3,16 @@ import { Button } from '@material-ui/core';
 import { DEFAULT_VIDEO_CONSTRAINTS } from '../../../constants';
 import FlipCameraIcon from './FlipCameraIcon';
 import { LocalVideoTrack } from 'twilio-video';
+import useDevices from '../../../hooks/useDevices/useDevices';
 import useMediaStreamTrack from '../../../hooks/useMediaStreamTrack/useMediaStreamTrack';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
-import { useVideoInputDevices } from '../../../hooks/deviceHooks/deviceHooks';
 
 export default function FlipCameraButton() {
   const { localTracks } = useVideoContext();
   const [supportsFacingMode, setSupportsFacingMode] = useState<Boolean | null>(null);
   const videoTrack = localTracks.find(track => track.name.includes('camera')) as LocalVideoTrack;
   const mediaStreamTrack = useMediaStreamTrack(videoTrack);
-  const videoDeviceList = useVideoInputDevices();
+  const { videoInputDevices } = useDevices();
 
   useEffect(() => {
     // The 'supportsFacingMode' variable determines if this component is rendered
@@ -34,7 +34,7 @@ export default function FlipCameraButton() {
     });
   }, [mediaStreamTrack, videoTrack]);
 
-  return supportsFacingMode && videoDeviceList.length > 1 ? (
+  return supportsFacingMode && videoInputDevices.length > 1 ? (
     <Button onClick={toggleFacingMode} disabled={!videoTrack} startIcon={<FlipCameraIcon />}>
       Flip Camera
     </Button>
