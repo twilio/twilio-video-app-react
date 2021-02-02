@@ -2,14 +2,14 @@ import React from 'react';
 import AudioOutputList from './AudioOutputList';
 import { Select, Typography } from '@material-ui/core';
 import { shallow } from 'enzyme';
-import { useAudioOutputDevices } from '../../../hooks/deviceHooks/deviceHooks';
+import useDevices from '../../../hooks/useDevices/useDevices';
 import { useAppState } from '../../../state';
 
 jest.mock('../../../state');
-jest.mock('../../../hooks/deviceHooks/deviceHooks');
+jest.mock('../../../hooks/useDevices/useDevices');
 
 const mockUseAppState = useAppState as jest.Mock<any>;
-const mockUseAudioOutputDevices = useAudioOutputDevices as jest.Mock<any>;
+const mockUseDevices = useDevices as jest.Mock<any>;
 
 mockUseAppState.mockImplementation(() => ({ activeSinkId: '123' }));
 
@@ -20,7 +20,7 @@ const mockDevice = {
 
 describe('the AudioOutputList component', () => {
   it('should display the name of the active output device if only one is available', () => {
-    mockUseAudioOutputDevices.mockImplementation(() => [mockDevice]);
+    mockUseDevices.mockImplementation(() => ({ audioOutputDevices: [mockDevice] }));
     const wrapper = shallow(<AudioOutputList />);
     expect(wrapper.find(Select).exists()).toBe(false);
     expect(
@@ -32,7 +32,7 @@ describe('the AudioOutputList component', () => {
   });
 
   it('should display "System Default Audio Output" when no audio output devices are available', () => {
-    mockUseAudioOutputDevices.mockImplementation(() => []);
+    mockUseDevices.mockImplementation(() => ({ audioOutputDevices: [] }));
     const wrapper = shallow(<AudioOutputList />);
     expect(wrapper.find(Select).exists()).toBe(false);
     expect(
@@ -44,7 +44,7 @@ describe('the AudioOutputList component', () => {
   });
 
   it('should display a Select menu when multiple audio output devices are available', () => {
-    mockUseAudioOutputDevices.mockImplementation(() => [mockDevice, mockDevice]);
+    mockUseDevices.mockImplementation(() => ({ audioOutputDevices: [mockDevice, mockDevice] }));
     const wrapper = shallow(<AudioOutputList />);
     expect(wrapper.find(Select).exists()).toBe(true);
   });
