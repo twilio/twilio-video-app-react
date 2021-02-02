@@ -14,6 +14,7 @@ import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackS
 import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
 import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
+import MosLevel from '../MosLevel/MosLevel';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -120,6 +121,17 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'center',
       background: 'rgba(0, 0, 0, 0.5)',
     },
+    mosContainer: {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      width: '28px',
+      height: '28px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: 'rgba(255, 255, 0, 0.5)',
+    },
     typeography: {
       color: 'white',
       [theme.breakpoints.down('sm')]: {
@@ -181,6 +193,11 @@ export default function ParticipantInfo({
         <div className={classes.networkQualityContainer}>
           <NetworkQualityLevel participant={participant} />
         </div>
+        {isLocalParticipant && (
+          <div className={classes.mosContainer}>
+            <MosLevel />
+          </div>
+        )}
         <div className={classes.infoRowBottom}>
           {isScreenShareEnabled && (
             <span className={classes.screenShareIconContainer}>
