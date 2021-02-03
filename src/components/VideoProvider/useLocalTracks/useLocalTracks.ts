@@ -39,7 +39,7 @@ export default function useLocalTracks() {
       setVideoTrack(newTrack);
       return newTrack;
     });
-  }, []);
+  }, [videoInputDevices]);
 
   const removeLocalAudioTrack = useCallback(() => {
     if (audioTrack) {
