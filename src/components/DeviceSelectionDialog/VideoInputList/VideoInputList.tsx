@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { DEFAULT_VIDEO_CONSTRAINTS, SELECTED_VIDEO_INPUT_KEY } from '../../../constants';
 import { FormControl, MenuItem, Typography, Select } from '@material-ui/core';
 import { LocalVideoTrack } from 'twilio-video';
@@ -24,13 +24,19 @@ export default function VideoInputList() {
   const { videoInputDevices } = useDevices();
   const { localTracks } = useVideoContext();
 
-  const localVideoTrack = localTracks.find(track => track.kind === 'video') as LocalVideoTrack;
+  const localVideoTrack = localTracks.find(track => track.kind === 'video') as LocalVideoTrack | undefined;
   const mediaStreamTrack = useMediaStreamTrack(localVideoTrack);
-  const localVideoInputDeviceId = mediaStreamTrack?.getSettings().deviceId;
+  const [storedLocalVideoDeviceId, setStoredLocalVideoDeviceId] = useState(
+    window.localStorage.getItem(SELECTED_VIDEO_INPUT_KEY)
+  );
+  const localVideoInputDeviceId = mediaStreamTrack?.getSettings().deviceId || storedLocalVideoDeviceId;
 
   function replaceTrack(newDeviceId: string) {
+    // Here we store the device ID in the component state. This is so we can re-render this component display
+    // to display the name of the selected device when it is changed while the users camera is off.
+    setStoredLocalVideoDeviceId(newDeviceId);
     window.localStorage.setItem(SELECTED_VIDEO_INPUT_KEY, newDeviceId);
-    localVideoTrack.restart({
+    localVideoTrack?.restart({
       ...(DEFAULT_VIDEO_CONSTRAINTS as {}),
       deviceId: { exact: newDeviceId },
     });

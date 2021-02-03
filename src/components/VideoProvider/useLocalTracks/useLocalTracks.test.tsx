@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react-hooks';
-import { SELECTED_AUDIO_INPUT_KEY, SELECTED_VIDEO_INPUT_KEY } from '../../../constants';
+import { SELECTED_AUDIO_INPUT_KEY, SELECTED_VIDEO_INPUT_KEY, DEFAULT_VIDEO_CONSTRAINTS } from '../../../constants';
 import useLocalTracks from './useLocalTracks';
 import Video from 'twilio-video';
 import useDevices from '../../../hooks/useDevices/useDevices';
@@ -237,6 +237,55 @@ describe('the useLocalTracks hook', () => {
 
       expect(result.current.localTracks.some(track => track.kind === 'audio')).toBe(false);
       expect(initialAudioTrack!.stop).toHaveBeenCalled();
+    });
+  });
+
+  describe('the getLocalVideoTrack function', () => {
+    it('should create a local video track', async () => {
+      const { result, waitForNextUpdate } = renderHook(useLocalTracks);
+
+      await act(async () => {
+        result.current.getLocalVideoTrack();
+        await waitForNextUpdate();
+      });
+
+      expect(Video.createLocalVideoTrack).toHaveBeenCalledWith({
+        ...(DEFAULT_VIDEO_CONSTRAINTS as {}),
+        name: 'camera-123456',
+      });
+    });
+
+    it('should not specify a device ID when the device ID stored in local storage does not exist', async () => {
+      const { result, waitForNextUpdate } = renderHook(useLocalTracks);
+
+      window.localStorage.setItem(SELECTED_VIDEO_INPUT_KEY, 'device-id-does-not-exist');
+
+      await act(async () => {
+        result.current.getLocalVideoTrack();
+        await waitForNextUpdate();
+      });
+
+      expect(Video.createLocalVideoTrack).toHaveBeenCalledWith({
+        ...(DEFAULT_VIDEO_CONSTRAINTS as {}),
+        name: 'camera-123456',
+      });
+    });
+
+    it('should specify a device ID when one is stored in local storage and the device exists', async () => {
+      const { result, waitForNextUpdate } = renderHook(useLocalTracks);
+
+      window.localStorage.setItem(SELECTED_VIDEO_INPUT_KEY, 'mockVideoDeviceId');
+
+      await act(async () => {
+        result.current.getLocalVideoTrack();
+        await waitForNextUpdate();
+      });
+
+      expect(Video.createLocalVideoTrack).toHaveBeenCalledWith({
+        ...(DEFAULT_VIDEO_CONSTRAINTS as {}),
+        name: 'camera-123456',
+        deviceId: { exact: 'mockVideoDeviceId' },
+      });
     });
   });
 });
