@@ -98,4 +98,16 @@ describe('the VideoInputList component', () => {
       deviceId: { exact: 'mockDeviceID' },
     });
   });
+
+  it('should not call track.restart when no video track is present', () => {
+    mockUseDevices.mockImplementation(() => ({ videoInputDevices: [mockDevice, mockDevice] }));
+    mockUseVideoContext.mockImplementationOnce(() => ({
+      room: {},
+      getLocalVideoTrack: mockGetLocalVideotrack,
+      localTracks: [],
+    }));
+    const wrapper = shallow(<VideoInputList />);
+    wrapper.find(Select).simulate('change', { target: { value: 'mockDeviceID' } });
+    expect(mockLocalTrack.restart).not.toHaveBeenCalled();
+  });
 });

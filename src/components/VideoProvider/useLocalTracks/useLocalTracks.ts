@@ -22,18 +22,24 @@ export default function useLocalTracks() {
     });
   }, []);
 
-  const getLocalVideoTrack = useCallback((newOptions?: CreateLocalTrackOptions) => {
+  const getLocalVideoTrack = useCallback(() => {
+    const selectedVideoDeviceId = window.localStorage.getItem(SELECTED_VIDEO_INPUT_KEY);
+
+    const hasSelectedVideoDevice = videoInputDevices.some(
+      device => selectedVideoDeviceId && device.deviceId === selectedVideoDeviceId
+    );
+
     const options: CreateLocalTrackOptions = {
       ...(DEFAULT_VIDEO_CONSTRAINTS as {}),
       name: `camera-${Date.now()}`,
-      ...newOptions,
+      ...(hasSelectedVideoDevice && { deviceId: { exact: selectedVideoDeviceId! } }),
     };
 
     return Video.createLocalVideoTrack(options).then(newTrack => {
       setVideoTrack(newTrack);
       return newTrack;
     });
-  }, []);
+  }, [videoInputDevices]);
 
   const removeLocalAudioTrack = useCallback(() => {
     if (audioTrack) {
