@@ -1,9 +1,6 @@
 import React from 'react';
-
 import Button from '@material-ui/core/Button';
-
 import CloseChatWindowIcon from '../../../icons/CloseChatWindowIcon';
-
 import useChatContext from '../../../hooks/useChatContext/useChatContext';
 
 export default function CloseChatWindowButton() {

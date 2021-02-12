@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-
 import CloseChatWindowButton from '../Buttons/CloseChatWindowButton/CloseChatWindowButton';
 
 const useStyles = makeStyles((theme: Theme) =>
