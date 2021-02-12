@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import ChatWindowHeader from '../ChatWindowHeader/ChatWindowHeader';
 import useChatContext from '../../hooks/useChatContext/useChatContext';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -19,7 +20,6 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-//add css for mobile in this file
 export default function ChatWindow() {
   const classes = useStyles();
   const { isChatWindowOpen } = useChatContext();
@@ -27,5 +27,9 @@ export default function ChatWindow() {
   //if chat window is not open, don't render this component
   if (!isChatWindowOpen) return null;
 
-  return <aside className={classes.container}></aside>;
+  return (
+    <aside className={classes.container}>
+      <ChatWindowHeader />
+    </aside>
+  );
 }
