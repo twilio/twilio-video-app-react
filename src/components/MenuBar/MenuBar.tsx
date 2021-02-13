@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback} from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
@@ -12,6 +12,7 @@ import { Typography, Grid, Hidden } from '@material-ui/core';
 import ToggleAudioButton from '../Buttons/ToggleAudioButton/ToggleAudioButton';
 import ToggleVideoButton from '../Buttons/ToggleVideoButton/ToggleVideoButton';
 import ToggleScreenShareButton from '../Buttons/ToogleScreenShareButton/ToggleScreenShareButton';
+import useLocalVideoProcessor from '../../hooks/useLocalVideoProcessor/useLocalVideoProcessor';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -69,6 +70,18 @@ export default function MenuBar() {
   const isReconnecting = roomState === 'reconnecting';
   const { room } = useVideoContext();
 
+  const [setGrayScaleProcessor, setBlurProcessor, setNoFilter] = useLocalVideoProcessor();
+
+  const handleGrayscaleClick = useCallback(() => {
+    setGrayScaleProcessor();
+  }, [setGrayScaleProcessor]);
+  const handleBlurClick = useCallback(() => {
+    setBlurProcessor();
+  }, [setBlurProcessor]);
+  const handleNoEffectClick = useCallback(() => {
+    setNoFilter();
+  }, [setNoFilter]);
+
   return (
     <>
       {isSharingScreen && (
@@ -84,6 +97,19 @@ export default function MenuBar() {
               <Typography variant="body1">{room.name}</Typography>
             </Grid>
           </Hidden>
+          <Grid item>
+            <Grid container justify="center">
+            <Button onClick={handleGrayscaleClick}>
+              Grayscale
+            </Button>
+            <Button onClick={handleBlurClick}>
+              Blur
+            </Button>
+            <Button onClick={handleNoEffectClick}>
+              No Effect
+            </Button>
+            </Grid>
+          </Grid>
           <Grid item>
             <Grid container justify="center">
               <ToggleAudioButton disabled={isReconnecting} />
