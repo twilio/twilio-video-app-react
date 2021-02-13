@@ -5,25 +5,19 @@ import CloseChatWindowButton from '../Buttons/CloseChatWindowButton/CloseChatWin
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
-      position: 'absolute',
-      width: `${theme.chatWindowWidth}px`,
       height: `${theme.chatWindowHeaderHeight}px`,
       background: '#F4F4F6',
-      [theme.breakpoints.down('sm')]: {
-        width: '100vw',
-      },
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingLeft: '1em',
+      paddingRight: '1em',
     },
     text: {
       fontWeight: 'bold',
-      position: 'absolute',
-      top: '32.14%',
-      left: '16px',
-      bottom: '32.14%',
     },
-    closeButton: {
-      position: 'absolute',
-      right: 0,
-      top: 'calc(50% - 40px/2)',
+    closeChatWindow: {
+      cursor: 'pointer',
     },
   })
 );
@@ -34,7 +28,7 @@ export default function ChatWindowHeader() {
   return (
     <div className={classes.container}>
       <div className={classes.text}>Chat</div>
-      <div className={classes.closeButton}>
+      <div className={classes.closeChatWindow}>
         <CloseChatWindowButton />
       </div>
     </div>
