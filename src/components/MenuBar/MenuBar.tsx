@@ -1,4 +1,4 @@
-import React, { useCallback} from 'react';
+import React, { useCallback, useState} from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
@@ -8,11 +8,11 @@ import Menu from './Menu/Menu';
 
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import { Filters } from '../VideoProvider/useFilters/useFilters';
 import { Typography, Grid, Hidden } from '@material-ui/core';
 import ToggleAudioButton from '../Buttons/ToggleAudioButton/ToggleAudioButton';
 import ToggleVideoButton from '../Buttons/ToggleVideoButton/ToggleVideoButton';
 import ToggleScreenShareButton from '../Buttons/ToogleScreenShareButton/ToggleScreenShareButton';
-import useLocalVideoProcessor from '../../hooks/useLocalVideoProcessor/useLocalVideoProcessor';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -63,24 +63,25 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+
+
 export default function MenuBar() {
   const classes = useStyles();
   const { isSharingScreen, toggleScreenShare } = useVideoContext();
   const roomState = useRoomState();
   const isReconnecting = roomState === 'reconnecting';
-  const { room } = useVideoContext();
+  const { room, setFilter } = useVideoContext();
 
-  const [setGrayScaleProcessor, setBlurProcessor, setNoFilter] = useLocalVideoProcessor();
 
   const handleGrayscaleClick = useCallback(() => {
-    setGrayScaleProcessor();
-  }, [setGrayScaleProcessor]);
+    setFilter(Filters.Grayscale);
+  }, [setFilter]);
   const handleBlurClick = useCallback(() => {
-    setBlurProcessor();
-  }, [setBlurProcessor]);
+    setFilter(Filters.Blur);
+  }, [setFilter]);
   const handleNoEffectClick = useCallback(() => {
-    setNoFilter();
-  }, [setNoFilter]);
+    setFilter(Filters.None);
+  }, [setFilter]);
 
   return (
     <>

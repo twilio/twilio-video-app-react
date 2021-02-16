@@ -17,6 +17,7 @@ import useHandleTrackPublicationFailed from './useHandleTrackPublicationFailed/u
 import useLocalTracks from './useLocalTracks/useLocalTracks';
 import useRoom from './useRoom/useRoom';
 import useScreenShareToggle from './useScreenShareToggle/useScreenShareToggle';
+import { useFilters, Filters } from './useFilters/useFilters';
 
 /*
  *  The hooks used by the VideoProvider component are different than the hooks found in the 'hooks/' directory. The hooks
@@ -40,6 +41,7 @@ export interface IVideoContext {
   isSharingScreen: boolean;
   toggleScreenShare: () => void;
   getAudioAndVideoTracks: () => Promise<void>;
+  setFilter: (filter?: Filters, track?: LocalVideoTrack) => void;
 }
 
 export const VideoContext = createContext<IVideoContext>(null!);
@@ -74,6 +76,8 @@ export function VideoProvider({ options, children, onError = () => {}, onDisconn
   useHandleOnDisconnect(room, onDisconnect);
   const [isSharingScreen, toggleScreenShare] = useScreenShareToggle(room, onError);
 
+  const setFilter = useFilters(room);
+
   return (
     <VideoContext.Provider
       value={{
@@ -91,6 +95,7 @@ export function VideoProvider({ options, children, onError = () => {}, onDisconn
         isSharingScreen,
         toggleScreenShare,
         getAudioAndVideoTracks,
+        setFilter,
       }}
     >
       <SelectedParticipantProvider room={room}>{children}</SelectedParticipantProvider>

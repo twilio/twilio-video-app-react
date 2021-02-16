@@ -9,6 +9,7 @@ export default function useLocalVideoToggle() {
     getLocalVideoTrack,
     removeLocalVideoTrack,
     onError,
+    setFilter,
   } = useVideoContext();
   const videoTrack = localTracks.find(track => track.name.includes('camera')) as LocalVideoTrack;
   const [isPublishing, setIspublishing] = useState(false);
@@ -23,7 +24,10 @@ export default function useLocalVideoToggle() {
       } else {
         setIspublishing(true);
         getLocalVideoTrack()
-          .then((track: LocalVideoTrack) => localParticipant?.publishTrack(track, { priority: 'low' }))
+          .then((track: LocalVideoTrack) => {
+            localParticipant?.publishTrack(track, { priority: 'low' });
+            setFilter(undefined, track);
+          })
           .catch(onError)
           .finally(() => setIspublishing(false));
       }

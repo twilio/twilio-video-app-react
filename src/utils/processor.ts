@@ -10,7 +10,7 @@ class Processor {
   }
 }
 
-class GrayScaleProcessor extends Processor {
+class GrayscaleProcessor extends Processor {
   constructor() {
     super();
   }
@@ -46,4 +46,4 @@ class BlurProcessor extends Processor {
   }
 }
 
-export { GrayScaleProcessor, BlurProcessor }
+export { GrayscaleProcessor, BlurProcessor }
