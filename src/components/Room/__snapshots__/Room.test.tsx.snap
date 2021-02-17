@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`the Room component should render correctly with chat window closed 1`] = `
+<div
+  className="makeStyles-container-1"
+>
+  <MainParticipant />
+  <ParticipantList />
+  <ChatWindow />
+</div>
+`;
+
+exports[`the Room component should render correctly with chat window open 1`] = `
+<div
+  className="makeStyles-container-1 makeStyles-chatWindowOpen-2"
+>
+  <MainParticipant />
+  <ParticipantList />
+  <ChatWindow />
+</div>
+`;
