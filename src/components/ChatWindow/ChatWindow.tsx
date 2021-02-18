@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import ChatWindowHeader from '../ChatWindowHeader/ChatWindowHeader';
+import ChatWindowHeader from './ChatWindowHeader/ChatWindowHeader';
 import useChatContext from '../../hooks/useChatContext/useChatContext';
 
 const useStyles = makeStyles((theme: Theme) =>
