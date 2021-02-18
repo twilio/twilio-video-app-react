@@ -11,7 +11,6 @@ declare module '@material-ui/core/styles/createMuiTheme' {
     sidebarMobilePadding: number;
     participantBorderWidth: number;
     chatWindowWidth: number;
-    chatWindowHeaderHeight: number;
   }
 
   // allow configuration using `createMuiTheme`
@@ -25,7 +24,6 @@ declare module '@material-ui/core/styles/createMuiTheme' {
     sidebarMobilePadding: number;
     participantBorderWidth: number;
     chatWindowWidth?: number;
-    chatWindowHeaderHeight?: number;
   }
 }
 
@@ -126,5 +124,4 @@ export default createMuiTheme({
   participantBorderWidth: 2,
   mobileTopBarHeight: 52,
   chatWindowWidth: 320,
-  chatWindowHeaderHeight: 56,
 });
