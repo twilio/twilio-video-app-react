@@ -4,14 +4,13 @@ import { Button } from '@material-ui/core';
 
 import ChatIcon from '../../../icons/ChatIcon';
 import ToggleChatButton from './ToggleChatButton';
-
 import useChatContext from '../../../hooks/useChatContext/useChatContext';
 
 jest.mock('../../../hooks/useChatContext/useChatContext');
 const mockUseChatContext = useChatContext as jest.Mock<any>;
 
 const mockToggleChatWindow = jest.fn();
-mockUseChatContext.mockImplementation(() => ({ setIsChatWindowOpen: mockToggleChatWindow }));
+mockUseChatContext.mockImplementation(() => ({ setIsChatWindowOpen: mockToggleChatWindow, isChatWindowOpen: false }));
 
 describe('the ToggleChatButton component', () => {
   it('should render correctly when chat is enabled', () => {
@@ -23,6 +22,6 @@ describe('the ToggleChatButton component', () => {
   it('should call the correct toggle function when clicked', () => {
     const wrapper = shallow(<ToggleChatButton />);
     wrapper.find(Button).simulate('click');
-    expect(mockToggleChatWindow).toHaveBeenCalled();
+    expect(mockToggleChatWindow).toHaveBeenCalledWith(true);
   });
 });
