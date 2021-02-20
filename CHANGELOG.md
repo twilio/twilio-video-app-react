@@ -1,3 +1,13 @@
+## 0.2.3
+
+### Bugfixes
+
+- Update `VideoInputList` so that the app doesn't crash when the deivce is changed while the camera is off. [#412](https://github.com/twilio/twilio-video-app-react/pull/412)
+
+### Dependency Upgrades
+
+- `react-scripts` has been upgraded from 3.4.4 to 4.0.2. [#416](https://github.com/twilio/twilio-video-app-react/pull/416)
+
 ## 0.2.2
 
 ### Bugfixes
