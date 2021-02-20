@@ -6,6 +6,7 @@
   "dependencies": {
     "@material-ui/core": "^4.9.1",
     "@material-ui/icons": "^4.9.1",
+    "@twilio/conversations": "^1.1.0",
     "@types/d3-timer": "^1.0.9",
     "@types/fscreen": "^1.0.1",
     "@types/jest": "^24.9.1",
@@ -98,7 +99,7 @@
       "pre-commit": "lint-staged"
     }
   },
-  "proxy": "http://localhost:8081/",
+  "proxy": "https://video-app-0785-1088-dev.twil.io",
   "jest": {
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
