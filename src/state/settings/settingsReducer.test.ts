@@ -32,15 +32,15 @@ describe('the settingsReducer', () => {
 
   it('should set the maxTracks property to 10 when not using a mobile browser', () => {
     jest.resetModules();
-    const { initialSettings } = require('./settingsReducer');
-    expect(initialSettings.maxTracks).toBe('10');
+    const reducer = require('./settingsReducer');
+    expect(reducer.initialSettings.maxTracks).toBe('10');
   });
 
   it('should set the maxTracks property to 5 when using a mobile browser', () => {
     Object.defineProperty(navigator, 'userAgent', { value: 'Mobile' });
     jest.resetModules();
-    const { initialSettings } = jest.requireActual('./settingsReducer');
-    expect(initialSettings.maxTracks).toBe('5');
+    const reducer = jest.requireActual('./settingsReducer');
+    expect(reducer.initialSettings.maxTracks).toBe('5');
   });
 });
 
