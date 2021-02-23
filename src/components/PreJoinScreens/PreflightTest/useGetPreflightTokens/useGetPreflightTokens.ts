@@ -18,8 +18,8 @@ export default function useGetPreflightTokens() {
       const subscriberIdentity = 'participant-' + nanoid();
 
       Promise.all([getToken(publisherIdentity, roomName), getToken(subscriberIdentity, roomName)])
-        .then(tokens => {
-          setTokens(tokens);
+        .then(newTokens => {
+          setTokens(newTokens);
           setIsFetching(false);
         })
         .catch(error => setTokenError(error));

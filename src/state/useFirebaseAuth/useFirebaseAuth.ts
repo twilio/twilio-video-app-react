@@ -31,8 +31,8 @@ export default function useFirebaseAuth() {
 
   useEffect(() => {
     firebase.initializeApp(firebaseConfig);
-    firebase.auth().onAuthStateChanged(user => {
-      setUser(user);
+    firebase.auth().onAuthStateChanged(newUser => {
+      setUser(newUser);
       setIsAuthReady(true);
     });
   }, []);
@@ -44,8 +44,8 @@ export default function useFirebaseAuth() {
     return firebase
       .auth()
       .signInWithPopup(provider)
-      .then(user => {
-        setUser(user.user);
+      .then(newUser => {
+        setUser(newUser.user);
       });
   }, []);
 

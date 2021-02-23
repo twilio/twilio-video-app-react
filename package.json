@@ -28,10 +28,10 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "4.0.2",
+    "react-scripts": "4.0.3",
     "strip-color": "^0.1.0",
     "twilio": "^3.39.3",
-    "twilio-video": "^2.11.0",
+    "twilio-video": "^2.12.0",
     "typescript": "^3.8.3"
   },
   "devDependencies": {
@@ -53,7 +53,7 @@
     "puppeteer": "^5.3.1",
     "react-test-renderer": "^16.12.0",
     "start-server-and-test": "^1.10.8",
-    "ts-jest": "^24.3.0"
+    "ts-jest": "^26.5.1"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
@@ -67,7 +67,7 @@
     "build": "node ./scripts/build.js",
     "test": "jest",
     "eject": "react-scripts eject",
-    "lint": "eslint src/**/*.{ts,tsx}",
+    "lint": "eslint src",
     "server": "node server.js",
     "test:ci": "jest --ci --runInBand --reporters=default --reporters=jest-junit --coverage",
     "cypress:open": "cypress open",
@@ -78,7 +78,10 @@
   "eslintConfig": {
     "extends": "react-app",
     "rules": {
-      "no-shadow": "warn"
+      "no-shadow": "off",
+      "@typescript-eslint/no-shadow": [
+        "warn"
+      ]
     }
   },
   "browserslist": {
