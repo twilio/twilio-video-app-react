@@ -12,7 +12,6 @@ import { SelectedParticipantProvider } from './useSelectedParticipant/useSelecte
 
 import AttachVisibilityHandler from './AttachVisibilityHandler/AttachVisibilityHandler';
 import useHandleRoomDisconnectionErrors from './useHandleRoomDisconnectionErrors/useHandleRoomDisconnectionErrors';
-import useHandleOnDisconnect from './useHandleOnDisconnect/useHandleOnDisconnect';
 import useHandleTrackPublicationFailed from './useHandleTrackPublicationFailed/useHandleTrackPublicationFailed';
 import useLocalTracks from './useLocalTracks/useLocalTracks';
 import useRoom from './useRoom/useRoom';
@@ -71,7 +70,6 @@ export function VideoProvider({ options, children, onError = () => {}, onDisconn
   // Register onError and onDisconnect callback functions.
   useHandleRoomDisconnectionErrors(room, onError);
   useHandleTrackPublicationFailed(room, onError);
-  useHandleOnDisconnect(room, onDisconnect);
   const [isSharingScreen, toggleScreenShare] = useScreenShareToggle(room, onError);
 
   return (
