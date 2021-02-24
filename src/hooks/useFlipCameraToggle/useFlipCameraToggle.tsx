@@ -7,7 +7,7 @@ import useVideoContext from '../useVideoContext/useVideoContext';
 
 export default function useFlipCameraToggle() {
   const { localTracks } = useVideoContext();
-  const [supportsFacingMode, setSupportsFacingMode] = useState<Boolean | null>(null);
+  const [supportsFacingMode, setSupportsFacingMode] = useState(false);
   const videoTrack = localTracks.find(track => track.name.includes('camera')) as LocalVideoTrack | undefined;
   const mediaStreamTrack = useMediaStreamTrack(videoTrack);
   const { videoInputDevices } = useDevices();
@@ -19,7 +19,7 @@ export default function useFlipCameraToggle() {
     // won't set 'supportsFacingMode' to false. This prevents the icon from briefly
     // disappearing when the user switches their front/rear camera.
     const currentFacingMode = mediaStreamTrack?.getSettings().facingMode;
-    if (currentFacingMode && supportsFacingMode === null) {
+    if (currentFacingMode && supportsFacingMode === false) {
       setSupportsFacingMode(true);
     }
   }, [mediaStreamTrack, supportsFacingMode]);

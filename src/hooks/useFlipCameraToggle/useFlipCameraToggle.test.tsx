@@ -41,7 +41,7 @@ describe('the useFlipCameraToggle hook', () => {
     });
   });
 
-  it('should return flipCameraSupported: null, when a videoTrack exists and facingMode is not supported', () => {
+  it('should return flipCameraSupported: false, when a videoTrack exists and facingMode is not supported', () => {
     mockUseVideoContext.mockImplementation(() => ({
       ...mockVideoContext,
       localTracks: [
@@ -57,11 +57,11 @@ describe('the useFlipCameraToggle hook', () => {
     expect(result.current).toEqual({
       flipCameraDisabled: false,
       toggleFacingMode: expect.any(Function),
-      flipCameraSupported: null,
+      flipCameraSupported: false,
     });
   });
 
-  it('should return flipCameraSupported: null, and flipCameraDisabled: true, when no video track is present', () => {
+  it('should return flipCameraSupported: false, and flipCameraDisabled: true, when no video track is present', () => {
     mockUseVideoContext.mockImplementation(() => ({
       ...mockVideoContext,
       localTracks: [],
@@ -70,7 +70,7 @@ describe('the useFlipCameraToggle hook', () => {
     expect(result.current).toEqual({
       flipCameraDisabled: true,
       toggleFacingMode: expect.any(Function),
-      flipCameraSupported: null,
+      flipCameraSupported: false,
     });
   });
 
