@@ -22,7 +22,7 @@ describe('the Menu component', () => {
       mockUseMediaQuery.mockImplementation(() => false);
       mockUseFlipCameraToggle.mockImplementation(() => ({
         flipCameraDisabled: false,
-        flipCameraSupported: null,
+        flipCameraSupported: false,
       }));
     });
 
@@ -80,7 +80,7 @@ describe('the Menu component', () => {
       expect(wrapper.find(MoreIcon).exists()).toBe(true);
     });
 
-    it('should render non-disabled Flip Camera button when facingMode is supported', () => {
+    it('should render non-disabled Flip Camera button when flipCameraSupported is true', () => {
       const wrapper = shallow(<Menu />);
       expect(wrapper.find(FlipCameraIcon).exists()).toBe(true);
       expect(
@@ -91,7 +91,7 @@ describe('the Menu component', () => {
       ).toBe(false);
     });
 
-    it('should render a disabled Flip Camera button when facingMode is supported, but videoTrack is undefined', () => {
+    it('should render a disabled Flip Camera button when flipCameraSupported is true, and flipCameraDisabled is true', () => {
       mockUseFlipCameraToggle.mockImplementationOnce(() => ({
         flipCameraDisabled: true,
         flipCameraSupported: true,
@@ -106,7 +106,7 @@ describe('the Menu component', () => {
       ).toBe(true);
     });
 
-    it('should not render Flip Camera button when facingMode is not supported', () => {
+    it('should not render Flip Camera button when flipCameraSupported is false', () => {
       mockUseFlipCameraToggle.mockImplementationOnce(() => ({
         flipCameraSupported: false,
       }));
