@@ -36,6 +36,10 @@ jobs:
           path: coverage
 
       - run: 
+          name: "Eslint"
+          command: npm run lint -- --max-warnings 0
+
+      - run: 
           name: "Build app with Firebase auth disabled"
           command: npm run build
           environment:

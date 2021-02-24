@@ -82,13 +82,13 @@ export default function useLocalTracks() {
 
     return Video.createLocalTracks(localTrackConstraints)
       .then(tracks => {
-        const videoTrack = tracks.find(track => track.kind === 'video');
-        const audioTrack = tracks.find(track => track.kind === 'audio');
-        if (videoTrack) {
-          setVideoTrack(videoTrack as LocalVideoTrack);
+        const newVideoTrack = tracks.find(track => track.kind === 'video');
+        const newAudioTrack = tracks.find(track => track.kind === 'audio');
+        if (newVideoTrack) {
+          setVideoTrack(newVideoTrack as LocalVideoTrack);
         }
-        if (audioTrack) {
-          setAudioTrack(audioTrack as LocalAudioTrack);
+        if (newAudioTrack) {
+          setAudioTrack(newAudioTrack as LocalAudioTrack);
         }
       })
       .finally(() => setIsAcquiringLocalTracks(false));
