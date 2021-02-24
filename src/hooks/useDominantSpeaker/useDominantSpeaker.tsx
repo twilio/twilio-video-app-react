@@ -4,7 +4,7 @@ import { RemoteParticipant } from 'twilio-video';
 
 export default function useDominantSpeaker() {
   const { room } = useVideoContext();
-  const [dominantSpeaker, setDominantSpeaker] = useState(room?.dominantSpeaker);
+  const [dominantSpeaker, setDominantSpeaker] = useState(room?.dominantSpeaker ?? null);
 
   useEffect(() => {
     if (room) {
