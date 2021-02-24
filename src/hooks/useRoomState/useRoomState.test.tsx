@@ -18,7 +18,6 @@ describe('the useRoomState hook', () => {
       isConnecting: false,
       localTracks: [],
       onError: () => {},
-      onDisconnect: () => {},
     }));
   });
 
@@ -76,7 +75,6 @@ describe('the useRoomState hook', () => {
         isConnecting: false,
         localTracks: [],
         onError: () => {},
-        onDisconnect: () => {},
       }));
     });
 
@@ -99,7 +97,6 @@ describe('the useRoomState hook', () => {
         isConnecting: false,
         localTracks: [],
         onError: () => {},
-        onDisconnect: () => {},
       }));
     });
 

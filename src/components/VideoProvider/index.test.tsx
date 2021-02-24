@@ -10,7 +10,6 @@ import useHandleTrackPublicationFailed from './useHandleTrackPublicationFailed/u
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 const mockRoom = new EventEmitter() as Room;
-const mockOnDisconnect = jest.fn();
 jest.mock('./useRoom/useRoom', () => jest.fn(() => ({ room: mockRoom, isConnecting: false, connect: () => {} })));
 jest.mock('./useLocalTracks/useLocalTracks', () =>
   jest.fn(() => ({
@@ -27,7 +26,7 @@ jest.mock('./useHandleTrackPublicationFailed/useHandleTrackPublicationFailed');
 describe('the VideoProvider component', () => {
   it('should correctly return the Video Context object', () => {
     const wrapper: React.FC = ({ children }) => (
-      <VideoProvider onError={() => {}} onDisconnect={mockOnDisconnect} options={{ dominantSpeaker: true }}>
+      <VideoProvider onError={() => {}} options={{ dominantSpeaker: true }}>
         {children}
       </VideoProvider>
     );
@@ -38,7 +37,6 @@ describe('the VideoProvider component', () => {
       room: mockRoom,
       onError: expect.any(Function),
       connect: expect.any(Function),
-      onDisconnect: mockOnDisconnect,
       getLocalVideoTrack: expect.any(Function),
       getLocalAudioTrack: expect.any(Function),
       removeLocalVideoTrack: expect.any(Function),
@@ -56,7 +54,7 @@ describe('the VideoProvider component', () => {
   it('should call the onError function when there is an error', () => {
     const mockOnError = jest.fn();
     const wrapper: React.FC = ({ children }) => (
-      <VideoProvider onError={mockOnError} onDisconnect={mockOnDisconnect} options={{ dominantSpeaker: true }}>
+      <VideoProvider onError={mockOnError} options={{ dominantSpeaker: true }}>
         {children}
       </VideoProvider>
     );
