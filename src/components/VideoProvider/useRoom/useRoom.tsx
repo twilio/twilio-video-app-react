@@ -8,7 +8,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 window.TwilioVideo = Video;
 
 export default function useRoom(localTracks: LocalTrack[], onError: Callback, options?: ConnectOptions) {
-  const [room, setRoom] = useState<Room>(new EventEmitter() as Room);
+  const [room, setRoom] = useState<Room | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
   const optionsRef = useRef(options);
 
@@ -32,7 +32,7 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
 
           newRoom.once('disconnected', () => {
             // Reset the room only after all other `disconnected` listeners have been called.
-            setTimeout(() => setRoom(new EventEmitter() as Room));
+            setTimeout(() => setRoom(null));
             window.removeEventListener('beforeunload', disconnect);
 
             if (isMobile) {

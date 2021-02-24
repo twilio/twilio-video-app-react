@@ -26,7 +26,7 @@ import useScreenShareToggle from './useScreenShareToggle/useScreenShareToggle';
  */
 
 export interface IVideoContext {
-  room: Room;
+  room: Room | null;
   localTracks: (LocalAudioTrack | LocalVideoTrack)[];
   isConnecting: boolean;
   connect: (token: string) => Promise<void>;

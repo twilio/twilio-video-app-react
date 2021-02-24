@@ -28,7 +28,7 @@ export default function EndCallButton(props: { className?: string }) {
     }
     removeLocalAudioTrack();
     removeLocalVideoTrack();
-    room.disconnect();
+    room!.disconnect();
   };
 
   return (
