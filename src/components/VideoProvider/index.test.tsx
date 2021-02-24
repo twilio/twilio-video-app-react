@@ -51,7 +51,6 @@ describe('the VideoProvider component', () => {
     expect(useLocalTracks).toHaveBeenCalled();
     expect(useHandleRoomDisconnectionErrors).toHaveBeenCalledWith(mockRoom, expect.any(Function));
     expect(useHandleTrackPublicationFailed).toHaveBeenCalledWith(mockRoom, expect.any(Function));
-    expect(useHandleOnDisconnect).toHaveBeenCalledWith(mockRoom, mockOnDisconnect);
   });
 
   it('should call the onError function when there is an error', () => {
