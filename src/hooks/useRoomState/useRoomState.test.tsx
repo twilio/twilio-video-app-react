@@ -6,14 +6,14 @@ import useVideoContext from '../useVideoContext/useVideoContext';
 
 jest.mock('../useVideoContext/useVideoContext');
 
-const mockedVideoContext = useVideoContext as jest.Mock<any>;
+const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 
 describe('the useRoomState hook', () => {
   let mockRoom: Room;
 
   beforeEach(() => {
     mockRoom = new EventEmitter() as Room;
-    mockedVideoContext.mockImplementation(() => ({
+    mockUseVideoContext.mockImplementation(() => ({
       room: mockRoom,
       isConnecting: false,
       localTracks: [],
@@ -22,7 +22,8 @@ describe('the useRoomState hook', () => {
     }));
   });
 
-  it('should return "disconnected" by default', () => {
+  it('should return "disconnected" by default when there is no room', () => {
+    mockUseVideoContext.mockImplementationOnce(() => ({}));
     const { result } = renderHook(useRoomState);
     expect(result.current).toBe('disconnected');
   });
@@ -63,13 +64,14 @@ describe('the useRoomState hook', () => {
   });
 
   it('should update when a new room object is provided', () => {
+    mockUseVideoContext.mockImplementationOnce(() => ({}));
     const { result, rerender } = renderHook(useRoomState);
     expect(result.current).toBe('disconnected');
 
     act(() => {
       mockRoom = new EventEmitter() as Room;
       mockRoom.state = 'connected';
-      mockedVideoContext.mockImplementation(() => ({
+      mockUseVideoContext.mockImplementation(() => ({
         room: mockRoom,
         isConnecting: false,
         localTracks: [],
@@ -92,7 +94,7 @@ describe('the useRoomState hook', () => {
 
     act(() => {
       mockRoom = new EventEmitter() as Room;
-      mockedVideoContext.mockImplementation(() => ({
+      mockUseVideoContext.mockImplementation(() => ({
         room: mockRoom,
         isConnecting: false,
         localTracks: [],

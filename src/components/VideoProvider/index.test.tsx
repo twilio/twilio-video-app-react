@@ -7,7 +7,6 @@ import useLocalTracks from './useLocalTracks/useLocalTracks';
 import useRoom from './useRoom/useRoom';
 import useHandleRoomDisconnectionErrors from './useHandleRoomDisconnectionErrors/useHandleRoomDisconnectionErrors';
 import useHandleTrackPublicationFailed from './useHandleTrackPublicationFailed/useHandleTrackPublicationFailed';
-import useHandleOnDisconnect from './useHandleOnDisconnect/useHandleOnDisconnect';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 const mockRoom = new EventEmitter() as Room;
@@ -24,8 +23,6 @@ jest.mock('./useLocalTracks/useLocalTracks', () =>
 );
 jest.mock('./useHandleRoomDisconnectionErrors/useHandleRoomDisconnectionErrors');
 jest.mock('./useHandleTrackPublicationFailed/useHandleTrackPublicationFailed');
-jest.mock('./useHandleTrackPublicationFailed/useHandleTrackPublicationFailed');
-jest.mock('./useHandleOnDisconnect/useHandleOnDisconnect');
 
 describe('the VideoProvider component', () => {
   it('should correctly return the Video Context object', () => {
