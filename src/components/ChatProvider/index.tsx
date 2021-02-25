@@ -28,21 +28,24 @@ export function ChatProvider({ children }: ChatProviderProps) {
   const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
   const [chatClient, setChatClient] = useState<Client>();
 
-  const connect = useCallback((token: string) => {
-    Client.create(token)
-      .then(client => {
-        //@ts-ignore
-        window.chatClient = client;
-        setChatClient(client);
-      })
-      .catch(onError);
-  }, []);
+  const connect = useCallback(
+    (token: string) => {
+      Client.create(token)
+        .then(client => {
+          //@ts-ignore
+          window.chatClient = client;
+          setChatClient(client);
+        })
+        .catch(onError);
+    },
+    [onError]
+  );
 
   useEffect(() => {
     const handleMessageAdded = (message: Message) => setMessages(oldMessages => [...oldMessages, message]);
 
     if (conversation) {
-      conversation.getMessages().then(messages => setMessages(messages.items));
+      conversation.getMessages().then(newMessages => setMessages(newMessages.items));
       conversation.on('messageAdded', handleMessageAdded);
       return () => {
         conversation.off('messageAdded', handleMessageAdded);
@@ -66,14 +69,14 @@ export function ChatProvider({ children }: ChatProviderProps) {
     if (room && chatClient) {
       chatClient
         .getConversationByUniqueName(room.sid)
-        .then(conversation => {
+        .then(newConversation => {
           //@ts-ignore
-          window.chatConversation = conversation;
-          setConversation(conversation);
+          window.chatConversation = newConversation;
+          setConversation(newConversation);
         })
         .catch(onError);
     }
-  }, [room, chatClient]);
+  }, [room, chatClient, onError]);
 
   return (
     <ChatContext.Provider
