@@ -60,14 +60,14 @@ interface DeviceSelectionScreenProps {
 export default function DeviceSelectionScreen({ name, roomName, setStep }: DeviceSelectionScreenProps) {
   const classes = useStyles();
   const { getToken, isFetching } = useAppState();
-  const chatContext = useChatContext();
-  const { connect, isAcquiringLocalTracks, isConnecting } = useVideoContext();
+  const { connect: chatConnect } = useChatContext();
+  const { connect: videoConnect, isAcquiringLocalTracks, isConnecting } = useVideoContext();
   const disableButtons = isFetching || isAcquiringLocalTracks || isConnecting;
 
   const handleJoin = () => {
     getToken(name, roomName).then(token => {
-      connect(token);
-      chatContext.connect(token);
+      videoConnect(token);
+      chatConnect(token);
     });
   };
 
