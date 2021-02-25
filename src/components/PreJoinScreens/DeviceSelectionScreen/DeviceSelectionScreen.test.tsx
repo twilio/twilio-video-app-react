@@ -7,14 +7,16 @@ import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 import ToggleVideoButton from '../../Buttons/ToggleVideoButton/ToggleVideoButton';
 import ToggleAudioButton from '../../Buttons/ToggleAudioButton/ToggleAudioButton';
 
-jest.mock('../../../hooks/useVideoContext/useVideoContext');
-jest.mock('../../../state');
-
 const mockUseAppState = useAppState as jest.Mock<any>;
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 
 const mockConnect = jest.fn();
+const mockChatConnect = jest.fn(() => Promise.resolve());
 const mockGetToken = jest.fn(() => Promise.resolve('mockToken'));
+
+jest.mock('../../../hooks/useChatContext/useChatContext', () => () => ({ connect: mockChatConnect }));
+jest.mock('../../../hooks/useVideoContext/useVideoContext');
+jest.mock('../../../state');
 
 mockUseAppState.mockImplementation(() => ({ getToken: mockGetToken, isFetching: false }));
 mockUseVideoContext.mockImplementation(() => ({
@@ -109,6 +111,7 @@ describe('the DeviceSelectionScreen component', () => {
     expect(mockGetToken).toHaveBeenCalledWith('test name', 'test room name');
     setImmediate(() => {
       expect(mockConnect).toHaveBeenCalledWith('mockToken');
+      expect(mockChatConnect).toHaveBeenCalledWith('mockToken');
       done();
     });
   });
