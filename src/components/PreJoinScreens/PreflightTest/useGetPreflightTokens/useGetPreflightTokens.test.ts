@@ -23,8 +23,8 @@ describe('the useGetPreflightTokens hook', () => {
   });
 
   it('should return the tokenError property when there is an error', async () => {
-    const mockGetToken = jest.fn(() => Promise.reject('mockError'));
-    mockUseAppState.mockImplementationOnce(() => ({ getToken: mockGetToken }));
+    const mockGetTokenFn = jest.fn(() => Promise.reject('mockError'));
+    mockUseAppState.mockImplementationOnce(() => ({ getToken: mockGetTokenFn }));
     const { result, waitForNextUpdate } = renderHook(useGetPreflightTokens);
     await waitForNextUpdate();
     expect(result.current).toEqual({ tokens: undefined, tokenError: 'mockError' });

@@ -1,1 +1,2 @@
-export default (track: any) => track?.mediaStreamTrack;
+const useMediaStreamTrack = (track: any) => track?.mediaStreamTrack;
+export default useMediaStreamTrack;
