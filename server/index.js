@@ -6,10 +6,15 @@ require('./bootstrap-globals');
 
 app.use(express.json());
 
+const authMiddleware =
+  process.env.REACT_APP_SET_AUTH === 'firebase' ? require('./firebase-middleware') : (req, res, next) => next();
+
+app.use(authMiddleware);
+
 const tokenEndpoint = require('@twilio-labs/plugin-rtc/src/serverless/functions/token').handler;
 const recordingRulesEndpoint = require('@twilio-labs/plugin-rtc/src/serverless/functions/recordingrules').handler;
 
-const { TWILIO_ACCOUNT_SID, TWILIO_API_KEY_SID, TWILIO_API_KEY_SECRET, TWILIO_CONVERSAIONS_SERVICE_SID } = process.env;
+const { TWILIO_ACCOUNT_SID, TWILIO_API_KEY_SID, TWILIO_API_KEY_SECRET, TWILIO_CONVERSATIONS_SERVICE_SID } = process.env;
 
 const twilioClient = Twilio(TWILIO_API_KEY_SID, TWILIO_API_KEY_SECRET, {
   accountSid: TWILIO_ACCOUNT_SID,
@@ -20,7 +25,7 @@ const context = {
   TWILIO_API_KEY_SID,
   TWILIO_API_KEY_SECRET,
   ROOM_TYPE: 'group',
-  CONVERSATIONS_SERVICE_SID: TWILIO_CONVERSAIONS_SERVICE_SID,
+  CONVERSATIONS_SERVICE_SID: TWILIO_CONVERSATIONS_SERVICE_SID,
   getTwilioClient: () => twilioClient,
 };
 
