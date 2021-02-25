@@ -99,7 +99,7 @@
       "pre-commit": "lint-staged"
     }
   },
-  "proxy": "https://video-app-0785-1088-dev.twil.io",
+  "proxy": "http://localhost:8081/",
   "jest": {
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
