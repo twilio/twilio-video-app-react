@@ -36,7 +36,9 @@ export function ChatProvider({ children }: ChatProviderProps) {
           window.chatClient = client;
           setChatClient(client);
         })
-        .catch(onError);
+        .catch(() => {
+          onError(new Error("There was a problem connecting to Twilio's conversation service."));
+        });
     },
     [onError]
   );
@@ -74,7 +76,9 @@ export function ChatProvider({ children }: ChatProviderProps) {
           window.chatConversation = newConversation;
           setConversation(newConversation);
         })
-        .catch(onError);
+        .catch(() => {
+          onError(new Error('There was a problem getting the Conversation associated with this room.'));
+        });
     }
   }, [room, chatClient, onError]);
 

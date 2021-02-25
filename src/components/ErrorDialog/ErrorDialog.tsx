@@ -10,7 +10,7 @@ import { TwilioError } from 'twilio-video';
 
 interface ErrorDialogProps {
   dismissError: Function;
-  error: TwilioError | null;
+  error: TwilioError | Error | null;
 }
 
 function ErrorDialog({ dismissError, error }: PropsWithChildren<ErrorDialogProps>) {

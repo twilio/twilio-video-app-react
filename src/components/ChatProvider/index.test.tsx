@@ -141,7 +141,9 @@ describe('the ChatProvider component', () => {
     result.current.connect('mockToken');
 
     setImmediate(() => {
-      expect(mockOnError).toHaveBeenCalledWith('mockError');
+      expect(mockOnError).toHaveBeenCalledWith(
+        new Error("There was a problem connecting to Twilio's conversation service.")
+      );
       done();
     });
   });
@@ -152,6 +154,8 @@ describe('the ChatProvider component', () => {
     result.current.connect('mockToken');
     await waitForNextUpdate();
 
-    expect(mockOnError).toHaveBeenCalledWith('mockError');
+    expect(mockOnError).toHaveBeenCalledWith(
+      new Error('There was a problem getting the Conversation associated with this room.')
+    );
   });
 });
