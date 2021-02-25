@@ -7,11 +7,9 @@ import useLocalTracks from './useLocalTracks/useLocalTracks';
 import useRoom from './useRoom/useRoom';
 import useHandleRoomDisconnectionErrors from './useHandleRoomDisconnectionErrors/useHandleRoomDisconnectionErrors';
 import useHandleTrackPublicationFailed from './useHandleTrackPublicationFailed/useHandleTrackPublicationFailed';
-import useHandleOnDisconnect from './useHandleOnDisconnect/useHandleOnDisconnect';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 const mockRoom = new EventEmitter() as Room;
-const mockOnDisconnect = jest.fn();
 jest.mock('./useRoom/useRoom', () => jest.fn(() => ({ room: mockRoom, isConnecting: false, connect: () => {} })));
 jest.mock('./useLocalTracks/useLocalTracks', () =>
   jest.fn(() => ({
@@ -24,13 +22,11 @@ jest.mock('./useLocalTracks/useLocalTracks', () =>
 );
 jest.mock('./useHandleRoomDisconnectionErrors/useHandleRoomDisconnectionErrors');
 jest.mock('./useHandleTrackPublicationFailed/useHandleTrackPublicationFailed');
-jest.mock('./useHandleTrackPublicationFailed/useHandleTrackPublicationFailed');
-jest.mock('./useHandleOnDisconnect/useHandleOnDisconnect');
 
 describe('the VideoProvider component', () => {
   it('should correctly return the Video Context object', () => {
     const wrapper: React.FC = ({ children }) => (
-      <VideoProvider onError={() => {}} onDisconnect={mockOnDisconnect} options={{ dominantSpeaker: true }}>
+      <VideoProvider onError={() => {}} options={{ dominantSpeaker: true }}>
         {children}
       </VideoProvider>
     );
@@ -41,7 +37,6 @@ describe('the VideoProvider component', () => {
       room: mockRoom,
       onError: expect.any(Function),
       connect: expect.any(Function),
-      onDisconnect: mockOnDisconnect,
       getLocalVideoTrack: expect.any(Function),
       getLocalAudioTrack: expect.any(Function),
       removeLocalVideoTrack: expect.any(Function),
@@ -54,13 +49,12 @@ describe('the VideoProvider component', () => {
     expect(useLocalTracks).toHaveBeenCalled();
     expect(useHandleRoomDisconnectionErrors).toHaveBeenCalledWith(mockRoom, expect.any(Function));
     expect(useHandleTrackPublicationFailed).toHaveBeenCalledWith(mockRoom, expect.any(Function));
-    expect(useHandleOnDisconnect).toHaveBeenCalledWith(mockRoom, mockOnDisconnect);
   });
 
   it('should call the onError function when there is an error', () => {
     const mockOnError = jest.fn();
     const wrapper: React.FC = ({ children }) => (
-      <VideoProvider onError={mockOnError} onDisconnect={mockOnDisconnect} options={{ dominantSpeaker: true }}>
+      <VideoProvider onError={mockOnError} options={{ dominantSpeaker: true }}>
         {children}
       </VideoProvider>
     );

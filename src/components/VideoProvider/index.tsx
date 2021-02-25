@@ -7,12 +7,11 @@ import {
   Room,
   TwilioError,
 } from 'twilio-video';
-import { Callback, ErrorCallback } from '../../types';
+import { ErrorCallback } from '../../types';
 import { SelectedParticipantProvider } from './useSelectedParticipant/useSelectedParticipant';
 
 import AttachVisibilityHandler from './AttachVisibilityHandler/AttachVisibilityHandler';
 import useHandleRoomDisconnectionErrors from './useHandleRoomDisconnectionErrors/useHandleRoomDisconnectionErrors';
-import useHandleOnDisconnect from './useHandleOnDisconnect/useHandleOnDisconnect';
 import useHandleTrackPublicationFailed from './useHandleTrackPublicationFailed/useHandleTrackPublicationFailed';
 import useLocalTracks from './useLocalTracks/useLocalTracks';
 import useRoom from './useRoom/useRoom';
@@ -26,12 +25,11 @@ import useScreenShareToggle from './useScreenShareToggle/useScreenShareToggle';
  */
 
 export interface IVideoContext {
-  room: Room;
+  room: Room | null;
   localTracks: (LocalAudioTrack | LocalVideoTrack)[];
   isConnecting: boolean;
   connect: (token: string) => Promise<void>;
   onError: ErrorCallback;
-  onDisconnect: Callback;
   getLocalVideoTrack: (newOptions?: CreateLocalTrackOptions) => Promise<LocalVideoTrack>;
   getLocalAudioTrack: (deviceId?: string) => Promise<LocalAudioTrack>;
   isAcquiringLocalTracks: boolean;
@@ -47,11 +45,10 @@ export const VideoContext = createContext<IVideoContext>(null!);
 interface VideoProviderProps {
   options?: ConnectOptions;
   onError: ErrorCallback;
-  onDisconnect?: Callback;
   children: ReactNode;
 }
 
-export function VideoProvider({ options, children, onError = () => {}, onDisconnect = () => {} }: VideoProviderProps) {
+export function VideoProvider({ options, children, onError = () => {} }: VideoProviderProps) {
   const onErrorCallback = (error: TwilioError) => {
     console.log(`ERROR: ${error.message}`, error);
     onError(error);
@@ -68,10 +65,9 @@ export function VideoProvider({ options, children, onError = () => {}, onDisconn
   } = useLocalTracks();
   const { room, isConnecting, connect } = useRoom(localTracks, onErrorCallback, options);
 
-  // Register onError and onDisconnect callback functions.
+  // Register onError callback functions.
   useHandleRoomDisconnectionErrors(room, onError);
   useHandleTrackPublicationFailed(room, onError);
-  useHandleOnDisconnect(room, onDisconnect);
   const [isSharingScreen, toggleScreenShare] = useScreenShareToggle(room, onError);
 
   return (
@@ -81,7 +77,6 @@ export function VideoProvider({ options, children, onError = () => {}, onDisconn
         localTracks,
         isConnecting,
         onError: onErrorCallback,
-        onDisconnect,
         getLocalVideoTrack,
         getLocalAudioTrack,
         connect,

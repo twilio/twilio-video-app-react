@@ -9,9 +9,8 @@ export default function useMainParticipant() {
   const screenShareParticipant = useScreenShareParticipant();
   const dominantSpeaker = useDominantSpeaker();
   const participants = useParticipants();
-  const {
-    room: { localParticipant },
-  } = useVideoContext();
+  const { room } = useVideoContext();
+  const localParticipant = room?.localParticipant;
   const remoteScreenShareParticipant = screenShareParticipant !== localParticipant ? screenShareParticipant : null;
 
   // The participant that is returned is displayed in the main video area. Changing the order of the following

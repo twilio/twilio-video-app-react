@@ -3,17 +3,19 @@ import { useEffect } from 'react';
 
 import { Callback } from '../../../types';
 
-export default function useHandleRoomDisconnectionErrors(room: Room, onError: Callback) {
+export default function useHandleRoomDisconnectionErrors(room: Room | null, onError: Callback) {
   useEffect(() => {
-    const onDisconnected = (room: Room, error: TwilioError) => {
-      if (error) {
-        onError(error);
-      }
-    };
+    if (room) {
+      const onDisconnected = (_: Room, error: TwilioError) => {
+        if (error) {
+          onError(error);
+        }
+      };
 
-    room.on('disconnected', onDisconnected);
-    return () => {
-      room.off('disconnected', onDisconnected);
-    };
+      room.on('disconnected', onDisconnected);
+      return () => {
+        room.off('disconnected', onDisconnected);
+      };
+    }
   }, [room, onError]);
 }

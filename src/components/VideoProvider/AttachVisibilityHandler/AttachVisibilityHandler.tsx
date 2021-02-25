@@ -19,7 +19,7 @@ export default function AttachVisibilityHandler() {
   const shouldRepublishVideoOnForeground = useRef(false);
 
   useEffect(() => {
-    if (isMobile) {
+    if (room && isMobile) {
       const handleVisibilityChange = () => {
         // We don't need to unpublish the local video track if it has already been unpublished
         if (document.visibilityState === 'hidden' && isVideoEnabled) {
