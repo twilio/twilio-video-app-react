@@ -1,9 +1,8 @@
 import React, { createContext, useCallback, useEffect, useRef, useState } from 'react';
 import { Client } from '@twilio/conversations';
-import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { Conversation } from '@twilio/conversations/lib/conversation';
 import { Message } from '@twilio/conversations/lib/message';
-import useRoomState from '../../hooks/useRoomState/useRoomState';
+import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 type ChatContextType = {
   isChatWindowOpen: boolean;
@@ -11,7 +10,7 @@ type ChatContextType = {
   connect: (token: string) => void;
   hasUnreadMessages: boolean;
   messages: Message[];
-  conversation?: Conversation;
+  conversation: Conversation | null;
 };
 
 export const ChatContext = createContext<ChatContextType>(null!);
@@ -21,21 +20,22 @@ type ChatProviderProps = {
 };
 
 export function ChatProvider({ children }: ChatProviderProps) {
-  const { room } = useVideoContext();
-  const state = useRoomState();
+  const { room, onError } = useVideoContext();
   const isChatWindowOpenRef = useRef(false);
   const [isChatWindowOpen, setIsChatWindowOpen] = useState(false);
-  const [conversation, setConversation] = useState<Conversation>();
+  const [conversation, setConversation] = useState<Conversation | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
   const [chatClient, setChatClient] = useState<Client>();
 
   const connect = useCallback((token: string) => {
-    Client.create(token).then(client => {
-      //@ts-ignore
-      window.chatClient = client;
-      setChatClient(client);
-    });
+    Client.create(token)
+      .then(client => {
+        //@ts-ignore
+        window.chatClient = client;
+        setChatClient(client);
+      })
+      .catch(onError);
   }, []);
 
   useEffect(() => {
@@ -51,7 +51,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
   }, [conversation]);
 
   useEffect(() => {
-    if (!isChatWindowOpenRef.current) {
+    // If the chat window is closed and there are new messages, set hasUnreadMessages to true
+    if (!isChatWindowOpenRef.current && messages.length) {
       setHasUnreadMessages(true);
     }
   }, [messages]);
@@ -63,11 +64,14 @@ export function ChatProvider({ children }: ChatProviderProps) {
 
   useEffect(() => {
     if (room && chatClient) {
-      chatClient.getConversationByUniqueName(room.sid).then(conversation => {
-        //@ts-ignore
-        window.chatConversation = conversation;
-        setConversation(conversation);
-      });
+      chatClient
+        .getConversationByUniqueName(room.sid)
+        .then(conversation => {
+          //@ts-ignore
+          window.chatConversation = conversation;
+          setConversation(conversation);
+        })
+        .catch(onError);
     }
   }, [room, chatClient]);
 
