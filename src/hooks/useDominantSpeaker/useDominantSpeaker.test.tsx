@@ -51,6 +51,12 @@ describe('the useDominantSpeaker hook', () => {
     expect(result.current).toBe(null);
   });
 
+  it('should return "null" as the default value when there is no room', () => {
+    mockUseVideoContext.mockImplementationOnce(() => ({}));
+    const { result } = renderHook(useDominantSpeaker);
+    expect(result.current).toBe(null);
+  });
+
   it('should clean up listeners on unmount', () => {
     const { unmount } = renderHook(useDominantSpeaker);
     expect(mockRoom.listenerCount('dominantSpeakerChanged')).toBe(1);

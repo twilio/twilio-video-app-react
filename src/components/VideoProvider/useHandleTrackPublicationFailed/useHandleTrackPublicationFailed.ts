@@ -3,14 +3,13 @@ import { useEffect } from 'react';
 
 import { Callback } from '../../../types';
 
-export default function useHandleTrackPublicationFailed(room: Room, onError: Callback) {
-  const { localParticipant } = room;
+export default function useHandleTrackPublicationFailed(room: Room | null, onError: Callback) {
   useEffect(() => {
-    if (localParticipant) {
-      localParticipant.on('trackPublicationFailed', onError);
+    if (room) {
+      room.localParticipant.on('trackPublicationFailed', onError);
       return () => {
-        localParticipant.off('trackPublicationFailed', onError);
+        room.localParticipant.off('trackPublicationFailed', onError);
       };
     }
-  }, [localParticipant, onError]);
+  }, [room, onError]);
 }

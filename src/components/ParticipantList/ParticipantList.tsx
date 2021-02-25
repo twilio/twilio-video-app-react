@@ -43,9 +43,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function ParticipantList() {
   const classes = useStyles();
-  const {
-    room: { localParticipant },
-  } = useVideoContext();
+  const { room } = useVideoContext();
+  const localParticipant = room!.localParticipant;
   const participants = useParticipants();
   const [selectedParticipant, setSelectedParticipant] = useSelectedParticipant();
   const screenShareParticipant = useScreenShareParticipant();

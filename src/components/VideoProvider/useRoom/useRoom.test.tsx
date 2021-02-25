@@ -1,5 +1,4 @@
 import { act, renderHook } from '@testing-library/react-hooks';
-import EventEmitter from 'events';
 import { mockRoom } from '../../../__mocks__/twilio-video';
 import useRoom from './useRoom';
 import Video, { LocalTrack } from 'twilio-video';
@@ -11,11 +10,6 @@ describe('the useRoom hook', () => {
   beforeEach(jest.clearAllMocks);
   afterEach(() => mockRoom.removeAllListeners());
 
-  it('should return an empty room when no token is provided', () => {
-    const { result } = renderHook(() => useRoom([], () => {}, {}));
-    expect(result.current.room).toEqual(new EventEmitter());
-  });
-
   it('should set isConnecting to true while connecting to the room ', async () => {
     const { result, waitForNextUpdate } = renderHook(() => useRoom([], () => {}, {}));
     expect(result.current.isConnecting).toBe(false);
@@ -25,7 +19,7 @@ describe('the useRoom hook', () => {
     expect(result.current.isConnecting).toBe(true);
     await waitForNextUpdate();
     expect(Video.connect).toHaveBeenCalledTimes(1);
-    expect(result.current.room.disconnect).not.toHaveBeenCalled();
+    expect(result.current.room!.disconnect).not.toHaveBeenCalled();
     expect(result.current.isConnecting).toBe(false);
   });
 
@@ -44,7 +38,7 @@ describe('the useRoom hook', () => {
       result.current.connect('token');
     });
     await waitForNextUpdate();
-    expect(result.current.room.state).toEqual('connected');
+    expect(result.current.room!.state).toEqual('connected');
   });
 
   it('should add a listener for the "beforeUnload" event when connected to a room', async () => {
@@ -64,7 +58,7 @@ describe('the useRoom hook', () => {
       result.current.connect('token');
     });
     await waitForNextUpdate();
-    result.current.room.emit('disconnected');
+    result.current.room!.emit('disconnected');
     await waitForNextUpdate();
     expect(window.removeEventListener).toHaveBeenCalledWith('beforeunload', expect.any(Function));
   });
@@ -84,10 +78,10 @@ describe('the useRoom hook', () => {
       result.current.connect('token');
     });
     await waitForNextUpdate();
-    expect(result.current.room.state).toBe('connected');
-    result.current.room.emit('disconnected');
+    expect(result.current.room!.state).toBe('connected');
+    result.current.room!.emit('disconnected');
     await waitForNextUpdate();
-    expect(result.current.room.state).toBe(undefined);
+    expect(result.current.room).toBe(null);
   });
 
   describe('when isMobile is true', () => {
@@ -111,7 +105,7 @@ describe('the useRoom hook', () => {
         result.current.connect('token');
       });
       await waitForNextUpdate();
-      result.current.room.emit('disconnected');
+      result.current.room!.emit('disconnected');
       await waitForNextUpdate();
       expect(window.removeEventListener).toHaveBeenCalledWith('pagehide', expect.any(Function));
     });
