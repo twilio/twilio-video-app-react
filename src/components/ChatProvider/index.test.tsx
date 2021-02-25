@@ -149,7 +149,7 @@ describe('the ChatProvider component', () => {
   });
 
   it('should call onError when there is an error obtaining the conversation', async () => {
-    mockClient.getConversationByUniqueName.mockImplementation(() => Promise.reject('mockError'));
+    mockClient.getConversationByUniqueName.mockImplementationOnce(() => Promise.reject('mockError'));
     const { result, waitForNextUpdate } = renderHook(useChatContext, { wrapper });
     result.current.connect('mockToken');
     await waitForNextUpdate();

@@ -44,9 +44,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
   );
 
   useEffect(() => {
-    const handleMessageAdded = (message: Message) => setMessages(oldMessages => [...oldMessages, message]);
-
     if (conversation) {
+      const handleMessageAdded = (message: Message) => setMessages(oldMessages => [...oldMessages, message]);
       conversation.getMessages().then(newMessages => setMessages(newMessages.items));
       conversation.on('messageAdded', handleMessageAdded);
       return () => {
