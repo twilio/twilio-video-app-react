@@ -15,11 +15,7 @@ type ChatContextType = {
 
 export const ChatContext = createContext<ChatContextType>(null!);
 
-type ChatProviderProps = {
-  children: React.ReactNode;
-};
-
-export function ChatProvider({ children }: ChatProviderProps) {
+export const ChatProvider: React.FC = ({ children }) => {
   const { room, onError } = useVideoContext();
   const isChatWindowOpenRef = useRef(false);
   const [isChatWindowOpen, setIsChatWindowOpen] = useState(false);
@@ -88,4 +84,4 @@ export function ChatProvider({ children }: ChatProviderProps) {
       {children}
     </ChatContext.Provider>
   );
-}
+};
