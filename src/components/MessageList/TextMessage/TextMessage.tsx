@@ -1,7 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
-import { LocalParticipant } from 'twilio-video';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -22,17 +21,16 @@ const useStyles = makeStyles(() =>
 
 interface TextMessageProps {
   body: string;
-  author: string;
-  localParticipant: LocalParticipant;
+  isLocalParticipant: boolean;
 }
 
-export default function TextMessage({ body, author, localParticipant }: TextMessageProps) {
+export default function TextMessage({ body, isLocalParticipant }: TextMessageProps) {
   const classes = useStyles();
   return (
     <div>
       <div
         className={clsx(classes.messageContainer, {
-          [classes.localParticipant]: author === localParticipant.identity,
+          [classes.localParticipant]: isLocalParticipant,
         })}
       >
         <div>{body}</div>

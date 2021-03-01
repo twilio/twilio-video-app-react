@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
-import { LocalParticipant } from 'twilio-video';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -16,16 +15,16 @@ const useStyles = makeStyles(() =>
 );
 
 interface MessageInfoProps {
-  localParticipant: LocalParticipant;
   author: string;
   dateCreated: string;
+  isLocalParticipant: boolean;
 }
 
-export default function MessageInfo({ localParticipant, author, dateCreated }: MessageInfoProps) {
+export default function MessageInfo({ author, dateCreated, isLocalParticipant }: MessageInfoProps) {
   const classes = useStyles();
   return (
     <div className={classes.messageInfoContainer}>
-      <div>{author === localParticipant.identity ? `${author} (You)` : author}</div>
+      <div>{isLocalParticipant ? `${author} (You)` : author}</div>
       <div>{dateCreated}</div>
     </div>
   );

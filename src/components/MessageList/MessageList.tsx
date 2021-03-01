@@ -24,14 +24,13 @@ export default function MessageList({ messages }: MessageListProps) {
         const time = message.dateCreated
           .toLocaleTimeString('en-us', { hour: 'numeric', minute: 'numeric' })
           .toLowerCase();
+        const isLocalParticipant = localParticipant.identity === message.author;
         return (
           <React.Fragment key={message.sid}>
             {messages[idx - 1]?.author !== message.author && (
-              <MessageInfo author={message.author} localParticipant={localParticipant} dateCreated={time} />
+              <MessageInfo author={message.author} isLocalParticipant={isLocalParticipant} dateCreated={time} />
             )}
-            {message.type === 'text' && (
-              <TextMessage body={message.body} author={message.author} localParticipant={localParticipant} />
-            )}
+            {message.type === 'text' && <TextMessage body={message.body} isLocalParticipant={isLocalParticipant} />}
           </React.Fragment>
         );
       })}
