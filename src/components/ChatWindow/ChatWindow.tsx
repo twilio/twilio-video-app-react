@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import ChatWindowHeader from './ChatWindowHeader/ChatWindowHeader';
+import MessageList from '../MessageList/MessageList';
 import useChatContext from '../../hooks/useChatContext/useChatContext';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -20,6 +21,53 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+const arbitraryDate = new Date();
+
+const messages = [
+  {
+    author: 'olivia',
+    dateCreated: arbitraryDate,
+    body: 'This is a message',
+    sid: 'IMXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    type: 'text',
+  },
+  {
+    author: 'tim',
+    dateCreated: arbitraryDate,
+    body: 'Hi Olivia!',
+    sid: 'IMXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX2',
+    type: 'text',
+  },
+  {
+    author: 'tim',
+    dateCreated: arbitraryDate,
+    body: 'That is pretty rad double line message! How did you do that?',
+    sid: 'IMXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX3',
+    type: 'text',
+  },
+  {
+    author: 'tim',
+    dateCreated: arbitraryDate,
+    body: '😉',
+    sid: 'IMXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX4',
+    type: 'text',
+  },
+  {
+    author: 'olivia',
+    dateCreated: new Date(arbitraryDate.getTime() + 1 * 60 * 1000),
+    body: 'Magic',
+    sid: 'IMXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX5',
+    type: 'text',
+  },
+  {
+    author: 'olivia',
+    dateCreated: new Date(arbitraryDate.getTime() + 1 * 60 * 1000),
+    body: 'lots of magic',
+    sid: 'IMXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX6',
+    type: 'text',
+  },
+];
+
 export default function ChatWindow() {
   const classes = useStyles();
   const { isChatWindowOpen } = useChatContext();
@@ -30,6 +78,7 @@ export default function ChatWindow() {
   return (
     <aside className={classes.container}>
       <ChatWindowHeader />
+      <MessageList messages={messages} />
     </aside>
   );
 }
