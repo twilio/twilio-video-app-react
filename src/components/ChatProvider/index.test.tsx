@@ -67,6 +67,9 @@ describe('the ChatProvider component', () => {
 
   it('should set hasUnreadMessages to true when initial messages are loaded while the chat window is closed', async () => {
     const { result, waitForNextUpdate } = renderHook(useChatContext, { wrapper });
+
+    expect(result.current.hasUnreadMessages).toBe(false);
+
     result.current.connect('mockToken');
     await waitForNextUpdate();
 
