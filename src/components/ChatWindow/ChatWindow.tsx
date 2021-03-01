@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const arbitraryDate = new Date();
+const arbitraryDate = new Date(1614635301000);
 
 const messages = [
   {
@@ -54,14 +54,14 @@ const messages = [
   },
   {
     author: 'olivia',
-    dateCreated: new Date(arbitraryDate.getTime() + 1 * 60 * 1000),
+    dateCreated: new Date(1614635361000),
     body: 'Magic',
     sid: 'IMXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX5',
     type: 'text',
   },
   {
     author: 'olivia',
-    dateCreated: new Date(arbitraryDate.getTime() + 1 * 60 * 1000),
+    dateCreated: new Date(1614635361000),
     body: 'lots of magic',
     sid: 'IMXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX6',
     type: 'text',
