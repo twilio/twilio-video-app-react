@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`the MessagesList component should render correctly 1`] = `
+<div>
+  <div
+    class="makeStyles-messageInfoContainer-1"
+  >
+    <div>
+      olivia (You)
+    </div>
+    <div>
+      3:33 pm
+    </div>
+  </div>
+  <div>
+    <div
+      class="makeStyles-messageContainer-2 makeStyles-localParticipant-3"
+    >
+      <div>
+        This is a message
+      </div>
+    </div>
+  </div>
+  <div
+    class="makeStyles-messageInfoContainer-1"
+  >
+    <div>
+      tim
+    </div>
+    <div>
+      3:33 pm
+    </div>
+  </div>
+  <div>
+    <div
+      class="makeStyles-messageContainer-2"
+    >
+      <div>
+        Hi Olivia!
+      </div>
+    </div>
+  </div>
+  <div>
+    <div
+      class="makeStyles-messageContainer-2"
+    >
+      <div>
+        That is pretty rad double line message! How did you do that?
+      </div>
+    </div>
+  </div>
+  <div>
+    <div
+      class="makeStyles-messageContainer-2"
+    >
+      <div>
+        😉
+      </div>
+    </div>
+  </div>
+  <div
+    class="makeStyles-messageInfoContainer-1"
+  >
+    <div>
+      olivia (You)
+    </div>
+    <div>
+      3:34 pm
+    </div>
+  </div>
+  <div>
+    <div
+      class="makeStyles-messageContainer-2 makeStyles-localParticipant-3"
+    >
+      <div>
+        Magic
+      </div>
+    </div>
+  </div>
+  <div>
+    <div
+      class="makeStyles-messageContainer-2 makeStyles-localParticipant-3"
+    >
+      <div>
+        lots of magic
+      </div>
+    </div>
+  </div>
+</div>
+`;
