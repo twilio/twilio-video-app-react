@@ -6,6 +6,7 @@
   "dependencies": {
     "@material-ui/core": "^4.9.1",
     "@material-ui/icons": "^4.9.1",
+    "@twilio/conversations": "^1.1.0",
     "@types/d3-timer": "^1.0.9",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.11",
