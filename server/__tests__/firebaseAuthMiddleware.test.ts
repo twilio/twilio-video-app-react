@@ -4,7 +4,7 @@ process.env.REACT_APP_FIREBASE_DATABASE_URL = 'mockURL';
 import firebaseAuthMiddleware from '../firebaseAuthMiddleware';
 import firebaseAdmin from 'firebase-admin';
 
-jest.mock('../serviceAccountKey.json', () => ({ mockCertificate: 'foo' }));
+jest.mock('../serviceAccountKey.json', () => ({ mockCertificate: 'foo' }), { virtual: true });
 jest.mock('firebase-admin', () => {
   const mockVerifyIdToken = jest.fn();
 
