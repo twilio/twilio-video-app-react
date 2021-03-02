@@ -22,6 +22,7 @@ interface MessageInfoProps {
 
 export default function MessageInfo({ author, dateCreated, isLocalParticipant }: MessageInfoProps) {
   const classes = useStyles();
+
   return (
     <div className={classes.messageInfoContainer}>
       <div>{isLocalParticipant ? `${author} (You)` : author}</div>

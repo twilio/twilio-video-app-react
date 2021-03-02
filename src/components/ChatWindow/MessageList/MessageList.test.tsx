@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import MessageList from './MessageList';
 
-jest.mock('../../hooks/useVideoContext/useVideoContext', () => () => ({
+jest.mock('../../../hooks/useVideoContext/useVideoContext', () => () => ({
   room: { localParticipant: { identity: 'olivia' } },
 }));
 

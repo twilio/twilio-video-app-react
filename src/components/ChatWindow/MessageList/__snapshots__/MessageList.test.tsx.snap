@@ -14,7 +14,7 @@ exports[`the MessagesList component should render correctly 1`] = `
   </div>
   <div>
     <div
-      class="makeStyles-messageContainer-2 makeStyles-localParticipant-3"
+      class="makeStyles-messageContainer-2 makeStyles-hasLocalParticipant-3"
     >
       <div>
         This is a message
@@ -70,7 +70,7 @@ exports[`the MessagesList component should render correctly 1`] = `
   </div>
   <div>
     <div
-      class="makeStyles-messageContainer-2 makeStyles-localParticipant-3"
+      class="makeStyles-messageContainer-2 makeStyles-hasLocalParticipant-3"
     >
       <div>
         Magic
@@ -79,7 +79,7 @@ exports[`the MessagesList component should render correctly 1`] = `
   </div>
   <div>
     <div
-      class="makeStyles-messageContainer-2 makeStyles-localParticipant-3"
+      class="makeStyles-messageContainer-2 makeStyles-hasLocalParticipant-3"
     >
       <div>
         lots of magic

@@ -12,8 +12,9 @@ const useStyles = makeStyles(() =>
       margin: '0.5em 0.8em -0.19em',
       wordBreak: 'break-word',
       backgroundColor: '#E1E3EA',
+      hyphens: 'auto',
     },
-    localParticipant: {
+    hasLocalParticipant: {
       backgroundColor: '#CCE4FF',
     },
   })
@@ -26,11 +27,12 @@ interface TextMessageProps {
 
 export default function TextMessage({ body, isLocalParticipant }: TextMessageProps) {
   const classes = useStyles();
+
   return (
     <div>
       <div
         className={clsx(classes.messageContainer, {
-          [classes.localParticipant]: isLocalParticipant,
+          [classes.hasLocalParticipant]: isLocalParticipant,
         })}
       >
         <div>{body}</div>

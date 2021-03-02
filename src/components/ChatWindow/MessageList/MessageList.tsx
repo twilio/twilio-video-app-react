@@ -1,7 +1,7 @@
 import React from 'react';
 import TextMessage from './TextMessage/TextMessage';
 import MessageInfo from './MessageInfo/MessageInfo';
-import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
 interface Message {
   author: string;
@@ -18,6 +18,7 @@ interface MessageListProps {
 export default function MessageList({ messages }: MessageListProps) {
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
+
   return (
     <>
       {messages.map((message, idx) => {
