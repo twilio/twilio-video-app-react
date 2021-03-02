@@ -7,7 +7,7 @@ const useStyles = makeStyles(() =>
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      padding: '1.425em 1em 0.083em',
+      padding: '1.425em 0 0.083em',
       fontSize: '12px',
       color: '#606B85',
     },

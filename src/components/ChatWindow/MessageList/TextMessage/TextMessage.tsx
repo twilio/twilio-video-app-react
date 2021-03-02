@@ -9,12 +9,12 @@ const useStyles = makeStyles(() =>
       display: 'inline-flex',
       alignItems: 'center',
       padding: '0.5em 0.8em 0.6em',
-      margin: '0.5em 0.8em -0.19em',
+      margin: '0.3em 0 0',
       wordBreak: 'break-word',
       backgroundColor: '#E1E3EA',
       hyphens: 'auto',
     },
-    hasLocalParticipant: {
+    isLocalParticipant: {
       backgroundColor: '#CCE4FF',
     },
   })
@@ -32,7 +32,7 @@ export default function TextMessage({ body, isLocalParticipant }: TextMessagePro
     <div>
       <div
         className={clsx(classes.messageContainer, {
-          [classes.hasLocalParticipant]: isLocalParticipant,
+          [classes.isLocalParticipant]: isLocalParticipant,
         })}
       >
         <div>{body}</div>
