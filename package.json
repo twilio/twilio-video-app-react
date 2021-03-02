@@ -66,7 +66,7 @@
     "start": "concurrently npm:server npm:dev",
     "dev": "react-scripts start",
     "build": "node ./scripts/build.js",
-    "test": "jest",
+    "test": "cross-env TZ=utc jest",
     "eject": "react-scripts eject",
     "lint": "eslint src",
     "server": "node server.js",
