@@ -17,11 +17,11 @@ const tokenEndpoint: ServerlessFunction = require('@twilio-labs/plugin-rtc/src/s
 const recordingRulesEndpoint: ServerlessFunction = require('@twilio-labs/plugin-rtc/src/serverless/functions/recordingrules')
   .handler;
 
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, '../build')));
 
-app.all('token', authMiddleware, createExpressHandler(tokenEndpoint));
-app.all('recordingrules', authMiddleware, createExpressHandler(recordingRulesEndpoint));
+app.all('/token', authMiddleware, createExpressHandler(tokenEndpoint));
+app.all('/recordingrules', authMiddleware, createExpressHandler(recordingRulesEndpoint));
 
-app.get('*', (_, res) => res.sendFile(path.join(__dirname, 'build/index.html')));
+app.get('*', (_, res) => res.sendFile(path.join(__dirname, '../build/index.html')));
 
 app.listen(PORT, () => console.log(`twilio-video-app-react server running on ${PORT}`));
