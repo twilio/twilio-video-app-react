@@ -8,7 +8,7 @@ jest.mock('../../../hooks/useVideoContext/useVideoContext', () => () => ({
 
 const arbitraryDate = new Date(1614635301000);
 
-const messages = [
+const messages: any = [
   {
     author: 'olivia',
     dateCreated: arbitraryDate,
@@ -53,7 +53,7 @@ const messages = [
   },
 ];
 
-describe('the MessagesList component', () => {
+describe('the messageList component', () => {
   it('should render correctly', () => {
     const { container } = render(<MessageList messages={messages} />);
     expect(container).toMatchSnapshot();
