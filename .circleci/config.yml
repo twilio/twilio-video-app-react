@@ -56,7 +56,7 @@ jobs:
             echo TWILIO_API_KEY_SID=$TWILIO_API_KEY >> .env
             echo TWILIO_API_KEY_SECRET=$TWILIO_API_SECRET >> .env
 
-      # - run: npm run cypress:ci
+      - run: npm run cypress:ci
 
       - store_test_results:
           path: test-reports
