@@ -9,7 +9,7 @@ exports[`the MessagesList component should render correctly 1`] = `
       olivia (You)
     </div>
     <div>
-      4:48 pm
+      9:48 pm
     </div>
   </div>
   <div>
@@ -28,7 +28,7 @@ exports[`the MessagesList component should render correctly 1`] = `
       tim
     </div>
     <div>
-      4:48 pm
+      9:48 pm
     </div>
   </div>
   <div>
@@ -65,7 +65,7 @@ exports[`the MessagesList component should render correctly 1`] = `
       olivia (You)
     </div>
     <div>
-      4:49 pm
+      9:49 pm
     </div>
   </div>
   <div>
