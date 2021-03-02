@@ -41,8 +41,8 @@ describe('the firebaseAuthMiddleware function', () => {
   });
 
   it('should return a 401 when there is no authorization header', async () => {
-    const mockRequest: any = { get: () => '' };
-    await firebaseAuthMiddleware(mockRequest, mockResponse, mockNext);
+    const mockRequestWithoutHeader: any = { get: () => '' };
+    await firebaseAuthMiddleware(mockRequestWithoutHeader, mockResponse, mockNext);
     expect(mockResponse.status).toHaveBeenCalledWith(401);
     expect(mockResponse.send).toHaveBeenCalled();
   });
