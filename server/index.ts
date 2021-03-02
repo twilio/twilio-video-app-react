@@ -1,10 +1,9 @@
+import './bootstrap-globals';
 import { createExpressHandler } from './createExpressHandler';
-import dotenv from 'dotenv';
 import express, { RequestHandler } from 'express';
 import path from 'path';
 import { ServerlessFunction } from './types';
 
-dotenv.config();
 const PORT = process.env.PORT ?? 8081;
 
 const app = express();
@@ -12,7 +11,7 @@ app.use(express.json());
 
 const noopMiddleware: RequestHandler = (_, __, next) => next();
 const authMiddleware =
-  process.env.REACT_APP_SET_AUTH === 'firebase' ? require('./firebase-middleware') : noopMiddleware;
+  process.env.REACT_APP_SET_AUTH === 'firebase' ? require('./firebaseAuthMiddleware') : noopMiddleware;
 
 const tokenEndpoint: ServerlessFunction = require('@twilio-labs/plugin-rtc/src/serverless/functions/token').handler;
 const recordingRulesEndpoint: ServerlessFunction = require('@twilio-labs/plugin-rtc/src/serverless/functions/recordingrules')

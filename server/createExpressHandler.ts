@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { Request, Response } from 'express';
 import { ServerlessContext, ServerlessFunction } from './types';
 import Twilio from 'twilio';
