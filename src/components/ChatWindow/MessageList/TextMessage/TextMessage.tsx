@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     wordBreak: 'break-word',
     backgroundColor: '#E1E3EA',
     hyphens: 'auto',
-    whiteSpace: 'pre',
+    whiteSpace: 'pre-wrap',
   },
   isLocalParticipant: {
     backgroundColor: '#CCE4FF',
@@ -59,7 +59,7 @@ export default function TextMessage({ body, isLocalParticipant }: TextMessagePro
           [classes.isLocalParticipant]: isLocalParticipant,
         })}
       >
-        {addLinks(body)}
+        <div>{addLinks(body)}</div>
       </div>
     </div>
   );
