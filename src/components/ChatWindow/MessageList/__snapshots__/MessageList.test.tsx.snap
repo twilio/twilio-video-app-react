@@ -19,9 +19,7 @@ exports[`the messageList component should render correctly 1`] = `
       <div
         class="makeStyles-messageContainer-2 makeStyles-isLocalParticipant-3"
       >
-        <div>
-          This is a message
-        </div>
+        This is a message
       </div>
     </div>
     <div
@@ -38,27 +36,21 @@ exports[`the messageList component should render correctly 1`] = `
       <div
         class="makeStyles-messageContainer-2"
       >
-        <div>
-          Hi Olivia!
-        </div>
+        Hi Olivia!
       </div>
     </div>
     <div>
       <div
         class="makeStyles-messageContainer-2"
       >
-        <div>
-          That is pretty rad double line message! How did you do that?
-        </div>
+        That is pretty rad double line message! How did you do that?
       </div>
     </div>
     <div>
       <div
         class="makeStyles-messageContainer-2"
       >
-        <div>
-          😉
-        </div>
+        😉
       </div>
     </div>
     <div
@@ -75,18 +67,14 @@ exports[`the messageList component should render correctly 1`] = `
       <div
         class="makeStyles-messageContainer-2 makeStyles-isLocalParticipant-3"
       >
-        <div>
-          Magic
-        </div>
+        Magic
       </div>
     </div>
     <div>
       <div
         class="makeStyles-messageContainer-2 makeStyles-isLocalParticipant-3"
       >
-        <div>
-          lots of magic
-        </div>
+        lots of magic
       </div>
     </div>
   </div>
