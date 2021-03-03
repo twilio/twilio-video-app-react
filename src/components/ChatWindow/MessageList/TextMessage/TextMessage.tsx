@@ -46,6 +46,8 @@ function addLinks(text: string) {
     lastIndex = match.lastIndex;
   }
 
+  results.push(text.slice(lastIndex, text.length));
+
   return results;
 }
 
