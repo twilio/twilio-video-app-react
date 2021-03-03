@@ -31,20 +31,17 @@ function addLinks(text: string) {
   if (!matches) return text;
 
   const results = [];
-  let i = 0;
   let lastIndex = 0;
 
-  while (i < matches.length) {
-    const match = matches[i];
+  matches.forEach((match, i) => {
     results.push(text.slice(lastIndex, match.index));
     results.push(
-      <Link target="_blank" rel="noreferrer" href={match.url}>
+      <Link target="_blank" rel="noreferrer" href={match.url} key={i}>
         {match.text}
       </Link>
     );
-    i++;
     lastIndex = match.lastIndex;
-  }
+  });
 
   results.push(text.slice(lastIndex, text.length));
 
