@@ -51,6 +51,13 @@ const messages: any = [
     sid: 'IMXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX6',
     type: 'text',
   },
+  {
+    author: 'tim',
+    dateCreated: new Date(1614635361000),
+    body: 'look at this app: github.com/twilio/twilio-video-app-react. Neat huh?',
+    sid: 'IMXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX7',
+    type: 'text',
+  },
 ];
 
 describe('the messageList component', () => {
