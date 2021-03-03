@@ -35,7 +35,7 @@ export default function TextMessage({ body, isLocalParticipant }: TextMessagePro
           [classes.isLocalParticipant]: isLocalParticipant,
         })}
       >
-        <div>{body}</div>
+        {body}
       </div>
     </div>
   );
