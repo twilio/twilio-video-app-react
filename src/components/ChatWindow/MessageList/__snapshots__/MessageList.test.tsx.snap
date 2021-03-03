@@ -77,6 +77,31 @@ exports[`the messageList component should render correctly 1`] = `
         lots of magic
       </div>
     </div>
+    <div
+      class="makeStyles-messageInfoContainer-1"
+    >
+      <div>
+        tim
+      </div>
+      <div>
+        9:49 pm
+      </div>
+    </div>
+    <div>
+      <div
+        class="makeStyles-messageContainer-2"
+      >
+        look at this app: 
+        <a
+          class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
+          href="http://github.com/twilio/twilio-video-app-react"
+          rel="noreferrer"
+          target="_blank"
+        >
+          github.com/twilio/twilio-video-app-react
+        </a>
+      </div>
+    </div>
   </div>
 </div>
 `;
