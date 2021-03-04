@@ -21,34 +21,34 @@ const VideoApp = () => {
   const connectionOptions = useConnectionOptions();
 
   return (
-    <UnsupportedBrowserWarning>
-      <VideoProvider options={connectionOptions} onError={setError}>
-        <ErrorDialog dismissError={() => setError(null)} error={error} />
-        <App />
-      </VideoProvider>
-    </UnsupportedBrowserWarning>
+    <VideoProvider options={connectionOptions} onError={setError}>
+      <ErrorDialog dismissError={() => setError(null)} error={error} />
+      <App />
+    </VideoProvider>
   );
 };
 
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
     <CssBaseline />
-    <Router>
-      <AppStateProvider>
-        <Switch>
-          <PrivateRoute exact path="/">
-            <VideoApp />
-          </PrivateRoute>
-          <PrivateRoute path="/room/:URLRoomName">
-            <VideoApp />
-          </PrivateRoute>
-          <Route path="/login">
-            <LoginPage />
-          </Route>
-          <Redirect to="/" />
-        </Switch>
-      </AppStateProvider>
-    </Router>
+    <UnsupportedBrowserWarning>
+      <Router>
+        <AppStateProvider>
+          <Switch>
+            <PrivateRoute exact path="/">
+              <VideoApp />
+            </PrivateRoute>
+            <PrivateRoute path="/room/:URLRoomName">
+              <VideoApp />
+            </PrivateRoute>
+            <Route path="/login">
+              <LoginPage />
+            </Route>
+            <Redirect to="/" />
+          </Switch>
+        </AppStateProvider>
+      </Router>
+    </UnsupportedBrowserWarning>
   </MuiThemeProvider>,
   document.getElementById('root')
 );
