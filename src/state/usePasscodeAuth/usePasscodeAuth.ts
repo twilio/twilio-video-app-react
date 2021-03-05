@@ -14,7 +14,7 @@ export function fetchToken(name: string, room: string, passcode: string, create_
     headers: {
       'content-type': 'application/json',
     },
-    body: JSON.stringify({ user_identity: name, room_name: room, passcode, create_room }),
+    body: JSON.stringify({ user_identity: name, room_name: room, passcode, create_room, create_conversation: true }),
   });
 }
 

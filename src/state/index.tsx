@@ -71,7 +71,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
           headers: {
             'content-type': 'application/json',
           },
-          body: JSON.stringify({ user_identity, room_name }),
+          body: JSON.stringify({ user_identity, room_name, create_conversation: true }),
         })
           .then(res => res.json())
           .then(res => res.token as string);

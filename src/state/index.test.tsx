@@ -52,7 +52,7 @@ describe('the useAppState hook', () => {
 
     expect(window.fetch).toHaveBeenCalledWith('http://test.com/api/token', {
       headers: { 'content-type': 'application/json' },
-      body: '{"user_identity":"testname","room_name":"testroom"}',
+      body: '{"user_identity":"testname","room_name":"testroom","create_conversation":true}',
       method: 'POST',
     });
   });
