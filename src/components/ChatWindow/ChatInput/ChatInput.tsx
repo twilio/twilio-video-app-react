@@ -12,7 +12,6 @@ const useStyles = makeStyles({
     padding: '1em 1.2em 1em',
   },
   textArea: {
-    outline: 'none',
     paddingTop: '0.2em',
     width: '100%',
     border: '0',
@@ -50,7 +49,7 @@ export default function InputField({ conversation }: InputFieldProps) {
     setMessageBody(event.target.value);
   };
 
-  // ensures pressing enter + shift creates a new line, so that enter on its own sends the message:
+  // ensures pressing enter + shift creates a new line, so that enter on its own only sends the message:
   const handleReturnKeyPress = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
