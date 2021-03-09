@@ -73,8 +73,8 @@ export default function MenuBar() {
   const { room, setFilter } = useVideoContext();
 
 
-  const handleGrayscaleClick = useCallback(() => {
-    setFilter(Filters.Grayscale);
+  const handleVirtualBackgroundClick = useCallback(() => {
+    setFilter(Filters.VirtualBackground);
   }, [setFilter]);
   const handleBlurClick = useCallback(() => {
     setFilter(Filters.Blur);
@@ -100,8 +100,8 @@ export default function MenuBar() {
           </Hidden>
           <Grid item>
             <Grid container justify="center">
-            <Button onClick={handleGrayscaleClick}>
-              Grayscale
+            <Button onClick={handleVirtualBackgroundClick}>
+              VirtualBackground
             </Button>
             <Button onClick={handleBlurClick}>
               Blur

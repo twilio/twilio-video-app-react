@@ -18,6 +18,7 @@ import useLocalTracks from './useLocalTracks/useLocalTracks';
 import useRoom from './useRoom/useRoom';
 import useScreenShareToggle from './useScreenShareToggle/useScreenShareToggle';
 import { useFilters, Filters } from './useFilters/useFilters';
+import { GaussianBlurBackgroundProcessor, VirtualBackgroundProcessor } from '@twilio/video-processors';
 
 /*
  *  The hooks used by the VideoProvider component are different than the hooks found in the 'hooks/' directory. The hooks
@@ -42,6 +43,7 @@ export interface IVideoContext {
   toggleScreenShare: () => void;
   getAudioAndVideoTracks: () => Promise<void>;
   setFilter: (filter?: Filters, track?: LocalVideoTrack) => void;
+  processor: GaussianBlurBackgroundProcessor | VirtualBackgroundProcessor | null;
 }
 
 export const VideoContext = createContext<IVideoContext>(null!);
@@ -76,7 +78,7 @@ export function VideoProvider({ options, children, onError = () => {}, onDisconn
   useHandleOnDisconnect(room, onDisconnect);
   const [isSharingScreen, toggleScreenShare] = useScreenShareToggle(room, onError);
 
-  const setFilter = useFilters(room);
+  const [processor, setFilter] = useFilters(room);
 
   return (
     <VideoContext.Provider
@@ -96,6 +98,7 @@ export function VideoProvider({ options, children, onError = () => {}, onDisconn
         toggleScreenShare,
         getAudioAndVideoTracks,
         setFilter,
+        processor,
       }}
     >
       <SelectedParticipantProvider room={room}>{children}</SelectedParticipantProvider>
