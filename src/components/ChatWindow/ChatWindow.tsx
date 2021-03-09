@@ -8,10 +8,10 @@ import useChatContext from '../../hooks/useChatContext/useChatContext';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     chatWindowContainer: {
-      overflowY: 'auto',
       background: '#FFFFFF',
-      position: 'relative',
       zIndex: 100,
+      display: 'flex',
+      flexDirection: 'column',
       [theme.breakpoints.down('sm')]: {
         position: 'fixed',
         top: 0,
