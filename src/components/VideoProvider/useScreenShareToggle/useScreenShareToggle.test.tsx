@@ -7,8 +7,9 @@ const mockLocalParticipant = new EventEmitter() as any;
 mockLocalParticipant.publishTrack = jest.fn(() => Promise.resolve('mockPublication'));
 mockLocalParticipant.unpublishTrack = jest.fn();
 
-const mockRoom = new EventEmitter() as any;
-mockRoom.localParticipant = mockLocalParticipant;
+const mockRoom = {
+  localParticipant: mockLocalParticipant,
+} as any;
 
 const mockOnError: ErrorCallback = () => {};
 
