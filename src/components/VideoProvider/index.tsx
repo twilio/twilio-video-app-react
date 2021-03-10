@@ -66,7 +66,7 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
 
   const [isSharingScreen, toggleScreenShare] = useScreenShareToggle(room, onError);
 
-  // Register onError callback functions.
+  // Register callback functions to be called on room disconnect.
   useHandleRoomDisconnection(
     room,
     onError,
