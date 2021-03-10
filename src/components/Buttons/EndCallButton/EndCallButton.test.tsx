@@ -8,7 +8,6 @@ const mockVideoContext = {
     disconnect: jest.fn(),
   },
   isSharingScreen: false,
-  toggleScreenShare: jest.fn(),
   removeLocalAudioTrack: jest.fn(),
   removeLocalVideoTrack: jest.fn(),
 };
@@ -22,7 +21,6 @@ describe('End Call button', () => {
 
       beforeAll(() => {
         jest.clearAllMocks();
-        mockVideoContext.isSharingScreen = true;
         wrapper = shallow(<EndCallButton />);
         wrapper.simulate('click');
       });
@@ -35,27 +33,8 @@ describe('End Call button', () => {
         expect(mockVideoContext.removeLocalVideoTrack).toHaveBeenCalled();
       });
 
-      it('should toggle screen sharing off', () => {
-        expect(mockVideoContext.toggleScreenShare).toHaveBeenCalled();
-      });
-
       it('should disconnect from the room ', () => {
         expect(mockVideoContext.room.disconnect).toHaveBeenCalled();
-      });
-    });
-
-    describe('while not sharing screen', () => {
-      let wrapper;
-
-      beforeAll(() => {
-        jest.clearAllMocks();
-        mockVideoContext.isSharingScreen = false;
-        wrapper = shallow(<EndCallButton />);
-        wrapper.simulate('click');
-      });
-
-      it('should not toggle screen sharing', () => {
-        expect(mockVideoContext.toggleScreenShare).not.toHaveBeenCalled();
       });
     });
   });

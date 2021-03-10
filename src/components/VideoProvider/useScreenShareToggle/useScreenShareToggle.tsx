@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { LogLevels, Track, Room } from 'twilio-video';
 import { ErrorCallback } from '../../../types';
 
@@ -60,6 +60,21 @@ export default function useScreenShareToggle(room: Room | null, onError: ErrorCa
       !isSharing ? shareScreen() : stopScreenShareRef.current();
     }
   }, [isSharing, shareScreen, stopScreenShareRef, room]);
+
+  useEffect(() => {
+    if (room) {
+      const handleDisconnect = () => {
+        if (isSharing) {
+          stopScreenShareRef.current();
+        }
+      };
+
+      room.on('disconnected', handleDisconnect);
+      return () => {
+        room.off('disconnected', handleDisconnect);
+      };
+    }
+  }, [room, isSharing]);
 
   return [isSharing, toggleScreenShare] as const;
 }

@@ -7,9 +7,8 @@ const mockLocalParticipant = new EventEmitter() as any;
 mockLocalParticipant.publishTrack = jest.fn(() => Promise.resolve('mockPublication'));
 mockLocalParticipant.unpublishTrack = jest.fn();
 
-const mockRoom = {
-  localParticipant: mockLocalParticipant,
-} as any;
+const mockRoom = new EventEmitter() as any;
+mockRoom.localParticipant = mockLocalParticipant;
 
 const mockOnError: ErrorCallback = () => {};
 
@@ -67,6 +66,21 @@ describe('the useScreenShareToggle hook', () => {
       });
       expect(mockLocalParticipant.unpublishTrack).toHaveBeenCalledWith(mockTrack);
       expect(localParticipantSpy).toHaveBeenCalledWith('trackUnpublished', 'mockPublication');
+      expect(mockTrack.stop).toHaveBeenCalled();
+      expect(result.current[0]).toEqual(false);
+    });
+
+    it('should correctly stop screen sharing when disconnected from the room', async () => {
+      const { result, waitForNextUpdate } = renderHook(() => useScreenShareToggle(mockRoom, mockOnError));
+      expect(mockTrack.onended).toBeUndefined();
+      result.current[1]();
+      await waitForNextUpdate();
+      expect(result.current[0]).toEqual(true);
+      act(() => {
+        mockRoom.emit('disconnected');
+      });
+      expect(mockLocalParticipant.unpublishTrack).toHaveBeenCalledWith(mockTrack);
+      expect(mockLocalParticipant.unpublishTrack).toHaveBeenCalledWith(mockTrack);
       expect(mockTrack.stop).toHaveBeenCalled();
       expect(result.current[0]).toEqual(false);
     });
