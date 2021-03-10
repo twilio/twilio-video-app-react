@@ -61,20 +61,5 @@ export default function useScreenShareToggle(room: Room | null, onError: ErrorCa
     }
   }, [isSharing, shareScreen, stopScreenShareRef, room]);
 
-  useEffect(() => {
-    if (room) {
-      const handleDisconnect = () => {
-        if (isSharing) {
-          stopScreenShareRef.current();
-        }
-      };
-
-      room.on('disconnected', handleDisconnect);
-      return () => {
-        room.off('disconnected', handleDisconnect);
-      };
-    }
-  }, [room, isSharing]);
-
   return [isSharing, toggleScreenShare] as const;
 }

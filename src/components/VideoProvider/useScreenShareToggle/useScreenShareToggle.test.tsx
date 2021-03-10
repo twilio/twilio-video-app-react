@@ -70,21 +70,6 @@ describe('the useScreenShareToggle hook', () => {
       expect(result.current[0]).toEqual(false);
     });
 
-    it('should correctly stop screen sharing when disconnected from the room', async () => {
-      const { result, waitForNextUpdate } = renderHook(() => useScreenShareToggle(mockRoom, mockOnError));
-      expect(mockTrack.onended).toBeUndefined();
-      result.current[1]();
-      await waitForNextUpdate();
-      expect(result.current[0]).toEqual(true);
-      act(() => {
-        mockRoom.emit('disconnected');
-      });
-      expect(mockLocalParticipant.unpublishTrack).toHaveBeenCalledWith(mockTrack);
-      expect(mockLocalParticipant.unpublishTrack).toHaveBeenCalledWith(mockTrack);
-      expect(mockTrack.stop).toHaveBeenCalled();
-      expect(result.current[0]).toEqual(false);
-    });
-
     describe('onended function', () => {
       it('should correctly stop screen sharing when called', async () => {
         const localParticipantSpy = jest.spyOn(mockLocalParticipant, 'emit');
