@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { LogLevels, Track, Room } from 'twilio-video';
 import { ErrorCallback } from '../../../types';
 

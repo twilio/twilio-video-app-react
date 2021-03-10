@@ -32,7 +32,6 @@ describe('the useHandleRoomDisconnection hook', () => {
   });
 
   it('should react to the rooms "disconnected" event and invoke onError callback if there is an error', () => {
-    const mockOnError = jest.fn();
     renderHook(() =>
       useHandleRoomDisconnection(
         mockRoom,
@@ -50,7 +49,6 @@ describe('the useHandleRoomDisconnection hook', () => {
   });
 
   it('should remove local tracks when the "disconnected" event is emitted', () => {
-    const mockOnError = jest.fn();
     renderHook(() =>
       useHandleRoomDisconnection(
         mockRoom,
@@ -69,7 +67,6 @@ describe('the useHandleRoomDisconnection hook', () => {
   });
 
   it('should not toggle screensharing when the "disconnected" event is emitted and isSharing is false', () => {
-    const mockOnError = jest.fn();
     renderHook(() =>
       useHandleRoomDisconnection(
         mockRoom,
@@ -87,7 +84,6 @@ describe('the useHandleRoomDisconnection hook', () => {
   });
 
   it('should toggle screensharing when the "disconnected" event is emitted and isSharing is true', () => {
-    const mockOnError = jest.fn();
     renderHook(() =>
       useHandleRoomDisconnection(
         mockRoom,
