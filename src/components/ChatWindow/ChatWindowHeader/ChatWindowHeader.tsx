@@ -23,6 +23,7 @@ const useStyles = makeStyles(() =>
       display: 'flex',
       background: 'transparent',
       border: '0',
+      padding: '0.4em',
     },
   })
 );
