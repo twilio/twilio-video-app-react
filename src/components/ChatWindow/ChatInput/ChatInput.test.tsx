@@ -18,32 +18,32 @@ describe('the ChatInput component', () => {
 
   afterEach(jest.clearAllMocks);
 
-  it('should activate the send message button when user types a valid message', () => {
+  it('should enable the send message button when user types a valid message', () => {
     const wrapper = shallow(<ChatInput conversation={{ sendMessage: mockHandleSendMessage } as any} />);
     expect(
       wrapper
         .find(SendMessageIcon)
         .parent()
-        .prop('className')
-    ).not.toContain('activeSendButton');
+        .prop('disabled')
+    ).toBe(true);
     wrapper.find(TextareaAutosize).simulate('change', { target: { value: 'I am a message!!!' } });
     expect(
       wrapper
         .find(SendMessageIcon)
         .parent()
-        .prop('className')
-    ).toContain('activeSendButton');
+        .prop('disabled')
+    ).toBe(false);
   });
 
-  it('should not activate the send message button when message only contains whitespace', () => {
+  it('should disable the send message button when message only contains whitespace', () => {
     const wrapper = shallow(<ChatInput conversation={{ sendMessage: mockHandleSendMessage } as any} />);
     wrapper.find(TextareaAutosize).simulate('change', { target: { value: '         ' } });
     expect(
       wrapper
         .find(SendMessageIcon)
         .parent()
-        .prop('className')
-    ).not.toContain('activeSendButton');
+        .prop('disabled')
+    ).toBe(true);
   });
 
   it('should call the correct function when send message button is clicked', () => {
