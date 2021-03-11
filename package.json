@@ -77,7 +77,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint src server",
     "server": "ts-node -T -P server/tsconfig.json server/index.ts",
-    "build:server": "tsc -p server/",
+    "typescript:server": "tsc --noEmit -p server/",
     "test:ci": "jest --ci --runInBand --reporters=default --reporters=jest-junit --coverage",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --browser chrome",
