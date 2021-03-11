@@ -30,11 +30,12 @@ const useStyles = makeStyles({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: '1em',
-    background: 'transparent',
-  },
-  activeSendButton: {
     background: '#0263E0',
     cursor: 'pointer',
+    '&:disabled': {
+      background: 'none',
+      cursor: 'default',
+    },
   },
 });
 
@@ -82,8 +83,9 @@ export default function ChatInput({ conversation }: ChatInputProps) {
       />
 
       <button
-        className={clsx(classes.sendButton, { [classes.activeSendButton]: isValidMessage })}
+        className={clsx(classes.sendButton)}
         onClick={() => handleSendMessage(messageBody)}
+        disabled={!isValidMessage}
       >
         <SendMessageIcon />
       </button>
