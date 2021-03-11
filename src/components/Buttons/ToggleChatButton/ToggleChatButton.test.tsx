@@ -98,7 +98,7 @@ describe('the ToggleChatButton component', () => {
   it(`should not add the 'animate' class when a new message is received when the chat window is open`, () => {
     mockUseChatContext.mockImplementationOnce(() => ({
       setIsChatWindowOpen: mockToggleChatWindow,
-      isChatWindowOpen: open,
+      isChatWindowOpen: true,
       conversation: mockConversation,
     }));
 
