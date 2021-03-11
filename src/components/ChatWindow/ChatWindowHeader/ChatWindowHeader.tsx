@@ -21,6 +21,8 @@ const useStyles = makeStyles(() =>
     closeChatWindow: {
       cursor: 'pointer',
       display: 'flex',
+      background: 'transparent',
+      border: '0',
     },
   })
 );
@@ -32,9 +34,9 @@ export default function ChatWindowHeader() {
   return (
     <div className={classes.container}>
       <div className={classes.text}>Chat</div>
-      <div className={classes.closeChatWindow} onClick={() => setIsChatWindowOpen(false)}>
+      <button className={classes.closeChatWindow} onClick={() => setIsChatWindowOpen(false)}>
         <CloseIcon />
-      </div>
+      </button>
     </div>
   );
 }
