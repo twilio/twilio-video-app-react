@@ -27,7 +27,7 @@ const useStyles = makeStyles({
     opacity: 1,
   },
   ring: {
-    border: '3px solid #62bd19',
+    border: '3px solid #5BB75B',
     borderRadius: '30px',
     height: '14px',
     width: '14px',

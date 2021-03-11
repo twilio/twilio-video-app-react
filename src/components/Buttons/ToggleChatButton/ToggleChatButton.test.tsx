@@ -1,12 +1,11 @@
 import React from 'react';
+import { act } from 'react-dom/test-utils';
 import { Button } from '@material-ui/core';
 import { EventEmitter } from 'events';
 import { shallow, mount } from 'enzyme';
 
-import ChatIcon from '../../../icons/ChatIcon';
 import ToggleChatButton, { ANIMATION_DURATION } from './ToggleChatButton';
 import useChatContext from '../../../hooks/useChatContext/useChatContext';
-import { act } from 'react-dom/test-utils';
 
 jest.mock('../../../hooks/useChatContext/useChatContext');
 const mockUseChatContext = useChatContext as jest.Mock<any>;
@@ -97,7 +96,6 @@ describe('the ToggleChatButton component', () => {
   });
 
   it(`should not add the 'animate' class when a new message is received when the chat window is open`, () => {
-    jest.useFakeTimers();
     mockUseChatContext.mockImplementationOnce(() => ({
       setIsChatWindowOpen: mockToggleChatWindow,
       isChatWindowOpen: open,
