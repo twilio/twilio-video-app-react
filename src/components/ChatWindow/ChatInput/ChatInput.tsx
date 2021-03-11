@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import clsx from 'clsx';
 import SendMessageIcon from '../../../icons/SendMessageIcon';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import { makeStyles, Theme, useMediaQuery } from '@material-ui/core';
@@ -82,11 +81,7 @@ export default function ChatInput({ conversation }: ChatInputProps) {
         value={messageBody}
       />
 
-      <button
-        className={clsx(classes.sendButton)}
-        onClick={() => handleSendMessage(messageBody)}
-        disabled={!isValidMessage}
-      >
+      <button className={classes.sendButton} onClick={() => handleSendMessage(messageBody)} disabled={!isValidMessage}>
         <SendMessageIcon />
       </button>
     </div>
