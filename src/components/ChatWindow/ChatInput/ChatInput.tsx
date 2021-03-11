@@ -12,7 +12,8 @@ const useStyles = makeStyles({
     padding: '1em 1.2em 1em',
   },
   textArea: {
-    paddingTop: '0.2em',
+    padding: '0.75em 1em',
+    marginTop: '0.4em',
     width: '100%',
     border: '0',
     resize: 'none',
@@ -22,12 +23,14 @@ const useStyles = makeStyles({
   sendButton: {
     height: '40px',
     width: '40px',
+    border: '0',
     borderRadius: '4px',
     float: 'right',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: '1em',
+    background: 'transparent',
   },
   activeSendButton: {
     background: '#0263E0',
@@ -35,11 +38,11 @@ const useStyles = makeStyles({
   },
 });
 
-interface InputFieldProps {
+interface ChatInputProps {
   conversation: Conversation;
 }
 
-export default function InputField({ conversation }: InputFieldProps) {
+export default function ChatInput({ conversation }: ChatInputProps) {
   const classes = useStyles();
   const [messageBody, setMessageBody] = useState('');
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
@@ -51,7 +54,7 @@ export default function InputField({ conversation }: InputFieldProps) {
 
   // ensures pressing enter + shift creates a new line, so that enter on its own only sends the message:
   const handleReturnKeyPress = (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
+    if (!isMobile && event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
       handleSendMessage(messageBody);
     }
@@ -70,20 +73,20 @@ export default function InputField({ conversation }: InputFieldProps) {
         rowsMin={1}
         rowsMax={3}
         className={classes.textArea}
-        aria-label="maximum height"
+        aria-label="chat input"
         placeholder="Write a message..."
         autoFocus
-        onKeyPress={isMobile ? () => null : event => handleReturnKeyPress(event)}
-        onChange={event => handleChange(event)}
+        onKeyPress={handleReturnKeyPress}
+        onChange={handleChange}
         value={messageBody}
       />
 
-      <div
+      <button
         className={clsx(classes.sendButton, { [classes.activeSendButton]: isValidMessage })}
         onClick={() => handleSendMessage(messageBody)}
       >
         <SendMessageIcon />
-      </div>
+      </button>
     </div>
   );
 }
