@@ -208,7 +208,8 @@ describe('the verifyPasscode function', () => {
   it('should call the API with the correct parameters', async () => {
     await verifyPasscode('123456');
     expect(window.fetch).toHaveBeenLastCalledWith('/token', {
-      body: '{"user_identity":"temp-name","room_name":"temp-room","passcode":"123456","create_room":false}',
+      body:
+        '{"user_identity":"temp-name","room_name":"temp-room","passcode":"123456","create_room":false,"create_conversation":true}',
       headers: { 'content-type': 'application/json' },
       method: 'POST',
     });
