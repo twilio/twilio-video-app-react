@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Message } from '@twilio/conversations/lib/message';
 import MessageInfo from './MessageInfo/MessageInfo';
+import MessageListScrollContainer from './MessageListScrollContainer/MessageListScrollContainer';
 import TextMessage from './TextMessage/TextMessage';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
@@ -23,7 +24,7 @@ export default function MessageList({ messages }: MessageListProps) {
   const localParticipant = room!.localParticipant;
 
   return (
-    <div className={classes.messageListContainer}>
+    <MessageListScrollContainer className={classes.messageListContainer}>
       {messages.map((message, idx) => {
         const time = message.dateCreated
           .toLocaleTimeString('en-us', { hour: 'numeric', minute: 'numeric' })
@@ -39,6 +40,6 @@ export default function MessageList({ messages }: MessageListProps) {
           </React.Fragment>
         );
       })}
-    </div>
+    </MessageListScrollContainer>
   );
 }
