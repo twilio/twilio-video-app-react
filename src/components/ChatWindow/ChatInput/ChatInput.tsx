@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import SendMessageIcon from '../../../icons/SendMessageIcon';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-import { makeStyles, Theme, useMediaQuery } from '@material-ui/core';
+import { Button, Grid, makeStyles, Theme, useMediaQuery } from '@material-ui/core';
 import { Conversation } from '@twilio/conversations/lib/conversation';
+import FileAttachmentIcon from '../../../icons/FileAttachmentIcon';
 
 const useStyles = makeStyles({
   chatInputContainer: {
@@ -19,21 +20,12 @@ const useStyles = makeStyles({
     fontSize: '14px',
     fontFamily: 'Inter',
   },
-  sendButton: {
-    height: '40px',
-    width: '40px',
-    border: '0',
-    borderRadius: '4px',
-    float: 'right',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: '1em',
-    background: '#0263E0',
-    cursor: 'pointer',
+  button: {
+    margin: '1em 0 0 1em',
+    padding: '0.56em',
+    minWidth: 'auto',
     '&:disabled': {
       background: 'none',
-      cursor: 'default',
     },
   },
 });
@@ -47,6 +39,7 @@ export default function ChatInput({ conversation }: ChatInputProps) {
   const [messageBody, setMessageBody] = useState('');
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
   const isValidMessage = /\S/.test(messageBody);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessageBody(event.target.value);
@@ -80,10 +73,22 @@ export default function ChatInput({ conversation }: ChatInputProps) {
         onChange={handleChange}
         value={messageBody}
       />
+      <Grid container justify="flex-end">
+        <input ref={fileInputRef} type="file" style={{ display: 'none' }} />
+        <Button className={classes.button} onClick={() => fileInputRef.current?.click()}>
+          <FileAttachmentIcon />
+        </Button>
 
-      <button className={classes.sendButton} onClick={() => handleSendMessage(messageBody)} disabled={!isValidMessage}>
-        <SendMessageIcon />
-      </button>
+        <Button
+          className={classes.button}
+          onClick={() => handleSendMessage(messageBody)}
+          color="primary"
+          variant="contained"
+          disabled={!isValidMessage}
+        >
+          <SendMessageIcon />
+        </Button>
+      </Grid>
     </div>
   );
 }
