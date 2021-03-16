@@ -60,6 +60,15 @@ export default function ChatInput({ conversation }: ChatInputProps) {
     }
   };
 
+  const handleSendFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      const file = event.target.files[0];
+      var formData = new FormData();
+      formData.append('userfile', file);
+      conversation.sendMessage(formData);
+    }
+  };
+
   return (
     <div className={classes.chatInputContainer}>
       <TextareaAutosize
@@ -74,7 +83,7 @@ export default function ChatInput({ conversation }: ChatInputProps) {
         value={messageBody}
       />
       <Grid container justify="flex-end">
-        <input ref={fileInputRef} type="file" style={{ display: 'none' }} />
+        <input ref={fileInputRef} type="file" style={{ display: 'none' }} onChange={handleSendFile} />
         <Button className={classes.button} onClick={() => fileInputRef.current?.click()}>
           <FileAttachmentIcon />
         </Button>
