@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import ChatWindowHeader from './ChatWindowHeader/ChatWindowHeader';
 import ChatInput from './ChatInput/ChatInput';
+import clsx from 'clsx';
 import MessageList from './MessageList/MessageList';
 import useChatContext from '../../hooks/useChatContext/useChatContext';
 
@@ -12,6 +13,7 @@ const useStyles = makeStyles((theme: Theme) =>
       zIndex: 100,
       display: 'flex',
       flexDirection: 'column',
+      borderLeft: '1px solid #E4E7E9',
       [theme.breakpoints.down('sm')]: {
         position: 'fixed',
         top: 0,
@@ -20,6 +22,9 @@ const useStyles = makeStyles((theme: Theme) =>
         right: 0,
       },
     },
+    hide: {
+      display: 'none',
+    },
   })
 );
 
@@ -27,11 +32,8 @@ export default function ChatWindow() {
   const classes = useStyles();
   const { isChatWindowOpen, messages, conversation } = useChatContext();
 
-  //if chat window is not open, don't render this component
-  if (!isChatWindowOpen) return null;
-
   return (
-    <aside className={classes.chatWindowContainer}>
+    <aside className={clsx(classes.chatWindowContainer, { [classes.hide]: !isChatWindowOpen })}>
       <ChatWindowHeader />
       <MessageList messages={messages} />
       <ChatInput conversation={conversation!} />
