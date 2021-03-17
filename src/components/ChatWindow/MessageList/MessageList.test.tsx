@@ -58,6 +58,15 @@ const messages: any = [
     sid: 'IMXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX7',
     type: 'text',
   },
+  {
+    author: 'tim',
+    dateCreated: new Date(1614635361000),
+    media: {
+      filename: 'test1.txt',
+      size: 123456,
+    },
+    type: 'media',
+  },
 ];
 
 describe('the messageList component', () => {
