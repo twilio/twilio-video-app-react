@@ -1,5 +1,4 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { Message } from '@twilio/conversations/lib/message';
 import MessageInfo from './MessageInfo/MessageInfo';
 import MessageListScrollContainer from './MessageListScrollContainer/MessageListScrollContainer';
@@ -10,21 +9,12 @@ interface MessageListProps {
   messages: Message[];
 }
 
-const useStyles = makeStyles({
-  messageListContainer: {
-    padding: '0 1.2em 1em',
-    overflowY: 'auto',
-    flex: 1,
-  },
-});
-
 export default function MessageList({ messages }: MessageListProps) {
-  const classes = useStyles();
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
 
   return (
-    <MessageListScrollContainer className={classes.messageListContainer}>
+    <MessageListScrollContainer messages={messages}>
       {messages.map((message, idx) => {
         const time = message.dateCreated
           .toLocaleTimeString('en-us', { hour: 'numeric', minute: 'numeric' })
