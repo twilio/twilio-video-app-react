@@ -1,9 +1,10 @@
 import React, { useRef, useState } from 'react';
-import SendMessageIcon from '../../../icons/SendMessageIcon';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-import { Button, Grid, makeStyles, Theme, useMediaQuery } from '@material-ui/core';
+import { Button, CircularProgress, Grid, makeStyles, Theme, useMediaQuery } from '@material-ui/core';
 import { Conversation } from '@twilio/conversations/lib/conversation';
 import FileAttachmentIcon from '../../../icons/FileAttachmentIcon';
+import SendMessageIcon from '../../../icons/SendMessageIcon';
+import Snackbar from '../../Snackbar/Snackbar';
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 
 const useStyles = makeStyles({
   chatInputContainer: {
@@ -21,12 +22,29 @@ const useStyles = makeStyles({
     fontFamily: 'Inter',
   },
   button: {
-    margin: '1em 0 0 1em',
     padding: '0.56em',
     minWidth: 'auto',
     '&:disabled': {
       background: 'none',
+      '& path': {
+        fill: '#d8d8d8',
+      },
     },
+  },
+  buttonContainer: {
+    margin: '1em 0 0 1em',
+    display: 'flex',
+  },
+  fileButtonContainer: {
+    position: 'relative',
+    marginRight: '1em',
+  },
+  fileButtonLoadingSpinner: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
   },
 });
 
@@ -37,6 +55,8 @@ interface ChatInputProps {
 export default function ChatInput({ conversation }: ChatInputProps) {
   const classes = useStyles();
   const [messageBody, setMessageBody] = useState('');
+  const [isSendingFile, setIsSendingFile] = useState(false);
+  const [isSendingFileError, setIsSendingFileError] = useState<string | null>(null);
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
   const isValidMessage = /\S/.test(messageBody);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -61,16 +81,38 @@ export default function ChatInput({ conversation }: ChatInputProps) {
   };
 
   const handleSendFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      const file = event.target.files[0];
+    const file = event.target.files?.[0];
+    if (file) {
       var formData = new FormData();
       formData.append('userfile', file);
-      conversation.sendMessage(formData);
+      setIsSendingFile(true);
+      setIsSendingFileError(null);
+      conversation
+        .sendMessage(formData)
+        .catch(e => {
+          if (e.code === 413) {
+            setIsSendingFileError('File size is too large. Maxiumim size is 150MB. Please try again.');
+          } else {
+            setIsSendingFileError('There was a problem uploading the file. Please try again.');
+          }
+          console.error(e);
+          //@ts-ignore
+          window.e = e;
+        })
+        .finally(() => setIsSendingFile(false));
     }
   };
 
   return (
     <div className={classes.chatInputContainer}>
+      <Snackbar
+        open={Boolean(isSendingFileError)}
+        headline="Error"
+        message={isSendingFileError || ''}
+        variant="error"
+        handleClose={() => setIsSendingFileError(null)}
+      />
+
       <TextareaAutosize
         rowsMin={1}
         rowsMax={3}
@@ -82,21 +124,28 @@ export default function ChatInput({ conversation }: ChatInputProps) {
         onChange={handleChange}
         value={messageBody}
       />
-      <Grid container justify="flex-end">
-        <input ref={fileInputRef} type="file" style={{ display: 'none' }} onChange={handleSendFile} />
-        <Button className={classes.button} onClick={() => fileInputRef.current?.click()}>
-          <FileAttachmentIcon />
-        </Button>
 
-        <Button
-          className={classes.button}
-          onClick={() => handleSendMessage(messageBody)}
-          color="primary"
-          variant="contained"
-          disabled={!isValidMessage}
-        >
-          <SendMessageIcon />
-        </Button>
+      <Grid container alignItems="flex-end" justify="flex-end" wrap="nowrap">
+        <input ref={fileInputRef} type="file" style={{ display: 'none' }} onChange={handleSendFile} />
+        <div className={classes.buttonContainer}>
+          <div className={classes.fileButtonContainer}>
+            <Button className={classes.button} onClick={() => fileInputRef.current?.click()} disabled={isSendingFile}>
+              <FileAttachmentIcon />
+            </Button>
+
+            {isSendingFile && <CircularProgress size={24} className={classes.fileButtonLoadingSpinner} />}
+          </div>
+
+          <Button
+            className={classes.button}
+            onClick={() => handleSendMessage(messageBody)}
+            color="primary"
+            variant="contained"
+            disabled={!isValidMessage}
+          >
+            <SendMessageIcon />
+          </Button>
+        </div>
       </Grid>
     </div>
   );
