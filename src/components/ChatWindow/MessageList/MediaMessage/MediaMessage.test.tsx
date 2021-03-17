@@ -16,7 +16,7 @@ describe('the formatFileSize function', () => {
     { bytes: 1647987, result: '1.57 MB' },
     { bytes: 23789647, result: '22.69 MB' },
     { bytes: 798234605, result: '761.26 MB' },
-    { bytes: 2458769876, result: '761.26 MB' },
+    { bytes: 2458769876, result: '2.29 GB' },
   ].forEach(testCase => {
     it(`should format ${testCase.bytes} to "${testCase.result}"`, () => {
       expect(formatFileSize(testCase.bytes)).toBe(testCase.result);

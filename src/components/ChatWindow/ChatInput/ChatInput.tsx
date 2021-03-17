@@ -56,7 +56,7 @@ export default function ChatInput({ conversation }: ChatInputProps) {
   const classes = useStyles();
   const [messageBody, setMessageBody] = useState('');
   const [isSendingFile, setIsSendingFile] = useState(false);
-  const [isSendingFileError, setIsSendingFileError] = useState<string | null>(null);
+  const [fileSendError, setFileSendError] = useState<string | null>(null);
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
   const isValidMessage = /\S/.test(messageBody);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -86,14 +86,14 @@ export default function ChatInput({ conversation }: ChatInputProps) {
       var formData = new FormData();
       formData.append('userfile', file);
       setIsSendingFile(true);
-      setIsSendingFileError(null);
+      setFileSendError(null);
       conversation
         .sendMessage(formData)
         .catch(e => {
           if (e.code === 413) {
-            setIsSendingFileError('File size is too large. Maxiumim size is 150MB. Please try again.');
+            setFileSendError('File size is too large. Maximum file size is 150MB.');
           } else {
-            setIsSendingFileError('There was a problem uploading the file. Please try again.');
+            setFileSendError('There was a problem uploading the file. Please try again.');
           }
           console.log('Problem sending file: ', e);
         })
@@ -104,11 +104,11 @@ export default function ChatInput({ conversation }: ChatInputProps) {
   return (
     <div className={classes.chatInputContainer}>
       <Snackbar
-        open={Boolean(isSendingFileError)}
+        open={Boolean(fileSendError)}
         headline="Error"
-        message={isSendingFileError || ''}
+        message={fileSendError || ''}
         variant="error"
-        handleClose={() => setIsSendingFileError(null)}
+        handleClose={() => setFileSendError(null)}
       />
 
       <TextareaAutosize

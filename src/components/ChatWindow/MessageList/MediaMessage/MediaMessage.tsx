@@ -2,7 +2,6 @@ import React from 'react';
 import FileDownloadIcon from '../../../../icons/FileDownloadIcon';
 import { makeStyles } from '@material-ui/core/styles';
 import { Media } from '@twilio/conversations/lib/media';
-import { Grid } from '@material-ui/core';
 
 const useStyles = makeStyles({
   messageContainer: {
