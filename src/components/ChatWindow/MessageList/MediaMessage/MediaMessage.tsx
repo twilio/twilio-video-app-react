@@ -14,7 +14,11 @@ const useStyles = makeStyles({
     cursor: 'pointer',
   },
   mediaInfo: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
     marginLeft: '1.5em',
+    minWidth: 0,
     '& p': {
       margin: 0,
       fontSize: '12px',
@@ -22,6 +26,8 @@ const useStyles = makeStyles({
   },
   filename: {
     fontWeight: 700,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   },
   size: {
     fontWeight: 400,
@@ -35,7 +41,7 @@ interface MediaMessageProps {
 export function formatFileSize(bytes: number, suffixIndex = 0): string {
   const suffixes = ['bytes', 'KB', 'MB', 'GB'];
   if (bytes < 1000) return +bytes.toFixed(2) + ' ' + suffixes[suffixIndex];
-  return formatFileSize(bytes / 1000, suffixIndex + 1);
+  return formatFileSize(bytes / 1024, suffixIndex + 1);
 }
 
 export default function FileMessage({ media }: MediaMessageProps) {
@@ -56,13 +62,13 @@ export default function FileMessage({ media }: MediaMessageProps) {
 
   return (
     <div className={classes.messageContainer} onClick={handleClick}>
-      <FileDownloadIcon />
-      <Grid container alignItems="center" className={classes.mediaInfo}>
-        <div>
-          <p className={classes.filename}>{media.filename}</p>
-          <p className={classes.size}>{formatFileSize(media.size)} - Click to open</p>
-        </div>
-      </Grid>
+      <div>
+        <FileDownloadIcon />
+      </div>
+      <div className={classes.mediaInfo}>
+        <p className={classes.filename}>{media.filename}</p>
+        <p className={classes.size}>{formatFileSize(media.size)} - Click to open</p>
+      </div>
     </div>
   );
 }

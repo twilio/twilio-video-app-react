@@ -8,11 +8,15 @@ jest.mock('@material-ui/core/styles/makeStyles', () => () => () => ({}));
 describe('the formatFileSize function', () => {
   [
     { bytes: 789, result: '789 bytes' },
-    { bytes: 1234, result: '1.23 KB' },
-    { bytes: 67384, result: '67.38 KB' },
-    { bytes: 567123, result: '567.12 KB' },
-    { bytes: 1647987, result: '1.65 MB' },
-    { bytes: 23789647, result: '23.79 MB' },
+    { bytes: 1000, result: '0.98 KB' },
+    { bytes: 1234, result: '1.21 KB' },
+    { bytes: 67384, result: '65.8 KB' },
+    { bytes: 567123, result: '553.83 KB' },
+    { bytes: 1000000, result: '976.56 KB' },
+    { bytes: 1647987, result: '1.57 MB' },
+    { bytes: 23789647, result: '22.69 MB' },
+    { bytes: 798234605, result: '761.26 MB' },
+    { bytes: 2458769876, result: '761.26 MB' },
   ].forEach(testCase => {
     it(`should format ${testCase.bytes} to "${testCase.result}"`, () => {
       expect(formatFileSize(testCase.bytes)).toBe(testCase.result);
