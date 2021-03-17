@@ -18,7 +18,7 @@ export default function PreJoinScreens() {
   const { user } = useAppState();
   const { getAudioAndVideoTracks } = useVideoContext();
   const { URLRoomName } = useParams();
-  const [step, setStep] = useState(Steps.deviceSelectionStep);
+  const [step, setStep] = useState(Steps.roomNameStep);
 
   let userName = 'FooBar';
   let userAgent = navigator.userAgent;
@@ -32,8 +32,8 @@ export default function PreJoinScreens() {
     userName = 'Safari';
   }
 
-  const [name, setName] = useState<string>(user?.displayName || userName);
-  const [roomName, setRoomName] = useState<string>('testchar');
+  const [name, setName] = useState<string>(user?.displayName || '');
+  const [roomName, setRoomName] = useState<string>('');
 
   const [mediaError, setMediaError] = useState<Error>();
 
