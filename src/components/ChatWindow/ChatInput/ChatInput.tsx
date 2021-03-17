@@ -95,9 +95,7 @@ export default function ChatInput({ conversation }: ChatInputProps) {
           } else {
             setIsSendingFileError('There was a problem uploading the file. Please try again.');
           }
-          console.error(e);
-          //@ts-ignore
-          window.e = e;
+          console.log('Problem sending file: ', e);
         })
         .finally(() => setIsSendingFile(false));
     }
