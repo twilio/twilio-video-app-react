@@ -5,7 +5,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import ChatInput from '../ChatInput/ChatInput';
 import SendMessageIcon from '../../../icons/SendMessageIcon';
-import { Button, CircularProgress } from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core';
 import FileAttachmentIcon from '../../../icons/FileAttachmentIcon';
 import Snackbar from '../../Snackbar/Snackbar';
 
