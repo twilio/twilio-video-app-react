@@ -32,6 +32,12 @@ interface MediaMessageProps {
   media: Media;
 }
 
+function formatFileSize(bytes: number, suffixIndex = 0) {
+  const suffixes = ['bytes', 'KB', 'MB', 'GB'];
+  if (bytes < 1000) return +bytes.toFixed(2) + ' ' + suffixes[suffixIndex];
+  formatFileSize(bytes / 1000, suffixIndex + 1);
+}
+
 export default function FileMessage({ media }: MediaMessageProps) {
   const classes = useStyles();
 
@@ -54,7 +60,7 @@ export default function FileMessage({ media }: MediaMessageProps) {
       <Grid container alignItems="center" className={classes.mediaInfo}>
         <div>
           <p className={classes.filename}>{media.filename}</p>
-          <p className={classes.size}>{media.size} - Click to open</p>
+          <p className={classes.size}>{formatFileSize(media.size)} - Click to open</p>
         </div>
       </Grid>
     </div>
