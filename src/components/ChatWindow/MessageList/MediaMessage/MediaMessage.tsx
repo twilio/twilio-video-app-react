@@ -12,6 +12,10 @@ const useStyles = makeStyles({
     borderRadius: '4px',
     cursor: 'pointer',
   },
+  iconContainer: {
+    display: 'flex',
+    alignItems: 'center',
+  },
   mediaInfo: {
     display: 'flex',
     flexDirection: 'column',
@@ -61,7 +65,7 @@ export default function FileMessage({ media }: MediaMessageProps) {
 
   return (
     <div className={classes.messageContainer} onClick={handleClick}>
-      <div>
+      <div className={classes.iconContainer}>
         <FileDownloadIcon />
       </div>
       <div className={classes.mediaInfo}>
