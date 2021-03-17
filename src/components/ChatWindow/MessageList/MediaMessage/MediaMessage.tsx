@@ -32,10 +32,10 @@ interface MediaMessageProps {
   media: Media;
 }
 
-function formatFileSize(bytes: number, suffixIndex = 0) {
+export function formatFileSize(bytes: number, suffixIndex = 0): string {
   const suffixes = ['bytes', 'KB', 'MB', 'GB'];
   if (bytes < 1000) return +bytes.toFixed(2) + ' ' + suffixes[suffixIndex];
-  formatFileSize(bytes / 1000, suffixIndex + 1);
+  return formatFileSize(bytes / 1000, suffixIndex + 1);
 }
 
 export default function FileMessage({ media }: MediaMessageProps) {
