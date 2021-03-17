@@ -97,7 +97,10 @@ export default function ChatInput({ conversation }: ChatInputProps) {
           }
           console.log('Problem sending file: ', e);
         })
-        .finally(() => setIsSendingFile(false));
+        .finally(() => {
+          setIsSendingFile(false);
+          fileInputRef.current!.value = '';
+        });
     }
   };
 
