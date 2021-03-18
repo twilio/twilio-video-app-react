@@ -1,5 +1,6 @@
 import React from 'react';
 import DeviceSelectionScreen from './DeviceSelectionScreen';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { shallow } from 'enzyme';
 import { Steps } from '../PreJoinScreens';
 import { useAppState } from '../../../state';
@@ -35,8 +36,8 @@ describe('the DeviceSelectionScreen component', () => {
 
     const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
 
-    it('should disable the Join Now button', () => {
-      expect(wrapper.find({ children: 'Join Now' }).prop('disabled')).toBe(true);
+    it('should show the loading screen', () => {
+      expect(wrapper.find(CircularProgress).prop('variant')).toBe('indeterminate');
     });
 
     it('should disable the desktop and mobile toggle video buttons', () => {
@@ -79,8 +80,8 @@ describe('the DeviceSelectionScreen component', () => {
     mockUseAppState.mockImplementationOnce(() => ({ getToken: mockGetToken, isFetching: true }));
     const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
 
-    it('should disable the Join Now button', () => {
-      expect(wrapper.find({ children: 'Join Now' }).prop('disabled')).toBe(true);
+    it('should show the loading screen', () => {
+      expect(wrapper.find(CircularProgress).prop('variant')).toBe('indeterminate');
     });
 
     it('should disable the desktop and mobile toggle video buttons', () => {
