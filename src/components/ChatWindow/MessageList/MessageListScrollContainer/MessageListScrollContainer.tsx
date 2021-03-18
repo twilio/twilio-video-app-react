@@ -6,10 +6,6 @@ import Button from '@material-ui/core/Button';
 import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
 
 const styles = createStyles({
-  messageListContainer: {
-    overflowY: 'auto',
-    flex: '1',
-  },
   outerContainer: {
     minHeight: 0,
     flex: 1,
@@ -20,7 +16,11 @@ const styles = createStyles({
     overflowY: 'auto',
     padding: '0 1.2em 1em',
   },
-  unread: {
+  messageListContainer: {
+    overflowY: 'auto',
+    flex: '1',
+  },
+  newMessageNotification: {
     position: 'absolute',
     bottom: '14px',
     backgroundColor: '#027AC5',
@@ -58,7 +58,6 @@ export class MessageListScrollContainer extends React.Component<
   MessageListScrollContainerState
 > {
   chatThreadRef = React.createRef<HTMLDivElement>();
-  // change unreadMessagesCount to boolean? if unread is true
   state = { isScrolledToBottom: true, unreadMessagesCount: 0, messageNotificationCount: 0 };
 
   componentDidMount() {
@@ -114,7 +113,9 @@ export class MessageListScrollContainer extends React.Component<
           <div className={classes.messageListContainer}>
             {this.props.children}
             <Button
-              className={clsx(classes.unread, { [classes.messagesRead]: this.state.unreadMessagesCount === 0 })}
+              className={clsx(classes.newMessageNotification, {
+                [classes.messagesRead]: this.state.unreadMessagesCount === 0,
+              })}
               onClick={this.handleClick}
               startIcon={<ArrowDownwardIcon />}
             >
