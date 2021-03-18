@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles, Typography, Grid, Button, Theme, Hidden } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import LocalVideoPreview from './LocalVideoPreview/LocalVideoPreview';
 import SettingsMenu from './SettingsMenu/SettingsMenu';
 import { Steps } from '../PreJoinScreens';
@@ -70,6 +71,21 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
       chatConnect(token);
     });
   };
+
+  if (isFetching || isConnecting) {
+    return (
+      <Grid container justify="center" spacing={2} alignItems="center" direction="column" style={{ height: '100%' }}>
+        <Grid item>
+          <CircularProgress variant="indeterminate" />
+        </Grid>
+        <Grid item>
+          <Typography variant="body2" style={{ fontWeight: 'bold', fontSize: '16px' }}>
+            Joining Meeting
+          </Typography>
+        </Grid>
+      </Grid>
+    );
+  }
 
   return (
     <>
