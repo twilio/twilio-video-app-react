@@ -1,11 +1,10 @@
 import { useState, useCallback, useRef } from 'react';
-import { LogLevels, Track, Room } from 'twilio-video';
+import { Track, Room } from 'twilio-video';
 import { ErrorCallback } from '../../../types';
 
 interface MediaStreamTrackPublishOptions {
   name?: string;
   priority: Track.Priority;
-  logLevel: LogLevels;
 }
 
 export default function useScreenShareToggle(room: Room | null, onError: ErrorCallback) {
