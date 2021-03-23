@@ -10,7 +10,7 @@
 ### Dependency Upgrades
 
 - `react-scripts` has been upgraded from 4.0.2 to 4.0.3. [#432](https://github.com/twilio/twilio-video-app-react/pull/432)
-- `ts-jest` has been upgraded from 24.3.0 to 26.5.1. [#432](https://github.com/twilio/twilio-video-app-react/pull/432)]
+- `ts-jest` has been upgraded from 24.3.0 to 26.5.1. [#432](https://github.com/twilio/twilio-video-app-react/pull/432)
 - `react-dev-utils` has been upgraded from 11.0.3 to 11.0.4 [#455](https://github.com/twilio/twilio-video-app-react/pull/455)
 - `twilio-video` has been upgraded from 2.11.0 to 2.13.1. [#466](https://github.com/twilio/twilio-video-app-react/pull/466)
 
