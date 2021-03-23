@@ -28,11 +28,19 @@ export default function MessageList({ messages }: MessageListProps) {
         const time = message.dateCreated
           .toLocaleTimeString('en-us', { hour: 'numeric', minute: 'numeric' })
           .toLowerCase();
+
+        const previousTime = messages[idx - 1]?.dateCreated
+          .toLocaleTimeString('en-us', { hour: 'numeric', minute: 'numeric' })
+          .toLowerCase();
+
+        // Display the MessageInfo component when the author or formatted timestamp differs from the previous message
+        const shouldDisplayMessageInfo = time !== previousTime || message.author !== messages[idx - 1]?.author;
+
         const isLocalParticipant = localParticipant.identity === message.author;
 
         return (
           <React.Fragment key={message.sid}>
-            {messages[idx - 1]?.author !== message.author && (
+            {shouldDisplayMessageInfo && (
               <MessageInfo author={message.author} isLocalParticipant={isLocalParticipant} dateCreated={time} />
             )}
             {message.type === 'text' && <TextMessage body={message.body} isLocalParticipant={isLocalParticipant} />}

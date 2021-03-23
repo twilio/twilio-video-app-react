@@ -52,6 +52,16 @@ exports[`the messageList component should render correctly 1`] = `
         </div>
       </div>
     </div>
+    <div
+      class="makeStyles-messageInfoContainer-2"
+    >
+      <div>
+        tim
+      </div>
+      <div>
+        9:49 pm
+      </div>
+    </div>
     <div>
       <div
         class="makeStyles-messageContainer-3"
@@ -80,6 +90,16 @@ exports[`the messageList component should render correctly 1`] = `
         </div>
       </div>
     </div>
+    <div
+      class="makeStyles-messageInfoContainer-2"
+    >
+      <div>
+        olivia (You)
+      </div>
+      <div>
+        9:50 pm
+      </div>
+    </div>
     <div>
       <div
         class="makeStyles-messageContainer-3 makeStyles-isLocalParticipant-4"
@@ -96,7 +116,7 @@ exports[`the messageList component should render correctly 1`] = `
         tim
       </div>
       <div>
-        9:49 pm
+        9:50 pm
       </div>
     </div>
     <div>
