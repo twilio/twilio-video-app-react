@@ -1,11 +1,17 @@
+/* istanbul ignore file */
 import React from 'react';
-import clsx from 'clsx';
-import { Message } from '@twilio/conversations/lib/message';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import Button from '@material-ui/core/Button';
+import clsx from 'clsx';
+import { Message } from '@twilio/conversations/lib/message';
+import throttle from 'lodash.throttle';
 import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
 
 const styles = createStyles({
+  messageListContainer: {
+    overflowY: 'auto',
+    flex: '1',
+  },
   outerContainer: {
     minHeight: 0,
     flex: 1,
@@ -16,92 +22,98 @@ const styles = createStyles({
     overflowY: 'auto',
     padding: '0 1.2em 1em',
   },
-  messageListContainer: {
-    overflowY: 'auto',
-    flex: '1',
-  },
-  newMessageNotification: {
+  button: {
     position: 'absolute',
     bottom: '14px',
-    backgroundColor: '#027AC5',
-    right: '1.2em',
+    right: '2em',
     zIndex: 100,
-    display: 'flex',
     padding: '0.5em 0.9em',
-    alignItems: 'center',
-    color: 'white',
-    visibility: 'visible',
-    opacity: 1,
-    boxShadow: '0px 4px 16px rgba(18, 28, 45, 0.2)',
-    '&:hover': {
-      backgroundColor: '#027AC5',
-    },
-  },
-  messagesRead: {
-    transition: 'all 0.5s ease',
     visibility: 'hidden',
     opacity: 0,
+    boxShadow: '0px 4px 16px rgba(18, 28, 45, 0.2)',
+    transition: 'all 0.5s ease',
+  },
+  showButton: {
+    visibility: 'visible',
+    opacity: 1,
+    bottom: '24px',
   },
 });
-
 interface MessageListScrollContainerProps extends WithStyles<typeof styles> {
   messages: Message[];
 }
-
 interface MessageListScrollContainerState {
   isScrolledToBottom: boolean;
-  unreadMessagesCount: number;
+  showButton: boolean;
   messageNotificationCount: number;
 }
+
+/*
+ * This component is a container for the MessageList component. It enables scrolling so that users
+ * can scroll through the messages as the MessageList grows taller than this container.
+ *
+ * Note that this component is tested with Cyprus only.
+ */
 export class MessageListScrollContainer extends React.Component<
   MessageListScrollContainerProps,
   MessageListScrollContainerState
 > {
   chatThreadRef = React.createRef<HTMLDivElement>();
-  state = { isScrolledToBottom: true, unreadMessagesCount: 0, messageNotificationCount: 0 };
+  state = { isScrolledToBottom: true, showButton: false, messageNotificationCount: 0 };
+
+  scrollToBottom() {
+    const innerScrollContainerEl = this.chatThreadRef.current!;
+    innerScrollContainerEl.scrollTop = innerScrollContainerEl!.scrollHeight;
+  }
 
   componentDidMount() {
-    const chatThreadRef = this.chatThreadRef.current!;
-    chatThreadRef.scrollTop = chatThreadRef!.scrollHeight;
-    chatThreadRef.addEventListener('scroll', this.handleScroll);
+    this.scrollToBottom();
+    this.chatThreadRef.current!.addEventListener('scroll', this.handleScroll);
   }
 
-  getSnapshotBeforeUpdate() {
-    const chatThreadRef = this.chatThreadRef.current;
-    if (chatThreadRef) {
-      return chatThreadRef.clientHeight + chatThreadRef.scrollTop === chatThreadRef.scrollHeight;
-    }
-  }
-
-  componentDidUpdate(prevProps: any, __: any, snapshot?: boolean) {
-    const chatThreadRef = this.chatThreadRef.current!;
-    if (snapshot) {
-      chatThreadRef.scrollTop = chatThreadRef.scrollHeight;
+  // this component updates as users send new messages:
+  componentDidUpdate(prevProps: MessageListScrollContainerProps, prevState: MessageListScrollContainerState) {
+    if (prevState.isScrolledToBottom) {
+      this.scrollToBottom();
     } else if (this.props.messages.length !== prevProps.messages.length) {
-      this.setState(prevState => ({
-        unreadMessagesCount: prevState.unreadMessagesCount + 1,
-        messageNotificationCount: prevState.unreadMessagesCount + 1,
+      const numberOfNewMessages = this.props.messages.length - prevProps.messages.length;
+
+      this.setState(previousState => ({
+        // if there's at least one new message, show the 'new message' button:
+        showButton: !previousState.isScrolledToBottom,
+        // if 'new message' button is visible,
+        // messageNotificationCount will be the number of previously unread messages + the number of new messages
+        // otherwise, messageNotificationCount is set to 1:
+        messageNotificationCount: previousState.showButton
+          ? previousState.messageNotificationCount + numberOfNewMessages
+          : 1,
       }));
     }
   }
 
-  handleScroll = () => {
-    const chatThreadRef = this.chatThreadRef.current!;
-    const isScrolledToBottom = chatThreadRef.clientHeight + chatThreadRef.scrollTop === chatThreadRef!.scrollHeight;
+  handleScroll = throttle(() => {
+    const innerScrollContainerEl = this.chatThreadRef.current!;
+    const isScrolledToBottom =
+      innerScrollContainerEl.clientHeight + innerScrollContainerEl.scrollTop === innerScrollContainerEl!.scrollHeight;
+
     this.setState(prevState => ({
       isScrolledToBottom,
-      unreadMessagesCount: isScrolledToBottom ? 0 : prevState.unreadMessagesCount,
+      showButton: isScrolledToBottom ? false : prevState.showButton,
     }));
-  };
+  }, 300);
 
   handleClick = () => {
-    const chatThreadRef = this.chatThreadRef.current!;
-    chatThreadRef.scrollTo({ top: 10000, behavior: 'smooth' });
+    const innerScrollContainerEl = this.chatThreadRef.current!;
+
+    innerScrollContainerEl.scrollTo({ top: innerScrollContainerEl.scrollHeight, behavior: 'smooth' });
+
+    this.setState({ showButton: false });
   };
 
   componentWillUnmount() {
-    const chatThreadRef = this.chatThreadRef.current!;
-    chatThreadRef.removeEventListener('scroll', this.handleScroll);
+    const innerScrollContainerEl = this.chatThreadRef.current!;
+
+    innerScrollContainerEl.removeEventListener('scroll', this.handleScroll);
   }
 
   render() {
@@ -113,14 +125,14 @@ export class MessageListScrollContainer extends React.Component<
           <div className={classes.messageListContainer}>
             {this.props.children}
             <Button
-              className={clsx(classes.newMessageNotification, {
-                [classes.messagesRead]: this.state.unreadMessagesCount === 0,
-              })}
+              className={clsx(classes.button, { [classes.showButton]: this.state.showButton })}
               onClick={this.handleClick}
               startIcon={<ArrowDownwardIcon />}
+              color="primary"
+              variant="contained"
             >
-              {this.state.messageNotificationCount === 1 && '1 new message'}
-              {this.state.messageNotificationCount > 1 && `${this.state.messageNotificationCount} new messages`}
+              {this.state.messageNotificationCount} new message
+              {this.state.messageNotificationCount > 1 && 's'}
             </Button>
           </div>
         </div>
