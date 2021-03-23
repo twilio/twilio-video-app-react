@@ -5,7 +5,7 @@
 - Screen sharing track is stopped when disconnected from a room due to network issues. [#452](https://github.com/twilio/twilio-video-app-react/pull/452)
 - The `<UnsupportedBrowserWarning />` component has been moved to fix an issue with the app crashing on devices where `navigator.mediaDevices` doesn't exist. [#447](https://github.com/twilio/twilio-video-app-react/pull/447)
 - The Typescript definition for the `room` object has been improved. [#434](https://github.com/twilio/twilio-video-app-react/pull/434)
-- Fix NPM script to lint files. [#432](https://github.com/twilio/twilio-video-app-react/pull/432)]
+- Fix NPM script to lint files. [#432](https://github.com/twilio/twilio-video-app-react/pull/432)
 
 ### Dependency Upgrades
 
