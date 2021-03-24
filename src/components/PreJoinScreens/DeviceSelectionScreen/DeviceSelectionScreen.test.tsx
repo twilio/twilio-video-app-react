@@ -37,7 +37,7 @@ describe('the DeviceSelectionScreen component', () => {
     const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
 
     it('should show the loading screen', () => {
-      expect(wrapper.find(CircularProgress).prop('variant')).toBe('indeterminate');
+      expect(wrapper.find(CircularProgress).exists()).toBe(true);
     });
 
     it('should disable the desktop and mobile toggle video buttons', () => {
@@ -81,7 +81,7 @@ describe('the DeviceSelectionScreen component', () => {
     const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
 
     it('should show the loading screen', () => {
-      expect(wrapper.find(CircularProgress).prop('variant')).toBe('indeterminate');
+      expect(wrapper.find(CircularProgress).exists()).toBe(true);
     });
 
     it('should disable the desktop and mobile toggle video buttons', () => {
