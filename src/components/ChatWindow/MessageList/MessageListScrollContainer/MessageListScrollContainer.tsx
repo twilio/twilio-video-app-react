@@ -49,10 +49,15 @@ interface MessageListScrollContainerState {
 }
 
 /*
- * This component is a container for the MessageList component. It enables scrolling so that users
- * can scroll through the messages as the MessageList grows taller than this container.
+ * This component is a scrollable container that wraps around the 'MessageList' component.
+ * The MessageList will ultimately grow taller than its container as it continues to receive
+ * new messages, and users will need to have the ability to scroll up and down the chat window.
+ * A "new message" button will be displayed when the user receives a new message, and is not scrolled
+ * to the bottom. This button will be hidden if the user clicks on it, or manually scrolls
+ * to the bottom. Otherwise, this component will auto-scroll to the bottom when a new message is
+ * received, and the user is already scrolled to the bottom.
  *
- * Note that this component is tested with Cyprus only.
+ * Note that this component is tested with Cypress only.
  */
 export class MessageListScrollContainer extends React.Component<
   MessageListScrollContainerProps,
