@@ -74,15 +74,15 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
 
   if (isFetching || isConnecting) {
     return (
-      <Grid container justify="center" spacing={2} alignItems="center" direction="column" style={{ height: '100%' }}>
-        <Grid item>
+      <Grid container justify="center" alignItems="center" direction="column" style={{ height: '100%' }}>
+        <div>
           <CircularProgress variant="indeterminate" />
-        </Grid>
-        <Grid item>
+        </div>
+        <div>
           <Typography variant="body2" style={{ fontWeight: 'bold', fontSize: '16px' }}>
             Joining Meeting
           </Typography>
-        </Grid>
+        </div>
       </Grid>
     );
   }
