@@ -3,118 +3,156 @@
 exports[`the messageList component should render correctly 1`] = `
 <div>
   <div
-    class="makeStyles-messageListContainer-1"
+    class="MessageListScrollContainer-outerContainer-2"
   >
     <div
-      class="makeStyles-messageInfoContainer-2"
+      class="MessageListScrollContainer-innerScrollContainer-3"
     >
-      <div>
-        olivia (You)
-      </div>
-      <div>
-        9:48 pm
-      </div>
-    </div>
-    <div>
       <div
-        class="makeStyles-messageContainer-3 makeStyles-isLocalParticipant-4"
+        class="MessageListScrollContainer-messageListContainer-1"
       >
-        <div>
-          This is a message
+        <div
+          class="makeStyles-messageInfoContainer-6"
+        >
+          <div>
+            olivia (You)
+          </div>
+          <div>
+            9:48 pm
+          </div>
         </div>
-      </div>
-    </div>
-    <div
-      class="makeStyles-messageInfoContainer-2"
-    >
-      <div>
-        tim
-      </div>
-      <div>
-        9:48 pm
-      </div>
-    </div>
-    <div>
-      <div
-        class="makeStyles-messageContainer-3"
-      >
         <div>
-          Hi Olivia!
-        </div>
-      </div>
-    </div>
-    <div>
-      <div
-        class="makeStyles-messageContainer-3"
-      >
-        <div>
-          That is pretty rad double line message! How did you do that?
-        </div>
-      </div>
-    </div>
-    <div>
-      <div
-        class="makeStyles-messageContainer-3"
-      >
-        <div>
-          😉
-        </div>
-      </div>
-    </div>
-    <div
-      class="makeStyles-messageInfoContainer-2"
-    >
-      <div>
-        olivia (You)
-      </div>
-      <div>
-        9:49 pm
-      </div>
-    </div>
-    <div>
-      <div
-        class="makeStyles-messageContainer-3 makeStyles-isLocalParticipant-4"
-      >
-        <div>
-          Magic
-        </div>
-      </div>
-    </div>
-    <div>
-      <div
-        class="makeStyles-messageContainer-3 makeStyles-isLocalParticipant-4"
-      >
-        <div>
-          lots of magic
-        </div>
-      </div>
-    </div>
-    <div
-      class="makeStyles-messageInfoContainer-2"
-    >
-      <div>
-        tim
-      </div>
-      <div>
-        9:49 pm
-      </div>
-    </div>
-    <div>
-      <div
-        class="makeStyles-messageContainer-3"
-      >
-        <div>
-          look at this app: 
-          <a
-            class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
-            href="http://github.com/twilio/twilio-video-app-react"
-            rel="noreferrer"
-            target="_blank"
+          <div
+            class="makeStyles-messageContainer-7 makeStyles-isLocalParticipant-8"
           >
-            github.com/twilio/twilio-video-app-react
-          </a>
-          . Neat huh?
+            <div>
+              This is a message
+            </div>
+          </div>
         </div>
+        <div
+          class="makeStyles-messageInfoContainer-6"
+        >
+          <div>
+            tim
+          </div>
+          <div>
+            9:48 pm
+          </div>
+        </div>
+        <div>
+          <div
+            class="makeStyles-messageContainer-7"
+          >
+            <div>
+              Hi Olivia!
+            </div>
+          </div>
+        </div>
+        <div>
+          <div
+            class="makeStyles-messageContainer-7"
+          >
+            <div>
+              That is pretty rad double line message! How did you do that?
+            </div>
+          </div>
+        </div>
+        <div>
+          <div
+            class="makeStyles-messageContainer-7"
+          >
+            <div>
+              😉
+            </div>
+          </div>
+        </div>
+        <div
+          class="makeStyles-messageInfoContainer-6"
+        >
+          <div>
+            olivia (You)
+          </div>
+          <div>
+            9:49 pm
+          </div>
+        </div>
+        <div>
+          <div
+            class="makeStyles-messageContainer-7 makeStyles-isLocalParticipant-8"
+          >
+            <div>
+              Magic
+            </div>
+          </div>
+        </div>
+        <div>
+          <div
+            class="makeStyles-messageContainer-7 makeStyles-isLocalParticipant-8"
+          >
+            <div>
+              lots of magic
+            </div>
+          </div>
+        </div>
+        <div
+          class="makeStyles-messageInfoContainer-6"
+        >
+          <div>
+            tim
+          </div>
+          <div>
+            9:49 pm
+          </div>
+        </div>
+        <div>
+          <div
+            class="makeStyles-messageContainer-7"
+          >
+            <div>
+              look at this app: 
+              <a
+                class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
+                href="http://github.com/twilio/twilio-video-app-react"
+                rel="noreferrer"
+                target="_blank"
+              >
+                github.com/twilio/twilio-video-app-react
+              </a>
+              . Neat huh?
+            </div>
+          </div>
+        </div>
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-contained MessageListScrollContainer-button-4 MuiButton-containedPrimary"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            <span
+              class="MuiButton-startIcon MuiButton-iconSizeMedium"
+            >
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root"
+                focusable="false"
+                role="presentation"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"
+                />
+              </svg>
+            </span>
+            0
+             new message
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
       </div>
     </div>
   </div>
