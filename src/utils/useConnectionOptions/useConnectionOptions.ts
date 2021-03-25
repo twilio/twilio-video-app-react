@@ -2,6 +2,7 @@ import { ConnectOptions } from 'twilio-video';
 import { isMobile, removeUndefineds } from '..';
 import { getResolution } from '../../state/settings/renderDimensions';
 import { useAppState } from '../../state';
+const environment = process.env.REACT_APP_ENVIRONMENT || 'prod';
 
 export default function useConnectionOptions() {
   const { roomType, settings } = useAppState();
@@ -17,11 +18,14 @@ export default function useConnectionOptions() {
       video: {
         mode: settings.bandwidthProfileMode,
         dominantSpeakerPriority: settings.dominantSpeakerPriority,
-        renderDimensions: {
-          low: getResolution(settings.renderDimensionLow),
-          standard: getResolution(settings.renderDimensionStandard),
-          high: getResolution(settings.renderDimensionHigh),
-        },
+        renderDimensions:
+          settings.autoRenderDimensions === 'Enabled'
+            ? 'auto'
+            : {
+                low: getResolution(settings.renderDimensionLow),
+                standard: getResolution(settings.renderDimensionStandard),
+                high: getResolution(settings.renderDimensionHigh),
+              },
         maxTracks: Number(settings.maxTracks),
       },
     },
@@ -41,6 +45,9 @@ export default function useConnectionOptions() {
   // For mobile browsers, limit the maximum incoming video bitrate to 2.5 Mbps.
   if (isMobile && connectionOptions?.bandwidthProfile?.video) {
     connectionOptions!.bandwidthProfile!.video!.maxSubscriptionBitrate = 2500000;
+  }
+  if (environment !== 'prod') {
+    connectionOptions!.environment = environment;
   }
 
   // Here we remove any 'undefined' values. The twilio-video SDK will only use defaults

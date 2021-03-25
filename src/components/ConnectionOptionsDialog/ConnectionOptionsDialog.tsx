@@ -171,6 +171,21 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
             </FormControl>
           </Grid>
           <Grid item sm={6} xs={12}>
+            <FormControl className={classes.formControl}>
+              <InputLabel id={inputLabels.autoRenderDimensions}>Auto renderDimensions:</InputLabel>
+              <Select
+                fullWidth
+                disabled={isDisabled}
+                name={inputLabels.autoRenderDimensions}
+                label={inputLabels.autoRenderDimensions}
+                value={withDefault(settings.autoRenderDimensions ? 'Enabled' : 'Disabled')}
+                onChange={handleChange}
+              >
+                <MenuItem value="Enabled">Enabled</MenuItem>
+                <MenuItem value="Disabled">Disabled</MenuItem>
+              </Select>
+            </FormControl>
+
             <FormControl fullWidth className={classes.formControl}>
               <InputLabel id={inputLabels.renderDimensionLow} className={classes.label}>
                 Render Dimension (Low Priority):

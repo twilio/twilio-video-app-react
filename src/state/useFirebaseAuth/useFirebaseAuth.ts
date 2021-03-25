@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from 'react';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
+const environment = process.env.REACT_APP_ENVIRONMENT || 'prod';
+
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -23,6 +25,11 @@ export default function useFirebaseAuth() {
 
       const endpoint = process.env.REACT_APP_TOKEN_ENDPOINT || '/token';
       const params = new window.URLSearchParams({ identity, roomName });
+
+      if (environment === 'stage') {
+        params.set('environment', 'stage');
+        params.set('appEnvironment', 'production');
+      }
 
       return fetch(`${endpoint}?${params}`, { headers }).then(res => res.text());
     },
