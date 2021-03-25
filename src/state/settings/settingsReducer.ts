@@ -12,6 +12,7 @@ export interface Settings {
   renderDimensionStandard?: RenderDimensionValue;
   renderDimensionHigh?: RenderDimensionValue;
   autoRenderDimensions: string;
+  logLevel: 'error' | 'warn' | 'debug' | 'info' | 'off';
 }
 
 type SettingsKeys = keyof Settings;
@@ -31,6 +32,7 @@ export const initialSettings: Settings = {
   renderDimensionStandard: '960p',
   renderDimensionHigh: 'wide1080p',
   autoRenderDimensions: 'Enabled',
+  logLevel: 'debug',
 };
 
 // This inputLabels object is used by ConnectionOptions.tsx. It is used to populate the id, name, and label props

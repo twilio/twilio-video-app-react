@@ -34,6 +34,7 @@ export default function useConnectionOptions() {
 
     // Comment this line if you are playing music.
     maxAudioBitrate: Number(settings.maxAudioBitrate),
+    logLevel: settings.logLevel,
 
     // VP8 simulcast enables the media server in a Small Group or Group Room
     // to adapt your encoded video quality for each RemoteParticipant based on

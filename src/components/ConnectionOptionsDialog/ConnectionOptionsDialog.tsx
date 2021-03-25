@@ -172,6 +172,23 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
           </Grid>
           <Grid item sm={6} xs={12}>
             <FormControl className={classes.formControl}>
+              <InputLabel id={inputLabels.autoRenderDimensions}>LogLevel:</InputLabel>
+              <Select
+                fullWidth
+                disabled={isDisabled}
+                name={inputLabels.logLevel}
+                label={inputLabels.logLevel}
+                value={withDefault(settings.logLevel)}
+                onChange={handleChange}
+              >
+                <MenuItem value="error">error</MenuItem>
+                <MenuItem value="warn">warn</MenuItem>
+                <MenuItem value="info">info</MenuItem>
+                <MenuItem value="debug">debug</MenuItem>
+                <MenuItem value="off">off</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl className={classes.formControl}>
               <InputLabel id={inputLabels.autoRenderDimensions}>Auto renderDimensions:</InputLabel>
               <Select
                 fullWidth
