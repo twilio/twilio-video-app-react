@@ -9,6 +9,9 @@ interface MessageListProps {
   messages: Message[];
 }
 
+const getFormattedTime = (message?: Message) =>
+  message?.dateCreated.toLocaleTimeString('en-us', { hour: 'numeric', minute: 'numeric' }).toLowerCase();
+
 export default function MessageList({ messages }: MessageListProps) {
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
@@ -16,14 +19,17 @@ export default function MessageList({ messages }: MessageListProps) {
   return (
     <MessageListScrollContainer messages={messages}>
       {messages.map((message, idx) => {
-        const time = message.dateCreated
-          .toLocaleTimeString('en-us', { hour: 'numeric', minute: 'numeric' })
-          .toLowerCase();
+        const time = getFormattedTime(message)!;
+        const previousTime = getFormattedTime(messages[idx - 1]);
+
+        // Display the MessageInfo component when the author or formatted timestamp differs from the previous message
+        const shouldDisplayMessageInfo = time !== previousTime || message.author !== messages[idx - 1]?.author;
+
         const isLocalParticipant = localParticipant.identity === message.author;
 
         return (
           <React.Fragment key={message.sid}>
-            {messages[idx - 1]?.author !== message.author && (
+            {shouldDisplayMessageInfo && (
               <MessageInfo author={message.author} isLocalParticipant={isLocalParticipant} dateCreated={time} />
             )}
             {message.type === 'text' && <TextMessage body={message.body} isLocalParticipant={isLocalParticipant} />}
