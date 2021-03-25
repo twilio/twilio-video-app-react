@@ -126,7 +126,6 @@ describe('the ChatInput component', () => {
           .parent()
           .prop('disabled')
       ).toBe(false);
-      expect(wrapper.find('input[type="file"]').prop('value')).toBe('');
       done();
     });
   });

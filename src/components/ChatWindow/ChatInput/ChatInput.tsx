@@ -99,7 +99,6 @@ export default function ChatInput({ conversation }: ChatInputProps) {
         })
         .finally(() => {
           setIsSendingFile(false);
-          fileInputRef.current!.value = '';
         });
     }
   };
@@ -127,7 +126,9 @@ export default function ChatInput({ conversation }: ChatInputProps) {
       />
 
       <Grid container alignItems="flex-end" justify="flex-end" wrap="nowrap">
-        <input ref={fileInputRef} type="file" style={{ display: 'none' }} onChange={handleSendFile} />
+        {/* Since the file input element is invisible, we can hardcode an empty string as its value.
+        This allows users to upload the same file multiple times. */}
+        <input ref={fileInputRef} type="file" style={{ display: 'none' }} onChange={handleSendFile} value={''} />
         <div className={classes.buttonContainer}>
           <div className={classes.fileButtonContainer}>
             <Button className={classes.button} onClick={() => fileInputRef.current?.click()} disabled={isSendingFile}>
