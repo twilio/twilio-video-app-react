@@ -84,7 +84,7 @@ context('A video app user', () => {
     });
   });
 
-  describe('when entering a room with one participant', () => {
+  describe.only('when entering a room with one participant', () => {
     const ROOM_NAME = getRoomName();
 
     before(() => {
@@ -105,6 +105,39 @@ context('A video app user', () => {
 
     it('should be able to hear the other participant', () => {
       cy.getParticipant('test1').shouldBeMakingSound();
+    });
+
+    it('should be able to send and receive messages', () => {
+      cy.task('sendAMessage', { name: 'test1', message: 'welcome to the chat!' });
+      cy.get('[data-cy-chat-button]').click();
+      cy.get('[data-cy-message-list-outer]').should('contain', 'welcome to the chat');
+      cy.get('[data-cy-chat-input]').type('glad to be here!');
+      cy.get('[data-cy-send-message-button]').click();
+      cy.get('[data-cy-message-list-outer]').should('contain', 'glad to be here');
+    });
+
+    it('should see "1 new message" button when not scrolled to bottom of chat and a new message is received', () => {
+      cy.task('sendAMessage', {
+        name: 'test1',
+        message: 'welcome \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n to the chat!',
+      });
+      cy.get('[data-cy-message-list-inner-scroll]').scrollTo('top', { easing: 'linear' });
+      cy.task('sendAMessage', { name: 'test1', message: 'how is it going?' });
+      cy.get('[data-cy-message-list-outer]').should('contain', '1 new message');
+    });
+
+    it('should scroll to bottom of chat when "1 new message button" is clicked on', () => {
+      cy.get('[data-cy-new-message-button]').click();
+      cy.get('[data-cy-message-list-outer]')
+        .contains('how is it going')
+        .should('be.visible');
+    });
+
+    it('should auto-scroll to bottom of chat when already scrolled to bottom and a new message is received', () => {
+      cy.task('sendAMessage', { name: 'test1', message: 'what a wonderful day!' });
+      cy.get('[data-cy-message-list-outer]')
+        .contains('what a wonderful day')
+        .should('be.visible');
     });
   });
 
