@@ -125,8 +125,8 @@ export class MessageListScrollContainer extends React.Component<
     const { classes } = this.props;
 
     return (
-      <div className={classes.outerContainer}>
-        <div className={classes.innerScrollContainer} ref={this.chatThreadRef}>
+      <div className={classes.outerContainer} data-cy-message-list-outer>
+        <div className={classes.innerScrollContainer} ref={this.chatThreadRef} data-cy-message-list-inner-scroll>
           <div className={classes.messageListContainer}>
             {this.props.children}
             <Button
@@ -135,6 +135,7 @@ export class MessageListScrollContainer extends React.Component<
               startIcon={<ArrowDownwardIcon />}
               color="primary"
               variant="contained"
+              data-cy-new-message-button
             >
               {this.state.messageNotificationCount} new message
               {this.state.messageNotificationCount > 1 && 's'}

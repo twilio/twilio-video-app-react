@@ -79,9 +79,15 @@ export default function ChatInput({ conversation }: ChatInputProps) {
         onKeyPress={handleReturnKeyPress}
         onChange={handleChange}
         value={messageBody}
+        data-cy-chat-input
       />
 
-      <button className={classes.sendButton} onClick={() => handleSendMessage(messageBody)} disabled={!isValidMessage}>
+      <button
+        className={classes.sendButton}
+        onClick={() => handleSendMessage(messageBody)}
+        disabled={!isValidMessage}
+        data-cy-send-message-button
+      >
         <SendMessageIcon />
       </button>
     </div>
