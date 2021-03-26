@@ -65,6 +65,7 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
   const { settings, dispatchSetting } = useAppState();
   const roomState = useRoomState();
   const isDisabled = roomState !== 'disconnected';
+  const disableRenderDimensions = isDisabled || settings.autoRenderDimensions === 'Enabled';
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<{ value: unknown; name?: string }>) => {
@@ -189,13 +190,27 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
               </Select>
             </FormControl>
             <FormControl className={classes.formControl}>
+              <InputLabel id={inputLabels.idleTrackSwitchOff}>Idle Track Switch Off:</InputLabel>
+              <Select
+                fullWidth
+                disabled={isDisabled}
+                name={inputLabels.idleTrackSwitchOff}
+                label={inputLabels.idleTrackSwitchOff}
+                value={withDefault(settings.idleTrackSwitchOff)}
+                onChange={handleChange}
+              >
+                <MenuItem value="Enabled">Enabled</MenuItem>
+                <MenuItem value="Disabled">Disabled</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl className={classes.formControl}>
               <InputLabel id={inputLabels.autoRenderDimensions}>Auto renderDimensions:</InputLabel>
               <Select
                 fullWidth
                 disabled={isDisabled}
                 name={inputLabels.autoRenderDimensions}
                 label={inputLabels.autoRenderDimensions}
-                value={withDefault(settings.autoRenderDimensions ? 'Enabled' : 'Disabled')}
+                value={withDefault(settings.autoRenderDimensions)}
                 onChange={handleChange}
               >
                 <MenuItem value="Enabled">Enabled</MenuItem>
@@ -209,7 +224,7 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
               </InputLabel>
               <Select
                 fullWidth
-                disabled={isDisabled}
+                disabled={disableRenderDimensions}
                 name={inputLabels.renderDimensionLow}
                 label={inputLabels.renderDimensionLow}
                 value={withDefault(settings.renderDimensionLow)}
@@ -225,7 +240,7 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
               </InputLabel>
               <Select
                 fullWidth
-                disabled={isDisabled}
+                disabled={disableRenderDimensions}
                 name={inputLabels.renderDimensionStandard}
                 label={inputLabels.renderDimensionStandard}
                 value={withDefault(settings.renderDimensionStandard)}
@@ -241,7 +256,7 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
               </InputLabel>
               <Select
                 fullWidth
-                disabled={isDisabled}
+                disabled={disableRenderDimensions}
                 name={inputLabels.renderDimensionHigh}
                 label={inputLabels.renderDimensionHigh}
                 value={withDefault(settings.renderDimensionHigh)}

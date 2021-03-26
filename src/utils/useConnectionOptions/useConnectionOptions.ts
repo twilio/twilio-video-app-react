@@ -27,6 +27,7 @@ export default function useConnectionOptions() {
                 high: getResolution(settings.renderDimensionHigh),
               },
         maxTracks: Number(settings.maxTracks),
+        idleTrackSwitchOff: settings.idleTrackSwitchOff === 'Enabled',
       },
     },
     dominantSpeaker: true,
