@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import SendMessageIcon from '../../../icons/SendMessageIcon';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-import { makeStyles, Theme, useMediaQuery } from '@material-ui/core';
+import React, { useRef, useState } from 'react';
+import { Button, CircularProgress, Grid, makeStyles, Theme, useMediaQuery } from '@material-ui/core';
 import { Conversation } from '@twilio/conversations/lib/conversation';
+import FileAttachmentIcon from '../../../icons/FileAttachmentIcon';
+import SendMessageIcon from '../../../icons/SendMessageIcon';
+import Snackbar from '../../Snackbar/Snackbar';
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 
 const useStyles = makeStyles({
   chatInputContainer: {
@@ -19,22 +21,30 @@ const useStyles = makeStyles({
     fontSize: '14px',
     fontFamily: 'Inter',
   },
-  sendButton: {
-    height: '40px',
-    width: '40px',
-    border: '0',
-    borderRadius: '4px',
-    float: 'right',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: '1em',
-    background: '#0263E0',
-    cursor: 'pointer',
+  button: {
+    padding: '0.56em',
+    minWidth: 'auto',
     '&:disabled': {
       background: 'none',
-      cursor: 'default',
+      '& path': {
+        fill: '#d8d8d8',
+      },
     },
+  },
+  buttonContainer: {
+    margin: '1em 0 0 1em',
+    display: 'flex',
+  },
+  fileButtonContainer: {
+    position: 'relative',
+    marginRight: '1em',
+  },
+  fileButtonLoadingSpinner: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
   },
 });
 
@@ -42,11 +52,17 @@ interface ChatInputProps {
   conversation: Conversation;
 }
 
+const ALLOWED_FILE_TYPES =
+  'audio/*, image/*, text/*, video/*, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document .xslx, .ppt, .pdf, .key, .svg, .csv';
+
 export default function ChatInput({ conversation }: ChatInputProps) {
   const classes = useStyles();
   const [messageBody, setMessageBody] = useState('');
+  const [isSendingFile, setIsSendingFile] = useState(false);
+  const [fileSendError, setFileSendError] = useState<string | null>(null);
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
   const isValidMessage = /\S/.test(messageBody);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessageBody(event.target.value);
@@ -67,8 +83,39 @@ export default function ChatInput({ conversation }: ChatInputProps) {
     }
   };
 
+  const handleSendFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      var formData = new FormData();
+      formData.append('userfile', file);
+      setIsSendingFile(true);
+      setFileSendError(null);
+      conversation
+        .sendMessage(formData)
+        .catch(e => {
+          if (e.code === 413) {
+            setFileSendError('File size is too large. Maximum file size is 150MB.');
+          } else {
+            setFileSendError('There was a problem uploading the file. Please try again.');
+          }
+          console.log('Problem sending file: ', e);
+        })
+        .finally(() => {
+          setIsSendingFile(false);
+        });
+    }
+  };
+
   return (
     <div className={classes.chatInputContainer}>
+      <Snackbar
+        open={Boolean(fileSendError)}
+        headline="Error"
+        message={fileSendError || ''}
+        variant="error"
+        handleClose={() => setFileSendError(null)}
+      />
+
       <TextareaAutosize
         rowsMin={1}
         rowsMax={3}
@@ -81,9 +128,37 @@ export default function ChatInput({ conversation }: ChatInputProps) {
         value={messageBody}
       />
 
-      <button className={classes.sendButton} onClick={() => handleSendMessage(messageBody)} disabled={!isValidMessage}>
-        <SendMessageIcon />
-      </button>
+      <Grid container alignItems="flex-end" justify="flex-end" wrap="nowrap">
+        {/* Since the file input element is invisible, we can hardcode an empty string as its value.
+        This allows users to upload the same file multiple times. */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          style={{ display: 'none' }}
+          onChange={handleSendFile}
+          value={''}
+          accept={ALLOWED_FILE_TYPES}
+        />
+        <div className={classes.buttonContainer}>
+          <div className={classes.fileButtonContainer}>
+            <Button className={classes.button} onClick={() => fileInputRef.current?.click()} disabled={isSendingFile}>
+              <FileAttachmentIcon />
+            </Button>
+
+            {isSendingFile && <CircularProgress size={24} className={classes.fileButtonLoadingSpinner} />}
+          </div>
+
+          <Button
+            className={classes.button}
+            onClick={() => handleSendMessage(messageBody)}
+            color="primary"
+            variant="contained"
+            disabled={!isValidMessage}
+          >
+            <SendMessageIcon />
+          </Button>
+        </div>
+      </Grid>
     </div>
   );
 }
