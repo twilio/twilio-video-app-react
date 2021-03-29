@@ -6,5 +6,6 @@
   "reporterOptions": {
     "configFile": "cypress/reporter-config.json"
   },
-  "retries": 2
+  "retries": 2,
+  "scrollBehavior": false
 }
