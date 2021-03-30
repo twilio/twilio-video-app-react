@@ -5,8 +5,8 @@ entrypoint: npm run server
 env_variables:
   REACT_APP_SET_AUTH: 'firebase'
 
-  handlers:
-    - url: /.*
-      secure: always
-      redirect_http_response_code: 301
-      script: auto
+handlers:
+  - url: /.*
+    secure: always
+    redirect_http_response_code: 301
+    script: auto
