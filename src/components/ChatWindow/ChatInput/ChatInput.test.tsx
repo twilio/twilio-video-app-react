@@ -1,7 +1,6 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import ChatInput from '../ChatInput/ChatInput';
 import { CircularProgress } from '@material-ui/core';
@@ -12,7 +11,6 @@ import * as utils from '../../../utils';
 
 jest.mock('@material-ui/core/useMediaQuery');
 
-const mockUseMediaQuery = useMediaQuery as jest.Mock<boolean>;
 const mockHandleSendMessage = jest.fn<any, (string | FormData)[]>(() => Promise.resolve());
 
 describe('the ChatInput component', () => {
