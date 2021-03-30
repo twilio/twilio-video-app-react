@@ -108,24 +108,32 @@ context('A video app user', () => {
     });
 
     describe('the chat feature', () => {
+      // Before we test the chat feature, we want to open the chat window and send enough messages
+      // to make the message list taller than its container so that we can test the scrolling behavior:
       before(() => {
         cy.get('[data-cy-chat-button]').click();
-        cy.task('sendAMessage', {
-          name: 'test1',
-          message: 'welcome \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n to the chat!',
-        });
-        cy.contains('welcome');
+      // Create an array with 15 values, then send a message when looping over each of them:
+        Array(15)
+          .fill(true)
+          .forEach((_, i) => {
+            cy.task('sendAMessage', {
+              name: 'test1',
+              message: 'welcome to the chat! - ' + i,
+            });
+          });
+      // Wait 1 second for the above to complete:
+        cy.wait(1000);
+        cy.contains('welcome to the chat! - 14');
       });
 
       after(() => {
         cy.get('[data-cy-chat-button]').click();
       });
 
-      it.only('should see "1 new message" button when not scrolled to bottom of chat and a new message is received', () => {
+      it('should see "1 new message" button when not scrolled to bottom of chat and a new message is received', () => {
         cy.get('[data-cy-message-list-inner-scroll]').scrollTo(0, 0);
         cy.task('sendAMessage', { name: 'test1', message: 'how is it going?' });
         cy.contains('1 new message').should('be.visible');
-        // cy.get('[data-cy-new-message-button]').should('be.visible');
       });
 
       it('should scroll to bottom of chat when "1 new message button" is clicked on', () => {
