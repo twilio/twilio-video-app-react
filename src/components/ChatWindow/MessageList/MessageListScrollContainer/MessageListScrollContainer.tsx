@@ -76,19 +76,21 @@ export class MessageListScrollContainer extends React.Component<
     this.chatThreadRef.current!.addEventListener('scroll', this.handleScroll);
   }
 
-  // this component updates as users send new messages:
+  // This component updates as users send new messages:
   componentDidUpdate(prevProps: MessageListScrollContainerProps, prevState: MessageListScrollContainerState) {
-    if (prevState.isScrolledToBottom) {
+    const hasNewMessages = this.props.messages.length !== prevProps.messages.length;
+
+    if (prevState.isScrolledToBottom && hasNewMessages) {
       this.scrollToBottom();
-    } else if (this.props.messages.length !== prevProps.messages.length) {
+    } else if (hasNewMessages) {
       const numberOfNewMessages = this.props.messages.length - prevProps.messages.length;
 
       this.setState(previousState => ({
-        // if there's at least one new message, show the 'new message' button:
+        // If there's at least one new message, show the 'new message' button:
         showButton: !previousState.isScrolledToBottom,
-        // if 'new message' button is visible,
-        // messageNotificationCount will be the number of previously unread messages + the number of new messages
-        // otherwise, messageNotificationCount is set to 1:
+        // If 'new message' button is visible,
+        // messageNotificationCount will be the number of previously unread messages + the number of new messages.
+        // Otherwise, messageNotificationCount is set to 1:
         messageNotificationCount: previousState.showButton
           ? previousState.messageNotificationCount + numberOfNewMessages
           : 1,
@@ -98,6 +100,11 @@ export class MessageListScrollContainer extends React.Component<
 
   handleScroll = throttle(() => {
     const innerScrollContainerEl = this.chatThreadRef.current!;
+    // Because this.handleScroll() is a throttled method,
+    // it's possible that it can be called after this component unmounts, and this element will be null.
+    // Therefore, if it doesn't exist, don't do anything:
+    if (!innerScrollContainerEl) return;
+
     const isScrolledToBottom =
       innerScrollContainerEl.clientHeight + innerScrollContainerEl.scrollTop === innerScrollContainerEl!.scrollHeight;
 
