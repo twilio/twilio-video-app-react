@@ -4,6 +4,7 @@ import MessageInfo from './MessageInfo/MessageInfo';
 import MessageListScrollContainer from './MessageListScrollContainer/MessageListScrollContainer';
 import TextMessage from './TextMessage/TextMessage';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import MediaMessage from './MediaMessage/MediaMessage';
 
 interface MessageListProps {
   messages: Message[];
@@ -33,6 +34,7 @@ export default function MessageList({ messages }: MessageListProps) {
               <MessageInfo author={message.author} isLocalParticipant={isLocalParticipant} dateCreated={time} />
             )}
             {message.type === 'text' && <TextMessage body={message.body} isLocalParticipant={isLocalParticipant} />}
+            {message.type === 'media' && <MediaMessage media={message.media} />}
           </React.Fragment>
         );
       })}

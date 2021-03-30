@@ -9,7 +9,7 @@ const useStyles = makeStyles(() =>
     container: {
       height: '56px',
       background: '#F4F4F6',
-      boxShadow: 'inset 0 -0.1em 0 #E4E7E9',
+      borderBottom: '1px solid #E4E7E9',
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
