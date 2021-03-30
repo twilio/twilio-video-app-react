@@ -107,39 +107,58 @@ context('A video app user', () => {
       cy.getParticipant('test1').shouldBeMakingSound();
     });
 
-    it('should be able to send and receive messages', () => {
-      cy.task('sendAMessage', { name: 'test1', message: 'welcome to the chat!' });
-      cy.get('[data-cy-chat-button]').click();
-      cy.get('[data-cy-message-list-outer]').should('contain', 'welcome to the chat');
-      cy.get('[data-cy-chat-input]').type('glad to be here!');
-      cy.get('[data-cy-send-message-button]').click();
-      cy.get('[data-cy-message-list-outer]').should('contain', 'glad to be here');
-      cy.get('[data-cy-chat-button]').click();
-    });
-
-    it.only('should see "1 new message" button when not scrolled to bottom of chat and a new message is received', () => {
-      cy.get('[data-cy-chat-button]').click();
-      cy.task('sendAMessage', {
-        name: 'test1',
-        message: 'welcome \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n to the chat!',
+    describe('the chat feature', () => {
+      before(() => {
+        cy.get('[data-cy-chat-button]').click();
       });
-      cy.get('[data-cy-message-list-inner-scroll]').scrollTo('top', { easing: 'linear', force: true });
-      cy.task('sendAMessage', { name: 'test1', message: 'how is it going?' });
-      cy.get('[data-cy-message-list-outer]').should('contain', '1 new message');
-    });
 
-    it('should scroll to bottom of chat when "1 new message button" is clicked on', () => {
-      cy.get('[data-cy-new-message-button]').click();
-      cy.get('[data-cy-message-list-outer]')
-        .contains('how is it going')
-        .should('not.be.visible');
-    });
+      after(() => {
+        cy.get('[data-cy-chat-button]').click();
+      });
 
-    it.skip('should auto-scroll to bottom of chat when already scrolled to bottom and a new message is received', () => {
-      cy.task('sendAMessage', { name: 'test1', message: 'what a wonderful day!' });
-      cy.get('[data-cy-message-list-outer]')
-        .contains('what a wonderful day')
-        .should('be.visible');
+      it('should see "1 new message" button when not scrolled to bottom of chat and a new message is received', () => {
+        cy.task('sendAMessage', {
+          name: 'test1',
+          message: 'welcome \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n to the chat!',
+        });
+        cy.contains('welcome');
+        cy.get('[data-cy-message-list-inner-scroll]').scrollTo(0, 0);
+        cy.task('sendAMessage', { name: 'test1', message: 'how is it going?' });
+        cy.get('[data-cy-message-list-outer]').should('contain', '1 new message');
+      });
+
+      it('should scroll to bottom of chat when "1 new message button" is clicked on', () => {
+        cy.get('[data-cy-message-list-inner-scroll]').scrollTo(0, 0);
+        cy.get('[data-cy-new-message-button]')
+          .should('be.visible')
+          .click();
+        cy.get('[data-cy-message-list-outer]')
+          .contains('how is it going')
+          .should('be.visible');
+        cy.get('[data-cy-message-list-inner-scroll]').should($el => {
+          expect($el.prop('scrollHeight')).to.equal($el.prop('scrollTop') + $el.prop('clientHeight'));
+        });
+      });
+
+      it('should not see "1 new message" button when manually scroll to bottom of chat after receiving new message', () => {
+        cy.get('[data-cy-message-list-inner-scroll]').scrollTo(0, 0);
+        cy.task('sendAMessage', { name: 'test1', message: 'chatting is fun!' });
+        cy.get('[data-cy-new-message-button]').should('be.visible');
+        cy.get('[data-cy-message-list-inner-scroll]').scrollTo('bottom');
+        cy.get('[data-cy-new-message-button]').should('not.be.visible');
+        cy.get('[data-cy-message-list-outer]')
+          .contains('chatting is fun!')
+          .should('be.visible');
+      });
+
+      it('should auto-scroll to bottom of chat when already scrolled to bottom and a new message is received', () => {
+        cy.get('[data-cy-message-list-inner-scroll]').scrollTo('bottom');
+        cy.task('sendAMessage', { name: 'test1', message: 'what a wonderful day!' });
+        cy.contains('what a wonderful day!');
+        cy.get('[data-cy-message-list-inner-scroll]').should($el => {
+          expect($el.prop('scrollHeight')).to.equal($el.prop('scrollTop') + $el.prop('clientHeight'));
+        });
+      });
     });
   });
 
