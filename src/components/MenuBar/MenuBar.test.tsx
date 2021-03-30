@@ -7,6 +7,7 @@ import ToggleScreenShareButton from '../Buttons/ToogleScreenShareButton/ToggleSc
 import ToggleVideoButton from '../Buttons/ToggleVideoButton/ToggleVideoButton';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import * as utils from '../../utils';
 
 jest.mock('../../hooks/useRoomState/useRoomState');
 jest.mock('../../hooks/useVideoContext/useVideoContext');
@@ -23,6 +24,11 @@ mockUseVideoContext.mockImplementation(() => ({
 mockUseRoomState.mockImplementation(() => 'connected');
 
 describe('the MenuBar component', () => {
+  beforeEach(() => {
+    //@ts-ignore
+    utils.isMobile = false;
+  });
+
   it('should disable toggle buttons while reconnecting to the room', () => {
     mockUseRoomState.mockImplementationOnce(() => 'reconnecting');
     const wrapper = shallow(<MenuBar />);
@@ -53,6 +59,28 @@ describe('the MenuBar component', () => {
         .find(Typography)
         .text()
     ).toBe('You are sharing your screen');
+  });
+
+  it('should display the ToggleScreenShareButton when isSharingScreen is false and isMobile is false', () => {
+    mockUseVideoContext.mockImplementationOnce(() => ({
+      isSharingScreen: false,
+      toggleScreenShare: () => {},
+      room: { name: 'Test Room' },
+    }));
+    const wrapper = shallow(<MenuBar />);
+    expect(wrapper.find(ToggleScreenShareButton).exists()).toBe(true);
+  });
+
+  it('should hide the ToggleScreenShareButton when isSharingScreen is false and isMobile is true', () => {
+    mockUseVideoContext.mockImplementationOnce(() => ({
+      isSharingScreen: false,
+      toggleScreenShare: () => {},
+      room: { name: 'Test Room' },
+    }));
+    // @ts-ignore
+    utils.isMobile = true;
+    const wrapper = shallow(<MenuBar />);
+    expect(wrapper.find(ToggleScreenShareButton).exists()).toBe(false);
   });
 
   it('should call toggleScreenShare when the "Stop Sharing" button is clicked', () => {
