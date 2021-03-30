@@ -54,12 +54,14 @@ export default function FileMessage({ media }: MediaMessageProps) {
     media.getContentTemporaryUrl().then(url => {
       const anchorEl = document.createElement('a');
 
-      anchorEl.download = media.filename;
       anchorEl.href = url;
       anchorEl.target = '_blank';
       anchorEl.rel = 'noopener';
 
-      anchorEl.click();
+      // setTimeout is needed in order to open files in iOS Safari.
+      setTimeout(() => {
+        anchorEl.click();
+      });
     });
   };
 
