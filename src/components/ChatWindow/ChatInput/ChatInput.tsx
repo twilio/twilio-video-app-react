@@ -135,6 +135,7 @@ export default function ChatInput({ conversation, isChatWindowOpen }: ChatInputP
         onKeyPress={handleReturnKeyPress}
         onChange={handleChange}
         value={messageBody}
+        data-cy-chat-input
         ref={textInputRef}
       />
 
@@ -164,6 +165,7 @@ export default function ChatInput({ conversation, isChatWindowOpen }: ChatInputP
             color="primary"
             variant="contained"
             disabled={!isValidMessage}
+            data-cy-send-message-button
           >
             <SendMessageIcon />
           </Button>

@@ -82,6 +82,7 @@ export default function ToggleVideoButton() {
 
   return (
     <Button
+      data-cy-chat-button
       onClick={toggleChatWindow}
       disabled={!conversation}
       startIcon={

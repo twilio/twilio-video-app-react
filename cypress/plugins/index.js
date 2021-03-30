@@ -56,6 +56,13 @@ module.exports = (on, config) => {
       delete participants[name];
       return Promise.resolve(null);
     },
+    sendAMessage: async ({ message, name }) => {
+      const page = participants[name];
+      await page.click('[data-cy-chat-button]');
+      await page.type('[data-cy-chat-input]', message);
+      await page.click('[data-cy-send-message-button]');
+      return Promise.resolve(null);
+    },
   };
   on('task', participantFunctions);
 };

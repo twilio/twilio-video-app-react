@@ -63,6 +63,7 @@ const messages: any = [
       filename: 'test1.txt',
       size: 123456,
     },
+    sid: 'IMXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX8',
     type: 'media',
   },
 ];
