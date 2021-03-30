@@ -110,31 +110,38 @@ context('A video app user', () => {
     describe('the chat feature', () => {
       before(() => {
         cy.get('[data-cy-chat-button]').click();
+        cy.task('sendAMessage', {
+          name: 'test1',
+          message: 'welcome \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n to the chat!',
+        });
+        cy.contains('welcome');
       });
 
       after(() => {
         cy.get('[data-cy-chat-button]').click();
       });
 
-      it('should see "1 new message" button when not scrolled to bottom of chat and a new message is received', () => {
-        cy.task('sendAMessage', {
-          name: 'test1',
-          message: 'welcome \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n to the chat!',
-        });
-        cy.contains('welcome');
+      it.only('should see "1 new message" button when not scrolled to bottom of chat and a new message is received', () => {
         cy.get('[data-cy-message-list-inner-scroll]').scrollTo(0, 0);
         cy.task('sendAMessage', { name: 'test1', message: 'how is it going?' });
-        cy.get('[data-cy-message-list-outer]').should('contain', '1 new message');
+        cy.contains('1 new message').should('be.visible');
+        // cy.get('[data-cy-new-message-button]').should('be.visible');
       });
 
       it('should scroll to bottom of chat when "1 new message button" is clicked on', () => {
         cy.get('[data-cy-message-list-inner-scroll]').scrollTo(0, 0);
+        cy.task('sendAMessage', { name: 'test1', message: 'Ahoy!' });
+        cy.contains('Ahoy!');
         cy.get('[data-cy-new-message-button]')
           .should('be.visible')
           .click();
-        cy.get('[data-cy-message-list-outer]')
-          .contains('how is it going')
+        cy.get('[data-cy-message-list-inner-scroll]')
+          .contains('Ahoy!')
           .should('be.visible');
+
+        // Here we are checking if the chat window has scrolled all the way to the bottom.
+        // The following will be true if the scrolling container's scrollHeight property
+        // is equal to its 'scrollTop' plus its 'clientHeight' properties:
         cy.get('[data-cy-message-list-inner-scroll]').should($el => {
           expect($el.prop('scrollHeight')).to.equal($el.prop('scrollTop') + $el.prop('clientHeight'));
         });
@@ -146,7 +153,7 @@ context('A video app user', () => {
         cy.get('[data-cy-new-message-button]').should('be.visible');
         cy.get('[data-cy-message-list-inner-scroll]').scrollTo('bottom');
         cy.get('[data-cy-new-message-button]').should('not.be.visible');
-        cy.get('[data-cy-message-list-outer]')
+        cy.get('[data-cy-message-list-inner-scroll]')
           .contains('chatting is fun!')
           .should('be.visible');
       });
@@ -155,6 +162,7 @@ context('A video app user', () => {
         cy.get('[data-cy-message-list-inner-scroll]').scrollTo('bottom');
         cy.task('sendAMessage', { name: 'test1', message: 'what a wonderful day!' });
         cy.contains('what a wonderful day!');
+        // Check if chat window is scrolled to the bottom:
         cy.get('[data-cy-message-list-inner-scroll]').should($el => {
           expect($el.prop('scrollHeight')).to.equal($el.prop('scrollTop') + $el.prop('clientHeight'));
         });
