@@ -16,10 +16,21 @@ const noopMiddleware: RequestHandler = (_, __, next) => next();
 const authMiddleware =
   process.env.REACT_APP_SET_AUTH === 'firebase' ? require('./firebaseAuthMiddleware') : noopMiddleware;
 
-app.use(express.static(path.join(__dirname, '../build')));
-
 app.all('/token', authMiddleware, tokenEndpoint);
 
-app.get('*', (_, res) => res.sendFile(path.join(__dirname, '../build/index.html')));
+app.use((req, res, next) => {
+  if (req.path === '/' || req.path === 'index.html') {
+    res.set('Cache-Control', 'no-cache');
+  } else {
+    res.set('Cache-Control', 'max-age=31536000');
+  }
+  next();
+});
+app.use(express.static(path.join(__dirname, '../build')));
+
+app.get('*', (_, res) => {
+  res.set('Cache-Control', 'no-cache');
+  res.sendFile(path.join(__dirname, '../build/index.html'));
+});
 
 app.listen(PORT, () => console.log(`twilio-video-app-react server running on ${PORT}`));
