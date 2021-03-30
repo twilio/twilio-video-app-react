@@ -132,7 +132,7 @@ export class MessageListScrollContainer extends React.Component<
     const { classes } = this.props;
 
     return (
-      <div className={classes.outerContainer} data-cy-message-list-outer>
+      <div className={classes.outerContainer}>
         <div className={classes.innerScrollContainer} ref={this.chatThreadRef} data-cy-message-list-inner-scroll>
           <div className={classes.messageListContainer}>
             {this.props.children}
