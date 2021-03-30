@@ -41,10 +41,12 @@ describe('the MediaMessage component', () => {
 
     setTimeout(() => {
       expect(mockAnchorElement.href).toBe('http://twilio.com/foo.txt');
-      expect(mockAnchorElement.download).toBe('foo.txt');
       expect(mockAnchorElement.target).toBe('_blank');
       expect(mockAnchorElement.rel).toBe('noopener');
-      expect(mockAnchorElement.click).toHaveBeenCalled();
+      // This extra setTimeout is needed for the iOS workaround
+      setTimeout(() => {
+        expect(mockAnchorElement.click).toHaveBeenCalled();
+      });
       done();
     });
   });

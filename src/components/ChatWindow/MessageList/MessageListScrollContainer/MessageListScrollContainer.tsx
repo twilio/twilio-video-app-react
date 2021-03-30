@@ -8,10 +8,6 @@ import throttle from 'lodash.throttle';
 import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
 
 const styles = createStyles({
-  messageListContainer: {
-    overflowY: 'auto',
-    flex: '1',
-  },
   outerContainer: {
     minHeight: 0,
     flex: 1,
@@ -20,7 +16,12 @@ const styles = createStyles({
   innerScrollContainer: {
     height: '100%',
     overflowY: 'auto',
-    padding: '0 1.2em 1em',
+    padding: '0 1.2em 0',
+  },
+  messageListContainer: {
+    overflowY: 'auto',
+    flex: '1',
+    paddingBottom: '1em',
   },
   button: {
     position: 'absolute',
@@ -39,9 +40,11 @@ const styles = createStyles({
     bottom: '24px',
   },
 });
+
 interface MessageListScrollContainerProps extends WithStyles<typeof styles> {
   messages: Message[];
 }
+
 interface MessageListScrollContainerState {
   isScrolledToBottom: boolean;
   showButton: boolean;
@@ -105,8 +108,12 @@ export class MessageListScrollContainer extends React.Component<
     // Therefore, if it doesn't exist, don't do anything:
     if (!innerScrollContainerEl) return;
 
+    // On systems using display scaling, scrollTop may return a decimal value, so we need to account for this in the
+    // "isScrolledToBottom" calculation.
     const isScrolledToBottom =
-      innerScrollContainerEl.clientHeight + innerScrollContainerEl.scrollTop === innerScrollContainerEl!.scrollHeight;
+      Math.abs(
+        innerScrollContainerEl.clientHeight + innerScrollContainerEl.scrollTop - innerScrollContainerEl!.scrollHeight
+      ) < 1;
 
     this.setState(prevState => ({
       isScrolledToBottom,

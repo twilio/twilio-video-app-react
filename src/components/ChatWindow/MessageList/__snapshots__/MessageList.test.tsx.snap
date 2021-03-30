@@ -3,15 +3,14 @@
 exports[`the messageList component should render correctly 1`] = `
 <div>
   <div
-    class="MessageListScrollContainer-outerContainer-2"
-    data-cy-message-list-outer="true"
+    class="MessageListScrollContainer-outerContainer-1"
   >
     <div
-      class="MessageListScrollContainer-innerScrollContainer-3"
+      class="MessageListScrollContainer-innerScrollContainer-2"
       data-cy-message-list-inner-scroll="true"
     >
       <div
-        class="MessageListScrollContainer-messageListContainer-1"
+        class="MessageListScrollContainer-messageListContainer-3"
       >
         <div
           class="makeStyles-messageInfoContainer-6"
