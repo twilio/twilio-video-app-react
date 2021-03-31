@@ -4,7 +4,7 @@ import { ErrorCallback } from '../../types';
 import { SelectedParticipantProvider } from './useSelectedParticipant/useSelectedParticipant';
 
 import AttachVisibilityHandler from './AttachVisibilityHandler/AttachVisibilityHandler';
-import useHandleRoomDisconnectionErrors from './useHandleRoomDisconnectionErrors/useHandleRoomDisconnectionErrors';
+import useHandleRoomDisconnection from './useHandleRoomDisconnection/useHandleRoomDisconnection';
 import useHandleTrackPublicationFailed from './useHandleTrackPublicationFailed/useHandleTrackPublicationFailed';
 import useLocalTracks from './useLocalTracks/useLocalTracks';
 import useRoom from './useRoom/useRoom';
@@ -26,7 +26,6 @@ export interface IVideoContext {
   getLocalVideoTrack: (newOptions?: CreateLocalTrackOptions) => Promise<LocalVideoTrack>;
   getLocalAudioTrack: (deviceId?: string) => Promise<LocalAudioTrack>;
   isAcquiringLocalTracks: boolean;
-  removeLocalAudioTrack: () => void;
   removeLocalVideoTrack: () => void;
   isSharingScreen: boolean;
   toggleScreenShare: () => void;
@@ -61,10 +60,18 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
   } = useLocalTracks();
   const { room, isConnecting, connect } = useRoom(localTracks, onErrorCallback, options);
 
-  // Register onError callback functions.
-  useHandleRoomDisconnectionErrors(room, onError);
-  useHandleTrackPublicationFailed(room, onError);
   const [isSharingScreen, toggleScreenShare] = useScreenShareToggle(room, onError);
+
+  // Register callback functions to be called on room disconnect.
+  useHandleRoomDisconnection(
+    room,
+    onError,
+    removeLocalAudioTrack,
+    removeLocalVideoTrack,
+    isSharingScreen,
+    toggleScreenShare
+  );
+  useHandleTrackPublicationFailed(room, onError);
 
   return (
     <VideoContext.Provider
@@ -77,7 +84,6 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
         getLocalAudioTrack,
         connect,
         isAcquiringLocalTracks,
-        removeLocalAudioTrack,
         removeLocalVideoTrack,
         isSharingScreen,
         toggleScreenShare,
