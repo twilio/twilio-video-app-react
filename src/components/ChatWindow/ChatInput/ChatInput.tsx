@@ -1,7 +1,8 @@
-import React, { useRef, useState } from 'react';
-import { Button, CircularProgress, Grid, makeStyles, Theme, useMediaQuery } from '@material-ui/core';
+import React, { useEffect, useRef, useState } from 'react';
+import { Button, CircularProgress, Grid, makeStyles } from '@material-ui/core';
 import { Conversation } from '@twilio/conversations/lib/conversation';
 import FileAttachmentIcon from '../../../icons/FileAttachmentIcon';
+import { isMobile } from '../../../utils';
 import SendMessageIcon from '../../../icons/SendMessageIcon';
 import Snackbar from '../../Snackbar/Snackbar';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
@@ -50,19 +51,28 @@ const useStyles = makeStyles({
 
 interface ChatInputProps {
   conversation: Conversation;
+  isChatWindowOpen: boolean;
 }
 
 const ALLOWED_FILE_TYPES =
   'audio/*, image/*, text/*, video/*, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document .xslx, .ppt, .pdf, .key, .svg, .csv';
 
-export default function ChatInput({ conversation }: ChatInputProps) {
+export default function ChatInput({ conversation, isChatWindowOpen }: ChatInputProps) {
   const classes = useStyles();
   const [messageBody, setMessageBody] = useState('');
   const [isSendingFile, setIsSendingFile] = useState(false);
   const [fileSendError, setFileSendError] = useState<string | null>(null);
-  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
   const isValidMessage = /\S/.test(messageBody);
+  const textInputRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isChatWindowOpen) {
+      // When the chat window is opened, we will focus on the text input.
+      // This is so the user doesn't have to click on it to begin typing a message.
+      textInputRef.current?.focus();
+    }
+  }, [isChatWindowOpen]);
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessageBody(event.target.value);
@@ -122,10 +132,11 @@ export default function ChatInput({ conversation }: ChatInputProps) {
         className={classes.textArea}
         aria-label="chat input"
         placeholder="Write a message..."
-        autoFocus
         onKeyPress={handleReturnKeyPress}
         onChange={handleChange}
         value={messageBody}
+        data-cy-chat-input
+        ref={textInputRef}
       />
 
       <Grid container alignItems="flex-end" justify="flex-end" wrap="nowrap">
@@ -154,6 +165,7 @@ export default function ChatInput({ conversation }: ChatInputProps) {
             color="primary"
             variant="contained"
             disabled={!isValidMessage}
+            data-cy-send-message-button
           >
             <SendMessageIcon />
           </Button>
