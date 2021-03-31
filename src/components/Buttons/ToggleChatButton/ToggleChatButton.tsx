@@ -55,7 +55,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ToggleVideoButton() {
+export default function ToggleChatButton() {
   const classes = useStyles();
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const { isChatWindowOpen, setIsChatWindowOpen, conversation, hasUnreadMessages } = useChatContext();
