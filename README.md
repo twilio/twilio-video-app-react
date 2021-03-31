@@ -116,7 +116,7 @@ See browser support table for [twilio-video.js SDK](https://github.com/twilio/tw
 
 ### Running a local token server
 
-This application requires an access token to connect to a Room for Video and a Conversation for Chat. The included local token [server](server/index.ts) provides the application with access tokens. This token server can be used to run the app localally, and it is the server that is used when this app is run in development mode with `npm start`. Perform the following steps to setup the local token server:
+This application requires an access token to connect to a Room for Video and a Conversation for Chat. The included local token [server](server/index.ts) provides the application with access tokens. This token server can be used to run the app locally, and it is the server that is used when this app is run in development mode with `npm start`. Perform the following steps to setup the local token server:
 
 - Create an account in the [Twilio Console](https://www.twilio.com/console).
 - Click on 'Settings' and take note of your Account SID.
@@ -131,9 +131,9 @@ TWILIO_API_KEY_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 TWILIO_CONVERSATIONS_SERVICE_SID=ISxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
-Now the local token server (see [server.js](server/index.ts)) can dispense Access Tokens to connect to a Room and a Conversation. See [.env.example](.env.example) for information on additional environment variables that can be used.
+Now the local token server (see [server/index.ts](server/index.ts)) can dispense Access Tokens to connect to a Room and a Conversation. See [.env.example](.env.example) for information on additional environment variables that can be used.
 
-Note: the use of Twilio Conversations is optional. If you wish to opt out, simply run or build this app with the `REACT_APP_DISABLE_TWILIO_CONVERSATIONS` environment variable set to `true`.
+**Note:** the use of Twilio Conversations is optional. If you wish to opt out, simply run or build this app with the `REACT_APP_DISABLE_TWILIO_CONVERSATIONS` environment variable set to `true`.
 
 ### Running the App locally
 
@@ -193,7 +193,7 @@ Run end to end tests with
 
 This will open the Cypress test runner. When it's open, select a test file to run.
 
-Note: Be sure to complete the 'Getting Started' section before running these tests. These Cypress tests will connect to real Twilio rooms and real Twilio conversations, so you may be billed for any time that is used.
+**Note:** Be sure to complete the 'Getting Started' section before running these tests. These Cypress tests will connect to real Twilio rooms and real Twilio conversations, so you may be billed for any time that is used.
 
 ### Application Architecture
 
