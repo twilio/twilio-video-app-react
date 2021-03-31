@@ -1,16 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Button } from '@material-ui/core';
-import { DEFAULT_VIDEO_CONSTRAINTS } from '../../../constants';
-import FlipCameraIcon from './FlipCameraIcon';
+import { useCallback, useEffect, useState } from 'react';
+import { DEFAULT_VIDEO_CONSTRAINTS } from '../../constants';
 import { LocalVideoTrack } from 'twilio-video';
-import useDevices from '../../../hooks/useDevices/useDevices';
-import useMediaStreamTrack from '../../../hooks/useMediaStreamTrack/useMediaStreamTrack';
-import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import useDevices from '../useDevices/useDevices';
+import useMediaStreamTrack from '../useMediaStreamTrack/useMediaStreamTrack';
+import useVideoContext from '../useVideoContext/useVideoContext';
 
-export default function FlipCameraButton() {
+export default function useFlipCameraToggle() {
   const { localTracks } = useVideoContext();
-  const [supportsFacingMode, setSupportsFacingMode] = useState<Boolean | null>(null);
-  const videoTrack = localTracks.find(track => track.name.includes('camera')) as LocalVideoTrack;
+  const [supportsFacingMode, setSupportsFacingMode] = useState(false);
+  const videoTrack = localTracks.find(track => track.name.includes('camera')) as LocalVideoTrack | undefined;
   const mediaStreamTrack = useMediaStreamTrack(videoTrack);
   const { videoInputDevices } = useDevices();
 
@@ -21,22 +19,22 @@ export default function FlipCameraButton() {
     // won't set 'supportsFacingMode' to false. This prevents the icon from briefly
     // disappearing when the user switches their front/rear camera.
     const currentFacingMode = mediaStreamTrack?.getSettings().facingMode;
-    if (currentFacingMode && supportsFacingMode === null) {
+    if (currentFacingMode && supportsFacingMode === false) {
       setSupportsFacingMode(true);
     }
   }, [mediaStreamTrack, supportsFacingMode]);
 
   const toggleFacingMode = useCallback(() => {
     const newFacingMode = mediaStreamTrack?.getSettings().facingMode === 'user' ? 'environment' : 'user';
-    videoTrack.restart({
+    videoTrack?.restart({
       ...(DEFAULT_VIDEO_CONSTRAINTS as {}),
       facingMode: newFacingMode,
     });
   }, [mediaStreamTrack, videoTrack]);
 
-  return supportsFacingMode && videoInputDevices.length > 1 ? (
-    <Button onClick={toggleFacingMode} disabled={!videoTrack} startIcon={<FlipCameraIcon />}>
-      Flip Camera
-    </Button>
-  ) : null;
+  return {
+    flipCameraDisabled: !videoTrack,
+    toggleFacingMode,
+    flipCameraSupported: supportsFacingMode && videoInputDevices.length > 1,
+  };
 }

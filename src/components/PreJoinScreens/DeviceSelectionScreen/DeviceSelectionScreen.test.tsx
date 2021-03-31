@@ -1,5 +1,6 @@
 import React from 'react';
 import DeviceSelectionScreen from './DeviceSelectionScreen';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { shallow } from 'enzyme';
 import { Steps } from '../PreJoinScreens';
 import { useAppState } from '../../../state';
@@ -7,14 +8,16 @@ import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 import ToggleVideoButton from '../../Buttons/ToggleVideoButton/ToggleVideoButton';
 import ToggleAudioButton from '../../Buttons/ToggleAudioButton/ToggleAudioButton';
 
-jest.mock('../../../hooks/useVideoContext/useVideoContext');
-jest.mock('../../../state');
-
 const mockUseAppState = useAppState as jest.Mock<any>;
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 
 const mockConnect = jest.fn();
+const mockChatConnect = jest.fn(() => Promise.resolve());
 const mockGetToken = jest.fn(() => Promise.resolve('mockToken'));
+
+jest.mock('../../../hooks/useChatContext/useChatContext', () => () => ({ connect: mockChatConnect }));
+jest.mock('../../../hooks/useVideoContext/useVideoContext');
+jest.mock('../../../state');
 
 mockUseAppState.mockImplementation(() => ({ getToken: mockGetToken, isFetching: false }));
 mockUseVideoContext.mockImplementation(() => ({
@@ -24,6 +27,11 @@ mockUseVideoContext.mockImplementation(() => ({
 }));
 
 describe('the DeviceSelectionScreen component', () => {
+  beforeEach(() => {
+    process.env.REACT_APP_DISABLE_TWILIO_CONVERSATIONS = 'false';
+    jest.clearAllMocks();
+  });
+
   describe('when connecting to a room', () => {
     mockUseVideoContext.mockImplementationOnce(() => ({
       connect: mockConnect,
@@ -33,8 +41,8 @@ describe('the DeviceSelectionScreen component', () => {
 
     const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
 
-    it('should disable the Join Now button', () => {
-      expect(wrapper.find({ children: 'Join Now' }).prop('disabled')).toBe(true);
+    it('should show the loading screen', () => {
+      expect(wrapper.find(CircularProgress).exists()).toBe(true);
     });
 
     it('should disable the desktop and mobile toggle video buttons', () => {
@@ -77,8 +85,8 @@ describe('the DeviceSelectionScreen component', () => {
     mockUseAppState.mockImplementationOnce(() => ({ getToken: mockGetToken, isFetching: true }));
     const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
 
-    it('should disable the Join Now button', () => {
-      expect(wrapper.find({ children: 'Join Now' }).prop('disabled')).toBe(true);
+    it('should show the loading screen', () => {
+      expect(wrapper.find(CircularProgress).exists()).toBe(true);
     });
 
     it('should disable the desktop and mobile toggle video buttons', () => {
@@ -102,13 +110,27 @@ describe('the DeviceSelectionScreen component', () => {
     expect(mockSetStep).toHaveBeenCalledWith(Steps.roomNameStep);
   });
 
-  it('should fetch a token and connect to a room when the Join Now button is clicked', done => {
+  it('should fetch a token and connect to the Video SDK and Conversations SDK when the Join Now button is clicked', done => {
     const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
     wrapper.find({ children: 'Join Now' }).simulate('click');
 
     expect(mockGetToken).toHaveBeenCalledWith('test name', 'test room name');
     setImmediate(() => {
       expect(mockConnect).toHaveBeenCalledWith('mockToken');
+      expect(mockChatConnect).toHaveBeenCalledWith('mockToken');
+      done();
+    });
+  });
+
+  it('should fetch a token and connect to the Video SDK only when the Join Now button is clicked when the REACT_APP_DISABLE_TWILIO_CONVERSATIONS variable is true', done => {
+    process.env.REACT_APP_DISABLE_TWILIO_CONVERSATIONS = 'true';
+    const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
+    wrapper.find({ children: 'Join Now' }).simulate('click');
+
+    expect(mockGetToken).toHaveBeenCalledWith('test name', 'test room name');
+    setImmediate(() => {
+      expect(mockConnect).toHaveBeenCalledWith('mockToken');
+      expect(mockChatConnect).not.toHaveBeenCalledWith('mockToken');
       done();
     });
   });

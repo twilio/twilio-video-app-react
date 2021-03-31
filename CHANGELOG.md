@@ -1,3 +1,9 @@
+## 0.3.0
+
+### New Feature
+
+- This release adds an in-room chat feature. This chat feature allows users to send and receive textual messages and files while connected to a Twilio Video room. This feature is powered by the [Twilio Conversations API](https://www.twilio.com/conversations-api). For more information, please see this [blog post](https://www.twilio.com/blog/open-source-video-chat-app-reactjs-conversations-api).
+
 ## 0.2.4
 
 ### Bugfixes

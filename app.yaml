@@ -1,23 +1,12 @@
-runtime: python27
-api_version: 1
-threadsafe: true
+runtime: nodejs12
+
+entrypoint: npm run server
+
+env_variables:
+  REACT_APP_SET_AUTH: 'firebase'
 
 handlers:
-- url: /static
-  secure: always
-  static_dir: build/static
-
-- url: /(.*\.(json|ico|js|txt|png))$
-  secure: always
-  static_files: build/\1
-  upload: build/.*\.(json|ico|js|txt|png)$
-
-- url: /.well-known/apple-app-site-association
-  secure: always
-  static_files: build/.well-known/apple-app-site-association
-  upload: build/.well-known/apple-app-site-association
-
-- url: .*
-  secure: always
-  static_files: build/index.html
-  upload: build/index.html
+  - url: /.*
+    secure: always
+    redirect_http_response_code: 301
+    script: auto

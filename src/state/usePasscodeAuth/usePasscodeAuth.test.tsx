@@ -118,6 +118,53 @@ describe('the usePasscodeAuth hook', () => {
   });
 
   describe('the getToken function', () => {
+    it('should call the API with the correct parameters', async () => {
+      // @ts-ignore
+      window.fetch = jest.fn(() =>
+        Promise.resolve({ ok: true, json: () => Promise.resolve({ token: 'mockVideoToken' }) })
+      );
+      window.sessionStorage.setItem('passcode', '123123');
+      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
+      await waitForNextUpdate();
+
+      await act(async () => {
+        result.current.getToken('test-name', 'test-room');
+      });
+
+      expect(window.fetch).toHaveBeenLastCalledWith('/token', {
+        body:
+          '{"user_identity":"test-name","room_name":"test-room","passcode":"123123","create_room":true,"create_conversation":true}',
+        headers: { 'content-type': 'application/json' },
+        method: 'POST',
+      });
+    });
+
+    it('should call the API with the correct parameters when REACT_APP_DISABLE_TWILIO_CONVERSATIONS is true', async () => {
+      process.env.REACT_APP_DISABLE_TWILIO_CONVERSATIONS = 'true';
+
+      // @ts-ignore
+      window.fetch = jest.fn(() =>
+        Promise.resolve({ ok: true, json: () => Promise.resolve({ token: 'mockVideoToken' }) })
+      );
+      window.sessionStorage.setItem('passcode', '123123');
+      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
+      await waitForNextUpdate();
+
+      await act(async () => {
+        result.current.getToken('test-name', 'test-room');
+      });
+
+      expect(window.fetch).toHaveBeenLastCalledWith('/token', {
+        body:
+          '{"user_identity":"test-name","room_name":"test-room","passcode":"123123","create_room":true,"create_conversation":false}',
+        headers: { 'content-type': 'application/json' },
+        method: 'POST',
+      });
+
+      // reset the environment variable
+      delete process.env.REACT_APP_DISABLE_TWILIO_CONVERSATIONS;
+    });
+
     it('should return a token', async () => {
       // @ts-ignore
       window.fetch = jest.fn(() =>
@@ -208,7 +255,8 @@ describe('the verifyPasscode function', () => {
   it('should call the API with the correct parameters', async () => {
     await verifyPasscode('123456');
     expect(window.fetch).toHaveBeenLastCalledWith('/token', {
-      body: '{"user_identity":"temp-name","room_name":"temp-room","passcode":"123456","create_room":false}',
+      body:
+        '{"user_identity":"temp-name","room_name":"temp-room","passcode":"123456","create_room":false,"create_conversation":false}',
       headers: { 'content-type': 'application/json' },
       method: 'POST',
     });
