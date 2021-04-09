@@ -23,6 +23,7 @@ export default function useConnectionOptions() {
           high: getResolution(settings.renderDimensionHigh),
         },
         maxTracks: Number(settings.maxTracks),
+        trackSwitchOffMode: settings.trackSwitchOffMode,
       },
     },
     dominantSpeaker: true,
