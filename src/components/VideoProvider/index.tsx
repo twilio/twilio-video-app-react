@@ -7,6 +7,7 @@ import AttachVisibilityHandler from './AttachVisibilityHandler/AttachVisibilityH
 import useHandleRoomDisconnection from './useHandleRoomDisconnection/useHandleRoomDisconnection';
 import useHandleTrackPublicationFailed from './useHandleTrackPublicationFailed/useHandleTrackPublicationFailed';
 import useLocalTracks from './useLocalTracks/useLocalTracks';
+import useRestartAudioTrackOnDeviceChange from './useRestartAudioTrackOnDeviceChange/useRestartAudioTrackOnDeviceChange';
 import useRoom from './useRoom/useRoom';
 import useScreenShareToggle from './useScreenShareToggle/useScreenShareToggle';
 
@@ -72,6 +73,7 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
     toggleScreenShare
   );
   useHandleTrackPublicationFailed(room, onError);
+  useRestartAudioTrackOnDeviceChange(localTracks);
 
   return (
     <VideoContext.Provider
