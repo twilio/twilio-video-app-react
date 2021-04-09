@@ -49,6 +49,7 @@ export default function useConnectionOptions() {
     connectionOptions!.bandwidthProfile!.video!.maxSubscriptionBitrate = 2500000;
   }
   if (environment !== 'prod') {
+    // @ts-ignore
     connectionOptions!.environment = environment;
   }
 
