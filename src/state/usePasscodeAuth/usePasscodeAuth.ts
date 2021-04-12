@@ -1,5 +1,4 @@
 import { RoomType } from '../../types';
-import { TwilioError } from 'twilio-video';
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
