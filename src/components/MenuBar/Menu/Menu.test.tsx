@@ -9,9 +9,10 @@ import MenuContainer from '@material-ui/core/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { shallow } from 'enzyme';
 import { render, fireEvent, waitForElementToBeRemoved, waitForElement } from '@testing-library/react';
+
+import { useAppState } from '../../../state';
 import useFlipCameraToggle from '../../../hooks/useFlipCameraToggle/useFlipCameraToggle';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useAppState } from '../../../state';
 import useIsRecording from '../../../hooks/useIsRecording/useIsRecording';
 
 jest.mock('../../../hooks/useFlipCameraToggle/useFlipCameraToggle');
@@ -33,6 +34,10 @@ describe('the Menu component', () => {
   beforeAll(() => {
     mockUpdateRecordingRules = jest.fn(() => Promise.resolve());
     mockUseAppState.mockImplementation(() => ({ isFetching: false, updateRecordingRules: mockUpdateRecordingRules }));
+    mockUseFlipCameraToggle.mockImplementation(() => ({
+      flipCameraDisabled: false,
+      flipCameraSupported: false,
+    }));
   });
 
   describe('the recording button', () => {
@@ -143,7 +148,7 @@ describe('the Menu component', () => {
       expect(wrapper.find(DeviceSelectionDialog).prop('open')).toBe(false);
       wrapper
         .find(MenuItem)
-        .at(0)
+        .at(1)
         .simulate('click');
       expect(wrapper.find(DeviceSelectionDialog).prop('open')).toBe(true);
     });
@@ -181,7 +186,7 @@ describe('the Menu component', () => {
       expect(
         wrapper
           .find(MenuItem)
-          .at(0)
+          .at(1)
           .prop('disabled')
       ).toBe(false);
     });
@@ -196,7 +201,7 @@ describe('the Menu component', () => {
       expect(
         wrapper
           .find(MenuItem)
-          .at(0)
+          .at(1)
           .prop('disabled')
       ).toBe(true);
     });
