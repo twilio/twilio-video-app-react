@@ -1,5 +1,6 @@
 import React from 'react';
 import IntroContainer from './IntroContainer';
+import MediaErrorSnackbar from '../PreJoinScreens/MediaErrorSnackbar/MediaErrorSnackbar';
 import { shallow } from 'enzyme';
 import { useLocation } from 'react-router-dom';
 import { useAppState } from '../../state';
@@ -68,13 +69,13 @@ describe('the IntroContainer component', () => {
     expect(wrapper.find('span').text()).toBe('Test Content');
   });
 
-  it('should render subcontent when provided', () => {
+  it('should render MediaErrorSnackbar when there is an error', () => {
     const wrapper = shallow(
-      <IntroContainer subContent={<h1>Test Sub Content</h1>}>
+      <IntroContainer error={new Error('test error')}>
         <span>Test Content</span>
       </IntroContainer>
     );
 
-    expect(wrapper.find('h1').text()).toBe('Test Sub Content');
+    expect(wrapper.find(MediaErrorSnackbar).contains('test error'));
   });
 });
