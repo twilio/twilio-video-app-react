@@ -21,18 +21,11 @@ class MockTrack extends EventEmitter {
   }
 }
 
-class MockPreflightTest extends EventEmitter {
-  stop = jest.fn();
-}
-
-const mockPreflightTest = new MockPreflightTest();
-
 const twilioVideo = {
   connect: jest.fn(() => Promise.resolve(mockRoom)),
   createLocalTracks: jest.fn(() => Promise.resolve([new MockTrack('video'), new MockTrack('audio')])),
   createLocalVideoTrack: jest.fn(() => Promise.resolve(new MockTrack('video'))),
-  testPreflight: jest.fn(() => mockPreflightTest),
 };
 
-export { mockRoom, mockPreflightTest };
+export { mockRoom };
 export default twilioVideo;
