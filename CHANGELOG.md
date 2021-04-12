@@ -1,3 +1,51 @@
+## 0.3.0
+
+### New Feature
+
+- This release adds an in-room chat feature. This chat feature allows users to send and receive textual messages and files while connected to a Twilio Video room. This feature is powered by the [Twilio Conversations API](https://www.twilio.com/conversations-api). For more information, please see this [blog post](https://www.twilio.com/blog/open-source-video-chat-app-reactjs-conversations-api).
+
+## 0.2.4
+
+### Bugfixes
+
+- Screen sharing track is stopped when disconnected from a room due to network issues. [#452](https://github.com/twilio/twilio-video-app-react/pull/452)
+- The `<UnsupportedBrowserWarning />` component has been moved to fix an issue with the app crashing on devices where `navigator.mediaDevices` doesn't exist. [#447](https://github.com/twilio/twilio-video-app-react/pull/447)
+- The Typescript definition for the `room` object has been improved. [#434](https://github.com/twilio/twilio-video-app-react/pull/434)
+- Fix NPM script to lint files. [#432](https://github.com/twilio/twilio-video-app-react/pull/432)
+
+### Dependency Upgrades
+
+- `react-scripts` has been upgraded from 4.0.2 to 4.0.3. [#432](https://github.com/twilio/twilio-video-app-react/pull/432)
+- `ts-jest` has been upgraded from 24.3.0 to 26.5.1. [#432](https://github.com/twilio/twilio-video-app-react/pull/432)
+- `react-dev-utils` has been upgraded from 11.0.3 to 11.0.4 [#455](https://github.com/twilio/twilio-video-app-react/pull/455)
+- `twilio-video` has been upgraded from 2.11.0 to 2.13.1. [#466](https://github.com/twilio/twilio-video-app-react/pull/466)
+
+## 0.2.3
+
+### Bugfixes
+
+- Update `VideoInputList` so that the app doesn't crash when the deivce is changed while the camera is off. [#412](https://github.com/twilio/twilio-video-app-react/pull/412)
+
+### Dependency Upgrades
+
+- `react-scripts` has been upgraded from 3.4.4 to 4.0.2. [#416](https://github.com/twilio/twilio-video-app-react/pull/416)
+
+## 0.2.2
+
+### Bugfixes
+
+- The participant thumbnails are no longer pushed out of view on certain mobile devices. [#347](https://github.com/twilio/twilio-video-app-react/pull/347)
+- Fix issue where the user's camera LED would not turn off when they click on the "Stop Video" button. [#350](https://github.com/twilio/twilio-video-app-react/pull/350)
+- Fix issue where `getAudioAndVideoTracks` is repeatedly called when there is a `getUserMedia` error. [#363](https://github.com/twilio/twilio-video-app-react/pull/363)
+- Update `useTrackDimensions` hook so that it correctly causes a component re-render when track dimensions change. Thanks [@tomhicks](https://github.com/tomhicks)! [#387](https://github.com/twilio/twilio-video-app-react/pull/387)
+- Audio and Video tracks are now stopped when the user disconnects from the room. [#401](https://github.com/twilio/twilio-video-app-react/pull/401)
+- The participant list no longer flickers when the browser is of a certain height. [#402](https://github.com/twilio/twilio-video-app-react/pull/402)
+
+### Dependency Upgrades
+
+- `twilio-video` has been upgraded to 2.11.0. This version includes TypeScript definitions for twilio-video.js. See the twilio-video.js [CHANGELOG](https://github.com/twilio/twilio-video.js/blob/master/CHANGELOG.md#2110-january-26-2021) for more information. ([#409](https://github.com/twilio/twilio-video-app-react/pull/409))
+- `@types/twilio-video` has been removed. Type definitions are now included in `twilio-video` version 2.11.0.
+
 ## 0.2.1
 
 ### New Features

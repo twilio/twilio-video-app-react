@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Snackbar from '../../Snackbar/Snackbar';
-import { useHasAudioInputDevices, useHasVideoInputDevices } from '../../../hooks/deviceHooks/deviceHooks';
+import useDevices from '../../../hooks/useDevices/useDevices';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
 export function getSnackbarContent(hasAudio: boolean, hasVideo: boolean, error?: Error) {
@@ -59,16 +59,18 @@ export function getSnackbarContent(hasAudio: boolean, hasVideo: boolean, error?:
 }
 
 export default function MediaErrorSnackbar({ error }: { error?: Error }) {
-  const hasAudio = useHasAudioInputDevices();
-  const hasVideo = useHasVideoInputDevices();
+  const { hasAudioInputDevices, hasVideoInputDevices } = useDevices();
 
   const { isAcquiringLocalTracks } = useVideoContext();
 
   const [isSnackbarDismissed, setIsSnackbarDismissed] = useState(false);
 
-  const isSnackbarOpen = !isSnackbarDismissed && !isAcquiringLocalTracks && (Boolean(error) || !hasAudio || !hasVideo);
+  const isSnackbarOpen =
+    !isSnackbarDismissed &&
+    !isAcquiringLocalTracks &&
+    (Boolean(error) || !hasAudioInputDevices || !hasVideoInputDevices);
 
-  const { headline, message } = getSnackbarContent(hasAudio, hasVideo, error);
+  const { headline, message } = getSnackbarContent(hasAudioInputDevices, hasVideoInputDevices, error);
 
   return (
     <Snackbar

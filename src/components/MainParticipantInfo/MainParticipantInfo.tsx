@@ -115,9 +115,8 @@ interface MainParticipantInfoProps {
 
 export default function MainParticipantInfo({ participant, children }: MainParticipantInfoProps) {
   const classes = useStyles();
-  const {
-    room: { localParticipant },
-  } = useVideoContext();
+  const { room } = useVideoContext();
+  const localParticipant = room!.localParticipant;
   const isLocal = localParticipant === participant;
 
   const screenShareParticipant = useScreenShareParticipant();

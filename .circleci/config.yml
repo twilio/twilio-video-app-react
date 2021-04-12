@@ -13,7 +13,7 @@ jobs:
             - v1-deps-{{ .Branch }}-{{ checksum "package-lock.json" }}
             - v1-deps-{{ .Branch }}
             - v1-deps
-    
+
       - run: npm ci
 
       - save_cache:
@@ -24,25 +24,33 @@ jobs:
             - ~/.cache
 
       - run:
-          name: "Jest Unit Tests"
+          name: 'Jest Unit Tests'
           command: npm run test:ci
           environment:
-            JEST_JUNIT_OUTPUT_DIR: "test-reports/jest"
-            JEST_JUNIT_OUTPUT_NAME: "results.xml"
-            JEST_JUNIT_CLASSNAME: "{classname}"
-            JEST_JUNIT_TITLE: "{title}"
+            JEST_JUNIT_OUTPUT_DIR: 'test-reports/jest'
+            JEST_JUNIT_OUTPUT_NAME: 'results.xml'
+            JEST_JUNIT_CLASSNAME: '{classname}'
+            JEST_JUNIT_TITLE: '{title}'
 
       - store_artifacts:
           path: coverage
 
-      - run: 
-          name: "Build app with Firebase auth disabled"
+      - run:
+          name: 'Eslint'
+          command: npm run lint -- --max-warnings 0
+
+      - run:
+          name: 'Check server types'
+          command: npm run typescript:server
+
+      - run:
+          name: 'Build app with Firebase auth disabled'
           command: npm run build
           environment:
-            REACT_APP_TOKEN_ENDPOINT: "http://localhost:8081/token"
+            REACT_APP_TOKEN_ENDPOINT: 'http://localhost:8081/token'
 
-      - run: 
-          name: "Set environment variables for local token server (used by Cypress tests)"
+      - run:
+          name: 'Set environment variables for local token server (used by Cypress tests)'
           command: |
             echo TWILIO_ACCOUNT_SID=$TWILIO_ACCOUNT_SID >> .env
             echo TWILIO_API_KEY_SID=$TWILIO_API_KEY >> .env
@@ -55,7 +63,7 @@ jobs:
 
       # Rebuild app with firebase auth enabled
       - run:
-          name: "Build app with Firebase auth enabled"
+          name: 'Build app with Firebase auth enabled'
           command: |
             echo REACT_APP_SET_AUTH=firebase >> .env
             echo REACT_APP_TOKEN_ENDPOINT=$REACT_APP_TOKEN_ENDPOINT >> .env
@@ -70,7 +78,7 @@ jobs:
 
       - persist_to_workspace:
           root: .
-          paths: 
+          paths:
             - .
 
   deploy:
@@ -81,7 +89,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/twilio-video-react-app
-     
+
       - run: |
           echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
           gcloud --quiet config set project ${GOOGLE_PROJECT_ID}

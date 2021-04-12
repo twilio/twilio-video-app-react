@@ -30,6 +30,7 @@ const mockPreflightTest = new MockPreflightTest();
 const twilioVideo = {
   connect: jest.fn(() => Promise.resolve(mockRoom)),
   createLocalTracks: jest.fn(() => Promise.resolve([new MockTrack('video'), new MockTrack('audio')])),
+  createLocalVideoTrack: jest.fn(() => Promise.resolve(new MockTrack('video'))),
   testPreflight: jest.fn(() => mockPreflightTest),
 };
 

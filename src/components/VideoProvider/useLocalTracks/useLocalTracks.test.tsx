@@ -1,18 +1,21 @@
 import { act, renderHook } from '@testing-library/react-hooks';
-import { SELECTED_AUDIO_INPUT_KEY, SELECTED_VIDEO_INPUT_KEY } from '../../../constants';
+import { SELECTED_AUDIO_INPUT_KEY, SELECTED_VIDEO_INPUT_KEY, DEFAULT_VIDEO_CONSTRAINTS } from '../../../constants';
 import useLocalTracks from './useLocalTracks';
 import Video from 'twilio-video';
-import { useAudioInputDevices, useVideoInputDevices } from '../../../hooks/deviceHooks/deviceHooks';
+import useDevices from '../../../hooks/useDevices/useDevices';
 
-jest.mock('../../../hooks/deviceHooks/deviceHooks');
-const mockUseAudioInputDevices = useAudioInputDevices as jest.Mock<any>;
-const mockUseVideoInputDevices = useVideoInputDevices as jest.Mock<any>;
+jest.mock('../../../hooks/useDevices/useDevices');
+const mockUseDevices = useDevices as jest.Mock<any>;
 
 describe('the useLocalTracks hook', () => {
   beforeEach(() => {
     Date.now = () => 123456;
-    mockUseAudioInputDevices.mockImplementation(() => [{ deviceId: 'mockAudioDeviceId' }]);
-    mockUseVideoInputDevices.mockImplementation(() => [{ deviceId: 'mockVideoDeviceId' }]);
+    mockUseDevices.mockImplementation(() => ({
+      audioInputDevices: [{ deviceId: 'mockAudioDeviceId', kind: 'audioinput' }],
+      videoInputDevices: [{ deviceId: 'mockVideoDeviceId', kind: 'videoinput' }],
+      hasAudioInputDevices: true,
+      hasVideoInputDevices: true,
+    }));
   });
   afterEach(jest.clearAllMocks);
   afterEach(() => window.localStorage.clear());
@@ -87,7 +90,12 @@ describe('the useLocalTracks hook', () => {
     });
 
     it('should create a local audio track when no video devices are present', async () => {
-      mockUseVideoInputDevices.mockImplementation(() => []);
+      mockUseDevices.mockImplementation(() => ({
+        audioInputDevices: [{ deviceId: 'mockAudioDeviceId', kind: 'audioinput' }],
+        videoInputDevices: [],
+        hasAudioInputDevices: true,
+        hasVideoInputDevices: false,
+      }));
 
       const { result, waitForNextUpdate } = renderHook(useLocalTracks);
 
@@ -103,7 +111,12 @@ describe('the useLocalTracks hook', () => {
     });
 
     it('should create a local video track when no audio devices are present', async () => {
-      mockUseAudioInputDevices.mockImplementation(() => []);
+      mockUseDevices.mockImplementation(() => ({
+        audioInputDevices: [],
+        videoInputDevices: [{ deviceId: 'mockVideoDeviceId', kind: 'videoinput' }],
+        hasAudioInputDevices: false,
+        hasVideoInputDevices: true,
+      }));
 
       const { result, waitForNextUpdate } = renderHook(useLocalTracks);
 
@@ -160,8 +173,7 @@ describe('the useLocalTracks hook', () => {
     });
 
     it('should not create any tracks when no input devices are present', async () => {
-      mockUseAudioInputDevices.mockImplementation(() => []);
-      mockUseVideoInputDevices.mockImplementation(() => []);
+      mockUseDevices.mockImplementation(() => []);
 
       const { result } = renderHook(useLocalTracks);
 
@@ -202,6 +214,78 @@ describe('the useLocalTracks hook', () => {
 
       expect(result.current.localTracks.some(track => track.kind === 'video')).toBe(false);
       expect(initialVideoTrack!.stop).toHaveBeenCalled();
+    });
+  });
+
+  describe('the removeLocalAudioTrack function', () => {
+    it('should call audioTrack.stop() and remove the audioTrack from state', async () => {
+      const { result, waitForNextUpdate } = renderHook(useLocalTracks);
+
+      // First, get tracks
+      await act(async () => {
+        result.current.getAudioAndVideoTracks();
+        await waitForNextUpdate();
+      });
+
+      const initialAudioTrack = result.current.localTracks.find(track => track.kind === 'audio');
+      expect(initialAudioTrack!.stop).not.toHaveBeenCalled();
+      expect(initialAudioTrack).toBeTruthy();
+
+      act(() => {
+        result.current.removeLocalAudioTrack();
+      });
+
+      expect(result.current.localTracks.some(track => track.kind === 'audio')).toBe(false);
+      expect(initialAudioTrack!.stop).toHaveBeenCalled();
+    });
+  });
+
+  describe('the getLocalVideoTrack function', () => {
+    it('should create a local video track', async () => {
+      const { result, waitForNextUpdate } = renderHook(useLocalTracks);
+
+      await act(async () => {
+        result.current.getLocalVideoTrack();
+        await waitForNextUpdate();
+      });
+
+      expect(Video.createLocalVideoTrack).toHaveBeenCalledWith({
+        ...(DEFAULT_VIDEO_CONSTRAINTS as {}),
+        name: 'camera-123456',
+      });
+    });
+
+    it('should not specify a device ID when the device ID stored in local storage does not exist', async () => {
+      const { result, waitForNextUpdate } = renderHook(useLocalTracks);
+
+      window.localStorage.setItem(SELECTED_VIDEO_INPUT_KEY, 'device-id-does-not-exist');
+
+      await act(async () => {
+        result.current.getLocalVideoTrack();
+        await waitForNextUpdate();
+      });
+
+      expect(Video.createLocalVideoTrack).toHaveBeenCalledWith({
+        ...(DEFAULT_VIDEO_CONSTRAINTS as {}),
+        name: 'camera-123456',
+      });
+    });
+
+    it('should specify a device ID when one is stored in local storage and the device exists', async () => {
+      const { result, waitForNextUpdate } = renderHook(useLocalTracks);
+
+      window.localStorage.setItem(SELECTED_VIDEO_INPUT_KEY, 'mockVideoDeviceId');
+
+      await act(async () => {
+        result.current.getLocalVideoTrack();
+        await waitForNextUpdate();
+      });
+
+      expect(Video.createLocalVideoTrack).toHaveBeenCalledWith({
+        ...(DEFAULT_VIDEO_CONSTRAINTS as {}),
+        name: 'camera-123456',
+        deviceId: { exact: 'mockVideoDeviceId' },
+      });
     });
   });
 });

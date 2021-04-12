@@ -1,4 +1,4 @@
-import { act, HookResult, renderHook, RenderHookResult } from '@testing-library/react-hooks';
+import { act, HookResult, renderHook } from '@testing-library/react-hooks';
 import { EventEmitter } from 'events';
 import React from 'react';
 import { Participant, Room } from 'twilio-video';

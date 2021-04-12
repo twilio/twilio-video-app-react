@@ -11,7 +11,6 @@ import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/use
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
-      padding: '2em',
       overflowY: 'auto',
       background: 'rgb(79, 83, 85)',
       gridArea: '1 / 2 / 1 / 3',
@@ -21,14 +20,21 @@ const useStyles = makeStyles((theme: Theme) =>
         overflowY: 'initial',
         overflowX: 'auto',
         display: 'flex',
-        padding: `${theme.sidebarMobilePadding}px`,
       },
     },
     transparentBackground: {
       background: 'transparent',
     },
     scrollContainer: {
+      display: 'flex',
+      justifyContent: 'center',
+    },
+    innerScrollContainer: {
+      width: `calc(${theme.sidebarWidth}px - 4em)`,
+      padding: '2em 0',
       [theme.breakpoints.down('sm')]: {
+        width: 'auto',
+        padding: `${theme.sidebarMobilePadding}px`,
         display: 'flex',
       },
     },
@@ -37,9 +43,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function ParticipantList() {
   const classes = useStyles();
-  const {
-    room: { localParticipant },
-  } = useVideoContext();
+  const { room } = useVideoContext();
+  const localParticipant = room!.localParticipant;
   const participants = useParticipants();
   const [selectedParticipant, setSelectedParticipant] = useSelectedParticipant();
   const screenShareParticipant = useScreenShareParticipant();
@@ -55,21 +60,23 @@ export default function ParticipantList() {
       })}
     >
       <div className={classes.scrollContainer}>
-        <Participant participant={localParticipant} isLocalParticipant={true} />
-        {participants.map(participant => {
-          const isSelected = participant === selectedParticipant;
-          const hideParticipant =
-            participant === mainParticipant && participant !== screenShareParticipant && !isSelected;
-          return (
-            <Participant
-              key={participant.sid}
-              participant={participant}
-              isSelected={participant === selectedParticipant}
-              onClick={() => setSelectedParticipant(participant)}
-              hideParticipant={hideParticipant}
-            />
-          );
-        })}
+        <div className={classes.innerScrollContainer}>
+          <Participant participant={localParticipant} isLocalParticipant={true} />
+          {participants.map(participant => {
+            const isSelected = participant === selectedParticipant;
+            const hideParticipant =
+              participant === mainParticipant && participant !== screenShareParticipant && !isSelected;
+            return (
+              <Participant
+                key={participant.sid}
+                participant={participant}
+                isSelected={participant === selectedParticipant}
+                onClick={() => setSelectedParticipant(participant)}
+                hideParticipant={hideParticipant}
+              />
+            );
+          })}
+        </div>
       </div>
     </aside>
   );

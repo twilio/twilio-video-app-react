@@ -8,18 +8,20 @@ export default function useRoomState() {
   const [state, setState] = useState<RoomStateType>('disconnected');
 
   useEffect(() => {
-    const setRoomState = () => setState((room.state || 'disconnected') as RoomStateType);
-    setRoomState();
-    room
-      .on('disconnected', setRoomState)
-      .on('reconnected', setRoomState)
-      .on('reconnecting', setRoomState);
-    return () => {
+    if (room) {
+      const setRoomState = () => setState(room.state as RoomStateType);
+      setRoomState();
       room
-        .off('disconnected', setRoomState)
-        .off('reconnected', setRoomState)
-        .off('reconnecting', setRoomState);
-    };
+        .on('disconnected', setRoomState)
+        .on('reconnected', setRoomState)
+        .on('reconnecting', setRoomState);
+      return () => {
+        room
+          .off('disconnected', setRoomState)
+          .off('reconnected', setRoomState)
+          .off('reconnecting', setRoomState);
+      };
+    }
   }, [room]);
 
   return state;

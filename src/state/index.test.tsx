@@ -1,6 +1,5 @@
 import React from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
-import { TwilioError } from 'twilio-video';
 
 import AppStateProvider, { useAppState } from './index';
 import useFirebaseAuth from './useFirebaseAuth/useFirebaseAuth';
@@ -13,7 +12,14 @@ jest.mock('./useActiveSinkId/useActiveSinkId.ts', () => () => ['default', () => 
 const mockUsePasscodeAuth = usePasscodeAuth as jest.Mock<any>;
 
 // @ts-ignore
-window.fetch = jest.fn(() => Promise.resolve({ text: () => 'mockVideoToken' }));
+window.fetch = jest.fn(() =>
+  Promise.resolve({
+    text: () => 'mockVideoToken',
+    json: () => ({
+      token: 'mockVideoToken',
+    }),
+  })
+);
 
 const wrapper: React.FC = ({ children }) => <AppStateProvider>{children}</AppStateProvider>;
 
@@ -23,7 +29,7 @@ describe('the useAppState hook', () => {
 
   it('should set an error', () => {
     const { result } = renderHook(useAppState, { wrapper });
-    act(() => result.current.setError(new Error('testError') as TwilioError));
+    act(() => result.current.setError(new Error('testError')));
     expect(result.current.error!.message).toBe('testError');
   });
 
@@ -44,8 +50,10 @@ describe('the useAppState hook', () => {
 
     expect(token).toBe('mockVideoToken');
 
-    expect(window.fetch).toHaveBeenCalledWith('http://test.com/api/token?identity=testname&roomName=testroom', {
-      headers: { _headers: {} },
+    expect(window.fetch).toHaveBeenCalledWith('http://test.com/api/token', {
+      headers: { 'content-type': 'application/json' },
+      body: '{"user_identity":"testname","room_name":"testroom","create_conversation":true}',
+      method: 'POST',
     });
   });
 

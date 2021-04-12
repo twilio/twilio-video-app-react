@@ -23,6 +23,8 @@ import {
 import { useAppState } from '../../../state';
 import useIsRecording from '../../../hooks/useIsRecording/useIsRecording';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import FlipCameraIcon from '../../../icons/FlipCameraIcon';
+import useFlipCameraToggle from '../../../hooks/useFlipCameraToggle/useFlipCameraToggle';
 
 export const IconContainer = styled('div')({
   display: 'flex',
@@ -45,6 +47,7 @@ export default function Menu(props: { buttonClassName?: string }) {
   const isRecording = useIsRecording();
 
   const anchorRef = useRef<HTMLButtonElement>(null);
+  const { flipCameraDisabled, toggleFacingMode, flipCameraSupported } = useFlipCameraToggle();
 
   return (
     <>
@@ -76,7 +79,7 @@ export default function Menu(props: { buttonClassName?: string }) {
           onClick={() => {
             setMenuOpen(false);
             if (isRecording) {
-              updateRecordingRules(room.sid, [{ type: 'exclude', all: true }]).then(() =>
+              updateRecordingRules(room!.sid, [{ type: 'exclude', all: true }]).then(() =>
                 setIsRecordingSnackbarOpen(true)
               );
             } else {
@@ -87,6 +90,14 @@ export default function Menu(props: { buttonClassName?: string }) {
           <IconContainer>{isRecording ? <StopRecordingIcon /> : <StartRecordingIcon />}</IconContainer>
           <Typography variant="body1">{isRecording ? 'Stop' : 'Start'} Recording</Typography>
         </MenuItem>
+        {flipCameraSupported && (
+          <MenuItem disabled={flipCameraDisabled} onClick={toggleFacingMode}>
+            <IconContainer>
+              <FlipCameraIcon />
+            </IconContainer>
+            <Typography variant="body1">Flip Camera</Typography>
+          </MenuItem>
+        )}
 
         <MenuItem onClick={() => setSettingsOpen(true)}>
           <IconContainer>
@@ -138,7 +149,7 @@ export default function Menu(props: { buttonClassName?: string }) {
         handleContinue={() => {
           setRecordingConfirmDialogOpen(false);
           setIsRecordingSnackbarOpen(false);
-          updateRecordingRules(room.sid, [{ type: 'include', all: true }]);
+          updateRecordingRules(room!.sid, [{ type: 'include', all: true }]);
         }}
       />
     </>

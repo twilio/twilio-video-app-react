@@ -1,5 +1,4 @@
 import { shallow } from 'enzyme';
-import CloseIcon from '@material-ui/icons/Close';
 import React from 'react';
 import Snackbar from './Snackbar';
 

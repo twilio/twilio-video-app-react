@@ -2,31 +2,10 @@ import { LocalVideoTrack, RemoteVideoTrack, TwilioError } from 'twilio-video';
 import { EventEmitter } from 'events';
 
 declare module 'twilio-video' {
-  interface LocalParticipant {
-    setBandwidthProfile: (bandwidthProfile: BandwidthProfileOptions) => void;
-    publishTrack(track: LocalTrack, options?: { priority: Track.Priority }): Promise<LocalTrackPublication>;
-  }
-
-  interface VideoCodecSettings {
-    simulcast?: boolean;
-  }
-
-  interface LocalTrackPublication {
-    setPriority: (priority: Track.Priority) => void;
-  }
-
+  // These help to create union types between Local and Remote VideoTracks
   interface LocalVideoTrack {
     isSwitchedOff: undefined;
     setPriority: undefined;
-  }
-
-  interface RemoteVideoTrack {
-    isSwitchedOff: boolean;
-    setPriority: (priority: Track.Priority | null) => void;
-  }
-
-  interface VideoBandwidthProfileOptions {
-    trackSwitchOffMode?: 'predicted' | 'detected' | 'disabled';
   }
 
   function testPreflight(
@@ -50,11 +29,16 @@ declare global {
   interface HTMLMediaElement {
     setSinkId?(sinkId: string): Promise<undefined>;
   }
+
+  // Helps create a union type with TwilioError
+  interface Error {
+    code: undefined;
+  }
 }
 
 export type Callback = (...args: any[]) => void;
 
-export type ErrorCallback = (error: TwilioError) => void;
+export type ErrorCallback = (error: TwilioError | Error) => void;
 
 export type IVideoTrack = LocalVideoTrack | RemoteVideoTrack;
 
