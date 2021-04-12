@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import AboutDialog from '../../AboutDialog/AboutDialog';
-import ConfirmRecordingDialog from './ConfirmRecordingDialog/ConfirmRecordingDialog';
 import DeviceSelectionDialog from '../../DeviceSelectionDialog/DeviceSelectionDialog';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import InfoIconOutlined from '../../../icons/InfoIconOutlined';
@@ -8,17 +7,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import StartRecordingIcon from '../../../icons/StartRecordingIcon';
 import StopRecordingIcon from '../../../icons/StopRecordingIcon';
 import SettingsIcon from '../../../icons/SettingsIcon';
-import Snackbar from '../../Snackbar/Snackbar';
-import {
-  Button,
-  Link,
-  styled,
-  Theme,
-  useMediaQuery,
-  Menu as MenuContainer,
-  MenuItem,
-  Typography,
-} from '@material-ui/core';
+import { Button, styled, Theme, useMediaQuery, Menu as MenuContainer, MenuItem, Typography } from '@material-ui/core';
 
 import { useAppState } from '../../../state';
 import useIsRecording from '../../../hooks/useIsRecording/useIsRecording';
@@ -39,8 +28,6 @@ export default function Menu(props: { buttonClassName?: string }) {
   const [aboutOpen, setAboutOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [recordingConfirmDialogOpen, setRecordingConfirmDialogOpen] = useState(false);
-  const [isRecordingSnackbarOpen, setIsRecordingSnackbarOpen] = useState(false);
 
   const { isFetching, updateRecordingRules } = useAppState();
   const { room } = useVideoContext();
@@ -79,11 +66,9 @@ export default function Menu(props: { buttonClassName?: string }) {
           onClick={() => {
             setMenuOpen(false);
             if (isRecording) {
-              updateRecordingRules(room!.sid, [{ type: 'exclude', all: true }]).then(() =>
-                setIsRecordingSnackbarOpen(true)
-              );
+              updateRecordingRules(room!.sid, [{ type: 'exclude', all: true }]);
             } else {
-              setRecordingConfirmDialogOpen(true);
+              updateRecordingRules(room!.sid, [{ type: 'include', all: true }]);
             }
           }}
         >
@@ -125,31 +110,6 @@ export default function Menu(props: { buttonClassName?: string }) {
         onClose={() => {
           setSettingsOpen(false);
           setMenuOpen(false);
-        }}
-      />
-      <Snackbar
-        open={isRecordingSnackbarOpen}
-        headline="Recording Complete"
-        message={
-          <>
-            You can view the recording in the{' '}
-            <Link target="_blank" rel="noopener" href="https://www.twilio.com/console/video/logs/recordings">
-              Twilio Console
-            </Link>
-            . Recordings will be available once this room has ended.
-          </>
-        }
-        variant="info"
-        handleClose={() => setIsRecordingSnackbarOpen(false)}
-      ></Snackbar>
-
-      <ConfirmRecordingDialog
-        open={recordingConfirmDialogOpen}
-        handleClose={() => setRecordingConfirmDialogOpen(false)}
-        handleContinue={() => {
-          setRecordingConfirmDialogOpen(false);
-          setIsRecordingSnackbarOpen(false);
-          updateRecordingRules(room!.sid, [{ type: 'include', all: true }]);
         }}
       />
     </>
