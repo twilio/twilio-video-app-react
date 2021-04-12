@@ -18,7 +18,6 @@ interface SnackbarProps {
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
     display: 'flex',
-    alignItems: 'baseline',
     justifyContent: 'space-between',
     width: '400px',
     minHeight: '50px',
@@ -32,11 +31,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   contentContainer: {
     display: 'flex',
+    lineHeight: 1.8,
   },
   iconContainer: {
     display: 'flex',
     padding: '0 1.3em 0 0.3em',
-    transform: 'translateY(4px)',
+    transform: 'translateY(3px)',
   },
   headline: {
     fontWeight: 'bold',
@@ -71,6 +71,7 @@ export default function Snackbar({ headline, message, variant, open, handleClose
       }}
       open={open}
       onClose={handleOnClose}
+      autoHideDuration={10000}
     >
       <div
         className={clsx(classes.container, {
