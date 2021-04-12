@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles, Theme, Typography } from '@material-ui/core';
+import MediaErrorSnackbar from '../PreJoinScreens/MediaErrorSnackbar/MediaErrorSnackbar';
 import Swoosh from './swoosh';
 import VideoLogo from './VideoLogo';
 import TwilioLogo from './TwilioLogo';
@@ -87,16 +88,11 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontSize: '1.1rem',
     },
   },
-  subContentContainer: {
-    position: 'absolute',
-    marginTop: '1em',
-    width: '100%',
-  },
 }));
 
 interface IntroContainerProps {
   children: React.ReactNode;
-  subContent?: React.ReactNode;
+  error?: Error;
 }
 
 const IntroContainer = (props: IntroContainerProps) => {
@@ -120,8 +116,8 @@ const IntroContainer = (props: IntroContainerProps) => {
           </div>
           <div className={classes.content}>{props.children}</div>
         </div>
-        {props.subContent && <div className={classes.subContentContainer}>{props.subContent}</div>}
       </div>
+      {props.error && <MediaErrorSnackbar error={props.error} />}
     </div>
   );
 };
