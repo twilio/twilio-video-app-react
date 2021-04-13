@@ -46,14 +46,14 @@ export default function RecordingNotifications() {
         open={activeSnackbar === Snackbars.recordingStarted}
         handleClose={() => setActiveSnackbar(Snackbars.none)}
         variant="info"
-        headline="Recording has started"
+        headline="Recording has started."
         message=""
       />
       <Snackbar
         open={activeSnackbar === Snackbars.recordingInProgress}
         handleClose={() => setActiveSnackbar(Snackbars.none)}
         variant="info"
-        headline="Recording is in progress"
+        headline="Recording is in progress."
         message=""
       />
       <Snackbar

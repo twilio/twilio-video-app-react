@@ -8,7 +8,7 @@ import Menu from './Menu';
 import MenuContainer from '@material-ui/core/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { shallow } from 'enzyme';
-import { render, fireEvent, waitForElementToBeRemoved, waitForElement } from '@testing-library/react';
+import { render, fireEvent, waitForElement } from '@testing-library/react';
 
 import { useAppState } from '../../../state';
 import useFlipCameraToggle from '../../../hooks/useFlipCameraToggle/useFlipCameraToggle';
