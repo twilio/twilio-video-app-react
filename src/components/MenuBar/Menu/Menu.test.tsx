@@ -53,7 +53,7 @@ describe('the Menu component', () => {
         expect(getByText('Stop Recording')).toBeTruthy();
       });
 
-      it('should update recording rules and display the snackbar when the user clicks on the Stop Recording button', () => {
+      it('should correctly update recording rules and display the snackbar when the user clicks on the Stop Recording button', () => {
         const { getByText } = render(<Menu />);
         fireEvent.click(getByText('More'));
 
@@ -76,20 +76,11 @@ describe('the Menu component', () => {
         expect(getByText('Start Recording')).toBeTruthy();
       });
 
-      it('should open a dialog box when clicked', () => {
+      it('should correctly update recording rules and display the snackbar when the user clicks on the Start Recording button', () => {
         const { getByText } = render(<Menu />);
         fireEvent.click(getByText('More'));
 
         fireEvent.click(getByText('Start Recording'));
-        expect(getByText('Continue')).toBeTruthy();
-      });
-
-      it('should update recording rules when the user confirms the dialog box', () => {
-        const { getByText } = render(<Menu />);
-        fireEvent.click(getByText('More'));
-
-        fireEvent.click(getByText('Start Recording'));
-        fireEvent.click(getByText('Continue'));
         expect(mockUpdateRecordingRules).toHaveBeenCalledWith('mockRoomSid', [{ all: true, type: 'include' }]);
       });
 
@@ -103,16 +94,6 @@ describe('the Menu component', () => {
             .at(0)
             .prop('disabled')
         ).toBe(true);
-      });
-
-      it('should close the dialog box when Cancel is clicked', () => {
-        const { queryByText, getByText } = render(<Menu />);
-
-        fireEvent.click(getByText('More'));
-
-        fireEvent.click(getByText('Start Recording'));
-        fireEvent.click(getByText('Cancel'));
-        return expect(waitForElementToBeRemoved(() => queryByText('Continue'))).resolves.toBe(true);
       });
     });
   });
