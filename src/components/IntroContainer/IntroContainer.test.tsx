@@ -67,14 +67,4 @@ describe('the IntroContainer component', () => {
 
     expect(wrapper.find('span').text()).toBe('Test Content');
   });
-
-  it('should render subcontent when provided', () => {
-    const wrapper = shallow(
-      <IntroContainer subContent={<h1>Test Sub Content</h1>}>
-        <span>Test Content</span>
-      </IntroContainer>
-    );
-
-    expect(wrapper.find('h1').text()).toBe('Test Sub Content');
-  });
 });
