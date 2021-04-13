@@ -1,6 +1,7 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import DeviceSelectionScreen from './DeviceSelectionScreen/DeviceSelectionScreen';
+import MediaErrorSnackbar from './MediaErrorSnackbar/MediaErrorSnackbar';
 import { mount, shallow } from 'enzyme';
 import PreJoinScreens from './PreJoinScreens';
 import RoomNameScreen from './RoomNameScreen/RoomNameScreen';
@@ -22,6 +23,7 @@ Object.defineProperty(window.history, 'replaceState', { value: mockReplaceState 
 jest.mock('../../state');
 jest.mock('react-router-dom', () => ({ useParams: jest.fn() }));
 jest.mock('../../hooks/useVideoContext/useVideoContext');
+jest.mock('./MediaErrorSnackbar/MediaErrorSnackbar', () => () => null);
 const mockUseAppState = useAppState as jest.Mock<any>;
 const mockUseParams = useParams as jest.Mock<any>;
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
@@ -108,7 +110,7 @@ describe('the PreJoinScreens component', () => {
       wrapper.update();
     });
 
-    const error = wrapper.children().prop('error');
+    const error = wrapper.find(MediaErrorSnackbar).prop('error');
     expect(error).toBe('testError');
     expect(mockGetAudioAndVideoTracks).toHaveBeenCalledTimes(1); // This makes sure that 'getAudioAndVideoTracks' isn't called repeatedly
   });
