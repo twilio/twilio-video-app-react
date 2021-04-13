@@ -16,18 +16,21 @@ export default function RecordingNotifications() {
   const isRecording = useIsRecording();
 
   useEffect(() => {
+    // Show "Recording in progress" snackbar when a user joins a room that is recording
     if (isRecording && prevIsRecording.current === null) {
       setActiveSnackbar(Snackbars.recordingInProgress);
     }
   }, [isRecording]);
 
   useEffect(() => {
+    // Show "Recording started" snackbar when recording has started.
     if (isRecording && prevIsRecording.current === false) {
       setActiveSnackbar(Snackbars.recordingStarted);
     }
   }, [isRecording]);
 
   useEffect(() => {
+    // Show "Recording finished" snackbar when recording has stopped.
     if (!isRecording && prevIsRecording.current === true) {
       setActiveSnackbar(Snackbars.recordingFinished);
     }
