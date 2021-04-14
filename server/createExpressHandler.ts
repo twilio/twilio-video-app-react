@@ -7,6 +7,7 @@ const { TWILIO_ACCOUNT_SID, TWILIO_API_KEY_SID, TWILIO_API_KEY_SECRET, TWILIO_CO
 
 const twilioClient = Twilio(TWILIO_API_KEY_SID, TWILIO_API_KEY_SECRET, {
   accountSid: TWILIO_ACCOUNT_SID,
+  region: process.env.REACT_APP_TWILIO_ENVIRONMENT,
 });
 
 const context: ServerlessContext = {
