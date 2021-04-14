@@ -39,6 +39,35 @@ export default function useFirebaseAuth() {
     [user]
   );
 
+  const updateRecordingRules = useCallback(
+    async (room_sid, rules) => {
+      const headers = new window.Headers();
+
+      const idToken = await user!.getIdToken();
+      headers.set('Authorization', idToken);
+      headers.set('content-type', 'application/json');
+
+      return fetch('/recordingrules', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ room_sid, rules }),
+      }).then(async res => {
+        const jsonResponse = await res.json();
+
+        if (!res.ok) {
+          const recordingError = new Error(
+            jsonResponse.error?.message || 'There was an error updating recording rules'
+          );
+          recordingError.code = jsonResponse.error?.code;
+          return Promise.reject(recordingError);
+        }
+
+        return jsonResponse;
+      });
+    },
+    [user]
+  );
+
   useEffect(() => {
     firebase.initializeApp(firebaseConfig);
     firebase.auth().onAuthStateChanged(newUser => {
@@ -68,5 +97,5 @@ export default function useFirebaseAuth() {
       });
   }, []);
 
-  return { user, signIn, signOut, isAuthReady, getToken };
+  return { user, signIn, signOut, isAuthReady, getToken, updateRecordingRules };
 }
