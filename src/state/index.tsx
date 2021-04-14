@@ -8,8 +8,8 @@ import usePasscodeAuth from './usePasscodeAuth/usePasscodeAuth';
 import { User } from 'firebase';
 
 export interface StateContextType {
-  error: TwilioError | null;
-  setError(error: TwilioError | null): void;
+  error: TwilioError | Error | null;
+  setError(error: TwilioError | Error | null): void;
   getToken(name: string, room: string, passcode?: string): Promise<string>;
   user?: User | null | { displayName: undefined; photoURL: undefined; passcode?: string };
   signIn?(passcode?: string): Promise<void>;
@@ -63,12 +63,22 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   } else {
     contextValue = {
       ...contextValue,
-      getToken: async (identity, roomName) => {
-        const headers = new window.Headers();
+      getToken: async (user_identity, room_name) => {
         const endpoint = process.env.REACT_APP_TOKEN_ENDPOINT || '/token';
-        const params = new window.URLSearchParams({ identity, roomName });
 
-        return fetch(`${endpoint}?${params}`, { headers }).then(res => res.text());
+        return fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_identity,
+            room_name,
+            create_conversation: process.env.REACT_APP_DISABLE_TWILIO_CONVERSATIONS !== 'true',
+          }),
+        })
+          .then(res => res.json())
+          .then(res => res.token as string);
       },
     };
   }

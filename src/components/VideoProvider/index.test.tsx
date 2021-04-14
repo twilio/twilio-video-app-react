@@ -4,8 +4,9 @@ import { renderHook } from '@testing-library/react-hooks';
 import { Room, TwilioError } from 'twilio-video';
 import { VideoProvider } from './index';
 import useLocalTracks from './useLocalTracks/useLocalTracks';
+import useRestartAudioTrackOnDeviceChange from './useRestartAudioTrackOnDeviceChange/useRestartAudioTrackOnDeviceChange';
 import useRoom from './useRoom/useRoom';
-import useHandleRoomDisconnectionErrors from './useHandleRoomDisconnectionErrors/useHandleRoomDisconnectionErrors';
+import useHandleRoomDisconnection from './useHandleRoomDisconnection/useHandleRoomDisconnection';
 import useHandleTrackPublicationFailed from './useHandleTrackPublicationFailed/useHandleTrackPublicationFailed';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
@@ -17,11 +18,13 @@ jest.mock('./useLocalTracks/useLocalTracks', () =>
     getLocalVideoTrack: () => {},
     getLocalAudioTrack: () => {},
     isAcquiringLocalTracks: true,
+    removeLocalAudioTrack: () => {},
     removeLocalVideoTrack: () => {},
   }))
 );
-jest.mock('./useHandleRoomDisconnectionErrors/useHandleRoomDisconnectionErrors');
+jest.mock('./useHandleRoomDisconnection/useHandleRoomDisconnection');
 jest.mock('./useHandleTrackPublicationFailed/useHandleTrackPublicationFailed');
+jest.mock('./useRestartAudioTrackOnDeviceChange/useRestartAudioTrackOnDeviceChange');
 
 describe('the VideoProvider component', () => {
   it('should correctly return the Video Context object', () => {
@@ -47,8 +50,16 @@ describe('the VideoProvider component', () => {
       dominantSpeaker: true,
     });
     expect(useLocalTracks).toHaveBeenCalled();
-    expect(useHandleRoomDisconnectionErrors).toHaveBeenCalledWith(mockRoom, expect.any(Function));
+    expect(useHandleRoomDisconnection).toHaveBeenCalledWith(
+      mockRoom,
+      expect.any(Function),
+      expect.any(Function),
+      expect.any(Function),
+      false,
+      expect.any(Function)
+    );
     expect(useHandleTrackPublicationFailed).toHaveBeenCalledWith(mockRoom, expect.any(Function));
+    expect(useRestartAudioTrackOnDeviceChange).toHaveBeenCalledWith(result.current.localTracks);
   });
 
   it('should call the onError function when there is an error', () => {

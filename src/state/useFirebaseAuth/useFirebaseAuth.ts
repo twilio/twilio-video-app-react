@@ -2,8 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
-const environment = process.env.REACT_APP_ENVIRONMENT || 'prod';
-
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -17,21 +15,26 @@ export default function useFirebaseAuth() {
   const [isAuthReady, setIsAuthReady] = useState(false);
 
   const getToken = useCallback(
-    async (identity: string, roomName: string) => {
+    async (user_identity: string, room_name: string) => {
       const headers = new window.Headers();
 
       const idToken = await user!.getIdToken();
       headers.set('Authorization', idToken);
+      headers.set('content-type', 'application/json');
 
       const endpoint = process.env.REACT_APP_TOKEN_ENDPOINT || '/token';
-      const params = new window.URLSearchParams({ identity, roomName });
 
-      if (environment === 'stage') {
-        params.set('environment', 'stage');
-        params.set('appEnvironment', 'production');
-      }
-
-      return fetch(`${endpoint}?${params}`, { headers }).then(res => res.text());
+      return fetch(endpoint, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          user_identity,
+          room_name,
+          create_conversation: process.env.REACT_APP_DISABLE_TWILIO_CONVERSATIONS !== 'true',
+        }),
+      })
+        .then(res => res.json())
+        .then(res => res.token as string);
     },
     [user]
   );

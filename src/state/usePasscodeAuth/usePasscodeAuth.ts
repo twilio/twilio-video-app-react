@@ -8,27 +8,41 @@ export function getPasscode() {
   return passcode;
 }
 
-export function fetchToken(name: string, room: string, passcode: string, create_room = true) {
+export function fetchToken(
+  name: string,
+  room: string,
+  passcode: string,
+  create_room = true,
+  create_conversation = process.env.REACT_APP_DISABLE_TWILIO_CONVERSATIONS !== 'true'
+) {
   return fetch(`/token`, {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
     },
-    body: JSON.stringify({ user_identity: name, room_name: room, passcode, create_room }),
+    body: JSON.stringify({
+      user_identity: name,
+      room_name: room,
+      passcode,
+      create_room,
+      create_conversation,
+    }),
   });
 }
 
 export function verifyPasscode(passcode: string) {
-  return fetchToken('temp-name', 'temp-room', passcode, false /* create_room */).then(async res => {
-    const jsonResponse = await res.json();
-    if (res.status === 401) {
-      return { isValid: false, error: jsonResponse.error?.message };
-    }
+  return fetchToken('temp-name', 'temp-room', passcode, false /* create_room */, false /* create_conversation */).then(
+    async res => {
+      const jsonResponse = await res.json();
+      if (res.status === 401) {
+        return { isValid: false, error: jsonResponse.error?.message };
+      }
 
-    if (res.ok && jsonResponse.token) {
-      return { isValid: true };
+      if (res.ok && jsonResponse.token) {
+        return { isValid: true };
+      }
     }
-  });
+  );
 }
 
 export function getErrorMessage(message: string) {

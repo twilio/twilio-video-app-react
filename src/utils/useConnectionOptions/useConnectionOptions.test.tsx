@@ -67,6 +67,7 @@ describe('the useConnectionOptions function', () => {
               width: 1280,
             },
           },
+          trackSwitchOffMode: 'detected',
         },
       },
       dominantSpeaker: true,

@@ -87,16 +87,10 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontSize: '1.1rem',
     },
   },
-  subContentContainer: {
-    position: 'absolute',
-    marginTop: '1em',
-    width: '100%',
-  },
 }));
 
 interface IntroContainerProps {
   children: React.ReactNode;
-  subContent?: React.ReactNode;
 }
 
 const IntroContainer = (props: IntroContainerProps) => {
@@ -120,7 +114,6 @@ const IntroContainer = (props: IntroContainerProps) => {
           </div>
           <div className={classes.content}>{props.children}</div>
         </div>
-        {props.subContent && <div className={classes.subContentContainer}>{props.subContent}</div>}
       </div>
     </div>
   );
