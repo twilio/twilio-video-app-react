@@ -8,10 +8,11 @@ import Menu from './Menu';
 import MenuContainer from '@material-ui/core/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { shallow } from 'enzyme';
-import { render, fireEvent, waitForElementToBeRemoved, waitForElement } from '@testing-library/react';
+import { render, fireEvent, waitForElement } from '@testing-library/react';
+
+import { useAppState } from '../../../state';
 import useFlipCameraToggle from '../../../hooks/useFlipCameraToggle/useFlipCameraToggle';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useAppState } from '../../../state';
 import useIsRecording from '../../../hooks/useIsRecording/useIsRecording';
 
 jest.mock('../../../hooks/useFlipCameraToggle/useFlipCameraToggle');
@@ -33,6 +34,10 @@ describe('the Menu component', () => {
   beforeAll(() => {
     mockUpdateRecordingRules = jest.fn(() => Promise.resolve());
     mockUseAppState.mockImplementation(() => ({ isFetching: false, updateRecordingRules: mockUpdateRecordingRules }));
+    mockUseFlipCameraToggle.mockImplementation(() => ({
+      flipCameraDisabled: false,
+      flipCameraSupported: false,
+    }));
   });
 
   describe('the recording button', () => {
@@ -48,7 +53,7 @@ describe('the Menu component', () => {
         expect(getByText('Stop Recording')).toBeTruthy();
       });
 
-      it('should update recording rules and display the snackbar when the user clicks on the Stop Recording button', () => {
+      it('should correctly update recording rules and display the snackbar when the user clicks on the Stop Recording button', () => {
         const { getByText } = render(<Menu />);
         fireEvent.click(getByText('More'));
 
@@ -71,20 +76,11 @@ describe('the Menu component', () => {
         expect(getByText('Start Recording')).toBeTruthy();
       });
 
-      it('should open a dialog box when clicked', () => {
+      it('should correctly update recording rules and display the snackbar when the user clicks on the Start Recording button', () => {
         const { getByText } = render(<Menu />);
         fireEvent.click(getByText('More'));
 
         fireEvent.click(getByText('Start Recording'));
-        expect(getByText('Continue')).toBeTruthy();
-      });
-
-      it('should update recording rules when the user confirms the dialog box', () => {
-        const { getByText } = render(<Menu />);
-        fireEvent.click(getByText('More'));
-
-        fireEvent.click(getByText('Start Recording'));
-        fireEvent.click(getByText('Continue'));
         expect(mockUpdateRecordingRules).toHaveBeenCalledWith('mockRoomSid', [{ all: true, type: 'include' }]);
       });
 
@@ -98,16 +94,6 @@ describe('the Menu component', () => {
             .at(0)
             .prop('disabled')
         ).toBe(true);
-      });
-
-      it('should close the dialog box when Cancel is clicked', () => {
-        const { queryByText, getByText } = render(<Menu />);
-
-        fireEvent.click(getByText('More'));
-
-        fireEvent.click(getByText('Start Recording'));
-        fireEvent.click(getByText('Cancel'));
-        return expect(waitForElementToBeRemoved(() => queryByText('Continue'))).resolves.toBe(true);
       });
     });
   });
@@ -143,7 +129,7 @@ describe('the Menu component', () => {
       expect(wrapper.find(DeviceSelectionDialog).prop('open')).toBe(false);
       wrapper
         .find(MenuItem)
-        .at(0)
+        .at(1)
         .simulate('click');
       expect(wrapper.find(DeviceSelectionDialog).prop('open')).toBe(true);
     });
@@ -181,7 +167,7 @@ describe('the Menu component', () => {
       expect(
         wrapper
           .find(MenuItem)
-          .at(0)
+          .at(1)
           .prop('disabled')
       ).toBe(false);
     });
@@ -196,7 +182,7 @@ describe('the Menu component', () => {
       expect(
         wrapper
           .find(MenuItem)
-          .at(0)
+          .at(1)
           .prop('disabled')
       ).toBe(true);
     });

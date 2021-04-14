@@ -8,6 +8,7 @@ exports[`the Snackbar component should render correctly with "error" variant 1`]
       "vertical": "top",
     }
   }
+  autoHideDuration={10000}
   onClose={[Function]}
   open={true}
 >
@@ -63,6 +64,7 @@ exports[`the Snackbar component should render correctly with "info" variant 1`] 
       "vertical": "top",
     }
   }
+  autoHideDuration={10000}
   onClose={[Function]}
   open={true}
 >
@@ -118,6 +120,7 @@ exports[`the Snackbar component should render correctly with "warning" variant 1
       "vertical": "top",
     }
   }
+  autoHideDuration={10000}
   onClose={[Function]}
   open={true}
 >
@@ -173,6 +176,7 @@ exports[`the Snackbar component should render correctly with no handleClose func
       "vertical": "top",
     }
   }
+  autoHideDuration={10000}
   onClose={[Function]}
   open={true}
 >

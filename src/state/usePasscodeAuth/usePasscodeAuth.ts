@@ -1,5 +1,4 @@
 import { RoomType } from '../../types';
-import { TwilioError } from 'twilio-video';
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -96,9 +95,7 @@ export default function usePasscodeAuth() {
         const jsonResponse = await res.json();
 
         if (!res.ok) {
-          const error = new Error(
-            jsonResponse.error?.message || 'There was an error updating recording rules'
-          ) as TwilioError;
+          const error = new Error(jsonResponse.error?.message || 'There was an error updating recording rules');
           error.code = jsonResponse.error?.code;
 
           return Promise.reject(error);

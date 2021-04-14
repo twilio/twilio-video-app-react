@@ -94,11 +94,11 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
           const jsonResponse = await res.json();
 
           if (!res.ok) {
-            const error = new Error(
+            const recordingError = new Error(
               jsonResponse.error?.message || 'There was an error updating recording rules'
-            ) as TwilioError;
-            error.code = jsonResponse.error?.code;
-            return Promise.reject(error);
+            );
+            recordingError.code = jsonResponse.error?.code;
+            return Promise.reject(recordingError);
           }
 
           return jsonResponse;
