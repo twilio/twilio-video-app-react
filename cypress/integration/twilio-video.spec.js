@@ -8,6 +8,10 @@ const getRoomName = () =>
     .toString(36)
     .slice(2);
 
+const delay = ms => {
+  return new Promise(resolve => setTimeout(resolve, ms));
+};
+
 context('A video app user', () => {
   describe('before entering a room', () => {
     it('should see their audio level indicator moving in the media device panel', () => {
@@ -82,6 +86,16 @@ context('A video app user', () => {
       cy.getParticipant('test1').should('not.exist');
       cy.get('[data-cy-main-participant]').should('contain', 'testuser');
     });
+
+    describe.only('the recording start/stop feature', () => {
+      after(async () => {
+        await delay(3000);
+      });
+
+      it('should see the recording indicator after clicking "Start Recording"', () => {
+        cy.get('[data-cy-more-button]').last().click()
+      });
+    });
   });
 
   describe('when entering a room with one participant', () => {
@@ -112,7 +126,7 @@ context('A video app user', () => {
       // to make the message list taller than its container so that we can test the scrolling behavior:
       before(() => {
         cy.get('[data-cy-chat-button]').click();
-      // Create an array with 15 values, then send a message when looping over each of them:
+        // Create an array with 15 values, then send a message when looping over each of them:
         Array(15)
           .fill(true)
           .forEach((_, i) => {
@@ -121,7 +135,7 @@ context('A video app user', () => {
               message: 'welcome to the chat! - ' + i,
             });
           });
-      // Wait 1 second for the above to complete:
+        // Wait 1 second for the above to complete:
         cy.wait(1000);
         cy.contains('welcome to the chat! - 14');
       });

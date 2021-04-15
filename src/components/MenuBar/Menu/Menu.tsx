@@ -38,7 +38,12 @@ export default function Menu(props: { buttonClassName?: string }) {
 
   return (
     <>
-      <Button onClick={() => setMenuOpen(isOpen => !isOpen)} ref={anchorRef} className={props.buttonClassName}>
+      <Button
+        data-cy-more-button
+        onClick={() => setMenuOpen(isOpen => !isOpen)}
+        ref={anchorRef}
+        className={props.buttonClassName}
+      >
         {isMobile ? (
           <MoreIcon />
         ) : (
@@ -71,6 +76,7 @@ export default function Menu(props: { buttonClassName?: string }) {
               updateRecordingRules(room!.sid, [{ type: 'include', all: true }]);
             }
           }}
+          data-cy-recording-button
         >
           <IconContainer>{isRecording ? <StopRecordingIcon /> : <StartRecordingIcon />}</IconContainer>
           <Typography variant="body1">{isRecording ? 'Stop' : 'Start'} Recording</Typography>
