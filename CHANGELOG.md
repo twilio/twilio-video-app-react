@@ -1,4 +1,3 @@
-
 ## 0.3.1 (April 15, 2021)
 
 ### Bugfixes
@@ -6,6 +5,7 @@
 - User can now be heard by other participants after their audio input device is removed. [#487](https://github.com/twilio/twilio-video-app-react/pull/487)
 - Added missing `trackSwitchOffMode` to `connectionOptions` object in `useConnectionOptions` hook. [#488](https://github.com/twilio/twilio-video-app-react/pull/488)
 - Removed preflight test from app. [#489](https://github.com/twilio/twilio-video-app-react/pull/489)
+
 ## 0.3.0 (March 31, 2021)
 
 ### New Feature
