@@ -39,10 +39,10 @@ export default function Menu(props: { buttonClassName?: string }) {
   return (
     <>
       <Button
-        data-cy-more-button
         onClick={() => setMenuOpen(isOpen => !isOpen)}
         ref={anchorRef}
         className={props.buttonClassName}
+        data-cy-more-button
       >
         {isMobile ? (
           <MoreIcon />
