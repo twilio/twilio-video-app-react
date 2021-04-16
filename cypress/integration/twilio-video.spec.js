@@ -102,7 +102,7 @@ context('A video app user', () => {
       it('should see the recording indicator and notification after clicking "Start Recording"', async () => {
         cy.get('[data-cy-recording-indicator]').should('be.visible');
         cy.contains('Recording has started').should('be.visible');
-        await delay(2000)
+        await delay(2000);
         cy.get('[data-cy-more-button]')
           .last()
           .click();
