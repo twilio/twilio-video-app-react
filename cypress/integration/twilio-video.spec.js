@@ -8,10 +8,6 @@ const getRoomName = () =>
     .toString(36)
     .slice(2);
 
-const delay = ms => {
-  return new Promise(resolve => setTimeout(resolve, ms));
-};
-
 context('A video app user', () => {
   describe('before entering a room', () => {
     it('should see their audio level indicator moving in the media device panel', () => {
@@ -95,14 +91,14 @@ context('A video app user', () => {
         cy.get('[data-cy-recording-button]').click();
       });
 
-      after(async () => {
-        await delay(3000);
+      after(() => {
+        cy.wait(3000);
       });
 
-      it('should see the recording indicator and notification after clicking "Start Recording"', async () => {
+      it('should see the recording indicator and notification after clicking "Start Recording"', () => {
         cy.get('[data-cy-recording-indicator]').should('be.visible');
         cy.contains('Recording has started').should('be.visible');
-        await delay(2000);
+        cy.wait(2000);
         cy.get('[data-cy-more-button]')
           .last()
           .click();
