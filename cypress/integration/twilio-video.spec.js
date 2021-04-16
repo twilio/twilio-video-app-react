@@ -87,13 +87,35 @@ context('A video app user', () => {
       cy.get('[data-cy-main-participant]').should('contain', 'testuser');
     });
 
-    describe.only('the recording start/stop feature', () => {
+    describe('the recording start/stop feature', () => {
+      before(() => {
+        cy.get('[data-cy-more-button]')
+          .last()
+          .click();
+        cy.get('[data-cy-recording-button]').click();
+      });
+
       after(async () => {
         await delay(3000);
       });
 
-      it('should see the recording indicator after clicking "Start Recording"', () => {
-        cy.get('[data-cy-more-button]').last().click()
+      it('should see the recording indicator and notification after clicking "Start Recording"', async () => {
+        cy.get('[data-cy-recording-indicator]').should('be.visible');
+        cy.contains('Recording has started').should('be.visible');
+        await delay(2000)
+        cy.get('[data-cy-more-button]')
+          .last()
+          .click();
+        cy.get('[data-cy-recording-button]').click();
+      });
+
+      it('should see "Recording Complete" notification, and not the recording indicator after clicking "Stop Recording"', () => {
+        cy.get('[data-cy-more-button]')
+          .last()
+          .click();
+        cy.get('[data-cy-recording-button]').click();
+        cy.get('[data-cy-recording-indicator]').should('not.exist');
+        cy.contains('Recording Complete').should('be.visible');
       });
     });
   });
