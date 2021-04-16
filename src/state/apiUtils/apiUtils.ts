@@ -1,9 +1,9 @@
-import axios, { AxiosRequestConfig } from 'axios';
-import { useEffect } from 'react';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { useCallback, useEffect, useState } from 'react';
 import { RecordingRules } from '../../types';
 
 export const apiClient = axios.create({
-  baseURL: process.env.REAC_APP_BASE_URL ?? '/',
+  baseURL: process.env.REACT_APP_BASE_URL ?? '/',
   headers: {
     'content-type': 'application/json',
   },
@@ -31,3 +31,29 @@ export const useInterceptor = (
     };
   }, deps); // eslint-disable-line react-hooks/exhaustive-deps
 };
+
+export function useAPI<T extends Function>(fn: T) {
+  const [isFetching, setIsFetching] = useState(false);
+  const [data, setData] = useState<any>();
+  const [error, setError] = useState<Error | null>(null);
+
+  const request: any = useCallback(
+    (...args: any[]) => {
+      setIsFetching(true);
+      return fn(...args)
+        .then((res: AxiosResponse) => setData(res.data))
+        .catch(setError)
+        .finally(() => setIsFetching(false));
+    },
+    [fn]
+  );
+
+  return [request as T, data, isFetching, error] as const;
+}
+
+export const useGetToken = () =>
+  useAPI((user_identity: string, room_name: string) =>
+    getToken(user_identity, room_name).then(res => res.data as { token: string; room_type: string })
+  );
+
+export const useUpdateRecordingRules = () => useAPI(updateRecordingRules);

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useState } from 'react';
+import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
 import { RecordingRules, RoomType } from '../types';
 import { TwilioError } from 'twilio-video';
 import { settingsReducer, initialSettings, Settings, SettingsAction } from './settings/settingsReducer';
@@ -11,7 +11,7 @@ import firebase from 'firebase/app';
 export interface StateContextType {
   error: TwilioError | Error | null;
   setError(error: TwilioError | Error | null): void;
-  getToken(name: string, room: string, passcode?: string): Promise<string>;
+  getToken(name: string, room: string): Promise<{ token: string; room_type: string }>;
   user?: firebase.User | null | { displayName: undefined; photoURL: undefined; passcode?: string };
   signIn?(passcode?: string): Promise<void>;
   signOut?(): Promise<void>;
@@ -38,10 +38,18 @@ export const StateContext = createContext<StateContextType>(null!);
 */
 export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const [error, setError] = useState<TwilioError | Error | null>(null);
-  const [isFetching, setIsFetching] = useState(false);
   const [activeSinkId, setActiveSinkId] = useActiveSinkId();
   const [settings, dispatchSetting] = useReducer(settingsReducer, initialSettings);
-  const [roomType, setRoomType] = useState<RoomType>();
+  const [getToken, tokenData, isFetchingToken, tokenError] = api.useGetToken();
+  const [updateRecordingRules, , isFetchingRecordRules, recordRulesError] = api.useUpdateRecordingRules();
+
+  useEffect(() => {
+    if (recordRulesError) setError(recordRulesError);
+  }, [recordRulesError]);
+
+  useEffect(() => {
+    if (tokenError) setError(tokenError);
+  }, [tokenError]);
 
   let isAuthReady, signIn, signOut, user;
 
@@ -53,31 +61,15 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     ({ isAuthReady, signIn, signOut, user } = usePasscodeAuth()); // eslint-disable-line react-hooks/rules-of-hooks
   }
 
-  function getToken(user_identity: string, room_name: string) {
-    setIsFetching(true);
-    return api
-      .getToken(user_identity, room_name)
-      .then(res => {
-        setRoomType(res.data.roomType);
-        return res.data.token;
-      })
-      .finally(() => setIsFetching(false));
-  }
-
-  function updateRecordingRules(room_sid: string, rules: RecordingRules) {
-    setIsFetching(true);
-    return api.updateRecordingRules(room_sid, rules).finally(() => setIsFetching(false));
-  }
-
   return (
     <StateContext.Provider
       value={{
         getToken,
         updateRecordingRules,
-        roomType,
+        roomType: tokenData.roomType,
         settings,
         dispatchSetting,
-        isFetching,
+        isFetching: isFetchingRecordRules || isFetchingToken,
         activeSinkId,
         setActiveSinkId,
         isAuthReady,

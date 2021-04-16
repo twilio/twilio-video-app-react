@@ -38,25 +38,6 @@ describe('the useAppState hook', () => {
     expect(result.error.message).toEqual('useAppState must be used within the AppStateProvider');
   });
 
-  it('should get a token using the REACT_APP_TOKEN_ENDPOINT environment variable when avaiable', async () => {
-    process.env.REACT_APP_TOKEN_ENDPOINT = 'http://test.com/api/token';
-
-    const { result } = renderHook(useAppState, { wrapper });
-
-    let token;
-    await act(async () => {
-      token = await result.current.getToken('testname', 'testroom');
-    });
-
-    expect(token).toBe('mockVideoToken');
-
-    expect(window.fetch).toHaveBeenCalledWith('http://test.com/api/token', {
-      headers: { 'content-type': 'application/json' },
-      body: '{"user_identity":"testname","room_name":"testroom","create_conversation":true}',
-      method: 'POST',
-    });
-  });
-
   describe('with auth disabled', () => {
     it('should not use any auth hooks', async () => {
       delete process.env.REACT_APP_SET_AUTH;

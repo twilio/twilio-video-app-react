@@ -49,18 +49,4 @@ describe('the useFirebaseAuth hook', () => {
     await waitForNextUpdate();
     expect(result.current.user).toBe(mockUser);
   });
-
-  it('should include the users idToken in request to the video token server', async () => {
-    process.env.REACT_APP_TOKEN_ENDPOINT = 'http://test-endpoint.com/token';
-    const { result, waitForNextUpdate } = renderHook(() => useFirebaseAuth());
-    await waitForNextUpdate();
-    result.current.signIn();
-    await waitForNextUpdate();
-    await result.current.getToken('testuser', 'testroom');
-    expect(window.fetch).toHaveBeenCalledWith('http://test-endpoint.com/token', {
-      headers: { _headers: { authorization: ['idToken'], 'content-type': ['application/json'] } },
-      body: '{"user_identity":"testuser","room_name":"testroom","create_conversation":true}',
-      method: 'POST',
-    });
-  });
 });
