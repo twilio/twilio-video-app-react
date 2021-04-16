@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import * as firebase from 'firebase/app';
-import 'firebase/auth';
+import firebase from 'firebase/app';
 import { useInterceptor } from '../apiUtils/apiUtils';
 
 const firebaseConfig = {

@@ -5,14 +5,14 @@ import { settingsReducer, initialSettings, Settings, SettingsAction } from './se
 import useActiveSinkId from './useActiveSinkId/useActiveSinkId';
 import useFirebaseAuth from './useFirebaseAuth/useFirebaseAuth';
 import usePasscodeAuth from './usePasscodeAuth/usePasscodeAuth';
-import { User } from 'firebase';
 import * as api from './apiUtils/apiUtils';
+import firebase from 'firebase/app';
 
 export interface StateContextType {
   error: TwilioError | Error | null;
   setError(error: TwilioError | Error | null): void;
   getToken(name: string, room: string, passcode?: string): Promise<string>;
-  user?: User | null | { displayName: undefined; photoURL: undefined; passcode?: string };
+  user?: firebase.User | null | { displayName: undefined; photoURL: undefined; passcode?: string };
   signIn?(passcode?: string): Promise<void>;
   signOut?(): Promise<void>;
   isAuthReady?: boolean;
