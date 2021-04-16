@@ -6,6 +6,7 @@ import useActiveSinkId from './useActiveSinkId/useActiveSinkId';
 import useFirebaseAuth from './useFirebaseAuth/useFirebaseAuth';
 import usePasscodeAuth from './usePasscodeAuth/usePasscodeAuth';
 import { User } from 'firebase';
+import * as api from './apiUtils/apiUtils';
 
 export interface StateContextType {
   error: TwilioError | Error | null;
@@ -27,118 +28,66 @@ export interface StateContextType {
 export const StateContext = createContext<StateContextType>(null!);
 
 /*
-  The 'react-hooks/rules-of-hooks' linting rules prevent React Hooks fron being called
-  inside of if() statements. This is because hooks must always be called in the same order
+  The 'react-hooks/rules-of-hooks' linting rules prevent React Hooks from being called
+  conditionally. This is because hooks must always be called in the same order
   every time a component is rendered. The 'react-hooks/rules-of-hooks' rule is disabled below
   because the "if (process.env.REACT_APP_SET_AUTH === 'firebase')" statements are evaluated
-  at build time (not runtime). If the statement evaluates to false, then the code is not
+  at build time, not runtime. If the statement evaluates to false, then the code is not
   included in the bundle that is produced (due to tree-shaking). Thus, in this instance, it
   is ok to call hooks inside if() statements.
 */
 export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
-  const [error, setError] = useState<TwilioError | null>(null);
+  const [error, setError] = useState<TwilioError | Error | null>(null);
   const [isFetching, setIsFetching] = useState(false);
   const [activeSinkId, setActiveSinkId] = useActiveSinkId();
   const [settings, dispatchSetting] = useReducer(settingsReducer, initialSettings);
+  const [roomType, setRoomType] = useState<RoomType>();
 
-  let contextValue = {
-    error,
-    setError,
-    isFetching,
-    activeSinkId,
-    setActiveSinkId,
-    settings,
-    dispatchSetting,
-  } as StateContextType;
+  let isAuthReady, signIn, signOut, user;
 
   if (process.env.REACT_APP_SET_AUTH === 'firebase') {
-    contextValue = {
-      ...contextValue,
-      ...useFirebaseAuth(), // eslint-disable-line react-hooks/rules-of-hooks
-    };
-  } else if (process.env.REACT_APP_SET_AUTH === 'passcode') {
-    contextValue = {
-      ...contextValue,
-      ...usePasscodeAuth(), // eslint-disable-line react-hooks/rules-of-hooks
-    };
-  } else {
-    contextValue = {
-      ...contextValue,
-      getToken: async (user_identity, room_name) => {
-        const endpoint = process.env.REACT_APP_TOKEN_ENDPOINT || '/token';
-
-        return fetch(endpoint, {
-          method: 'POST',
-          headers: {
-            'content-type': 'application/json',
-          },
-          body: JSON.stringify({
-            user_identity,
-            room_name,
-            create_conversation: process.env.REACT_APP_DISABLE_TWILIO_CONVERSATIONS !== 'true',
-          }),
-        })
-          .then(res => res.json())
-          .then(res => res.token as string);
-      },
-      updateRecordingRules: async (room_sid, rules) => {
-        const endpoint = process.env.REACT_APP_TOKEN_ENDPOINT || '/recordingrules';
-
-        return fetch(endpoint, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ room_sid, rules }),
-          method: 'POST',
-        }).then(async res => {
-          const jsonResponse = await res.json();
-
-          if (!res.ok) {
-            const recordingError = new Error(
-              jsonResponse.error?.message || 'There was an error updating recording rules'
-            );
-            recordingError.code = jsonResponse.error?.code;
-            return Promise.reject(recordingError);
-          }
-
-          return jsonResponse;
-        });
-      },
-    };
+    ({ isAuthReady, signIn, signOut, user } = useFirebaseAuth()); // eslint-disable-line react-hooks/rules-of-hooks
   }
 
-  const getToken: StateContextType['getToken'] = (name, room) => {
-    setIsFetching(true);
-    return contextValue
-      .getToken(name, room)
-      .then(res => {
-        setIsFetching(false);
-        return res;
-      })
-      .catch(err => {
-        setError(err);
-        setIsFetching(false);
-        return Promise.reject(err);
-      });
-  };
+  if (process.env.REACT_APP_SET_AUTH === 'passcode') {
+    ({ isAuthReady, signIn, signOut, user } = usePasscodeAuth()); // eslint-disable-line react-hooks/rules-of-hooks
+  }
 
-  const updateRecordingRules: StateContextType['updateRecordingRules'] = (room_sid, rules) => {
+  function getToken(user_identity: string, room_name: string) {
     setIsFetching(true);
-    return contextValue
-      .updateRecordingRules(room_sid, rules)
+    return api
+      .getToken(user_identity, room_name)
       .then(res => {
-        setIsFetching(false);
-        return res;
+        setRoomType(res.data.roomType);
+        return res.data.token;
       })
-      .catch(err => {
-        setError(err);
-        setIsFetching(false);
-        return Promise.reject(err);
-      });
-  };
+      .finally(() => setIsFetching(false));
+  }
+
+  function updateRecordingRules(room_sid: string, rules: RecordingRules) {
+    setIsFetching(true);
+    return api.updateRecordingRules(room_sid, rules).finally(() => setIsFetching(false));
+  }
 
   return (
-    <StateContext.Provider value={{ ...contextValue, getToken, updateRecordingRules }}>
+    <StateContext.Provider
+      value={{
+        getToken,
+        updateRecordingRules,
+        roomType,
+        settings,
+        dispatchSetting,
+        isFetching,
+        activeSinkId,
+        setActiveSinkId,
+        isAuthReady,
+        signIn,
+        signOut,
+        user,
+        error,
+        setError,
+      }}
+    >
       {props.children}
     </StateContext.Provider>
   );
