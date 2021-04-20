@@ -83,7 +83,7 @@ context('A video app user', () => {
       cy.get('[data-cy-main-participant]').should('contain', 'testuser');
     });
 
-    describe.only('the recording start/stop feature', () => {
+    describe('the recording start/stop feature', () => {
       before(() => {
         cy.get('footer [data-cy-more-button]').click();
         cy.get('[data-cy-recording-button]').click();
