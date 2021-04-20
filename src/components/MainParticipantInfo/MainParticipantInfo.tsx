@@ -38,8 +38,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
   },
   networkQualityIndicator: {
-    marginLeft: '5px',
-    paddingBottom: '3px',
+    marginLeft: '0.4em',
+    padding: '0.9em',
   },
   reconnectingContainer: {
     position: 'absolute',
