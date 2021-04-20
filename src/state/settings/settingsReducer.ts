@@ -1,18 +1,12 @@
-import { isMobile } from '../../utils';
-import { RenderDimensionValue } from './renderDimensions';
 import { Track, VideoBandwidthProfileOptions } from 'twilio-video';
 
 export interface Settings {
   trackSwitchOffMode: VideoBandwidthProfileOptions['trackSwitchOffMode'];
   dominantSpeakerPriority?: Track.Priority;
   bandwidthProfileMode: VideoBandwidthProfileOptions['mode'];
-  maxTracks: string;
   maxAudioBitrate: string;
-  renderDimensionLow?: RenderDimensionValue;
-  renderDimensionStandard?: RenderDimensionValue;
-  renderDimensionHigh?: RenderDimensionValue;
-  autoRenderDimensions: string;
-  idleTrackSwitchOff: string;
+  contentPreferencesMode?: 'auto' | 'manual';
+  subscribedTrackSwitchOffMode?: 'auto' | 'manual';
   logLevel: 'error' | 'warn' | 'debug' | 'info' | 'off';
 }
 
@@ -27,14 +21,10 @@ export const initialSettings: Settings = {
   trackSwitchOffMode: undefined,
   dominantSpeakerPriority: 'standard',
   bandwidthProfileMode: 'collaboration',
-  maxTracks: isMobile ? '5' : '10',
   maxAudioBitrate: '16000',
-  renderDimensionLow: 'low',
-  renderDimensionStandard: '960p',
-  renderDimensionHigh: 'wide1080p',
-  autoRenderDimensions: 'Enabled',
+  contentPreferencesMode: 'auto',
+  subscribedTrackSwitchOffMode: 'auto',
   logLevel: 'debug',
-  idleTrackSwitchOff: 'Enabled',
 };
 
 // This inputLabels object is used by ConnectionOptions.tsx. It is used to populate the id, name, and label props

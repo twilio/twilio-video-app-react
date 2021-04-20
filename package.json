@@ -37,9 +37,9 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "4.0.3",
     "strip-color": "^0.1.0",
-    "twilio-video": "github:twilio/twilio-video.js#2.14.0-rc3",
     "ts-node": "^9.1.1",
     "twilio": "^3.57.0",
+    "twilio-video": "github:twilio/twilio-video.js#2.14.0-rc4",
     "typescript": "^3.8.3"
   },
   "devDependencies": {
