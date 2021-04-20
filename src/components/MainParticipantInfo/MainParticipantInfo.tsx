@@ -13,6 +13,7 @@ import useTrack from '../../hooks/useTrack/useTrack';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
 import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
+import NetworkQualityLevel from '../NetworkQualityLevel/NetworkQualityLevel';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -35,6 +36,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     zIndex: 2,
     height: '100%',
     width: '100%',
+  },
+  networkQualityIndicator: {
+    marginLeft: '5px',
+    paddingBottom: '3px',
   },
   reconnectingContainer: {
     position: 'absolute',
@@ -107,13 +112,16 @@ export default function MainParticipantInfo({ participant, children }: MainParti
       })}
     >
       <div className={classes.infoContainer}>
-        <div className={classes.identity}>
-          <AudioLevelIndicator audioTrack={audioTrack} />
-          <Typography variant="body1" color="inherit">
-            {participant.identity}
-            {isLocal && ' (You)'}
-            {screenSharePublication && ' - Screen'}
-          </Typography>
+        <div style={{ display: 'flex' }}>
+          <div className={classes.identity}>
+            <AudioLevelIndicator audioTrack={audioTrack} />
+            <Typography variant="body1" color="inherit">
+              {participant.identity}
+              {isLocal && ' (You)'}
+              {screenSharePublication && ' - Screen'}
+            </Typography>
+          </div>
+          <NetworkQualityLevel participant={localParticipant} className={classes.networkQualityIndicator} />
         </div>
       </div>
       {(!isVideoEnabled || isVideoSwitchedOff) && (
