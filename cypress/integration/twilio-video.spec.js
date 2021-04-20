@@ -82,6 +82,32 @@ context('A video app user', () => {
       cy.getParticipant('test1').should('not.exist');
       cy.get('[data-cy-main-participant]').should('contain', 'testuser');
     });
+
+    describe('the recording start/stop feature', () => {
+      before(() => {
+        cy.get('footer [data-cy-more-button]').click();
+        cy.get('[data-cy-recording-button]').click();
+        cy.wait(2000);
+      });
+
+      after(() => {
+        cy.wait(3000);
+      });
+
+      it('should see the recording indicator and notification after clicking "Start Recording"', () => {
+        cy.get('[data-cy-recording-indicator]').should('be.visible');
+        cy.contains('Recording has started').should('be.visible');
+        cy.get('footer [data-cy-more-button]').click();
+        cy.get('[data-cy-recording-button]').click();
+      });
+
+      it('should see "Recording Complete" notification, and not the recording indicator after clicking "Stop Recording"', () => {
+        cy.get('footer [data-cy-more-button]').click();
+        cy.get('[data-cy-recording-button]').click();
+        cy.get('[data-cy-recording-indicator]').should('not.exist');
+        cy.contains('Recording Complete').should('be.visible');
+      });
+    });
   });
 
   describe('when entering a room with one participant', () => {
@@ -112,7 +138,7 @@ context('A video app user', () => {
       // to make the message list taller than its container so that we can test the scrolling behavior:
       before(() => {
         cy.get('[data-cy-chat-button]').click();
-      // Create an array with 15 values, then send a message when looping over each of them:
+        // Create an array with 15 values, then send a message when looping over each of them:
         Array(15)
           .fill(true)
           .forEach((_, i) => {
@@ -121,7 +147,7 @@ context('A video app user', () => {
               message: 'welcome to the chat! - ' + i,
             });
           });
-      // Wait 1 second for the above to complete:
+        // Wait 1 second for the above to complete:
         cy.wait(1000);
         cy.contains('welcome to the chat! - 14');
       });

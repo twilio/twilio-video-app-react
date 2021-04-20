@@ -161,7 +161,7 @@ export default function MainParticipantInfo({ participant, children }: MainParti
           >
             <div className={classes.recordingIndicator}>
               <div className={classes.circle}></div>
-              <Typography variant="body1" color="inherit">
+              <Typography variant="body1" color="inherit" data-cy-recording-indicator>
                 Recording
               </Typography>
             </div>
