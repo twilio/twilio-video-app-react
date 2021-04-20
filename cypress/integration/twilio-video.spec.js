@@ -83,12 +83,11 @@ context('A video app user', () => {
       cy.get('[data-cy-main-participant]').should('contain', 'testuser');
     });
 
-    describe('the recording start/stop feature', () => {
+    describe.only('the recording start/stop feature', () => {
       before(() => {
-        cy.get('[data-cy-more-button]')
-          .last()
-          .click();
+        cy.get('footer [data-cy-more-button]').click();
         cy.get('[data-cy-recording-button]').click();
+        cy.wait(2000);
       });
 
       after(() => {
@@ -98,17 +97,12 @@ context('A video app user', () => {
       it('should see the recording indicator and notification after clicking "Start Recording"', () => {
         cy.get('[data-cy-recording-indicator]').should('be.visible');
         cy.contains('Recording has started').should('be.visible');
-        cy.wait(2000);
-        cy.get('[data-cy-more-button]')
-          .last()
-          .click();
+        cy.get('footer [data-cy-more-button]').click();
         cy.get('[data-cy-recording-button]').click();
       });
 
       it('should see "Recording Complete" notification, and not the recording indicator after clicking "Stop Recording"', () => {
-        cy.get('[data-cy-more-button]')
-          .last()
-          .click();
+        cy.get('footer [data-cy-more-button]').click();
         cy.get('[data-cy-recording-button]').click();
         cy.get('[data-cy-recording-indicator]').should('not.exist');
         cy.contains('Recording Complete').should('be.visible');
