@@ -1,13 +1,13 @@
 import React from 'react';
-import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { Participant } from 'twilio-video';
 import useParticipantNetworkQualityLevel from '../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel';
 
 const useStyles = makeStyles({
   outerContainer: {
-    width: '28px',
-    height: '28px',
+    width: '2em',
+    height: '2em',
+    padding: '0.9em',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -26,22 +26,17 @@ const useStyles = makeStyles({
   },
 });
 
-interface NetworkQualityLevelProps {
-  participant: Participant;
-  className?: string;
-}
-
 const STEP = 3;
 const BARS_ARRAY = [0, 1, 2, 3, 4];
 
-export default function NetworkQualityLevel({ participant, className }: NetworkQualityLevelProps) {
+export default function NetworkQualityLevel({ participant }: { participant: Participant }) {
   const classes = useStyles();
   const networkQualityLevel = useParticipantNetworkQualityLevel(participant);
 
   if (networkQualityLevel === null) return null;
 
   return (
-    <div className={clsx(classes.outerContainer, className)}>
+    <div className={classes.outerContainer}>
       <div className={classes.innerContainer}>
         {BARS_ARRAY.map(level => (
           <div

@@ -25,21 +25,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: 'rgba(0, 0, 0, 0.5)',
     color: 'white',
     padding: '0.1em 0.3em 0.1em 0',
-    fontSize: '1.2em',
     display: 'inline-flex',
     '& svg': {
       marginLeft: '0.3em',
     },
+    marginRight: '0.4em',
   },
   infoContainer: {
     position: 'absolute',
     zIndex: 2,
     height: '100%',
     width: '100%',
-  },
-  networkQualityIndicator: {
-    marginLeft: '0.4em',
-    padding: '0.9em',
   },
   reconnectingContainer: {
     position: 'absolute',
@@ -121,7 +117,7 @@ export default function MainParticipantInfo({ participant, children }: MainParti
               {screenSharePublication && ' - Screen'}
             </Typography>
           </div>
-          <NetworkQualityLevel participant={localParticipant} className={classes.networkQualityIndicator} />
+          <NetworkQualityLevel participant={localParticipant} />
         </div>
       </div>
       {(!isVideoEnabled || isVideoSwitchedOff) && (
