@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       marginLeft: '0.3em',
     },
     marginRight: '0.4em',
+    alignItems: 'center',
   },
   infoContainer: {
     position: 'absolute',
