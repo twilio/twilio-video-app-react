@@ -124,6 +124,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
                 Cancel
               </Button>
               <Button
+                style={{ width: '100%' }}
                 variant="contained"
                 color="primary"
                 data-cy-join-now
