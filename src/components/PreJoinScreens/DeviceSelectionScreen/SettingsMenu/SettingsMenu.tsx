@@ -38,7 +38,7 @@ export default function SettingsMenu({ mobileButtonClass }: { mobileButtonClass?
           startIcon={<MoreIcon />}
           className={mobileButtonClass}
         >
-          More
+          Mais
         </Button>
       ) : (
         <Button
@@ -47,7 +47,7 @@ export default function SettingsMenu({ mobileButtonClass }: { mobileButtonClass?
           startIcon={<SettingsIcon />}
           className={classes.settingsButton}
         >
-          Settings
+          Configurações
         </Button>
       )}
       <MenuContainer
@@ -65,14 +65,14 @@ export default function SettingsMenu({ mobileButtonClass }: { mobileButtonClass?
         }}
       >
         <MenuItem onClick={() => setAboutOpen(true)}>
-          <Typography variant="body1">About</Typography>
+          <Typography variant="body1">Sobre</Typography>
         </MenuItem>
         <MenuItem onClick={() => setDeviceSettingsOpen(true)}>
-          <Typography variant="body1">Audio and Video Settings</Typography>
+          <Typography variant="body1">Áudio e Video</Typography>
         </MenuItem>
         {roomType !== 'peer-to-peer' && roomType !== 'go' && (
           <MenuItem onClick={() => setConnectionSettingsOpen(true)}>
-            <Typography variant="body1">Connection Settings</Typography>
+            <Typography variant="body1">Conexão</Typography>
           </MenuItem>
         )}
       </MenuContainer>

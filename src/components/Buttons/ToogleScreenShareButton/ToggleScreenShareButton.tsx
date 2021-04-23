@@ -8,10 +8,10 @@ import Tooltip from '@material-ui/core/Tooltip';
 import useScreenShareParticipant from '../../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
-export const SCREEN_SHARE_TEXT = 'Share Screen';
-export const STOP_SCREEN_SHARE_TEXT = 'Stop Sharing Screen';
-export const SHARE_IN_PROGRESS_TEXT = 'Cannot share screen when another user is sharing';
-export const SHARE_NOT_SUPPORTED_TEXT = 'Screen sharing is not supported with this browser';
+export const SCREEN_SHARE_TEXT = 'Compartilhar';
+export const STOP_SCREEN_SHARE_TEXT = 'Parar Compartilhamento';
+export const SHARE_IN_PROGRESS_TEXT = 'Não é possível compartilhar a tela simultaneamente';
+export const SHARE_NOT_SUPPORTED_TEXT = 'Compartilhamento de tela não é suportado por esse navegador';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

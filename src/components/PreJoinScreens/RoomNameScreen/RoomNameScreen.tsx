@@ -52,19 +52,19 @@ export default function RoomNameScreen({ name, roomName, setName, setRoomName, h
   return (
     <>
       <Typography variant="h5" className={classes.gutterBottom}>
-        Join a Room
+        Acessar Atendimento
       </Typography>
       <Typography variant="body1">
         {hasUsername
-          ? "Enter the name of a room you'd like to join."
-          : "Enter your name and the name of a room you'd like to join"}
+          ? 'Insira o código do atendimento que deseja entrar'
+          : 'Insira seu nome e o código do atendimento que deseja entrar'}
       </Typography>
       <form onSubmit={handleSubmit}>
         <div className={classes.inputContainer}>
           {!hasUsername && (
             <div className={classes.textFieldContainer}>
               <InputLabel shrink htmlFor="input-user-name">
-                Your Name
+                Seu Nome
               </InputLabel>
               <TextField
                 id="input-user-name"
@@ -78,7 +78,7 @@ export default function RoomNameScreen({ name, roomName, setName, setRoomName, h
           )}
           <div className={classes.textFieldContainer}>
             <InputLabel shrink htmlFor="input-room-name">
-              Room Name
+              Atendimento
             </InputLabel>
             <TextField
               autoCapitalize="false"
@@ -99,7 +99,7 @@ export default function RoomNameScreen({ name, roomName, setName, setRoomName, h
             disabled={!name || !roomName}
             className={classes.continueButton}
           >
-            Continue
+            Continuar
           </Button>
         </Grid>
       </form>

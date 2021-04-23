@@ -36,7 +36,7 @@ export default function Menu(props: { buttonClassName?: string }) {
           <MoreIcon />
         ) : (
           <>
-            Settings
+            Configurações
             <ExpandMoreIcon />
           </>
         )}
@@ -59,7 +59,7 @@ export default function Menu(props: { buttonClassName?: string }) {
             <IconContainer>
               <FlipCameraIcon />
             </IconContainer>
-            <Typography variant="body1">Flip Camera</Typography>
+            <Typography variant="body1">Alternar Câmera</Typography>
           </MenuItem>
         )}
 
@@ -67,14 +67,14 @@ export default function Menu(props: { buttonClassName?: string }) {
           <IconContainer>
             <SettingsIcon />
           </IconContainer>
-          <Typography variant="body1">Audio and Video Settings</Typography>
+          <Typography variant="body1">Áudio e Vídeo</Typography>
         </MenuItem>
 
         <MenuItem onClick={() => setAboutOpen(true)}>
           <IconContainer>
             <InfoIconOutlined />
           </IconContainer>
-          <Typography variant="body1">About</Typography>
+          <Typography variant="body1">Sobre</Typography>
         </MenuItem>
       </MenuContainer>
       <AboutDialog

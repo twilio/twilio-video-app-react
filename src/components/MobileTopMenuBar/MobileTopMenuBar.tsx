@@ -28,6 +28,12 @@ const useStyles = makeStyles((theme: Theme) => ({
       margin: '0 1em',
     },
   },
+  mobileTopRoomName: {
+    width: 'calc(100% - 130px)',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+  },
 }));
 
 export default function MobileTopMenuBar() {
@@ -36,7 +42,9 @@ export default function MobileTopMenuBar() {
 
   return (
     <Grid container alignItems="center" justify="space-between" className={classes.container}>
-      <Typography variant="subtitle1">{room!.name}</Typography>
+      <Typography className={classes.mobileTopRoomName} variant="subtitle1">
+        {room!.name}
+      </Typography>
       <div>
         <EndCallButton className={classes.endCallButton} />
         <Menu buttonClassName={classes.settingsButton} />

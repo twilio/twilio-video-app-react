@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    filter: 'hue-rotate(180deg)',
     backgroundImage: Swoosh,
     backgroundSize: 'cover',
     width: '296px',
@@ -54,10 +55,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     position: 'absolute',
     width: '210px',
     textAlign: 'center',
+    filter: 'hue-rotate(180deg)',
     [theme.breakpoints.down('sm')]: {
       display: 'flex',
       alignItems: 'center',
       width: '90%',
+      justifyContent: 'center',
       textAlign: 'initial',
       '& svg': {
         height: '64px',
@@ -107,9 +110,6 @@ const IntroContainer = (props: IntroContainerProps) => {
           <div className={classes.swooshContainer}>
             <div className={classes.logoContainer}>
               <VideoLogo />
-              <Typography variant="h6" className={classes.title}>
-                Meu Médico
-              </Typography>
             </div>
           </div>
           <div className={classes.content}>{props.children}</div>

@@ -80,7 +80,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
         </div>
         <div>
           <Typography variant="body2" style={{ fontWeight: 'bold', fontSize: '16px' }}>
-            Joining Meeting
+            Acessando...
           </Typography>
         </div>
       </Grid>
@@ -91,9 +91,8 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
     <>
       <Typography variant="h5" className={classes.gutterBottom}>
         {/* Join {roomName} */}
-        Join Meeting
+        Acessar Atendimento
       </Typography>
-
       <Grid container justify="center">
         <Grid item md={7} sm={12} xs={12}>
           <div className={classes.localPreviewContainer}>
@@ -116,23 +115,17 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
               </Hidden>
             </div>
             <div className={classes.joinButtons}>
-              <Button
-                style={{ display: 'none' }}
-                variant="outlined"
-                color="primary"
-                onClick={() => setStep(Steps.roomNameStep)}
-              >
-                Cancel
+              <Button variant="outlined" color="primary" onClick={() => setStep(Steps.roomNameStep)}>
+                Cancelar
               </Button>
               <Button
-                style={{ width: '100%' }}
                 variant="contained"
                 color="primary"
                 data-cy-join-now
                 onClick={handleJoin}
                 disabled={disableButtons}
               >
-                Join Now
+                Acessar
               </Button>
             </div>
           </Grid>
