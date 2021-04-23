@@ -44,6 +44,9 @@ ReactDOM.render(
             <PrivateRoute path="/room/:URLRoomName">
               <VideoApp />
             </PrivateRoute>
+            <PrivateRoute path="/participant/:URLName/room/:URLRoomName">
+              <VideoApp />
+            </PrivateRoute>
             <Route path="/login">
               <LoginPage />
             </Route>
