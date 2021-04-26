@@ -11,7 +11,7 @@ export default function VideoLogo() {
       width="180px"
       height="168.884px"
       viewBox="0 0 701.552 168.884"
-      enable-background="new 0 0 701.552 168.884"
+      enableBackground="new 0 0 701.552 168.884"
     >
       <g>
         <g>
@@ -74,8 +74,8 @@ export default function VideoLogo() {
           />
         </g>
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           fill="#FFFFFF"
           d="M1145.273-44.552c-45.233,0-81.902,36.669-81.902,81.902
 		s36.669,81.902,81.902,81.902c45.233,0,81.902-36.669,81.902-81.902S1190.507-44.552,1145.273-44.552z M1194.742,50.689h-8.21
@@ -145,8 +145,8 @@ export default function VideoLogo() {
           />
         </g>
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           fill="#FFFFFF"
           d="M297.347,0.884c-46.392,0-84,37.608-84,84s37.608,84,84,84
 		c46.392,0,84-37.608,84-84S343.739,0.884,297.347,0.884z M348.083,98.565h-8.421l-8.842,21.052
