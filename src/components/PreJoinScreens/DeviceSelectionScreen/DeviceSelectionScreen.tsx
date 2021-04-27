@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles, Typography, Grid, Button, Theme, Hidden } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LocalVideoPreview from './LocalVideoPreview/LocalVideoPreview';
@@ -9,6 +9,7 @@ import ToggleVideoButton from '../../Buttons/ToggleVideoButton/ToggleVideoButton
 import { useAppState } from '../../../state';
 import useChatContext from '../../../hooks/useChatContext/useChatContext';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import ErrorDialog from '../../ErrorDialog/ErrorDialog';
 
 const useStyles = makeStyles((theme: Theme) => ({
   gutterBottom: {
@@ -64,8 +65,14 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
   const { connect: chatConnect } = useChatContext();
   const { connect: videoConnect, isAcquiringLocalTracks, isConnecting } = useVideoContext();
   const disableButtons = isFetching || isAcquiringLocalTracks || isConnecting;
+  const [error, setError] = useState<Error | null>(null);
 
   const handleJoin = () => {
+    if (roomName.length !== 36) {
+      setError(new Error('O código do atendimento é inválido'));
+      return;
+    }
+
     getToken(name, roomName).then(token => {
       videoConnect(token);
       process.env.REACT_APP_DISABLE_TWILIO_CONVERSATIONS !== 'true' && chatConnect(token);
@@ -89,6 +96,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
 
   return (
     <>
+      <ErrorDialog dismissError={() => setError(null)} error={error} />
       <Typography variant="h5" className={classes.gutterBottom}>
         {/* Join {roomName} */}
         Acessar Atendimento

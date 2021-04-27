@@ -22,8 +22,15 @@ export default function EndCallButton(props: { className?: string }) {
   const classes = useStyles();
   const { room } = useVideoContext();
 
+  const disconnect = () => {
+    room!.disconnect();
+    setTimeout(() => {
+      window.location.href = `${window.location.protocol}//${window.location.host}`;
+    }, 500);
+  };
+
   return (
-    <Button onClick={() => room!.disconnect()} className={clsx(classes.button, props.className)} data-cy-disconnect>
+    <Button onClick={() => disconnect()} className={clsx(classes.button, props.className)} data-cy-disconnect>
       Sair
     </Button>
   );

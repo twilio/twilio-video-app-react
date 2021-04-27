@@ -6,6 +6,7 @@ import RoomNameScreen from './RoomNameScreen/RoomNameScreen';
 import { useAppState } from '../../state';
 import { useParams } from 'react-router-dom';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import ErrorDialog from '../ErrorDialog/ErrorDialog';
 
 export enum Steps {
   roomNameStep,
@@ -15,14 +16,15 @@ export enum Steps {
 export default function PreJoinScreens() {
   const { user } = useAppState();
   const { getAudioAndVideoTracks } = useVideoContext();
-  const { URLRoomName } = useParams();
-  const { URLName } = useParams();
+  const { URLRoomName }: any = useParams();
+  const { URLName }: any = useParams();
   const [step, setStep] = useState(Steps.roomNameStep);
 
   const [name, setName] = useState<string>(user?.displayName || '');
   const [roomName, setRoomName] = useState<string>('');
 
   const [mediaError, setMediaError] = useState<Error>();
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     if (URLRoomName) {
@@ -35,6 +37,13 @@ export default function PreJoinScreens() {
       setName(URLName);
     }
     if (URLRoomName && URLName) {
+      if (window.history && window.history.pushState) {
+        window.history.pushState(
+          {},
+          'Rewrite URL',
+          `${window.location.protocol}//${window.location.host}/room/${URLRoomName}`
+        );
+      }
       setStep(Steps.deviceSelectionStep);
     }
   }, [user, URLRoomName, URLName]);
@@ -51,6 +60,12 @@ export default function PreJoinScreens() {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (roomName.length !== 36) {
+      setError(new Error('O código do atendimento é inválido'));
+      return;
+    }
+
     // If this app is deployed as a twilio function, don't change the URL because routing isn't supported.
     if (!window.location.origin.includes('twil.io')) {
       window.history.replaceState(null, '', window.encodeURI(`/room/${roomName}${window.location.search || ''}`));
@@ -60,6 +75,7 @@ export default function PreJoinScreens() {
 
   return (
     <IntroContainer>
+      <ErrorDialog dismissError={() => setError(null)} error={error} />
       <MediaErrorSnackbar error={mediaError} />
       {step === Steps.roomNameStep && (
         <RoomNameScreen
