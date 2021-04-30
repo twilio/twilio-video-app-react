@@ -6,8 +6,8 @@ export interface Settings {
   bandwidthProfileMode: VideoBandwidthProfileOptions['mode'];
   maxAudioBitrate: string;
   contentPreferencesMode?: 'auto' | 'manual';
-  subscribedTrackSwitchOffMode?: 'auto' | 'manual';
-  logLevel: 'error' | 'warn' | 'debug' | 'info' | 'off';
+  clientTrackSwitchOffControl?: 'auto' | 'manual';
+  logLevel: 'error' | 'warn' | 'debug' | 'info' | 'silent';
 }
 
 type SettingsKeys = keyof Settings;
@@ -23,7 +23,7 @@ export const initialSettings: Settings = {
   bandwidthProfileMode: 'collaboration',
   maxAudioBitrate: '16000',
   contentPreferencesMode: 'auto',
-  subscribedTrackSwitchOffMode: 'auto',
+  clientTrackSwitchOffControl: 'auto',
   logLevel: 'debug',
 };
 

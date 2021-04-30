@@ -165,17 +165,17 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
                 <MenuItem value="warn">warn</MenuItem>
                 <MenuItem value="info">info</MenuItem>
                 <MenuItem value="debug">debug</MenuItem>
-                <MenuItem value="off">off</MenuItem>
+                <MenuItem value="silent">silent</MenuItem>
               </Select>
             </FormControl>
             <FormControl className={classes.formControl}>
-              <InputLabel id={inputLabels.subscribedTrackSwitchOffMode}>Subscribed Track Switch Off Mode:</InputLabel>
+              <InputLabel id={inputLabels.clientTrackSwitchOffControl}>Client Track Switch Off Control:</InputLabel>
               <Select
                 fullWidth
                 disabled={isDisabled}
-                name={inputLabels.subscribedTrackSwitchOffMode}
-                label={inputLabels.subscribedTrackSwitchOffMode}
-                value={withDefault(settings.subscribedTrackSwitchOffMode)}
+                name={inputLabels.clientTrackSwitchOffControl}
+                label={inputLabels.clientTrackSwitchOffControl}
+                value={withDefault(settings.clientTrackSwitchOffControl)}
                 onChange={handleChange}
               >
                 <MenuItem value="auto">auto</MenuItem>

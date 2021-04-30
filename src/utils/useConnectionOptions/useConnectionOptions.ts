@@ -1,4 +1,4 @@
-import { ConnectOptions } from 'twilio-video';
+import { ConnectOptions, Logger } from 'twilio-video';
 import { isMobile, removeUndefineds } from '..';
 import { useAppState } from '../../state';
 const environment = process.env.REACT_APP_TWILIO_ENVIRONMENT || 'prod';
@@ -19,7 +19,7 @@ export default function useConnectionOptions() {
         dominantSpeakerPriority: settings.dominantSpeakerPriority,
         trackSwitchOffMode: settings.trackSwitchOffMode,
         contentPreferencesMode: settings.contentPreferencesMode,
-        subscribedTrackSwitchOffMode: settings.subscribedTrackSwitchOffMode,
+        clientTrackSwitchOffControl: settings.clientTrackSwitchOffControl,
       },
     },
     dominantSpeaker: true,
@@ -27,7 +27,6 @@ export default function useConnectionOptions() {
 
     // Comment this line if you are playing music.
     maxAudioBitrate: Number(settings.maxAudioBitrate),
-    logLevel: settings.logLevel,
 
     // VP8 simulcast enables the media server in a Small Group or Group Room
     // to adapt your encoded video quality for each RemoteParticipant based on
@@ -35,6 +34,9 @@ export default function useConnectionOptions() {
     // you are using Peer-to-Peer or 'Go' Rooms.
     preferredVideoCodecs: [{ codec: 'VP8', simulcast: roomType !== 'peer-to-peer' && roomType !== 'go' }],
   };
+
+  const logger = Logger.getLogger('twilio-video');
+  logger.setLevel(settings.logLevel);
 
   // For mobile browsers, limit the maximum incoming video bitrate to 2.5 Mbps.
   if (isMobile && connectionOptions?.bandwidthProfile?.video) {
