@@ -16,7 +16,7 @@ export default function useRestartAudioTrackOnDeviceChange(localTracks: (LocalAu
   useEffect(() => {
     const handleDeviceChange = () => {
       if (audioTrack?.mediaStreamTrack.readyState === 'ended') {
-        audioTrack.restart();
+        audioTrack.restart({});
       }
     };
 
