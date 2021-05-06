@@ -89,6 +89,8 @@ export default function useLocalTracks() {
         const newAudioTrack = tracks.find(track => track.kind === 'audio') as LocalAudioTrack;
         if (newVideoTrack) {
           setVideoTrack(newVideoTrack);
+          // Save the deviceId so it can be picked up by the VideoInputList component. This only matters
+          // in cases where the user's video is disabled.
           window.localStorage.setItem(
             SELECTED_VIDEO_INPUT_KEY,
             newVideoTrack.mediaStreamTrack.getCapabilities().deviceId ?? ''
