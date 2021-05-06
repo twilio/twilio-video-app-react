@@ -1,11 +1,9 @@
 import { act, renderHook } from '@testing-library/react-hooks';
+import { getDeviceInfo } from '../../utils';
 import useDevices from './useDevices';
 
-let mockDevices = [
-  { deviceId: 1, label: '1', kind: 'audioinput' },
-  { deviceId: 2, label: '2', kind: 'videoinput' },
-  { deviceId: 3, label: '3', kind: 'audiooutput' },
-];
+jest.mock('../../utils', () => ({ getDeviceInfo: jest.fn(() => Promise.resolve()) }));
+
 let mockAddEventListener = jest.fn();
 let mockRemoveEventListener = jest.fn();
 
@@ -18,77 +16,38 @@ navigator.mediaDevices = {
 describe('the useDevices hook', () => {
   afterEach(jest.clearAllMocks);
 
-  it('should correctly return a list of audio input devices', async () => {
-    // @ts-ignore
-    navigator.mediaDevices.enumerateDevices = () => Promise.resolve(mockDevices);
+  it('should return the correct default values', async () => {
     const { result, waitForNextUpdate } = renderHook(useDevices);
-    await waitForNextUpdate();
     expect(result.current).toMatchInlineSnapshot(`
       Object {
-        "audioInputDevices": Array [
-          Object {
-            "deviceId": 1,
-            "kind": "audioinput",
-            "label": "1",
-          },
-        ],
-        "audioOutputDevices": Array [
-          Object {
-            "deviceId": 3,
-            "kind": "audiooutput",
-            "label": "3",
-          },
-        ],
-        "hasAudioInputDevices": true,
-        "hasVideoInputDevices": true,
-        "videoInputDevices": Array [
-          Object {
-            "deviceId": 2,
-            "kind": "videoinput",
-            "label": "2",
-          },
-        ],
+        "audioInputDevices": Array [],
+        "audioOutputDevices": Array [],
+        "hasAudioInputDevices": false,
+        "hasVideoInputDevices": false,
+        "videoInputDevices": Array [],
       }
     `);
-  });
 
-  it('should return hasAudioInputDevices: false when there are no audio input devices', async () => {
-    navigator.mediaDevices.enumerateDevices = () =>
-      // @ts-ignore
-      Promise.resolve([
-        { deviceId: 2, label: '2', kind: 'videoinput' },
-        { deviceId: 3, label: '3', kind: 'audiooutput' },
-      ]);
-    const { result, waitForNextUpdate } = renderHook(useDevices);
     await waitForNextUpdate();
-    expect(result.current.hasAudioInputDevices).toBe(false);
-  });
-
-  it('should return hasAudioInputDevices: false when there are no audio input devices', async () => {
-    navigator.mediaDevices.enumerateDevices = () =>
-      // @ts-ignore
-      Promise.resolve([
-        { deviceId: 1, label: '1', kind: 'audioinput' },
-        { deviceId: 3, label: '3', kind: 'audiooutput' },
-      ]);
-    const { result, waitForNextUpdate } = renderHook(useDevices);
-    await waitForNextUpdate();
-    expect(result.current.hasVideoInputDevices).toBe(false);
   });
 
   it('should respond to "devicechange" events', async () => {
-    // @ts-ignore
-    navigator.mediaDevices.enumerateDevices = () => Promise.resolve(mockDevices);
-    const { result, waitForNextUpdate } = renderHook(useDevices);
-    await waitForNextUpdate();
+    const { waitForNextUpdate } = renderHook(useDevices);
+    expect(getDeviceInfo).toHaveBeenCalledTimes(1);
+
     expect(mockAddEventListener).toHaveBeenCalledWith('devicechange', expect.any(Function));
     act(() => {
-      navigator.mediaDevices.enumerateDevices = () =>
-        // @ts-ignore
-        Promise.resolve([{ deviceId: 2, label: '2', kind: 'audioinput' }]);
       mockAddEventListener.mock.calls[0][1]();
     });
+
     await waitForNextUpdate();
-    expect(result.current.audioInputDevices).toEqual([{ deviceId: 2, label: '2', kind: 'audioinput' }]);
+    expect(getDeviceInfo).toHaveBeenCalledTimes(2);
+  });
+
+  it('should remove "devicechange" listener on component unmount', async () => {
+    const { waitForNextUpdate, unmount } = renderHook(useDevices);
+    await waitForNextUpdate();
+    unmount();
+    expect(mockRemoveEventListener).toHaveBeenCalledWith('devicechange', expect.any(Function));
   });
 });
