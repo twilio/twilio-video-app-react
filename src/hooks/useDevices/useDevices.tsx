@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { getDeviceInfo } from '../../utils';
 
 // This returns the type of the value that is returned by a promise resolution
-type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;
+type ThenArg<T> = T extends PromiseLike<infer U> ? U : never;
 
 export default function useDevices() {
   const [deviceInfo, setDeviceInfo] = useState<ThenArg<ReturnType<typeof getDeviceInfo>>>({
