@@ -84,7 +84,7 @@ describe('the getDeviceInfo function', () => {
     expect(result.hasAudioInputDevices).toBe(false);
   });
 
-  it('should return hasAudioInputDevices: false when there are no audio input devices', async () => {
+  it('should return hasVideoInputDevices: false when there are no video input devices', async () => {
     navigator.mediaDevices.enumerateDevices = () =>
       // @ts-ignore
       Promise.resolve([
