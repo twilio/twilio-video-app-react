@@ -114,7 +114,6 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     return contextValue
       .getToken(name, room)
       .then(res => {
-        console.log(res, res.room_type);
         setRoomType(res.room_type);
         setIsFetching(false);
         return res;
