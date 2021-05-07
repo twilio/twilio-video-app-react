@@ -42,12 +42,33 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
           // @ts-ignore
           window.twilioRoom = newRoom;
 
-          newRoom.localParticipant.videoTracks.forEach(publication =>
+          newRoom.localParticipant.videoTracks.forEach(publication => {
+            publication.on('subscriberPreferences', (preferences, parameters, setParameters) => {
+              // @ceagleston: This is where you can process subscriber preferences.
+              console.log(
+                `Subscriber hints [${publication.trackName}, ${publication.trackSid}]:`,
+                preferences,
+                parameters
+              );
+            });
             // All video tracks are published with 'low' priority because the video track
             // that is displayed in the 'MainParticipant' component will have it's priority
             // set to 'high' via track.setPriority()
-            publication.setPriority('low')
-          );
+            publication.setPriority('low');
+          });
+
+          newRoom.localParticipant.on('trackPublished', publication => {
+            if (publication.track.kind === 'video') {
+              publication.on('subscriberPreferences', (preferences, parameters, setParameters) => {
+                // @ceagleston: This is where you can process subscriber preferences.
+                console.log(
+                  `Subscriber hints [${publication.trackName}, ${publication.trackSid}]:`,
+                  preferences,
+                  parameters
+                );
+              });
+            }
+          });
 
           setIsConnecting(false);
 

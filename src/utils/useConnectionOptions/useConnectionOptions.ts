@@ -1,6 +1,5 @@
 import { ConnectOptions } from 'twilio-video';
 import { isMobile, removeUndefineds } from '..';
-import { getResolution } from '../../state/settings/renderDimensions';
 import { useAppState } from '../../state';
 
 export default function useConnectionOptions() {
@@ -15,14 +14,10 @@ export default function useConnectionOptions() {
     // Twilio Console: https://www.twilio.com/console/video/configure
     bandwidthProfile: {
       video: {
+        clientTrackSwitchOffControl: 'auto',
+        contentPreferencesMode: 'auto',
         mode: settings.bandwidthProfileMode,
         dominantSpeakerPriority: settings.dominantSpeakerPriority,
-        renderDimensions: {
-          low: getResolution(settings.renderDimensionLow),
-          standard: getResolution(settings.renderDimensionStandard),
-          high: getResolution(settings.renderDimensionHigh),
-        },
-        maxTracks: Number(settings.maxTracks),
         trackSwitchOffMode: settings.trackSwitchOffMode,
       },
     },
