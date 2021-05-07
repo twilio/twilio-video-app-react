@@ -1,4 +1,3 @@
-import { RoomType } from '../../types';
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -61,7 +60,6 @@ export default function usePasscodeAuth() {
 
   const [user, setUser] = useState<{ displayName: undefined; photoURL: undefined; passcode: string } | null>(null);
   const [isAuthReady, setIsAuthReady] = useState(false);
-  const [roomType, setRoomType] = useState<RoomType>();
 
   const getToken = useCallback(
     (name: string, room: string) => {
@@ -74,11 +72,7 @@ export default function usePasscodeAuth() {
           const errorMessage = getErrorMessage(json.error?.message || res.statusText);
           throw Error(errorMessage);
         })
-        .then(res => res.json())
-        .then(res => {
-          setRoomType(res.room_type);
-          return res.token as string;
-        });
+        .then(res => res.json());
     },
     [user]
   );
@@ -142,5 +136,5 @@ export default function usePasscodeAuth() {
     return Promise.resolve();
   }, []);
 
-  return { user, isAuthReady, getToken, signIn, signOut, roomType, updateRecordingRules };
+  return { user, isAuthReady, getToken, signIn, signOut, updateRecordingRules };
 }

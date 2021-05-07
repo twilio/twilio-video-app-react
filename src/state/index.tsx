@@ -10,7 +10,7 @@ import { User } from 'firebase';
 export interface StateContextType {
   error: TwilioError | Error | null;
   setError(error: TwilioError | Error | null): void;
-  getToken(name: string, room: string, passcode?: string): Promise<string>;
+  getToken(name: string, room: string, passcode?: string): Promise<{ room_type: RoomType; token: string }>;
   user?: User | null | { displayName: undefined; photoURL: undefined; passcode?: string };
   signIn?(passcode?: string): Promise<void>;
   signOut?(): Promise<void>;
@@ -40,6 +40,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const [isFetching, setIsFetching] = useState(false);
   const [activeSinkId, setActiveSinkId] = useActiveSinkId();
   const [settings, dispatchSetting] = useReducer(settingsReducer, initialSettings);
+  const [roomType, setRoomType] = useState<RoomType>();
 
   let contextValue = {
     error,
@@ -49,6 +50,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     setActiveSinkId,
     settings,
     dispatchSetting,
+    roomType,
   } as StateContextType;
 
   if (process.env.REACT_APP_SET_AUTH === 'firebase') {
@@ -77,9 +79,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
             room_name,
             create_conversation: process.env.REACT_APP_DISABLE_TWILIO_CONVERSATIONS !== 'true',
           }),
-        })
-          .then(res => res.json())
-          .then(res => res.token as string);
+        }).then(res => res.json());
       },
       updateRecordingRules: async (room_sid, rules) => {
         const endpoint = process.env.REACT_APP_TOKEN_ENDPOINT || '/recordingrules';
@@ -90,19 +90,21 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
           },
           body: JSON.stringify({ room_sid, rules }),
           method: 'POST',
-        }).then(async res => {
-          const jsonResponse = await res.json();
+        })
+          .then(async res => {
+            const jsonResponse = await res.json();
 
-          if (!res.ok) {
-            const recordingError = new Error(
-              jsonResponse.error?.message || 'There was an error updating recording rules'
-            );
-            recordingError.code = jsonResponse.error?.code;
-            return Promise.reject(recordingError);
-          }
+            if (!res.ok) {
+              const recordingError = new Error(
+                jsonResponse.error?.message || 'There was an error updating recording rules'
+              );
+              recordingError.code = jsonResponse.error?.code;
+              return Promise.reject(recordingError);
+            }
 
-          return jsonResponse;
-        });
+            return jsonResponse;
+          })
+          .catch(err => setError(err));
       },
     };
   }
@@ -112,6 +114,8 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     return contextValue
       .getToken(name, room)
       .then(res => {
+        console.log(res, res.room_type);
+        setRoomType(res.room_type);
         setIsFetching(false);
         return res;
       })
