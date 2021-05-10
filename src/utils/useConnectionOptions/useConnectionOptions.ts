@@ -33,6 +33,9 @@ export default function useConnectionOptions() {
     // their individual bandwidth constraints. Simulcast should be disabled if
     // you are using Peer-to-Peer or 'Go' Rooms.
     preferredVideoCodecs: [{ codec: 'VP8', simulcast: roomType !== 'peer-to-peer' && roomType !== 'go' }],
+
+    //@ts-ignore - Internal use only. This property is not exposed in type definitions.
+    environment: process.env.REACT_APP_TWILIO_ENVIRONMENT,
   };
 
   const logger = Logger.getLogger('twilio-video');
@@ -43,13 +46,9 @@ export default function useConnectionOptions() {
     connectionOptions!.bandwidthProfile!.video!.maxSubscriptionBitrate = 2500000;
   }
 
-  if (environment !== 'prod') {
+  if (process.env.REACT_APP_TWILIO_ENVIRONMENT === 'dev') {
     //@ts-ignore - Internal use only. This property is not exposed in type definitions.
-    connectionOptions!.environment = environment;
-    if (environment === 'dev') {
-      //@ts-ignore - Internal use only. This property is not exposed in type definitions.
-      connectionOptions!.wsServer = 'wss://us2.vss.dev.twilio.com/signaling';
-    }
+    connectionOptions!.wsServer = 'wss://us2.vss.dev.twilio.com/signaling';
   }
 
   // Here we remove any 'undefined' values. The twilio-video SDK will only use defaults
