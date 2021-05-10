@@ -1,7 +1,6 @@
-import { ConnectOptions, Logger } from 'twilio-video';
+import { ConnectOptions } from 'twilio-video';
 import { isMobile, removeUndefineds } from '..';
 import { useAppState } from '../../state';
-const environment = process.env.REACT_APP_TWILIO_ENVIRONMENT || 'prod';
 
 export default function useConnectionOptions() {
   const { roomType, settings } = useAppState();
@@ -37,9 +36,6 @@ export default function useConnectionOptions() {
     //@ts-ignore - Internal use only. This property is not exposed in type definitions.
     environment: process.env.REACT_APP_TWILIO_ENVIRONMENT,
   };
-
-  const logger = Logger.getLogger('twilio-video');
-  logger.setLevel(settings.logLevel);
 
   // For mobile browsers, limit the maximum incoming video bitrate to 2.5 Mbps.
   if (isMobile && connectionOptions?.bandwidthProfile?.video) {

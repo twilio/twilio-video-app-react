@@ -136,7 +136,8 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
                 <MenuItem value="default">Server Default</MenuItem>
               </Select>
             </FormControl>
-
+          </Grid>
+          <Grid item sm={6} xs={12}>
             <FormControl className={classes.formControl}>
               <TextField
                 disabled={isDisabled}
@@ -149,25 +150,7 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
                 onChange={handleNumberChange}
               />
             </FormControl>
-          </Grid>
-          <Grid item sm={6} xs={12}>
-            <FormControl className={classes.formControl}>
-              <InputLabel id={inputLabels.logLevel}>LogLevel:</InputLabel>
-              <Select
-                fullWidth
-                disabled={isDisabled}
-                name={inputLabels.logLevel}
-                label={inputLabels.logLevel}
-                value={withDefault(settings.logLevel)}
-                onChange={handleChange}
-              >
-                <MenuItem value="error">error</MenuItem>
-                <MenuItem value="warn">warn</MenuItem>
-                <MenuItem value="info">info</MenuItem>
-                <MenuItem value="debug">debug</MenuItem>
-                <MenuItem value="silent">silent</MenuItem>
-              </Select>
-            </FormControl>
+
             <FormControl className={classes.formControl}>
               <InputLabel id={inputLabels.clientTrackSwitchOffControl}>Client Track Switch Off Control:</InputLabel>
               <Select
@@ -178,11 +161,12 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
                 value={withDefault(settings.clientTrackSwitchOffControl)}
                 onChange={handleChange}
               >
-                <MenuItem value="auto">auto</MenuItem>
-                <MenuItem value="manual">manual</MenuItem>
+                <MenuItem value="auto">Auto</MenuItem>
+                <MenuItem value="manual">Manual</MenuItem>
                 <MenuItem value="default">Default</MenuItem>
               </Select>
             </FormControl>
+
             <FormControl className={classes.formControl}>
               <InputLabel id={inputLabels.contentPreferencesMode}>Content Preferences Mode:</InputLabel>
               <Select
@@ -193,8 +177,8 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
                 value={withDefault(settings.contentPreferencesMode)}
                 onChange={handleChange}
               >
-                <MenuItem value="auto">auto</MenuItem>
-                <MenuItem value="manual">manual</MenuItem>
+                <MenuItem value="auto">Auto</MenuItem>
+                <MenuItem value="manual">Manual</MenuItem>
                 <MenuItem value="default">Default</MenuItem>
               </Select>
             </FormControl>
