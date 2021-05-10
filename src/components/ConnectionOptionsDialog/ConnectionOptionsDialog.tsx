@@ -139,19 +139,6 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
           </Grid>
           <Grid item sm={6} xs={12}>
             <FormControl className={classes.formControl}>
-              <TextField
-                disabled={isDisabled}
-                fullWidth
-                id={inputLabels.maxAudioBitrate}
-                label="Max Audio Bitrate"
-                placeholder="Leave blank for no limit"
-                name={inputLabels.maxAudioBitrate}
-                value={withDefault(settings.maxAudioBitrate)}
-                onChange={handleNumberChange}
-              />
-            </FormControl>
-
-            <FormControl className={classes.formControl}>
               <InputLabel id={inputLabels.clientTrackSwitchOffControl}>Client Track Switch Off Control:</InputLabel>
               <Select
                 fullWidth
@@ -181,6 +168,19 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
                 <MenuItem value="manual">Manual</MenuItem>
                 <MenuItem value="default">Default</MenuItem>
               </Select>
+            </FormControl>
+
+            <FormControl className={classes.formControl}>
+              <TextField
+                disabled={isDisabled}
+                fullWidth
+                id={inputLabels.maxAudioBitrate}
+                label="Max Audio Bitrate"
+                placeholder="Leave blank for no limit"
+                name={inputLabels.maxAudioBitrate}
+                value={withDefault(settings.maxAudioBitrate)}
+                onChange={handleNumberChange}
+              />
             </FormControl>
           </Grid>
         </Grid>

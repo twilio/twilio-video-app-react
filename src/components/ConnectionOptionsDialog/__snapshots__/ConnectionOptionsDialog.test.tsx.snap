@@ -160,20 +160,6 @@ exports[`the ConnectionOptionsDialog component when connected to a room should r
         <WithStyles(ForwardRef(FormControl))
           className="makeStyles-formControl-4"
         >
-          <WithStyles(ForwardRef(TextField))
-            disabled={true}
-            fullWidth={true}
-            id="maxAudioBitrate"
-            label="Max Audio Bitrate"
-            name="maxAudioBitrate"
-            onChange={[Function]}
-            placeholder="Leave blank for no limit"
-            value="16000"
-          />
-        </WithStyles(ForwardRef(FormControl))>
-        <WithStyles(ForwardRef(FormControl))
-          className="makeStyles-formControl-4"
-        >
           <WithStyles(ForwardRef(InputLabel))
             id="clientTrackSwitchOffControl"
           >
@@ -236,6 +222,20 @@ exports[`the ConnectionOptionsDialog component when connected to a room should r
               Default
             </WithStyles(ForwardRef(MenuItem))>
           </WithStyles(ForwardRef(Select))>
+        </WithStyles(ForwardRef(FormControl))>
+        <WithStyles(ForwardRef(FormControl))
+          className="makeStyles-formControl-4"
+        >
+          <WithStyles(ForwardRef(TextField))
+            disabled={true}
+            fullWidth={true}
+            id="maxAudioBitrate"
+            label="Max Audio Bitrate"
+            name="maxAudioBitrate"
+            onChange={[Function]}
+            placeholder="Leave blank for no limit"
+            value="16000"
+          />
         </WithStyles(ForwardRef(FormControl))>
       </WithStyles(ForwardRef(Grid))>
     </WithStyles(ForwardRef(Grid))>
@@ -414,20 +414,6 @@ exports[`the ConnectionOptionsDialog component when not connected to a room shou
         <WithStyles(ForwardRef(FormControl))
           className="makeStyles-formControl-4"
         >
-          <WithStyles(ForwardRef(TextField))
-            disabled={true}
-            fullWidth={true}
-            id="maxAudioBitrate"
-            label="Max Audio Bitrate"
-            name="maxAudioBitrate"
-            onChange={[Function]}
-            placeholder="Leave blank for no limit"
-            value="16000"
-          />
-        </WithStyles(ForwardRef(FormControl))>
-        <WithStyles(ForwardRef(FormControl))
-          className="makeStyles-formControl-4"
-        >
           <WithStyles(ForwardRef(InputLabel))
             id="clientTrackSwitchOffControl"
           >
@@ -490,6 +476,20 @@ exports[`the ConnectionOptionsDialog component when not connected to a room shou
               Default
             </WithStyles(ForwardRef(MenuItem))>
           </WithStyles(ForwardRef(Select))>
+        </WithStyles(ForwardRef(FormControl))>
+        <WithStyles(ForwardRef(FormControl))
+          className="makeStyles-formControl-4"
+        >
+          <WithStyles(ForwardRef(TextField))
+            disabled={true}
+            fullWidth={true}
+            id="maxAudioBitrate"
+            label="Max Audio Bitrate"
+            name="maxAudioBitrate"
+            onChange={[Function]}
+            placeholder="Leave blank for no limit"
+            value="16000"
+          />
         </WithStyles(ForwardRef(FormControl))>
       </WithStyles(ForwardRef(Grid))>
     </WithStyles(ForwardRef(Grid))>
