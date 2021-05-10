@@ -42,6 +42,8 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
           // @ts-ignore
           window.twilioRoom = newRoom;
 
+          const subscriberPreferences = new Map();
+
           newRoom.localParticipant.videoTracks.forEach(publication => {
             publication.on('subscriberPreferences', (preferences, parameters, setParameters) => {
               // @ceagleston: This is where you can process subscriber preferences.
@@ -50,6 +52,13 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
                 preferences,
                 parameters
               );
+              subscriberPreferences.set(preferences.subscriber, preferences);
+              const shouldEnable = Array.from(subscriberPreferences.values()).reduce(
+                (shouldEnable_, prefs) => shouldEnable_ || prefs.hint.enabled,
+                false
+              );
+              parameters.encodings.forEach((encoding: any) => (encoding.active = shouldEnable));
+              setParameters(parameters);
             });
             // All video tracks are published with 'low' priority because the video track
             // that is displayed in the 'MainParticipant' component will have it's priority
@@ -66,6 +75,13 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
                   preferences,
                   parameters
                 );
+                subscriberPreferences.set(preferences.subscriber, preferences);
+                const shouldEnable = Array.from(subscriberPreferences.values()).reduce(
+                  (shouldEnable_, prefs) => shouldEnable_ || prefs.hint.enabled,
+                  false
+                );
+                parameters.encodings.forEach((encoding: any) => (encoding.active = shouldEnable));
+                setParameters(parameters);
               });
             }
           });
