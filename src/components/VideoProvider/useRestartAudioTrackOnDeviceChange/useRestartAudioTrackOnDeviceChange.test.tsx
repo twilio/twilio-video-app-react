@@ -30,7 +30,7 @@ describe('the useHandleTrackPublicationFailed hook', () => {
     // call handleDeviceChange function:
     mockAddEventListener.mock.calls[0][1]();
 
-    expect(localTrack[0].restart).toHaveBeenCalled();
+    expect(localTrack[0].restart).toHaveBeenCalledWith({});
   });
 
   it('should remove the event handler when component unmounts', () => {

@@ -112,14 +112,6 @@ const useStyles = makeStyles((theme: Theme) =>
       bottom: 0,
       left: 0,
     },
-    networkQualityContainer: {
-      width: '28px',
-      height: '28px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: 'rgba(0, 0, 0, 0.5)',
-    },
     typeography: {
       color: 'white',
       [theme.breakpoints.down('sm')]: {
@@ -178,9 +170,7 @@ export default function ParticipantInfo({
       data-cy-participant={participant.identity}
     >
       <div className={classes.infoContainer}>
-        <div className={classes.networkQualityContainer}>
-          <NetworkQualityLevel participant={participant} />
-        </div>
+        <NetworkQualityLevel participant={participant} />
         <div className={classes.infoRowBottom}>
           {isScreenShareEnabled && (
             <span className={classes.screenShareIconContainer}>
