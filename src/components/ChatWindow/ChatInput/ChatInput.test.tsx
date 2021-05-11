@@ -114,6 +114,30 @@ describe('the ChatInput component', () => {
     expect(mockHandleSendMessage).not.toHaveBeenCalled();
   });
 
+  it('should add the "isTextareaFocused" class to the parent of TextareaAutosize when the focus event is fired, and remove it when the blur event is fired', () => {
+    const wrapper = mount(
+      <ChatInput conversation={{ sendMessage: mockHandleSendMessage } as any} isChatWindowOpen={true} />
+    );
+
+    wrapper.find(TextareaAutosize).simulate('focus');
+
+    expect(
+      wrapper
+        .find(TextareaAutosize)
+        .parent()
+        .prop('className')
+    ).toContain('isTextareaFocused');
+
+    wrapper.find(TextareaAutosize).simulate('blur');
+
+    expect(
+      wrapper
+        .find(TextareaAutosize)
+        .parent()
+        .prop('className')
+    ).not.toContain('isTextareaFocused');
+  });
+
   it('should disable the file input button and display a loading spinner while sending a file', done => {
     const wrapper = shallow(
       <ChatInput conversation={{ sendMessage: mockHandleSendMessage } as any} isChatWindowOpen={true} />
