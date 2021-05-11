@@ -87,11 +87,11 @@ If any errors occur after running a [Twilio CLI RTC Plugin](https://github.com/t
 
 After running the command [to deploy the app to Twilio](#deploy-the-app-to-twilio), the room type will be returned in the command line output. Each room type provides a different video experience. More details about these room types can be found [here](https://www.twilio.com/docs/video/tutorials/understanding-video-rooms). The rest of this section explains how these room types affect the behavior of the video app.
 
-_Group_ - The Group room type allows up to fifty participants to join a video room in the app. The Network Quality Level (NQL) indicators and dominant speaker are demonstrated with this room type. Also, the VP8 video codec with simulcast enabled along with a bandwidth profile are set by default in order to provide an optimal group video app experience.
+_Group_ - The Group room type allows up to fifty participants to join a video room in the app. The Network Quality Level (NQL) indicators, dominant speaker, and start-stop recordings are demonstrated with this room type. Also, the VP8 video codec with simulcast enabled along with a bandwidth profile are set by default in order to provide an optimal group video app experience.
 
 _Small Group_ - The Small Group room type provides an identical group video app experience except for a smaller limit of four participants.
 
-_Peer-to-peer_ - Although up to ten participants can join a room using the Peer-to-peer (P2P) room type, it is ideal for a one to one video experience. The NQL indicators, bandwidth profiles, and dominant speaker cannot be used with this room type. Thus, they are not demonstrated in the video app. Also, the VP8 video codec with simulcast disabled and 720p minimum video capturing dimensions are also set by default in order to provide an optimal one to one video app experience. If more than ten participants join a room with this room type, then the video app will present an error.
+_Peer-to-peer_ - Although up to ten participants can join a room using the Peer-to-peer (P2P) room type, it is ideal for a one to one video experience. The NQL indicators, bandwidth profiles, dominant speaker, and start-stop recordings cannot be used with this room type. Thus, they are not demonstrated in the video app. Also, the VP8 video codec with simulcast disabled and 720p minimum video capturing dimensions are also set by default in order to provide an optimal one to one video app experience. If more than ten participants join a room with this room type, then the video app will present an error.
 
 _Go_ - The Go room type provides a similar Peer-to-peer video app experience except for a smaller limit of two participants. If more than two participants join a room with this room type, then the video app will present an error.
 
@@ -109,6 +109,7 @@ The Video app has the following features:
 - [x] [Dominant speaker](https://www.twilio.com/docs/video/detecting-dominant-speaker) indicator
 - [x] [Network quality](https://www.twilio.com/docs/video/using-network-quality-api) indicator
 - [x] Defines participant bandwidth usage with the [Bandwidth Profile API](https://www.twilio.com/docs/video/tutorials/using-bandwidth-profile-api)
+- [x] Start and stop recording with the [Recording Rules API](https://www.twilio.com/docs/video/api/recording-rules)
 
 ## Browser Support
 
