@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, CircularProgress, Grid, makeStyles } from '@material-ui/core';
+import clsx from 'clsx';
 import { Conversation } from '@twilio/conversations/lib/conversation';
 import FileAttachmentIcon from '../../../icons/FileAttachmentIcon';
 import { isMobile } from '../../../utils';
@@ -7,20 +8,19 @@ import SendMessageIcon from '../../../icons/SendMessageIcon';
 import Snackbar from '../../Snackbar/Snackbar';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   chatInputContainer: {
     borderTop: '1px solid #e4e7e9',
     borderBottom: '1px solid #e4e7e9',
     padding: '1em 1.2em 1em',
   },
   textArea: {
-    padding: '0.75em 1em',
-    marginTop: '0.4em',
     width: '100%',
     border: '0',
     resize: 'none',
     fontSize: '14px',
     fontFamily: 'Inter',
+    outline: 'none',
   },
   button: {
     padding: '0.56em',
@@ -47,7 +47,17 @@ const useStyles = makeStyles({
     marginTop: -12,
     marginLeft: -12,
   },
-});
+  textAreaContainer: {
+    display: 'flex',
+    marginTop: '0.4em',
+    padding: '0.48em 0.7em',
+    border: '2px solid transparent',
+  },
+  isTextareaFocused: {
+    borderColor: theme.palette.primary.main,
+    borderRadius: '4px',
+  },
+}));
 
 interface ChatInputProps {
   conversation: Conversation;
@@ -65,6 +75,7 @@ export default function ChatInput({ conversation, isChatWindowOpen }: ChatInputP
   const isValidMessage = /\S/.test(messageBody);
   const textInputRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isTextareaFocused, setIsTextareaFocused] = useState(false);
 
   useEffect(() => {
     if (isChatWindowOpen) {
@@ -125,19 +136,27 @@ export default function ChatInput({ conversation, isChatWindowOpen }: ChatInputP
         variant="error"
         handleClose={() => setFileSendError(null)}
       />
-
-      <TextareaAutosize
-        rowsMin={1}
-        rowsMax={3}
-        className={classes.textArea}
-        aria-label="chat input"
-        placeholder="Write a message..."
-        onKeyPress={handleReturnKeyPress}
-        onChange={handleChange}
-        value={messageBody}
-        data-cy-chat-input
-        ref={textInputRef}
-      />
+      <div className={clsx(classes.textAreaContainer, { [classes.isTextareaFocused]: isTextareaFocused })}>
+        {/* 
+        Here we add the "isTextareaFocused" class when the user is focused on the TextareaAutosize component.
+        This helps to ensure a consistent appearance across all browsers. Adding padding to the TextareaAutosize
+        component does not work well in Firefox. See: https://github.com/twilio/twilio-video-app-react/issues/498
+        */}
+        <TextareaAutosize
+          rowsMin={1}
+          rowsMax={3}
+          className={classes.textArea}
+          aria-label="chat input"
+          placeholder="Write a message..."
+          onKeyPress={handleReturnKeyPress}
+          onChange={handleChange}
+          value={messageBody}
+          data-cy-chat-input
+          ref={textInputRef}
+          onFocus={() => setIsTextareaFocused(true)}
+          onBlur={() => setIsTextareaFocused(false)}
+        />
+      </div>
 
       <Grid container alignItems="flex-end" justify="flex-end" wrap="nowrap">
         {/* Since the file input element is invisible, we can hardcode an empty string as its value.

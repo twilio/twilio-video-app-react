@@ -1,10 +1,20 @@
 import { useState, useEffect } from 'react';
+import { getDeviceInfo } from '../../utils';
+
+// This returns the type of the value that is returned by a promise resolution
+type ThenArg<T> = T extends PromiseLike<infer U> ? U : never;
 
 export default function useDevices() {
-  const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
+  const [deviceInfo, setDeviceInfo] = useState<ThenArg<ReturnType<typeof getDeviceInfo>>>({
+    audioInputDevices: [],
+    videoInputDevices: [],
+    audioOutputDevices: [],
+    hasAudioInputDevices: false,
+    hasVideoInputDevices: false,
+  });
 
   useEffect(() => {
-    const getDevices = () => navigator.mediaDevices.enumerateDevices().then(newDevices => setDevices(newDevices));
+    const getDevices = () => getDeviceInfo().then(devices => setDeviceInfo(devices));
     navigator.mediaDevices.addEventListener('devicechange', getDevices);
     getDevices();
 
@@ -13,11 +23,5 @@ export default function useDevices() {
     };
   }, []);
 
-  return {
-    audioInputDevices: devices.filter(device => device.kind === 'audioinput'),
-    videoInputDevices: devices.filter(device => device.kind === 'videoinput'),
-    audioOutputDevices: devices.filter(device => device.kind === 'audiooutput'),
-    hasAudioInputDevices: devices.filter(device => device.kind === 'audioinput').length > 0,
-    hasVideoInputDevices: devices.filter(device => device.kind === 'videoinput').length > 0,
-  };
+  return deviceInfo;
 }
