@@ -33,7 +33,11 @@ describe('the Menu component', () => {
 
   beforeAll(() => {
     mockUpdateRecordingRules = jest.fn(() => Promise.resolve());
-    mockUseAppState.mockImplementation(() => ({ isFetching: false, updateRecordingRules: mockUpdateRecordingRules }));
+    mockUseAppState.mockImplementation(() => ({
+      isFetching: false,
+      updateRecordingRules: mockUpdateRecordingRules,
+      roomType: 'group',
+    }));
     mockUseFlipCameraToggle.mockImplementation(() => ({
       flipCameraDisabled: false,
       flipCameraSupported: false,
@@ -67,6 +71,61 @@ describe('the Menu component', () => {
     describe('while recording is not in progress', () => {
       beforeAll(() => {
         mockUseIsRecording.mockImplementation(() => false);
+      });
+
+      it('should render the recording button in group rooms', () => {
+        mockUseAppState.mockImplementation(() => ({
+          isFetching: false,
+          updateRecordingRules: mockUpdateRecordingRules,
+          roomType: 'group',
+        }));
+        const { getByText } = render(<Menu />);
+        fireEvent.click(getByText('More'));
+        expect(getByText('Start Recording')).toBeTruthy();
+      });
+
+      it('should render the recording button in group-small rooms', () => {
+        mockUseAppState.mockImplementation(() => ({
+          isFetching: false,
+          updateRecordingRules: mockUpdateRecordingRules,
+          roomType: 'group-small',
+        }));
+        const { getByText } = render(<Menu />);
+        fireEvent.click(getByText('More'));
+        expect(getByText('Start Recording')).toBeTruthy();
+      });
+
+      it('should not render the recording button in go rooms', () => {
+        mockUseAppState.mockImplementation(() => ({
+          isFetching: false,
+          updateRecordingRules: mockUpdateRecordingRules,
+          roomType: 'go',
+        }));
+        const { getByText, queryByText } = render(<Menu />);
+        fireEvent.click(getByText('More'));
+        expect(queryByText('Start Recording')).toBeNull();
+      });
+
+      it('should not render the recording button in peer-to-peer rooms', () => {
+        mockUseAppState.mockImplementation(() => ({
+          isFetching: false,
+          updateRecordingRules: mockUpdateRecordingRules,
+          roomType: 'peer-to-peer',
+        }));
+        const { getByText, queryByText } = render(<Menu />);
+        fireEvent.click(getByText('More'));
+        expect(queryByText('Start Recording')).toBeNull();
+      });
+
+      it('should render the recording button when roomType is undefined', () => {
+        mockUseAppState.mockImplementation(() => ({
+          isFetching: false,
+          updateRecordingRules: mockUpdateRecordingRules,
+          roomType: undefined,
+        }));
+        const { getByText } = render(<Menu />);
+        fireEvent.click(getByText('More'));
+        expect(getByText('Start Recording')).toBeTruthy();
       });
 
       it('should display "Start Recording"', () => {

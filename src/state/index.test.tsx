@@ -48,7 +48,7 @@ describe('the useAppState hook', () => {
       token = await result.current.getToken('testname', 'testroom');
     });
 
-    expect(token).toBe('mockVideoToken');
+    expect(token).toEqual({ token: 'mockVideoToken' });
 
     expect(window.fetch).toHaveBeenCalledWith('http://test.com/api/token', {
       headers: { 'content-type': 'application/json' },
