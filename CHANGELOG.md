@@ -10,7 +10,7 @@ The `clientTrackSwitchOffControl` and `contentPreferencesMode` settings allow fo
 
 - The appearance of the text input field in the chat window has been improved in Firefox. [#512](https://github.com/twilio/twilio-video-app-react/pull/512).
 - Fix automatic audio track restart in Firefox. [#507](https://github.com/twilio/twilio-video-app-react/pull/507)
-- Fix issue related to the selection of video input devices when the app runs for the first time. [508](https://github.com/twilio/twilio-video-app-react/pull/508)
+- Fix issue related to the selection of video input devices when the app runs for the first time. [#508](https://github.com/twilio/twilio-video-app-react/pull/508)
 - Display network quality meter for main participant. [#499](https://github.com/twilio/twilio-video-app-react/pull/499)
 
 ### Dependency Upgrades
