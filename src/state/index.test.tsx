@@ -48,7 +48,7 @@ describe('the useAppState hook', () => {
       token = await result.current.getToken('testname', 'testroom');
     });
 
-    expect(token).toBe('mockVideoToken');
+    expect(token).toEqual({ token: 'mockVideoToken' });
 
     expect(window.fetch).toHaveBeenCalledWith('http://test.com/api/token', {
       headers: { 'content-type': 'application/json' },
@@ -114,7 +114,7 @@ describe('the useAppState hook', () => {
       });
     });
 
-    it('should set isFetching to true after getToken is called, and false after getToken succeeds', async () => {
+    it('should set isFetching to true after getToken is called, and false after getToken fails', async () => {
       process.env.REACT_APP_SET_AUTH = 'passcode';
       mockUsePasscodeAuth.mockImplementation(() => {
         return {

@@ -8,6 +8,7 @@ exports[`the Snackbar component should render correctly with "error" variant 1`]
       "vertical": "top",
     }
   }
+  autoHideDuration={10000}
   onClose={[Function]}
   open={true}
 >
@@ -55,6 +56,62 @@ exports[`the Snackbar component should render correctly with "error" variant 1`]
 </WithStyles(ForwardRef(Snackbar))>
 `;
 
+exports[`the Snackbar component should render correctly with "info" variant 1`] = `
+<WithStyles(ForwardRef(Snackbar))
+  anchorOrigin={
+    Object {
+      "horizontal": "right",
+      "vertical": "top",
+    }
+  }
+  autoHideDuration={10000}
+  onClose={[Function]}
+  open={true}
+>
+  <div
+    className="makeStyles-container-1 makeStyles-info-7"
+  >
+    <div
+      className="makeStyles-contentContainer-2"
+    >
+      <div
+        className="makeStyles-iconContainer-3"
+      >
+        <InfoIcon />
+      </div>
+      <div>
+        <WithStyles(ForwardRef(Typography))
+          className="makeStyles-headline-4"
+          component="span"
+          variant="body1"
+        >
+          Test Headline
+        </WithStyles(ForwardRef(Typography))>
+        <WithStyles(ForwardRef(Typography))
+          component="span"
+          variant="body1"
+        >
+           
+          Test Message
+        </WithStyles(ForwardRef(Typography))>
+      </div>
+    </div>
+    <div>
+      <WithStyles(ForwardRef(IconButton))
+        aria-label="close"
+        color="inherit"
+        onClick={[Function]}
+        size="small"
+      >
+        <CloseIcon
+          fontSize="small"
+        />
+      </WithStyles(ForwardRef(IconButton))>
+    </div>
+  </div>
+</WithStyles(ForwardRef(Snackbar))>
+`;
+
 exports[`the Snackbar component should render correctly with "warning" variant 1`] = `
 <WithStyles(ForwardRef(Snackbar))
   anchorOrigin={
@@ -63,6 +120,7 @@ exports[`the Snackbar component should render correctly with "warning" variant 1
       "vertical": "top",
     }
   }
+  autoHideDuration={10000}
   onClose={[Function]}
   open={true}
 >
@@ -118,6 +176,7 @@ exports[`the Snackbar component should render correctly with no handleClose func
       "vertical": "top",
     }
   }
+  autoHideDuration={10000}
   onClose={[Function]}
   open={true}
 >

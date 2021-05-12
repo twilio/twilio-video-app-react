@@ -3,10 +3,12 @@ import React from 'react';
 import MainParticipantInfo from './MainParticipantInfo';
 import AvatarIcon from '../../icons/AvatarIcon';
 import { shallow } from 'enzyme';
+
+import useIsRecording from '../../hooks/useIsRecording/useIsRecording';
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
+import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
 import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
-import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 jest.mock('../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel', () => () => 4);
@@ -15,12 +17,14 @@ jest.mock('../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff');
 jest.mock('../../hooks/useTrack/useTrack');
 jest.mock('../../hooks/useVideoContext/useVideoContext');
 jest.mock('../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting');
+jest.mock('../../hooks/useIsRecording/useIsRecording');
 
 const mockUsePublications = usePublications as jest.Mock<any>;
 const mockUseIsTrackSwitchedOff = useIsTrackSwitchedOff as jest.Mock<any>;
 const mockUseTrack = useTrack as jest.Mock<any>;
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 const mockUseParticipantIsReconnecting = useParticipantIsReconnecting as jest.Mock<boolean>;
+const mockUseIsRecording = useIsRecording as jest.Mock<boolean>;
 
 describe('the MainParticipantInfo component', () => {
   beforeEach(jest.clearAllMocks);
@@ -114,5 +118,21 @@ describe('the MainParticipantInfo component', () => {
       <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
     );
     expect(wrapper.text()).toContain('mockIdentity - Screen');
+  });
+
+  it('should not render the recording indicator when isRecording is false', () => {
+    mockUseIsRecording.mockImplementationOnce(() => false);
+    const wrapper = shallow(
+      <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
+    );
+    expect(wrapper.text()).not.toContain('Recording');
+  });
+
+  it('should render the recording indicator when isRecording is true', () => {
+    mockUseIsRecording.mockImplementationOnce(() => true);
+    const wrapper = shallow(
+      <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
+    );
+    expect(wrapper.text()).toContain('Recording');
   });
 });

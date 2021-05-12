@@ -178,7 +178,7 @@ describe('the usePasscodeAuth hook', () => {
       await act(async () => {
         token = await result.current.getToken('test-name', 'test-room');
       });
-      expect(token).toBe('mockVideoToken');
+      expect(token).toEqual({ token: 'mockVideoToken' });
     });
 
     it('should return a useful error message from the serverless function', async () => {

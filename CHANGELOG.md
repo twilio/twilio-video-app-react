@@ -1,3 +1,9 @@
+## 0.4.0 (May 12, 2021)
+
+### New Feature
+
+- This release adds a Start-Stop Recording feature for Group Rooms. This feature allows users to control when to record the contents of the Video Room. Recordings are on a per Track basis and are accessible via the Twilio Console. This feature is powered by the [Twilio Recording Rules API](https://www.twilio.com/docs/video/api/recording-rules). For more information on the Recording Rules API, please see this [blog post](https://www.twilio.com/blog/video-recording-rules-api).
+
 ## 0.3.2 (May 11, 2021)
 
 ### New Feature

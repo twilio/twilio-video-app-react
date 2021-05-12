@@ -46,8 +46,6 @@ jobs:
       - run:
           name: 'Build app with Firebase auth disabled'
           command: npm run build
-          environment:
-            REACT_APP_TOKEN_ENDPOINT: 'http://localhost:8081/token'
 
       - run:
           name: 'Set environment variables for local token server (used by Cypress tests)'
@@ -58,6 +56,9 @@ jobs:
             echo TWILIO_CONVERSATIONS_SERVICE_SID=$TWILIO_CONVERSATIONS_SERVICE_SID >> .env
 
       - run: npm run cypress:ci
+
+      - store_artifacts:
+          path: cypress/screenshots
 
       - store_test_results:
           path: test-reports
