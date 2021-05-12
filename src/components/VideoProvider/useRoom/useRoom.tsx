@@ -126,27 +126,17 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
   return { room, isConnecting, connect };
 }
 
-function createPublisherHints(publishedTrackSid: string, subscriberPreferences: any): any {
+function createPublisherHints(publishedTrackSid: string, subscriberPreferences: any, layerDims: any[]): any {
   const active = [...subscriberPreferences.values()].reduce((active_, prefs) => active_ || prefs.hint.enabled, false);
 
   if (active === false) {
     return {
       hints: [
         {
-          encodings: [
-            {
-              active: false,
-              layer_index: 0,
-            },
-            {
-              active: false,
-              layer_index: 1,
-            },
-            {
-              active: false,
-              layer_index: 2,
-            },
-          ],
+          encodings: layerDims.map(({ layerIndex }) => ({
+            active: false,
+            layer_index: layerIndex,
+          })),
           track: publishedTrackSid,
         },
       ],
@@ -154,29 +144,11 @@ function createPublisherHints(publishedTrackSid: string, subscriberPreferences: 
     };
   }
 
-  const layerDims = [
-    {
-      height: 180,
-      index: 0,
-      width: 320,
-    },
-    {
-      height: 360,
-      index: 1,
-      width: 640,
-    },
-    {
-      height: 720,
-      index: 2,
-      width: 1280,
-    },
-  ];
-
   const enabledDims = [...subscriberPreferences.values()]
     .filter(prefs => prefs.hint.enabled)
     .map(prefs => prefs.hint.renderDimensions || { height: 720, width: 1280 });
 
-  const [maxDims] = enabledDims.sort((dims1, dplayims2) => taxiCabDistance(dims2) - taxiCabDistance(dims1) - 1);
+  const [maxDims] = enabledDims.sort((dims1, dims2) => taxiCabDistance(dims2) - taxiCabDistance(dims1) - 1);
 
   const [maxLayerDim] = layerDims.sort(
     (dims1, dims2) => taxiCabDistance(dims1, maxDims) - taxiCabDistance(dims2, maxDims) - 1
@@ -185,9 +157,9 @@ function createPublisherHints(publishedTrackSid: string, subscriberPreferences: 
   return {
     hints: [
       {
-        encodings: layerDims.map((dim, i) => ({
-          active: i <= maxLayerDim.index,
-          layer_index: i,
+        encodings: layerDims.map(({ layerIndex }) => ({
+          active: layerIndex <= maxLayerDim.layerIndex,
+          layer_index: layerIndex,
         })),
         track: publishedTrackSid,
       },
@@ -203,8 +175,8 @@ function onSubscriberPreferences(
   preferences: any,
   parameters: any,
   setParameters: any
-) {
-  console.log(`Subscriber hints [${publication.trackName}, ${publication.trackSid}]:`, preferences);
+): void {
+  console.log(`Subscriber hints [${publication.trackName}]:`, JSON.stringify(preferences, null, 2));
 
   const trackPreferences = subscriberPreferences.get(publication.trackSid) || new Map();
   const subscriberTrackPreferences = {
@@ -215,9 +187,21 @@ function onSubscriberPreferences(
   trackPreferences.set(preferences.subscriber, subscriberTrackPreferences);
   subscriberPreferences.set(publication.trackSid, trackPreferences);
 
-  const publisherHints = createPublisherHints(publication.trackSid, trackPreferences);
+  const { height, width } = publication.track.mediaStreamTrack.getSettings();
+  const nEncodings = parameters.encodings.length;
 
-  console.log(`Publisher hints: hints [${publication.trackName}, ${publication.trackSid}]:`, publisherHints);
+  const layerDims = parameters.encodings.map((encoding: any, i: number) => {
+    const { scaleResolutionDownBy = 1 << (nEncodings - i - 1) } = encoding;
+    return {
+      height: Math.round(height! / scaleResolutionDownBy),
+      layerIndex: i,
+      width: Math.round(width! / scaleResolutionDownBy),
+    };
+  });
+
+  const publisherHints = createPublisherHints(publication.trackSid, trackPreferences, layerDims);
+
+  console.log(`Publisher hints: hints [${publication.trackName}]:`, JSON.stringify(publisherHints, null, 2));
 
   publisherHints.hints[0].encodings.forEach(
     ({ active, layer_index }: any) => (parameters.encodings[layer_index].active = active)
@@ -226,6 +210,6 @@ function onSubscriberPreferences(
   setParameters(parameters);
 }
 
-function taxiCabDistance(dims1: any, dims2: any = { height: 0, width: 0 }) {
+function taxiCabDistance(dims1: any, dims2: any = { height: 0, width: 0 }): number {
   return Math.abs(dims1.width - dims2.width + dims1.height - dims2.height);
 }
