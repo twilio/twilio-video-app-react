@@ -55,6 +55,7 @@ jobs:
             echo TWILIO_ACCOUNT_SID=$TWILIO_ACCOUNT_SID >> .env
             echo TWILIO_API_KEY_SID=$TWILIO_API_KEY >> .env
             echo TWILIO_API_KEY_SECRET=$TWILIO_API_SECRET >> .env
+            echo TWILIO_CONVERSATIONS_SERVICE_SID=$TWILIO_CONVERSATIONS_SERVICE_SID >> .env
 
       - run: npm run cypress:ci
 
@@ -66,7 +67,6 @@ jobs:
           name: 'Build app with Firebase auth enabled'
           command: |
             echo REACT_APP_SET_AUTH=firebase >> .env
-            echo REACT_APP_TOKEN_ENDPOINT=$REACT_APP_TOKEN_ENDPOINT >> .env
             echo REACT_APP_FIREBASE_API_KEY=$REACT_APP_FIREBASE_API_KEY >> .env
             echo REACT_APP_FIREBASE_AUTH_DOMAIN=$REACT_APP_FIREBASE_AUTH_DOMAIN >> .env
             echo REACT_APP_FIREBASE_DATABASE_URL=$REACT_APP_FIREBASE_DATABASE_URL >> .env
