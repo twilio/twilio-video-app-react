@@ -151,19 +151,77 @@ exports[`the ConnectionOptionsDialog component when connected to a room should r
             </WithStyles(ForwardRef(MenuItem))>
           </WithStyles(ForwardRef(Select))>
         </WithStyles(ForwardRef(FormControl))>
+      </WithStyles(ForwardRef(Grid))>
+      <WithStyles(ForwardRef(Grid))
+        item={true}
+        sm={6}
+        xs={12}
+      >
         <WithStyles(ForwardRef(FormControl))
           className="makeStyles-formControl-4"
         >
-          <WithStyles(ForwardRef(TextField))
+          <WithStyles(ForwardRef(InputLabel))
+            id="clientTrackSwitchOffControl"
+          >
+            Client Track Switch Off Control:
+          </WithStyles(ForwardRef(InputLabel))>
+          <WithStyles(ForwardRef(Select))
             disabled={true}
             fullWidth={true}
-            id="maxTracks"
-            label="Max Tracks"
-            name="maxTracks"
+            label="clientTrackSwitchOffControl"
+            name="clientTrackSwitchOffControl"
             onChange={[Function]}
-            placeholder="Leave blank for no limit"
-            value="10"
-          />
+            value="auto"
+          >
+            <WithStyles(ForwardRef(MenuItem))
+              value="auto"
+            >
+              Auto
+            </WithStyles(ForwardRef(MenuItem))>
+            <WithStyles(ForwardRef(MenuItem))
+              value="manual"
+            >
+              Manual
+            </WithStyles(ForwardRef(MenuItem))>
+            <WithStyles(ForwardRef(MenuItem))
+              value="default"
+            >
+              Default
+            </WithStyles(ForwardRef(MenuItem))>
+          </WithStyles(ForwardRef(Select))>
+        </WithStyles(ForwardRef(FormControl))>
+        <WithStyles(ForwardRef(FormControl))
+          className="makeStyles-formControl-4"
+        >
+          <WithStyles(ForwardRef(InputLabel))
+            id="contentPreferencesMode"
+          >
+            Content Preferences Mode:
+          </WithStyles(ForwardRef(InputLabel))>
+          <WithStyles(ForwardRef(Select))
+            disabled={true}
+            fullWidth={true}
+            label="contentPreferencesMode"
+            name="contentPreferencesMode"
+            onChange={[Function]}
+            value="auto"
+          >
+            <WithStyles(ForwardRef(MenuItem))
+              value="auto"
+            >
+              Auto
+            </WithStyles(ForwardRef(MenuItem))>
+            <WithStyles(ForwardRef(MenuItem))
+              value="manual"
+            >
+              Manual
+            </WithStyles(ForwardRef(MenuItem))>
+            <WithStyles(ForwardRef(MenuItem))
+              value="default"
+            >
+              Default
+            </WithStyles(ForwardRef(MenuItem))>
+          </WithStyles(ForwardRef(Select))>
         </WithStyles(ForwardRef(FormControl))>
         <WithStyles(ForwardRef(FormControl))
           className="makeStyles-formControl-4"
@@ -178,252 +236,6 @@ exports[`the ConnectionOptionsDialog component when connected to a room should r
             placeholder="Leave blank for no limit"
             value="16000"
           />
-        </WithStyles(ForwardRef(FormControl))>
-      </WithStyles(ForwardRef(Grid))>
-      <WithStyles(ForwardRef(Grid))
-        item={true}
-        sm={6}
-        xs={12}
-      >
-        <WithStyles(ForwardRef(FormControl))
-          className="makeStyles-formControl-4"
-          fullWidth={true}
-        >
-          <WithStyles(ForwardRef(InputLabel))
-            className="makeStyles-label-5"
-            id="renderDimensionLow"
-          >
-            Render Dimension (Low Priority):
-          </WithStyles(ForwardRef(InputLabel))>
-          <WithStyles(ForwardRef(Select))
-            disabled={true}
-            fullWidth={true}
-            label="renderDimensionLow"
-            name="renderDimensionLow"
-            onChange={[Function]}
-            value="low"
-          >
-            <WithStyles(ForwardRef(MenuItem))
-              key="low"
-              value="low"
-            >
-              Low (160 x 90)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="cif"
-              value="cif"
-            >
-              CIF (352 x 288)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="vga"
-              value="vga"
-            >
-              VGA (640 x 480)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="wvga"
-              value="wvga"
-            >
-              WVGA (800 x 480)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="540p"
-              value="540p"
-            >
-              HD 540P (960 x 540)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="720p"
-              value="720p"
-            >
-              HD 720P (1280 x 720)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="960p"
-              value="960p"
-            >
-              HD 960P (1280 x 960)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="standard1080p"
-              value="standard1080p"
-            >
-              HD Standard 1080P (1440 x 1080)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="wide1080p"
-              value="wide1080p"
-            >
-              HD Widescreen 1080P (1920 x 1080)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="default"
-              value="default"
-            >
-              Server Default
-            </WithStyles(ForwardRef(MenuItem))>
-          </WithStyles(ForwardRef(Select))>
-        </WithStyles(ForwardRef(FormControl))>
-        <WithStyles(ForwardRef(FormControl))
-          className="makeStyles-formControl-4"
-          fullWidth={true}
-        >
-          <WithStyles(ForwardRef(InputLabel))
-            className="makeStyles-label-5"
-            id="renderDimensionStandard"
-          >
-            Render Dimension (Standard Priority):
-          </WithStyles(ForwardRef(InputLabel))>
-          <WithStyles(ForwardRef(Select))
-            disabled={true}
-            fullWidth={true}
-            label="renderDimensionStandard"
-            name="renderDimensionStandard"
-            onChange={[Function]}
-            value="960p"
-          >
-            <WithStyles(ForwardRef(MenuItem))
-              key="low"
-              value="low"
-            >
-              Low (160 x 90)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="cif"
-              value="cif"
-            >
-              CIF (352 x 288)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="vga"
-              value="vga"
-            >
-              VGA (640 x 480)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="wvga"
-              value="wvga"
-            >
-              WVGA (800 x 480)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="540p"
-              value="540p"
-            >
-              HD 540P (960 x 540)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="720p"
-              value="720p"
-            >
-              HD 720P (1280 x 720)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="960p"
-              value="960p"
-            >
-              HD 960P (1280 x 960)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="standard1080p"
-              value="standard1080p"
-            >
-              HD Standard 1080P (1440 x 1080)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="wide1080p"
-              value="wide1080p"
-            >
-              HD Widescreen 1080P (1920 x 1080)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="default"
-              value="default"
-            >
-              Server Default
-            </WithStyles(ForwardRef(MenuItem))>
-          </WithStyles(ForwardRef(Select))>
-        </WithStyles(ForwardRef(FormControl))>
-        <WithStyles(ForwardRef(FormControl))
-          className="makeStyles-formControl-4"
-          fullWidth={true}
-        >
-          <WithStyles(ForwardRef(InputLabel))
-            className="makeStyles-label-5"
-            id="renderDimensionHigh"
-          >
-            Render Dimension (High Priority):
-          </WithStyles(ForwardRef(InputLabel))>
-          <WithStyles(ForwardRef(Select))
-            disabled={true}
-            fullWidth={true}
-            label="renderDimensionHigh"
-            name="renderDimensionHigh"
-            onChange={[Function]}
-            value="wide1080p"
-          >
-            <WithStyles(ForwardRef(MenuItem))
-              key="low"
-              value="low"
-            >
-              Low (160 x 90)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="cif"
-              value="cif"
-            >
-              CIF (352 x 288)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="vga"
-              value="vga"
-            >
-              VGA (640 x 480)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="wvga"
-              value="wvga"
-            >
-              WVGA (800 x 480)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="540p"
-              value="540p"
-            >
-              HD 540P (960 x 540)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="720p"
-              value="720p"
-            >
-              HD 720P (1280 x 720)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="960p"
-              value="960p"
-            >
-              HD 960P (1280 x 960)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="standard1080p"
-              value="standard1080p"
-            >
-              HD Standard 1080P (1440 x 1080)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="wide1080p"
-              value="wide1080p"
-            >
-              HD Widescreen 1080P (1920 x 1080)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="default"
-              value="default"
-            >
-              Server Default
-            </WithStyles(ForwardRef(MenuItem))>
-          </WithStyles(ForwardRef(Select))>
         </WithStyles(ForwardRef(FormControl))>
       </WithStyles(ForwardRef(Grid))>
     </WithStyles(ForwardRef(Grid))>
@@ -593,19 +405,77 @@ exports[`the ConnectionOptionsDialog component when not connected to a room shou
             </WithStyles(ForwardRef(MenuItem))>
           </WithStyles(ForwardRef(Select))>
         </WithStyles(ForwardRef(FormControl))>
+      </WithStyles(ForwardRef(Grid))>
+      <WithStyles(ForwardRef(Grid))
+        item={true}
+        sm={6}
+        xs={12}
+      >
         <WithStyles(ForwardRef(FormControl))
           className="makeStyles-formControl-4"
         >
-          <WithStyles(ForwardRef(TextField))
+          <WithStyles(ForwardRef(InputLabel))
+            id="clientTrackSwitchOffControl"
+          >
+            Client Track Switch Off Control:
+          </WithStyles(ForwardRef(InputLabel))>
+          <WithStyles(ForwardRef(Select))
             disabled={true}
             fullWidth={true}
-            id="maxTracks"
-            label="Max Tracks"
-            name="maxTracks"
+            label="clientTrackSwitchOffControl"
+            name="clientTrackSwitchOffControl"
             onChange={[Function]}
-            placeholder="Leave blank for no limit"
-            value="10"
-          />
+            value="auto"
+          >
+            <WithStyles(ForwardRef(MenuItem))
+              value="auto"
+            >
+              Auto
+            </WithStyles(ForwardRef(MenuItem))>
+            <WithStyles(ForwardRef(MenuItem))
+              value="manual"
+            >
+              Manual
+            </WithStyles(ForwardRef(MenuItem))>
+            <WithStyles(ForwardRef(MenuItem))
+              value="default"
+            >
+              Default
+            </WithStyles(ForwardRef(MenuItem))>
+          </WithStyles(ForwardRef(Select))>
+        </WithStyles(ForwardRef(FormControl))>
+        <WithStyles(ForwardRef(FormControl))
+          className="makeStyles-formControl-4"
+        >
+          <WithStyles(ForwardRef(InputLabel))
+            id="contentPreferencesMode"
+          >
+            Content Preferences Mode:
+          </WithStyles(ForwardRef(InputLabel))>
+          <WithStyles(ForwardRef(Select))
+            disabled={true}
+            fullWidth={true}
+            label="contentPreferencesMode"
+            name="contentPreferencesMode"
+            onChange={[Function]}
+            value="auto"
+          >
+            <WithStyles(ForwardRef(MenuItem))
+              value="auto"
+            >
+              Auto
+            </WithStyles(ForwardRef(MenuItem))>
+            <WithStyles(ForwardRef(MenuItem))
+              value="manual"
+            >
+              Manual
+            </WithStyles(ForwardRef(MenuItem))>
+            <WithStyles(ForwardRef(MenuItem))
+              value="default"
+            >
+              Default
+            </WithStyles(ForwardRef(MenuItem))>
+          </WithStyles(ForwardRef(Select))>
         </WithStyles(ForwardRef(FormControl))>
         <WithStyles(ForwardRef(FormControl))
           className="makeStyles-formControl-4"
@@ -620,252 +490,6 @@ exports[`the ConnectionOptionsDialog component when not connected to a room shou
             placeholder="Leave blank for no limit"
             value="16000"
           />
-        </WithStyles(ForwardRef(FormControl))>
-      </WithStyles(ForwardRef(Grid))>
-      <WithStyles(ForwardRef(Grid))
-        item={true}
-        sm={6}
-        xs={12}
-      >
-        <WithStyles(ForwardRef(FormControl))
-          className="makeStyles-formControl-4"
-          fullWidth={true}
-        >
-          <WithStyles(ForwardRef(InputLabel))
-            className="makeStyles-label-5"
-            id="renderDimensionLow"
-          >
-            Render Dimension (Low Priority):
-          </WithStyles(ForwardRef(InputLabel))>
-          <WithStyles(ForwardRef(Select))
-            disabled={true}
-            fullWidth={true}
-            label="renderDimensionLow"
-            name="renderDimensionLow"
-            onChange={[Function]}
-            value="low"
-          >
-            <WithStyles(ForwardRef(MenuItem))
-              key="low"
-              value="low"
-            >
-              Low (160 x 90)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="cif"
-              value="cif"
-            >
-              CIF (352 x 288)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="vga"
-              value="vga"
-            >
-              VGA (640 x 480)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="wvga"
-              value="wvga"
-            >
-              WVGA (800 x 480)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="540p"
-              value="540p"
-            >
-              HD 540P (960 x 540)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="720p"
-              value="720p"
-            >
-              HD 720P (1280 x 720)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="960p"
-              value="960p"
-            >
-              HD 960P (1280 x 960)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="standard1080p"
-              value="standard1080p"
-            >
-              HD Standard 1080P (1440 x 1080)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="wide1080p"
-              value="wide1080p"
-            >
-              HD Widescreen 1080P (1920 x 1080)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="default"
-              value="default"
-            >
-              Server Default
-            </WithStyles(ForwardRef(MenuItem))>
-          </WithStyles(ForwardRef(Select))>
-        </WithStyles(ForwardRef(FormControl))>
-        <WithStyles(ForwardRef(FormControl))
-          className="makeStyles-formControl-4"
-          fullWidth={true}
-        >
-          <WithStyles(ForwardRef(InputLabel))
-            className="makeStyles-label-5"
-            id="renderDimensionStandard"
-          >
-            Render Dimension (Standard Priority):
-          </WithStyles(ForwardRef(InputLabel))>
-          <WithStyles(ForwardRef(Select))
-            disabled={true}
-            fullWidth={true}
-            label="renderDimensionStandard"
-            name="renderDimensionStandard"
-            onChange={[Function]}
-            value="960p"
-          >
-            <WithStyles(ForwardRef(MenuItem))
-              key="low"
-              value="low"
-            >
-              Low (160 x 90)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="cif"
-              value="cif"
-            >
-              CIF (352 x 288)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="vga"
-              value="vga"
-            >
-              VGA (640 x 480)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="wvga"
-              value="wvga"
-            >
-              WVGA (800 x 480)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="540p"
-              value="540p"
-            >
-              HD 540P (960 x 540)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="720p"
-              value="720p"
-            >
-              HD 720P (1280 x 720)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="960p"
-              value="960p"
-            >
-              HD 960P (1280 x 960)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="standard1080p"
-              value="standard1080p"
-            >
-              HD Standard 1080P (1440 x 1080)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="wide1080p"
-              value="wide1080p"
-            >
-              HD Widescreen 1080P (1920 x 1080)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="default"
-              value="default"
-            >
-              Server Default
-            </WithStyles(ForwardRef(MenuItem))>
-          </WithStyles(ForwardRef(Select))>
-        </WithStyles(ForwardRef(FormControl))>
-        <WithStyles(ForwardRef(FormControl))
-          className="makeStyles-formControl-4"
-          fullWidth={true}
-        >
-          <WithStyles(ForwardRef(InputLabel))
-            className="makeStyles-label-5"
-            id="renderDimensionHigh"
-          >
-            Render Dimension (High Priority):
-          </WithStyles(ForwardRef(InputLabel))>
-          <WithStyles(ForwardRef(Select))
-            disabled={true}
-            fullWidth={true}
-            label="renderDimensionHigh"
-            name="renderDimensionHigh"
-            onChange={[Function]}
-            value="wide1080p"
-          >
-            <WithStyles(ForwardRef(MenuItem))
-              key="low"
-              value="low"
-            >
-              Low (160 x 90)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="cif"
-              value="cif"
-            >
-              CIF (352 x 288)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="vga"
-              value="vga"
-            >
-              VGA (640 x 480)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="wvga"
-              value="wvga"
-            >
-              WVGA (800 x 480)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="540p"
-              value="540p"
-            >
-              HD 540P (960 x 540)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="720p"
-              value="720p"
-            >
-              HD 720P (1280 x 720)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="960p"
-              value="960p"
-            >
-              HD 960P (1280 x 960)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="standard1080p"
-              value="standard1080p"
-            >
-              HD Standard 1080P (1440 x 1080)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="wide1080p"
-              value="wide1080p"
-            >
-              HD Widescreen 1080P (1920 x 1080)
-            </WithStyles(ForwardRef(MenuItem))>
-            <WithStyles(ForwardRef(MenuItem))
-              key="default"
-              value="default"
-            >
-              Server Default
-            </WithStyles(ForwardRef(MenuItem))>
-          </WithStyles(ForwardRef(Select))>
         </WithStyles(ForwardRef(FormControl))>
       </WithStyles(ForwardRef(Grid))>
     </WithStyles(ForwardRef(Grid))>
