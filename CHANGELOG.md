@@ -2,9 +2,9 @@
 
 ### New Feature
 
-- This release upgrades `twilio-video` to version 2.14.0 which contains a significant update to the Bandwidth Profile API. This new version deprecates the `maxTracks` and `renderDimensions` settings and introduces the `clientTrackSwitchOffControl` and `contentPreferencesMode` settings. The "Connection Settings" modal in this app has been updated to reflect these new options.
+This release upgrades `twilio-video` to version 2.14.0 which contains a significant update to the Bandwidth Profile API. This new version deprecates the `maxTracks` and `renderDimensions` settings and introduces the `clientTrackSwitchOffControl` and `contentPreferencesMode` settings. The "Connection Settings" modal in this app has been updated to reflect these new options.
 
-The Client Track Switch Off Control and Video Content Preferences allow for more efficient use of bandwidth and CPU in multi-party applications. Learn more about these new features in the twilio-video.js [CHANGELOG](https://github.com/twilio/twilio-video.js/blob/master/CHANGELOG.md#2140-may-11-2021).
+The `clientTrackSwitchOffControl` and `contentPreferencesMode` settings allow for more efficient use of bandwidth and CPU in multi-party applications. Learn more about these new features in the twilio-video.js [CHANGELOG](https://github.com/twilio/twilio-video.js/blob/master/CHANGELOG.md#2140-may-11-2021).
 
 ### Bugfixes
 
