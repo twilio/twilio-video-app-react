@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'center',
     },
     innerScrollContainer: {
-      width: `calc(${theme.sidebarWidth}px - 4em)`,
+      width: '260px',
       padding: '2em 0',
       [theme.breakpoints.down('sm')]: {
         width: 'auto',

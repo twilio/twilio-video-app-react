@@ -18,8 +18,6 @@ export default function useScreenShareToggle(room: Room | null, onError: ErrorCa
         audio: false,
         video: {
           frameRate: 10,
-          height: 1080,
-          width: 1920,
         },
       })
       .then(stream => {
