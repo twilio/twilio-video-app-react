@@ -187,11 +187,19 @@ function onSubscriberPreferences(
   trackPreferences.set(preferences.subscriber, subscriberTrackPreferences);
   subscriberPreferences.set(publication.trackSid, trackPreferences);
 
-  const { height, width } = publication.track.mediaStreamTrack.getSettings();
+  const { frameRate, height, width } = publication.track.mediaStreamTrack.getSettings();
   const nEncodings = parameters.encodings.length;
+  const isScreenShare = publication.trackName === 'screen';
 
   const layerDims = parameters.encodings.map((encoding: any, i: number) => {
-    const { scaleResolutionDownBy = 1 << (nEncodings - i - 1) } = encoding;
+    const {
+      maxFramerate = isScreenShare ? frameRate! >> (nEncodings - i - 1) : frameRate! >> Number(!i),
+      scaleResolutionDownBy = isScreenShare ? 1 : 1 << (nEncodings - i - 1),
+    } = encoding;
+
+    encoding.maxFramerate = maxFramerate;
+    encoding.scaleResolutionDownBy = scaleResolutionDownBy;
+
     return {
       height: Math.round(height! / scaleResolutionDownBy),
       layerIndex: i,
