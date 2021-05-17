@@ -8,7 +8,6 @@ import Typography from '@material-ui/core/Typography';
 
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
 import usePublications from '../../hooks/usePublications/usePublications';
-import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 import useTrack from '../../hooks/useTrack/useTrack';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
@@ -84,9 +83,6 @@ export default function MainParticipantInfo({ participant, children }: MainParti
   const localParticipant = room!.localParticipant;
   const isLocal = localParticipant === participant;
 
-  const screenShareParticipant = useScreenShareParticipant();
-  const isRemoteParticipantScreenSharing = screenShareParticipant && screenShareParticipant !== localParticipant;
-
   const publications = usePublications(participant);
   const videoPublication = publications.find(p => p.trackName.includes('camera'));
   const screenSharePublication = publications.find(p => p.trackName.includes('screen'));
@@ -105,7 +101,7 @@ export default function MainParticipantInfo({ participant, children }: MainParti
       data-cy-main-participant
       data-cy-participant={participant.identity}
       className={clsx(classes.container, {
-        [classes.fullWidth]: !isRemoteParticipantScreenSharing,
+        [classes.fullWidth]: room!.participants.size === 0,
       })}
     >
       <div className={classes.infoContainer}>

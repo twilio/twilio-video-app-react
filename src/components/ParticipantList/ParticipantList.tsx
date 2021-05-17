@@ -2,6 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import Participant from '../Participant/Participant';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import useDominantSpeaker from '../../hooks/useDominantSpeaker/useDominantSpeaker';
 import useMainParticipant from '../../hooks/useMainParticipant/useMainParticipant';
 import useParticipants from '../../hooks/useParticipants/useParticipants';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
@@ -22,20 +23,20 @@ const useStyles = makeStyles((theme: Theme) =>
         display: 'flex',
       },
     },
-    transparentBackground: {
-      background: 'transparent',
-    },
     scrollContainer: {
       display: 'flex',
       justifyContent: 'center',
     },
     innerScrollContainer: {
-      width: '260px',
+      display: 'flex',
+      flexDirection: 'column',
+      width: `calc(${theme.sidebarWidth}px - 3em)`,
       padding: '2em 0',
       [theme.breakpoints.down('sm')]: {
         width: 'auto',
         padding: `${theme.sidebarMobilePadding}px`,
         display: 'flex',
+        flexDirection: 'row',
       },
     },
   })
@@ -45,20 +46,16 @@ export default function ParticipantList() {
   const classes = useStyles();
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
+  const dominantSpeaker = useDominantSpeaker();
   const participants = useParticipants();
   const [selectedParticipant, setSelectedParticipant] = useSelectedParticipant();
   const screenShareParticipant = useScreenShareParticipant();
   const mainParticipant = useMainParticipant();
-  const isRemoteParticipantScreenSharing = screenShareParticipant && screenShareParticipant !== localParticipant;
 
   if (participants.length === 0) return null; // Don't render this component if there are no remote participants.
 
   return (
-    <aside
-      className={clsx(classes.container, {
-        [classes.transparentBackground]: !isRemoteParticipantScreenSharing,
-      })}
-    >
+    <aside className={clsx(classes.container)}>
       <div className={classes.scrollContainer}>
         <div className={classes.innerScrollContainer}>
           <Participant participant={localParticipant} isLocalParticipant={true} />
@@ -70,6 +67,7 @@ export default function ParticipantList() {
               <Participant
                 key={participant.sid}
                 participant={participant}
+                isDominantSpeaker={participant === dominantSpeaker}
                 isSelected={participant === selectedParticipant}
                 onClick={() => setSelectedParticipant(participant)}
                 hideParticipant={hideParticipant}

@@ -20,7 +20,7 @@ export default function MainParticipant() {
       : null;
 
   return (
-    /* audio is disabled for this participant component because this participant's audio 
+    /* audio is disabled for this participant component because this participant's audio
        is already being rendered in the <ParticipantStrip /> component.  */
     <MainParticipantInfo participant={mainParticipant}>
       <ParticipantTracks
