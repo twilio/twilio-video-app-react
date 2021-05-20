@@ -1,13 +1,11 @@
 import { act, renderHook } from '@testing-library/react-hooks';
 import EventEmitter from 'events';
-import useDominantSpeaker from '../useDominantSpeaker/useDominantSpeaker';
 import useParticipants from './useParticipants';
 import useVideoContext from '../useVideoContext/useVideoContext';
 
 jest.mock('../useVideoContext/useVideoContext');
 jest.mock('../useDominantSpeaker/useDominantSpeaker');
 
-const mockUseDominantSpeaker = useDominantSpeaker as jest.Mock<any>;
 const mockedVideoContext = useVideoContext as jest.Mock<any>;
 
 describe('the useParticipants hook', () => {
