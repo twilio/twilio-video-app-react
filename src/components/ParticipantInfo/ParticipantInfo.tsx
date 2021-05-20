@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       height: 0,
       overflow: 'hidden',
-      marginBottom: '2em',
+      marginBottom: '0.5em',
       '& video': {
         filter: 'none',
         objectFit: 'contain !important',
@@ -40,6 +40,12 @@ const useStyles = makeStyles((theme: Theme) =>
         fontSize: '10px',
         paddingTop: `${theme.sidebarMobileHeight - 2}px`,
       },
+    },
+    dominantSpeaker: {
+      order: -1,
+    },
+    localParticipant: {
+      order: -2,
     },
     innerContainer: {
       position: 'absolute',
@@ -131,6 +137,7 @@ interface ParticipantInfoProps {
   participant: Participant;
   children: React.ReactNode;
   onClick?: () => void;
+  isDominantSpeaker?: boolean;
   isSelected?: boolean;
   isLocalParticipant?: boolean;
   hideParticipant?: boolean;
@@ -139,6 +146,7 @@ interface ParticipantInfoProps {
 export default function ParticipantInfo({
   participant,
   onClick,
+  isDominantSpeaker,
   isSelected,
   children,
   isLocalParticipant,
@@ -163,7 +171,9 @@ export default function ParticipantInfo({
   return (
     <div
       className={clsx(classes.container, {
+        [classes.dominantSpeaker]: isDominantSpeaker,
         [classes.hideParticipant]: hideParticipant,
+        [classes.localParticipant]: isLocalParticipant,
         [classes.cursorPointer]: Boolean(onClick),
       })}
       onClick={onClick}

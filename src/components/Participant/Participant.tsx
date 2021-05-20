@@ -19,6 +19,7 @@ export default function Participant({
   videoOnly,
   enableScreenShare,
   onClick,
+  isDominantSpeaker,
   isSelected,
   isLocalParticipant,
   hideParticipant,
@@ -27,6 +28,7 @@ export default function Participant({
     <ParticipantInfo
       participant={participant}
       onClick={onClick}
+      isDominantSpeaker={isDominantSpeaker}
       isSelected={isSelected}
       isLocalParticipant={isLocalParticipant}
       hideParticipant={hideParticipant}
