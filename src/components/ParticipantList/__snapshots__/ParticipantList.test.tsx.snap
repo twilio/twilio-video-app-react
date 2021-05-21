@@ -16,7 +16,6 @@ exports[`the ParticipantList component should correctly render Participant compo
       />
       <Participant
         hideParticipant={false}
-        isDominantSpeaker={false}
         isSelected={false}
         key="0"
         onClick={[Function]}
@@ -28,7 +27,6 @@ exports[`the ParticipantList component should correctly render Participant compo
       />
       <Participant
         hideParticipant={false}
-        isDominantSpeaker={false}
         isSelected={false}
         key="1"
         onClick={[Function]}
@@ -40,7 +38,6 @@ exports[`the ParticipantList component should correctly render Participant compo
       />
       <Participant
         hideParticipant={false}
-        isDominantSpeaker={false}
         isSelected={true}
         key="2"
         onClick={[Function]}
