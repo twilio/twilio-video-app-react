@@ -14,7 +14,7 @@ const mockRoom = new MockRoom();
 class MockTrack extends EventEmitter {
   kind = '';
   stop = jest.fn();
-  mediaStreamTrack = { getCapabilities: () => ({ deviceId: 'mockDeviceId' }) };
+  mediaStreamTrack = { getSettings: () => ({ deviceId: 'mockDeviceId' }) };
 
   constructor(kind: string) {
     super();

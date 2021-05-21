@@ -93,7 +93,7 @@ export default function useLocalTracks() {
           // in cases where the user's video is disabled.
           window.localStorage.setItem(
             SELECTED_VIDEO_INPUT_KEY,
-            newVideoTrack.mediaStreamTrack.getCapabilities().deviceId ?? ''
+            newVideoTrack.mediaStreamTrack.getSettings().deviceId ?? ''
           );
         }
         if (newAudioTrack) {
