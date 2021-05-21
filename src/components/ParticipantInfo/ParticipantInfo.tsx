@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       height: 0,
       overflow: 'hidden',
-      marginBottom: '2em',
+      marginBottom: '0.5em',
       '& video': {
         filter: 'none',
         objectFit: 'contain !important',
