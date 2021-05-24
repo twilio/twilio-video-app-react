@@ -11,18 +11,16 @@ describe('the useConnectionOptions function', () => {
       trackSwitchOffMode: undefined,
       dominantSpeakerPriority: undefined,
       bandwidthProfileMode: undefined,
-      maxTracks: '',
       maxAudioBitrate: '',
-      renderDimensionLow: undefined,
-      renderDimensionStandard: undefined,
-      renderDimensionHigh: undefined,
+      clientTrackSwitchOffControl: 'manual',
+      contentPreferencesMode: 'auto',
     };
 
     const result = {
       bandwidthProfile: {
         video: {
-          maxTracks: 0,
-          renderDimensions: {},
+          clientTrackSwitchOffControl: 'manual',
+          contentPreferencesMode: 'auto',
         },
       },
       dominantSpeaker: true,
@@ -40,34 +38,19 @@ describe('the useConnectionOptions function', () => {
       trackSwitchOffMode: 'detected',
       dominantSpeakerPriority: 'high',
       bandwidthProfileMode: 'collaboration',
-      maxTracks: '100',
       maxAudioBitrate: '0',
-      renderDimensionLow: 'low',
-      renderDimensionStandard: '960p',
-      renderDimensionHigh: 'wide1080p',
+      contentPreferencesMode: 'auto',
+      clientTrackSwitchOffControl: 'manual',
     };
 
     const result = {
       bandwidthProfile: {
         video: {
           dominantSpeakerPriority: 'high',
-          maxTracks: 100,
           mode: 'collaboration',
-          renderDimensions: {
-            high: {
-              height: 1080,
-              width: 1920,
-            },
-            low: {
-              height: 90,
-              width: 160,
-            },
-            standard: {
-              height: 960,
-              width: 1280,
-            },
-          },
           trackSwitchOffMode: 'detected',
+          contentPreferencesMode: 'auto',
+          clientTrackSwitchOffControl: 'manual',
         },
       },
       dominantSpeaker: true,
@@ -85,11 +68,7 @@ describe('the useConnectionOptions function', () => {
       trackSwitchOffMode: 'detected',
       dominantSpeakerPriority: 'high',
       bandwidthProfileMode: 'collaboration',
-      maxTracks: '100',
       maxAudioBitrate: '0',
-      renderDimensionLow: 'low',
-      renderDimensionStandard: '960p',
-      renderDimensionHigh: 'wide1080p',
     };
 
     mockUseAppState.mockImplementationOnce(() => ({ settings, roomType: 'peer-to-peer' }));
@@ -101,11 +80,7 @@ describe('the useConnectionOptions function', () => {
       trackSwitchOffMode: 'detected',
       dominantSpeakerPriority: 'high',
       bandwidthProfileMode: 'collaboration',
-      maxTracks: '100',
       maxAudioBitrate: '0',
-      renderDimensionLow: 'low',
-      renderDimensionStandard: '960p',
-      renderDimensionHigh: 'wide1080p',
     };
 
     mockUseAppState.mockImplementationOnce(() => ({ settings, roomType: 'go' }));

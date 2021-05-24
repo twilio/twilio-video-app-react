@@ -15,3 +15,8 @@
 
 # Node.js dependencies:
 node_modules/
+
+# Application source and tests
+src/
+cypress/
+coverage/

@@ -1,6 +1,5 @@
 import { ConnectOptions } from 'twilio-video';
 import { isMobile, removeUndefineds } from '..';
-import { getResolution } from '../../state/settings/renderDimensions';
 import { useAppState } from '../../state';
 
 export default function useConnectionOptions() {
@@ -17,13 +16,9 @@ export default function useConnectionOptions() {
       video: {
         mode: settings.bandwidthProfileMode,
         dominantSpeakerPriority: settings.dominantSpeakerPriority,
-        renderDimensions: {
-          low: getResolution(settings.renderDimensionLow),
-          standard: getResolution(settings.renderDimensionStandard),
-          high: getResolution(settings.renderDimensionHigh),
-        },
-        maxTracks: Number(settings.maxTracks),
         trackSwitchOffMode: settings.trackSwitchOffMode,
+        contentPreferencesMode: settings.contentPreferencesMode,
+        clientTrackSwitchOffControl: settings.clientTrackSwitchOffControl,
       },
     },
     dominantSpeaker: true,

@@ -1,3 +1,28 @@
+## 0.4.0 (May 12, 2021)
+
+### New Feature
+
+- This release adds a Start-Stop Recording feature for Group Rooms. This feature allows users to control when to record the contents of the Video Room. Recordings are on a per Track basis and are accessible via the Twilio Console. This feature is powered by the [Twilio Recording Rules API](https://www.twilio.com/docs/video/api/recording-rules). For more information on the Recording Rules API, please see this [blog post](https://www.twilio.com/blog/video-recording-rules-api).
+
+## 0.3.2 (May 11, 2021)
+
+### New Feature
+
+This release upgrades `twilio-video` to version 2.14.0 which contains a significant update to the Bandwidth Profile API. This new version deprecates the `maxTracks` and `renderDimensions` settings and introduces the `clientTrackSwitchOffControl` and `contentPreferencesMode` settings. The "Connection Settings" modal in this app has been updated to reflect these new options.
+
+The `clientTrackSwitchOffControl` and `contentPreferencesMode` settings allow for more efficient use of bandwidth and CPU in multi-party applications. Learn more about these new features in the twilio-video.js [CHANGELOG](https://github.com/twilio/twilio-video.js/blob/master/CHANGELOG.md#2140-may-11-2021).
+
+### Bugfixes
+
+- The appearance of the text input field in the chat window has been improved in Firefox. [#512](https://github.com/twilio/twilio-video-app-react/pull/512).
+- Fix automatic audio track restart in Firefox. [#507](https://github.com/twilio/twilio-video-app-react/pull/507)
+- Fix issue related to the selection of video input devices when the app runs for the first time. [#508](https://github.com/twilio/twilio-video-app-react/pull/508)
+- Display network quality meter for main participant. [#499](https://github.com/twilio/twilio-video-app-react/pull/499)
+
+### Dependency Upgrades
+
+- `twilio-video` has been upgraded from 2.13.1 to 2.14.0. [#506](https://github.com/twilio/twilio-video-app-react/pull/506)
+
 ## 0.3.1 (April 15, 2021)
 
 ### Bugfixes

@@ -17,6 +17,13 @@ describe('the Snackbar component', () => {
     expect(wrapper).toMatchSnapshot();
   });
 
+  it('should render correctly with "info" variant', () => {
+    const wrapper = shallow(
+      <Snackbar variant="info" headline="Test Headline" message="Test Message" handleClose={() => {}} open={true} />
+    );
+    expect(wrapper).toMatchSnapshot();
+  });
+
   it('should render correctly with no handleClose function provided', () => {
     const wrapper = shallow(<Snackbar variant="error" headline="Test Headline" message="Test Message" open={true} />);
     expect(wrapper).toMatchSnapshot();
