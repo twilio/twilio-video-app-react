@@ -59,7 +59,7 @@ export default function useScreenShareToggle(room: Room | null, onError: ErrorCa
     if (room) {
       !isSharing ? shareScreen() : stopScreenShareRef.current();
     }
-  }, [isSharing, shareScreen, stopScreenShareRef, room]);
+  }, [isSharing, shareScreen, room]);
 
   return [isSharing, toggleScreenShare] as const;
 }
