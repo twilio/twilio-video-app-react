@@ -14,6 +14,7 @@ const mockRoom = new MockRoom();
 class MockTrack extends EventEmitter {
   kind = '';
   stop = jest.fn();
+  mediaStreamTrack = { getSettings: () => ({ deviceId: 'mockDeviceId' }) };
 
   constructor(kind: string) {
     super();
@@ -21,18 +22,14 @@ class MockTrack extends EventEmitter {
   }
 }
 
-class MockPreflightTest extends EventEmitter {
-  stop = jest.fn();
-}
-
-const mockPreflightTest = new MockPreflightTest();
-
 const twilioVideo = {
   connect: jest.fn(() => Promise.resolve(mockRoom)),
-  createLocalTracks: jest.fn(() => Promise.resolve([new MockTrack('video'), new MockTrack('audio')])),
-  createLocalVideoTrack: jest.fn(() => Promise.resolve(new MockTrack('video'))),
-  testPreflight: jest.fn(() => mockPreflightTest),
+  createLocalTracks: jest.fn(
+    // Here we use setTimeout so we can control when this function resolves with jest.runAllTimers()
+    () => new Promise(resolve => setTimeout(() => resolve([new MockTrack('video'), new MockTrack('audio')])))
+  ),
+  createLocalVideoTrack: jest.fn(() => new Promise(resolve => setTimeout(() => resolve(new MockTrack('video'))))),
 };
 
-export { mockRoom, mockPreflightTest };
+export { mockRoom };
 export default twilioVideo;

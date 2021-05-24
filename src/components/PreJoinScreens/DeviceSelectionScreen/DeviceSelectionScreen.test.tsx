@@ -13,7 +13,7 @@ const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 
 const mockConnect = jest.fn();
 const mockChatConnect = jest.fn(() => Promise.resolve());
-const mockGetToken = jest.fn(() => Promise.resolve('mockToken'));
+const mockGetToken = jest.fn(() => Promise.resolve({ token: 'mockToken' }));
 
 jest.mock('../../../hooks/useChatContext/useChatContext', () => () => ({ connect: mockChatConnect }));
 jest.mock('../../../hooks/useVideoContext/useVideoContext');

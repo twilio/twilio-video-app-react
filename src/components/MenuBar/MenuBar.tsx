@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     screenShareBanner: {
       position: 'fixed',
-      zIndex: 10,
+      zIndex: 8,
       bottom: `${theme.footerHeight}px`,
       left: 0,
       right: 0,

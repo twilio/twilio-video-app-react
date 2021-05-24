@@ -1,10 +1,43 @@
-## 0.3.0
+## 0.4.0 (May 12, 2021)
+
+### New Feature
+
+- This release adds a Start-Stop Recording feature for Group Rooms. This feature allows users to control when to record the contents of the Video Room. Recordings are on a per Track basis and are accessible via the Twilio Console. This feature is powered by the [Twilio Recording Rules API](https://www.twilio.com/docs/video/api/recording-rules). For more information on the Recording Rules API, please see this [blog post](https://www.twilio.com/blog/video-recording-rules-api).
+
+## 0.3.2 (May 11, 2021)
+
+### New Feature
+
+This release upgrades `twilio-video` to version 2.14.0 which contains a significant update to the Bandwidth Profile API. This new version deprecates the `maxTracks` and `renderDimensions` settings and introduces the `clientTrackSwitchOffControl` and `contentPreferencesMode` settings. The "Connection Settings" modal in this app has been updated to reflect these new options.
+
+The `clientTrackSwitchOffControl` and `contentPreferencesMode` settings allow for more efficient use of bandwidth and CPU in multi-party applications. Learn more about these new features in the twilio-video.js [CHANGELOG](https://github.com/twilio/twilio-video.js/blob/master/CHANGELOG.md#2140-may-11-2021).
+
+### Bugfixes
+
+- The appearance of the text input field in the chat window has been improved in Firefox. [#512](https://github.com/twilio/twilio-video-app-react/pull/512).
+- Fix automatic audio track restart in Firefox. [#507](https://github.com/twilio/twilio-video-app-react/pull/507)
+- Fix issue related to the selection of video input devices when the app runs for the first time. [#508](https://github.com/twilio/twilio-video-app-react/pull/508)
+- Display network quality meter for main participant. [#499](https://github.com/twilio/twilio-video-app-react/pull/499)
+
+### Dependency Upgrades
+
+- `twilio-video` has been upgraded from 2.13.1 to 2.14.0. [#506](https://github.com/twilio/twilio-video-app-react/pull/506)
+
+## 0.3.1 (April 15, 2021)
+
+### Bugfixes
+
+- User can now be heard by other participants after their audio input device is removed. [#487](https://github.com/twilio/twilio-video-app-react/pull/487)
+- Added missing `trackSwitchOffMode` to `connectionOptions` object in `useConnectionOptions` hook. [#488](https://github.com/twilio/twilio-video-app-react/pull/488)
+- Removed preflight test from app. [#489](https://github.com/twilio/twilio-video-app-react/pull/489)
+
+## 0.3.0 (March 31, 2021)
 
 ### New Feature
 
 - This release adds an in-room chat feature. This chat feature allows users to send and receive textual messages and files while connected to a Twilio Video room. This feature is powered by the [Twilio Conversations API](https://www.twilio.com/conversations-api). For more information, please see this [blog post](https://www.twilio.com/blog/open-source-video-chat-app-reactjs-conversations-api).
 
-## 0.2.4
+## 0.2.4 (March 23, 2021)
 
 ### Bugfixes
 
@@ -20,7 +53,7 @@
 - `react-dev-utils` has been upgraded from 11.0.3 to 11.0.4 [#455](https://github.com/twilio/twilio-video-app-react/pull/455)
 - `twilio-video` has been upgraded from 2.11.0 to 2.13.1. [#466](https://github.com/twilio/twilio-video-app-react/pull/466)
 
-## 0.2.3
+## 0.2.3 (February 19, 2021)
 
 ### Bugfixes
 
@@ -30,7 +63,7 @@
 
 - `react-scripts` has been upgraded from 3.4.4 to 4.0.2. [#416](https://github.com/twilio/twilio-video-app-react/pull/416)
 
-## 0.2.2
+## 0.2.2 (February 2, 2021)
 
 ### Bugfixes
 
@@ -46,7 +79,7 @@
 - `twilio-video` has been upgraded to 2.11.0. This version includes TypeScript definitions for twilio-video.js. See the twilio-video.js [CHANGELOG](https://github.com/twilio/twilio-video.js/blob/master/CHANGELOG.md#2110-january-26-2021) for more information. ([#409](https://github.com/twilio/twilio-video-app-react/pull/409))
 - `@types/twilio-video` has been removed. Type definitions are now included in `twilio-video` version 2.11.0.
 
-## 0.2.1
+## 0.2.1 (October 26, 2020)
 
 ### New Features
 
@@ -64,7 +97,7 @@
 - `firebase` has been upgraded from 7.8.0 to 7.24.0 ([#335](https://github.com/twilio/twilio-video-app-react/pull/335))
 - `twilio-video` has been upgraded from 2.8.0-beta.1 to 2.8.0-beta.2. This is to include a bug fix where an iOS 14 Safari Participant is not heard by others in a Room after handling an incoming phone call. ([#344](https://github.com/twilio/twilio-video-app-react/pull/344))
 
-## 0.2.0
+## 0.2.0 (September 30, 2020)
 
 This release contains support for the Programmable Video Go room type and an overhauled UI/UX experience.
 
@@ -80,7 +113,7 @@ Users are then presented with an updated “in room” experience. All of the me
 
 Additionally, all the UI/UX improvements have been implemented on mobile web browsers as well.
 
-## 0.1.0
+## 0.1.0 (March 6, 2020)
 
 This release marks the first iteration of the Twilio Video Collaboration App: a canonical multi-party collaboration video application built with Programmable Video. This application demonstrates the capabilities of Programmable Video and serves as a reference to developers building video apps.
 

@@ -1,12 +1,12 @@
 {
   "name": "twilio-video-app-react",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "private": true,
   "license": "Apache-2.0",
   "dependencies": {
     "@material-ui/core": "^4.9.1",
     "@material-ui/icons": "^4.9.1",
-    "@twilio-labs/plugin-rtc": "^0.8.1",
+    "@twilio-labs/plugin-rtc": "^0.8.2",
     "@twilio/conversations": "^1.1.0",
     "@types/d3-timer": "^1.0.9",
     "@types/dotenv": "^8.2.0",
@@ -39,7 +39,7 @@
     "strip-color": "^0.1.0",
     "ts-node": "^9.1.1",
     "twilio": "^3.57.0",
-    "twilio-video": "^2.13.1",
+    "twilio-video": "^2.14.0",
     "typescript": "^3.8.3"
   },
   "devDependencies": {

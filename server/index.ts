@@ -14,11 +14,16 @@ app.use(express.json());
 const tokenFunction: ServerlessFunction = require('@twilio-labs/plugin-rtc/src/serverless/functions/token').handler;
 const tokenEndpoint = createExpressHandler(tokenFunction);
 
+const recordingRulesFunction: ServerlessFunction = require('@twilio-labs/plugin-rtc/src/serverless/functions/recordingrules')
+  .handler;
+const recordingRulesEndpoint = createExpressHandler(recordingRulesFunction);
+
 const noopMiddleware: RequestHandler = (_, __, next) => next();
 const authMiddleware =
   process.env.REACT_APP_SET_AUTH === 'firebase' ? require('./firebaseAuthMiddleware') : noopMiddleware;
 
 app.all('/token', authMiddleware, tokenEndpoint);
+app.all('/recordingrules', authMiddleware, recordingRulesEndpoint);
 
 app.use((req, res, next) => {
   // Here we add Cache-Control headers in accordance with the create-react-app best practices.
