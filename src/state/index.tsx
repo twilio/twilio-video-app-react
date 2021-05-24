@@ -27,7 +27,7 @@ export interface StateContextType {
 export const StateContext = createContext<StateContextType>(null!);
 
 /*
-  The 'react-hooks/rules-of-hooks' linting rules prevent React Hooks fron being called
+  The 'react-hooks/rules-of-hooks' linting rules prevent React Hooks from being called
   inside of if() statements. This is because hooks must always be called in the same order
   every time a component is rendered. The 'react-hooks/rules-of-hooks' rule is disabled below
   because the "if (process.env.REACT_APP_SET_AUTH === 'firebase')" statements are evaluated
