@@ -1,5 +1,4 @@
 import { shallow } from 'enzyme';
-import CloseIcon from '@material-ui/icons/Close';
 import React from 'react';
 import Snackbar from './Snackbar';
 
@@ -14,6 +13,13 @@ describe('the Snackbar component', () => {
   it('should render correctly with "error" variant', () => {
     const wrapper = shallow(
       <Snackbar variant="error" headline="Test Headline" message="Test Message" handleClose={() => {}} open={true} />
+    );
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should render correctly with "info" variant', () => {
+    const wrapper = shallow(
+      <Snackbar variant="info" headline="Test Headline" message="Test Message" handleClose={() => {}} open={true} />
     );
     expect(wrapper).toMatchSnapshot();
   });

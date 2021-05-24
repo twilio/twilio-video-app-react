@@ -38,8 +38,8 @@ describe('the ConnectionOptionsDialog component', () => {
       const wrapper = shallow(<ConnectionOptionsDialog open={true} onClose={() => {}} />);
       wrapper
         .find(TextField)
-        .find({ name: 'maxTracks' })
-        .simulate('change', { target: { value: '123456a', name: 'maxTracks' } });
+        .find({ name: 'maxAudioBitrate' })
+        .simulate('change', { target: { value: '123456a', name: 'maxAudioBitrate' } });
       expect(mockDispatchSetting).not.toHaveBeenCalled();
     });
 
@@ -47,9 +47,9 @@ describe('the ConnectionOptionsDialog component', () => {
       const wrapper = shallow(<ConnectionOptionsDialog open={true} onClose={() => {}} />);
       wrapper
         .find(TextField)
-        .find({ name: 'maxTracks' })
-        .simulate('change', { target: { value: '123456', name: 'maxTracks' } });
-      expect(mockDispatchSetting).toHaveBeenCalledWith({ value: '123456', name: 'maxTracks' });
+        .find({ name: 'maxAudioBitrate' })
+        .simulate('change', { target: { value: '123456', name: 'maxAudioBitrate' } });
+      expect(mockDispatchSetting).toHaveBeenCalledWith({ value: '123456', name: 'maxAudioBitrate' });
     });
   });
 

@@ -8,9 +8,8 @@ import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 export default function MainParticipant() {
   const mainParticipant = useMainParticipant();
-  const {
-    room: { localParticipant },
-  } = useVideoContext();
+  const { room } = useVideoContext();
+  const localParticipant = room!.localParticipant;
   const [selectedParticipant] = useSelectedParticipant();
   const screenShareParticipant = useScreenShareParticipant();
 

@@ -17,7 +17,6 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { inputLabels, Settings } from '../../state/settings/settingsReducer';
-import { RenderDimensions } from '../../state/settings/renderDimensions';
 import { useAppState } from '../../state';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 
@@ -53,12 +52,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const withDefault = (val?: string) => (typeof val === 'undefined' ? 'default' : val);
-
-const RenderDimensionItems = RenderDimensions.map(({ label, value }) => (
-  <MenuItem value={value} key={value}>
-    {label}
-  </MenuItem>
-));
 
 export default function ConnectionOptionsDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
   const classes = useStyles();
@@ -143,18 +136,38 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
                 <MenuItem value="default">Server Default</MenuItem>
               </Select>
             </FormControl>
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <FormControl className={classes.formControl}>
+              <InputLabel id={inputLabels.clientTrackSwitchOffControl}>Client Track Switch Off Control:</InputLabel>
+              <Select
+                fullWidth
+                disabled={isDisabled}
+                name={inputLabels.clientTrackSwitchOffControl}
+                label={inputLabels.clientTrackSwitchOffControl}
+                value={withDefault(settings.clientTrackSwitchOffControl)}
+                onChange={handleChange}
+              >
+                <MenuItem value="auto">Auto</MenuItem>
+                <MenuItem value="manual">Manual</MenuItem>
+                <MenuItem value="default">Default</MenuItem>
+              </Select>
+            </FormControl>
 
             <FormControl className={classes.formControl}>
-              <TextField
-                disabled={isDisabled}
+              <InputLabel id={inputLabels.contentPreferencesMode}>Content Preferences Mode:</InputLabel>
+              <Select
                 fullWidth
-                id={inputLabels.maxTracks}
-                label="Max Tracks"
-                placeholder="Leave blank for no limit"
-                name={inputLabels.maxTracks}
-                value={withDefault(settings.maxTracks)}
-                onChange={handleNumberChange}
-              />
+                disabled={isDisabled}
+                name={inputLabels.contentPreferencesMode}
+                label={inputLabels.contentPreferencesMode}
+                value={withDefault(settings.contentPreferencesMode)}
+                onChange={handleChange}
+              >
+                <MenuItem value="auto">Auto</MenuItem>
+                <MenuItem value="manual">Manual</MenuItem>
+                <MenuItem value="default">Default</MenuItem>
+              </Select>
             </FormControl>
 
             <FormControl className={classes.formControl}>
@@ -168,55 +181,6 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
                 value={withDefault(settings.maxAudioBitrate)}
                 onChange={handleNumberChange}
               />
-            </FormControl>
-          </Grid>
-          <Grid item sm={6} xs={12}>
-            <FormControl fullWidth className={classes.formControl}>
-              <InputLabel id={inputLabels.renderDimensionLow} className={classes.label}>
-                Render Dimension (Low Priority):
-              </InputLabel>
-              <Select
-                fullWidth
-                disabled={isDisabled}
-                name={inputLabels.renderDimensionLow}
-                label={inputLabels.renderDimensionLow}
-                value={withDefault(settings.renderDimensionLow)}
-                onChange={handleChange}
-              >
-                {RenderDimensionItems}
-              </Select>
-            </FormControl>
-
-            <FormControl fullWidth className={classes.formControl}>
-              <InputLabel id={inputLabels.renderDimensionStandard} className={classes.label}>
-                Render Dimension (Standard Priority):
-              </InputLabel>
-              <Select
-                fullWidth
-                disabled={isDisabled}
-                name={inputLabels.renderDimensionStandard}
-                label={inputLabels.renderDimensionStandard}
-                value={withDefault(settings.renderDimensionStandard)}
-                onChange={handleChange}
-              >
-                {RenderDimensionItems}
-              </Select>
-            </FormControl>
-
-            <FormControl fullWidth className={classes.formControl}>
-              <InputLabel id={inputLabels.renderDimensionHigh} className={classes.label}>
-                Render Dimension (High Priority):
-              </InputLabel>
-              <Select
-                fullWidth
-                disabled={isDisabled}
-                name={inputLabels.renderDimensionHigh}
-                label={inputLabels.renderDimensionHigh}
-                value={withDefault(settings.renderDimensionHigh)}
-                onChange={handleChange}
-              >
-                {RenderDimensionItems}
-              </Select>
             </FormControl>
           </Grid>
         </Grid>

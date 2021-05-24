@@ -12,11 +12,11 @@ import DeviceSelectionDialog from '../../../DeviceSelectionDialog/DeviceSelectio
 import SettingsIcon from '../../../../icons/SettingsIcon';
 import { useAppState } from '../../../../state';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles({
   settingsButton: {
     margin: '1.8em 0 0',
   },
-}));
+});
 
 export default function SettingsMenu({ mobileButtonClass }: { mobileButtonClass?: string }) {
   const classes = useStyles();
@@ -56,11 +56,11 @@ export default function SettingsMenu({ mobileButtonClass }: { mobileButtonClass?
         anchorEl={anchorRef.current}
         getContentAnchorEl={null}
         anchorOrigin={{
-          vertical: 'bottom',
+          vertical: 'top',
           horizontal: isMobile ? 'left' : 'right',
         }}
         transformOrigin={{
-          vertical: isMobile ? -55 : -45,
+          vertical: 0,
           horizontal: 'center',
         }}
       >

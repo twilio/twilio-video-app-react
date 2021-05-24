@@ -155,37 +155,5 @@ describe('the useLocalVideoToggle hook', () => {
       await waitForNextUpdate();
       expect(mockOnError).toHaveBeenCalledWith('mockError');
     });
-
-    it('should call getLocalVideoTrack with the deviceId of the previously active track', async () => {
-      const mockGetLocalVideoTrack = jest.fn(() => Promise.resolve('mockTrack'));
-
-      mockUseVideoContext.mockImplementation(() => ({
-        localTracks: [getMockTrack('camera', 'testDeviceID')],
-        room: { localParticipant: null },
-        removeLocalVideoTrack: jest.fn(),
-        getLocalVideoTrack: mockGetLocalVideoTrack,
-      }));
-
-      const { result, rerender, waitForNextUpdate } = renderHook(useLocalVideoToggle);
-
-      // Remove existing track
-      result.current[1]();
-
-      mockUseVideoContext.mockImplementation(() => ({
-        localTracks: [],
-        room: { localParticipant: null },
-        removeLocalVideoTrack: jest.fn(),
-        getLocalVideoTrack: mockGetLocalVideoTrack,
-      }));
-      rerender();
-
-      await act(async () => {
-        // Get new video track
-        result.current[1]();
-        await waitForNextUpdate();
-      });
-
-      expect(mockGetLocalVideoTrack).toHaveBeenCalledWith({ deviceId: { exact: 'testDeviceID' } });
-    });
   });
 });

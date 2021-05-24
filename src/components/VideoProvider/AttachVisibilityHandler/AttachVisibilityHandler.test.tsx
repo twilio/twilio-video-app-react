@@ -3,15 +3,18 @@ import AttachVisibilityHandler from './AttachVisibilityHandler';
 import useLocalVideoToggle from '../../../hooks/useLocalVideoToggle/useLocalVideoToggle';
 import { render } from '@testing-library/react';
 import * as utils from '../../../utils';
+import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
-jest.mock('../../../hooks/useVideoContext/useVideoContext', () => () => ({ room: {} }));
+jest.mock('../../../hooks/useVideoContext/useVideoContext');
 jest.mock('../../../hooks/useLocalVideoToggle/useLocalVideoToggle');
 
+const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 const mockUseLocalVideoToggle = useLocalVideoToggle as jest.Mock<any>;
 const mockToggleVideoEnabled = jest.fn();
 
 Object.defineProperty(document, 'visibilityState', { value: '', writable: true });
 mockUseLocalVideoToggle.mockImplementation(() => [true, mockToggleVideoEnabled]);
+mockUseVideoContext.mockImplementation(() => ({ room: {} }));
 
 describe('the AttachVisibilityHandler component', () => {
   describe('when isMobile is false', () => {
@@ -69,6 +72,13 @@ describe('the AttachVisibilityHandler component', () => {
       document.visibilityState = 'visible';
       document.dispatchEvent(new Event('visibilitychange'));
       expect(mockToggleVideoEnabled).not.toHaveBeenCalled();
+    });
+
+    it('should not add a visibilitychange event handler to the document when a room does not exist', () => {
+      mockUseVideoContext.mockImplementationOnce(() => ({}));
+      jest.spyOn(document, 'addEventListener');
+      render(<AttachVisibilityHandler />);
+      expect(document.addEventListener).not.toHaveBeenCalled();
     });
   });
 });

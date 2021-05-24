@@ -9,7 +9,6 @@ interface ParticipantProps {
   enableScreenShare?: boolean;
   onClick?: () => void;
   isSelected?: boolean;
-  isDominantSpeaker?: boolean;
   isLocalParticipant?: boolean;
   hideParticipant?: boolean;
 }

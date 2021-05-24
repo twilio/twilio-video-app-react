@@ -10,6 +10,7 @@ declare module '@material-ui/core/styles/createMuiTheme' {
     mobileFooterHeight: number;
     sidebarMobilePadding: number;
     participantBorderWidth: number;
+    chatWindowWidth: number;
   }
 
   // allow configuration using `createMuiTheme`
@@ -22,6 +23,7 @@ declare module '@material-ui/core/styles/createMuiTheme' {
     mobileFooterHeight: number;
     sidebarMobilePadding: number;
     participantBorderWidth: number;
+    chatWindowWidth?: number;
   }
 }
 
@@ -116,9 +118,10 @@ export default createMuiTheme({
   brand: '#E22525',
   footerHeight: 72,
   mobileFooterHeight: 56,
-  sidebarWidth: 355,
+  sidebarWidth: 300,
   sidebarMobileHeight: 90,
   sidebarMobilePadding: 8,
   participantBorderWidth: 2,
   mobileTopBarHeight: 52,
+  chatWindowWidth: 320,
 });

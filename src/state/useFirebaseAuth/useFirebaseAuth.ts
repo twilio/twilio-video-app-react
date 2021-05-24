@@ -15,24 +15,61 @@ export default function useFirebaseAuth() {
   const [isAuthReady, setIsAuthReady] = useState(false);
 
   const getToken = useCallback(
-    async (identity: string, roomName: string) => {
+    async (user_identity: string, room_name: string) => {
       const headers = new window.Headers();
 
       const idToken = await user!.getIdToken();
       headers.set('Authorization', idToken);
+      headers.set('content-type', 'application/json');
 
       const endpoint = process.env.REACT_APP_TOKEN_ENDPOINT || '/token';
-      const params = new window.URLSearchParams({ identity, roomName });
 
-      return fetch(`${endpoint}?${params}`, { headers }).then(res => res.text());
+      return fetch(endpoint, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          user_identity,
+          room_name,
+          create_conversation: process.env.REACT_APP_DISABLE_TWILIO_CONVERSATIONS !== 'true',
+        }),
+      }).then(res => res.json());
+    },
+    [user]
+  );
+
+  const updateRecordingRules = useCallback(
+    async (room_sid, rules) => {
+      const headers = new window.Headers();
+
+      const idToken = await user!.getIdToken();
+      headers.set('Authorization', idToken);
+      headers.set('content-type', 'application/json');
+
+      return fetch('/recordingrules', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ room_sid, rules }),
+      }).then(async res => {
+        const jsonResponse = await res.json();
+
+        if (!res.ok) {
+          const recordingError = new Error(
+            jsonResponse.error?.message || 'There was an error updating recording rules'
+          );
+          recordingError.code = jsonResponse.error?.code;
+          return Promise.reject(recordingError);
+        }
+
+        return jsonResponse;
+      });
     },
     [user]
   );
 
   useEffect(() => {
     firebase.initializeApp(firebaseConfig);
-    firebase.auth().onAuthStateChanged(user => {
-      setUser(user);
+    firebase.auth().onAuthStateChanged(newUser => {
+      setUser(newUser);
       setIsAuthReady(true);
     });
   }, []);
@@ -44,8 +81,8 @@ export default function useFirebaseAuth() {
     return firebase
       .auth()
       .signInWithPopup(provider)
-      .then(user => {
-        setUser(user.user);
+      .then(newUser => {
+        setUser(newUser.user);
       });
   }, []);
 
@@ -58,5 +95,5 @@ export default function useFirebaseAuth() {
       });
   }, []);
 
-  return { user, signIn, signOut, isAuthReady, getToken };
+  return { user, signIn, signOut, isAuthReady, getToken, updateRecordingRules };
 }

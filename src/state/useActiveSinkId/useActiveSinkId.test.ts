@@ -1,12 +1,12 @@
 import { act, renderHook } from '@testing-library/react-hooks';
 import { SELECTED_AUDIO_OUTPUT_KEY } from '../../constants';
 import useActiveSinkId from './useActiveSinkId';
-import { useAudioOutputDevices } from '../../hooks/deviceHooks/deviceHooks';
+import useDevices from '../../hooks/useDevices/useDevices';
 
-jest.mock('../../hooks/deviceHooks/deviceHooks');
-const mockUseAudioOutputDevices = useAudioOutputDevices as jest.Mock<any>;
+jest.mock('../../hooks/useDevices/useDevices');
+const mockUseDevices = useDevices as jest.Mock<any>;
 
-mockUseAudioOutputDevices.mockImplementation(() => []);
+mockUseDevices.mockImplementation(() => ({ audioOutputDevices: [] }));
 
 describe('the useActiveSinkId hook', () => {
   beforeEach(() => window.localStorage.clear());
@@ -20,7 +20,7 @@ describe('the useActiveSinkId hook', () => {
     window.localStorage.setItem(SELECTED_AUDIO_OUTPUT_KEY, 'mockAudioOutputDeviceID');
     const { result, rerender } = renderHook(useActiveSinkId);
 
-    mockUseAudioOutputDevices.mockImplementationOnce(() => [{ deviceId: 'mockAudioOutputDeviceID' }]);
+    mockUseDevices.mockImplementationOnce(() => ({ audioOutputDevices: [{ deviceId: 'mockAudioOutputDeviceID' }] }));
     rerender();
 
     expect(result.current[0]).toBe('mockAudioOutputDeviceID');
@@ -30,7 +30,7 @@ describe('the useActiveSinkId hook', () => {
     window.localStorage.setItem(SELECTED_AUDIO_OUTPUT_KEY, 'anotherMockAudioOutputDeviceID');
     const { result, rerender } = renderHook(useActiveSinkId);
 
-    mockUseAudioOutputDevices.mockImplementationOnce(() => [{ deviceId: 'mockAudioOutputDeviceID' }]);
+    mockUseDevices.mockImplementationOnce(() => ({ audioOutputDevices: [{ deviceId: 'mockAudioOutputDeviceID' }] }));
     rerender();
 
     expect(result.current[0]).toBe('default');
