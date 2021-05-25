@@ -34,3 +34,18 @@ export async function getDeviceInfo() {
     hasVideoInputDevices: devices.some(device => device.kind === 'videoinput'),
   };
 }
+
+// This function will return 'true' when the specified permission has been denied by the user.
+// If the API doesn't exist, or the query function returns an error, 'false' will be returned.
+export async function isPermissionDenied(name: PermissionName) {
+  if (navigator.permissions) {
+    try {
+      const result = await navigator.permissions.query({ name });
+      return result.state === 'denied';
+    } catch {
+      return false;
+    }
+  } else {
+    return false;
+  }
+}

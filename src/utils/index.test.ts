@@ -1,4 +1,4 @@
-import { getDeviceInfo, removeUndefineds } from '.';
+import { getDeviceInfo, isPermissionDenied, removeUndefineds } from '.';
 
 describe('the removeUndefineds function', () => {
   it('should recursively remove any object keys with a value of undefined', () => {
@@ -93,5 +93,35 @@ describe('the getDeviceInfo function', () => {
       ]);
     const result = await getDeviceInfo();
     expect(result.hasVideoInputDevices).toBe(false);
+  });
+});
+
+describe('the isPermissionsDenied function', () => {
+  it('should return false when navigator.permissions does not exist', () => {
+    // @ts-ignore
+    navigator.permissions = undefined;
+
+    expect(isPermissionDenied('camera')).resolves.toBe(false);
+  });
+
+  it('should return false when navigator.permissions.query throws an error', () => {
+    // @ts-ignore
+    navigator.permissions = { query: () => Promise.reject() };
+
+    expect(isPermissionDenied('camera')).resolves.toBe(false);
+  });
+
+  it('should return false when navigator.permissions.query returns "granted"', () => {
+    // @ts-ignore
+    navigator.permissions = { query: () => Promise.resolve({ state: 'granted' }) };
+
+    expect(isPermissionDenied('camera')).resolves.toBe(false);
+  });
+
+  it('should return true when navigator.permissions.query returns "denied"', () => {
+    // @ts-ignore
+    navigator.permissions = { query: () => Promise.resolve({ state: 'denied' }) };
+
+    expect(isPermissionDenied('camera')).resolves.toBe(true);
   });
 });
