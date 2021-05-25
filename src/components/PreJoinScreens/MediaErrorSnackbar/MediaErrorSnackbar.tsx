@@ -11,10 +11,12 @@ export function getSnackbarContent(hasAudio: boolean, hasVideo: boolean, error?:
     // These custom errors are thrown by the useLocalTracks hook. They are thrown when the user explicitly denies
     // permission to only their camera, or only their microphone.
     case error?.message === 'CameraPermissionsDenied':
+      headline = 'Unable to Access Media:';
       message =
         'The user has denied permission to use video. Please grant permission to the browser to access the camera.';
       break;
     case error?.message === 'MicrophonePermissionsDenied':
+      headline = 'Unable to Access Media:';
       message =
         'The user has denied permission to use audio. Please grant permission to the browser to access the microphone.';
       break;

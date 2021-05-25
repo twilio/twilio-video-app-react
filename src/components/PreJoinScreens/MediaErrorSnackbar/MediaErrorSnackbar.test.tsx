@@ -146,7 +146,7 @@ describe('the getSnackbarContent function', () => {
     const results = getSnackbarContent(true, true, error);
     expect(results).toMatchInlineSnapshot(`
       Object {
-        "headline": "",
+        "headline": "Unable to Access Media:",
         "message": "The user has denied permission to use video. Please grant permission to the browser to access the camera.",
       }
     `);
@@ -157,7 +157,7 @@ describe('the getSnackbarContent function', () => {
     const results = getSnackbarContent(true, true, error);
     expect(results).toMatchInlineSnapshot(`
       Object {
-        "headline": "",
+        "headline": "Unable to Access Media:",
         "message": "The user has denied permission to use audio. Please grant permission to the browser to access the microphone.",
       }
     `);
