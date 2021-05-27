@@ -76,6 +76,23 @@ describe('the useLocalTracks hook', () => {
       });
     });
 
+    it('should not create any tracks when microphone and camera permissions have been denied', async () => {
+      mockIsPermissionDenied.mockImplementation(name => Promise.resolve(true));
+      const { result } = renderHook(useLocalTracks);
+
+      const expectedError = new Error();
+      expectedError.name = 'NotAllowedError';
+
+      await act(async () => {
+        await expect(result.current.getAudioAndVideoTracks()).rejects.toThrow(expectedError);
+      });
+
+      expect(Video.createLocalTracks).toHaveBeenCalledWith({
+        audio: false,
+        video: false,
+      });
+    });
+
     it('should correctly create local audio and video tracks when selected device IDs are available in localStorage', async () => {
       window.localStorage.setItem(SELECTED_VIDEO_INPUT_KEY, 'mockVideoDeviceId');
       window.localStorage.setItem(SELECTED_AUDIO_INPUT_KEY, 'mockAudioDeviceId');

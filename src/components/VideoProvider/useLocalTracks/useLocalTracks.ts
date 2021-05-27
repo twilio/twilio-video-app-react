@@ -111,6 +111,12 @@ export default function useLocalTracks() {
         }
 
         // These custom errors will be picked up by the MediaErrorSnackbar component.
+        if (isCameraPermissionDenied && isMicrophonePermissionDenied) {
+          const error = new Error();
+          error.name = 'NotAllowedError';
+          throw error;
+        }
+
         if (isCameraPermissionDenied) {
           throw new Error('CameraPermissionsDenied');
         }
