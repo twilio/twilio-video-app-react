@@ -77,7 +77,7 @@ describe('the useLocalTracks hook', () => {
     });
 
     it('should not create any tracks when microphone and camera permissions have been denied', async () => {
-      mockIsPermissionDenied.mockImplementation(name => Promise.resolve(true));
+      mockIsPermissionDenied.mockImplementation(() => Promise.resolve(true));
       const { result } = renderHook(useLocalTracks);
 
       const expectedError = new Error();
