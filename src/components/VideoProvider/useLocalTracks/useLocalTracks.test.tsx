@@ -1,11 +1,12 @@
 import { act, renderHook } from '@testing-library/react-hooks';
-import { getDeviceInfo } from '../../../utils';
+import { getDeviceInfo, isPermissionDenied } from '../../../utils';
 import { SELECTED_AUDIO_INPUT_KEY, SELECTED_VIDEO_INPUT_KEY, DEFAULT_VIDEO_CONSTRAINTS } from '../../../constants';
 import useLocalTracks from './useLocalTracks';
 import Video from 'twilio-video';
 
 jest.mock('../../../utils');
 const mockGetDeviceInfo = getDeviceInfo as jest.Mock<any>;
+const mockIsPermissionDenied = isPermissionDenied as jest.Mock<Promise<boolean>>;
 
 describe('the useLocalTracks hook', () => {
   beforeEach(() => {
@@ -18,6 +19,7 @@ describe('the useLocalTracks hook', () => {
         hasVideoInputDevices: true,
       })
     );
+    mockIsPermissionDenied.mockImplementation(() => Promise.resolve(false));
   });
   afterEach(jest.clearAllMocks);
   afterEach(() => window.localStorage.clear());
@@ -38,6 +40,56 @@ describe('the useLocalTracks hook', () => {
           height: 720,
           name: 'camera-123456',
         },
+      });
+    });
+
+    it('should not create a local video track when camera permission has been denied', async () => {
+      mockIsPermissionDenied.mockImplementation(name => Promise.resolve(name === 'camera'));
+      const { result } = renderHook(useLocalTracks);
+
+      await act(async () => {
+        await expect(result.current.getAudioAndVideoTracks()).rejects.toThrow('CameraPermissionsDenied');
+      });
+
+      expect(Video.createLocalTracks).toHaveBeenCalledWith({
+        audio: true,
+        video: false,
+      });
+    });
+
+    it('should not create a local audio track when microphone permission has been denied', async () => {
+      mockIsPermissionDenied.mockImplementation(name => Promise.resolve(name === 'microphone'));
+      const { result } = renderHook(useLocalTracks);
+
+      await act(async () => {
+        await expect(result.current.getAudioAndVideoTracks()).rejects.toThrow('MicrophonePermissionsDenied');
+      });
+
+      expect(Video.createLocalTracks).toHaveBeenCalledWith({
+        audio: false,
+        video: {
+          frameRate: 24,
+          width: 1280,
+          height: 720,
+          name: 'camera-123456',
+        },
+      });
+    });
+
+    it('should not create any tracks when microphone and camera permissions have been denied', async () => {
+      mockIsPermissionDenied.mockImplementation(() => Promise.resolve(true));
+      const { result } = renderHook(useLocalTracks);
+
+      const expectedError = new Error();
+      expectedError.name = 'NotAllowedError';
+
+      await act(async () => {
+        await expect(result.current.getAudioAndVideoTracks()).rejects.toThrow(expectedError);
+      });
+
+      expect(Video.createLocalTracks).toHaveBeenCalledWith({
+        audio: false,
+        video: false,
       });
     });
 

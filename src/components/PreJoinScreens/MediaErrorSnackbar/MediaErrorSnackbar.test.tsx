@@ -140,4 +140,26 @@ describe('the getSnackbarContent function', () => {
       }
     `);
   });
+
+  it('should return the correct content when there is a CameraPermissionsDenied error', () => {
+    const error = new Error('CameraPermissionsDenied');
+    const results = getSnackbarContent(true, true, error);
+    expect(results).toMatchInlineSnapshot(`
+      Object {
+        "headline": "Unable to Access Media:",
+        "message": "The user has denied permission to use video. Please grant permission to the browser to access the camera.",
+      }
+    `);
+  });
+
+  it('should return the correct content when there is a MicrophonePermissionsDenied error', () => {
+    const error = new Error('MicrophonePermissionsDenied');
+    const results = getSnackbarContent(true, true, error);
+    expect(results).toMatchInlineSnapshot(`
+      Object {
+        "headline": "Unable to Access Media:",
+        "message": "The user has denied permission to use audio. Please grant permission to the browser to access the microphone.",
+      }
+    `);
+  });
 });
