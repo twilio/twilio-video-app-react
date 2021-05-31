@@ -41,7 +41,7 @@ export default function ThankYouScreen() {
     event.preventDefault();
     if (URLFrom) {
       if (URLFrom !== 'iframe') {
-        window.open(URLFrom, '_system');
+        window.open(`${URLFrom}://`, '_system');
       }
     }
   };
