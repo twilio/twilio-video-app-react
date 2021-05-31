@@ -16,15 +16,14 @@ export enum Steps {
 export default function PreJoinScreens() {
   const { user } = useAppState();
   const { getAudioAndVideoTracks } = useVideoContext();
-  const { URLRoomName }: any = useParams();
-  const { URLName }: any = useParams();
+  const { URLRoomName, URLParticipantName, URLFrom }: any = useParams();
   const [step, setStep] = useState(Steps.roomNameStep);
 
   const [name, setName] = useState<string>(user?.displayName || '');
   const [roomName, setRoomName] = useState<string>('');
 
   const [mediaError, setMediaError] = useState<Error>();
-  const [error, setError] = useState<Error | null>(null);
+  const [validationError, setValidationError] = useState<Error | null>(null);
 
   useEffect(() => {
     if (URLRoomName) {
@@ -33,10 +32,15 @@ export default function PreJoinScreens() {
         setStep(Steps.deviceSelectionStep);
       }
     }
-    if (URLName) {
-      setName(URLName);
+    if (URLParticipantName) {
+      setName(URLParticipantName);
     }
-    if (URLRoomName && URLName) {
+    if (URLFrom) {
+      sessionStorage.setItem('URLFrom', URLFrom);
+    } else {
+      sessionStorage.removeItem('URLFrom');
+    }
+    if (URLRoomName && URLParticipantName) {
       if (window.history && window.history.pushState) {
         window.history.pushState(
           {},
@@ -46,7 +50,7 @@ export default function PreJoinScreens() {
       }
       setStep(Steps.deviceSelectionStep);
     }
-  }, [user, URLRoomName, URLName]);
+  }, [user, URLRoomName, URLParticipantName, URLFrom]);
 
   useEffect(() => {
     if (step === Steps.deviceSelectionStep && !mediaError) {
@@ -62,7 +66,7 @@ export default function PreJoinScreens() {
     event.preventDefault();
 
     if (roomName.length !== 36) {
-      setError(new Error('O código do atendimento é inválido'));
+      setValidationError(new Error('O código do atendimento é inválido'));
       return;
     }
 
@@ -75,7 +79,7 @@ export default function PreJoinScreens() {
 
   return (
     <IntroContainer>
-      <ErrorDialog dismissError={() => setError(null)} error={error} />
+      <ErrorDialog dismissError={() => setValidationError(null)} error={validationError} />
       <MediaErrorSnackbar error={mediaError} />
       {step === Steps.roomNameStep && (
         <RoomNameScreen

@@ -1,10 +1,9 @@
 import React from 'react';
 import clsx from 'clsx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-
 import { Button } from '@material-ui/core';
-
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -19,18 +18,20 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function EndCallButton(props: { className?: string }) {
+  const history = useHistory();
   const classes = useStyles();
   const { room } = useVideoContext();
 
-  const disconnect = () => {
-    room!.disconnect();
+  const disconnectIt = () => {
+    history.push('/thankyou');
     setTimeout(() => {
-      window.location.href = `${window.location.protocol}//${window.location.host}`;
-    }, 500);
+      room!.disconnect();
+      console.log('disconnected');
+    }, 200);
   };
 
   return (
-    <Button onClick={() => disconnect()} className={clsx(classes.button, props.className)} data-cy-disconnect>
+    <Button onClick={() => disconnectIt()} className={clsx(classes.button, props.className)} data-cy-disconnect>
       Sair
     </Button>
   );

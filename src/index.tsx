@@ -16,6 +16,7 @@ import { ChatProvider } from './components/ChatProvider';
 import { VideoProvider } from './components/VideoProvider';
 import useConnectionOptions from './utils/useConnectionOptions/useConnectionOptions';
 import UnsupportedBrowserWarning from './components/UnsupportedBrowserWarning/UnsupportedBrowserWarning';
+import ThankYouScreen from './components/PreJoinScreens/ThankYouScreen/ThankYouScreen';
 
 const VideoApp = () => {
   const { error, setError } = useAppState();
@@ -44,9 +45,15 @@ ReactDOM.render(
             <PrivateRoute path="/room/:URLRoomName">
               <VideoApp />
             </PrivateRoute>
-            <PrivateRoute path="/participant/:URLName/room/:URLRoomName">
+            <PrivateRoute path="/participant/:URLParticipantName/room/:URLRoomName/from/:URLFrom">
               <VideoApp />
             </PrivateRoute>
+            <PrivateRoute path="/participant/:URLParticipantName/room/:URLRoomName">
+              <VideoApp />
+            </PrivateRoute>
+            <Route path="/thankyou">
+              <ThankYouScreen />
+            </Route>
             <Route path="/login">
               <LoginPage />
             </Route>

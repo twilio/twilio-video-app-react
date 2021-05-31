@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'center',
     background: 'rgb(40, 42, 43)',
     height: '100%',
+    padding: '8px',
   },
   container: {
     position: 'relative',
