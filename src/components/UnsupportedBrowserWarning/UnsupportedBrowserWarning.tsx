@@ -17,8 +17,8 @@ const useStyles = makeStyles({
 
 export default function UnsupportedBrowserWarning({ children }: { children: React.ReactElement }) {
   const classes = useStyles();
-
-  if (!Video.isSupported) {
+  let shouldByPass = true;
+  if (!Video.isSupported && !shouldByPass) {
     return (
       <Container>
         <Grid container justify="center" className={classes.container}>
