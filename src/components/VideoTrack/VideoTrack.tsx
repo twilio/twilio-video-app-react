@@ -45,5 +45,5 @@ export default function VideoTrack({ track, isLocal, priority }: VideoTrackProps
     objectFit: isPortrait || track.name.includes('screen') ? ('contain' as const) : ('cover' as const),
   };
 
-  return <Video ref={ref} style={style} playsInline autoPlay controls={false} />;
+  return <Video ref={ref} style={style} playsInline={true} autoPlay={true} controls={false} />;
 }
