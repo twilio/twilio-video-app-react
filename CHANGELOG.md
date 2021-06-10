@@ -1,3 +1,14 @@
+## 0.4.1 (June 10, 2021)
+
+### Bugfixes
+
+- Error messages have been improved on the Device Selection Screen when a user denies permission for audio, video, or both. [#530](https://github.com/twilio/twilio-video-app-react/pull/530)
+- Fix issue where users were unable to acquire audio in Firefox. [#526](https://github.com/twilio/twilio-video-app-react/pull/526)
+- The size of the thumbnails in the Participants list has been reduced as well as the gap in between each of them. [#524](https://github.com/twilio/twilio-video-app-react/pull/524)
+
+### Thanks!
+- Thank you to @hanhlee [#527](https://github.com/twilio/twilio-video-app-react/pull/527), @t4nmoy [#528](https://github.com/twilio/twilio-video-app-react/pull/528), and @arturodr [#529](https://github.com/twilio/twilio-video-app-react/pull/529) for your help with detecting typos and unnecessary dependencies!
+
 ## 0.4.0 (May 12, 2021)
 
 ### New Feature
