@@ -1,7 +1,9 @@
 import React, { useState, useRef } from 'react';
 import AboutDialog from '../../AboutDialog/AboutDialog';
 import DeviceSelectionDialog from '../../DeviceSelectionDialog/DeviceSelectionDialog';
+import BackgroundSelectionDialog from '../../BackgroundSelectionDialog/BackgroundSelectionDialog';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import PortraitIcon from '@material-ui/icons/Portrait';
 import InfoIconOutlined from '../../../icons/InfoIconOutlined';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import StartRecordingIcon from '../../../icons/StartRecordingIcon';
@@ -28,6 +30,7 @@ export default function Menu(props: { buttonClassName?: string }) {
   const [aboutOpen, setAboutOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [backgroundOpen, setBackgroundOpen] = useState(false);
 
   const { isFetching, updateRecordingRules, roomType } = useAppState();
   const { room } = useVideoContext();
@@ -99,6 +102,18 @@ export default function Menu(props: { buttonClassName?: string }) {
           <Typography variant="body1">Audio and Video Settings</Typography>
         </MenuItem>
 
+        <MenuItem
+          onClick={() => {
+            setBackgroundOpen(true);
+            setMenuOpen(false);
+          }}
+        >
+          <IconContainer>
+            <PortraitIcon />
+          </IconContainer>
+          <Typography variant="body1">Backgrounds</Typography>
+        </MenuItem>
+
         <MenuItem onClick={() => setAboutOpen(true)}>
           <IconContainer>
             <InfoIconOutlined />
@@ -118,6 +133,12 @@ export default function Menu(props: { buttonClassName?: string }) {
         onClose={() => {
           setSettingsOpen(false);
           setMenuOpen(false);
+        }}
+      />
+      <BackgroundSelectionDialog
+        open={backgroundOpen}
+        onClose={() => {
+          setBackgroundOpen(false);
         }}
       />
     </>
