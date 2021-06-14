@@ -1,7 +1,8 @@
 import React from 'react';
-import Drawer from '@material-ui/core/Drawer';
 import BackgroundSelectionHeader from './BackgroundSelectionHeader/BackgroundSelectionHeader';
+import Drawer from '@material-ui/core/Drawer';
 import { makeStyles, Theme } from '@material-ui/core/styles';
+import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 const useStyles = makeStyles((theme: Theme) => ({
   drawer: {
@@ -11,24 +12,21 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-interface BackgroundSelectionProps {
-  open: boolean;
-  onClose: () => void;
-}
-
-function BackgroundSelectionDialog({ open, onClose }: BackgroundSelectionProps) {
+function BackgroundSelectionDialog() {
   const classes = useStyles();
+  const { backgroundSelectionOpen, setBackgroundSelectionOpen } = useVideoContext();
 
   return (
     <Drawer
       variant="persistent"
       anchor="right"
-      open={open}
+      open={backgroundSelectionOpen}
+      transitionDuration={0}
       classes={{
         paper: classes.drawer,
       }}
     >
-      <BackgroundSelectionHeader onClose={onClose} />
+      <BackgroundSelectionHeader onClose={() => setBackgroundSelectionOpen(false)} />
       {
         // TODO Implement background selection logic and front end
       }

@@ -45,6 +45,8 @@ describe('the VideoProvider component', () => {
       removeLocalVideoTrack: expect.any(Function),
       isAcquiringLocalTracks: true,
       toggleScreenShare: expect.any(Function),
+      backgroundSelectionOpen: false,
+      setBackgroundSelectionOpen: expect.any(Function),
     });
     expect(useRoom).toHaveBeenCalledWith([{ name: 'mockTrack' }], expect.any(Function), {
       dominantSpeaker: true,

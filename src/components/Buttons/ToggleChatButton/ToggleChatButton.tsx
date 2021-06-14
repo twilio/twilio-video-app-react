@@ -4,6 +4,7 @@ import ChatIcon from '../../../icons/ChatIcon';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core';
 import useChatContext from '../../../hooks/useChatContext/useChatContext';
+import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
 export const ANIMATION_DURATION = 700;
 
@@ -59,9 +60,15 @@ export default function ToggleChatButton() {
   const classes = useStyles();
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const { isChatWindowOpen, setIsChatWindowOpen, conversation, hasUnreadMessages } = useChatContext();
+  const { backgroundSelectionOpen, setBackgroundSelectionOpen } = useVideoContext();
 
   const toggleChatWindow = () => {
     setIsChatWindowOpen(!isChatWindowOpen);
+    // close background selection window
+    // backgroundSelectionOpen is only true when the chat window is closed
+    if (backgroundSelectionOpen) {
+      setBackgroundSelectionOpen(false);
+    }
   };
 
   useEffect(() => {
