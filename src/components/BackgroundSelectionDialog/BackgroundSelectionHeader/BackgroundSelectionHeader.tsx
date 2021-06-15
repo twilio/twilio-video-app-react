@@ -6,12 +6,14 @@ const useStyles = makeStyles(() =>
   createStyles({
     container: {
       height: '56px',
+      minHeight: '56px',
       background: '#F4F4F6',
       borderBottom: '1px solid #E4E7E9',
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
       padding: '0 1em',
+      bottom: '10px',
     },
     text: {
       fontWeight: 'bold',
