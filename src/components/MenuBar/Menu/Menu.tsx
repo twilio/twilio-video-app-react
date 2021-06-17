@@ -35,7 +35,7 @@ export default function Menu(props: { buttonClassName?: string }) {
   const { isFetching, updateRecordingRules, roomType } = useAppState();
   const { setIsChatWindowOpen } = useChatContext();
   const isRecording = useIsRecording();
-  const { room, setBackgroundSelectionOpen } = useVideoContext();
+  const { room, setIsBackgroundSelectionOpen } = useVideoContext();
 
   const anchorRef = useRef<HTMLButtonElement>(null);
   const { flipCameraDisabled, toggleFacingMode, flipCameraSupported } = useFlipCameraToggle();
@@ -106,7 +106,7 @@ export default function Menu(props: { buttonClassName?: string }) {
         {isSupported && (
           <MenuItem
             onClick={() => {
-              setBackgroundSelectionOpen(true);
+              setIsBackgroundSelectionOpen(true);
               setIsChatWindowOpen(false);
               setMenuOpen(false);
             }}

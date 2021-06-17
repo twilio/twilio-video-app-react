@@ -10,7 +10,7 @@ import { strict } from 'assert';
 const useStyles = makeStyles((theme: Theme) => ({
   drawer: {
     display: 'flex',
-    width: theme.chatWindowWidth,
+    width: theme.rightDrawerWidth,
     height: `calc(100% - ${theme.footerHeight}px)`,
   },
   thumbnailRow: {
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 function BackgroundSelectionDialog() {
   const classes = useStyles();
-  const { backgroundSelectionOpen, setBackgroundSelectionOpen } = useVideoContext();
+  const { isBackgroundSelectionOpen, setIsBackgroundSelectionOpen } = useVideoContext();
 
   const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -30,13 +30,13 @@ function BackgroundSelectionDialog() {
     <Drawer
       variant="persistent"
       anchor="right"
-      open={backgroundSelectionOpen}
+      open={isBackgroundSelectionOpen}
       transitionDuration={0}
       classes={{
         paper: classes.drawer,
       }}
     >
-      <BackgroundSelectionHeader onClose={() => setBackgroundSelectionOpen(false)} />
+      <BackgroundSelectionHeader onClose={() => setIsBackgroundSelectionOpen(false)} />
 
       <div className={classes.thumbnailRow}>
         <BackgroundThumbnail thumbnail={'none'} name={'none'} />

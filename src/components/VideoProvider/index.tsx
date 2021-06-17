@@ -32,8 +32,8 @@ export interface IVideoContext {
   isSharingScreen: boolean;
   toggleScreenShare: () => void;
   getAudioAndVideoTracks: () => Promise<void>;
-  backgroundSelectionOpen: boolean;
-  setBackgroundSelectionOpen: (value: boolean) => void;
+  isBackgroundSelectionOpen: boolean;
+  setIsBackgroundSelectionOpen: (value: boolean) => void;
   backgroundSettings: BackgroundSettings;
   setBackgroundSettings: (settings: BackgroundSettings) => void;
 }
@@ -80,7 +80,7 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
   useHandleTrackPublicationFailed(room, onError);
   useRestartAudioTrackOnDeviceChange(localTracks);
 
-  const [backgroundSelectionOpen, setBackgroundSelectionOpen] = useState(false);
+  const [isBackgroundSelectionOpen, setIsBackgroundSelectionOpen] = useState(false);
   const [backgroundSettings, setBackgroundSettings] = useBackgroundSettings();
 
   return (
@@ -98,8 +98,8 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
         isSharingScreen,
         toggleScreenShare,
         getAudioAndVideoTracks,
-        backgroundSelectionOpen,
-        setBackgroundSelectionOpen,
+        isBackgroundSelectionOpen,
+        setIsBackgroundSelectionOpen,
         backgroundSettings,
         setBackgroundSettings,
       }}

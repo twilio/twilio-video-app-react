@@ -24,20 +24,18 @@ const useStyles = makeStyles((theme: Theme) => {
         gridTemplateRows: `calc(100% - ${totalMobileSidebarHeight}) ${totalMobileSidebarHeight}`,
       },
     },
-    chatWindowOpen: { gridTemplateColumns: `1fr ${theme.sidebarWidth}px ${theme.chatWindowWidth}px` },
-    backgroundSelectionOpen: { gridTemplateColumns: `1fr ${theme.sidebarWidth}px 20vw` },
+    rightDrawerOpen: { gridTemplateColumns: `1fr ${theme.sidebarWidth}px ${theme.rightDrawerWidth}px` },
   };
 });
 
 export default function Room() {
   const classes = useStyles();
   const { isChatWindowOpen } = useChatContext();
-  const { backgroundSelectionOpen } = useVideoContext();
+  const { isBackgroundSelectionOpen } = useVideoContext();
   return (
     <div
       className={clsx(classes.container, {
-        [classes.chatWindowOpen]: isChatWindowOpen,
-        [classes.backgroundSelectionOpen]: backgroundSelectionOpen,
+        [classes.rightDrawerOpen]: isChatWindowOpen || isBackgroundSelectionOpen,
       })}
     >
       <MainParticipant />
