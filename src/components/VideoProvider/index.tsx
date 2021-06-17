@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useCallback } from 'react';
+import React, { createContext, ReactNode, useCallback, useState } from 'react';
 import { CreateLocalTrackOptions, ConnectOptions, LocalAudioTrack, LocalVideoTrack, Room } from 'twilio-video';
 import { ErrorCallback } from '../../types';
 import { SelectedParticipantProvider } from './useSelectedParticipant/useSelectedParticipant';
@@ -31,6 +31,8 @@ export interface IVideoContext {
   isSharingScreen: boolean;
   toggleScreenShare: () => void;
   getAudioAndVideoTracks: () => Promise<void>;
+  isBackgroundSelectionOpen: boolean;
+  setIsBackgroundSelectionOpen: (value: boolean) => void;
 }
 
 export const VideoContext = createContext<IVideoContext>(null!);
@@ -75,6 +77,8 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
   useHandleTrackPublicationFailed(room, onError);
   useRestartAudioTrackOnDeviceChange(localTracks);
 
+  const [isBackgroundSelectionOpen, setIsBackgroundSelectionOpen] = useState(false);
+
   return (
     <VideoContext.Provider
       value={{
@@ -90,6 +94,8 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
         isSharingScreen,
         toggleScreenShare,
         getAudioAndVideoTracks,
+        isBackgroundSelectionOpen,
+        setIsBackgroundSelectionOpen,
       }}
     >
       <SelectedParticipantProvider room={room}>{children}</SelectedParticipantProvider>
