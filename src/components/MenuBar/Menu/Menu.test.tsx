@@ -185,7 +185,7 @@ describe('the Menu component', () => {
       expect(wrapper.find(AboutDialog).prop('open')).toBe(false);
       wrapper
         .find(MenuItem)
-        .at(3)
+        .at(2)
         .simulate('click');
       expect(wrapper.find(AboutDialog).prop('open')).toBe(true);
     });
@@ -198,16 +198,6 @@ describe('the Menu component', () => {
         .at(1)
         .simulate('click');
       expect(wrapper.find(DeviceSelectionDialog).prop('open')).toBe(true);
-    });
-
-    it('should open the BackgroundSelectionDiaog when the Background button is clicked', () => {
-      const wrapper = shallow(<Menu />);
-      expect(wrapper.find(BackgroundSelectionDialog).prop('open')).toBe(false);
-      wrapper
-        .find(MenuItem)
-        .at(2)
-        .simulate('click');
-      expect(wrapper.find(BackgroundSelectionDialog).prop('open')).toBe(true);
     });
 
     it('should render the correct icon', () => {

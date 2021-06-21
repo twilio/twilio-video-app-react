@@ -32,15 +32,4 @@ describe('the Room component', () => {
     const wrapper = shallow(<Room />);
     expect(wrapper.prop('className')).toContain('rightDrawerOpen');
   });
-
-  it('should render correctly with the background selection window closed', () => {
-    const wrapper = shallow(<Room />);
-    expect(wrapper.prop('className')).not.toContain('backgroundSelectionOpen');
-  });
-
-  it('should render correctly with the background selection window open', () => {
-    mockUseVideoContext.mockImplementationOnce(() => ({ backgroundSelectionOpen: true }));
-    const wrapper = shallow(<Room />);
-    expect(wrapper.prop('className')).toContain('backgroundSelectionOpen');
-  });
 });

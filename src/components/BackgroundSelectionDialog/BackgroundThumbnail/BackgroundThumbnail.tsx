@@ -77,7 +77,7 @@ export default function BackgroundThumbnail({ thumbnail, imagePath, name, index 
       <div
         className={classes.thumb + (thumbnailSelected ? ' selected' : '')}
         style={{
-          backgroundImage: "url('https://picsum.photos/id/200/440/320.jpg')",
+          backgroundImage: `url('${imagePath}')`,
         }}
         onMouseEnter={() => setHovering(true)}
         onMouseLeave={() => setHovering(false)}
@@ -110,7 +110,7 @@ export default function BackgroundThumbnail({ thumbnail, imagePath, name, index 
           setBackgroundSettings({
             type: thumbnail,
             index: 0,
-          });
+          } as BackgroundSettings);
         }}
       >
         {getIcon()}
