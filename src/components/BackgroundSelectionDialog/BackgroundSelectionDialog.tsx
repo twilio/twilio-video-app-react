@@ -12,10 +12,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: theme.rightDrawerWidth,
     height: `calc(100% - ${theme.footerHeight}px)`,
   },
-  thumbnailRow: {
+  thumbnailContainer: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexWrap: 'wrap',
   },
 }));
 
@@ -25,26 +25,6 @@ function BackgroundSelectionDialog() {
 
   const imageNames = backgroundConfig.imageNames;
   const images = backgroundConfig.images;
-
-  const groupedImages = [];
-  // puts images into groups of 2, for easier mapping
-  // assumes that there an odd number of available images
-  for (var i = 1; i < images.length; i += 2) {
-    let group = [];
-    group.push(
-      {
-        imageName: imageNames[i],
-        image: images[i],
-        index: i,
-      },
-      {
-        imageName: imageNames[i + 1],
-        image: images[i + 1],
-        index: i + 1,
-      }
-    );
-    groupedImages.push(group);
-  }
 
   return (
     <Drawer
@@ -57,33 +37,19 @@ function BackgroundSelectionDialog() {
       }}
     >
       <BackgroundSelectionHeader onClose={() => setIsBackgroundSelectionOpen(false)} />
-
-      <div className={classes.thumbnailRow}>
+      <div className={classes.thumbnailContainer}>
         <BackgroundThumbnail thumbnail={'none'} name={'None'} />
         <BackgroundThumbnail thumbnail={'blur'} name={'Blur'} />
-      </div>
-
-      <div className={classes.thumbnailRow}>
-        <BackgroundThumbnail thumbnail={'grayScale'} name={'Gray Scale'} />
-        <BackgroundThumbnail thumbnail={'image'} name={imageNames[0]} imagePath={images[0]} index={0} />
-      </div>
-
-      {groupedImages.map(row => (
-        <div className={classes.thumbnailRow}>
+        {images.map((image, index) => (
           <BackgroundThumbnail
             thumbnail={'image'}
-            name={row[0].imageName}
-            index={row[0].index}
-            imagePath={row[0].image}
+            name={imageNames[index]}
+            index={index}
+            imagePath={image}
+            key={image}
           />
-          <BackgroundThumbnail
-            thumbnail={'image'}
-            name={row[1].imageName}
-            index={row[1].index}
-            imagePath={row[1].image}
-          />
-        </div>
-      ))}
+        ))}
+      </div>
     </Drawer>
   );
 }

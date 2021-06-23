@@ -1,15 +1,11 @@
 import { useState } from 'react';
+import Abstract from '../../../../public/images/Abstract.jpg';
 import { Thumbnail } from '../../BackgroundSelectionDialog/BackgroundThumbnail/BackgroundThumbnail';
 
 export interface BackgroundSettings {
-  type?: Thumbnail;
+  type: Thumbnail;
   index?: number;
 }
-
-const defaultSettings: BackgroundSettings = {
-  type: 'none',
-  index: 0,
-};
 
 const imageNames: string[] = [
   'Abstract',
@@ -26,12 +22,13 @@ const imageNames: string[] = [
   'Nature',
   'Ocean',
   'Patio',
-  'Palm Trees',
   'Plant',
   'San Francisco',
 ];
 
 const images = imageNames.map(name => `/images/${name.replace(' ', '')}.jpg`);
+
+const images1 = [Abstract];
 
 export const backgroundConfig = {
   imageNames,
@@ -39,7 +36,9 @@ export const backgroundConfig = {
 };
 
 export default function useBackgroundSettings() {
-  let currentSettings = defaultSettings;
-  const [backgroundSettings, setBackgroundSettings] = useState(currentSettings);
+  const [backgroundSettings, setBackgroundSettings] = useState({
+    type: 'none',
+    index: 0,
+  });
   return [backgroundSettings, setBackgroundSettings] as const;
 }

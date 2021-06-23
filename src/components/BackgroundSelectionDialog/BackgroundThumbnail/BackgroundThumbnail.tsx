@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
+import clsx from 'clsx';
 import BlurIcon from '@material-ui/icons/BlurOnOutlined';
-import GrayIcon from '@material-ui/icons/GradientOutlined';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import NoneIcon from '@material-ui/icons/NotInterestedOutlined';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
-import { BackgroundSettings } from '../../VideoProvider/useBackgroundSettings/useBackgroundSettings';
+import { Box } from '@material-ui/core';
 
-export type Thumbnail = 'none' | 'blur' | 'grayScale' | 'image';
+export type Thumbnail = 'none' | 'blur' | 'image';
 
 interface BackgroundThumbnailProps {
   thumbnail: Thumbnail;
@@ -27,24 +27,27 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center',
       backgroundSize: 'cover',
-      border: '2px solid rgba(0, 0, 0, 0.3)',
+      border: '3px solid rgba(0, 0, 0, 0.3)',
       borderRadius: '10px',
-      ['&:hover']: {
+      '&:hover': {
         cursor: 'pointer',
         boxShadow: 'inset 0 0 0 100px rgb(95, 93, 128, 0.6)',
-        ['& svg']: {
+        '& svg': {
           color: '#027AC5',
         },
+        '& $label': {
+          visibility: 'visible',
+        },
       },
-      ['&:last-child']: {
+      '&:last-child': {
         marginRight: '10px',
       },
       [theme.breakpoints.down('sm')]: {
         height: '50px',
       },
-      ['&.selected']: {
+      '&.selected': {
         border: '3px solid #027AC5',
-        ['& svg']: {
+        '& svg': {
           color: '#027AC5',
         },
       },
@@ -54,12 +57,13 @@ const useStyles = makeStyles((theme: Theme) =>
       fontWeight: 'bold',
       fontSize: '18px',
       position: 'absolute',
+      visibility: 'hidden',
     },
     thumbIcon: {
       height: 50,
       width: 50,
       color: 'rgba(0, 0, 0, 0.5)',
-      ['&.selected']: {
+      '&.selected': {
         color: '#027AC5',
       },
     },
@@ -68,54 +72,31 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function BackgroundThumbnail({ thumbnail, imagePath, name, index }: BackgroundThumbnailProps) {
   const classes = useStyles();
-  const [hovering, setHovering] = useState(false);
   const { backgroundSettings, setBackgroundSettings } = useVideoContext();
+  const isImage = thumbnail === 'image';
+  const thumbnailSelected = isImage ? backgroundSettings.index === index : backgroundSettings.type === thumbnail;
+  const icons = {
+    none: NoneIcon,
+    blur: BlurIcon,
+    image: Box,
+  };
+  const ThumbnailIcon = icons[thumbnail];
 
-  if (thumbnail === 'image') {
-    const thumbnailSelected = backgroundSettings.type === 'image' && backgroundSettings.index === index;
-    return (
-      <div
-        className={classes.thumb + (thumbnailSelected ? ' selected' : '')}
-        style={{
-          backgroundImage: `url('${imagePath}')`,
-        }}
-        onMouseEnter={() => setHovering(true)}
-        onMouseLeave={() => setHovering(false)}
-        onClick={() => {
-          setBackgroundSettings({
-            type: 'image',
-            index: index,
-          } as BackgroundSettings);
-        }}
-      >
-        {hovering && <div className={classes.label}>{name}</div>}
-      </div>
-    );
-  } else {
-    const getIcon = () => {
-      if (thumbnail === 'none') {
-        return <NoneIcon className={classes.thumbIcon} />;
-      } else if (thumbnail === 'blur') {
-        return <BlurIcon className={classes.thumbIcon} />;
-      } else {
-        return <GrayIcon className={classes.thumbIcon} />;
-      }
-    };
-    return (
-      <div
-        className={classes.thumb + (backgroundSettings.type === thumbnail ? ' selected' : '')}
-        onMouseEnter={() => setHovering(true)}
-        onMouseLeave={() => setHovering(false)}
-        onClick={() => {
-          setBackgroundSettings({
-            type: thumbnail,
-            index: 0,
-          } as BackgroundSettings);
-        }}
-      >
-        {getIcon()}
-        {hovering && <div className={classes.label}>{name}</div>}
-      </div>
-    );
-  }
+  return (
+    <div
+      className={clsx(classes.thumb, { selected: thumbnailSelected })}
+      style={{
+        backgroundImage: isImage ? `url('${imagePath}')` : '',
+      }}
+      onClick={() => {
+        setBackgroundSettings({
+          type: thumbnail,
+          index: index,
+        });
+      }}
+    >
+      <ThumbnailIcon className={classes.thumbIcon} />
+      <div className={classes.label}>{name}</div>
+    </div>
+  );
 }

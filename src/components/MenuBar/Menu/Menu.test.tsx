@@ -2,7 +2,6 @@ import React from 'react';
 import AboutDialog from '../../AboutDialog/AboutDialog';
 import { Button, MenuItem } from '@material-ui/core';
 import DeviceSelectionDialog from '../../DeviceSelectionDialog/DeviceSelectionDialog';
-import BackgroundSelectionDialog from '../../BackgroundSelectionDialog/BackgroundSelectionDialog';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import FlipCameraIcon from '../../../icons/FlipCameraIcon';
 import Menu from './Menu';
