@@ -4,7 +4,6 @@ import BlurIcon from '@material-ui/icons/BlurOnOutlined';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import NoneIcon from '@material-ui/icons/NotInterestedOutlined';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
-import { Box } from '@material-ui/core';
 
 export type Thumbnail = 'none' | 'blur' | 'image';
 
@@ -17,54 +16,70 @@ interface BackgroundThumbnailProps {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    thumb: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
+    thumbContainer: {
       margin: '10px 0px 10px 10px',
-      width: '45%',
+      width: '144px',
       height: '80px',
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center',
-      backgroundSize: 'cover',
-      border: '3px solid rgba(0, 0, 0, 0.3)',
-      borderRadius: '10px',
-      '&:hover': {
-        cursor: 'pointer',
-        boxShadow: 'inset 0 0 0 100px rgb(95, 93, 128, 0.6)',
-        '& svg': {
-          color: '#027AC5',
-        },
-        '& $label': {
-          visibility: 'visible',
-        },
-      },
-      '&:last-child': {
-        marginRight: '10px',
-      },
-      [theme.breakpoints.down('sm')]: {
-        height: '50px',
-      },
-      '&.selected': {
-        border: '3px solid #027AC5',
-        '& svg': {
-          color: '#027AC5',
-        },
-      },
+      display: 'flex',
     },
-    label: {
-      color: 'white',
-      fontWeight: 'bold',
-      fontSize: '18px',
-      position: 'absolute',
-      visibility: 'hidden',
+    thumbIconContainer: {
+      width: '144px',
+      height: '80px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: '10px',
+      border: 'solid #A9A9A9',
+      '&.selected': {
+        border: 'solid #027AC5',
+        '& svg': {
+          color: '#027AC5',
+        },
+      },
     },
     thumbIcon: {
       height: 50,
       width: 50,
-      color: 'rgba(0, 0, 0, 0.5)',
+      color: '#A9A9A9',
       '&.selected': {
         color: '#027AC5',
+      },
+    },
+    thumbImage: {
+      width: '100%',
+      borderRadius: '10px',
+      border: 'solid #A9A9A9',
+      '&:hover': {
+        cursor: 'pointer',
+        '& svg': {
+          color: '#027AC5',
+        },
+        '& $thumbOverlay': {
+          visibility: 'visible',
+        },
+      },
+      '&.selected': {
+        border: 'solid #027AC5',
+        '& svg': {
+          color: '#027AC5',
+        },
+      },
+    },
+    thumbOverlay: {
+      position: 'absolute',
+      color: 'transparent',
+      padding: '20px',
+      fontSize: '14px',
+      fontWeight: 'bold',
+      width: '144px',
+      height: '80px',
+      borderRadius: '10px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      '&:hover': {
+        background: 'rgba(95, 93, 128, 0.6)',
+        color: 'white',
       },
     },
   })
@@ -74,29 +89,34 @@ export default function BackgroundThumbnail({ thumbnail, imagePath, name, index 
   const classes = useStyles();
   const { backgroundSettings, setBackgroundSettings } = useVideoContext();
   const isImage = thumbnail === 'image';
-  const thumbnailSelected = isImage ? backgroundSettings.index === index : backgroundSettings.type === thumbnail;
+  const thumbnailSelected = isImage
+    ? backgroundSettings.index === index && backgroundSettings.type === 'image'
+    : backgroundSettings.type === thumbnail;
   const icons = {
     none: NoneIcon,
     blur: BlurIcon,
-    image: Box,
+    image: null,
   };
   const ThumbnailIcon = icons[thumbnail];
 
   return (
     <div
-      className={clsx(classes.thumb, { selected: thumbnailSelected })}
-      style={{
-        backgroundImage: isImage ? `url('${imagePath}')` : '',
-      }}
-      onClick={() => {
+      className={classes.thumbContainer}
+      onClick={() =>
         setBackgroundSettings({
           type: thumbnail,
           index: index,
-        });
-      }}
+        })
+      }
     >
-      <ThumbnailIcon className={classes.thumbIcon} />
-      <div className={classes.label}>{name}</div>
+      {ThumbnailIcon ? (
+        <div className={clsx(classes.thumbIconContainer, { selected: thumbnailSelected })}>
+          <ThumbnailIcon className={classes.thumbIcon} />
+        </div>
+      ) : (
+        <img className={clsx(classes.thumbImage, { selected: thumbnailSelected })} src={imagePath} alt={name} />
+      )}
+      <div className={classes.thumbOverlay}>{name}</div>
     </div>
   );
 }

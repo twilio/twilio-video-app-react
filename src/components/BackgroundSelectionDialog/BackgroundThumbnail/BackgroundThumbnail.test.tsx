@@ -17,12 +17,24 @@ mockUseVideoContext.mockImplementation(() => ({
 describe('The BackgroundThumbanil component', () => {
   it('should not be selected when thumbnail prop and backgroundSettings type are different', () => {
     const wrapper = shallow(<BackgroundThumbnail thumbnail={'none'} />);
-    expect(wrapper.find('div').prop('className')).toContain('thumb');
+    expect(
+      wrapper
+        .find('div')
+        .children('div')
+        .first()
+        .prop('className')
+    ).toContain('thumb');
   });
 
   it('should be selected when thumbnail prop and backgroundSettings type are equivalent', () => {
     const wrapper = shallow(<BackgroundThumbnail thumbnail={'blur'} />);
-    expect(wrapper.find('div').prop('className')).toContain('selected');
+    expect(
+      wrapper
+        .find('div')
+        .children('div')
+        .first()
+        .prop('className')
+    ).toContain('selected');
   });
 
   it("should contain the NoneIcon when thumbnail is set to 'none'", () => {
@@ -45,27 +57,13 @@ describe('The BackgroundThumbanil component', () => {
     ).toBe(true);
   });
 
-  it("should contain the Gray when thumbnail is set to 'grayScale'", () => {
-    const wrapper = shallow(<BackgroundThumbnail thumbnail={'grayScale'} />);
-    expect(
-      wrapper
-        .find('div')
-        .children('GradientOutlinedIcon')
-        .exists()
-    ).toBe(true);
-  });
-
   it("should not have any icons when thumbnail is set to 'image'", () => {
     const wrapper = shallow(<BackgroundThumbnail thumbnail={'image'} />);
     expect(
       wrapper
         .find('div')
-        .children('GradientOutlinedIcon')
+        .children('BlurOnOutlinedIcon')
         .exists() ||
-        wrapper
-          .find('div')
-          .children('BlurOnOutlinedIcon')
-          .exists() ||
         wrapper
           .find('div')
           .children('NotInterestedOutlinedIcon')
