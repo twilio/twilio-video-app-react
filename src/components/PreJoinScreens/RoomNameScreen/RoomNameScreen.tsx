@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent } from 'react';
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Typography, makeStyles, TextField, Grid, Button, InputLabel, Theme } from '@material-ui/core';
 import { useAppState } from '../../../state';
 
@@ -38,6 +38,7 @@ interface RoomNameScreenProps {
 export default function RoomNameScreen({ name, roomName, setName, setRoomName, handleSubmit }: RoomNameScreenProps) {
   const classes = useStyles();
   const { user } = useAppState();
+  const [hasRoomName, setHasRoomName] = useState(false);
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -49,6 +50,20 @@ export default function RoomNameScreen({ name, roomName, setName, setRoomName, h
 
   const hasUsername = !window.location.search.includes('customIdentity=true') && user?.displayName;
 
+  function getRoomName() {
+    const match = window.location.search.match(/[?&]room=([^&]+).*$/);
+    const room = match ? match[1] : window.sessionStorage.getItem('room');
+    return room;
+  }
+
+  useEffect(() => {
+    const room = getRoomName();
+    if (room) {
+      setRoomName(room);
+      setHasRoomName(true);
+    }
+  }, []);
+
   return (
     <>
       <Typography variant="h5" className={classes.gutterBottom}>
@@ -57,6 +72,8 @@ export default function RoomNameScreen({ name, roomName, setName, setRoomName, h
       <Typography variant="body1">
         {hasUsername
           ? "Enter the name of a room you'd like to join."
+          : hasRoomName
+          ? 'Enter your name before joining the room'
           : "Enter your name and the name of a room you'd like to join"}
       </Typography>
       <form onSubmit={handleSubmit}>
@@ -76,20 +93,22 @@ export default function RoomNameScreen({ name, roomName, setName, setRoomName, h
               />
             </div>
           )}
-          <div className={classes.textFieldContainer}>
-            <InputLabel shrink htmlFor="input-room-name">
-              Room Name
-            </InputLabel>
-            <TextField
-              autoCapitalize="false"
-              id="input-room-name"
-              variant="outlined"
-              fullWidth
-              size="small"
-              value={roomName}
-              onChange={handleRoomNameChange}
-            />
-          </div>
+          {!hasRoomName && (
+            <div className={classes.textFieldContainer}>
+              <InputLabel shrink htmlFor="input-room-name">
+                Room Name
+              </InputLabel>
+              <TextField
+                autoCapitalize="false"
+                id="input-room-name"
+                variant="outlined"
+                fullWidth
+                size="small"
+                value={roomName}
+                onChange={handleRoomNameChange}
+              />
+            </div>
+          )}
         </div>
         <Grid container justify="flex-end">
           <Button
