@@ -17,51 +17,61 @@ interface BackgroundThumbnailProps {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     thumbContainer: {
-      margin: '10px 0px 10px 10px',
-      width: '144px',
-      height: '80px',
+      margin: '5px',
+      width: 'calc(50% - 15px)',
       display: 'flex',
+      position: 'relative',
+      '&::after': {
+        content: '""',
+        paddingBottom: '55.5%',
+      },
     },
     thumbIconContainer: {
-      width: '144px',
-      height: '80px',
+      width: '100%',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: '10px',
-      border: 'solid #A9A9A9',
+      border: `solid ${theme.palette.grey[400]}`,
       '&.selected': {
-        border: 'solid #027AC5',
+        border: `solid ${theme.palette.primary.main}`,
         '& svg': {
-          color: '#027AC5',
+          color: `${theme.palette.primary.main}`,
         },
       },
     },
     thumbIcon: {
       height: 50,
       width: 50,
-      color: '#A9A9A9',
+      color: `${theme.palette.grey[400]}`,
       '&.selected': {
-        color: '#027AC5',
+        color: `${theme.palette.primary.main}`,
       },
     },
     thumbImage: {
       width: '100%',
+      height: '100%',
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      objectFit: 'cover',
       borderRadius: '10px',
-      border: 'solid #A9A9A9',
+      border: `solid ${theme.palette.grey[400]}`,
       '&:hover': {
         cursor: 'pointer',
         '& svg': {
-          color: '#027AC5',
+          color: `${theme.palette.primary.main}`,
         },
         '& $thumbOverlay': {
           visibility: 'visible',
         },
       },
       '&.selected': {
-        border: 'solid #027AC5',
+        border: `solid ${theme.palette.primary.main}`,
         '& svg': {
-          color: '#027AC5',
+          color: `${theme.palette.primary.main}`,
         },
       },
     },
@@ -71,8 +81,8 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: '20px',
       fontSize: '14px',
       fontWeight: 'bold',
-      width: '144px',
-      height: '80px',
+      width: '100%',
+      height: '100%',
       borderRadius: '10px',
       display: 'flex',
       justifyContent: 'center',

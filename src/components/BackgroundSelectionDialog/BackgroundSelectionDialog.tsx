@@ -14,8 +14,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   thumbnailContainer: {
     display: 'flex',
-    flexDirection: 'row',
     flexWrap: 'wrap',
+    padding: '5px',
   },
 }));
 
