@@ -78,7 +78,6 @@ export default function useBackgroundSettings(room: Room | undefined | null) {
     type: 'none',
     index: 0,
   } as BackgroundSettings);
-  const [videoProcessor, setVideoProcessor] = useState<GaussianBlurBackgroundProcessor | null>(null);
 
   const updateBackgroundSettings = useCallback(
     async (settings: BackgroundSettings, force?: boolean, newRoom?: Room) => {
@@ -90,11 +89,10 @@ export default function useBackgroundSettings(room: Room | undefined | null) {
       if (!videoTrack) {
         return;
       }
-      const { type, index } = settings;
+      const { type } = settings;
       if (type !== backgroundSettings.type || force) {
         if (type === 'none' && videoTrack.processor) {
           videoTrack.removeProcessor(videoTrack.processor);
-          setVideoProcessor(null);
         } else if (type === 'blur') {
           if (!blurProcessor) {
             blurProcessor = new GaussianBlurBackgroundProcessor({ ...bgLibSettings });
@@ -105,14 +103,12 @@ export default function useBackgroundSettings(room: Room | undefined | null) {
             videoTrack.removeProcessor(videoTrack.processor);
           }
           videoTrack.addProcessor(blurProcessor);
-          setVideoProcessor(blurProcessor);
         }
       } else if (type === 'image') {
         console.log('image click');
         if (videoTrack.processor) {
           videoTrack.removeProcessor(videoTrack.processor);
         }
-        setVideoProcessor(null);
       }
 
       const updatedSettings = {
@@ -121,7 +117,7 @@ export default function useBackgroundSettings(room: Room | undefined | null) {
       };
       setBackgroundSettings(updatedSettings);
     },
-    [backgroundSettings, setBackgroundSettings, room, videoProcessor, setVideoProcessor]
+    [backgroundSettings, setBackgroundSettings, room]
   );
 
   return [backgroundSettings, updateBackgroundSettings] as const;

@@ -109,12 +109,16 @@ export default function BackgroundThumbnail({ thumbnail, imagePath, name, index 
   };
   const ThumbnailIcon = icons[thumbnail];
 
-  const handleThumbnailClick = (type: Thumbnail, index?: number) => {
-    updateBackgroundSettings({ type, index });
-  };
-
   return (
-    <div className={classes.thumbContainer} onClick={() => handleThumbnailClick(thumbnail, index)}>
+    <div
+      className={classes.thumbContainer}
+      onClick={() => {
+        updateBackgroundSettings({
+          type: thumbnail,
+          index: index,
+        });
+      }}
+    >
       {ThumbnailIcon ? (
         <div className={clsx(classes.thumbIconContainer, { selected: thumbnailSelected })}>
           <ThumbnailIcon className={classes.thumbIcon} />
