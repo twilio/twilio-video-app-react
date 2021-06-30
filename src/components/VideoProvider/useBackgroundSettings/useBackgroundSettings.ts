@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { Room } from 'twilio-video';
+import { useCallback, useState } from 'react';
+import { GaussianBlurBackgroundProcessor } from '@twilio/video-processors';
 import AbstractThumb from '../../../images/thumb/Abstract.jpg';
 import BohoHomeThumb from '../../../images/thumb/BohoHome.jpg';
 import BookshelfThumb from '../../../images/thumb/Bookshelf.jpg';
@@ -65,13 +67,62 @@ export const backgroundConfig = {
   images,
 };
 
-// TODO : Add video processing logic after backgroundSettings change
-// useEffect hooks, etc ...
+const bgLibSettings = {
+  assetsPath: '/virtualbackground',
+};
 
-export default function useBackgroundSettings() {
+let blurProcessor: GaussianBlurBackgroundProcessor;
+
+export default function useBackgroundSettings(room: Room | undefined | null) {
   const [backgroundSettings, setBackgroundSettings] = useState({
     type: 'none',
     index: 0,
   } as BackgroundSettings);
-  return [backgroundSettings, setBackgroundSettings] as const;
+  const [videoProcessor, setVideoProcessor] = useState<GaussianBlurBackgroundProcessor | null>(null);
+
+  const updateBackgroundSettings = useCallback(
+    async (settings: BackgroundSettings, force?: boolean, newRoom?: Room) => {
+      room = room || newRoom;
+      if (!room) {
+        return;
+      }
+      const videoTrack = Array.from(room.localParticipant.videoTracks.values())[0].track;
+      if (!videoTrack) {
+        return;
+      }
+      const { type, index } = settings;
+      if (type !== backgroundSettings.type || force) {
+        if (type === 'none' && videoTrack.processor) {
+          videoTrack.removeProcessor(videoTrack.processor);
+          setVideoProcessor(null);
+        } else if (type === 'blur') {
+          if (!blurProcessor) {
+            blurProcessor = new GaussianBlurBackgroundProcessor({ ...bgLibSettings });
+            (window as any).blurProcessor = blurProcessor;
+            await blurProcessor.loadModel();
+          }
+          if (videoTrack.processor) {
+            videoTrack.removeProcessor(videoTrack.processor);
+          }
+          videoTrack.addProcessor(blurProcessor);
+          setVideoProcessor(blurProcessor);
+        }
+      } else if (type === 'image') {
+        console.log('image click');
+        if (videoTrack.processor) {
+          videoTrack.removeProcessor(videoTrack.processor);
+        }
+        setVideoProcessor(null);
+      }
+
+      const updatedSettings = {
+        ...backgroundSettings,
+        ...settings,
+      };
+      setBackgroundSettings(updatedSettings);
+    },
+    [backgroundSettings, setBackgroundSettings, room, videoProcessor, setVideoProcessor]
+  );
+
+  return [backgroundSettings, updateBackgroundSettings] as const;
 }

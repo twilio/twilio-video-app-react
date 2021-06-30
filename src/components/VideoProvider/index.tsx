@@ -35,7 +35,7 @@ export interface IVideoContext {
   isBackgroundSelectionOpen: boolean;
   setIsBackgroundSelectionOpen: (value: boolean) => void;
   backgroundSettings: BackgroundSettings;
-  setBackgroundSettings: (settings: BackgroundSettings) => void;
+  updateBackgroundSettings: (settings: BackgroundSettings, force?: boolean, room?: Room) => void;
 }
 
 export const VideoContext = createContext<IVideoContext>(null!);
@@ -81,7 +81,7 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
   useRestartAudioTrackOnDeviceChange(localTracks);
 
   const [isBackgroundSelectionOpen, setIsBackgroundSelectionOpen] = useState(false);
-  const [backgroundSettings, setBackgroundSettings] = useBackgroundSettings();
+  const [backgroundSettings, updateBackgroundSettings] = useBackgroundSettings(room);
 
   return (
     <VideoContext.Provider
@@ -101,7 +101,7 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
         isBackgroundSelectionOpen,
         setIsBackgroundSelectionOpen,
         backgroundSettings,
-        setBackgroundSettings,
+        updateBackgroundSettings,
       }}
     >
       <SelectedParticipantProvider room={room}>{children}</SelectedParticipantProvider>

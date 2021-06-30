@@ -97,7 +97,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function BackgroundThumbnail({ thumbnail, imagePath, name, index }: BackgroundThumbnailProps) {
   const classes = useStyles();
-  const { backgroundSettings, setBackgroundSettings } = useVideoContext();
+  const { backgroundSettings, updateBackgroundSettings } = useVideoContext();
   const isImage = thumbnail === 'image';
   const thumbnailSelected = isImage
     ? backgroundSettings.index === index && backgroundSettings.type === 'image'
@@ -109,16 +109,12 @@ export default function BackgroundThumbnail({ thumbnail, imagePath, name, index 
   };
   const ThumbnailIcon = icons[thumbnail];
 
+  const handleThumbnailClick = (type: Thumbnail, index?: number) => {
+    updateBackgroundSettings({ type, index });
+  };
+
   return (
-    <div
-      className={classes.thumbContainer}
-      onClick={() =>
-        setBackgroundSettings({
-          type: thumbnail,
-          index: index,
-        })
-      }
-    >
+    <div className={classes.thumbContainer} onClick={() => handleThumbnailClick(thumbnail, index)}>
       {ThumbnailIcon ? (
         <div className={clsx(classes.thumbIconContainer, { selected: thumbnailSelected })}>
           <ThumbnailIcon className={classes.thumbIcon} />
