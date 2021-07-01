@@ -5,7 +5,6 @@ import CloseIcon from '../../../icons/CloseIcon';
 const useStyles = makeStyles(() =>
   createStyles({
     container: {
-      height: '56px',
       minHeight: '56px',
       background: '#F4F4F6',
       borderBottom: '1px solid #E4E7E9',

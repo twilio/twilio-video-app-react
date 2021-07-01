@@ -15,65 +15,59 @@ mockUseVideoContext.mockImplementation(() => ({
 }));
 
 describe('The BackgroundThumbanil component', () => {
-  it('should not be selected when thumbnail prop and backgroundSettings type are different', () => {
-    const wrapper = shallow(<BackgroundThumbnail thumbnail={'none'} />);
-    expect(
-      wrapper
-        .find('div')
-        .children('div')
-        .first()
-        .prop('className')
-    ).toContain('thumb');
+  it('should update the background settings when clicked', () => {
+    const wrapper = shallow(<BackgroundThumbnail thumbnail={'none'} index={5} />);
+    wrapper.simulate('click');
+    expect(mockSetBackgroundSettings).toHaveBeenCalledWith({ index: 5, type: 'none' });
   });
 
-  it('should be selected when thumbnail prop and backgroundSettings type are equivalent', () => {
+  it('should not be selected when thumbnail prop and backgroundSettings type are not equivalent (icon)', () => {
+    const wrapper = shallow(<BackgroundThumbnail thumbnail={'none'} />);
+    expect(wrapper.find('.selected').exists()).toBe(false);
+  });
+
+  it('should be selected when thumbnail prop and backgroundSettings type are equivalent (icon)', () => {
     const wrapper = shallow(<BackgroundThumbnail thumbnail={'blur'} />);
-    expect(
-      wrapper
-        .find('div')
-        .children('div')
-        .first()
-        .prop('className')
-    ).toContain('selected');
+    expect(wrapper.find('.selected').exists()).toBe(true);
+  });
+
+  it('should be selected when thumbnail prop and backgroundSettings type are equivalent (image)', () => {
+    mockUseVideoContext.mockImplementationOnce(() => ({
+      backgroundSettings: {
+        type: 'image',
+        index: 1,
+      },
+      setBackgroundSettings: mockSetBackgroundSettings,
+    }));
+    const wrapper = shallow(<BackgroundThumbnail thumbnail={'image'} index={1} />);
+    expect(wrapper.find('.selected').exists()).toBe(true);
+  });
+
+  it('should not be selected when thumbnail and backgroundSettings type are not equivlanet (image)', () => {
+    mockUseVideoContext.mockImplementationOnce(() => ({
+      backgroundSettings: {
+        type: 'image',
+        index: 1,
+      },
+      setBackgroundSettings: mockSetBackgroundSettings,
+    }));
+    const wrapper = shallow(<BackgroundThumbnail thumbnail={'image'} index={5} />);
+    expect(wrapper.find('.selected').exists()).toBe(false);
   });
 
   it("should contain the NoneIcon when thumbnail is set to 'none'", () => {
     const wrapper = shallow(<BackgroundThumbnail thumbnail={'none'} />);
-    expect(
-      wrapper
-        .find('div')
-        .children('NotInterestedOutlinedIcon')
-        .exists()
-    ).toBe(true);
+    expect(wrapper.find('NotInterestedOutlinedIcon').exists()).toBe(true);
   });
 
   it("should contain the BlurIcon when thumbnail is set to 'blur'", () => {
     const wrapper = shallow(<BackgroundThumbnail thumbnail={'blur'} />);
-    expect(
-      wrapper
-        .find('div')
-        .children('BlurOnOutlinedIcon')
-        .exists()
-    ).toBe(true);
+    expect(wrapper.find('BlurOnOutlinedIcon').exists()).toBe(true);
   });
 
   it("should not have any icons when thumbnail is set to 'image'", () => {
     const wrapper = shallow(<BackgroundThumbnail thumbnail={'image'} />);
-    expect(
-      wrapper
-        .find('div')
-        .children('BlurOnOutlinedIcon')
-        .exists() ||
-        wrapper
-          .find('div')
-          .children('NotInterestedOutlinedIcon')
-          .exists()
-    ).toBe(false);
-  });
-
-  it('Clicking on a thumbnail updates the background settings', () => {
-    const wrapper = shallow(<BackgroundThumbnail thumbnail={'none'} />);
-    wrapper.simulate('click');
-    expect(mockSetBackgroundSettings).toHaveBeenCalled();
+    expect(wrapper.find('BlurOnOutlinedIcon').exists()).toBe(false);
+    expect(wrapper.find('NotInterestedOutlinedIcon').exists()).toBe(false);
   });
 });

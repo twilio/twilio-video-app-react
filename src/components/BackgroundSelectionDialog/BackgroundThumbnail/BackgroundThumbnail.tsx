@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     thumbContainer: {
       margin: '5px',
-      width: 'calc(50% - 15px)',
+      width: 'calc(50% - 10px)',
       display: 'flex',
       position: 'relative',
       '&::after': {
@@ -112,12 +112,12 @@ export default function BackgroundThumbnail({ thumbnail, imagePath, name, index 
   return (
     <div
       className={classes.thumbContainer}
-      onClick={() => {
+      onClick={() =>
         updateBackgroundSettings({
           type: thumbnail,
           index: index,
-        });
-      }}
+        })
+      }
     >
       {ThumbnailIcon ? (
         <div className={clsx(classes.thumbIconContainer, { selected: thumbnailSelected })}>
