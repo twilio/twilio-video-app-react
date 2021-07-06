@@ -1,4 +1,3 @@
-import React from 'react';
 import Snackbar from '../Snackbar/Snackbar';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 

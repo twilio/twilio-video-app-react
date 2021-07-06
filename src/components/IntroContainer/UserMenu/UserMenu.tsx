@@ -1,4 +1,5 @@
-import React, { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback } from 'react';
+import * as React from 'react';
 import { makeStyles, Typography, Button, MenuItem, Link } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useAppState } from '../../../state';

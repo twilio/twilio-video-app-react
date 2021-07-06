@@ -1,5 +1,3 @@
-import React from 'react';
-
 import MainParticipantInfo from './MainParticipantInfo';
 import AvatarIcon from '../../icons/AvatarIcon';
 import { shallow } from 'enzyme';

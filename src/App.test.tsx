@@ -1,4 +1,3 @@
-import React from 'react';
 import App from './App';
 import MenuBar from './components/MenuBar/MenuBar';
 import PreJoinScreens from './components/PreJoinScreens/PreJoinScreens';

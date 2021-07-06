@@ -1,4 +1,3 @@
-import React from 'react';
 import AttachVisibilityHandler from './AttachVisibilityHandler';
 import useLocalVideoToggle from '../../../hooks/useLocalVideoToggle/useLocalVideoToggle';
 import { render } from '@testing-library/react';

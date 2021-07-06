@@ -1,4 +1,3 @@
-import React from 'react';
 import clsx from 'clsx';
 import { Link } from '@material-ui/core';
 import linkify from 'linkify-it';

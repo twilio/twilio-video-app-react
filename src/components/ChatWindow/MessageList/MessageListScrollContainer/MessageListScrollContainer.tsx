@@ -1,5 +1,5 @@
 /* istanbul ignore file */
-import React from 'react';
+import { createRef, Component } from 'react';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import Button from '@material-ui/core/Button';
 import clsx from 'clsx';
@@ -62,11 +62,11 @@ interface MessageListScrollContainerState {
  *
  * Note that this component is tested with Cypress only.
  */
-export class MessageListScrollContainer extends React.Component<
+export class MessageListScrollContainer extends Component<
   MessageListScrollContainerProps,
   MessageListScrollContainerState
 > {
-  chatThreadRef = React.createRef<HTMLDivElement>();
+  chatThreadRef = createRef<HTMLDivElement>();
   state = { isScrolledToBottom: true, showButton: false, messageNotificationCount: 0 };
 
   scrollToBottom() {

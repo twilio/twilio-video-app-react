@@ -1,4 +1,3 @@
-import React from 'react';
 import LoginPage from './LoginPage';
 import { act, fireEvent, render, waitForElement } from '@testing-library/react';
 import { useAppState } from '../../state';

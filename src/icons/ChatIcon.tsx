@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function ChatIcon() {
   return (
     <svg width="19" height="17" viewBox="0 0 19 17" fill="none" xmlns="http://www.w3.org/2000/svg">

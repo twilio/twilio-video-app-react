@@ -1,4 +1,3 @@
-import React from 'react';
 import UnsupportedBrowserWarning from './UnsupportedBrowserWarning';
 import Video from 'twilio-video';
 import { shallow } from 'enzyme';

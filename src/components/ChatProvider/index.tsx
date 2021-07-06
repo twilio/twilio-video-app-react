@@ -1,4 +1,5 @@
-import React, { createContext, useCallback, useEffect, useRef, useState } from 'react';
+import { createContext, useCallback, useEffect, useRef, useState } from 'react';
+import * as React from 'react';
 import { Client } from '@twilio/conversations';
 import { Conversation } from '@twilio/conversations/lib/conversation';
 import { Message } from '@twilio/conversations/lib/message';

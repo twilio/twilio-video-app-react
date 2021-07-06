@@ -1,4 +1,3 @@
-import React from 'react';
 import AudioInputList from './AudioInputList';
 import { SELECTED_AUDIO_INPUT_KEY } from '../../../constants';
 import { Select, Typography } from '@material-ui/core';

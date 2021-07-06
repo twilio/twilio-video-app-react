@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, FormEvent } from 'react';
+import { ChangeEvent, useState, FormEvent } from 'react';
 import { useAppState } from '../../state';
 
 import Button from '@material-ui/core/Button';

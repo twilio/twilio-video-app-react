@@ -1,4 +1,3 @@
-import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { Button } from '@material-ui/core';
 import { EventEmitter } from 'events';

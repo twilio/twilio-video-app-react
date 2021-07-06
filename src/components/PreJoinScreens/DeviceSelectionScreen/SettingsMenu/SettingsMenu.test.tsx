@@ -1,4 +1,3 @@
-import React from 'react';
 import AboutDialog from '../../../AboutDialog/AboutDialog';
 import { Button, MenuItem } from '@material-ui/core';
 import ConnectionOptionsDialog from '../../../ConnectionOptionsDialog/ConnectionOptionsDialog';

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { act } from 'react-dom/test-utils';
 import DeviceSelectionScreen from './DeviceSelectionScreen/DeviceSelectionScreen';
 import MediaErrorSnackbar from './MediaErrorSnackbar/MediaErrorSnackbar';
@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom';
 import { useAppState } from '../../state';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
+// @ts-ignore
 delete window.location;
 // @ts-ignore
 window.location = {

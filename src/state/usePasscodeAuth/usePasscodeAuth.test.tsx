@@ -1,9 +1,10 @@
-import React from 'react';
+import * as React from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router-dom';
 import usePasscodeAuth, { getPasscode, verifyPasscode } from './usePasscodeAuth';
 
+// @ts-ignore
 delete window.location;
 // @ts-ignore
 window.location = {

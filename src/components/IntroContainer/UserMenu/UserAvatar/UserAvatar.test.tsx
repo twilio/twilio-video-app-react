@@ -1,4 +1,3 @@
-import React from 'react';
 import { Avatar } from '@material-ui/core';
 import { shallow } from 'enzyme';
 import Person from '@material-ui/icons/Person';

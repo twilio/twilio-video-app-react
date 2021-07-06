@@ -1,4 +1,3 @@
-import React from 'react';
 import AboutDialog from './AboutDialog';
 import { render } from '@testing-library/react';
 import { useAppState } from '../../state';

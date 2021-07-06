@@ -1,4 +1,3 @@
-import React from 'react';
 import DeviceSelectionScreen from './DeviceSelectionScreen';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { shallow } from 'enzyme';
