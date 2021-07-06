@@ -1,4 +1,3 @@
-import React from 'react';
 import AudioOutputList from './AudioOutputList';
 import { Select, Typography } from '@material-ui/core';
 import { shallow } from 'enzyme';

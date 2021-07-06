@@ -1,4 +1,3 @@
-import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';

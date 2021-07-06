@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import * as React from 'react';
 import { Button, CircularProgress, Grid, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import { Conversation } from '@twilio/conversations/lib/conversation';

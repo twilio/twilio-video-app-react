@@ -1,4 +1,3 @@
-import React from 'react';
 import LocalVideoPreview from './LocalVideoPreview';
 import { IVideoContext } from '../../../VideoProvider';
 import { shallow } from 'enzyme';

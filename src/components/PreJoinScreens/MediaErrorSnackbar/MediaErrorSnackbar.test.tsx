@@ -1,4 +1,3 @@
-import React from 'react';
 import MediaErrorSnackBar, { getSnackbarContent } from './MediaErrorSnackbar';
 import { shallow } from 'enzyme';
 import useDevices from '../../../hooks/useDevices/useDevices';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { shallow } from 'enzyme';
 import Tooltip from '@material-ui/core/Tooltip';
 import ParticipantConnectionIndicator from './ParticipantConnectionIndicator';

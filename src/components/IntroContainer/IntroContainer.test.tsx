@@ -1,4 +1,3 @@
-import React from 'react';
 import IntroContainer from './IntroContainer';
 import { shallow } from 'enzyme';
 import { useLocation } from 'react-router-dom';

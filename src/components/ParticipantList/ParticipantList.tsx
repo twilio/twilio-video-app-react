@@ -1,4 +1,3 @@
-import React from 'react';
 import clsx from 'clsx';
 import Participant from '../Participant/Participant';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';

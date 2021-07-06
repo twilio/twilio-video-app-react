@@ -1,4 +1,3 @@
-import React from 'react';
 import MainParticipant from './MainParticipant';
 import ParticipantTracks from '../ParticipantTracks/ParticipantTracks';
 import { shallow } from 'enzyme';

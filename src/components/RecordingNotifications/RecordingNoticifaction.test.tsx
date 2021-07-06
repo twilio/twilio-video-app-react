@@ -1,4 +1,3 @@
-import React from 'react';
 import { mount } from 'enzyme';
 import RecordingNotifications from './RecordingNotifications';
 import Snackbar from '../Snackbar/Snackbar';

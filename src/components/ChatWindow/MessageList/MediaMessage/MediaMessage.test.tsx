@@ -1,4 +1,3 @@
-import React from 'react';
 import { Media } from '@twilio/conversations/lib/media';
 import MediaMessage, { formatFileSize } from './MediaMessage';
 import { shallow } from 'enzyme';

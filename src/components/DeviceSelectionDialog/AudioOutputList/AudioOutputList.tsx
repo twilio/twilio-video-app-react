@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormControl, MenuItem, Typography, Select } from '@material-ui/core';
 import { useAppState } from '../../../state';
 import useDevices from '../../../hooks/useDevices/useDevices';

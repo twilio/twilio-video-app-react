@@ -1,4 +1,3 @@
-import React from 'react';
 import clsx from 'clsx';
 import { makeStyles, Theme } from '@material-ui/core';
 import ChatWindow from '../ChatWindow/ChatWindow';

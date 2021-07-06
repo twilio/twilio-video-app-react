@@ -1,4 +1,3 @@
-import React from 'react';
 import { shallow } from 'enzyme';
 import useLocalVideoToggle from '../../../hooks/useLocalVideoToggle/useLocalVideoToggle';
 

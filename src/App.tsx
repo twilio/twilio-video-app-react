@@ -1,4 +1,3 @@
-import React from 'react';
 import { styled, Theme } from '@material-ui/core/styles';
 
 import MenuBar from './components/MenuBar/MenuBar';

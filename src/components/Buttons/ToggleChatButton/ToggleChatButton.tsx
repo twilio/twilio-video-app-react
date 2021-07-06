@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import ChatIcon from '../../../icons/ChatIcon';
 import clsx from 'clsx';

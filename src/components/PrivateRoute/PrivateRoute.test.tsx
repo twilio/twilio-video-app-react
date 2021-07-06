@@ -1,4 +1,3 @@
-import React from 'react';
 import PrivateRoute from './PrivateRoute';
 import { useAppState } from '../../state';
 import { mount } from 'enzyme';

@@ -1,4 +1,3 @@
-import React from 'react';
 import AvatarIcon from '../../../../icons/AvatarIcon';
 import { makeStyles, Theme, Typography } from '@material-ui/core';
 import LocalAudioLevelIndicator from '../../../LocalAudioLevelIndicator/LocalAudioLevelIndicator';

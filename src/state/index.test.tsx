@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
 
 import AppStateProvider, { useAppState } from './index';

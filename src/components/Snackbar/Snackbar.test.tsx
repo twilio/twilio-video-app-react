@@ -1,5 +1,4 @@
 import { shallow } from 'enzyme';
-import React from 'react';
 import Snackbar from './Snackbar';
 
 describe('the Snackbar component', () => {

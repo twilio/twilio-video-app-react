@@ -1,4 +1,3 @@
-import React from 'react';
 import AvatarIcon from '../../icons/AvatarIcon';
 import ParticipantInfo from './ParticipantInfo';
 import PinIcon from './PinIcon/PinIcon';

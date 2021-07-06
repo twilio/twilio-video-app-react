@@ -1,4 +1,3 @@
-import React from 'react';
 import RoomNameScreen from './RoomNameScreen';
 import { shallow } from 'enzyme';
 import { TextField } from '@material-ui/core';
@@ -43,6 +42,7 @@ describe('the RoomNameScreen component', () => {
   it('should render correctly when there is a logged in user and "customIdentity=true" query parameter"', () => {
     mockUseAppState.mockImplementationOnce(() => ({ user: { displayName: 'Test Name' } }));
 
+    // @ts-ignore
     delete window.location;
     // @ts-ignore
     window.location = {

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import clsx from 'clsx';
 import CloseIcon from '@material-ui/icons/Close';
 import ErrorIcon from '../../icons/ErrorIcon';

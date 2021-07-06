@@ -1,4 +1,3 @@
-import React from 'react';
 import AudioLevelIndicator from '../../AudioLevelIndicator/AudioLevelIndicator';
 import { LocalAudioTrack } from 'twilio-video';
 import { FormControl, MenuItem, Typography, Select, Grid } from '@material-ui/core';

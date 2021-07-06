@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 
 import Button from '@material-ui/core/Button';
 import VideoOffIcon from '../../../icons/VideoOffIcon';

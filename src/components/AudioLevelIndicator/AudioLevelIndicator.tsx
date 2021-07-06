@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { AudioTrack, LocalAudioTrack, RemoteAudioTrack } from 'twilio-video';
 import { interval } from 'd3-timer';
 import useIsTrackEnabled from '../../hooks/useIsTrackEnabled/useIsTrackEnabled';
@@ -146,4 +146,4 @@ function AudioLevelIndicator({ audioTrack, color = 'white' }: { audioTrack?: Aud
   );
 }
 
-export default React.memo(AudioLevelIndicator);
+export default memo(AudioLevelIndicator);

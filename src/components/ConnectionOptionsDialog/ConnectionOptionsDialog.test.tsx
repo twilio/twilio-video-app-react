@@ -1,4 +1,3 @@
-import React from 'react';
 import ConnectionOptionsDialog from './ConnectionOptionsDialog';
 import { initialSettings } from '../../state/settings/settingsReducer';
 import { Select, TextField } from '@material-ui/core';

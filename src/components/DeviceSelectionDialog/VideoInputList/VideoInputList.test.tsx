@@ -1,4 +1,3 @@
-import React from 'react';
 import { DEFAULT_VIDEO_CONSTRAINTS, SELECTED_VIDEO_INPUT_KEY } from '../../../constants';
 import { Select, Typography } from '@material-ui/core';
 import { shallow } from 'enzyme';

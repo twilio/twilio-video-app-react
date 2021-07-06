@@ -1,4 +1,3 @@
-import React from 'react';
 import Publication from './Publication';
 import { shallow } from 'enzyme';
 import useTrack from '../../hooks/useTrack/useTrack';

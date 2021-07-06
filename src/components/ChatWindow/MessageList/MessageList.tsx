@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 import { Message } from '@twilio/conversations/lib/message';
 import MessageInfo from './MessageInfo/MessageInfo';
 import MessageListScrollContainer from './MessageListScrollContainer/MessageListScrollContainer';
@@ -29,13 +29,13 @@ export default function MessageList({ messages }: MessageListProps) {
         const isLocalParticipant = localParticipant.identity === message.author;
 
         return (
-          <React.Fragment key={message.sid}>
+          <Fragment key={message.sid}>
             {shouldDisplayMessageInfo && (
               <MessageInfo author={message.author} isLocalParticipant={isLocalParticipant} dateCreated={time} />
             )}
             {message.type === 'text' && <TextMessage body={message.body} isLocalParticipant={isLocalParticipant} />}
             {message.type === 'media' && <MediaMessage media={message.media} />}
-          </React.Fragment>
+          </Fragment>
         );
       })}
     </MessageListScrollContainer>

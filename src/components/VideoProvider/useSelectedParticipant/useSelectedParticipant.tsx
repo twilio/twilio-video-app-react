@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+import * as React from 'react';
 import { Participant, Room } from 'twilio-video';
 
 type selectedParticipantContextType = [Participant | null, (participant: Participant) => void];

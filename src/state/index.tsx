@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useReducer, useState } from 'react';
+import { createContext, useContext, useReducer, useState } from 'react';
+import * as React from 'react';
 import { RecordingRules, RoomType } from '../types';
 import { TwilioError } from 'twilio-video';
 import { settingsReducer, initialSettings, Settings, SettingsAction } from './settings/settingsReducer';

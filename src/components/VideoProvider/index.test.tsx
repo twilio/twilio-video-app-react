@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import React from 'react';
+import * as React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { Room, TwilioError } from 'twilio-video';
 import { VideoProvider } from './index';

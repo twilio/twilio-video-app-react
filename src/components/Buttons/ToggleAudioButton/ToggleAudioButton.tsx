@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Button from '@material-ui/core/Button';
 import MicIcon from '../../../icons/MicIcon';
 import MicOffIcon from '../../../icons/MicOffIcon';

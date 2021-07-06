@@ -1,5 +1,4 @@
 import EventEmitter from 'events';
-import React from 'react';
 import ParticipantList from './ParticipantList';
 import { shallow } from 'enzyme';
 import useMainParticipant from '../../hooks/useMainParticipant/useMainParticipant';

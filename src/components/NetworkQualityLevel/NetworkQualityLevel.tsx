@@ -1,4 +1,3 @@
-import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Participant } from 'twilio-video';
 import useParticipantNetworkQualityLevel from '../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel';

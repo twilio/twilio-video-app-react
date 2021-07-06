@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button, Link, Menu, MenuItem } from '@material-ui/core';
 import { shallow } from 'enzyme';
 import { useAppState } from '../../../state';
