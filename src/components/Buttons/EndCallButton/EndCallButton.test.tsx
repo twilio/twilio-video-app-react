@@ -7,6 +7,7 @@ const mockVideoContext = {
   room: {
     disconnect: jest.fn(),
   },
+  updateBackgroundSettings: jest.fn(),
 };
 
 jest.mock('../../../hooks/useVideoContext/useVideoContext', () => () => mockVideoContext);

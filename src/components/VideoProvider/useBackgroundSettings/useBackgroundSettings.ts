@@ -71,24 +71,39 @@ const bgLibSettings = {
   assetsPath: '/virtualbackground',
 };
 
+const BG_SETTINGS_KEY = 'bgsettings5';
+
 let blurProcessor: GaussianBlurBackgroundProcessor;
 
 export default function useBackgroundSettings(room: Room | undefined | null) {
-  const [backgroundSettings, setBackgroundSettings] = useState({
-    type: 'none',
-    index: 0,
-  } as BackgroundSettings);
+  let currentSettings: BackgroundSettings;
+  const localStorageSetting = window.localStorage.getItem(BG_SETTINGS_KEY);
+  currentSettings = localStorageSetting ? JSON.parse(localStorageSetting!) : { type: 'none', index: 0 };
+
+  const [backgroundSettings, setBackgroundSettings] = useState<BackgroundSettings>(currentSettings);
+
+  const updateSettings = (settings: BackgroundSettings): void => {
+    setBackgroundSettings(settings);
+    window.localStorage.setItem(BG_SETTINGS_KEY, JSON.stringify(settings));
+  };
 
   const updateBackgroundSettings = useCallback(
-    async (settings: BackgroundSettings, force?: boolean, newRoom?: Room) => {
+    async (settings: BackgroundSettings, reset?: boolean, force?: boolean, newRoom?: Room) => {
+      // reset, used for resetting background settings when camera is off/no video tracks
+      if (reset) {
+        updateSettings({ type: 'none' });
+        return;
+      }
       room = room || newRoom;
       if (!room) {
         return;
       }
-      const videoTrack = Array.from(room.localParticipant.videoTracks.values())[0].track;
-      if (!videoTrack) {
+
+      const videoTrackValue = Array.from(room.localParticipant.videoTracks.values())[0];
+      if (!videoTrackValue) {
         return;
       }
+      const videoTrack = videoTrackValue.track;
       const { type } = settings;
       if (type !== backgroundSettings.type || force) {
         if (type === 'none' && videoTrack.processor) {
@@ -96,26 +111,20 @@ export default function useBackgroundSettings(room: Room | undefined | null) {
         } else if (type === 'blur') {
           if (!blurProcessor) {
             blurProcessor = new GaussianBlurBackgroundProcessor({ ...bgLibSettings });
-            (window as any).blurProcessor = blurProcessor;
             await blurProcessor.loadModel();
           }
           if (videoTrack.processor) {
             videoTrack.removeProcessor(videoTrack.processor);
           }
           videoTrack.addProcessor(blurProcessor);
-        }
-      } else if (type === 'image') {
-        console.log('image click');
-        if (videoTrack.processor) {
-          videoTrack.removeProcessor(videoTrack.processor);
+        } else {
+          // TODO currently just removes processor, implement background image replacement logic
+          if (videoTrack.processor) {
+            videoTrack.removeProcessor(videoTrack.processor);
+          }
         }
       }
-
-      const updatedSettings = {
-        ...backgroundSettings,
-        ...settings,
-      };
-      setBackgroundSettings(updatedSettings);
+      updateSettings(settings);
     },
     [backgroundSettings, setBackgroundSettings, room]
   );

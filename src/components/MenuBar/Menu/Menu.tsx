@@ -17,6 +17,7 @@ import useIsRecording from '../../../hooks/useIsRecording/useIsRecording';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 import FlipCameraIcon from '../../../icons/FlipCameraIcon';
 import useFlipCameraToggle from '../../../hooks/useFlipCameraToggle/useFlipCameraToggle';
+import useLocalVideoToggle from '../../../hooks/useLocalVideoToggle/useLocalVideoToggle';
 
 export const IconContainer = styled('div')({
   display: 'flex',
@@ -36,6 +37,7 @@ export default function Menu(props: { buttonClassName?: string }) {
   const { setIsChatWindowOpen } = useChatContext();
   const isRecording = useIsRecording();
   const { room, setIsBackgroundSelectionOpen } = useVideoContext();
+  const [isVideoEnabled] = useLocalVideoToggle();
 
   const anchorRef = useRef<HTMLButtonElement>(null);
   const { flipCameraDisabled, toggleFacingMode, flipCameraSupported } = useFlipCameraToggle();
@@ -110,6 +112,7 @@ export default function Menu(props: { buttonClassName?: string }) {
               setIsChatWindowOpen(false);
               setMenuOpen(false);
             }}
+            disabled={!isVideoEnabled}
           >
             <IconContainer>
               <BackgroundIcon />

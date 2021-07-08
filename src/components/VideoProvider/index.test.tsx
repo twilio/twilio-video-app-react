@@ -3,6 +3,7 @@ import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { Room, TwilioError } from 'twilio-video';
 import { VideoProvider } from './index';
+import { BackgroundSettings } from '../VideoProvider/useBackgroundSettings/useBackgroundSettings';
 import useLocalTracks from './useLocalTracks/useLocalTracks';
 import useRestartAudioTrackOnDeviceChange from './useRestartAudioTrackOnDeviceChange/useRestartAudioTrackOnDeviceChange';
 import useRoom from './useRoom/useRoom';
@@ -34,6 +35,10 @@ describe('the VideoProvider component', () => {
       </VideoProvider>
     );
     const { result } = renderHook(useVideoContext, { wrapper });
+    const expectedSettings = {
+      type: 'none',
+      index: 0,
+    };
     expect(result.current).toMatchObject({
       isConnecting: false,
       localTracks: [{ name: 'mockTrack' }],
@@ -47,6 +52,8 @@ describe('the VideoProvider component', () => {
       toggleScreenShare: expect.any(Function),
       isBackgroundSelectionOpen: false,
       setIsBackgroundSelectionOpen: expect.any(Function),
+      backgroundSettings: expectedSettings,
+      updateBackgroundSettings: expect.any(Function),
     });
     expect(useRoom).toHaveBeenCalledWith([{ name: 'mockTrack' }], expect.any(Function), {
       dominantSpeaker: true,
