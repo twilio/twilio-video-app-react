@@ -90,16 +90,17 @@ export default function useBackgroundSettings(room: Room | undefined | null) {
   const updateBackgroundSettings = useCallback(
     async (settings: BackgroundSettings, reset?: boolean, force?: boolean, newRoom?: Room) => {
       // reset, used for resetting background settings when camera is off/no video tracks
+      let currentRoom = room;
       if (reset) {
         updateSettings({ type: 'none' });
         return;
       }
-      room = room || newRoom;
-      if (!room) {
+      currentRoom = currentRoom || newRoom;
+      if (!currentRoom) {
         return;
       }
 
-      const videoTrackValue = Array.from(room.localParticipant.videoTracks.values())[0];
+      const videoTrackValue = Array.from(currentRoom.localParticipant.videoTracks.values())[0];
       if (!videoTrackValue) {
         return;
       }
@@ -126,7 +127,7 @@ export default function useBackgroundSettings(room: Room | undefined | null) {
       }
       updateSettings(settings);
     },
-    [backgroundSettings, setBackgroundSettings, room]
+    [backgroundSettings, room]
   );
 
   return [backgroundSettings, updateBackgroundSettings] as const;
