@@ -23,7 +23,7 @@ export default function EndCallButton(props: { className?: string }) {
   const { room, updateBackgroundSettings } = useVideoContext();
 
   const handleDisconnect = () => {
-    updateBackgroundSettings({ type: 'none', index: 0 }, true);
+    updateBackgroundSettings({ type: 'none', index: 0 });
     room!.disconnect();
   };
 

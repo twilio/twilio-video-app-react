@@ -3,15 +3,7 @@ import { useCallback, useState } from 'react';
 import useVideoContext from '../useVideoContext/useVideoContext';
 
 export default function useLocalVideoToggle() {
-  const {
-    room,
-    localTracks,
-    getLocalVideoTrack,
-    removeLocalVideoTrack,
-    onError,
-    backgroundSettings,
-    updateBackgroundSettings,
-  } = useVideoContext();
+  const { room, localTracks, getLocalVideoTrack, removeLocalVideoTrack, onError } = useVideoContext();
   const localParticipant = room?.localParticipant;
   const videoTrack = localTracks.find(track => track.name.includes('camera')) as LocalVideoTrack;
   const [isPublishing, setIspublishing] = useState(false);
@@ -29,21 +21,11 @@ export default function useLocalVideoToggle() {
           .then((track: LocalVideoTrack) => localParticipant?.publishTrack(track, { priority: 'low' }))
           .catch(onError)
           .finally(() => {
-            updateBackgroundSettings(backgroundSettings, false, true);
             setIspublishing(false);
           });
       }
     }
-  }, [
-    videoTrack,
-    localParticipant,
-    getLocalVideoTrack,
-    isPublishing,
-    onError,
-    removeLocalVideoTrack,
-    backgroundSettings,
-    updateBackgroundSettings,
-  ]);
+  }, [videoTrack, localParticipant, getLocalVideoTrack, isPublishing, onError, removeLocalVideoTrack]);
 
   return [!!videoTrack, toggleVideoEnabled] as const;
 }
