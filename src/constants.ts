@@ -10,4 +10,4 @@ export const SELECTED_AUDIO_OUTPUT_KEY = 'TwilioVideoApp-selectedAudioOutput';
 export const SELECTED_VIDEO_INPUT_KEY = 'TwilioVideoApp-selectedVideoInput';
 
 // This is used to store the current background settings in localStorage
-export const BG_SETTINGS_KEY = 'bgsettings5';
+export const SELECTED_BACKGROUND_SETTINGS_KEY = 'TwilioVideoApp-selectedBackgroundSettings';

@@ -7,20 +7,20 @@ import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
 jest.mock('../../../hooks/useVideoContext/useVideoContext');
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
-const mockUpdateBackgroundSettings = jest.fn();
+const mockSetBackgroundSettings = jest.fn();
 mockUseVideoContext.mockImplementation(() => ({
   backgroundSettings: {
     type: 'blur',
     index: 0,
   },
-  updateBackgroundSettings: mockUpdateBackgroundSettings,
+  setBackgroundSettings: mockSetBackgroundSettings,
 }));
 
 describe('The BackgroundThumbanil component', () => {
   it('should update the background settings when clicked', () => {
     const wrapper = shallow(<BackgroundThumbnail thumbnail={'none'} index={5} />);
     wrapper.simulate('click');
-    expect(mockUpdateBackgroundSettings).toHaveBeenCalledWith({ index: 5, type: 'none' });
+    expect(mockSetBackgroundSettings).toHaveBeenCalledWith({ index: 5, type: 'none' });
   });
 
   it('should not be selected when thumbnail prop and backgroundSettings type are not equivalent (icon)', () => {
@@ -39,7 +39,7 @@ describe('The BackgroundThumbanil component', () => {
         type: 'image',
         index: 1,
       },
-      updateBackgroundSettings: mockUpdateBackgroundSettings,
+      setBackgroundSettings: mockSetBackgroundSettings,
     }));
     const wrapper = shallow(<BackgroundThumbnail thumbnail={'image'} index={1} />);
     expect(wrapper.find('.selected').exists()).toBe(true);
@@ -51,7 +51,7 @@ describe('The BackgroundThumbanil component', () => {
         type: 'image',
         index: 1,
       },
-      setBackgroundSettings: mockUpdateBackgroundSettings,
+      setBackgroundSettings: mockSetBackgroundSettings,
       updateBackgroundSettings: jest.fn(),
     }));
     const wrapper = shallow(<BackgroundThumbnail thumbnail={'image'} index={5} />);

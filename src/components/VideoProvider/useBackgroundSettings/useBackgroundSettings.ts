@@ -1,6 +1,6 @@
 import { LocalVideoTrack } from 'twilio-video';
-import { useCallback, useState, useEffect } from 'react';
-import { BG_SETTINGS_KEY } from '../../../constants';
+import { useState, useEffect } from 'react';
+import { SELECTED_BACKGROUND_SETTINGS_KEY } from '../../../constants';
 import { GaussianBlurBackgroundProcessor } from '@twilio/video-processors';
 import AbstractThumb from '../../../images/thumb/Abstract.jpg';
 import BohoHomeThumb from '../../../images/thumb/BohoHome.jpg';
@@ -71,58 +71,37 @@ export const backgroundConfig = {
 const virtualBackgroundAssets = '/virtualbackground';
 
 let blurProcessor: GaussianBlurBackgroundProcessor;
+blurProcessor = new GaussianBlurBackgroundProcessor({
+  assetsPath: virtualBackgroundAssets,
+});
+blurProcessor.loadModel();
 
-export default function useBackgroundSettings(videoTrack: LocalVideoTrack) {
+export default function useBackgroundSettings(videoTrack: LocalVideoTrack | undefined) {
   const [backgroundSettings, setBackgroundSettings] = useState<BackgroundSettings>(() => {
-    const localStorageSettings = window.localStorage.getItem(BG_SETTINGS_KEY);
+    const localStorageSettings = window.localStorage.getItem(SELECTED_BACKGROUND_SETTINGS_KEY);
     return localStorageSettings ? JSON.parse(localStorageSettings) : { type: 'none', index: 0 };
   });
 
-  // load processors on initialization
-  useEffect(() => {
-    if (!blurProcessor) {
-      blurProcessor = new GaussianBlurBackgroundProcessor({
-        assetsPath: virtualBackgroundAssets,
-      });
-      blurProcessor.loadModel();
+  // Specifically used for handling room disconnection
+  const removeProcessor = (): void => {
+    if (videoTrack && videoTrack.processor) {
+      videoTrack.removeProcessor(videoTrack.processor);
     }
-  }, []);
-
-  // for reapplying background replacement after camera is toggled on again
-  useEffect(() => {
-    const storedBackgroundSettings = window.localStorage.getItem(BG_SETTINGS_KEY);
-    if (videoTrack && storedBackgroundSettings) {
-      const parsedSettings = JSON.parse(storedBackgroundSettings!);
-      if (parsedSettings.type === 'blur') {
-        videoTrack.addProcessor(blurProcessor);
-      }
-    }
-  }, [videoTrack]);
-
-  // update the backgroundSettings and save into localStorage
-  const updateSettings = (settings: BackgroundSettings): void => {
-    setBackgroundSettings(settings);
-    window.localStorage.setItem(BG_SETTINGS_KEY, JSON.stringify(settings));
   };
 
-  const updateBackgroundSettings = useCallback(
-    async (settings: BackgroundSettings) => {
-      // check if new background settings have been selected
-      if (settings.type !== backgroundSettings.type) {
-        // remove processor
-        if (videoTrack.processor) {
-          videoTrack.removeProcessor(videoTrack.processor);
-        }
-        if (settings.type === 'blur') {
-          videoTrack.addProcessor(blurProcessor);
-        } else if (settings.type === 'image') {
-          // TODO add image replacement logic
-        }
-        updateSettings(settings);
+  useEffect(() => {
+    if (videoTrack) {
+      if (videoTrack.processor) {
+        videoTrack.removeProcessor(videoTrack.processor);
       }
-    },
-    [backgroundSettings, videoTrack]
-  );
+      if (backgroundSettings.type === 'blur') {
+        videoTrack.addProcessor(blurProcessor);
+      } else if (backgroundSettings.type === 'image') {
+        // TODO implement image background replacement logic
+      }
+    }
+    window.localStorage.setItem(SELECTED_BACKGROUND_SETTINGS_KEY, JSON.stringify(backgroundSettings));
+  }, [backgroundSettings, videoTrack]);
 
-  return [backgroundSettings, updateBackgroundSettings] as const;
+  return [backgroundSettings, setBackgroundSettings, removeProcessor] as const;
 }

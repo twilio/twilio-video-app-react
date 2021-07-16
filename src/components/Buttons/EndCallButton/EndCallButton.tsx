@@ -20,10 +20,10 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function EndCallButton(props: { className?: string }) {
   const classes = useStyles();
-  const { room, updateBackgroundSettings } = useVideoContext();
+  const { room, removeProcessor } = useVideoContext();
 
-  const handleDisconnect = () => {
-    updateBackgroundSettings({ type: 'none', index: 0 });
+  const handleDisconnect = (): void => {
+    removeProcessor();
     room!.disconnect();
   };
 

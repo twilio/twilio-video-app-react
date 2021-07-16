@@ -97,7 +97,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function BackgroundThumbnail({ thumbnail, imagePath, name, index }: BackgroundThumbnailProps) {
   const classes = useStyles();
-  const { backgroundSettings, updateBackgroundSettings } = useVideoContext();
+  const { backgroundSettings, setBackgroundSettings } = useVideoContext();
   const isImage = thumbnail === 'image';
   const thumbnailSelected = isImage
     ? backgroundSettings.index === index && backgroundSettings.type === 'image'
@@ -113,7 +113,7 @@ export default function BackgroundThumbnail({ thumbnail, imagePath, name, index 
     <div
       className={classes.thumbContainer}
       onClick={() =>
-        updateBackgroundSettings({
+        setBackgroundSettings({
           type: thumbnail,
           index: index,
         })
