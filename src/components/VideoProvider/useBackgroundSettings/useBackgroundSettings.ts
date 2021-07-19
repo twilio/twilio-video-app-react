@@ -69,12 +69,7 @@ export const backgroundConfig = {
 };
 
 const virtualBackgroundAssets = '/virtualbackground';
-
 let blurProcessor: GaussianBlurBackgroundProcessor;
-blurProcessor = new GaussianBlurBackgroundProcessor({
-  assetsPath: virtualBackgroundAssets,
-});
-blurProcessor.loadModel();
 
 export default function useBackgroundSettings(videoTrack: LocalVideoTrack | undefined) {
   const [backgroundSettings, setBackgroundSettings] = useState<BackgroundSettings>(() => {
@@ -88,6 +83,15 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
       videoTrack.removeProcessor(videoTrack.processor);
     }
   };
+
+  useEffect(() => {
+    if (!blurProcessor) {
+      blurProcessor = new GaussianBlurBackgroundProcessor({
+        assetsPath: virtualBackgroundAssets,
+      });
+      blurProcessor.loadModel();
+    }
+  }, []);
 
   useEffect(() => {
     if (videoTrack) {

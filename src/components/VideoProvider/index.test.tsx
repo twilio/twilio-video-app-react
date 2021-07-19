@@ -25,6 +25,15 @@ jest.mock('./useLocalTracks/useLocalTracks', () =>
 jest.mock('./useHandleRoomDisconnection/useHandleRoomDisconnection');
 jest.mock('./useHandleTrackPublicationFailed/useHandleTrackPublicationFailed');
 jest.mock('./useRestartAudioTrackOnDeviceChange/useRestartAudioTrackOnDeviceChange');
+jest.mock('@twilio/video-processors', () => {
+  return {
+    GaussianBlurBackgroundProcessor: jest.fn().mockImplementation(() => {
+      return {
+        loadModel: jest.fn(),
+      };
+    }),
+  };
+});
 
 describe('the VideoProvider component', () => {
   it('should correctly return the Video Context object', () => {
@@ -52,7 +61,8 @@ describe('the VideoProvider component', () => {
       isBackgroundSelectionOpen: false,
       setIsBackgroundSelectionOpen: expect.any(Function),
       backgroundSettings: expectedSettings,
-      updateBackgroundSettings: expect.any(Function),
+      setBackgroundSettings: expect.any(Function),
+      removeProcessor: expect.any(Function),
     });
     expect(useRoom).toHaveBeenCalledWith([{ name: 'mockTrack' }], expect.any(Function), {
       dominantSpeaker: true,

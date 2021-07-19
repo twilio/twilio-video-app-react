@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react-hooks';
-
+import useBackgroundSettings, { BackgroundSettings } from './useBackgroundSettings';
 const mockLoadModel = jest.fn();
 
 jest.mock('@twilio/video-processors', () => {
@@ -7,14 +7,10 @@ jest.mock('@twilio/video-processors', () => {
     GaussianBlurBackgroundProcessor: jest.fn().mockImplementation(() => {
       return {
         loadModel: mockLoadModel,
-        //added attribute for testing purposes
-        name: 'GaussianBlurBackgroundProcessor',
       };
     }),
   };
 });
-
-import useBackgroundSettings, { BackgroundSettings } from './useBackgroundSettings';
 
 const defaultSettings = {
   type: 'none',
