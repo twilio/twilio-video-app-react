@@ -155,10 +155,10 @@ exports[`the messageList component should render correctly 1`] = `
           </div>
         </div>
         <div
-          class="makeStyles-messageContainer-45"
+          class="makeStyles-messageContainer-9"
         >
           <div
-            class="makeStyles-iconContainer-46"
+            class="makeStyles-iconContainer-10"
           >
             <svg
               fill="none"
@@ -212,15 +212,15 @@ exports[`the messageList component should render correctly 1`] = `
             </svg>
           </div>
           <div
-            class="makeStyles-mediaInfo-47"
+            class="makeStyles-mediaInfo-11"
           >
             <p
-              class="makeStyles-filename-48"
+              class="makeStyles-filename-12"
             >
               test1.txt
             </p>
             <p
-              class="makeStyles-size-49"
+              class="makeStyles-size-13"
             >
               120.56 KB
                - Click to open
@@ -243,7 +243,6 @@ exports[`the messageList component should render correctly 1`] = `
                 aria-hidden="true"
                 class="MuiSvgIcon-root"
                 focusable="false"
-                role="presentation"
                 viewBox="0 0 24 24"
               >
                 <path

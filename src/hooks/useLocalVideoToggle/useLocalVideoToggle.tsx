@@ -20,7 +20,9 @@ export default function useLocalVideoToggle() {
         getLocalVideoTrack()
           .then((track: LocalVideoTrack) => localParticipant?.publishTrack(track, { priority: 'low' }))
           .catch(onError)
-          .finally(() => setIspublishing(false));
+          .finally(() => {
+            setIspublishing(false);
+          });
       }
     }
   }, [videoTrack, localParticipant, getLocalVideoTrack, isPublishing, onError, removeLocalVideoTrack]);
