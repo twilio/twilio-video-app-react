@@ -1,8 +1,8 @@
 import { act, renderHook } from '@testing-library/react-hooks';
 import { SELECTED_BACKGROUND_SETTINGS_KEY } from '../../../constants';
 import useBackgroundSettings, { BackgroundSettings } from './useBackgroundSettings';
-const mockLoadModel = jest.fn();
 
+const mockLoadModel = jest.fn();
 jest.mock('@twilio/video-processors', () => {
   return {
     GaussianBlurBackgroundProcessor: jest.fn().mockImplementation(() => {
@@ -26,9 +26,9 @@ const blurSettings = {
 };
 
 let mockVideoTrack: any;
+let mockRoom: any;
 let backgroundSettings: any;
 let setBackgroundSettings: any;
-let removeProcessor: any;
 let renderResult: any;
 
 beforeEach(async () => {
@@ -38,9 +38,12 @@ beforeEach(async () => {
     addProcessor: jest.fn(),
     removeProcessor: jest.fn(),
   };
-  const { result } = renderHook(() => useBackgroundSettings(mockVideoTrack as any));
+  mockRoom = {
+    localParticipant: 'participant',
+  };
+  const { result } = renderHook(() => useBackgroundSettings(mockVideoTrack as any, mockRoom));
   renderResult = result;
-  [backgroundSettings, setBackgroundSettings, removeProcessor] = renderResult.current;
+  [backgroundSettings, setBackgroundSettings] = renderResult.current;
   await act(async () => {
     setBackgroundSettings(defaultSettings);
   });
@@ -48,7 +51,7 @@ beforeEach(async () => {
 
 describe('The useBackgroundSettings hook ', () => {
   it('should return the backgroundsettings and update function.', () => {
-    expect(renderResult.current).toEqual([defaultSettings, expect.any(Function), expect.any(Function)]);
+    expect(renderResult.current).toEqual([defaultSettings, expect.any(Function)]);
   });
 
   it('should set the background settings correctly and set the video processor when "blur" is selected', async () => {
@@ -76,35 +79,16 @@ describe('The useBackgroundSettings hook ', () => {
     // TODO add test after implementing virtual background feature/logic
   });
 
-  describe('The removeProcessor function should ', () => {
-    it('call videoTrack.removeProcessor if videoTrack and videoTrack.processor exist', () => {
+  describe('The setBackgroundSettings function ', () => {
+    it('should call videoTrack.removeProcessor if videoTrack and videoTrack.processor exists', async () => {
       mockVideoTrack = {
         kind: 'video',
         processor: 'processor',
         addProcessor: jest.fn(),
         removeProcessor: jest.fn(),
       };
-      const { result: renderResult } = renderHook(() => useBackgroundSettings(mockVideoTrack as any));
-      removeProcessor = renderResult.current[2];
-      removeProcessor();
-      expect(mockVideoTrack.removeProcessor).toHaveBeenCalled();
-    });
-
-    it('should not call videoTrack.removeProcessor if either videoTrack or videoTrack.processor does not exist', () => {
-      // case where videoTrack exists but not the processor
-      expect(mockVideoTrack.removeProcessor).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('The setBackgroundSettings function should ', () => {
-    it('call videoTrack.removeProcessor if videoTrack and videoTrack.processor exists', async () => {
-      mockVideoTrack = {
-        kind: 'video',
-        processor: 'processor',
-        addProcessor: jest.fn(),
-        removeProcessor: jest.fn(),
-      };
-      const { result: renderResult } = renderHook(() => useBackgroundSettings(mockVideoTrack as any));
+      const { result } = renderHook(() => useBackgroundSettings(mockVideoTrack as any, mockRoom));
+      renderResult = result;
       setBackgroundSettings = renderResult.current[1];
       await act(async () => {
         setBackgroundSettings(defaultSettings);
@@ -113,7 +97,7 @@ describe('The useBackgroundSettings hook ', () => {
       expect(window.localStorage.getItem(SELECTED_BACKGROUND_SETTINGS_KEY)).toEqual(JSON.stringify(defaultSettings));
     });
 
-    it('not call videoTrack.removeProcessor if videoTrack.processor does not exist', async () => {
+    it('should not call videoTrack.removeProcessor if videoTrack.processor does not exist', async () => {
       await act(async () => {
         setBackgroundSettings(blurSettings);
       });
@@ -135,6 +119,16 @@ describe('The useBackgroundSettings hook ', () => {
         name: 'GaussianBlurBackgroundProcessor',
       });
       expect(window.localStorage.getItem(SELECTED_BACKGROUND_SETTINGS_KEY)).toEqual(JSON.stringify(imgSettings));
+    });
+
+    it('should not error when videoTrack does not exist and sets the local storage item', async () => {
+      const { result } = renderHook(() => useBackgroundSettings({} as any, mockRoom));
+      renderResult = result;
+      setBackgroundSettings = renderResult.current[1];
+      await act(async () => {
+        setBackgroundSettings(defaultSettings);
+      });
+      expect(window.localStorage.getItem(SELECTED_BACKGROUND_SETTINGS_KEY)).toEqual(JSON.stringify(defaultSettings));
     });
   });
 });

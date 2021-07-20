@@ -77,13 +77,6 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
     return localStorageSettings ? JSON.parse(localStorageSettings) : { type: 'none', index: 0 };
   });
 
-  // Specifically used for making sure no video processors are applied on prejoin screens
-  const removeProcessor = (): void => {
-    if (videoTrack && videoTrack.processor) {
-      videoTrack.removeProcessor(videoTrack.processor);
-    }
-  };
-
   useEffect(() => {
     if (!blurProcessor) {
       blurProcessor = new GaussianBlurBackgroundProcessor({
@@ -109,5 +102,5 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
     window.localStorage.setItem(SELECTED_BACKGROUND_SETTINGS_KEY, JSON.stringify(backgroundSettings));
   }, [backgroundSettings, videoTrack, room]);
 
-  return [backgroundSettings, setBackgroundSettings, removeProcessor] as const;
+  return [backgroundSettings, setBackgroundSettings] as const;
 }

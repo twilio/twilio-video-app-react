@@ -62,7 +62,6 @@ describe('the VideoProvider component', () => {
       setIsBackgroundSelectionOpen: expect.any(Function),
       backgroundSettings: expectedSettings,
       setBackgroundSettings: expect.any(Function),
-      removeProcessor: expect.any(Function),
     });
     expect(useRoom).toHaveBeenCalledWith([{ name: 'mockTrack' }], expect.any(Function), {
       dominantSpeaker: true,
