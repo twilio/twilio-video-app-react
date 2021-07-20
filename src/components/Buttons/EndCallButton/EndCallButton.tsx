@@ -20,15 +20,10 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function EndCallButton(props: { className?: string }) {
   const classes = useStyles();
-  const { room, removeProcessor } = useVideoContext();
-
-  const handleDisconnect = (): void => {
-    removeProcessor();
-    room!.disconnect();
-  };
+  const { room } = useVideoContext();
 
   return (
-    <Button onClick={handleDisconnect} className={clsx(classes.button, props.className)} data-cy-disconnect>
+    <Button onClick={() => room!.disconnect()} className={clsx(classes.button, props.className)} data-cy-disconnect>
       Disconnect
     </Button>
   );

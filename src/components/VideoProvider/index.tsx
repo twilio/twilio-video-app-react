@@ -80,12 +80,10 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
   );
   useHandleTrackPublicationFailed(room, onError);
   useRestartAudioTrackOnDeviceChange(localTracks);
-  console.log('tracks: ');
-  console.log(localTracks);
 
   const [isBackgroundSelectionOpen, setIsBackgroundSelectionOpen] = useState(false);
   const videoTrack = localTracks.find(track => track.name.includes('camera')) as LocalVideoTrack | undefined;
-  const [backgroundSettings, setBackgroundSettings, removeProcessor] = useBackgroundSettings(videoTrack);
+  const [backgroundSettings, setBackgroundSettings, removeProcessor] = useBackgroundSettings(videoTrack, room);
 
   return (
     <VideoContext.Provider

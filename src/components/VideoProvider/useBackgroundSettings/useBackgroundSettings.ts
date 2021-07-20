@@ -1,4 +1,4 @@
-import { LocalVideoTrack } from 'twilio-video';
+import { LocalVideoTrack, Room } from 'twilio-video';
 import { useState, useEffect } from 'react';
 import { SELECTED_BACKGROUND_SETTINGS_KEY } from '../../../constants';
 import { GaussianBlurBackgroundProcessor } from '@twilio/video-processors';
@@ -71,13 +71,13 @@ export const backgroundConfig = {
 const virtualBackgroundAssets = '/virtualbackground';
 let blurProcessor: GaussianBlurBackgroundProcessor;
 
-export default function useBackgroundSettings(videoTrack: LocalVideoTrack | undefined) {
+export default function useBackgroundSettings(videoTrack: LocalVideoTrack | undefined, room?: Room | null) {
   const [backgroundSettings, setBackgroundSettings] = useState<BackgroundSettings>(() => {
     const localStorageSettings = window.localStorage.getItem(SELECTED_BACKGROUND_SETTINGS_KEY);
     return localStorageSettings ? JSON.parse(localStorageSettings) : { type: 'none', index: 0 };
   });
 
-  // Specifically used for handling room disconnection
+  // Specifically used for making sure no video processors are applied on prejoin screens
   const removeProcessor = (): void => {
     if (videoTrack && videoTrack.processor) {
       videoTrack.removeProcessor(videoTrack.processor);
@@ -94,7 +94,9 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
   }, []);
 
   useEffect(() => {
-    if (videoTrack) {
+    // make sure localParticipant has joined room before applying video processors
+    // this ensures that the video processors are not applied on the LocalVideoPreview
+    if (videoTrack && room?.localParticipant) {
       if (videoTrack.processor) {
         videoTrack.removeProcessor(videoTrack.processor);
       }
@@ -105,7 +107,7 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
       }
     }
     window.localStorage.setItem(SELECTED_BACKGROUND_SETTINGS_KEY, JSON.stringify(backgroundSettings));
-  }, [backgroundSettings, videoTrack]);
+  }, [backgroundSettings, videoTrack, room]);
 
   return [backgroundSettings, setBackgroundSettings, removeProcessor] as const;
 }
