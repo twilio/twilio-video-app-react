@@ -80,7 +80,6 @@ describe('the useLocalVideoToggle hook', () => {
         localTracks: [],
         getLocalVideoTrack: mockGetLocalVideoTrack,
         room: {},
-        updateBackgroundSettings: jest.fn(),
       }));
 
       const { result, waitForNextUpdate } = renderHook(useLocalVideoToggle);
@@ -101,7 +100,6 @@ describe('the useLocalVideoToggle hook', () => {
         localTracks: [],
         getLocalVideoTrack: mockGetLocalVideoTrack,
         room: { localParticipant: mockLocalParticipant },
-        updateBackgroundSettings: jest.fn(),
       }));
 
       const { result, waitForNextUpdate } = renderHook(useLocalVideoToggle);
@@ -125,7 +123,6 @@ describe('the useLocalVideoToggle hook', () => {
         localTracks: [],
         getLocalVideoTrack: mockGetLocalVideoTrack,
         room: { localParticipant: mockLocalParticipant },
-        updateBackgroundSettings: jest.fn(),
       }));
 
       const { result, waitForNextUpdate } = renderHook(useLocalVideoToggle);
@@ -149,7 +146,6 @@ describe('the useLocalVideoToggle hook', () => {
         getLocalVideoTrack: mockGetLocalVideoTrack,
         room: { localParticipant: mockLocalParticipant },
         onError: mockOnError,
-        updateBackgroundSettings: jest.fn(),
       }));
 
       const { result, waitForNextUpdate } = renderHook(useLocalVideoToggle);
