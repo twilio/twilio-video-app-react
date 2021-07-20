@@ -52,7 +52,6 @@ describe('The BackgroundThumbanil component', () => {
         index: 1,
       },
       setBackgroundSettings: mockSetBackgroundSettings,
-      updateBackgroundSettings: jest.fn(),
     }));
     const wrapper = shallow(<BackgroundThumbnail thumbnail={'image'} index={5} />);
     expect(wrapper.find('.selected').exists()).toBe(false);
