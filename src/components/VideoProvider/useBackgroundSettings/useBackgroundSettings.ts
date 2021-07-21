@@ -1,4 +1,7 @@
-import { useState } from 'react';
+import { LocalVideoTrack, Room } from 'twilio-video';
+import { useState, useEffect } from 'react';
+import { SELECTED_BACKGROUND_SETTINGS_KEY } from '../../../constants';
+import { GaussianBlurBackgroundProcessor } from '@twilio/video-processors';
 import AbstractThumb from '../../../images/thumb/Abstract.jpg';
 import BohoHomeThumb from '../../../images/thumb/BohoHome.jpg';
 import BookshelfThumb from '../../../images/thumb/Bookshelf.jpg';
@@ -65,13 +68,39 @@ export const backgroundConfig = {
   images,
 };
 
-// TODO : Add video processing logic after backgroundSettings change
-// useEffect hooks, etc ...
+const virtualBackgroundAssets = '/virtualbackground';
+let blurProcessor: GaussianBlurBackgroundProcessor;
 
-export default function useBackgroundSettings() {
-  const [backgroundSettings, setBackgroundSettings] = useState({
-    type: 'none',
-    index: 0,
-  } as BackgroundSettings);
+export default function useBackgroundSettings(videoTrack: LocalVideoTrack | undefined, room?: Room | null) {
+  const [backgroundSettings, setBackgroundSettings] = useState<BackgroundSettings>(() => {
+    const localStorageSettings = window.localStorage.getItem(SELECTED_BACKGROUND_SETTINGS_KEY);
+    return localStorageSettings ? JSON.parse(localStorageSettings) : { type: 'none', index: 0 };
+  });
+
+  useEffect(() => {
+    if (!blurProcessor) {
+      blurProcessor = new GaussianBlurBackgroundProcessor({
+        assetsPath: virtualBackgroundAssets,
+      });
+      blurProcessor.loadModel();
+    }
+  }, []);
+
+  useEffect(() => {
+    // make sure localParticipant has joined room before applying video processors
+    // this ensures that the video processors are not applied on the LocalVideoPreview
+    if (videoTrack && room?.localParticipant) {
+      if (videoTrack.processor) {
+        videoTrack.removeProcessor(videoTrack.processor);
+      }
+      if (backgroundSettings.type === 'blur') {
+        videoTrack.addProcessor(blurProcessor);
+      } else if (backgroundSettings.type === 'image') {
+        // TODO implement image background replacement logic
+      }
+    }
+    window.localStorage.setItem(SELECTED_BACKGROUND_SETTINGS_KEY, JSON.stringify(backgroundSettings));
+  }, [backgroundSettings, videoTrack, room]);
+
   return [backgroundSettings, setBackgroundSettings] as const;
 }

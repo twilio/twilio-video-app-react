@@ -1,5 +1,7 @@
 import React from 'react';
 import BackgroundThumbnail from './BackgroundThumbnail';
+import BlurIcon from '@material-ui/icons/BlurOnOutlined';
+import NoneIcon from '@material-ui/icons/NotInterestedOutlined';
 import { shallow } from 'enzyme';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
@@ -57,17 +59,17 @@ describe('The BackgroundThumbanil component', () => {
 
   it("should contain the NoneIcon when thumbnail is set to 'none'", () => {
     const wrapper = shallow(<BackgroundThumbnail thumbnail={'none'} />);
-    expect(wrapper.find('NotInterestedOutlinedIcon').exists()).toBe(true);
+    expect(wrapper.containsMatchingElement(<NoneIcon />)).toBe(true);
   });
 
   it("should contain the BlurIcon when thumbnail is set to 'blur'", () => {
     const wrapper = shallow(<BackgroundThumbnail thumbnail={'blur'} />);
-    expect(wrapper.find('BlurOnOutlinedIcon').exists()).toBe(true);
+    expect(wrapper.containsMatchingElement(<BlurIcon />)).toBe(true);
   });
 
   it("should not have any icons when thumbnail is set to 'image'", () => {
     const wrapper = shallow(<BackgroundThumbnail thumbnail={'image'} />);
-    expect(wrapper.find('BlurOnOutlinedIcon').exists()).toBe(false);
-    expect(wrapper.find('NotInterestedOutlinedIcon').exists()).toBe(false);
+    expect(wrapper.containsMatchingElement(<BlurIcon />)).toBe(false);
+    expect(wrapper.containsMatchingElement(<NoneIcon />)).toBe(false);
   });
 });
