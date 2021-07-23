@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useState } from 'react';
-import { RoomType } from '../types';
+import { RoomType, BackendProps } from '../types';
 import { TwilioError } from 'twilio-video';
 import { settingsReducer, initialSettings, Settings, SettingsAction } from './settings/settingsReducer';
 
@@ -30,13 +30,14 @@ export const StateContext = createContext<StateContextType>(null!);
   included in the bundle that is produced (due to tree-shaking). Thus, in this instance, it
   is ok to call hooks inside if() statements.
 */
-export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
+export default function AppStateProvider(props: React.PropsWithChildren<{BackendProps}>) {
   const [error, setError] = useState<TwilioError | null>(null);
-  const [user, setUser] = useState({ displayName: props.userName, photoURL: props.userAvatar, participantID: props.participantID, userType: props.userType });
-  const [appointmentID, setAppointmentID] = useState(props.appointmentID);
-  const [token, setToken] = useState(props.token);
-  const [roomName, setRoomName] = useState(props.roomName);
-  const [roomEndTime, setRoomEndTime] = useState(props.roomEndTime);
+  const [user] = useState({ displayName: props.userName, photoURL: props.userAvatar, participantID: props.participantID, userType: props.userType });
+  const [appointmentID] = useState(props.appointmentID);
+  const [token] = useState(props.token);
+  const [roomName] = useState(props.roomName);
+  const [roomEndTime] = useState(props.roomEndTime);
+  const [test] = useState(props.test);
   const [activeSinkId, setActiveSinkId] = useState('default');
   const [settings, dispatchSetting] = useReducer(settingsReducer, initialSettings);
   let contextValue = {
@@ -51,6 +52,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     settings,
     dispatchSetting,
     appointmentID,
+    test,
   } as StateContextType;
   return <StateContext.Provider value={{ ...contextValue }}>{props.children}</StateContext.Provider>;
 }

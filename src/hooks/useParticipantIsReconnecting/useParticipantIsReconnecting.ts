@@ -8,6 +8,8 @@ export default function useParticipantIsReconnecting(participant: Participant) {
     const handleReconnecting = () => setIsReconnecting(true);
     const handleReconnected = () => setIsReconnecting(false);
 
+    handleReconnected(); // Reset state when there is a new participant
+
     participant.on('reconnecting', handleReconnecting);
     participant.on('reconnected', handleReconnected);
     return () => {

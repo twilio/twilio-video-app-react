@@ -20,7 +20,12 @@ function ErrorDialog({ dismissError, error }: PropsWithChildren<ErrorDialogProps
     <Dialog open={error !== null} onClose={() => dismissError()} fullWidth={true} maxWidth="xs">
       <DialogTitle>ERROR</DialogTitle>
       <DialogContent>
-        <DialogContentText component={'div'}>{enhancedMessage}</DialogContentText>
+        <DialogContentText>{enhancedMessage}</DialogContentText>
+        {Boolean(code) && (
+          <pre>
+            <code>Error Code: {code}</code>
+          </pre>
+        )}
       </DialogContent>
       <DialogActions>
         <Button onClick={() => dismissError()} color="primary" autoFocus>

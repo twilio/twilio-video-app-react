@@ -1,14 +1,13 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import { CssBaseline } from '@material-ui/core';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import VideoApp from './videoApp';
 import AppStateProvider, { useAppState } from './state';
 import theme from './theme';
-import './types';
+import { BackendProps } from './types';
 
-export default function index(props) {
+export default function index(props: React.PropsWithChildren<BackendProps>) {
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
@@ -19,7 +18,8 @@ export default function index(props) {
                         roomEndTime={props.roomEndTime}
                         appointmentID={props.appointmentID}
                         participantID={props.participantID}
-                        userType={props.userType}>
+                        userType={props.userType}
+                        test={props.test}>
         <VideoApp />
       </AppStateProvider>
     </MuiThemeProvider>
