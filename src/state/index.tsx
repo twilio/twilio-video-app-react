@@ -2,6 +2,7 @@ import React, { createContext, useContext, useReducer, useState } from 'react';
 import { RoomType, BackendProps } from '../types';
 import { TwilioError } from 'twilio-video';
 import { settingsReducer, initialSettings, Settings, SettingsAction } from './settings/settingsReducer';
+import useActiveSinkId from './useActiveSinkId/useActiveSinkId';
 
 export interface StateContextType {
   error: TwilioError | null;

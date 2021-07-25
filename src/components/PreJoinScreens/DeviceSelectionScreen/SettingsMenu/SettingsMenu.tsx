@@ -54,6 +54,7 @@ export default function SettingsMenu({ mobileButtonClass }: { mobileButtonClass?
         open={menuOpen}
         onClose={() => setMenuOpen(isOpen => !isOpen)}
         anchorEl={anchorRef.current}
+        getContentAnchorEl={null}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: isMobile ? 'left' : 'right',
