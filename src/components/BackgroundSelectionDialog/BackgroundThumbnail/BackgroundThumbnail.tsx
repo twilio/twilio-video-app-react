@@ -4,6 +4,8 @@ import BlurIcon from '@material-ui/icons/BlurOnOutlined';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import NoneIcon from '@material-ui/icons/NotInterestedOutlined';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import useLocalVideoToggle from '../../../hooks/useLocalVideoToggle/useLocalVideoToggle';
+import { useCallback } from 'react';
 
 export type Thumbnail = 'none' | 'blur' | 'image';
 
@@ -98,6 +100,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function BackgroundThumbnail({ thumbnail, imagePath, name, index }: BackgroundThumbnailProps) {
   const classes = useStyles();
   const { backgroundSettings, setBackgroundSettings } = useVideoContext();
+  const [isVideoEnabled, toggleVideoEnabled] = useLocalVideoToggle();
   const isImage = thumbnail === 'image';
   const thumbnailSelected = isImage
     ? backgroundSettings.index === index && backgroundSettings.type === 'image'
@@ -109,16 +112,18 @@ export default function BackgroundThumbnail({ thumbnail, imagePath, name, index 
   };
   const ThumbnailIcon = icons[thumbnail];
 
+  const handleClick = useCallback(() => {
+    if (!isVideoEnabled && thumbnail !== 'none') {
+      toggleVideoEnabled();
+    }
+    setBackgroundSettings({
+      type: thumbnail,
+      index: index,
+    });
+  }, [isVideoEnabled, toggleVideoEnabled, setBackgroundSettings]);
+
   return (
-    <div
-      className={classes.thumbContainer}
-      onClick={() =>
-        setBackgroundSettings({
-          type: thumbnail,
-          index: index,
-        })
-      }
-    >
+    <div className={classes.thumbContainer} onClick={handleClick}>
       {ThumbnailIcon ? (
         <div className={clsx(classes.thumbIconContainer, { selected: thumbnailSelected })}>
           <ThumbnailIcon className={classes.thumbIcon} />
