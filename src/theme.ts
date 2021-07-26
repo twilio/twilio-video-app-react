@@ -1,6 +1,6 @@
-import { createTheme } from '@material-ui/core/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 
-declare module '@material-ui/core/styles/createTheme' {
+declare module '@material-ui/core/styles/createMuiTheme' {
   interface Theme {
     sidebarWidth: number;
     sidebarMobileHeight: number;
@@ -8,9 +8,11 @@ declare module '@material-ui/core/styles/createTheme' {
     footerHeight: number;
     mobileTopBarHeight: number;
     mobileFooterHeight: number;
+    sidebarMobilePadding: number;
+    participantBorderWidth: number;
   }
 
-  // allow configuration using `createTheme`
+  // allow configuration using `createMuiTheme`
   interface ThemeOptions {
     sidebarWidth?: number;
     sidebarMobileHeight?: number;
@@ -18,12 +20,14 @@ declare module '@material-ui/core/styles/createTheme' {
     footerHeight: number;
     mobileTopBarHeight: number;
     mobileFooterHeight: number;
+    sidebarMobilePadding: number;
+    participantBorderWidth: number;
   }
 }
 
-const defaultTheme = createTheme();
+const defaultTheme = createMuiTheme();
 
-export default createTheme({
+export default createMuiTheme({
   overrides: {
     MuiCssBaseline: {
       '@global': {
@@ -114,5 +118,7 @@ export default createTheme({
   mobileFooterHeight: 56,
   sidebarWidth: 355,
   sidebarMobileHeight: 90,
+  sidebarMobilePadding: 8,
+  participantBorderWidth: 2,
   mobileTopBarHeight: 52,
 });

@@ -12,7 +12,7 @@ export default function useScreenShareParticipant() {
   const [screenShareParticipant, setScreenShareParticipant] = useState<Participant>();
 
   useEffect(() => {
-    if (room.state === 'connected') {
+    if (room) {
       const updateScreenShareParticipant = () => {
         setScreenShareParticipant(
           Array.from<Participant>(room.participants.values())

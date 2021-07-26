@@ -1,8 +1,8 @@
 import React from 'react';
 import Video from 'twilio-video';
-import { Container, Link, Typography, Paper, Grid } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
+import { Container, Typography, Paper, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import { isMobile, mobileOperatingSystem } from '../../utils/'
 import { useAppState } from '../../state';
 import updateParticipantFailed from '../../utils/ParticipantStatus/updateParticipantFailed'
@@ -43,7 +43,7 @@ const handleClick = () => {
   }
 };
 
-export default function({ children }: { children: React.ReactElement }) {
+export default function UnsupportedBrowserWarning({ children }: { children: React.ReactElement }) {
   const classes = useStyles();
   const message = browserErrorMessage();
   const { appointmentID, user } = useAppState();

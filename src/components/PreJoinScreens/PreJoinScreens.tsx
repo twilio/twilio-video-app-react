@@ -19,14 +19,14 @@ export default function PreJoinScreens() {
   const [mediaError, setMediaError] = useState<Error>();
 
   useEffect(() => {
-    if (step === Steps.deviceSelectionStep) {
+    if (step === Steps.deviceSelectionStep && !mediaError) {
       getAudioAndVideoTracks().catch(error => {
         console.log('Error acquiring local media:');
         console.dir(error);
         setMediaError(error);
       });
     }
-  }, [getAudioAndVideoTracks, step]);
+  }, [getAudioAndVideoTracks, step, mediaError]);
 
   const SubContent = (
     <>

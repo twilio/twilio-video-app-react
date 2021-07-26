@@ -2,31 +2,10 @@ import { LocalVideoTrack, RemoteVideoTrack, TwilioError } from 'twilio-video';
 import { EventEmitter } from 'events';
 
 declare module 'twilio-video' {
-  interface LocalParticipant {
-    setBandwidthProfile: (bandwidthProfile: BandwidthProfileOptions) => void;
-    publishTrack(track: LocalTrack, options?: { priority: Track.Priority }): Promise<LocalTrackPublication>;
-  }
-
-  interface VideoCodecSettings {
-    simulcast?: boolean;
-  }
-
-  interface LocalTrackPublication {
-    setPriority: (priority: Track.Priority) => void;
-  }
-
+  // These help to create union types between Local and Remote VideoTracks
   interface LocalVideoTrack {
     isSwitchedOff: undefined;
     setPriority: undefined;
-  }
-
-  interface RemoteVideoTrack {
-    isSwitchedOff: boolean;
-    setPriority: (priority: Track.Priority | null) => void;
-  }
-
-  interface VideoBandwidthProfileOptions {
-    trackSwitchOffMode?: 'predicted' | 'detected' | 'disabled';
   }
 
   function testPreflight(

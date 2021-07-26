@@ -3,6 +3,7 @@ import React from 'react';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import EndCallButton from '../Buttons/EndCallButton/EndCallButton';
 import Menu from '../MenuBar/Menu/Menu';
+import Countdown from './../Countdown/Countdown';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -36,7 +37,7 @@ export default function MobileTopMenuBar() {
 
   return (
     <Grid container alignItems="center" justify="space-between" className={classes.container}>
-      <Typography variant="subtitle1">{room.name}</Typography>
+      <Typography variant="subtitle1"><Countdown /></Typography>
       <div>
         <EndCallButton className={classes.endCallButton} />
         <Menu buttonClassName={classes.settingsButton} />

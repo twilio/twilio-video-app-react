@@ -1,5 +1,4 @@
-import { Callback } from '../../../types';
-import EventEmitter from 'events';
+import { Callback } from '../../../types'
 import { isMobile } from '../../../utils';
 import Video, { ConnectOptions, LocalTrack, Room } from 'twilio-video';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -11,7 +10,7 @@ import redirectRootPath from '../../../utils/redirectRootPath'
 window.TwilioVideo = Video;
 
 export default function useRoom(localTracks: LocalTrack[], onError: Callback, options?: ConnectOptions) {
-  const [room, setRoom] = useState<Room>(new EventEmitter() as Room);
+  const [room, setRoom] = useState<Room | null>(null);
   const { appointmentID, user } = useAppState();
   const [isConnecting, setIsConnecting] = useState(false);
   const optionsRef = useRef(options);
@@ -36,7 +35,7 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
 
           newRoom.once('disconnected', () => {
             // Reset the room only after all other `disconnected` listeners have been called.
-            setTimeout(() => setRoom(new EventEmitter() as Room));
+            setTimeout(() => setRoom(null));
             document.removeEventListener('turbolinks:before-cache', disconnect);
 
             if (isMobile) {

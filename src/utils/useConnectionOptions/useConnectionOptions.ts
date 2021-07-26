@@ -6,7 +6,7 @@ import { useAppState } from '../../state';
 export default function useConnectionOptions() {
   const { roomType, settings } = useAppState();
 
-  // See: https://media.twiliocdn.com/sdk/js/video/releases/2.0.0/docs/global.html#ConnectOptions
+  // See: https://sdk.twilio.com/js/video/releases/2.0.0/docs/global.html#ConnectOptions
   // for available connection options.
   const connectionOptions: ConnectOptions = {
     // Bandwidth Profile, Dominant Speaker, and Network Quality
