@@ -19,6 +19,9 @@ jest.mock('@twilio/video-processors', () => {
         name: 'VirtualBackgroundProcessor',
       };
     }),
+    ImageFit: {
+      Cover: 'Cover',
+    },
   };
 });
 
@@ -36,6 +39,14 @@ const imgSettings = {
   type: 'image',
   index: 2,
 };
+
+global.Image = jest.fn().mockImplementation(() => {
+  return {
+    set src(newSrc: String) {
+      this.onload();
+    },
+  };
+});
 
 let mockVideoTrack: any;
 let mockRoom: any;
@@ -72,7 +83,10 @@ describe('The useBackgroundSettings hook ', () => {
     });
     backgroundSettings = renderResult.current[0];
     expect(backgroundSettings.type).toEqual('blur');
-    expect(mockVideoTrack.addProcessor).toHaveBeenCalled();
+    expect(mockVideoTrack.addProcessor).toHaveBeenCalledWith({
+      loadModel: mockLoadModel,
+      name: 'GaussianBlurBackgroundProcessor',
+    });
   });
 
   it('should set the background settings correctly and remove the video processor when "none" is selected', async () => {
@@ -94,7 +108,11 @@ describe('The useBackgroundSettings hook ', () => {
     backgroundSettings = renderResult.current[0];
     expect(backgroundSettings.type).toEqual('image');
     expect(backgroundSettings.index).toEqual(2);
-    expect(mockVideoTrack.addProcessor).toHaveBeenCalled();
+    expect(mockVideoTrack.addProcessor).toHaveBeenCalledWith({
+      backgroundImage: expect.any(Object),
+      loadModel: mockLoadModel,
+      name: 'VirtualBackgroundProcessor',
+    });
   });
 
   describe('The setBackgroundSettings function ', () => {
@@ -142,6 +160,7 @@ describe('The useBackgroundSettings hook ', () => {
       });
       expect(mockVideoTrack.addProcessor).not.toHaveBeenCalledWith({
         loadModel: mockLoadModel,
+        backgroundImage: expect.any(Object),
         name: 'VirtualBackgroundProcessor',
       });
       expect(window.localStorage.getItem(SELECTED_BACKGROUND_SETTINGS_KEY)).toEqual(JSON.stringify(blurSettings));
