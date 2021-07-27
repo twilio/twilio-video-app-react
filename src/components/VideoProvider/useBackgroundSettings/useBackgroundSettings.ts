@@ -1,7 +1,12 @@
 import { LocalVideoTrack, Room } from 'twilio-video';
 import { useState, useEffect } from 'react';
 import { SELECTED_BACKGROUND_SETTINGS_KEY } from '../../../constants';
-import { GaussianBlurBackgroundProcessor, VirtualBackgroundProcessor, ImageFit } from '@twilio/video-processors';
+import {
+  GaussianBlurBackgroundProcessor,
+  VirtualBackgroundProcessor,
+  ImageFit,
+  isSupported,
+} from '@twilio/video-processors';
 import Abstract from '../../../images/Abstract.jpg';
 import AbstractThumb from '../../../images/thumb/Abstract.jpg';
 import BohoHome from '../../../images/BohoHome.jpg';
@@ -129,16 +134,19 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
     const localStorageSettings = window.localStorage.getItem(SELECTED_BACKGROUND_SETTINGS_KEY);
     return localStorageSettings ? JSON.parse(localStorageSettings) : { type: 'none', index: 0 };
   });
-
   useEffect(() => {
-    const loadProcessors = async () => {
+    if (!isSupported) {
+      return;
+    }
+    // make sure localParticipant has joined room before applying video processors
+    // this ensures that the video processors are not applied on the LocalVideoPreview
+    const handleProcessorChange = async () => {
       if (!blurProcessor) {
         blurProcessor = new GaussianBlurBackgroundProcessor({
           assetsPath: virtualBackgroundAssets,
         });
         await blurProcessor.loadModel();
       }
-
       if (!virtualBackgroundProcessor) {
         virtualBackgroundProcessor = new VirtualBackgroundProcessor({
           assetsPath: virtualBackgroundAssets,
@@ -147,14 +155,6 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
         });
         await virtualBackgroundProcessor.loadModel();
       }
-    };
-    loadProcessors();
-  }, []);
-
-  useEffect(() => {
-    // make sure localParticipant has joined room before applying video processors
-    // this ensures that the video processors are not applied on the LocalVideoPreview
-    const handleProcessorChange = async () => {
       if (videoTrack && room?.localParticipant) {
         if (videoTrack.processor) {
           videoTrack.removeProcessor(videoTrack.processor);
