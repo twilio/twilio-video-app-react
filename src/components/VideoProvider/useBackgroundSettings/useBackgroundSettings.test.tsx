@@ -3,6 +3,7 @@ import { SELECTED_BACKGROUND_SETTINGS_KEY } from '../../../constants';
 import useBackgroundSettings, { BackgroundSettings } from './useBackgroundSettings';
 
 const mockLoadModel = jest.fn();
+let mockIsSupported = true;
 jest.mock('@twilio/video-processors', () => {
   return {
     GaussianBlurBackgroundProcessor: jest.fn().mockImplementation(() => {
@@ -21,6 +22,9 @@ jest.mock('@twilio/video-processors', () => {
     }),
     ImageFit: {
       Cover: 'Cover',
+    },
+    get isSupported() {
+      return mockIsSupported;
     },
   };
 });
@@ -66,6 +70,7 @@ beforeEach(async () => {
   };
   const { result } = renderHook(() => useBackgroundSettings(mockVideoTrack as any, mockRoom));
   renderResult = result;
+  mockIsSupported = true;
   [backgroundSettings, setBackgroundSettings] = renderResult.current;
   await act(async () => {
     setBackgroundSettings(defaultSettings);
@@ -73,6 +78,18 @@ beforeEach(async () => {
 });
 
 describe('The useBackgroundSettings hook ', () => {
+  it('should not call loadModel, addProcessor, or removeProcessor if isSupported is false', async () => {
+    mockIsSupported = false;
+    mockLoadModel.mockReset();
+    // update backgroundSettings to trigger useEffect hook
+    await act(async () => {
+      setBackgroundSettings(blurSettings);
+    });
+    expect(mockLoadModel).not.toHaveBeenCalled();
+    expect(mockVideoTrack.addProcessor).not.toHaveBeenCalled();
+    expect(mockVideoTrack.removeProcessor).not.toHaveBeenCalled();
+  });
+
   it('should return the backgroundsettings and update function.', () => {
     expect(renderResult.current).toEqual([defaultSettings, expect.any(Function)]);
   });
