@@ -49,21 +49,7 @@ describe('the PreJoinScreens component', () => {
     const handleSubmit = wrapper.find(RoomNameScreen).prop('handleSubmit');
     handleSubmit({ preventDefault: () => {} } as any);
 
-    expect(window.history.replaceState).toHaveBeenCalledWith(null, '', '/room/Test%20Room%20123');
-  });
-
-  it('should not update the URL when the app is deployed as a Twilio function', () => {
-    // @ts-ignore
-    window.location = { ...window.location, origin: 'https://video-app-1234-twil.io' };
-    const wrapper = shallow(<PreJoinScreens />);
-
-    const setRoomName = wrapper.find(RoomNameScreen).prop('setRoomName');
-    setRoomName('Test Room 123');
-
-    const handleSubmit = wrapper.find(RoomNameScreen).prop('handleSubmit');
-    handleSubmit({ preventDefault: () => {} } as any);
-
-    expect(window.history.replaceState).not.toHaveBeenCalled();
+    expect(window.history.replaceState).toHaveBeenCalledWith(null, '', '/#/room/Test%20Room%20123');
   });
 
   it('should switch to the DeviceSelection screen when a room name is submitted', () => {

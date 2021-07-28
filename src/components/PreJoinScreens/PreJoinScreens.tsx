@@ -44,10 +44,7 @@ export default function PreJoinScreens() {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // If this app is deployed as a twilio function, don't change the URL because routing isn't supported.
-    if (!window.location.origin.includes('twil.io')) {
-      window.history.replaceState(null, '', window.encodeURI(`/room/${roomName}${window.location.search || ''}`));
-    }
+    window.history.replaceState(null, '', window.encodeURI(`/#/room/${roomName}${window.location.search || ''}`));
     setStep(Steps.deviceSelectionStep);
   };
 

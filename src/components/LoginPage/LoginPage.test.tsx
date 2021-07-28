@@ -46,19 +46,19 @@ describe('the LoginPage component', () => {
       const { getByText } = render(<LoginPage />);
       getByText('Sign in with Google').click();
       setImmediate(() => {
-        expect(mockReplace).toHaveBeenCalledWith({ pathname: '/' });
+        expect(mockReplace).toHaveBeenCalledWith('/');
         done();
       });
     });
 
     it('should redirect the user to their previous location after signIn', done => {
       process.env.REACT_APP_SET_AUTH = 'firebase';
-      mockUseLocation.mockImplementation(() => ({ state: { from: { pathname: '/room/test' } } }));
+      mockUseLocation.mockImplementation(() => ({ search: '?redirect=/room/test' }));
       mockUseAppState.mockImplementation(() => ({ user: null, signIn: () => Promise.resolve(), isAuthReady: true }));
       const { getByText } = render(<LoginPage />);
       getByText('Sign in with Google').click();
       setImmediate(() => {
-        expect(mockReplace).toHaveBeenCalledWith({ pathname: '/room/test' });
+        expect(mockReplace).toHaveBeenCalledWith('/room/test');
         done();
       });
     });

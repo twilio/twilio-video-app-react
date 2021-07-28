@@ -4,7 +4,7 @@ import { useAppState } from '../../state';
 
 export default function PrivateRoute({ children, ...rest }: RouteProps) {
   const { isAuthReady, user } = useAppState();
-    
+
   const renderChildren = user || !process.env.REACT_APP_SET_AUTH;
 
   if (!renderChildren && !isAuthReady) {
@@ -21,7 +21,7 @@ export default function PrivateRoute({ children, ...rest }: RouteProps) {
           <Redirect
             to={{
               pathname: '/login',
-              state: { from: location },
+              search: '?redirect=' + location.pathname,
             }}
           />
         )

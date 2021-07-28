@@ -11,7 +11,8 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { useQuery } from '../../hooks/useQuery/useQuery';
 
 const useStyles = makeStyles((theme: Theme) => ({
   googleButton: {
@@ -57,7 +58,7 @@ export default function LoginPage() {
   const classes = useStyles();
   const { signIn, user, isAuthReady } = useAppState();
   const history = useHistory();
-  const location = useLocation<{ from: Location }>();
+  const query = useQuery();
   const [passcode, setPasscode] = useState('');
   const [authError, setAuthError] = useState<Error | null>(null);
 
@@ -67,7 +68,7 @@ export default function LoginPage() {
     setAuthError(null);
     signIn?.(passcode)
       .then(() => {
-        history.replace(location?.state?.from || { pathname: '/' });
+        history.replace(query.get('redirect') || '/');
       })
       .catch(err => setAuthError(err));
   };
