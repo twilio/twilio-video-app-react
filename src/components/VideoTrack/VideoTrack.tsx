@@ -31,6 +31,11 @@ export default function VideoTrack({ track, isLocal, priority }: VideoTrackProps
     track.attach(el);
     return () => {
       track.detach(el);
+
+      // This addresses a Chrome issue where the number of WebMediaPlayers is limited.
+      // See: https://github.com/twilio/twilio-video.js/issues/1528
+      el.srcObject = null;
+
       if (track.setPriority && priority) {
         // Passing `null` to setPriority will set the track's priority to that which it was published with.
         track.setPriority(null);
