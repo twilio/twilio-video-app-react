@@ -31,6 +31,13 @@ describe('the AudioTrack component', () => {
     expect(document.querySelector('audio')).toBe(null);
   });
 
+  it('should set the audio elements srcObject to null when the component unmounts', () => {
+    const { unmount } = render(<AudioTrack track={mockTrack} />);
+    const audioElement = document.querySelector('audio')!;
+    unmount();
+    expect(audioElement.srcObject).toBe(null);
+  });
+
   describe('with an activeSinkId', () => {
     it('should set the sinkId when the component mounts', () => {
       mockUseAppState.mockImplementationOnce(() => ({ activeSinkId: 'mock-sink-id' }));
