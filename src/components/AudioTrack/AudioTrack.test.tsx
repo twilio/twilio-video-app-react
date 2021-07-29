@@ -33,9 +33,9 @@ describe('the AudioTrack component', () => {
 
   it('should set the audio elements srcObject to null when the component unmounts', () => {
     const { unmount } = render(<AudioTrack track={mockTrack} />);
-    const audioEl = document.querySelector('audio')!;
+    const audioElement = document.querySelector('audio')!;
     unmount();
-    expect(audioEl.srcObject).toBe(null);
+    expect(audioElement.srcObject).toBe(null);
   });
 
   describe('with an activeSinkId', () => {
