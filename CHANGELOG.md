@@ -1,3 +1,13 @@
+## 0.4.2 (July 29, 2021)
+
+### Dependency Upgrades
+
+- `twilio-video` has been upgraded from 2.14.0 to 2.15.3. This fixes an issue that was introduced in Chrome 92 where a limit on the number of `WebMediaPlayers` has been added. See [this GitHub issue](https://github.com/twilio/twilio-video.js/issues/1528) for more information. [#562](https://github.com/twilio/twilio-video-app-react/pull/562)
+
+### Bugfixes
+
+- Audio and Video track components now set their `<audio>` or `<video>` element's `srcObject` to `null` after the tracks are unmounted. This helps to fix the above mentioned issue introduced in Chrome 92. [#562](https://github.com/twilio/twilio-video-app-react/pull/562)
+
 ## 0.4.1 (June 10, 2021)
 
 ### Bugfixes
@@ -7,6 +17,7 @@
 - The size of the thumbnails in the Participants list has been reduced as well as the gap in between each of them. [#524](https://github.com/twilio/twilio-video-app-react/pull/524)
 
 ### Thanks!
+
 - Thank you to @hanhlee [#527](https://github.com/twilio/twilio-video-app-react/pull/527), @t4nmoy [#528](https://github.com/twilio/twilio-video-app-react/pull/528), and @arturodr [#529](https://github.com/twilio/twilio-video-app-react/pull/529) for your help with detecting typos and unnecessary dependencies!
 
 ## 0.4.0 (May 12, 2021)
