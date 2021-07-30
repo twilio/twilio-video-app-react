@@ -1,6 +1,6 @@
-import { createMuiTheme } from '@material-ui/core';
+import { createTheme } from '@material-ui/core';
 
-declare module '@material-ui/core/styles/createMuiTheme' {
+declare module '@material-ui/core/styles/createTheme' {
   interface Theme {
     sidebarWidth: number;
     sidebarMobileHeight: number;
@@ -13,7 +13,7 @@ declare module '@material-ui/core/styles/createMuiTheme' {
     rightDrawerWidth: number;
   }
 
-  // allow configuration using `createMuiTheme`
+  // allow configuration using `createTheme`
   interface ThemeOptions {
     sidebarWidth?: number;
     sidebarMobileHeight?: number;
@@ -27,9 +27,9 @@ declare module '@material-ui/core/styles/createMuiTheme' {
   }
 }
 
-const defaultTheme = createMuiTheme();
+const defaultTheme = createTheme();
 
-export default createMuiTheme({
+export default createTheme({
   overrides: {
     MuiCssBaseline: {
       '@global': {
