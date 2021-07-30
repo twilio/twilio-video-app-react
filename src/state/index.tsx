@@ -5,8 +5,8 @@ import { settingsReducer, initialSettings, Settings, SettingsAction } from './se
 import useActiveSinkId from './useActiveSinkId/useActiveSinkId';
 
 export interface StateContextType {
-  error: TwilioError | null;
-  setError(error: TwilioError | null): void;
+  error: TwilioError | Error | null;
+  setError(error: TwilioError | Error | null): void;
   user?: { displayName: undefined; photoURL: undefined; participantID: undefined, userType: undefined };
   token?: string
   roomName?: string

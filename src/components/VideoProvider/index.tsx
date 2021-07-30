@@ -1,12 +1,5 @@
-import React, { createContext, ReactNode } from 'react';
-import {
-  CreateLocalTrackOptions,
-  ConnectOptions,
-  LocalAudioTrack,
-  LocalVideoTrack,
-  Room,
-  TwilioError,
-} from 'twilio-video';
+import React, { createContext, ReactNode, useCallback } from 'react';
+import { CreateLocalTrackOptions, ConnectOptions, LocalAudioTrack, LocalVideoTrack, Room } from 'twilio-video';
 import { ErrorCallback } from '../../types';
 import { SelectedParticipantProvider } from './useSelectedParticipant/useSelectedParticipant';
 
@@ -48,10 +41,13 @@ interface VideoProviderProps {
 }
 
 export function VideoProvider({ options, children, onError = () => {} }: VideoProviderProps) {
-  const onErrorCallback = (error: TwilioError) => {
-    console.log(`ERROR: ${error.message}`, error);
-    onError(error);
-  };
+  const onErrorCallback: ErrorCallback = useCallback(
+    error => {
+      console.log(`ERROR: ${error.message}`, error);
+      onError(error);
+    },
+    [onError]
+  );
 
   const {
     localTracks,

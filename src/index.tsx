@@ -6,7 +6,6 @@ import VideoApp from './videoApp';
 import AppStateProvider, { useAppState } from './state';
 import theme from './theme';
 import { BackendProps } from './types';
-import UnsupportedBrowserWarning from './components/UnsupportedBrowserWarning/UnsupportedBrowserWarning';
 
 export default function index(props: React.PropsWithChildren<BackendProps>) {
   return (
@@ -21,9 +20,7 @@ export default function index(props: React.PropsWithChildren<BackendProps>) {
                           participantID={props.participantID}
                           userType={props.userType}
                           test={props.test}>
-          <UnsupportedBrowserWarning>
             <VideoApp />
-          </UnsupportedBrowserWarning>
         </AppStateProvider>
     </MuiThemeProvider>
   )

@@ -3,6 +3,7 @@ import React from 'react';
 import App from './App';
 import ErrorDialog from './components/ErrorDialog/ErrorDialog';
 import './types';
+import { ChatProvider } from './components/ChatProvider';
 import { VideoProvider } from './components/VideoProvider';
 import { useAppState } from './state';
 import useConnectionOptions from './utils/useConnectionOptions/useConnectionOptions';
@@ -15,7 +16,9 @@ export default function VideoApp() {
     <UnsupportedBrowserWarning>
       <VideoProvider options={connectionOptions} onError={setError}>
         <ErrorDialog dismissError={() => setError(null)} error={error} />
-        <App />
+        <ChatProvider>
+          <App />
+        </ChatProvider>
       </VideoProvider>
     </UnsupportedBrowserWarning>
   );

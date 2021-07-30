@@ -29,11 +29,16 @@ declare global {
   interface HTMLMediaElement {
     setSinkId?(sinkId: string): Promise<undefined>;
   }
+
+  // Helps create a union type with TwilioError
+  interface Error {
+    code: undefined;
+  }
 }
 
 export type Callback = (...args: any[]) => void;
 
-export type ErrorCallback = (error: TwilioError) => void;
+export type ErrorCallback = (error: TwilioError | Error) => void;
 
 export type IVideoTrack = LocalVideoTrack | RemoteVideoTrack;
 

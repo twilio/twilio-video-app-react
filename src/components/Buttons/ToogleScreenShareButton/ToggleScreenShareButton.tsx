@@ -16,7 +16,6 @@ export const SHARE_NOT_SUPPORTED_TEXT = 'Navegador no soportado para compartir p
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     button: {
-      margin: theme.spacing(1),
       '&[disabled]': {
         color: '#bbb',
         '& svg *': {

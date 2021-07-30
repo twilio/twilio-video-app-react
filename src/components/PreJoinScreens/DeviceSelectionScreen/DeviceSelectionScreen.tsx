@@ -6,7 +6,9 @@ import { Steps } from '../PreJoinScreens';
 import ToggleAudioButton from '../../Buttons/ToggleAudioButton/ToggleAudioButton';
 import ToggleVideoButton from '../../Buttons/ToggleVideoButton/ToggleVideoButton';
 import { useAppState } from '../../../state';
+import useChatContext from '../../../hooks/useChatContext/useChatContext';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+
 
 const useStyles = makeStyles((theme: Theme) => ({
   gutterBottom: {
@@ -58,11 +60,15 @@ interface DeviceSelectionScreenProps {
 export default function DeviceSelectionScreen({ name, setStep }: DeviceSelectionScreenProps) {
   const classes = useStyles();
   const { token, test } = useAppState();
-  const { connect, isAcquiringLocalTracks, isConnecting } = useVideoContext();
+  const { connect: chatConnect } = useChatContext();
+  const { connect: videoConnect, isAcquiringLocalTracks, isConnecting } = useVideoContext();
   const disableButtons = isAcquiringLocalTracks || isConnecting;
   const disableJoinButton = disableButtons || test;
 
-  const handleJoin = () => { connect(token); };
+  const handleJoin = () => { 
+    videoConnect(token);
+    chatConnect(token);
+  };
 
   return (
     <>

@@ -193,7 +193,7 @@ export default function ParticipantInfo({
             <AudioLevelIndicator audioTrack={audioTrack} />
             <Typography variant="body1" className={classes.typeography} component="span">
               {participant.identity.split('-')[0]}
-              {isLocalParticipant && ' (You)'}
+              {isLocalParticipant && ' (Tu)'}
             </Typography>
           </span>
         </div>
@@ -208,7 +208,7 @@ export default function ParticipantInfo({
         {isParticipantReconnecting && (
           <div className={classes.reconnectingContainer}>
             <Typography variant="body1" className={classes.typeography}>
-              Reconnecting...
+              Reconectando...
             </Typography>
           </div>
         )}
