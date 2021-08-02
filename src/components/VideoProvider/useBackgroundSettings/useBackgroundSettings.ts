@@ -128,12 +128,14 @@ export const backgroundConfig = {
 const virtualBackgroundAssets = '/virtualbackground';
 let blurProcessor: GaussianBlurBackgroundProcessor;
 let virtualBackgroundProcessor: VirtualBackgroundProcessor;
+let currentProcessor: GaussianBlurBackgroundProcessor | VirtualBackgroundProcessor | null;
 
 export default function useBackgroundSettings(videoTrack: LocalVideoTrack | undefined, room?: Room | null) {
   const [backgroundSettings, setBackgroundSettings] = useState<BackgroundSettings>(() => {
     const localStorageSettings = window.localStorage.getItem(SELECTED_BACKGROUND_SETTINGS_KEY);
     return localStorageSettings ? JSON.parse(localStorageSettings) : { type: 'none', index: 0 };
   });
+
   useEffect(() => {
     if (!isSupported) {
       return;
@@ -141,6 +143,11 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
     // make sure localParticipant has joined room before applying video processors
     // this ensures that the video processors are not applied on the LocalVideoPreview
     const handleProcessorChange = async () => {
+      const processors = {
+        none: null,
+        blur: blurProcessor,
+        image: virtualBackgroundProcessor,
+      };
       if (!blurProcessor) {
         blurProcessor = new GaussianBlurBackgroundProcessor({
           assetsPath: virtualBackgroundAssets,
@@ -156,14 +163,17 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
         await virtualBackgroundProcessor.loadModel();
       }
       if (videoTrack && room?.localParticipant) {
+        currentProcessor = processors[backgroundSettings.type];
+        // load image if needed before removing the processor
+        if (backgroundSettings.type === 'image' && typeof backgroundSettings.index === 'number') {
+          virtualBackgroundProcessor.backgroundImage = await getImage(backgroundSettings.index);
+        }
+        // remove previous processor and add the new one
         if (videoTrack.processor) {
           videoTrack.removeProcessor(videoTrack.processor);
         }
-        if (backgroundSettings.type === 'blur') {
-          videoTrack.addProcessor(blurProcessor);
-        } else if (backgroundSettings.type === 'image' && typeof backgroundSettings.index === 'number') {
-          virtualBackgroundProcessor.backgroundImage = await getImage(backgroundSettings.index);
-          videoTrack.addProcessor(virtualBackgroundProcessor);
+        if (currentProcessor) {
+          videoTrack.addProcessor(currentProcessor);
         }
       }
     };
