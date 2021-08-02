@@ -91,7 +91,7 @@ export default function RoomNameScreen({ name, roomName, setName, setRoomName, h
             />
           </div>
         </div>
-        <Grid container justify="flex-end">
+        <Grid container justifyContent="flex-end">
           <Button
             variant="contained"
             type="submit"
