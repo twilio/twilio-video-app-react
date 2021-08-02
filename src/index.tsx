@@ -3,11 +3,10 @@ import React from 'react';
 import { CssBaseline } from '@material-ui/core';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import VideoApp from './videoApp';
-import AppStateProvider, { useAppState } from './state';
+import AppStateProvider from './state';
 import theme from './theme';
-import { BackendProps } from './types';
 
-export default function index(props: React.PropsWithChildren<BackendProps>) {
+export default function index(props: React.PropsWithChildren<{}>) {
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />

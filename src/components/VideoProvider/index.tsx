@@ -7,6 +7,7 @@ import AttachVisibilityHandler from './AttachVisibilityHandler/AttachVisibilityH
 import useHandleRoomDisconnection from './useHandleRoomDisconnection/useHandleRoomDisconnection';
 import useHandleTrackPublicationFailed from './useHandleTrackPublicationFailed/useHandleTrackPublicationFailed';
 import useLocalTracks from './useLocalTracks/useLocalTracks';
+import useRestartAudioTrackOnDeviceChange from './useRestartAudioTrackOnDeviceChange/useRestartAudioTrackOnDeviceChange';
 import useRoom from './useRoom/useRoom';
 import useScreenShareToggle from './useScreenShareToggle/useScreenShareToggle';
 
@@ -60,9 +61,9 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
   } = useLocalTracks();
   const { room, isConnecting, connect } = useRoom(localTracks, onErrorCallback, options);
 
-  document.addEventListener('turbolinks:before-cache', removeLocalVideoTrack);
   const [isSharingScreen, toggleScreenShare] = useScreenShareToggle(room, onError);
 
+  // Register callback functions to be called on room disconnect.
   useHandleRoomDisconnection(
     room,
     onError,
@@ -72,6 +73,7 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
     toggleScreenShare
   );
   useHandleTrackPublicationFailed(room, onError);
+  useRestartAudioTrackOnDeviceChange(localTracks);
 
   return (
     <VideoContext.Provider
@@ -91,7 +93,7 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
       }}
     >
       <SelectedParticipantProvider room={room}>{children}</SelectedParticipantProvider>
-      {/*
+      {/* 
         The AttachVisibilityHandler component is using the useLocalVideoToggle hook
         which must be used within the VideoContext Provider.
       */}

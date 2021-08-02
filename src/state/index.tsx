@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useState } from 'react';
-import { RoomType, BackendProps } from '../types';
+import { RoomType } from '../types';
 import { TwilioError } from 'twilio-video';
 import { settingsReducer, initialSettings, Settings, SettingsAction } from './settings/settingsReducer';
 import useActiveSinkId from './useActiveSinkId/useActiveSinkId';
@@ -23,7 +23,7 @@ export interface StateContextType {
 export const StateContext = createContext<StateContextType>(null!);
 
 /*
-  The 'react-hooks/rules-of-hooks' linting rules prevent React Hooks fron being called
+  The 'react-hooks/rules-of-hooks' linting rules prevent React Hooks from being called
   inside of if() statements. This is because hooks must always be called in the same order
   every time a component is rendered. The 'react-hooks/rules-of-hooks' rule is disabled below
   because the "if (process.env.REACT_APP_SET_AUTH === 'firebase')" statements are evaluated
@@ -31,7 +31,7 @@ export const StateContext = createContext<StateContextType>(null!);
   included in the bundle that is produced (due to tree-shaking). Thus, in this instance, it
   is ok to call hooks inside if() statements.
 */
-export default function AppStateProvider(props: React.PropsWithChildren<{BackendProps}>) {
+export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const [error, setError] = useState<TwilioError | null>(null);
   const [user] = useState({ displayName: props.userName, photoURL: props.userAvatar, participantID: props.participantID, userType: props.userType });
   const [appointmentID] = useState(props.appointmentID);
@@ -39,8 +39,10 @@ export default function AppStateProvider(props: React.PropsWithChildren<{Backend
   const [roomName] = useState(props.roomName);
   const [roomEndTime] = useState(props.roomEndTime);
   const [test] = useState(props.test);
-  const [activeSinkId, setActiveSinkId] = useState('default');
+  const [activeSinkId, setActiveSinkId] = useActiveSinkId();
   const [settings, dispatchSetting] = useReducer(settingsReducer, initialSettings);
+  const [roomType] = useState<RoomType>('go');
+
   let contextValue = {
     error,
     user,
@@ -53,6 +55,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{Backend
     settings,
     dispatchSetting,
     appointmentID,
+    roomType,
     test,
   } as StateContextType;
   return <StateContext.Provider value={{ ...contextValue }}>{props.children}</StateContext.Provider>;

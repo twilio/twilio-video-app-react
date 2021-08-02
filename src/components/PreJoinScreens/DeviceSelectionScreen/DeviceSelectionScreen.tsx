@@ -1,14 +1,14 @@
 import React from 'react';
 import { makeStyles, Typography, Grid, Button, Theme, Hidden } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import LocalVideoPreview from './LocalVideoPreview/LocalVideoPreview';
 import SettingsMenu from './SettingsMenu/SettingsMenu';
-import { Steps } from '../PreJoinScreens';
 import ToggleAudioButton from '../../Buttons/ToggleAudioButton/ToggleAudioButton';
 import ToggleVideoButton from '../../Buttons/ToggleVideoButton/ToggleVideoButton';
 import { useAppState } from '../../../state';
 import useChatContext from '../../../hooks/useChatContext/useChatContext';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
-
+import redirectRootPath from '../../../utils/redirectRootPath';
 
 const useStyles = makeStyles((theme: Theme) => ({
   gutterBottom: {
@@ -52,12 +52,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-interface DeviceSelectionScreenProps {
-  name: string;
-  setStep: (step: Steps) => void;
-}
+interface DeviceSelectionScreenProps { name: string; }
 
-export default function DeviceSelectionScreen({ name, setStep }: DeviceSelectionScreenProps) {
+export default function DeviceSelectionScreen({ name }: DeviceSelectionScreenProps) {
   const classes = useStyles();
   const { token, test } = useAppState();
   const { connect: chatConnect } = useChatContext();
@@ -70,13 +67,28 @@ export default function DeviceSelectionScreen({ name, setStep }: DeviceSelection
     chatConnect(token);
   };
 
+  if (isConnecting) {
+    return (
+      <Grid container justifyContent="center" alignItems="center" direction="column" style={{ height: '100%' }}>
+        <div>
+          <CircularProgress variant="indeterminate" />
+        </div>
+        <div>
+          <Typography variant="body2" style={{ fontWeight: 'bold', fontSize: '16px' }}>
+            Uniendose a cita
+          </Typography>
+        </div>
+      </Grid>
+    );
+  }
+
   return (
     <>
       <Typography variant="h5" className={classes.gutterBottom}>
         {test ? 'Sala de prueba' : ''}
       </Typography>
 
-      <Grid container justify="center">
+      <Grid container justifyContent="center">
         <Grid item md={7} sm={12} xs={12}>
           <div className={classes.localPreviewContainer}>
             <LocalVideoPreview identity={name} />
@@ -90,7 +102,7 @@ export default function DeviceSelectionScreen({ name, setStep }: DeviceSelection
           </div>
         </Grid>
         <Grid item md={5} sm={12} xs={12}>
-          <Grid container direction="column" justify="space-between" style={{ height: '100%' }}>
+          <Grid container direction="column" justifyContent="space-between" style={{ height: '100%' }}>
             <div>
               <Hidden smDown>
                 <ToggleAudioButton className={classes.deviceButton} disabled={disableButtons} />
@@ -98,7 +110,7 @@ export default function DeviceSelectionScreen({ name, setStep }: DeviceSelection
               </Hidden>
             </div>
             <div className={classes.joinButtons}>
-              <Button variant="outlined" color="primary" onClick={() => setStep(Steps.roomNameStep)}>
+              <Button variant="outlined" color="primary" onClick={redirectRootPath}>
                 Volver
               </Button>
               <Button

@@ -51,7 +51,7 @@ export default function UnsupportedBrowserWarning({ children }: { children: Reac
     updateParticipantFailed(appointmentID, user.participantID, { name: 'BrowserNotSupported', message: 'Browser not supported' });
     return (
       <Container>
-        <Grid container justify="center" className={classes.container}>
+        <Grid container justifyContent="center" className={classes.container}>
           <Grid item xs={12} sm={6}>
             <Paper className={classes.paper}>
               <Typography variant="h4" className={classes.heading}>

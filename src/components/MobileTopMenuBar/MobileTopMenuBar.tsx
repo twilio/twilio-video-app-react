@@ -36,7 +36,7 @@ export default function MobileTopMenuBar() {
   const { room } = useVideoContext();
 
   return (
-    <Grid container alignItems="center" justify="space-between" className={classes.container}>
+    <Grid container alignItems="center" justifyContent="space-between" className={classes.container}>
       <Typography variant="subtitle1"><Countdown /></Typography>
       <div>
         <EndCallButton className={classes.endCallButton} />

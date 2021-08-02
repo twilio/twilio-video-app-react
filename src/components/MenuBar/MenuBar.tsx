@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     screenShareBanner: {
       position: 'fixed',
-      zIndex: 10,
+      zIndex: 8,
       bottom: `${theme.footerHeight}px`,
       left: 0,
       right: 0,
@@ -74,20 +74,20 @@ export default function MenuBar() {
   return (
     <>
       {isSharingScreen && (
-        <Grid container justify="center" alignItems="center" className={classes.screenShareBanner}>
+        <Grid container justifyContent="center" alignItems="center" className={classes.screenShareBanner}>
           <Typography variant="h6">Estás compartiendo pantalla</Typography>
           <Button onClick={() => toggleScreenShare()}>Parar</Button>
         </Grid>
       )}
       <footer className={classes.container}>
-        <Grid container justify="space-around" alignItems="center">
+        <Grid container justifyContent="space-around" alignItems="center">
           <Hidden smDown>
             <Grid style={{ flex: 1 }}>
               <Typography variant="body1"><Countdown /></Typography>
             </Grid>
           </Hidden>
           <Grid item>
-            <Grid container justify="center">
+            <Grid container justifyContent="center">
               <ToggleAudioButton disabled={isReconnecting} />
               <ToggleVideoButton disabled={isReconnecting} />
               {!isSharingScreen && !isMobile && <ToggleScreenShareButton disabled={isReconnecting} />}
@@ -96,7 +96,7 @@ export default function MenuBar() {
           </Grid>
           <Hidden smDown>
             <Grid style={{ flex: 1 }}>
-              <Grid container justify="flex-end">
+              <Grid container justifyContent="flex-end">
                 <Menu />
                 <EndCallButton />
               </Grid>
