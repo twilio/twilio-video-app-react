@@ -1,5 +1,5 @@
 import { LocalVideoTrack, Room } from 'twilio-video';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { SELECTED_BACKGROUND_SETTINGS_KEY } from '../../../constants';
 import {
   GaussianBlurBackgroundProcessor,
@@ -128,13 +128,29 @@ export const backgroundConfig = {
 const virtualBackgroundAssets = '/virtualbackground';
 let blurProcessor: GaussianBlurBackgroundProcessor;
 let virtualBackgroundProcessor: VirtualBackgroundProcessor;
-let currentProcessor: GaussianBlurBackgroundProcessor | VirtualBackgroundProcessor | null;
 
 export default function useBackgroundSettings(videoTrack: LocalVideoTrack | undefined, room?: Room | null) {
   const [backgroundSettings, setBackgroundSettings] = useState<BackgroundSettings>(() => {
     const localStorageSettings = window.localStorage.getItem(SELECTED_BACKGROUND_SETTINGS_KEY);
     return localStorageSettings ? JSON.parse(localStorageSettings) : { type: 'none', index: 0 };
   });
+
+  const removeProcessor = useCallback(() => {
+    if (videoTrack && videoTrack.processor) {
+      videoTrack.removeProcessor(videoTrack.processor);
+    }
+  }, [videoTrack]);
+
+  const addProcessor = useCallback(
+    (processor: GaussianBlurBackgroundProcessor | VirtualBackgroundProcessor) => {
+      if (!videoTrack || videoTrack.processor === processor) {
+        return;
+      }
+      removeProcessor();
+      videoTrack.addProcessor(processor);
+    },
+    [videoTrack, removeProcessor]
+  );
 
   useEffect(() => {
     if (!isSupported) {
@@ -143,11 +159,6 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
     // make sure localParticipant has joined room before applying video processors
     // this ensures that the video processors are not applied on the LocalVideoPreview
     const handleProcessorChange = async () => {
-      const processors = {
-        none: null,
-        blur: blurProcessor,
-        image: virtualBackgroundProcessor,
-      };
       if (!blurProcessor) {
         blurProcessor = new GaussianBlurBackgroundProcessor({
           assetsPath: virtualBackgroundAssets,
@@ -162,24 +173,22 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
         });
         await virtualBackgroundProcessor.loadModel();
       }
-      if (videoTrack && room?.localParticipant) {
-        currentProcessor = processors[backgroundSettings.type];
-        // load image if needed before removing the processor
-        if (backgroundSettings.type === 'image' && typeof backgroundSettings.index === 'number') {
-          virtualBackgroundProcessor.backgroundImage = await getImage(backgroundSettings.index);
-        }
-        // remove previous processor and add the new one
-        if (videoTrack.processor) {
-          videoTrack.removeProcessor(videoTrack.processor);
-        }
-        if (currentProcessor) {
-          videoTrack.addProcessor(currentProcessor);
-        }
+      if (!room?.localParticipant) {
+        return;
+      }
+
+      if (backgroundSettings.type === 'blur') {
+        addProcessor(blurProcessor);
+      } else if (backgroundSettings.type === 'image' && typeof backgroundSettings.index === 'number') {
+        virtualBackgroundProcessor.backgroundImage = await getImage(backgroundSettings.index);
+        addProcessor(virtualBackgroundProcessor);
+      } else {
+        removeProcessor();
       }
     };
     handleProcessorChange();
     window.localStorage.setItem(SELECTED_BACKGROUND_SETTINGS_KEY, JSON.stringify(backgroundSettings));
-  }, [backgroundSettings, videoTrack, room]);
+  }, [backgroundSettings, videoTrack, room, addProcessor, removeProcessor]);
 
   return [backgroundSettings, setBackgroundSettings] as const;
 }
