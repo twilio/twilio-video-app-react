@@ -1,5 +1,5 @@
 import { LocalVideoTrack, Room } from 'twilio-video';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { SELECTED_BACKGROUND_SETTINGS_KEY } from '../../../constants';
 import {
   GaussianBlurBackgroundProcessor,
@@ -134,6 +134,24 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
     const localStorageSettings = window.localStorage.getItem(SELECTED_BACKGROUND_SETTINGS_KEY);
     return localStorageSettings ? JSON.parse(localStorageSettings) : { type: 'none', index: 0 };
   });
+
+  const removeProcessor = useCallback(() => {
+    if (videoTrack && videoTrack.processor) {
+      videoTrack.removeProcessor(videoTrack.processor);
+    }
+  }, [videoTrack]);
+
+  const addProcessor = useCallback(
+    (processor: GaussianBlurBackgroundProcessor | VirtualBackgroundProcessor) => {
+      if (!videoTrack || videoTrack.processor === processor) {
+        return;
+      }
+      removeProcessor();
+      videoTrack.addProcessor(processor);
+    },
+    [videoTrack, removeProcessor]
+  );
+
   useEffect(() => {
     if (!isSupported) {
       return;
@@ -155,21 +173,22 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
         });
         await virtualBackgroundProcessor.loadModel();
       }
-      if (videoTrack && room?.localParticipant) {
-        if (videoTrack.processor) {
-          videoTrack.removeProcessor(videoTrack.processor);
-        }
-        if (backgroundSettings.type === 'blur') {
-          videoTrack.addProcessor(blurProcessor);
-        } else if (backgroundSettings.type === 'image' && typeof backgroundSettings.index === 'number') {
-          virtualBackgroundProcessor.backgroundImage = await getImage(backgroundSettings.index);
-          videoTrack.addProcessor(virtualBackgroundProcessor);
-        }
+      if (!room?.localParticipant) {
+        return;
+      }
+
+      if (backgroundSettings.type === 'blur') {
+        addProcessor(blurProcessor);
+      } else if (backgroundSettings.type === 'image' && typeof backgroundSettings.index === 'number') {
+        virtualBackgroundProcessor.backgroundImage = await getImage(backgroundSettings.index);
+        addProcessor(virtualBackgroundProcessor);
+      } else {
+        removeProcessor();
       }
     };
     handleProcessorChange();
     window.localStorage.setItem(SELECTED_BACKGROUND_SETTINGS_KEY, JSON.stringify(backgroundSettings));
-  }, [backgroundSettings, videoTrack, room]);
+  }, [backgroundSettings, videoTrack, room, addProcessor, removeProcessor]);
 
   return [backgroundSettings, setBackgroundSettings] as const;
 }
