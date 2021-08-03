@@ -143,8 +143,8 @@ export default function ChatInput({ conversation, isChatWindowOpen }: ChatInputP
         component does not work well in Firefox. See: https://github.com/twilio/twilio-video-app-react/issues/498
         */}
         <TextareaAutosize
-          rowsMin={1}
-          rowsMax={3}
+          minRows={1}
+          maxRows={3}
           className={classes.textArea}
           aria-label="chat input"
           placeholder="Write a message..."
@@ -158,7 +158,7 @@ export default function ChatInput({ conversation, isChatWindowOpen }: ChatInputP
         />
       </div>
 
-      <Grid container alignItems="flex-end" justify="flex-end" wrap="nowrap">
+      <Grid container alignItems="flex-end" justifyContent="flex-end" wrap="nowrap">
         {/* Since the file input element is invisible, we can hardcode an empty string as its value.
         This allows users to upload the same file multiple times. */}
         <input
