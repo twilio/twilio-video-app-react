@@ -3,15 +3,17 @@ import AboutDialog from '../../AboutDialog/AboutDialog';
 import Button from '@material-ui/core/Button';
 import DeviceSelectionDialog from '../../DeviceSelectionDialog/DeviceSelectionDialog';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import FlipCameraIcon from '../../../icons/FlipCameraIcon';
+import EndAppointmentIcon from '../../../icons/EndAppointmentIcon';
 import InfoIconOutlined from '../../../icons/InfoIconOutlined';
 import MenuContainer from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import SettingsIcon from '../../../icons/SettingsIcon';
+import FlipCameraIcon from '../../../icons/FlipCameraIcon';
 import Typography from '@material-ui/core/Typography';
 import { styled, Theme, useMediaQuery } from '@material-ui/core';
 import useFlipCameraToggle from '../../../hooks/useFlipCameraToggle/useFlipCameraToggle';
+import { useAppState } from '../../../state';
 
 export const IconContainer = styled('div')({
   display: 'flex',
@@ -22,12 +24,22 @@ export const IconContainer = styled('div')({
 
 export default function Menu(props: { buttonClassName?: string }) {
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
+  const { user, appointmentID } = useAppState();
   const [aboutOpen, setAboutOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   const anchorRef = useRef<HTMLButtonElement>(null);
   const { flipCameraDisabled, toggleFacingMode, flipCameraSupported } = useFlipCameraToggle();
+
+  const finishAppointment = () => {
+    if (window.confirm('¿Estas seguro de terminar esta sesión?')) {
+      $.ajax(`/appointments/${appointmentID}`, {
+        type: 'PATCH',
+        data: { appointment: { completed: true } }
+      })
+    }
+  };
 
   return (
     <>
@@ -36,7 +48,7 @@ export default function Menu(props: { buttonClassName?: string }) {
           <MoreIcon />
         ) : (
           <>
-            Configuraciones
+            Más
             <ExpandMoreIcon />
           </>
         )}
@@ -54,6 +66,16 @@ export default function Menu(props: { buttonClassName?: string }) {
           horizontal: 'center',
         }}
       >
+
+        { user.userType === 'Doctor' && (
+          <MenuItem onClick={finishAppointment}>
+            <IconContainer>
+              <EndAppointmentIcon />
+            </IconContainer>
+            <Typography variant="body1">Terminar cita</Typography>
+          </MenuItem>
+        )}
+
         {flipCameraSupported && (
           <MenuItem disabled={flipCameraDisabled} onClick={toggleFacingMode}>
             <IconContainer>

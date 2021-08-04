@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { isMobile, mobileOperatingSystem } from '../../utils/'
 import { useAppState } from '../../state';
-import updateParticipantFailed from '../../utils/ParticipantStatus/updateParticipantFailed'
+import updateParticipant from '../../utils/ParticipantStatus/updateParticipant'
 import redirectRootPath from '../../utils/redirectRootPath'
 
 const useStyles = makeStyles({
@@ -48,7 +48,7 @@ export default function UnsupportedBrowserWarning({ children }: { children: Reac
   const message = browserErrorMessage();
   const { appointmentID, user } = useAppState();
   if (!Video.isSupported) {
-    updateParticipantFailed(appointmentID, user.participantID, { name: 'BrowserNotSupported', message: 'Browser not supported' });
+    updateParticipant(appointmentID, user.participantID, 'failed', { name: 'BrowserNotSupported', message: 'Browser not supported' });
     return (
       <Container>
         <Grid container justifyContent="center" className={classes.container}>

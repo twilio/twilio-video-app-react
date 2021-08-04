@@ -5,7 +5,6 @@ import ErrorIcon from '../../icons/ErrorIcon';
 import { IconButton, makeStyles, Theme, Typography } from '@material-ui/core';
 import MUISnackbar from '@material-ui/core/Snackbar';
 import WarningIcon from '../../icons/WarningIcon';
-import InfoIcon from '../../icons/InfoIcon';
 
 interface SnackbarProps {
   headline: string;

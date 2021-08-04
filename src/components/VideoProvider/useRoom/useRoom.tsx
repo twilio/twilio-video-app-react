@@ -1,9 +1,8 @@
 import { Callback } from '../../../types'
-import { isMobile } from '../../../utils';
 import Video, { ConnectOptions, LocalTrack, Room } from 'twilio-video';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAppState } from '../../../state';
-import updateParticipantFailed from '../../../utils/ParticipantStatus/updateParticipantFailed';
+import updateParticipant from '../../../utils/ParticipantStatus/updateParticipant';
 import redirectRootPath from '../../../utils/redirectRootPath'
 
 // @ts-ignore
@@ -37,10 +36,7 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
             // Reset the room only after all other `disconnected` listeners have been called.
             setTimeout(() => setRoom(null));
             document.removeEventListener('turbolinks:before-cache', disconnect);
-
-            if (isMobile) {
-              window.removeEventListener('pagehide', disconnect);
-            }
+            updateParticipant(appointmentID, user.participantID, 'disconnected');
             // Hard redirect to appointment view
             redirectRootPath();
           });
@@ -56,18 +52,12 @@ export default function useRoom(localTracks: LocalTrack[], onError: Callback, op
           );
 
           setIsConnecting(false);
-          // turbolinks
           window.addEventListener('turbolinks:before-cache', disconnect)
-          // Add a listener to disconnect from the room when a user closes their browser
-
-          if (isMobile) {
-            // Add a listener to disconnect from the room when a mobile user closes their browser
-            window.addEventListener('pagehide', disconnect);
-          }
+          updateParticipant(appointmentID, user.participantID, 'connected');
         },
         error => {
           onError(error);
-          updateParticipantFailed(appointmentID, user.participantID, error);
+          updateParticipant(appointmentID, user.participantID, 'failed', error);
           setIsConnecting(false);
         }
       );

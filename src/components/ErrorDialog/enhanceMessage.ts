@@ -1,4 +1,4 @@
-import notAllowedMessages from './errorMessages/notAllowedMessages'
+import notAllowedMessages from './ErrorMessages/notAllowedMessages'
 
 // This function is used to provide error messages to the user that are
 // different than the error messages provided by the SDK.

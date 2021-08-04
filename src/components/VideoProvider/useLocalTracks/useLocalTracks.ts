@@ -3,11 +3,9 @@ import { getDeviceInfo, isPermissionDenied } from '../../../utils';
 import { useCallback, useState } from 'react';
 import Video, { LocalVideoTrack, LocalAudioTrack, CreateLocalTrackOptions } from 'twilio-video';
 
-import { useAppState } from '../../../state';
-import updateParticipantFailed from '../../../utils/ParticipantStatus/updateParticipantFailed';
+
 
 export default function useLocalTracks() {
-  const { setError, appointmentID, user } = useAppState();
   const [audioTrack, setAudioTrack] = useState<LocalAudioTrack>();
   const [videoTrack, setVideoTrack] = useState<LocalVideoTrack>();
   const [isAcquiringLocalTracks, setIsAcquiringLocalTracks] = useState(false);
@@ -125,10 +123,7 @@ export default function useLocalTracks() {
         if (isMicrophonePermissionDenied) {
           throw new Error('MicrophonePermissionsDenied');
         }
-      }, ((error) => {
-        updateParticipantFailed(appointmentID, user.participantID, error);
-        setError(error);
-      }))
+      })
       .finally(() => setIsAcquiringLocalTracks(false));
   }, [audioTrack, videoTrack, isAcquiringLocalTracks]);
 

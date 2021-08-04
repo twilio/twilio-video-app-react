@@ -17,10 +17,10 @@ import ToggleScreenShareButton from '../Buttons/ToogleScreenShareButton/ToggleSc
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    container: {
+    container: props => ({
       backgroundColor: theme.palette.background.default,
       bottom: 0,
-      left: 0,
+      width: `${ props.UserType == 'Doctor' ? 'calc(100% - 70px)' : '100%'}`,
       right: 0,
       height: `${theme.footerHeight}px`,
       position: 'fixed',
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
         height: `${theme.mobileFooterHeight}px`,
         padding: 0,
       },
-    },
+    }),
     screenShareBanner: {
       position: 'fixed',
       zIndex: 8,
@@ -64,8 +64,8 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function MenuBar() {
-  const classes = useStyles();
+export default function MenuBar(props) {
+  const classes = useStyles(props);
   const { isSharingScreen, toggleScreenShare } = useVideoContext();
   const roomState = useRoomState();
   const isReconnecting = roomState === 'reconnecting';

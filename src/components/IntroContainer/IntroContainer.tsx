@@ -100,7 +100,6 @@ const IntroContainer = (props: IntroContainerProps) => {
   return (
     <div className={classes.background}>
       <Logo className={classes.twilioLogo} />
-      {user && <UserMenu />}
       <div className={classes.container}>
         <div className={classes.innerContainer}>
           <div className={classes.swooshContainer}>

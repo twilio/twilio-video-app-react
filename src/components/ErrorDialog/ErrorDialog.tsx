@@ -14,18 +14,13 @@ interface ErrorDialogProps {
 }
 
 function ErrorDialog({ dismissError, error }: PropsWithChildren<ErrorDialogProps>) {
-  const { message, name, code } = error || {};
+  const { message, name } = error || {};
   const enhancedMessage = enhanceMessage(message, name);
   return (
     <Dialog open={error !== null} onClose={() => dismissError()} fullWidth={true} maxWidth="xs">
       <DialogTitle>ERROR</DialogTitle>
       <DialogContent>
         <DialogContentText>{enhancedMessage}</DialogContentText>
-        {Boolean(code) && (
-          <pre>
-            <code>Error Code: {code}</code>
-          </pre>
-        )}
       </DialogContent>
       <DialogActions>
         <Button onClick={() => dismissError()} color="primary" autoFocus>
