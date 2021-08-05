@@ -11,4 +11,7 @@ module.exports = {
 
   // We don't need to test the static JSX in the icons folder, so let's exclude it from our test coverage report
   coveragePathIgnorePatterns: ['node_modules', 'src/icons'],
+  moduleNameMapper: {
+    '.+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$': '<rootDir>/src/__mocks__/fileMock.ts',
+  },
 };

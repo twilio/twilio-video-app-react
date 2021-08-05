@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import AboutDialog from '../../AboutDialog/AboutDialog';
+import BackgroundIcon from '../../../icons/BackgroundIcon';
 import DeviceSelectionDialog from '../../DeviceSelectionDialog/DeviceSelectionDialog';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import InfoIconOutlined from '../../../icons/InfoIconOutlined';
@@ -8,8 +9,10 @@ import StartRecordingIcon from '../../../icons/StartRecordingIcon';
 import StopRecordingIcon from '../../../icons/StopRecordingIcon';
 import SettingsIcon from '../../../icons/SettingsIcon';
 import { Button, styled, Theme, useMediaQuery, Menu as MenuContainer, MenuItem, Typography } from '@material-ui/core';
+import { isSupported } from '@twilio/video-processors';
 
 import { useAppState } from '../../../state';
+import useChatContext from '../../../hooks/useChatContext/useChatContext';
 import useIsRecording from '../../../hooks/useIsRecording/useIsRecording';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 import FlipCameraIcon from '../../../icons/FlipCameraIcon';
@@ -30,8 +33,9 @@ export default function Menu(props: { buttonClassName?: string }) {
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   const { isFetching, updateRecordingRules, roomType } = useAppState();
-  const { room } = useVideoContext();
+  const { setIsChatWindowOpen } = useChatContext();
   const isRecording = useIsRecording();
+  const { room, setIsBackgroundSelectionOpen } = useVideoContext();
 
   const anchorRef = useRef<HTMLButtonElement>(null);
   const { flipCameraDisabled, toggleFacingMode, flipCameraSupported } = useFlipCameraToggle();
@@ -98,6 +102,21 @@ export default function Menu(props: { buttonClassName?: string }) {
           </IconContainer>
           <Typography variant="body1">Audio and Video Settings</Typography>
         </MenuItem>
+
+        {isSupported && (
+          <MenuItem
+            onClick={() => {
+              setIsBackgroundSelectionOpen(true);
+              setIsChatWindowOpen(false);
+              setMenuOpen(false);
+            }}
+          >
+            <IconContainer>
+              <BackgroundIcon />
+            </IconContainer>
+            <Typography variant="body1">Backgrounds</Typography>
+          </MenuItem>
+        )}
 
         <MenuItem onClick={() => setAboutOpen(true)}>
           <IconContainer>
