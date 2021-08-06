@@ -44,7 +44,9 @@ const imgSettings = {
   index: 2,
 };
 
-global.Image = jest.fn().mockImplementation(() => {
+const globalAny: any = global;
+
+globalAny.Image = jest.fn().mockImplementation(() => {
   return {
     set src(newSrc: String) {
       this.onload();
