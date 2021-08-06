@@ -2,7 +2,7 @@
 
 ### New Feature
 
-- This release adds a virtual background feature. This feature allows users to blur their background or apply a background image from the background selection window. The virtual backgrounds are applied to the video tracks using the [Twilio Video Processors SDK](https://www.twilio.com/docs/video/video-processors). For more information, please view this [blog post](https://www.twilio.com/blog/introducing-virtual-backgrounds-browser-based-video-applications).[#574](https://github.com/twilio/twilio-video-app-react/pull/574)
+- This release adds a virtual background feature. This feature allows users to blur their background or apply a background image from the background selection window. The virtual backgrounds are applied to the video tracks using the [Twilio Video Processors SDK](https://www.twilio.com/docs/video/video-processors). For more information, please view this [blog post](https://www.twilio.com/blog/introducing-virtual-backgrounds-browser-based-video-applications). [#574](https://github.com/twilio/twilio-video-app-react/pull/574)
 
 ### Dependency Upgrades
 
