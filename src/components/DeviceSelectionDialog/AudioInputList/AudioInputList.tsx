@@ -25,7 +25,7 @@ export default function AudioInputList() {
       <Typography variant="subtitle2" gutterBottom>
         Audio Input
       </Typography>
-      <Grid container alignItems="center" justify="space-between">
+      <Grid container alignItems="center" justifyContent="space-between">
         <div className="inputSelect">
           {audioInputDevices.length > 1 ? (
             <FormControl fullWidth>

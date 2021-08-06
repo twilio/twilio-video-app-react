@@ -21,7 +21,7 @@ export default function UnsupportedBrowserWarning({ children }: { children: Reac
   if (!Video.isSupported) {
     return (
       <Container>
-        <Grid container justify="center" className={classes.container}>
+        <Grid container justifyContent="center" className={classes.container}>
           <Grid item xs={12} sm={6}>
             <Paper className={classes.paper}>
               <Typography variant="h4" className={classes.heading}>
