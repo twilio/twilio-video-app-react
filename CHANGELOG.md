@@ -1,4 +1,4 @@
-## 0.5.0 (August 6, 2021)
+## 0.5.0 (August 9, 2021)
 
 ### New Feature
 
