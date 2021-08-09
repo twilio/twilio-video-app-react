@@ -6,9 +6,12 @@ import { shallow, mount } from 'enzyme';
 
 import ToggleChatButton, { ANIMATION_DURATION } from './ToggleChatButton';
 import useChatContext from '../../../hooks/useChatContext/useChatContext';
+import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
 jest.mock('../../../hooks/useChatContext/useChatContext');
+jest.mock('../../../hooks/useVideoContext/useVideoContext');
 const mockUseChatContext = useChatContext as jest.Mock<any>;
+const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 
 const mockConversation = new EventEmitter();
 const mockToggleChatWindow = jest.fn();
@@ -17,6 +20,9 @@ mockUseChatContext.mockImplementation(() => ({
   isChatWindowOpen: false,
   conversation: mockConversation,
 }));
+
+const mockSetIsBackgroundSelectionOpen = jest.fn();
+mockUseVideoContext.mockImplementation(() => ({ setIsBackgroundSelectionOpen: mockSetIsBackgroundSelectionOpen }));
 
 describe('the ToggleChatButton component', () => {
   it('should be enabled when a conversation is present', () => {
