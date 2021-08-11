@@ -30,12 +30,22 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface RoomNameScreenProps {
   name: string;
   roomName: string;
+  persona: string;
   setName: (name: string) => void;
   setRoomName: (roomName: string) => void;
+  setPersona: (persona: string) => void;
   handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
 }
 
-export default function RoomNameScreen({ name, roomName, setName, setRoomName, handleSubmit }: RoomNameScreenProps) {
+export default function RoomNameScreen({
+  name,
+  roomName,
+  persona,
+  setName,
+  setRoomName,
+  setPersona,
+  handleSubmit,
+}: RoomNameScreenProps) {
   const classes = useStyles();
   const { user } = useAppState();
 
@@ -45,6 +55,10 @@ export default function RoomNameScreen({ name, roomName, setName, setRoomName, h
 
   const handleRoomNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setRoomName(event.target.value);
+  };
+
+  const handlePersonaChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setPersona(event.target.value);
   };
 
   const hasUsername = !window.location.search.includes('customIdentity=true') && user?.displayName;
@@ -88,6 +102,20 @@ export default function RoomNameScreen({ name, roomName, setName, setRoomName, h
               size="small"
               value={roomName}
               onChange={handleRoomNameChange}
+            />
+          </div>
+          <div className={classes.textFieldContainer}>
+            <InputLabel shrink htmlFor="input-persona-name">
+              Persona
+            </InputLabel>
+            <TextField
+              autoCapitalize="false"
+              id="input-persona"
+              variant="outlined"
+              fullWidth
+              size="small"
+              value={persona}
+              onChange={handlePersonaChange}
             />
           </div>
         </div>

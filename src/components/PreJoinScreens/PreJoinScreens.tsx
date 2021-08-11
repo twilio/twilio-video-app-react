@@ -4,7 +4,6 @@ import IntroContainer from '../IntroContainer/IntroContainer';
 import MediaErrorSnackbar from './MediaErrorSnackbar/MediaErrorSnackbar';
 import RoomNameScreen from './RoomNameScreen/RoomNameScreen';
 import { useAppState } from '../../state';
-import { useParams } from 'react-router-dom';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 export enum Steps {
@@ -12,12 +11,25 @@ export enum Steps {
   deviceSelectionStep,
 }
 
+function getQueryParams(queryString: string) {
+  const sp = new URLSearchParams(queryString);
+
+  return {
+    URLRoomName: sp.get('room'),
+    URLPersona: sp.get('persona'),
+    URLName: sp.get('name'),
+  };
+}
+
 export default function PreJoinScreens() {
   const { user } = useAppState();
   const { getAudioAndVideoTracks } = useVideoContext();
-  const { URLRoomName } = useParams();
+  // console.log('URL:', window.location);
+  const { URLRoomName, URLPersona, URLName } = getQueryParams(window.location.search);
+  console.log('QueryParameters:', URLRoomName, URLPersona, URLName);
   const [step, setStep] = useState(Steps.roomNameStep);
 
+  const [persona, setPersona] = useState<string>(URLPersona ? URLPersona : 'provider');
   const [name, setName] = useState<string>(user?.displayName || '');
   const [roomName, setRoomName] = useState<string>('');
 
@@ -25,12 +37,22 @@ export default function PreJoinScreens() {
 
   useEffect(() => {
     if (URLRoomName) {
+      console.log('setting room name:', URLRoomName);
       setRoomName(URLRoomName);
-      if (user?.displayName) {
-        setStep(Steps.deviceSelectionStep);
-      }
     }
-  }, [user, URLRoomName]);
+    if (URLPersona) {
+      console.log('setting persona:', URLPersona);
+      setPersona(URLPersona);
+    }
+    if (URLName) {
+      console.log('setting name:', URLName);
+      setName(URLName);
+      setStep(Steps.deviceSelectionStep);
+      //      if (user?.displayName) {
+      //        setStep(Steps.deviceSelectionStep);
+      //      }
+    }
+  }, [user, URLRoomName, URLName, URLPersona]);
 
   useEffect(() => {
     if (step === Steps.deviceSelectionStep && !mediaError) {
@@ -58,14 +80,16 @@ export default function PreJoinScreens() {
         <RoomNameScreen
           name={name}
           roomName={roomName}
+          persona={persona}
           setName={setName}
           setRoomName={setRoomName}
+          setPersona={setPersona}
           handleSubmit={handleSubmit}
         />
       )}
 
       {step === Steps.deviceSelectionStep && (
-        <DeviceSelectionScreen name={name} roomName={roomName} setStep={setStep} />
+        <DeviceSelectionScreen name={name} roomName={roomName} persona={persona} setStep={setStep} />
       )}
     </IntroContainer>
   );
