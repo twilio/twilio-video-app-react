@@ -55,10 +55,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface DeviceSelectionScreenProps {
   name: string;
   roomName: string;
+  persona: string;
   setStep: (step: Steps) => void;
 }
 
-export default function DeviceSelectionScreen({ name, roomName, setStep }: DeviceSelectionScreenProps) {
+export default function DeviceSelectionScreen({ name, roomName, persona, setStep }: DeviceSelectionScreenProps) {
   const classes = useStyles();
   const { getToken, isFetching } = useAppState();
   const { connect: chatConnect } = useChatContext();
@@ -90,8 +91,13 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
   return (
     <>
       <Typography variant="h5" className={classes.gutterBottom}>
-        Join {roomName}
+        Join {roomName} ({persona})
       </Typography>
+      {persona === 'provider' && (
+        <Typography className={classes.gutterBottom} style={{ color: 'red' }}>
+          Patient is in the waiting room
+        </Typography>
+      )}
 
       <Grid container justifyContent="center">
         <Grid item md={7} sm={12} xs={12}>
@@ -115,9 +121,11 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
               </Hidden>
             </div>
             <div className={classes.joinButtons}>
-              <Button variant="outlined" color="primary" onClick={() => setStep(Steps.roomNameStep)}>
-                Cancel
-              </Button>
+              {persona === 'provider' && (
+                <Button variant="outlined" color="primary" onClick={() => setStep(Steps.roomNameStep)}>
+                  Cancel
+                </Button>
+              )}
               <Button
                 variant="contained"
                 color="primary"

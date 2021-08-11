@@ -112,7 +112,10 @@ export default function usePasscodeAuth() {
           if (verification?.isValid) {
             setUser({ passcode } as any);
             window.sessionStorage.setItem('passcode', passcode);
-            history.replace(window.location.pathname);
+            // passcode parameters is no longer needed, so strip out
+            const query = window.location.search.replace(/.passcode=(.*)&?/, '');
+            // replace history to hide url with passcode
+            history.replace({ pathname: '/', search: query, state: { isActive: true } });
           }
         })
         .then(() => setIsAuthReady(true));
