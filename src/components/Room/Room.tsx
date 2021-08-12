@@ -66,6 +66,7 @@ export default function Room() {
         />
         <ParticipantList />
         <ChatWindow />
+        <BackgroundSelectionDialog />
       </div>
     );
   else
@@ -78,6 +79,7 @@ export default function Room() {
         <MainParticipant />
         <ParticipantList />
         <ChatWindow />
+        <BackgroundSelectionDialog />
       </div>
     );
 }
