@@ -41,6 +41,16 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+function getQueryParams(queryString: string) {
+  const sp = new URLSearchParams(queryString);
+
+  return {
+    URLRoomName: sp.get('room'),
+    URLPersona: sp.get('persona'),
+    URLName: sp.get('name'),
+  };
+}
+
 export default function ParticipantList() {
   const classes = useStyles();
   const { room } = useVideoContext();
@@ -50,34 +60,64 @@ export default function ParticipantList() {
   const screenShareParticipant = useScreenShareParticipant();
   const mainParticipant = useMainParticipant();
   const isRemoteParticipantScreenSharing = screenShareParticipant && screenShareParticipant !== localParticipant;
+  const { URLRoomName, URLPersona, URLName } = getQueryParams(window.location.search);
 
-  if (participants.length === 0) return null; // Don't render this component if there are no remote participants.
+  if (participants.length === 0 && URLPersona === 'provider') return null;
 
-  return (
-    <aside
-      className={clsx(classes.container, {
-        [classes.transparentBackground]: !isRemoteParticipantScreenSharing,
-      })}
-    >
-      <div className={classes.scrollContainer}>
-        <div className={classes.innerScrollContainer}>
-          <Participant participant={localParticipant} isLocalParticipant={true} />
-          {participants.map(participant => {
-            const isSelected = participant === selectedParticipant;
-            const hideParticipant =
-              participant === mainParticipant && participant !== screenShareParticipant && !isSelected;
-            return (
-              <Participant
-                key={participant.sid}
-                participant={participant}
-                isSelected={participant === selectedParticipant}
-                onClick={() => setSelectedParticipant(participant)}
-                hideParticipant={hideParticipant}
-              />
-            );
-          })}
+  if (participants.length === 0 && URLPersona !== 'provider')
+    return (
+      <aside
+        className={clsx(classes.container, {
+          [classes.transparentBackground]: !isRemoteParticipantScreenSharing,
+        })}
+      >
+        <div className={classes.scrollContainer}>
+          <div className={classes.innerScrollContainer}>
+            <Participant participant={localParticipant} isLocalParticipant={true} />
+            {participants.map(participant => {
+              const isSelected = participant === selectedParticipant;
+              const hideParticipant = false;
+              // participant === mainParticipant && participant !== screenShareParticipant && !isSelected;
+              return (
+                <Participant
+                  key={participant.sid}
+                  participant={participant}
+                  isSelected={participant === selectedParticipant}
+                  onClick={() => setSelectedParticipant(participant)}
+                  hideParticipant={hideParticipant}
+                />
+              );
+            })}
+          </div>
         </div>
-      </div>
-    </aside>
-  );
+      </aside>
+    );
+  else
+    return (
+      <aside
+        className={clsx(classes.container, {
+          [classes.transparentBackground]: !isRemoteParticipantScreenSharing,
+        })}
+      >
+        <div className={classes.scrollContainer}>
+          <div className={classes.innerScrollContainer}>
+            <Participant participant={localParticipant} isLocalParticipant={true} />
+            {participants.map(participant => {
+              const isSelected = participant === selectedParticipant;
+              const hideParticipant =
+                participant === mainParticipant && participant !== screenShareParticipant && !isSelected;
+              return (
+                <Participant
+                  key={participant.sid}
+                  participant={participant}
+                  isSelected={participant === selectedParticipant}
+                  onClick={() => setSelectedParticipant(participant)}
+                  hideParticipant={hideParticipant}
+                />
+              );
+            })}
+          </div>
+        </div>
+      </aside>
+    );
 }
