@@ -10,7 +10,7 @@ declare module '@material-ui/core/styles/createTheme' {
     mobileFooterHeight: number;
     sidebarMobilePadding: number;
     participantBorderWidth: number;
-    chatWindowWidth: number;
+    rightDrawerWidth: number;
   }
 
   // allow configuration using `createMuiTheme`
@@ -23,7 +23,7 @@ declare module '@material-ui/core/styles/createTheme' {
     mobileFooterHeight: number;
     sidebarMobilePadding: number;
     participantBorderWidth: number;
-    chatWindowWidth?: number;
+    rightDrawerWidth?: number;
   }
 }
 
@@ -123,5 +123,5 @@ export default createTheme({
   sidebarMobilePadding: 8,
   participantBorderWidth: 2,
   mobileTopBarHeight: 52,
-  chatWindowWidth: 320,
+  rightDrawerWidth: 320,
 });

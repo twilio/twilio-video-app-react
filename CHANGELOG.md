@@ -1,3 +1,15 @@
+## 0.5.0 (August 9, 2021)
+
+### New Feature
+
+- This release adds a virtual background feature. This feature allows users to blur their background or apply a background image from the background selection window. The virtual backgrounds are applied to the video tracks using the [Twilio Video Processors SDK](https://www.twilio.com/docs/video/video-processors). For more information, please view this [blog post](https://www.twilio.com/blog/introducing-virtual-backgrounds-browser-based-video-applications). [#574](https://github.com/twilio/twilio-video-app-react/pull/574)
+
+### Dependency Upgrades
+
+- `@material-ui/core` has been updated from 4.9.1. to 4.12.3. [#568](https://github.com/twilio/twilio-video-app-react/pull/568)
+- `@material-ui/icons` has been updated from 4.9.1. to 4.11.12. [#568](https://github.com/twilio/twilio-video-app-react/pull/568)
+- `@twilio/conversations` has been updated from 1.1.0. to 1.2.3. [#568](https://github.com/twilio/twilio-video-app-react/pull/568)
+
 ## 0.4.2 (July 29, 2021)
 
 ### Dependency Upgrades
