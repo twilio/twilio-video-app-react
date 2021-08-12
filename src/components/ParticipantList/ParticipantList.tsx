@@ -60,7 +60,7 @@ export default function ParticipantList() {
   const screenShareParticipant = useScreenShareParticipant();
   const mainParticipant = useMainParticipant();
   const isRemoteParticipantScreenSharing = screenShareParticipant && screenShareParticipant !== localParticipant;
-  const { URLRoomName, URLPersona, URLName } = getQueryParams(window.location.search);
+  const { URLPersona } = getQueryParams(window.location.search);
 
   if (participants.length === 0 && URLPersona === 'provider') return null;
 

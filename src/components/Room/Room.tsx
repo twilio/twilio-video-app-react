@@ -9,7 +9,6 @@ import useChatContext from '../../hooks/useChatContext/useChatContext';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import ReactPlayer from 'react-player';
 import useParticipants from '../../hooks/useParticipants/useParticipants';
-import useMainParticipant from '../../hooks/useMainParticipant/useMainParticipant';
 
 const useStyles = makeStyles((theme: Theme) => {
   const totalMobileSidebarHeight = `${theme.sidebarMobileHeight +
@@ -47,7 +46,7 @@ export default function Room() {
   const { isBackgroundSelectionOpen } = useVideoContext();
 
   const participants = useParticipants();
-  const { URLRoomName, URLPersona, URLName } = getQueryParams(window.location.search);
+  const { URLPersona } = getQueryParams(window.location.search);
   if (participants.length === 0 && URLPersona !== 'provider')
     return (
       <div
