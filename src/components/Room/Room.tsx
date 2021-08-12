@@ -69,17 +69,16 @@ export default function Room() {
         <BackgroundSelectionDialog />
       </div>
     );
-  else
-    return (
-      <div
-        className={clsx(classes.container, {
-          [classes.rightDrawerOpen]: isChatWindowOpen || isBackgroundSelectionOpen,
-        })}
-      >
-        <MainParticipant />
-        <ParticipantList />
-        <ChatWindow />
-        <BackgroundSelectionDialog />
-      </div>
-    );
+  return (
+    <div
+      className={clsx(classes.container, {
+        [classes.rightDrawerOpen]: isChatWindowOpen || isBackgroundSelectionOpen,
+      })}
+    >
+      <MainParticipant />
+      <ParticipantList />
+      <ChatWindow />
+      <BackgroundSelectionDialog />
+    </div>
+  );
 }

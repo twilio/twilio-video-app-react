@@ -92,32 +92,31 @@ export default function ParticipantList() {
         </div>
       </aside>
     );
-  else
-    return (
-      <aside
-        className={clsx(classes.container, {
-          [classes.transparentBackground]: !isRemoteParticipantScreenSharing,
-        })}
-      >
-        <div className={classes.scrollContainer}>
-          <div className={classes.innerScrollContainer}>
-            <Participant participant={localParticipant} isLocalParticipant={true} />
-            {participants.map(participant => {
-              const isSelected = participant === selectedParticipant;
-              const hideParticipant =
-                participant === mainParticipant && participant !== screenShareParticipant && !isSelected;
-              return (
-                <Participant
-                  key={participant.sid}
-                  participant={participant}
-                  isSelected={participant === selectedParticipant}
-                  onClick={() => setSelectedParticipant(participant)}
-                  hideParticipant={hideParticipant}
-                />
-              );
-            })}
-          </div>
+  return (
+    <aside
+      className={clsx(classes.container, {
+        [classes.transparentBackground]: !isRemoteParticipantScreenSharing,
+      })}
+    >
+      <div className={classes.scrollContainer}>
+        <div className={classes.innerScrollContainer}>
+          <Participant participant={localParticipant} isLocalParticipant={true} />
+          {participants.map(participant => {
+            const isSelected = participant === selectedParticipant;
+            const hideParticipant =
+              participant === mainParticipant && participant !== screenShareParticipant && !isSelected;
+            return (
+              <Participant
+                key={participant.sid}
+                participant={participant}
+                isSelected={participant === selectedParticipant}
+                onClick={() => setSelectedParticipant(participant)}
+                hideParticipant={hideParticipant}
+              />
+            );
+          })}
         </div>
-      </aside>
-    );
+      </div>
+    </aside>
+  );
 }
