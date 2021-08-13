@@ -66,6 +66,30 @@ export default function DeviceSelectionScreen({ name, roomName, persona, setStep
   const { connect: videoConnect, isAcquiringLocalTracks, isConnecting } = useVideoContext();
   const disableButtons = isFetching || isAcquiringLocalTracks || isConnecting;
 
+  // Initial state for the number of people in the room
+  const [peopleInTheRoom, setPeopleInTheRoom] = React.useState(0);
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      return fetch('https://video-app-6893-3124-dev.twil.io/get-room-participant-count?roomName=' + roomName, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }).then(async res => {
+        const peopleCountRes = await res.json();
+        if (peopleCountRes.count > 0) {
+          setPeopleInTheRoom(peopleCountRes.count);
+          // Clear interval when we see a Patient in the room
+          clearInterval(interval);
+        }
+      });
+      // Every 5 seconds
+    }, 5000);
+    // Clear interval when component unbounds
+    return () => clearInterval(interval);
+  }, [roomName]);
+
   const handleJoin = () => {
     getToken(name, roomName).then(({ token }) => {
       videoConnect(token);
@@ -93,7 +117,7 @@ export default function DeviceSelectionScreen({ name, roomName, persona, setStep
       <Typography variant="h5" className={classes.gutterBottom}>
         Join {roomName} ({persona})
       </Typography>
-      {persona === 'provider' && (
+      {persona === 'provider' && peopleInTheRoom > 0 && (
         <Typography className={classes.gutterBottom} style={{ color: 'red' }}>
           Patient is in the waiting room
         </Typography>
