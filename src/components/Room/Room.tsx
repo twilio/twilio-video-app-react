@@ -9,13 +9,10 @@ import useChatContext from '../../hooks/useChatContext/useChatContext';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import ReactPlayer from 'react-player';
 import useParticipants from '../../hooks/useParticipants/useParticipants';
-import Banner from './Banner';
-import MenuBar from '../MenuBar/MenuBar';
 import ToggleAudioButton from '../Buttons/ToggleAudioButton/ToggleAudioButton';
 import EndCallButton from '../Buttons/EndCallButton/EndCallButton';
 import { checkPatient } from './RoomUtils';
 import ToggleVideoButton from '../Buttons/ToggleVideoButton/ToggleVideoButton';
-import Participant from '../Participant/Participant';
 
 const useStyles = makeStyles((theme: Theme) => {
   const totalMobileSidebarHeight = `${theme.sidebarMobileHeight +
