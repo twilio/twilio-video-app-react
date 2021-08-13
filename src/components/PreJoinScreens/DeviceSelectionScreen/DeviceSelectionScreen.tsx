@@ -23,9 +23,20 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: '1em 0',
   },
   joinButton: {
-    width: '100%',
     border: 'none',
-    margin: '1em 0',
+    flex: '1 1 0px',
+    margin: '1px',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+  },
+  cancelButton: {
+    border: '1px solid gray',
+    flex: '1 1 0px',
+    margin: '1px',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
   },
   localPreviewContainer: {
     paddingRight: '2em',
@@ -35,7 +46,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   joinButtons: {
     display: 'flex',
+    alignItems: 'center',
     justifyContent: 'space-between',
+
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column-reverse',
       width: '100%',
@@ -193,7 +206,12 @@ export default function DeviceSelectionScreen({ name, roomName, persona, setStep
             </div>
             <div className={classes.joinButtons}>
               {persona === 'provider' && (
-                <Button variant="outlined" color="primary" onClick={() => setStep(Steps.roomNameStep)}>
+                <Button
+                  className={classes.cancelButton}
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => setStep(Steps.roomNameStep)}
+                >
                   Cancel
                 </Button>
               )}
