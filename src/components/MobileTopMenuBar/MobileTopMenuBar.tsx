@@ -3,6 +3,8 @@ import React from 'react';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import EndCallButton from '../Buttons/EndCallButton/EndCallButton';
 import Menu from '../MenuBar/Menu/Menu';
+import { checkPatient } from '../Room/RoomUtils';
+import useParticipants from '../../hooks/useParticipants/useParticipants';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -33,6 +35,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 export default function MobileTopMenuBar() {
   const classes = useStyles();
   const { room } = useVideoContext();
+
+  const isPatient = checkPatient();
+  const participants = useParticipants();
+
+  if (participants.length === 0 && isPatient) return null;
 
   return (
     <Grid container alignItems="center" justifyContent="space-between" className={classes.container}>

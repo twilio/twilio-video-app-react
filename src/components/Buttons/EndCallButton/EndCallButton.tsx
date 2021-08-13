@@ -12,7 +12,8 @@ const useStyles = makeStyles((theme: Theme) =>
       background: theme.brand,
       color: 'white',
       '&:hover': {
-        background: '#600101',
+        //  background: '#600101',
+        background: 'black',
       },
     },
   })

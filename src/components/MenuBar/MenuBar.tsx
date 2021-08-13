@@ -12,6 +12,8 @@ import ToggleAudioButton from '../Buttons/ToggleAudioButton/ToggleAudioButton';
 import ToggleChatButton from '../Buttons/ToggleChatButton/ToggleChatButton';
 import ToggleVideoButton from '../Buttons/ToggleVideoButton/ToggleVideoButton';
 import ToggleScreenShareButton from '../Buttons/ToogleScreenShareButton/ToggleScreenShareButton';
+import { checkPatient } from '../Room/RoomUtils';
+import useParticipants from '../../hooks/useParticipants/useParticipants';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -68,6 +70,11 @@ export default function MenuBar() {
   const roomState = useRoomState();
   const isReconnecting = roomState === 'reconnecting';
   const { room } = useVideoContext();
+
+  const isPatient = checkPatient();
+  const participants = useParticipants();
+
+  if (participants.length === 0 && isPatient) return null;
 
   return (
     <>

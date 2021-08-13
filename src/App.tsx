@@ -10,6 +10,8 @@ import Room from './components/Room/Room';
 
 import useHeight from './hooks/useHeight/useHeight';
 import useRoomState from './hooks/useRoomState/useRoomState';
+import { checkPatient } from './components/Room/RoomUtils';
+import useParticipants from './hooks/useParticipants/useParticipants';
 
 const Container = styled('div')({
   display: 'grid',
@@ -35,12 +37,18 @@ export default function App() {
   // will look good on mobile browsers even after the location bar opens or closes.
   const height = useHeight();
 
+  const isPatient = checkPatient();
+  let backgroundColor = 'black';
+  const participants = useParticipants();
+
+  if (participants.length === 0 && isPatient) backgroundColor = 'white';
+
   return (
     <Container style={{ height }}>
       {roomState === 'disconnected' ? (
         <PreJoinScreens />
       ) : (
-        <Main>
+        <Main style={{ backgroundColor }}>
           <ReconnectingNotification />
           <RecordingNotifications />
           <MobileTopMenuBar />
