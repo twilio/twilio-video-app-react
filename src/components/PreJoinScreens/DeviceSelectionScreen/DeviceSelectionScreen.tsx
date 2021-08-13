@@ -22,6 +22,22 @@ const useStyles = makeStyles((theme: Theme) => ({
     border: '2px solid #aaa',
     margin: '1em 0',
   },
+  joinButton: {
+    border: 'none',
+    flex: '1 1 0px',
+    margin: '1px',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+  },
+  cancelButton: {
+    border: '1px solid gray',
+    flex: '1 1 0px',
+    margin: '1px',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+  },
   localPreviewContainer: {
     paddingRight: '2em',
     [theme.breakpoints.down('sm')]: {
@@ -30,7 +46,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   joinButtons: {
     display: 'flex',
+    alignItems: 'center',
     justifyContent: 'space-between',
+
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column-reverse',
       width: '100%',
@@ -188,7 +206,12 @@ export default function DeviceSelectionScreen({ name, roomName, persona, setStep
             </div>
             <div className={classes.joinButtons}>
               {persona === 'provider' && (
-                <Button variant="outlined" color="primary" onClick={() => setStep(Steps.roomNameStep)}>
+                <Button
+                  className={classes.cancelButton}
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => setStep(Steps.roomNameStep)}
+                >
                   Cancel
                 </Button>
               )}
@@ -198,6 +221,7 @@ export default function DeviceSelectionScreen({ name, roomName, persona, setStep
                 data-cy-join-now
                 onClick={handleJoin}
                 disabled={disableButtons}
+                className={classes.joinButton}
               >
                 Join Now
               </Button>
