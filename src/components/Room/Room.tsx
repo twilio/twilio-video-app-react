@@ -7,6 +7,8 @@ import MainParticipant from '../MainParticipant/MainParticipant';
 import BackgroundSelectionDialog from '../BackgroundSelectionDialog/BackgroundSelectionDialog';
 import useChatContext from '../../hooks/useChatContext/useChatContext';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import ReactPlayer from 'react-player';
+import useParticipants from '../../hooks/useParticipants/useParticipants';
 
 const useStyles = makeStyles((theme: Theme) => {
   const totalMobileSidebarHeight = `${theme.sidebarMobileHeight +
@@ -28,10 +30,44 @@ const useStyles = makeStyles((theme: Theme) => {
   };
 });
 
+function getQueryParams(queryString: string) {
+  const sp = new URLSearchParams(queryString);
+
+  return {
+    URLRoomName: sp.get('room'),
+    URLPersona: sp.get('persona'),
+    URLName: sp.get('name'),
+  };
+}
+
 export default function Room() {
   const classes = useStyles();
   const { isChatWindowOpen } = useChatContext();
   const { isBackgroundSelectionOpen } = useVideoContext();
+
+  const participants = useParticipants();
+  const { URLPersona } = getQueryParams(window.location.search);
+  if (participants.length === 0 && URLPersona !== 'provider')
+    return (
+      <div
+        className={clsx(classes.container, {
+          [classes.rightDrawerOpen]: isChatWindowOpen || isBackgroundSelectionOpen,
+        })}
+      >
+        <ReactPlayer
+          url="https://www.youtube.com/embed/E1h2Aqr8cu8"
+          width="100%"
+          controls={false}
+          height="100%"
+          muted={false}
+          loop={true}
+          playing={true}
+        />
+        <ParticipantList />
+        <ChatWindow />
+        <BackgroundSelectionDialog />
+      </div>
+    );
   return (
     <div
       className={clsx(classes.container, {
