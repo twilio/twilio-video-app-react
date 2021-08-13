@@ -22,6 +22,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     border: '2px solid #aaa',
     margin: '1em 0',
   },
+  joinButton: {
+    width: '100%',
+    border: 'none',
+    margin: '1em 0',
+  },
   localPreviewContainer: {
     paddingRight: '2em',
     [theme.breakpoints.down('sm')]: {
@@ -198,6 +203,7 @@ export default function DeviceSelectionScreen({ name, roomName, persona, setStep
                 data-cy-join-now
                 onClick={handleJoin}
                 disabled={disableButtons}
+                className={classes.joinButton}
               >
                 Join Now
               </Button>

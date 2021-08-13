@@ -42,11 +42,20 @@ const useWRStyles = makeStyles((theme: Theme) => {
     banner: {
       color: 'black',
       fontWeight: 'bold',
-      gridRow: '1 / 2',
+      gridRow: '1',
       gridColumn: '2 / 4',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
+      flexDirection: 'column',
+    },
+    footer: {
+      color: 'black',
+      gridRow: '5',
+      gridColumn: '2 / 4',
+      display: 'flex',
+      justifyContent: 'center',
+      textAlign: 'center',
       flexDirection: 'column',
     },
     controls: {
@@ -85,15 +94,13 @@ const useWRStyles = makeStyles((theme: Theme) => {
     containerWR: {
       backgroundColor: 'white',
       display: 'grid',
-      gridTemplate: '10% 45% 10% 35% / 1fr 300px 215px 1fr',
-
-      gridTemplateAreas: '"none banner banner none" "none player player none" "none patient controls none"',
+      gridTemplate: '7% 45% 5% 35% 8% / 1fr 300px 215px 1fr',
       height: '100%',
       [theme.breakpoints.down('sm')]: {
-        gridTemplate: '20% 40% 10% 30% / 1fr 235px 185px 1fr',
+        gridTemplate: '10% 40% 8% 30% 12% / 1fr 235px 185px 1fr',
       },
       [theme.breakpoints.down('xs')]: {
-        gridTemplate: '20% 40% 20% 30% / 2% 53% 43% 2%',
+        gridTemplate: '15% 40% 10% 30% 15%/ 2% 53% 43% 2%',
       },
     },
   };
@@ -134,6 +141,10 @@ export default function Room() {
           <ToggleAudioButton className={clsx(classesWR.button)} />
           <ToggleVideoButton className={clsx(classesWR.button)} />
           <EndCallButton className={clsx(classesWR.buttonDisconnect)} />
+        </div>
+
+        <div className={clsx(classesWR.footer)}>
+          You are in the waiting room. Your provider will be joining shortly.
         </div>
       </div>
     );
