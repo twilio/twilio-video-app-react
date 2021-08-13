@@ -52,6 +52,35 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
+function getParticipantCount(roomName: string) {
+  const endpoint = `get-room-participant-count?roomName=${roomName}`;
+  console.log('endpoint:', endpoint);
+
+  let responseData = null;
+  fetch(endpoint, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  })
+    .then(response => {
+      console.log('response:', response);
+      response.json();
+    })
+    .then(data => {
+      console.log('data:', data);
+      responseData = data;
+    })
+    .catch(error => {
+      console.log(error);
+    });
+
+  console.log('responseData:', responseData);
+  return responseData;
+
+  // # inside then
+  // setTimeout(getParticipantCount, 5);
+  // if # > 0 then dont recursion
+}
+
 interface DeviceSelectionScreenProps {
   name: string;
   roomName: string;
@@ -65,6 +94,28 @@ export default function DeviceSelectionScreen({ name, roomName, persona, setStep
   const { connect: chatConnect } = useChatContext();
   const { connect: videoConnect, isAcquiringLocalTracks, isConnecting } = useVideoContext();
   const disableButtons = isFetching || isAcquiringLocalTracks || isConnecting;
+
+  // Initial state for the number of people in the room
+  const [peopleInTheRoom, setPeopleInTheRoom] = React.useState(0);
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      return fetch(`get-room-participant-count?roomName=${roomName}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      }).then(async res => {
+        const peopleCountRes = await res.json();
+        if (peopleCountRes.count > 0) {
+          setPeopleInTheRoom(peopleCountRes.count);
+          // Clear interval when we see a participant in the room
+          clearInterval(interval);
+        }
+      });
+      // Every 5 seconds
+    }, 3000);
+    // Clear interval when component unbounds
+    return () => clearInterval(interval);
+  }, [roomName]);
 
   const handleJoin = () => {
     getToken(name, roomName).then(({ token }) => {
@@ -93,9 +144,24 @@ export default function DeviceSelectionScreen({ name, roomName, persona, setStep
       <Typography variant="h5" className={classes.gutterBottom}>
         Join {roomName} ({persona})
       </Typography>
-      {persona === 'provider' && (
-        <Typography className={classes.gutterBottom} style={{ color: 'red' }}>
+      {persona === 'provider' && peopleInTheRoom === 0 && (
+        <Typography className={classes.gutterBottom} style={{ color: 'darkgreen' }}>
+          Patient has not yet joined
+        </Typography>
+      )}
+      {persona === 'provider' && peopleInTheRoom > 0 && (
+        <Typography className={classes.gutterBottom} style={{ color: 'darkred' }}>
           Patient is in the waiting room
+        </Typography>
+      )}
+      {persona === 'patient' && peopleInTheRoom === 0 && (
+        <Typography className={classes.gutterBottom} style={{ color: 'darkgreen' }}>
+          Your provider will be joining shortly, please join the waiting room
+        </Typography>
+      )}
+      {persona === 'patient' && peopleInTheRoom > 0 && (
+        <Typography className={classes.gutterBottom} style={{ color: 'darkred' }}>
+          Your provider is waiting. Please join the video room immediately
         </Typography>
       )}
 

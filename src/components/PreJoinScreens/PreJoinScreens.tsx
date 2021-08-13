@@ -26,7 +26,7 @@ export default function PreJoinScreens() {
   const { getAudioAndVideoTracks } = useVideoContext();
   // console.log('URL:', window.location);
   const { URLRoomName, URLPersona, URLName } = getQueryParams(window.location.search);
-  console.log('QueryParameters:', URLRoomName, URLPersona, URLName);
+  // console.log('QueryParameters:', URLRoomName, URLPersona, URLName);
   const [step, setStep] = useState(Steps.roomNameStep);
 
   const [persona, setPersona] = useState<string>(URLPersona ? URLPersona : 'provider');
