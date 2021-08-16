@@ -128,6 +128,9 @@ export default function DeviceSelectionScreen({ name, roomName, persona, setStep
           // Clear interval when we see a participant in the room
           clearInterval(interval);
         }
+      }).catch(err => {
+        // for running locally
+        setPeopleInTheRoom(0);
       });
       // Every 5 seconds
     }, 3000);
