@@ -5,6 +5,11 @@ export function checkPatient() {
   return sp.get('persona') === 'patient';
 }
 
+export function getPatientName() {
+  const sp = new URLSearchParams(window.location.search);
+  return sp.get('name');
+}
+
 export function getThirdPartyURL(name: string) {
   const sp = new URLSearchParams(window.location.search);
   const personaReplace = `=${sp.get('persona')}`;

@@ -8,7 +8,7 @@ import Divider from '@material-ui/core/Divider';
 
 import { useAppState } from '../../state';
 import { Grid, InputLabel, makeStyles, TextField, Theme } from '@material-ui/core';
-import { getThirdPartyURL } from '../Room/RoomUtils';
+import { getPatientName, getThirdPartyURL } from '../Room/RoomUtils';
 import DialogContentText from '@material-ui/core/DialogContentText';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -77,7 +77,7 @@ function InviteDialog({ open, onClose }: PropsWithChildren<InviteDialogProps>) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         phoneNumber,
-        patient: 'patient',
+        patient: getPatientName(),
         visitUrl: getThirdPartyURL(partyName),
       }),
     })
