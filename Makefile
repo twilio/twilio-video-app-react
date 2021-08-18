@@ -36,15 +36,8 @@ delete:
 	twilio rtc:apps:video:delete
 
 
-deploy-app:
+deploy:
 	@echo ---------- $@
 	npm run deploy:twilio-cli
 
-
-deploy-function:
-	@echo ---------- $@
 	./tool-deploy-functions.sh
-
-
-deploy: deploy-app deploy-function
-	@echo ---------- $@
