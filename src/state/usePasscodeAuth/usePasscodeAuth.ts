@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import { Location } from 'history';
 
 const endpoint = process.env.REACT_APP_TOKEN_ENDPOINT || '/token';
 
-export function getPasscode() {
-  const match = window.location.href.match(/[?&]passcode=(\d+).*$/);
+export function getPasscode(location: Location) {
+  const match = location.search.match(/[?&]passcode=(\d+).*$/);
   const passcode = match ? match[1] : window.sessionStorage.getItem('passcode');
   return passcode;
 }
@@ -105,7 +106,7 @@ export default function usePasscodeAuth() {
   );
 
   useEffect(() => {
-    const passcode = getPasscode();
+    const passcode = getPasscode(location);
 
     if (passcode && !user) {
       verifyPasscode(passcode)
