@@ -5,7 +5,7 @@ exports[`the UnsupportedBrowserWarning component should render correctly when is
   <WithStyles(ForwardRef(Grid))
     className="makeStyles-container-1"
     container={true}
-    justify="center"
+    justifyContent="center"
   >
     <WithStyles(ForwardRef(Grid))
       item={true}

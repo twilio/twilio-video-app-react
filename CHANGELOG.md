@@ -1,3 +1,25 @@
+## 0.5.0 (August 9, 2021)
+
+### New Feature
+
+- This release adds a virtual background feature. This feature allows users to blur their background or apply a background image from the background selection window. The virtual backgrounds are applied to the video tracks using the [Twilio Video Processors SDK](https://www.twilio.com/docs/video/video-processors). For more information, please view this [blog post](https://www.twilio.com/blog/introducing-virtual-backgrounds-browser-based-video-applications). [#574](https://github.com/twilio/twilio-video-app-react/pull/574)
+
+### Dependency Upgrades
+
+- `@material-ui/core` has been updated from 4.9.1. to 4.12.3. [#568](https://github.com/twilio/twilio-video-app-react/pull/568)
+- `@material-ui/icons` has been updated from 4.9.1. to 4.11.12. [#568](https://github.com/twilio/twilio-video-app-react/pull/568)
+- `@twilio/conversations` has been updated from 1.1.0. to 1.2.3. [#568](https://github.com/twilio/twilio-video-app-react/pull/568)
+
+## 0.4.2 (July 29, 2021)
+
+### Dependency Upgrades
+
+- `twilio-video` has been upgraded from 2.14.0 to 2.15.3. This fixes an issue that was introduced in Chrome 92 where a limit on the number of `WebMediaPlayers` has been added. See [this GitHub issue](https://github.com/twilio/twilio-video.js/issues/1528) for more information. [#562](https://github.com/twilio/twilio-video-app-react/pull/562)
+
+### Bugfixes
+
+- Audio and Video track components now set their `<audio>` or `<video>` element's `srcObject` to `null` after the tracks are unmounted. This helps to fix the above mentioned issue introduced in Chrome 92. [#562](https://github.com/twilio/twilio-video-app-react/pull/562)
+
 ## 0.4.1 (June 10, 2021)
 
 ### Bugfixes
@@ -7,6 +29,7 @@
 - The size of the thumbnails in the Participants list has been reduced as well as the gap in between each of them. [#524](https://github.com/twilio/twilio-video-app-react/pull/524)
 
 ### Thanks!
+
 - Thank you to @hanhlee [#527](https://github.com/twilio/twilio-video-app-react/pull/527), @t4nmoy [#528](https://github.com/twilio/twilio-video-app-react/pull/528), and @arturodr [#529](https://github.com/twilio/twilio-video-app-react/pull/529) for your help with detecting typos and unnecessary dependencies!
 
 ## 0.4.0 (May 12, 2021)
