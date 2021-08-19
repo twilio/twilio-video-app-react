@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const endpoint = process.env.REACT_APP_TOKEN_ENDPOINT || '/token';
 
 export function getPasscode() {
-  const match = window.location.search.match(/passcode=(.*)&?/);
+  const match = window.location.href.match(/[?&]passcode=(\d+).*$/);
   const passcode = match ? match[1] : window.sessionStorage.getItem('passcode');
   return passcode;
 }
@@ -59,6 +59,7 @@ export function getErrorMessage(message: string) {
 
 export default function usePasscodeAuth() {
   const history = useHistory();
+  const location = useLocation();
 
   const [user, setUser] = useState<{ displayName: undefined; photoURL: undefined; passcode: string } | null>(null);
   const [isAuthReady, setIsAuthReady] = useState(false);
@@ -106,20 +107,20 @@ export default function usePasscodeAuth() {
   useEffect(() => {
     const passcode = getPasscode();
 
-    if (passcode) {
+    if (passcode && !user) {
       verifyPasscode(passcode)
         .then(verification => {
           if (verification?.isValid) {
             setUser({ passcode } as any);
             window.sessionStorage.setItem('passcode', passcode);
-            history.replace(window.location.pathname);
+            history.replace(location.pathname);
           }
         })
         .then(() => setIsAuthReady(true));
     } else {
       setIsAuthReady(true);
     }
-  }, [history]);
+  }, [history, location]);
 
   const signIn = useCallback((passcode: string) => {
     return verifyPasscode(passcode).then(verification => {

@@ -19,7 +19,9 @@ import UnsupportedBrowserWarning from './components/UnsupportedBrowserWarning/Un
 
 // Here we redirect the user to a URL with a hash. This maintains backwards-compatibilty with URLs
 // like https://my-twilio-video-app.com/room/test-room, which will be redirected to https://my-twilio-video-app.com/#/room/test-room
-if (!window.location.hash) window.history.replaceState(null, '', '/#' + window.location.pathname);
+if (!window.location.hash) {
+  window.history.replaceState(null, '', '/#' + window.location.pathname + window.location.search);
+}
 
 const VideoApp = () => {
   const { error, setError } = useAppState();
@@ -45,7 +47,7 @@ ReactDOM.render(
             <PrivateRoute exact path="/">
               <VideoApp />
             </PrivateRoute>
-            <PrivateRoute exact path="/room/:URLRoomName">
+            <PrivateRoute path="/room/:URLRoomName">
               <VideoApp />
             </PrivateRoute>
             <Route path="/login">
