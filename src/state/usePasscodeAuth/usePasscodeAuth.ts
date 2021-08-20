@@ -121,7 +121,7 @@ export default function usePasscodeAuth() {
     } else {
       setIsAuthReady(true);
     }
-  }, [history, location]);
+  }, [history, location, user]);
 
   const signIn = useCallback((passcode: string) => {
     return verifyPasscode(passcode).then(verification => {
