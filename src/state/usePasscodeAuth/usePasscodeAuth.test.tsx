@@ -1,20 +1,24 @@
 import React from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
-import { createBrowserHistory } from 'history';
-import { Router } from 'react-router-dom';
+import { createBrowserHistory, Location } from 'history';
+import { Router, useHistory, useLocation } from 'react-router-dom';
 import usePasscodeAuth, { getPasscode, verifyPasscode } from './usePasscodeAuth';
 
-delete window.location;
-// @ts-ignore
-window.location = {
-  search: '',
-};
+jest.mock('react-router-dom', () => {
+  return {
+    ...jest.requireActual('react-router-dom'),
+    useLocation: jest.fn(),
+    useHistory: jest.fn(),
+  };
+});
+
+const mockUseLocation = useLocation as jest.Mock<any>;
+const mockUseHistory = useHistory as jest.Mock<any>;
+
+const mockReplace = jest.fn();
+mockUseHistory.mockImplementation(() => ({ replace: mockReplace }));
 
 const customHistory = { ...createBrowserHistory(), replace: jest.fn() };
-
-const wrapper = (props: React.PropsWithChildren<unknown>) => (
-  <Router history={customHistory as any}>{props.children}</Router>
-);
 
 describe('the usePasscodeAuth hook', () => {
   describe('on first render', () => {
@@ -24,8 +28,9 @@ describe('the usePasscodeAuth hook', () => {
       window.fetch = jest.fn(() =>
         Promise.resolve({ ok: true, json: () => Promise.resolve({ token: 'mockVideoToken' }) })
       );
+      mockUseLocation.mockImplementation(() => ({ search: '' }));
       window.sessionStorage.setItem('passcode', '123123');
-      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
+      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth);
       await waitForNextUpdate();
       expect(result.current).toMatchObject({ isAuthReady: true, user: { passcode: '123123' } });
     });
@@ -35,17 +40,11 @@ describe('the usePasscodeAuth hook', () => {
       window.fetch = jest.fn(() =>
         Promise.resolve({ ok: true, json: () => Promise.resolve({ token: 'mockVideoToken' }) })
       );
-      // @ts-ignore
-      window.location = {
-        search: '?passcode=000000',
-        origin: 'http://test-origin',
-        pathname: '/test-pathname',
-      };
-      Object.defineProperty(window.history, 'replaceState', { value: jest.fn() });
-      window.sessionStorage.setItem('passcode', '123123');
-      const { waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
+
+      mockUseLocation.mockImplementation(() => ({ search: '?passcode=000000', pathname: '/test-pathname' }));
+      const { waitForNextUpdate } = renderHook(usePasscodeAuth);
       await waitForNextUpdate();
-      expect(customHistory.replace).toHaveBeenLastCalledWith('/test-pathname');
+      expect(mockReplace).toHaveBeenLastCalledWith('/test-pathname');
     });
 
     it('should not return a user when the app code is invalid', async () => {
@@ -53,15 +52,15 @@ describe('the usePasscodeAuth hook', () => {
       window.fetch = jest.fn(() =>
         Promise.resolve({ status: 401, json: () => Promise.resolve({ type: 'errorMessage' }) })
       );
-      window.location.search = '';
+      mockUseLocation.mockImplementation(() => ({ search: '' }));
       window.sessionStorage.setItem('passcode', '123123');
-      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
+      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth);
       await waitForNextUpdate();
       expect(result.current).toMatchObject({ isAuthReady: true, user: null });
     });
 
     it('should not return a user when there is no passcode', () => {
-      const { result } = renderHook(usePasscodeAuth, { wrapper });
+      const { result } = renderHook(usePasscodeAuth);
       expect(result.current).toMatchObject({ isAuthReady: true, user: null });
     });
   });
@@ -73,7 +72,7 @@ describe('the usePasscodeAuth hook', () => {
         Promise.resolve({ ok: true, json: () => Promise.resolve({ token: 'mockVideoToken' }) })
       );
       window.sessionStorage.setItem('passcode', '123123');
-      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
+      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth);
       await waitForNextUpdate();
       await act(() => result.current.signOut());
       expect(window.sessionStorage.getItem('passcode')).toBe(null);
@@ -87,7 +86,7 @@ describe('the usePasscodeAuth hook', () => {
       window.fetch = jest.fn(() =>
         Promise.resolve({ ok: true, json: () => Promise.resolve({ token: 'mockVideoToken' }) })
       );
-      const { result } = renderHook(usePasscodeAuth, { wrapper });
+      const { result } = renderHook(usePasscodeAuth);
       await act(() => result.current.signIn('123456'));
       expect(result.current.user).toEqual({ passcode: '123456' });
     });
@@ -97,7 +96,7 @@ describe('the usePasscodeAuth hook', () => {
       window.fetch = jest.fn(() =>
         Promise.resolve({ status: 401, json: () => Promise.resolve({ error: { message: 'passcode incorrect' } }) })
       );
-      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
+      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth);
       await waitForNextUpdate();
       result.current.signIn('123456').catch(err => {
         expect(err.message).toBe('Passcode is incorrect');
@@ -109,7 +108,7 @@ describe('the usePasscodeAuth hook', () => {
       window.fetch = jest.fn(() =>
         Promise.resolve({ status: 401, json: () => Promise.resolve({ error: { message: 'passcode expired' } }) })
       );
-      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
+      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth);
       await waitForNextUpdate();
       result.current.signIn('123456').catch(err => {
         expect(err.message).toBe('Passcode has expired');
@@ -124,7 +123,7 @@ describe('the usePasscodeAuth hook', () => {
         Promise.resolve({ ok: true, json: () => Promise.resolve({ token: 'mockVideoToken' }) })
       );
       window.sessionStorage.setItem('passcode', '123123');
-      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
+      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth);
       await waitForNextUpdate();
 
       await act(async () => {
@@ -147,7 +146,7 @@ describe('the usePasscodeAuth hook', () => {
         Promise.resolve({ ok: true, json: () => Promise.resolve({ token: 'mockVideoToken' }) })
       );
       window.sessionStorage.setItem('passcode', '123123');
-      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
+      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth);
       await waitForNextUpdate();
 
       await act(async () => {
@@ -171,7 +170,7 @@ describe('the usePasscodeAuth hook', () => {
         Promise.resolve({ ok: true, json: () => Promise.resolve({ token: 'mockVideoToken' }) })
       );
       window.sessionStorage.setItem('passcode', '123123');
-      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
+      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth);
       await waitForNextUpdate();
 
       let token = '';
@@ -188,7 +187,7 @@ describe('the usePasscodeAuth hook', () => {
         Promise.resolve({ ok: true, json: () => Promise.resolve({ token: 'mockVideoToken' }) })
       );
       window.sessionStorage.setItem('passcode', '123123');
-      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth, { wrapper });
+      const { result, waitForNextUpdate } = renderHook(usePasscodeAuth);
       await waitForNextUpdate();
       // @ts-ignore
       window.fetch = jest.fn(() =>
@@ -207,27 +206,27 @@ describe('the getPasscode function', () => {
   beforeEach(() => window.sessionStorage.clear());
 
   it('should return the passcode from session storage', () => {
-    window.location.search = '';
+    const mockLocation = { search: '' } as Location;
     window.sessionStorage.setItem('passcode', '123123');
-    expect(getPasscode()).toBe('123123');
+    expect(getPasscode(mockLocation)).toBe('123123');
   });
 
   it('should return the passcode from the URL', () => {
-    window.location.search = '?passcode=234234';
+    const mockLocation = { search: '?passcode=234234' } as Location;
 
-    expect(getPasscode()).toBe('234234');
+    expect(getPasscode(mockLocation)).toBe('234234');
   });
 
   it('should return the passcode from the URL when the app code is also sotred in sessionstorage', () => {
     window.sessionStorage.setItem('passcode', '123123');
-    window.location.search = '?passcode=234234';
+    const mockLocation = { search: '?passcode=234234' } as Location;
 
-    expect(getPasscode()).toBe('234234');
+    expect(getPasscode(mockLocation)).toBe('234234');
   });
 
   it('should return null when there is no passcode', () => {
-    window.location.search = '';
-    expect(getPasscode()).toBe(null);
+    const mockLocation = { search: '' } as Location;
+    expect(getPasscode(mockLocation)).toBe(null);
   });
 });
 
