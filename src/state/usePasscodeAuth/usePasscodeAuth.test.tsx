@@ -1,24 +1,18 @@
-import React from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
-import { createBrowserHistory, Location } from 'history';
-import { Router, useHistory, useLocation } from 'react-router-dom';
+import { Location } from 'history';
+import { useHistory, useLocation } from 'react-router-dom';
 import usePasscodeAuth, { getPasscode, verifyPasscode } from './usePasscodeAuth';
 
-jest.mock('react-router-dom', () => {
-  return {
-    ...jest.requireActual('react-router-dom'),
-    useLocation: jest.fn(),
-    useHistory: jest.fn(),
-  };
-});
+jest.mock('react-router-dom', () => ({
+  useLocation: jest.fn(),
+  useHistory: jest.fn(),
+}));
 
 const mockUseLocation = useLocation as jest.Mock<any>;
 const mockUseHistory = useHistory as jest.Mock<any>;
 
 const mockReplace = jest.fn();
 mockUseHistory.mockImplementation(() => ({ replace: mockReplace }));
-
-const customHistory = { ...createBrowserHistory(), replace: jest.fn() };
 
 describe('the usePasscodeAuth hook', () => {
   describe('on first render', () => {
