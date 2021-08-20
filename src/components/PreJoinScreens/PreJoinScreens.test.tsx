@@ -7,25 +7,25 @@ import PreJoinScreens from './PreJoinScreens';
 import RoomNameScreen from './RoomNameScreen/RoomNameScreen';
 import { useParams } from 'react-router-dom';
 import { useAppState } from '../../state';
+import { useHistory, useLocation } from 'react-router-dom';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
-delete window.location;
-// @ts-ignore
-window.location = {
-  pathname: '',
-  search: '',
-  origin: '',
-};
-
-const mockReplaceState = jest.fn();
-Object.defineProperty(window.history, 'replaceState', { value: mockReplaceState });
-
+jest.mock('react-router-dom', () => ({
+  useLocation: jest.fn(),
+  useHistory: jest.fn(),
+  useParams: jest.fn(),
+}));
 jest.mock('../../state');
-jest.mock('react-router-dom', () => ({ useParams: jest.fn() }));
 jest.mock('../../hooks/useVideoContext/useVideoContext');
 jest.mock('./MediaErrorSnackbar/MediaErrorSnackbar', () => () => null);
-const mockUseAppState = useAppState as jest.Mock<any>;
+
 const mockUseParams = useParams as jest.Mock<any>;
+const mockUseLocation = useLocation as jest.Mock<any>;
+const mockUseHistory = useHistory as jest.Mock<any>;
+const mockReplace = jest.fn();
+mockUseHistory.mockImplementation(() => ({ replace: mockReplace }));
+
+const mockUseAppState = useAppState as jest.Mock<any>;
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 
 jest.mock('../IntroContainer/IntroContainer', () => ({ children }: { children: React.ReactNode }) => children);
@@ -41,6 +41,7 @@ describe('the PreJoinScreens component', () => {
   });
 
   it('should update the URL to include the room name on submit', () => {
+    mockUseLocation.mockImplementation(() => ({ search: '?test=123' }));
     const wrapper = shallow(<PreJoinScreens />);
 
     const setRoomName = wrapper.find(RoomNameScreen).prop('setRoomName');
@@ -49,7 +50,7 @@ describe('the PreJoinScreens component', () => {
     const handleSubmit = wrapper.find(RoomNameScreen).prop('handleSubmit');
     handleSubmit({ preventDefault: () => {} } as any);
 
-    expect(window.history.replaceState).toHaveBeenCalledWith(null, '', '/#/room/Test%20Room%20123');
+    expect(mockReplace).toHaveBeenCalledWith('/room/Test Room 123?test=123');
   });
 
   it('should switch to the DeviceSelection screen when a room name is submitted', () => {
