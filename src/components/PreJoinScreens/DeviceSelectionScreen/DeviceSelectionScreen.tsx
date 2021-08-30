@@ -121,17 +121,19 @@ export default function DeviceSelectionScreen({ name, roomName, persona, setStep
       return fetch(`get-room-participant-count?roomName=${roomName}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-      }).then(async res => {
-        const peopleCountRes = await res.json();
-        if (peopleCountRes.count > 0) {
-          setPeopleInTheRoom(peopleCountRes.count);
-          // Clear interval when we see a participant in the room
-          clearInterval(interval);
-        }
-      }).catch(err => {
-        // for running locally
-        setPeopleInTheRoom(0);
-      });
+      })
+        .then(async res => {
+          const peopleCountRes = await res.json();
+          if (peopleCountRes.count > 0) {
+            setPeopleInTheRoom(peopleCountRes.count);
+            // Clear interval when we see a participant in the room
+            clearInterval(interval);
+          }
+        })
+        .catch(err => {
+          // for running locally
+          setPeopleInTheRoom(0);
+        });
       // Every 5 seconds
     }, 3000);
     // Clear interval when component unbounds
@@ -226,7 +228,9 @@ export default function DeviceSelectionScreen({ name, roomName, persona, setStep
                 disabled={disableButtons}
                 className={classes.joinButton}
               >
-                Join Now
+                {persona === 'patient' && peopleInTheRoom === 0 && 'Join Waiting Room'}
+                {persona === 'patient' && peopleInTheRoom > 0 && 'Join ' + roomName}
+                {persona !== 'patient' && 'Join Now'}
               </Button>
             </div>
           </Grid>

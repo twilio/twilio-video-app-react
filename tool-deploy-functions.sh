@@ -5,16 +5,55 @@ if [[ -z ${ACCOUNT_SID} ]]; then echo 'ACCOUNT_SID unset!'; exit 1; fi
 if [[ -z ${AUTH_TOKEN} ]];  then echo 'AUTH_TOKEN unset!'; exit 1; fi
 AUTHENTICATION="${ACCOUNT_SID}:${AUTH_TOKEN}"
 
-fname='/get-room-participant-count'
-fpath='functions/get-room-participant-count.js'
-
-fname2='/send-third-party-message'
-fpath2='functions/send-third-party-message.js'
-
 SERVICE_SID=$(twilio rtc:apps:video:view \
 | grep 'Edit your token server' \
 | sed 's/.*\(ZS[0-9a-z]*\)\/environment.*/\1/')
 echo "SERVICE_SID: ${SERVICE_SID}"
+if [[ -z "${SERVICE_SID}" ]]; then
+  echo "Telehealth does not seem to deployed to your Twilio Account. exiting!"
+  exit 1
+fi
+
+# create/update TWILIO_FROM_PHONE
+read -p "Enter Twilio Phone to send SMS from (E164 format): " twilioFromPhoneValue
+if [[ -z ${twilioFromPhoneValue} ]]; then
+  echo "Note that you will not be able to send SMS from the Telehealth App"
+else
+  twilioFromPhoneKey="TWILIO_FROM_PHONE"
+  echo "twilioFromPhoneKey  : ${twilioFromPhoneKey}"
+  echo "twilioFromPhoneValue: ${twilioFromPhoneValue}"
+fi
+
+ENVIRONMENT_SID=$(curl --silent --user ${AUTHENTICATION} \
+  -X GET "https://serverless.twilio.com/v1/Services/${SERVICE_SID}/Environments" \
+  | jq --raw-output '.environments[0] | .sid')
+echo "found enviroment: ${ENVIRONMENT_SID}"
+
+VARIABLE_SID=$(curl --silent --user ${AUTHENTICATION} \
+  -X GET https://serverless.twilio.com/v1/Services/${SERVICE_SID}/Environments/${ENVIRONMENT_SID}/Variables \
+  | jq --raw-output '.variables[] | select(.key | contains("'${twilioFromPhoneKey}'")) | .sid')
+if [[ -z "${VARIABLE_SID}" ]]; then
+  echo "creating variable ${twilioFromPhoneKey}"
+  VARIABLE_SID=$(curl --silent --user ${AUTHENTICATION} \
+    -X POST https://serverless.twilio.com/v1/Services/${SERVICE_SID}/Environments/${ENVIRONMENT_SID}/Variables \
+    --data-urlencode "Key=${twilioFromPhoneKey}" \
+    --data-urlencode "Value=${twilioFromPhoneValue}" \
+    | jq --raw-output '.sid')
+  echo "created variable ${twilioFromPhoneKey}: ${VARIABLE_SID}"
+else
+  echo "updating variable ${twilioFromPhoneKey}: ${VARIABLE_SID}"
+  VARIABLE_SID=$(curl --silent --user ${AUTHENTICATION} \
+    -X POST https://serverless.twilio.com/v1/Services/${SERVICE_SID}/Environments/${ENVIRONMENT_SID}/Variables/${VARIABLE_SID} \
+    --data-urlencode "Key=${twilioFromPhoneKey}" \
+    --data-urlencode "Value=${twilioFromPhoneValue}" \
+    | jq --raw-output '.sid')
+  echo "updated variable ${twilioFromPhoneKey}: ${VARIABLE_SID}"
+fi
+
+
+# create send-third-party-message function
+fname='/get-room-participant-count'
+fpath='functions/get-room-participant-count.js'
 
 SERVICE_UNIQUE_NAME=$(curl --silent --user ${AUTHENTICATION} \
   -X GET "https://serverless.twilio.com/v1/Services/${SERVICE_SID}" \
@@ -35,7 +74,6 @@ else
   echo "found function ${fname}"
 fi
 
-
 FV_COUNT=$(curl --silent --user ${AUTHENTICATION} \
   -X GET "https://serverless.twilio.com/v1/Services/${SERVICE_SID}/Functions/${FUNCTION_SID}/Versions" \
   | jq --raw-output '.function_versions[] | select(.path | contains("'${fname}'")) | .' \
@@ -48,6 +86,11 @@ curl --user ${AUTHENTICATION} \
   -F "Path=${fname}" \
   -F "Visibility=public"
 echo "created function version with path=${fpath}: SID=${FVERSION_SID}"
+
+
+# create send-third-party-message function
+fname2='/send-third-party-message'
+fpath2='functions/send-third-party-message.js'
 
 FUNCTION_SID=$(curl --silent --user ${AUTHENTICATION} \
   -X GET "https://serverless.twilio.com/v1/Services/${SERVICE_SID}/Functions" \
@@ -78,9 +121,11 @@ curl --user ${AUTHENTICATION} \
 echo "created function version with path=${fpath2}: SID=${FVERSION_SID}"
 
 
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 echo "Please goto Twilio console https://console.twilio.com/"
 echo "Open the telehealth service: ${SERVICE_UNIQUE_NAME}"
-echo "Click 'Deploy All' to deploy this function along with app"
+echo "Click 'Deploy All' to deploy the functions along with app"
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 read -p "Deployment successfully? [Y/N] " response
 case "${response}" in
     [yY][eE][sS]|[yY])
@@ -92,50 +137,3 @@ case "${response}" in
         exit 1
         ;;
 esac
-
-#FVERSION_SID=$(curl --silent --user ${AUTHENTICATION} \
-#  -X GET "https://serverless.twilio.com/v1/Services/${SERVICE_SID}/Functions/${FUNCTION_SID}/Versions" \
-#  | jq --raw-output '.function_versions[0] | .sid')
-
-# after this, manually go to Twilio service console, select 'video...' service, and click 'Deploy All'
-
-# TODO: if time permits, figure out programmatically executing 'Deploy All'
-
-#curl --silent --user ${AUTHENTICATION} \
-#  -X POST "https://serverless.twilio.com/v1/Services/${SERVICE_SID}/Builds" \
-#  --data-urlencode "FunctionVersions=${FVERSION_SID}"
-
-
-#BUILD_SID=$(curl --silent --user ${AUTHENTICATION} \
-#  -X POST "https://serverless.twilio.com/v1/Services/${SERVICE_SID}/Builds" \
-#  --data-urlencode "FunctionVersions=${FVERSION_SID}" \
-#  | jq --raw-output '.sid')
-#echo "started build: ${BUILD_SID}"
-#BUILD_STATUS='building'
-#while [[ ${BUILD_STATUS} == 'building' ]]; do
-#  BUILD_STATUS=$(curl --silent --user ${AUTHENTICATION} \
-#    -X GET "https://serverless.twilio.com/v1/Services/${SERVICE_SID}/Builds/${BUILD_SID}/Status" \
-#    | jq --raw-output '.status')
-#  echo "build status: ${BUILD_STATUS}"
-#  sleep 2
-#done
-#echo "build completed: ${BUILD_SID}"
-#
-#
-#ENVIRONMENT_SID=$(curl --silent --user ${AUTHENTICATION} \
-#  -X GET "https://serverless.twilio.com/v1/Services/${SERVICE_SID}/Environments" \
-#  | jq --raw-output '.environments[0] | .sid')
-#echo "found enviroment: ${ENVIRONMENT_SID}"
-#
-#
-#DEPLOYMENT_SID=$(curl --silent --user ${AUTHENTICATION} \
-#  -X POST "https://serverless.twilio.com/v1/Services/${SERVICE_SID}/Environments/${ENVIRONMENT_SID}/Deployments" \
-#  --data-urlencode "BuildSid=${BUILD_SID}")
-#echo "deployed: ${DEPLOYMENT_SID}"
-#
-#
-#exit 0
-#
-#curl --silent --user ${ACCOUNT_SID}:${AUTH_TOKEN} \
-#    -X GET "https://serverless.twilio.com/v1/Services/ZS68ba4bbb582dc2d67068e0d2c62f1c81/Builds/ZB61298a96dab4b8b34106ec53979cf463/Status" \
-#    | jq .
