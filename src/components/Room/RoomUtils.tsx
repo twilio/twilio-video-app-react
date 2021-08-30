@@ -12,13 +12,15 @@ export function getPatientName() {
 
 export function getThirdPartyURL(name: string) {
   const sp = new URLSearchParams(window.location.search);
-  const personaReplace = `=${sp.get('persona')}`;
-  const patientReplace = `=${sp.get('name')}`;
+  const room = `${sp.get('room')}`;
+  const persona = 'thirdparty';
   const urlString = window.location.href;
+  let urlPrefix = urlString.substr(0, urlString.indexOf('?'));
   const passcode = window.sessionStorage.getItem('passcode');
 
-  return urlString
-    .replace(personaReplace, '=thirdparty')
-    .replace(patientReplace, `=${name}`)
-    .concat(`&passcode=${passcode}`);
+  const thirdPartyUrl = `${urlPrefix}?room=${encodeURIComponent(room)}&persona=${persona}&name=${encodeURIComponent(
+    name
+  )}&passcode=${passcode}`;
+  console.log('URL', thirdPartyUrl);
+  return thirdPartyUrl;
 }
