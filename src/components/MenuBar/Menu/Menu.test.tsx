@@ -55,9 +55,18 @@ describe('the Menu component', () => {
   });
 
   describe('the recording button', () => {
+    it('should not display when REACT_APP_DISABLE_TWILIO_RECORDINGS is true', () => {
+      process.env.REACT_APP_DISABLE_TWILIO_RECORDINGS = 'true';
+      const { getByText, queryByText } = render(<Menu />);
+      fireEvent.click(getByText('More'));
+
+      expect(queryByText('Start Recording')).toBeNull();
+    });
+
     describe('while recording is in progress', () => {
       beforeAll(() => {
         mockUseIsRecording.mockImplementation(() => true);
+        process.env.REACT_APP_DISABLE_TWILIO_RECORDINGS = 'false';
       });
 
       it('should display "Stop Recording"', () => {
