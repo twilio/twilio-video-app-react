@@ -157,7 +157,7 @@ export default function MainParticipantInfo({ participant, children }: MainParti
               {screenSharePublication && ' - Screen'}
             </Typography>
           </div>
-          <NetworkQualityLevel participant={localParticipant} />
+          <NetworkQualityLevel participant={participant} />
         </div>
         {isRecording && (
           <Tooltip
