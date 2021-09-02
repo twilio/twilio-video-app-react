@@ -32,7 +32,8 @@ export const ChatProvider: React.FC = ({ children }) => {
           window.chatClient = client;
           setChatClient(client);
         })
-        .catch(() => {
+        .catch(e => {
+          console.error(e);
           onError(new Error("There was a problem connecting to Twilio's conversation service."));
         });
     },
