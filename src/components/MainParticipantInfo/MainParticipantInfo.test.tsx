@@ -113,7 +113,10 @@ describe('the MainParticipantInfo component', () => {
   });
 
   it('should add "- Screen" to the participants identity when they are screen sharing', () => {
-    mockUsePublications.mockImplementationOnce(() => [{ trackName: 'screen' }, { trackName: '', kind: 'video' }]);
+    mockUsePublications.mockImplementationOnce(() => [
+      { trackName: 'screen', kind: 'video' },
+      { trackName: '', kind: 'video' },
+    ]);
     const wrapper = shallow(
       <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
     );
