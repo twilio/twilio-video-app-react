@@ -1,7 +1,8 @@
 import React from 'react';
 import Video from 'twilio-video';
-import { Container, Link, Typography, Paper, Grid } from '@material-ui/core';
+import { Container, Link, Typography, Paper, Grid, Box, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { isMobile, isIOS, isAndroid } from 'react-device-detect';
 
 const useStyles = makeStyles({
   container: {
@@ -47,6 +48,79 @@ export default function UnsupportedBrowserWarning({ children }: { children: Reac
                   secure context
                 </Link>{' '}
                 (e.g. https or localhost).
+                <br />
+                {isMobile && isAndroid && (
+                  <Box>
+                    <Typography style={{ paddingTop: 10 }}>You can use Chrome on this phone.</Typography>
+                    <Box
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '100%',
+                        paddingTop: '5%',
+                      }}
+                    >
+                      <Button
+                        size="large"
+                        component="a"
+                        color="secondary"
+                        href={`intent://${window.location.host}${window.location.pathname}/#Intent;scheme=https;package=com.android.chrome;end`}
+                        variant="contained"
+                      >
+                        Open in Chrome
+                      </Button>
+                    </Box>
+                  </Box>
+                )}
+                {isMobile && isIOS && (
+                  <Box>
+                    <Typography style={{ paddingTop: 10 }}>You can use Safari on this phone.</Typography>
+                    <Typography style={{ paddingTop: 10 }}>1.- Press button to copy URL</Typography>
+                    <Box
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '100%',
+                        paddingTop: '5%',
+                      }}
+                    >
+                      <Button
+                        size="large"
+                        onClick={() => {
+                          navigator.clipboard.writeText(window.location.href);
+                          alert('Link copied');
+                        }}
+                        color="secondary"
+                        variant="contained"
+                      >
+                        Copy Link
+                      </Button>
+                    </Box>
+                    <Typography style={{ paddingTop: 10 }}>2.- Press button to open Safari</Typography>
+                    <Box
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '100%',
+                        paddingTop: '5%',
+                      }}
+                    >
+                      <Button
+                        size="large"
+                        component="a"
+                        color="secondary"
+                        href={`x-web-search://?`}
+                        variant="contained"
+                      >
+                        Open Safari
+                      </Button>
+                    </Box>
+                    <Typography style={{ paddingTop: 10 }}>3.- Paste the link on Safari browser</Typography>
+                  </Box>
+                )}
               </Typography>
             </Paper>
           </Grid>
