@@ -16,7 +16,8 @@ describe('the LocalVideoPreview component', () => {
       return {
         localTracks: [
           {
-            name: 'camera-123456',
+            name: '',
+            kind: 'video',
             attach: jest.fn(),
             detach: jest.fn(),
             mediaStreamTrack: { getSettings: () => ({}) },

@@ -7,9 +7,10 @@ import { LocalParticipant } from 'twilio-video';
 jest.mock('../useVideoContext/useVideoContext');
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 
-function getMockTrack(name: string, deviceId?: string) {
+function getMockTrack(kind: string, deviceId?: string) {
   return {
-    name,
+    name: '',
+    kind,
     mediaStreamTrack: {
       getSettings: () => ({
         deviceId,
@@ -21,7 +22,7 @@ function getMockTrack(name: string, deviceId?: string) {
 describe('the useLocalVideoToggle hook', () => {
   it('should return true when a localVideoTrack exists', () => {
     mockUseVideoContext.mockImplementation(() => ({
-      localTracks: [getMockTrack('camera-123456')],
+      localTracks: [getMockTrack('video')],
       room: { localParticipant: {} },
     }));
 
@@ -31,7 +32,7 @@ describe('the useLocalVideoToggle hook', () => {
 
   it('should return false when a localVideoTrack does not exist', () => {
     mockUseVideoContext.mockImplementation(() => ({
-      localTracks: [getMockTrack('microphone')],
+      localTracks: [getMockTrack('audio')],
       room: { localParticipant: {} },
     }));
 
@@ -44,7 +45,7 @@ describe('the useLocalVideoToggle hook', () => {
       const mockRemoveLocalVideoTrack = jest.fn();
 
       mockUseVideoContext.mockImplementation(() => ({
-        localTracks: [getMockTrack('camera')],
+        localTracks: [getMockTrack('video')],
         room: { localParticipant: null },
         removeLocalVideoTrack: mockRemoveLocalVideoTrack,
       }));
@@ -56,7 +57,7 @@ describe('the useLocalVideoToggle hook', () => {
 
     it('should call localParticipant.unpublishTrack when a localVideoTrack and localParticipant exists', () => {
       const mockLocalTrack = {
-        ...getMockTrack('camera-123456'),
+        ...getMockTrack('video'),
         stop: jest.fn(),
       };
 
