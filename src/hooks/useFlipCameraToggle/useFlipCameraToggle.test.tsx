@@ -13,7 +13,8 @@ const mockUseDevices = useDevices as jest.Mock<any>;
 const mockStreamSettings = { facingMode: 'user' };
 
 const mockVideoTrack = {
-  name: 'camera',
+  name: '',
+  kind: 'video',
   mediaStreamTrack: {
     getSettings: () => mockStreamSettings,
   },

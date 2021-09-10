@@ -147,7 +147,7 @@ export default function ParticipantInfo({
   const publications = usePublications(participant);
 
   const audioPublication = publications.find(p => p.kind === 'audio');
-  const videoPublication = publications.find(p => p.trackName.includes('camera'));
+  const videoPublication = publications.find(p => !p.trackName.includes('screen') && p.kind === 'video');
 
   const isVideoEnabled = Boolean(videoPublication);
   const isScreenShareEnabled = publications.find(p => p.trackName.includes('screen'));

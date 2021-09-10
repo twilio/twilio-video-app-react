@@ -31,7 +31,7 @@ describe('the MainParticipantInfo component', () => {
 
   beforeEach(() => {
     mockUseVideoContext.mockImplementation(() => ({ room: { localParticipant: {} } }));
-    mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
+    mockUsePublications.mockImplementation(() => [{ trackName: '', kind: 'video' }]);
     mockUseTrack.mockImplementation((track: any) => track);
     mockUseIsTrackSwitchedOff.mockImplementation(() => false);
   });
@@ -45,7 +45,7 @@ describe('the MainParticipantInfo component', () => {
   });
 
   it('should not render the AvatarIcon component when video tracks are published', () => {
-    mockUsePublications.mockImplementationOnce(() => [{ trackName: 'camera-123456' }]);
+    mockUsePublications.mockImplementationOnce(() => [{ trackName: '', kind: 'video' }]);
     const wrapper = shallow(
       <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
     );
@@ -70,7 +70,7 @@ describe('the MainParticipantInfo component', () => {
 
   it('should not render the reconnecting UI when the user is connected', () => {
     mockUseParticipantIsReconnecting.mockImplementationOnce(() => false);
-    mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
+    mockUsePublications.mockImplementation(() => [{ trackName: '', kind: 'video' }]);
     const wrapper = shallow(
       <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
     );
@@ -79,7 +79,7 @@ describe('the MainParticipantInfo component', () => {
 
   it('should render the reconnecting UI when the user is reconnecting', () => {
     mockUseParticipantIsReconnecting.mockImplementationOnce(() => true);
-    mockUsePublications.mockImplementation(() => [{ trackName: 'camera-123456' }]);
+    mockUsePublications.mockImplementation(() => [{ trackName: '', kind: 'video' }]);
     const wrapper = shallow(
       <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
     );
@@ -87,15 +87,15 @@ describe('the MainParticipantInfo component', () => {
   });
 
   it('should use the switchOff status of the screen share track when it is available', () => {
-    mockUsePublications.mockImplementationOnce(() => [{ trackName: 'screen' }, { trackName: 'camera-123456' }]);
+    mockUsePublications.mockImplementationOnce(() => [{ trackName: 'screen' }, { trackName: '', kind: 'video' }]);
     shallow(<MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>);
     expect(mockUseTrack).toHaveBeenCalledWith({ trackName: 'screen' });
   });
 
   it('should use the switchOff status of the camera track when the screen share track is not available', () => {
-    mockUsePublications.mockImplementationOnce(() => [{ trackName: 'camera-123456' }]);
+    mockUsePublications.mockImplementationOnce(() => [{ trackName: '', kind: 'video' }]);
     shallow(<MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>);
-    expect(mockUseTrack).toHaveBeenCalledWith({ trackName: 'camera-123456' });
+    expect(mockUseTrack).toHaveBeenCalledWith({ trackName: '', kind: 'video' });
   });
 
   it('should add "(You)" to the participants identity when they are the localParticipant', () => {
@@ -113,7 +113,10 @@ describe('the MainParticipantInfo component', () => {
   });
 
   it('should add "- Screen" to the participants identity when they are screen sharing', () => {
-    mockUsePublications.mockImplementationOnce(() => [{ trackName: 'screen' }, { trackName: 'camera-123456' }]);
+    mockUsePublications.mockImplementationOnce(() => [
+      { trackName: 'screen', kind: 'video' },
+      { trackName: '', kind: 'video' },
+    ]);
     const wrapper = shallow(
       <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
     );
