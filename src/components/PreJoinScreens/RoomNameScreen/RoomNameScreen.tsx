@@ -52,7 +52,7 @@ export default function RoomNameScreen({ name, roomName, setName, setRoomName, h
   return (
     <>
       <Typography variant="h5" className={classes.gutterBottom}>
-        Join a Room
+        Join a Room of Your Choice
       </Typography>
       <Typography variant="body1">
         {hasUsername
