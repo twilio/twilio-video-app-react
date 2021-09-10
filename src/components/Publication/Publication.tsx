@@ -31,7 +31,7 @@ export default function Publication({ publication, isLocalParticipant, videoOnly
         <VideoTrack
           track={track as IVideoTrack}
           priority={videoPriority}
-          isLocal={track.name.includes('camera') && isLocalParticipant}
+          isLocal={!track.name.includes('screen') && isLocalParticipant}
         />
       );
     case 'audio':

@@ -57,7 +57,9 @@ export default function LocalVideoPreview({ identity }: { identity: string }) {
   const classes = useStyles();
   const { localTracks } = useVideoContext();
 
-  const videoTrack = localTracks.find(track => track.name.includes('camera')) as LocalVideoTrack;
+  const videoTrack = localTracks.find(
+    track => !track.name.includes('screen') && track.kind === 'video'
+  ) as LocalVideoTrack;
 
   return (
     <div className={classes.container}>
