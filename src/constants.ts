@@ -1,7 +1,7 @@
 export const DEFAULT_VIDEO_CONSTRAINTS: MediaStreamConstraints['video'] = {
-  width: 1280,
-  height: 720,
-  frameRate: 24,
+  width: 640,
+  height: 480,
+  frameRate: 15,
 };
 
 // These are used to store the selected media devices in localStorage

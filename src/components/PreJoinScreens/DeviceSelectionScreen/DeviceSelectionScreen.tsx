@@ -68,7 +68,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
   const [error, setError] = useState<Error | null>(null);
 
   const handleJoin = () => {
-    if (roomName.length !== 36) {
+    if (roomName.length > 100) {
       setError(new Error('O código do atendimento é inválido'));
       return;
     }

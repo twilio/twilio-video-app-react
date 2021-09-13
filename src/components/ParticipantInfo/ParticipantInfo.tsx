@@ -180,7 +180,7 @@ export default function ParticipantInfo({
           <span className={classes.identity}>
             <AudioLevelIndicator audioTrack={audioTrack} />
             <Typography variant="body1" className={classes.typeography} component="span">
-              {participant.identity}
+              {participant.identity.split('_')[0]}
               {isLocalParticipant && ' (You)'}
             </Typography>
           </span>

@@ -65,7 +65,7 @@ export default function PreJoinScreens() {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (roomName.length !== 36) {
+    if (roomName.length > 100) {
       setValidationError(new Error('O código do atendimento é inválido'));
       return;
     }
