@@ -171,6 +171,22 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
             </FormControl>
 
             <FormControl className={classes.formControl}>
+              <InputLabel id={inputLabels.contentPreferencesMode}>Adaptive Simulcast:</InputLabel>
+              <Select
+                fullWidth
+                disabled={isDisabled}
+                name={inputLabels.adaptiveSimulcast}
+                label={inputLabels.adaptiveSimulcast}
+                value={withDefault(settings.adaptiveSimulcast)}
+                onChange={handleChange}
+              >
+                <MenuItem value="true">True</MenuItem>
+                <MenuItem value="false">False</MenuItem>
+                <MenuItem value="default">Default</MenuItem>
+              </Select>
+            </FormControl>
+
+            <FormControl className={classes.formControl}>
               <TextField
                 disabled={isDisabled}
                 fullWidth

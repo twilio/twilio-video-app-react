@@ -33,6 +33,10 @@ export default function useConnectionOptions() {
     // you are using Peer-to-Peer or 'Go' Rooms.
     preferredVideoCodecs: [{ codec: 'VP8', simulcast: roomType !== 'peer-to-peer' && roomType !== 'go' }],
 
+    // when connected to group room, this new property (subject to change) determines if
+    // client would turn off the simulcast layers selectively.
+    adaptiveSimulcast: settings.adaptiveSimulcast === 'true',
+
     //@ts-ignore - Internal use only. This property is not exposed in type definitions.
     environment: process.env.REACT_APP_TWILIO_ENVIRONMENT,
   };
