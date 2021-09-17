@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
         width: `${(theme.sidebarMobileHeight * 16) / 9}px`,
         marginRight: '8px',
         marginBottom: '0',
-        fontSize: '10px',
+        fontSize: '12px',
         paddingTop: `${theme.sidebarMobileHeight - 2}px`,
       },
     },
