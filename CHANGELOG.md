@@ -1,3 +1,14 @@
+## 0.5.1 (September 17, 2021)
+
+### Dependency Upgrades
+
+- `twilio-video` has been upgraded from 2.15.3 to 2.17.0. Twilio-video.js now supports Chrome on iOS versions 14.3 and above. With this upgrade, the `isSupported` boolean will be `true` in iOS Chrome, and users will be able to use the video app instead of seeing the `<UnsupportedBrowserWarning />` component. [#590](https://github.com/twilio/twilio-video-app-react/pull/590)
+
+### Bugfixes
+
+- Fixes issue with the MainParticipant erroneously displaying the network quality for the LocalParticipant. [#585](https://github.com/twilio/twilio-video-app-react/pull/585)
+- Improves interoperability with Twilio's iOS and Android quickstart apps. This app now will display any video track as the participant's main video, unless the video track has the name `screen` (to indicate a screenshare track). Previously, this app would only display video tracks with the name `camera`, which meant that participants that used Twilio's iOS and Android quickstart apps could not be seen by users of this video app. [#585](https://github.com/twilio/twilio-video-app-react/pull/585)
+
 ## 0.5.0 (August 9, 2021)
 
 ### New Feature
