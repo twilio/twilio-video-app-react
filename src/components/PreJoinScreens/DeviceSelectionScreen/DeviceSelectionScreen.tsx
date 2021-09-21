@@ -67,7 +67,6 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
     rtcApiKey: process.env.REACT_APP_RTC_API_KEY as string,
     rtcRoomId: roomName,
     rtcPeerId: name,
-    // debug: true,
   };
 
   React.useEffect(() => {
@@ -75,11 +74,12 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
   }, []);
 
   const handleJoin = () => {
-    watchRTC.setConfig({ ...wrtcConfig });
+    watchRTC.setConfig({ ...wrtcConfig, keys: { room: roomName, peer: name, searchRoom: roomName, searchPeer: name } });
     getToken(name, roomName).then(token => connect(token));
 
     setTimeout(() => {
-      watchRTC.addTags(['tag2', 'tag1']);
+      // watchRTC.addTags(['tag2', 'tag1']);
+      // watchRTC.addKeys({ key1: 'value1', peer: name + '_custom string' });
     }, 25000);
   };
 
