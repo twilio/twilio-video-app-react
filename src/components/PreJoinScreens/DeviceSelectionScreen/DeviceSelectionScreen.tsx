@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles, Typography, Grid, Button, Theme, Hidden } from '@material-ui/core';
+import * as queryString from 'query-string';
 import LocalVideoPreview from './LocalVideoPreview/LocalVideoPreview';
 import SettingsMenu from './SettingsMenu/SettingsMenu';
 import { Steps } from '../PreJoinScreens';
@@ -74,13 +75,41 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
   }, []);
 
   const handleJoin = () => {
-    watchRTC.setConfig({ ...wrtcConfig, keys: { room: roomName, peer: name, searchRoom: roomName, searchPeer: name } });
-    getToken(name, roomName).then(token => connect(token));
+    watchRTC.setConfig({
+      ...wrtcConfig,
+      keys: {
+        room: roomName,
+        ...(getCustomKeys() || {}),
+      },
+    });
 
-    setTimeout(() => {
-      // watchRTC.addTags(['tag2', 'tag1']);
-      // watchRTC.addKeys({ key1: 'value1', peer: name + '_custom string' });
-    }, 25000);
+    getToken(name, roomName).then(token => connect(token));
+  };
+
+  const getCustomKeys = () => {
+    try {
+      let keys = queryString.parse(window.location.search)?.key;
+      if (!keys) {
+        return {};
+      }
+      // if search query has only one 'key' it returns string and not array
+      if (typeof keys === 'string') {
+        keys = [keys];
+      }
+
+      // filter empty keys
+      keys = keys?.filter(x => !!x && x?.indexOf(':') !== -1);
+
+      return keys.map(x => {
+        const splitted = x.split(':');
+        return {
+          [splitted[0]]: splitted[1],
+        };
+      });
+    } catch (err) {
+      console.error(err.message);
+      return {};
+    }
   };
 
   return (
