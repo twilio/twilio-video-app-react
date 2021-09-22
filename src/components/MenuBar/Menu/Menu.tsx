@@ -7,8 +7,18 @@ import InfoIconOutlined from '../../../icons/InfoIconOutlined';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import StartRecordingIcon from '../../../icons/StartRecordingIcon';
 import StopRecordingIcon from '../../../icons/StopRecordingIcon';
+import SearchIcon from '@material-ui/icons/Search';
 import SettingsIcon from '../../../icons/SettingsIcon';
-import { Button, styled, Theme, useMediaQuery, Menu as MenuContainer, MenuItem, Typography } from '@material-ui/core';
+import {
+  Button,
+  styled,
+  Theme,
+  useMediaQuery,
+  Menu as MenuContainer,
+  MenuItem,
+  Typography,
+  Hidden,
+} from '@material-ui/core';
 import { isSupported } from '@twilio/video-processors';
 
 import { useAppState } from '../../../state';
@@ -17,6 +27,7 @@ import useIsRecording from '../../../hooks/useIsRecording/useIsRecording';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 import FlipCameraIcon from '../../../icons/FlipCameraIcon';
 import useFlipCameraToggle from '../../../hooks/useFlipCameraToggle/useFlipCameraToggle';
+import { VideoRoomMonitor } from '@twilio/video-room-monitor';
 
 export const IconContainer = styled('div')({
   display: 'flex',
@@ -124,6 +135,20 @@ export default function Menu(props: { buttonClassName?: string }) {
           </IconContainer>
           <Typography variant="body1">About</Typography>
         </MenuItem>
+
+        <Hidden smDown>
+          <MenuItem
+            onClick={() => {
+              VideoRoomMonitor.toggleMonitor();
+              setMenuOpen(false);
+            }}
+          >
+            <IconContainer>
+              <SearchIcon style={{ fill: '#707578', width: '0.9em' }} />
+            </IconContainer>
+            <Typography variant="body1">Room Monitor</Typography>
+          </MenuItem>
+        </Hidden>
       </MenuContainer>
       <AboutDialog
         open={aboutOpen}
