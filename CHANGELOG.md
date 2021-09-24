@@ -1,3 +1,13 @@
+## 0.6.0 (September 24, 2021)
+
+### New Feature
+
+- This release adds the [Twilio Video Room Monitor](https://github.com/twilio/twilio-video-room-monitor.js) to the app. The Room Monitor is a browser-based tool that displays real-time information and metrics from the Video SDK's [Room object](https://media.twiliocdn.com/sdk/js/video/releases/2.17.0/docs/Room.html) and relevant browser APIs. The Room Monitor can be activated by clicking on the "Room Monitor" button in the menu while in a room. [#594](https://github.com/twilio/twilio-video-app-react/pull/594)
+
+### Dependency Upgrades
+
+- `twilio-video` has been upgraded from 2.17.0 to 2.17.1. This fixes a regression in 2.17.0 which caused Chrome screen share tracks to be encoded at lower dimensions. [#593](https://github.com/twilio/twilio-video-app-react/pull/593)
+
 ## 0.5.1 (September 17, 2021)
 
 ### Dependency Upgrades
