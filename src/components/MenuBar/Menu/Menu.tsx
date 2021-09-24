@@ -7,8 +7,18 @@ import InfoIconOutlined from '../../../icons/InfoIconOutlined';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import StartRecordingIcon from '../../../icons/StartRecordingIcon';
 import StopRecordingIcon from '../../../icons/StopRecordingIcon';
+import SearchIcon from '@material-ui/icons/Search';
 import SettingsIcon from '../../../icons/SettingsIcon';
-import { Button, styled, Theme, useMediaQuery, Menu as MenuContainer, MenuItem, Typography } from '@material-ui/core';
+import {
+  Button,
+  styled,
+  Theme,
+  useMediaQuery,
+  Menu as MenuContainer,
+  MenuItem,
+  Typography,
+  Hidden,
+} from '@material-ui/core';
 import { isSupported } from '@twilio/video-processors';
 
 import { useAppState } from '../../../state';
@@ -17,6 +27,7 @@ import useIsRecording from '../../../hooks/useIsRecording/useIsRecording';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 import FlipCameraIcon from '../../../icons/FlipCameraIcon';
 import useFlipCameraToggle from '../../../hooks/useFlipCameraToggle/useFlipCameraToggle';
+import { VideoRoomMonitor } from '@twilio/video-room-monitor';
 
 export const IconContainer = styled('div')({
   display: 'flex',
@@ -70,32 +81,6 @@ export default function Menu(props: { buttonClassName?: string }) {
           horizontal: 'center',
         }}
       >
-        {roomType !== 'peer-to-peer' && roomType !== 'go' && (
-          <MenuItem
-            disabled={isFetching}
-            onClick={() => {
-              setMenuOpen(false);
-              if (isRecording) {
-                updateRecordingRules(room!.sid, [{ type: 'exclude', all: true }]);
-              } else {
-                updateRecordingRules(room!.sid, [{ type: 'include', all: true }]);
-              }
-            }}
-            data-cy-recording-button
-          >
-            <IconContainer>{isRecording ? <StopRecordingIcon /> : <StartRecordingIcon />}</IconContainer>
-            <Typography variant="body1">{isRecording ? 'Stop' : 'Start'} Recording</Typography>
-          </MenuItem>
-        )}
-        {flipCameraSupported && (
-          <MenuItem disabled={flipCameraDisabled} onClick={toggleFacingMode}>
-            <IconContainer>
-              <FlipCameraIcon />
-            </IconContainer>
-            <Typography variant="body1">Flip Camera</Typography>
-          </MenuItem>
-        )}
-
         <MenuItem onClick={() => setSettingsOpen(true)}>
           <IconContainer>
             <SettingsIcon />
@@ -117,6 +102,47 @@ export default function Menu(props: { buttonClassName?: string }) {
             <Typography variant="body1">Backgrounds</Typography>
           </MenuItem>
         )}
+
+        {flipCameraSupported && (
+          <MenuItem disabled={flipCameraDisabled} onClick={toggleFacingMode}>
+            <IconContainer>
+              <FlipCameraIcon />
+            </IconContainer>
+            <Typography variant="body1">Flip Camera</Typography>
+          </MenuItem>
+        )}
+
+        {roomType !== 'peer-to-peer' && roomType !== 'go' && (
+          <MenuItem
+            disabled={isFetching}
+            onClick={() => {
+              setMenuOpen(false);
+              if (isRecording) {
+                updateRecordingRules(room!.sid, [{ type: 'exclude', all: true }]);
+              } else {
+                updateRecordingRules(room!.sid, [{ type: 'include', all: true }]);
+              }
+            }}
+            data-cy-recording-button
+          >
+            <IconContainer>{isRecording ? <StopRecordingIcon /> : <StartRecordingIcon />}</IconContainer>
+            <Typography variant="body1">{isRecording ? 'Stop' : 'Start'} Recording</Typography>
+          </MenuItem>
+        )}
+
+        <Hidden smDown>
+          <MenuItem
+            onClick={() => {
+              VideoRoomMonitor.toggleMonitor();
+              setMenuOpen(false);
+            }}
+          >
+            <IconContainer>
+              <SearchIcon style={{ fill: '#707578', width: '0.9em' }} />
+            </IconContainer>
+            <Typography variant="body1">Room Monitor</Typography>
+          </MenuItem>
+        </Hidden>
 
         <MenuItem onClick={() => setAboutOpen(true)}>
           <IconContainer>
