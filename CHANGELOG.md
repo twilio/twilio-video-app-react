@@ -8,12 +8,6 @@
 
 ### Dependency Upgrades
 
-- `twilio-video` has been upgraded from 2.17.0 to 2.17.1. This fixes a regression in 2.17.0 which caused Chrome screen share tracks to be encoded at lower dimensions. [#593](https://github.com/twilio/twilio-video-app-react/pull/593)
-
-## 0.5.1 (September 17, 2021)
-
-### Dependency Upgrades
-
 - `twilio-video` has been upgraded from 2.15.3 to 2.17.0. Twilio-video.js now supports Chrome on iOS versions 14.3 and above. With this upgrade, the `isSupported` boolean will be `true` in iOS Chrome, and users will be able to use the video app instead of seeing the `<UnsupportedBrowserWarning />` component. [#590](https://github.com/twilio/twilio-video-app-react/pull/590)
 
 ### Bugfixes
