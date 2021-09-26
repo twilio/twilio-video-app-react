@@ -20,7 +20,7 @@ export default function ToggleAudioButton(props: { disabled?: boolean; className
       startIcon={isAudioEnabled ? <MicIcon /> : <MicOffIcon />}
       data-cy-audio-toggle
     >
-      {!hasAudioTrack ? 'No Audio' : isAudioEnabled ? 'Mute' : 'Unmute'}
+      {!hasAudioTrack ? 'Kein Audio verfügbar' : isAudioEnabled ? 'Stummschalten' : 'Hörbar'}
     </Button>
   );
 }

@@ -102,10 +102,10 @@ export default function LoginPage() {
       {process.env.REACT_APP_SET_AUTH === 'passcode' && (
         <>
           <Typography variant="h5" className={classes.gutterBottom}>
-            Enter passcode to join a room
+            Passcode eingeben
           </Typography>
           <form onSubmit={handleSubmit}>
-            <Grid container justifyContent="space-between">
+            <Grid container justify="space-between">
               <div className={classes.passcodeContainer}>
                 <InputLabel shrink htmlFor="input-passcode">
                   Passcode
@@ -127,7 +127,7 @@ export default function LoginPage() {
                 </div>
               </div>
             </Grid>
-            <Grid container justifyContent="flex-end">
+            <Grid container justify="flex-end">
               <Button
                 variant="contained"
                 color="primary"
@@ -135,7 +135,7 @@ export default function LoginPage() {
                 disabled={!passcode.length}
                 className={classes.submitButton}
               >
-                Submit
+                Weiter
               </Button>
             </Grid>
           </form>

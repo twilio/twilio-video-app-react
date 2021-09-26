@@ -51,7 +51,7 @@ export default function ParticipantList() {
   const mainParticipant = useMainParticipant();
   const isRemoteParticipantScreenSharing = screenShareParticipant && screenShareParticipant !== localParticipant;
 
-  if (participants.length === 0) return null; // Don't render this component if there are no remote participants.
+  // if (participants.length === 0) return null; // Don't render this component if there are no remote participants.
 
   return (
     <aside
@@ -63,16 +63,16 @@ export default function ParticipantList() {
         <div className={classes.innerScrollContainer}>
           <Participant participant={localParticipant} isLocalParticipant={true} />
           {participants.map(participant => {
-            const isSelected = participant === selectedParticipant;
-            const hideParticipant =
-              participant === mainParticipant && participant !== screenShareParticipant && !isSelected;
+            // const isSelected = participant === selectedParticipant;
+            // const hideParticipant =
+            //   participant === mainParticipant && participant !== screenShareParticipant && !isSelected;
             return (
               <Participant
                 key={participant.sid}
                 participant={participant}
                 isSelected={participant === selectedParticipant}
                 onClick={() => setSelectedParticipant(participant)}
-                hideParticipant={hideParticipant}
+                // hideParticipant={hideParticipant}
               />
             );
           })}

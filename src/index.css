@@ -1,0 +1,181 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --white: #fff;
+  --orange: #f5f7fb;
+  background-color: #f5f7fb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  cursor: pointer;
+}
+
+img {
+  max-width: 100%;
+}
+
+.outer-container {
+  max-width: 100vw;
+  margin: auto;
+  display: flex;
+  border-radius: 5px;
+  /* box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.3); */
+  overflow: hidden;
+}
+
+.outer-container > .carousel-wrapper {
+  flex: 5;
+  padding: 0;
+}
+
+.outer-container > .btn-wrapper {
+  flex: 1;
+}
+
+.outer-container .carousel-wrapper {
+  background: var(--orange);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+}
+
+.outer-container .carousel-wrapper p,
+.carousel-item {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+.leading-text {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin-right: 6px;
+}
+
+.carousel {
+  height: 100%;
+  display: flex;
+  flex: 5;
+  align-items: flex-start;
+  color: var(--white);
+}
+
+.carousel-button {
+  display: flex;
+  align-self: center;
+  padding: 10px;
+  max-width: 50px;
+  border-radius: 30px;
+  background-color: #801e80;
+  border: 2px solid var(--white);
+}
+
+.carousel-button svg {
+  height: 26px;
+  width: 26px;
+}
+.carousel-button path {
+  fill: var(--white);
+}
+
+.slides {
+  align-self: flex-end;
+  flex: 1;
+  max-width: 70%;
+  padding: 0;
+  overflow: hidden;
+}
+
+.carousel-inner {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  max-height: 100%;
+  height: 100%;
+}
+
+.carousel-inner::before,
+.carousel-inner::after {
+  content: '';
+  z-index: 1;
+  position: absolute;
+  width: 100%;
+  height: 160px;
+  pointer-events: none;
+}
+
+.carousel-inner::before {
+  top: 0;
+}
+
+.carousel-inner::after {
+  bottom: 0;
+}
+
+.carousel-item {
+  position: absolute;
+  background: none;
+  background-color: #fff;
+  color: #dee1e7;
+  width: 300px;
+  height: 160px;
+  border: none;
+  margin: auto;
+  padding: 0;
+  opacity: 0;
+  top: 42.5%;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  box-shadow: 0px 0px 45px rgba(42, 56, 90, 0.1);
+  border-radius: 3px;
+}
+
+.carousel-item p {
+  color: #dee1e7;
+}
+
+.carousel-item.visible {
+  opacity: 1;
+}
+
+.carousel-item.active {
+  z-index: 100;
+}
+
+.carousel-item.active p {
+  color: #e10136 !important;
+}
+
+.turn-card-btn {
+  background-color: #e10136 !important;
+  color: #fff;
+}
+
+.content .card {
+  width: 450px;
+  min-height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+
+  background: linear-gradient(180deg, #e60138 0%, #bf002d 100%);
+  border-radius: 3px;
+}
+
+.content .card p {
+  color: #fff;
+}

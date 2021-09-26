@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    background: 'rgb(40, 42, 43)',
+    background: 'rgb(255, 255, 255)',
     height: '100%',
   },
   container: {
@@ -41,8 +41,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundImage: Swoosh,
-    backgroundSize: 'cover',
+    // backgroundImage: Swoosh,
+    // backgroundSize: 'cover',
+    background: '#801e80',
     width: '296px',
     [theme.breakpoints.down('sm')]: {
       width: '100%',
@@ -100,15 +101,19 @@ const IntroContainer = (props: IntroContainerProps) => {
 
   return (
     <div className={classes.background}>
-      <TwilioLogo className={classes.twilioLogo} />
       {user && location.pathname !== '/login' && <UserMenu />}
       <div className={classes.container}>
         <div className={classes.innerContainer}>
           <div className={classes.swooshContainer}>
             <div className={classes.logoContainer}>
-              <VideoLogo />
+              {/* <VideoLogo /> */}
+              <img
+                src="https://images.squarespace-cdn.com/content/5f22903d49055f4257ab4f36/1600414044617-D9WYCVH8LODE8VC6MPMD/Logo_Demokratie_Plattform.png?format=1500w&content-type=image%2Fpng"
+                alt="Video"
+                width="200"
+              />
               <Typography variant="h6" className={classes.title}>
-                Twilio Programmable Video
+                DemokraTisch
               </Typography>
             </div>
           </div>
