@@ -63,7 +63,7 @@ export default function Menu(props: { buttonClassName?: string }) {
           <MoreIcon />
         ) : (
           <>
-            More
+            Mehr
             <ExpandMoreIcon />
           </>
         )}

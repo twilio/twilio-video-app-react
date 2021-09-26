@@ -41,7 +41,7 @@ class Filter extends Transform {
 // Colors normally don't work when using spawn(), so here we re-enable colors.
 process.env.FORCE_COLOR = require('supports-color').stdout.level;
 
-const buildProcess = spawn('node', [require.resolve('react-scripts/scripts/build')]);
+const buildProcess = spawn('node', [require.resolve('@craco/craco/scripts/build')]);
 
 buildProcess.stderr.pipe(process.stderr);
 buildProcess.stdout.pipe(new Filter()).pipe(process.stdout);

@@ -14,6 +14,7 @@ import theme from './theme';
 import './types';
 import { ChatProvider } from './components/ChatProvider';
 import { VideoProvider } from './components/VideoProvider';
+import { GameProvider } from './components/GameProvider';
 import useConnectionOptions from './utils/useConnectionOptions/useConnectionOptions';
 import UnsupportedBrowserWarning from './components/UnsupportedBrowserWarning/UnsupportedBrowserWarning';
 
@@ -23,10 +24,12 @@ const VideoApp = () => {
 
   return (
     <VideoProvider options={connectionOptions} onError={setError}>
-      <ErrorDialog dismissError={() => setError(null)} error={error} />
-      <ChatProvider>
-        <App />
-      </ChatProvider>
+      <GameProvider>
+        <ErrorDialog dismissError={() => setError(null)} error={error} />
+        <ChatProvider>
+          <App />
+        </ChatProvider>
+      </GameProvider>
     </VideoProvider>
   );
 };

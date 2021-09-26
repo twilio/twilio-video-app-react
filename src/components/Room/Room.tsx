@@ -7,6 +7,8 @@ import MainParticipant from '../MainParticipant/MainParticipant';
 import BackgroundSelectionDialog from '../BackgroundSelectionDialog/BackgroundSelectionDialog';
 import useChatContext from '../../hooks/useChatContext/useChatContext';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import useGameContext from '../../hooks/useGameContext/useGameContext';
+import Game from '../Game';
 
 const useStyles = makeStyles((theme: Theme) => {
   const totalMobileSidebarHeight = `${theme.sidebarMobileHeight +
@@ -32,13 +34,15 @@ export default function Room() {
   const classes = useStyles();
   const { isChatWindowOpen } = useChatContext();
   const { isBackgroundSelectionOpen } = useVideoContext();
+  const { isGameVisible } = useGameContext();
+
   return (
     <div
       className={clsx(classes.container, {
         [classes.rightDrawerOpen]: isChatWindowOpen || isBackgroundSelectionOpen,
       })}
     >
-      <MainParticipant />
+      {isGameVisible ? <Game /> : <MainParticipant />}
       <ParticipantList />
       <ChatWindow />
       <BackgroundSelectionDialog />
