@@ -65,20 +65,22 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
   const { connect, isAcquiringLocalTracks, isConnecting } = useVideoContext();
   const disableButtons = isFetching || isAcquiringLocalTracks || isConnecting;
   const wrtcConfig = {
-    rtcApiKey: process.env.REACT_APP_RTC_API_KEY as string,
+    rtcApiKey:
+      (queryString.parse(window.location.search)?.apiKey as string) || (process.env.REACT_APP_RTC_API_KEY as string),
     rtcRoomId: roomName,
     rtcPeerId: name,
   };
 
   React.useEffect(() => {
-    watchRTC.init({ rtcApiKey: process.env.REACT_APP_RTC_API_KEY as string });
+    watchRTC.init(wrtcConfig);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleJoin = () => {
     watchRTC.setConfig({
       ...wrtcConfig,
       keys: {
-        room: roomName,
         ...(getCustomKeys() || {}),
       },
     });

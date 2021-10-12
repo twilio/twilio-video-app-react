@@ -6,7 +6,7 @@
   "dependencies": {
     "@material-ui/core": "^4.9.1",
     "@material-ui/icons": "^4.9.1",
-    "@testrtc/watchrtc-sdk": "1.30.0",
+    "@testrtc/watchrtc-sdk": "1.30.4",
     "@types/d3-timer": "^1.0.9",
     "@types/fscreen": "^1.0.1",
     "@types/jest": "^24.9.1",
