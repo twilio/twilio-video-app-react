@@ -10,8 +10,11 @@ declare module 'twilio-video' {
 
 declare global {
   interface Window {
-    visualViewport?: {
+    visualViewport: {
+      height: number;
+      onresize: ((this: VisualViewport, ev: UIEvent) => any) | null;
       scale: number;
+      width: number;
     };
   }
 

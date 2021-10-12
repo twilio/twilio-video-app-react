@@ -1,18 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { isMobile } from '../../utils';
 
 export default function useHeight() {
-  const [height, setHeight] = useState(window.innerHeight * (window.visualViewport?.scale || 1));
+  const getHeight = () => window.innerHeight * (window.visualViewport?.scale || 1);
+  const getIsPortrait = () => window.visualViewport.height > window.visualViewport.width;
 
-  useEffect(() => {
-    const onResize = () => {
-      setHeight(window.innerHeight * (window.visualViewport?.scale || 1));
-    };
+  const [height, setHeight] = useState(getHeight());
+  const [isPortrait, setIsPortrait] = useState(getIsPortrait());
 
-    window.addEventListener('resize', onResize);
-    return () => {
-      window.removeEventListener('resize', onResize);
-    };
-  });
+  const onResize = () => {
+    // on desktop the window can be resized, so we should always setHeight when it is resized
+    // on mobile, visualViewport.onresize is triggered by either rotating the device or pinch-zooming
+    // we ONLY want to setHeight when it is rotated, otherwise pinch-zoom would be broken for the user
+    const isNowPortrait = getIsPortrait();
+    const deviceWasRotated = isPortrait !== isNowPortrait;
+
+    if (deviceWasRotated) {
+      setHeight(getHeight());
+      window.scrollTo(0, 0);
+      setIsPortrait(isNowPortrait);
+    } else if (!isMobile) {
+      setHeight(getHeight());
+    }
+  };
+
+  window.visualViewport.onresize = onResize;
 
   return height + 'px';
 }
