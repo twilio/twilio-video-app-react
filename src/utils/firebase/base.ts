@@ -61,7 +61,7 @@ export const getUid = () =>
 //   });
 
 const groupTokenValid = (groupToken: string) => {
-  return typeof groupToken !== 'string' || groupToken.length === 0;
+  return typeof groupToken === 'string' && groupToken.length === 0;
 };
 
 export const fetchSession = (groupToken: string) =>

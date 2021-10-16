@@ -59,7 +59,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
   };
 
   useEffect(() => {
-    if (URLShareToken) {
+    if (typeof URLShareToken === 'string' && URLShareToken.length !== 0) {
       fetchSession(URLShareToken)
         .then(dataAndGroup => {
           onSessionData(dataAndGroup.data, dataAndGroup.group);
@@ -69,6 +69,9 @@ export function SessionProvider({ children }: SessionProviderProps) {
           setSessionStatus(ISessionStatus.NOT_FOUND);
           setLoading(false);
         });
+    } else {
+      setSessionStatus(ISessionStatus.NOT_FOUND);
+      setLoading(false);
     }
   }, [URLShareToken]);
 
