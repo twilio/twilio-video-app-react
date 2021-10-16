@@ -42,13 +42,15 @@ export function SessionProvider({ children }: SessionProviderProps) {
       return;
     }
 
+    console.log(data, Date.now());
+
     setLoading(false);
     if (data.isPaused) {
       setSessionStatus(ISessionStatus.SESSION_PAUSED);
-      // } else if (data.startDate.toDate() > Date.now()) {
-      //   setSessionStatus(ISessionStatus.SESSION_NOT_STARTED);
-      // } else if (data.endAt.toDate() < Date.now()) {
-      //   setSessionStatus(ISessionStatus.SESSION_ENDED);
+    } else if (data.startDate.seconds > Date.now() / 1000) {
+      setSessionStatus(ISessionStatus.SESSION_NOT_STARTED);
+    } else if (data.endDate.seconds < Date.now() / 1000) {
+      setSessionStatus(ISessionStatus.SESSION_ENDED);
     } else {
       setSessionStatus(ISessionStatus.SESSION_RUNNING);
     }
