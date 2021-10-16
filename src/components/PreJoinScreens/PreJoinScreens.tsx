@@ -6,6 +6,8 @@ import RoomNameScreen from './RoomNameScreen/RoomNameScreen';
 import { useAppState } from '../../state';
 import { useParams } from 'react-router-dom';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import { subscribeToSession } from '../../utils/firebase';
+import useSessionContext from 'hooks/useSessionContext';
 
 export enum Steps {
   roomNameStep,
@@ -15,22 +17,24 @@ export enum Steps {
 export default function PreJoinScreens() {
   const { user } = useAppState();
   const { getAudioAndVideoTracks } = useVideoContext();
-  const { URLRoomName } = useParams();
+  const { URLShareToken } = useParams() as { URLShareToken: string };
   const [step, setStep] = useState(Steps.roomNameStep);
-
   const [name, setName] = useState<string>(user?.displayName || '');
   const [roomName, setRoomName] = useState<string>('');
-
   const [mediaError, setMediaError] = useState<Error>();
+  const { sessionData } = useSessionContext();
 
   useEffect(() => {
-    if (URLRoomName) {
-      setRoomName(URLRoomName);
-      if (user?.displayName) {
-        setStep(Steps.deviceSelectionStep);
-      }
+    if (sessionData) {
+      setRoomName(sessionData.roomId);
     }
-  }, [user, URLRoomName]);
+  }, [sessionData]);
+
+  useEffect(() => {
+    if (user?.displayName) {
+      setStep(Steps.deviceSelectionStep);
+    }
+  }, [user]);
 
   useEffect(() => {
     if (step === Steps.deviceSelectionStep && !mediaError) {
@@ -46,7 +50,7 @@ export default function PreJoinScreens() {
     event.preventDefault();
     // If this app is deployed as a twilio function, don't change the URL because routing isn't supported.
     if (!window.location.origin.includes('twil.io')) {
-      window.history.replaceState(null, '', window.encodeURI(`/room/${roomName}${window.location.search || ''}`));
+      // window.history.replaceState(null, '', window.encodeURI(`/room/${roomName}${window.location.search || ''}`));
     }
     setStep(Steps.deviceSelectionStep);
   };

@@ -35,16 +35,12 @@ interface RoomNameScreenProps {
   handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
 }
 
-export default function RoomNameScreen({ name, roomName, setName, setRoomName, handleSubmit }: RoomNameScreenProps) {
+export default function RoomNameScreen({ name, roomName, setName, handleSubmit }: RoomNameScreenProps) {
   const classes = useStyles();
   const { user } = useAppState();
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
-  };
-
-  const handleRoomNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setRoomName(event.target.value);
   };
 
   const hasUsername = !window.location.search.includes('customIdentity=true') && user?.displayName;
@@ -76,20 +72,6 @@ export default function RoomNameScreen({ name, roomName, setName, setRoomName, h
               />
             </div>
           )}
-          <div className={classes.textFieldContainer}>
-            <InputLabel shrink htmlFor="input-room-name">
-              Raum
-            </InputLabel>
-            <TextField
-              autoCapitalize="false"
-              id="input-room-name"
-              variant="outlined"
-              fullWidth
-              size="small"
-              value={roomName}
-              onChange={handleRoomNameChange}
-            />
-          </div>
         </div>
         <Grid container justifyContent="flex-end">
           <Button

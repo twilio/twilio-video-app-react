@@ -15,8 +15,10 @@ import './types';
 import { ChatProvider } from './components/ChatProvider';
 import { VideoProvider } from './components/VideoProvider';
 import { GameProvider } from './components/GameProvider';
-import useConnectionOptions from './utils/useConnectionOptions/useConnectionOptions';
+import useConnectionOptions from './hooks/useConnectionOptions/useConnectionOptions';
 import UnsupportedBrowserWarning from './components/UnsupportedBrowserWarning/UnsupportedBrowserWarning';
+import { SessionProvider } from './components/SessionProvider';
+import { SessionWrapper } from './components/SessionWrapper';
 
 const VideoApp = () => {
   const { error, setError } = useAppState();
@@ -41,15 +43,22 @@ ReactDOM.render(
       <Router>
         <AppStateProvider>
           <Switch>
-            <PrivateRoute exact path="/">
+            {/* <PrivateRoute exact path="/">
               <VideoApp />
-            </PrivateRoute>
-            <PrivateRoute path="/room/:URLRoomName">
+            </PrivateRoute> */}
+            {/* <PrivateRoute path="/room/:URLRoomName">
               <VideoApp />
+            </PrivateRoute> */}
+            <PrivateRoute path="/r/:URLShareToken">
+              <SessionProvider>
+                <SessionWrapper>
+                  <VideoApp />
+                </SessionWrapper>
+              </SessionProvider>
             </PrivateRoute>
-            <Route path="/login">
+            {/* <Route path="/login">
               <LoginPage />
-            </Route>
+            </Route> */}
             <Redirect to="/" />
           </Switch>
         </AppStateProvider>

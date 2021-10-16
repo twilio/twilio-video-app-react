@@ -1,5 +1,5 @@
 import { ConnectOptions } from 'twilio-video';
-import { isMobile, removeUndefineds } from '..';
+import { isMobile, removeUndefineds } from '../../utils';
 import { useAppState } from '../../state';
 
 export default function useConnectionOptions() {
