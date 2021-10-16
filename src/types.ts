@@ -45,3 +45,24 @@ export type RecordingRule = {
 };
 
 export type RecordingRules = RecordingRule[];
+
+export enum UserGroup {
+  Viewer = 'VIEWER',
+  Host = 'HOST',
+}
+
+export interface ISessionLabels {
+  title: string;
+}
+
+export interface ISession {
+  author: string;
+  shareTokens: {
+    [key: string]: UserGroup;
+  };
+  roomId: string;
+  labels: ISessionLabels;
+  isPaused?: boolean;
+  startDate: string;
+  endDate: string;
+}
