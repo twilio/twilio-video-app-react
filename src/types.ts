@@ -48,7 +48,7 @@ export type RecordingRules = RecordingRule[];
 
 export enum UserGroup {
   Viewer = 'VIEWER',
-  Host = 'HOST',
+  Moderator = 'MODERATOR',
 }
 
 export interface ISessionLabels {

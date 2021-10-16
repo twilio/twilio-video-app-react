@@ -40,26 +40,6 @@ export const getUid = () =>
     });
   });
 
-// export const getAuthIdToken = () =>
-//   new Promise<string>((resolve, reject) => {
-//     firebaseApp()
-//       .then(() => {
-//         const auth = getAuth();
-
-//         function userOrSignin() {
-//           if (auth.currentUser) return auth.currentUser;
-
-//           return signInAnonymously(auth).then((identity) => identity.user);
-//         }
-
-//         Promise.resolve(userOrSignin())
-//           .then(getIdToken)
-//           .then((idToken) => resolve(idToken))
-//           .catch((error) => reject(error));
-//       })
-//       .catch(reject);
-//   });
-
 const groupTokenValid = (groupToken: string) => {
   return typeof groupToken === 'string' && groupToken.length === 0;
 };

@@ -7,6 +7,7 @@ import { useAppState } from '../../state';
 import { useParams } from 'react-router-dom';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { subscribeToSession } from '../../utils/firebase';
+import useSessionContext from 'hooks/useSessionContext';
 
 export enum Steps {
   roomNameStep,
@@ -21,13 +22,13 @@ export default function PreJoinScreens() {
   const [name, setName] = useState<string>(user?.displayName || '');
   const [roomName, setRoomName] = useState<string>('');
   const [mediaError, setMediaError] = useState<Error>();
+  const { sessionData } = useSessionContext();
 
   useEffect(() => {
-    subscribeToSession(URLShareToken, (data, userGroup) => {
-      console.log(data, userGroup);
-      setRoomName(data.roomId);
-    });
-  }, []);
+    if (sessionData) {
+      setRoomName(sessionData.roomId);
+    }
+  }, [sessionData]);
 
   useEffect(() => {
     if (user?.displayName) {
