@@ -48,7 +48,7 @@ export default function RoomNameScreen({ name, roomName, setName, handleSubmit }
   return (
     <>
       <Typography variant="h5" className={classes.gutterBottom}>
-        Angebot beitreten
+        DemokraTisch beitreten
       </Typography>
       {/* <Typography variant="body1">
         {hasUsername
@@ -73,17 +73,9 @@ export default function RoomNameScreen({ name, roomName, setName, handleSubmit }
             </div>
           )}
         </div>
-        <Grid container justifyContent="flex-end">
-          <Button
-            variant="contained"
-            type="submit"
-            color="primary"
-            disabled={!name || !roomName}
-            className={classes.continueButton}
-          >
-            Weiter
-          </Button>
-        </Grid>
+        <div className="flex text-red hover:underline justify-center">
+          <button type="submit">Weiter</button>
+        </div>
       </form>
     </>
   );

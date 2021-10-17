@@ -1,18 +1,32 @@
-import firebase, { firestore } from 'firebase';
-import { ISession, UserGroup } from '../../types';
+import firebase from 'firebase';
 
-let _app: firebase.app.App, _userId: string, _session: { doc: any; userGroup: UserGroup };
+const {
+  REACT_APP_FIREBASE_API_KEY,
+  REACT_APP_FIREBASE_AUTH_DOMAIN,
+  REACT_APP_FIREBASE_STORAGE_BUCKET,
+  REACT_APP_FIREASE_MESSAGING_SENDER_ID,
+  REACT_APP_FIREBASE_APP_ID,
+} = process.env;
 
-export const firebaseApp = () =>
-  new Promise<firebase.app.App>((resolve, reject) => {
-    if (_app) {
-      return resolve(_app);
-    }
+var firebaseConfig = {
+  apiKey: REACT_APP_FIREBASE_API_KEY,
+  authDomain: REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: 'demokratisch-3adf0',
+  storageBucket: REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: REACT_APP_FIREASE_MESSAGING_SENDER_ID,
+  appId: REACT_APP_FIREBASE_APP_ID,
+};
 
-    const firebaseConfig = JSON.parse(process.env.NEXT_PUBLIC_FIREBASE_CONFIG as string) as Object;
+let _app: firebase.app.App, _userId: string;
 
-    resolve(firebase.initializeApp(firebaseConfig));
-  });
+export const getFirebase = () => {
+  if (_app) {
+    return _app;
+  }
+
+  _app = firebase.initializeApp(firebaseConfig);
+  return _app;
+};
 
 export const db = () => firebase.firestore();
 
@@ -22,65 +36,16 @@ export const getUid = () =>
       return resolve(_userId);
     }
 
-    firebaseApp().then(() => {
-      firebase.auth().onAuthStateChanged(user => {
-        if (user) {
-          var uid = user.uid;
+    getFirebase();
 
-          resolve(uid);
-        } else {
-          console.error('Firebase user undefined.');
+    firebase
+      .auth()
+      .signInAnonymously()
+      .then(data => {
+        if (data.user) {
+          _userId = data.user?.uid;
+          resolve(_userId);
         }
-      });
-
-      const auth = firebase
-        .auth()
-        .signInAnonymously()
-        .catch(reject);
-    });
-  });
-
-const groupTokenValid = (groupToken: string) => {
-  return typeof groupToken === 'string' && groupToken.length === 0;
-};
-
-export const fetchSession = (groupToken: string) =>
-  new Promise<{ data: ISession; group: UserGroup }>((resolve, reject) => {
-    if (groupTokenValid(groupToken)) {
-      throw new Error('shareToken undefined.');
-    }
-
-    db()
-      .collection('sessions')
-      .where('shareTokens.' + groupToken, '!=', null)
-      .get()
-      .then(snapshot => {
-        const docs = snapshot.docs;
-        if (snapshot.empty || !docs[0]) {
-          return reject({ empty: true });
-        }
-
-        const data = docs[0].data() as ISession;
-        resolve({ data, group: data.shareTokens[groupToken].toUpperCase() as UserGroup });
       })
       .catch(reject);
   });
-
-export const subscribeToSession = (groupToken: string, callback: (data: ISession, userGroup: UserGroup) => void) => {
-  if (groupTokenValid(groupToken)) {
-    throw new Error('shareToken undefined.');
-  }
-
-  db()
-    .collection('sessions')
-    .where('shareTokens.' + groupToken, '!=', null)
-    .onSnapshot(snapshot => {
-      const docs = snapshot.docs;
-      if (snapshot.empty || !docs[0]) {
-        return;
-      }
-
-      const data = docs[0].data() as ISession;
-      callback(data, data.shareTokens[groupToken]);
-    });
-};

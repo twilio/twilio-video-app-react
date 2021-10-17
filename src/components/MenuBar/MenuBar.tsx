@@ -2,24 +2,23 @@ import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
-import EndCallButton from '../Buttons/EndCallButton/EndCallButton';
 import Menu from './Menu/Menu';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { Typography, Grid, Hidden } from '@material-ui/core';
 import ToggleAudioButton from '../Buttons/ToggleAudioButton/ToggleAudioButton';
 import ToggleVideoButton from '../Buttons/ToggleVideoButton/ToggleVideoButton';
-import useGameContext from '../../hooks/useGameContext/useGameContext';
+// import useGameContext from '../../hooks/useGameContext/useGameContext';
+import useSessionContext from 'hooks/useSessionContext';
+import { ScreenType, UserGroup } from 'types';
+import { setActiveScreen } from 'utils/firebase/screen';
+import EndCallButton from 'components/Buttons/EndCallButton/EndCallButton';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
       backgroundColor: theme.palette.background.default,
-      bottom: 0,
-      left: 0,
-      right: 0,
       height: `${theme.footerHeight}px`,
-      position: 'fixed',
       display: 'flex',
       padding: '0 1.43em',
       zIndex: 10,
@@ -63,10 +62,27 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function MenuBar() {
   const classes = useStyles();
   const { isSharingScreen, toggleScreenShare } = useVideoContext();
-  const { isGameVisible, toggleGameVisible } = useGameContext();
+  // const { isGameVisible, toggleGameVisible } = useGameContext();
   const roomState = useRoomState();
   const isReconnecting = roomState === 'reconnecting';
   const { room } = useVideoContext();
+  const { userGroup, sessionData, groupToken } = useSessionContext();
+
+  const toggleGameScreen = () => {
+    setActiveScreen(
+      groupToken as string,
+      sessionData?.activeScreen === ScreenType.VideoChat ? ScreenType.Game : ScreenType.VideoChat
+    );
+  };
+
+  const buttonClassName =
+    'bg-white w-12 h-12 flex justify-center items-center rounded-full shadow-lg hover:shadow-xl transition-shadow duration-500';
+
+  const ScreenToggleButton = () => (
+    <button className={buttonClassName} onClick={toggleGameScreen}>
+      <img src={`/assets/${sessionData?.activeScreen === ScreenType.VideoChat ? 'grid-view' : 'carousel'}.svg`} />
+    </button>
+  );
 
   return (
     <>
@@ -76,35 +92,23 @@ export default function MenuBar() {
           <Button onClick={() => toggleScreenShare()}>Stop Sharing</Button>
         </Grid>
       )}
-      <footer className={classes.container}>
-        <Grid container justifyContent="space-around" alignItems="center">
-          <Hidden smDown>
-            <Grid style={{ flex: 1 }}>
-              <Typography variant="body1">{room!.name}</Typography>
-            </Grid>
-          </Hidden>
-          <Grid item>
-            <Grid container justifyContent="center">
-              <ToggleAudioButton disabled={isReconnecting} />
-              <ToggleVideoButton disabled={isReconnecting} />
-              {/* {!isSharingScreen && !isMobile && <ToggleScreenShareButton disabled={isReconnecting} />}
+      <footer className={'fixed bottom-0 z-30 flex flex-col py-5 w-full justify-center items-center space-y-5'}>
+        <div className="flex space-x-5 items-center w-full justify-center relative">
+          <span className="absolute left-10">
+            <Typography variant="body1">{room!.name}</Typography>
+          </span>
+          <ToggleAudioButton disabled={isReconnecting} className={buttonClassName} />
+          <ToggleVideoButton disabled={isReconnecting} className={buttonClassName} />
+          <EndCallButton />
+          {/* {!isSharingScreen && !isMobile && <ToggleScreenShareButton disabled={isReconnecting} />}
               {process.env.REACT_APP_DISABLE_TWILIO_CONVERSATIONS !== 'true' && <ToggleChatButton />} */}
-              <Hidden smDown>
-                <Menu />
-              </Hidden>
-            </Grid>
-          </Grid>
-          <Grid item>
-            <Button onClick={() => toggleGameVisible(!isGameVisible)}>Spielrad</Button>
-          </Grid>
-          <Hidden smDown>
-            <Grid style={{ flex: 1 }}>
-              <Grid container justifyContent="flex-end">
-                <EndCallButton />
-              </Grid>
-            </Grid>
-          </Hidden>
-        </Grid>
+          {userGroup === UserGroup.Moderator ? (
+            <>
+              <ScreenToggleButton />
+              <Menu buttonClassName={buttonClassName} />
+            </>
+          ) : null}
+        </div>
       </footer>
     </>
   );

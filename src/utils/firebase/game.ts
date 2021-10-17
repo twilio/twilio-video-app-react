@@ -1,0 +1,75 @@
+import { ICarouselGame, UserGroup } from 'types';
+import { getSessionStore } from '.';
+import { db } from './base';
+
+let _game: ICarouselGame;
+
+export const setCurrentPlayer = (groupToken: string, playerName: string) => {
+  getSessionStore(groupToken).then(store => {
+    db()
+      .collection('sessions')
+      .doc(store.doc.id)
+      .collection('games')
+      .doc('carousel')
+      .set(
+        {
+          currentPlayer: playerName,
+          activeCard: -1,
+        },
+        { merge: true }
+      );
+  });
+};
+
+export const setCarouselPosition = (groupToken: string, nextIndex: number) => {
+  getSessionStore(groupToken).then(store => {
+    db()
+      .collection('sessions')
+      .doc(store.doc.id)
+      .collection('games')
+      .doc('carousel')
+      .set(
+        {
+          carouselPosition: nextIndex,
+        },
+        { merge: true }
+      );
+  });
+};
+
+export const setActiveCard = (groupToken: string, index: number) => {
+  getSessionStore(groupToken).then(store => {
+    db()
+      .collection('sessions')
+      .doc(store.doc.id)
+      .collection('games')
+      .doc('carousel')
+      .set(
+        {
+          activeCard: index,
+          currentPlayer: '',
+        },
+        { merge: true }
+      );
+  });
+};
+
+export const subscribeToCarouselGame = (groupToken: string, callback: (game: ICarouselGame) => void) => {
+  getSessionStore(groupToken).then(store => {
+    db()
+      .collection('sessions')
+      .doc(store.doc.id)
+      .collection('games')
+      .doc('carousel')
+      .onSnapshot(doc => {
+        if (!doc) {
+          return;
+        }
+
+        _game = doc.data() as ICarouselGame;
+        if (_game !== null) {
+          callback(_game);
+        }
+      });
+  });
+};

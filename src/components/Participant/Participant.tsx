@@ -3,7 +3,7 @@ import ParticipantInfo from '../ParticipantInfo/ParticipantInfo';
 import ParticipantTracks from '../ParticipantTracks/ParticipantTracks';
 import { Participant as IParticipant } from 'twilio-video';
 
-interface ParticipantProps {
+export interface ParticipantProps {
   participant: IParticipant;
   videoOnly?: boolean;
   enableScreenShare?: boolean;

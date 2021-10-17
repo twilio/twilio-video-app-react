@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import getFirebase from '../../firebase.config';
+import { getFirebase } from 'utils/firebase/base';
+// import getFirebase from '../../firebase.config';
 import VerticalCarousel from '../VerticalCarousel';
 
 const firebase = getFirebase();
@@ -31,7 +32,7 @@ function Game() {
   }, []);
 
   return (
-    <div className="absolute w-full h-screen z-0 bg-grayish">
+    <div className="w-full h-full z-0 bg-grayish">
       <VerticalCarousel data={questions} />
     </div>
   );

@@ -23,13 +23,10 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       height: 0,
       overflow: 'hidden',
-      marginBottom: '0.5em',
       '& video': {
         filter: 'none',
         objectFit: 'contain !important',
       },
-      borderRadius: '4px',
-      border: `${theme.participantBorderWidth}px solid rgb(245, 248, 255)`,
       paddingTop: `calc(${(9 / 16) * 100}% - ${theme.participantBorderWidth}px)`,
       background: 'black',
       [theme.breakpoints.down('sm')]: {
@@ -162,7 +159,7 @@ export default function ParticipantInfo({
 
   return (
     <div
-      className={clsx(classes.container, {
+      className={clsx('rounded-sm', classes.container, {
         [classes.hideParticipant]: hideParticipant,
         [classes.cursorPointer]: Boolean(onClick),
       })}
@@ -170,7 +167,7 @@ export default function ParticipantInfo({
       data-cy-participant={participant.identity}
     >
       <div className={classes.infoContainer}>
-        <NetworkQualityLevel participant={participant} />
+        {/* <NetworkQualityLevel participant={participant} /> */}
         <div className={classes.infoRowBottom}>
           {isScreenShareEnabled && (
             <span className={classes.screenShareIconContainer}>
@@ -181,7 +178,7 @@ export default function ParticipantInfo({
             <AudioLevelIndicator audioTrack={audioTrack} />
             <Typography variant="body1" className={classes.typeography} component="span">
               {participant.identity}
-              {isLocalParticipant && ' (You)'}
+              {isLocalParticipant && ' (Sie)'}
             </Typography>
           </span>
         </div>

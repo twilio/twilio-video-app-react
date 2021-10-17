@@ -9,6 +9,8 @@ import ToggleVideoButton from '../../Buttons/ToggleVideoButton/ToggleVideoButton
 import { useAppState } from '../../../state';
 import useChatContext from '../../../hooks/useChatContext/useChatContext';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import useSessionContext from 'hooks/useSessionContext';
+import { setSessionModerator } from 'utils/firebase/session';
 
 const useStyles = makeStyles((theme: Theme) => ({
   gutterBottom: {
@@ -64,6 +66,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
   const { connect: chatConnect } = useChatContext();
   const { connect: videoConnect, isAcquiringLocalTracks, isConnecting } = useVideoContext();
   const disableButtons = isFetching || isAcquiringLocalTracks || isConnecting;
+  const { userGroup, groupToken } = useSessionContext();
 
   const handleJoin = () => {
     getToken(name, roomName).then(({ token }) => {
@@ -114,22 +117,16 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
                 <ToggleVideoButton className={classes.deviceButton} disabled={disableButtons} />
               </Hidden>
             </div>
-            <div className={classes.joinButtons}>
-              <Button variant="outlined" color="primary" onClick={() => setStep(Steps.roomNameStep)}>
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                data-cy-join-now
-                onClick={handleJoin}
-                disabled={disableButtons}
-              >
-                Jetzt beitreten
-              </Button>
-            </div>
           </Grid>
         </Grid>
+        <div className={'flex space-x-5 pt-10'}>
+          <button className="hover:underline" onClick={() => setStep(Steps.roomNameStep)}>
+            Zurück
+          </button>
+          <button className="text-red hover:underline" onClick={handleJoin} disabled={disableButtons}>
+            Jetzt beitreten
+          </button>
+        </div>
       </Grid>
     </>
   );

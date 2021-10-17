@@ -8,6 +8,8 @@ import { useParams } from 'react-router-dom';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { subscribeToSession } from '../../utils/firebase';
 import useSessionContext from 'hooks/useSessionContext';
+import { getUid } from 'utils/firebase/base';
+import { PopupScreen } from 'components/PopupScreen';
 
 export enum Steps {
   roomNameStep,
@@ -17,16 +19,17 @@ export enum Steps {
 export default function PreJoinScreens() {
   const { user } = useAppState();
   const { getAudioAndVideoTracks } = useVideoContext();
-  const { URLShareToken } = useParams() as { URLShareToken: string };
   const [step, setStep] = useState(Steps.roomNameStep);
   const [name, setName] = useState<string>(user?.displayName || '');
   const [roomName, setRoomName] = useState<string>('');
   const [mediaError, setMediaError] = useState<Error>();
   const { sessionData } = useSessionContext();
+  const [uid, setUid] = useState<string>();
 
   useEffect(() => {
     if (sessionData) {
       setRoomName(sessionData.roomId);
+      getUid().then(setUid);
     }
   }, [sessionData]);
 
@@ -56,7 +59,7 @@ export default function PreJoinScreens() {
   };
 
   return (
-    <IntroContainer>
+    <PopupScreen>
       <MediaErrorSnackbar error={mediaError} />
       {step === Steps.roomNameStep && (
         <RoomNameScreen
@@ -71,6 +74,6 @@ export default function PreJoinScreens() {
       {step === Steps.deviceSelectionStep && (
         <DeviceSelectionScreen name={name} roomName={roomName} setStep={setStep} />
       )}
-    </IntroContainer>
+    </PopupScreen>
   );
 }
