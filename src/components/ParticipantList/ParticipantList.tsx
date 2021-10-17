@@ -30,7 +30,7 @@ export default function ParticipantList() {
   );
 
   return (
-    <div className="flex justify-center items-center w-full overflow-x-auto gap-x-5 bg-grayish my-">
+    <div className="flex justify-center items-center overflow-x-auto gap-x-5 bg-grayish my-">
       {moderatorParitcipants.map(participant => {
         return (
           <SmallParticipant

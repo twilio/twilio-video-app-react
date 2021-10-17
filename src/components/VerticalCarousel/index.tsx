@@ -83,35 +83,38 @@ const VerticalCarousel = ({ data }: any) => {
 
     let last = activeIndex;
     for (let i = 0; i < steps; i++) {
-      let next = last;
-      if (dir) {
-        next += 1;
-        if (next >= data.length) {
-          next = 0;
-        }
-      } else {
-        next -= 1;
-        if (next < 0) {
-          next = data.length - 1;
-        }
-      }
-
       setTimeout(() => {
+        let next = last;
+        if (dir) {
+          next += 1;
+          if (next >= data.length) {
+            next = 0;
+          }
+        } else {
+          next -= 1;
+          if (next < 0) {
+            next = data.length - 1;
+          }
+        }
+        last = next;
         setActiveIndex(next);
-      }, 50 * i);
-      last = next;
+      }, (i * i) / 100 + i * 2);
     }
 
-    // setActiveIndex(newPos);
+    setTimeout(() => {
+      setActiveIndex(newPos);
+    }, (steps * steps) / 50 + steps * 2);
   };
 
   useEffect(() => {
     subscribeToCarouselGame(groupToken as string, game => {
       const currentCard = game.carouselPosition ?? 0;
       try {
-        spinTo(currentCard);
-        setCurrentPlayer(game.currentPlayer);
-        setRevealableIndex(game.activeCard);
+        if (activeIndex !== currentCard) {
+          spinTo(currentCard);
+          setCurrentPlayer(game.currentPlayer);
+          setRevealableIndex(game.activeCard);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -146,25 +149,31 @@ const VerticalCarousel = ({ data }: any) => {
         <div className="h-full relative px-20">
           {data.map((item: any, i: number) => {
             const pos = determinePlacement(i);
+            const visible = Math.abs(pos) <= visibleStyleThreshold;
+
+            let tx, ty;
+            if (visible) {
+              tx = -80 + (activeIndex === i ? 0 : (Math.sqrt(Math.abs(pos) * 0.11) * 0.05 * pos * pos) / Math.abs(pos));
+              ty = pos;
+            } else {
+              const edgePos = (visibleStyleThreshold * Math.abs(pos)) / pos;
+              ty = edgePos;
+              tx = -80 + (Math.sqrt(Math.abs(edgePos) * 0.11) * 0.05 * edgePos * edgePos) / Math.abs(edgePos);
+            }
 
             return (
               <button
                 className={cn('cursor-default z-0 relative', 'carousel-item', {
                   active: activeIndex === i,
-                  visible: Math.abs(pos) <= visibleStyleThreshold,
+                  visible,
                 })}
                 key={item.id}
                 style={{
-                  transform: `translateY(${pos}px) translateX(${-80 +
-                    (activeIndex === i
-                      ? 0
-                      : (Math.sqrt(Math.abs(pos) * 0.11) * 0.05 * pos * pos) / Math.abs(pos))}px) rotate(${
-                    activeIndex === i ? 0 : -pos / 12
-                  }deg)`,
+                  transform: `translateY(${pos}px) translateX(${tx}px) rotate(${activeIndex === i ? 0 : -pos / 12}deg)`,
                   zIndex: -1 * Math.abs(pos / itemHeight) + data.length,
                 }}
               >
-                <div className="absolute -left-12 xl:-left-8 top-0 bottom-0 flex items-center">
+                <div className="absolute -left-12 2xl:-left-8 top-0 bottom-0 flex items-center">
                   <div className="w-16 h-16 border-4 text-3xl shadow-xl border-white text-white flex justify-center items-center rounded-full bg-purple">
                     {i + 1}
                   </div>
