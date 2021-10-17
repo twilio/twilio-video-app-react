@@ -2,7 +2,6 @@ import { ISession, ISessionLabels, UserGroup } from '../../types';
 import { getSessionStore, subscribeToSession } from '../../utils/firebase';
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { setSessionModerator } from 'utils/firebase/session';
 
 export enum ISessionStatus {
   SESSION_NOT_STARTED = 'SESSION_NOT_STARTED',
@@ -36,7 +35,6 @@ export function SessionProvider({ children }: SessionProviderProps) {
   const [sessionToken, setSessionToken] = useState<string | null>(null);
   const [sessionStatus, setSessionStatus] = useState<ISessionStatus>(ISessionStatus.AWAITING_STATUS);
   const [userGroup, setUserGroup] = useState<UserGroup>();
-  const [labels, setLabels] = useState<ISessionLabels>();
   const [sessionData, setSessionData] = useState<ISession>();
 
   const onSessionData = (data: ISession, group: UserGroup) => {
@@ -55,7 +53,6 @@ export function SessionProvider({ children }: SessionProviderProps) {
       setSessionStatus(ISessionStatus.SESSION_RUNNING);
     }
 
-    setLabels(data.labels);
     setUserGroup(group);
     setSessionData(data);
   };
@@ -84,7 +81,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
         sessionStatus,
         loading,
         userGroup,
-        labels,
+        labels: sessionData?.labels,
         sessionData,
         groupToken: URLShareToken,
       }}

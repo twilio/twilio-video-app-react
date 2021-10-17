@@ -11,6 +11,8 @@ export interface ParticipantProps {
   isSelected?: boolean;
   isLocalParticipant?: boolean;
   hideParticipant?: boolean;
+  isActivePlayer?: boolean;
+  isModerator?: boolean;
 }
 
 export default function Participant({
@@ -21,6 +23,8 @@ export default function Participant({
   isSelected,
   isLocalParticipant,
   hideParticipant,
+  isActivePlayer,
+  isModerator,
 }: ParticipantProps) {
   return (
     <ParticipantInfo
@@ -29,6 +33,8 @@ export default function Participant({
       isSelected={isSelected}
       isLocalParticipant={isLocalParticipant}
       hideParticipant={hideParticipant}
+      isActivePlayer={isActivePlayer}
+      isModerator={isModerator}
     >
       <ParticipantTracks
         participant={participant}

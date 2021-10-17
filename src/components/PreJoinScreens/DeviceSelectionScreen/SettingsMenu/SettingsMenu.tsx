@@ -18,7 +18,13 @@ const useStyles = makeStyles({
   },
 });
 
-export default function SettingsMenu({ mobileButtonClass }: { mobileButtonClass?: string }) {
+export default function SettingsMenu({
+  mobileButtonClass,
+  className,
+}: {
+  mobileButtonClass?: string;
+  className?: string;
+}) {
   const classes = useStyles();
   const { roomType } = useAppState();
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
@@ -31,25 +37,9 @@ export default function SettingsMenu({ mobileButtonClass }: { mobileButtonClass?
 
   return (
     <>
-      {isMobile ? (
-        <Button
-          ref={anchorRef}
-          onClick={() => setMenuOpen(true)}
-          startIcon={<MoreIcon />}
-          className={mobileButtonClass}
-        >
-          More
-        </Button>
-      ) : (
-        <Button
-          ref={anchorRef}
-          onClick={() => setMenuOpen(true)}
-          startIcon={<SettingsIcon />}
-          className={classes.settingsButton}
-        >
-          Settings
-        </Button>
-      )}
+      <button ref={anchorRef} onClick={() => setMenuOpen(true)} className={className}>
+        <SettingsIcon />
+      </button>
       <MenuContainer
         open={menuOpen}
         onClose={() => setMenuOpen(isOpen => !isOpen)}

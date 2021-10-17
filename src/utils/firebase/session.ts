@@ -1,4 +1,4 @@
-import { firestore } from 'firebase';
+import firebase, { firestore } from 'firebase';
 import { ISession, UserGroup } from 'types';
 import { db } from './base';
 
@@ -69,7 +69,6 @@ export const startSession = (groupToken: string) => {
 
   getSessionStore(groupToken).then(store => {
     const time = firestore.FieldValue.serverTimestamp();
-    console.log('time', time);
     db()
       .collection('sessions')
       .doc(store.doc.id)
@@ -82,16 +81,13 @@ export const startSession = (groupToken: string) => {
   });
 };
 
-export const setSessionModerator = (groupToken: string, sid: string) => {
+export const addSessionModerator = (groupToken: string, sid: string) => {
   getSessionStore(groupToken).then(store => {
     db()
       .collection('sessions')
       .doc(store.doc.id)
-      .set(
-        {
-          moderator: sid,
-        },
-        { merge: true }
-      );
+      .update({
+        moderators: firestore.FieldValue.arrayUnion(sid),
+      });
   });
 };

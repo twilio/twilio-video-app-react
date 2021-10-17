@@ -28,8 +28,8 @@ export default function Room() {
   };
 
   return (
-    <div className="flex flex-col bg-grayish h-screen">
-      <div className="flex-grow pb-40">
+    <div className="flex flex-col h-screen">
+      <div className="flex-grow pb-32">
         <CurrentScreen />
       </div>
       <ChatWindow />

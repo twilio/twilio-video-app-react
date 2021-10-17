@@ -13,8 +13,9 @@ import './index.css';
 import useVideoContext from 'hooks/useVideoContext/useVideoContext';
 import useSessionContext from 'hooks/useSessionContext';
 import { UserGroup } from 'types';
-import { setSessionModerator } from 'utils/firebase/session';
+import { addSessionModerator } from 'utils/firebase/session';
 import useRoomState from 'hooks/useRoomState/useRoomState';
+import { PopupScreen } from './components/PopupScreen';
 
 const Container = styled('div')({
   display: 'grid',
@@ -29,7 +30,7 @@ export default function App() {
 
   useEffect(() => {
     if (groupToken && userGroup === UserGroup.Moderator && localParticipant) {
-      setSessionModerator(groupToken, localParticipant.sid);
+      addSessionModerator(groupToken, localParticipant.sid);
     }
   }, [localParticipant]);
 
@@ -41,22 +42,31 @@ export default function App() {
   const height = useHeight();
 
   return (
-    <Container style={{ height }}>
-      {roomState === 'disconnected' ? (
-        <PreJoinScreens />
-      ) : (
-        <div className="flex flex-col w-full h-full">
-          <ReconnectingNotification />
-          <RecordingNotifications />
-          <div className="flex flex-col h-screen space-y-2 bg-grayish">
-            {/* <MobileTopMenuBar /> */}
-            <div className="flex-grow w-full">
-              <Room />
+    <>
+      <div className="hidden w-full h-full md:block">
+        <Container style={{ height }}>
+          {roomState === 'disconnected' ? (
+            <PreJoinScreens />
+          ) : (
+            <div className="flex flex-col w-full h-full">
+              <ReconnectingNotification />
+              <RecordingNotifications />
+              <div className="flex flex-col h-screen space-y-2 bg-grayish">
+                {/* <MobileTopMenuBar /> */}
+                <div className="flex-grow w-full">
+                  <Room />
+                </div>
+                <MenuBar />
+              </div>
             </div>
-            <MenuBar />
-          </div>
-        </div>
-      )}
-    </Container>
+          )}
+        </Container>
+      </div>
+      <div className="md:hidden flex items-center justify-center w-full h-full">
+        <PopupScreen>
+          <h1 className="text-lg text-center">Bitte treten Sie dem DemokraTisch Raum auf einem größeren Gerät bei.</h1>
+        </PopupScreen>
+      </div>
+    </>
   );
 }

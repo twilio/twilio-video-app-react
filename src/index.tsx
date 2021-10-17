@@ -18,6 +18,7 @@ import useConnectionOptions from './hooks/useConnectionOptions/useConnectionOpti
 import UnsupportedBrowserWarning from './components/UnsupportedBrowserWarning/UnsupportedBrowserWarning';
 import { SessionProvider } from './components/SessionProvider';
 import { SessionWrapper } from './components/SessionWrapper';
+import { GameProvider } from './components/GameProvider';
 
 const VideoApp = () => {
   const { error, setError } = useAppState();
@@ -25,12 +26,12 @@ const VideoApp = () => {
 
   return (
     <VideoProvider options={connectionOptions} onError={setError}>
-      {/* <GameProvider> */}
-      <ErrorDialog dismissError={() => setError(null)} error={error} />
-      <ChatProvider>
-        <App />
-      </ChatProvider>
-      {/* </GameProvider> */}
+      <GameProvider>
+        <ErrorDialog dismissError={() => setError(null)} error={error} />
+        <ChatProvider>
+          <App />
+        </ChatProvider>
+      </GameProvider>
     </VideoProvider>
   );
 };
@@ -49,9 +50,6 @@ ReactDOM.render(
                 </SessionWrapper>
               </SessionProvider>
             </PrivateRoute>
-            {/* <Route path="/login">
-              <LoginPage />
-            </Route> */}
             <Redirect to="/" />
           </Switch>
         </AppStateProvider>

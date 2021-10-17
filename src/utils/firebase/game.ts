@@ -1,8 +1,26 @@
-import { ICarouselGame, UserGroup } from 'types';
+import { ICarouselGame, IQuestion, ScreenType, UserGroup } from 'types';
 import { getSessionStore } from '.';
 import { db } from './base';
 
 let _game: ICarouselGame;
+
+export const fetchQuestions = () =>
+  new Promise<IQuestion[]>((resolve, reject) => {
+    try {
+      const ref = db().collection('questions');
+
+      ref.get().then(docs => {
+        let allQuestions: any[] = [];
+        docs.forEach((doc: any) => {
+          const data = doc.data();
+          allQuestions.push(data);
+        });
+        resolve(allQuestions);
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
 
 export const setCurrentPlayer = (groupToken: string, playerName: string) => {
   getSessionStore(groupToken).then(store => {
@@ -73,3 +91,27 @@ export const subscribeToCarouselGame = (groupToken: string, callback: (game: ICa
       });
   });
 };
+
+export const fetchCarouselGame = (groupToken: string) =>
+  new Promise<ICarouselGame>((resolve, reject) => {
+    getSessionStore(groupToken).then(store => {
+      const ref = db()
+        .collection('sessions')
+        .doc(store.doc.id)
+        .collection('games')
+        .doc('carousel');
+
+      ref.get().then(doc => {
+        if (!doc) {
+          return;
+        }
+
+        _game = doc.data() as ICarouselGame;
+        if (_game !== null) {
+          resolve(_game);
+        } else {
+          reject({ empty: true });
+        }
+      });
+    });
+  });

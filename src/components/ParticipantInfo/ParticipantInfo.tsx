@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme: Theme) =>
         objectFit: 'contain !important',
       },
       paddingTop: `calc(${(9 / 16) * 100}% - ${theme.participantBorderWidth}px)`,
-      background: 'black',
       [theme.breakpoints.down('sm')]: {
         height: theme.sidebarMobileHeight,
         width: `${(theme.sidebarMobileHeight * 16) / 9}px`,
@@ -95,7 +94,6 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     identity: {
-      background: 'rgba(0, 0, 0, 0.5)',
       color: 'white',
       padding: '0.18em 0.3em',
       margin: 0,
@@ -131,6 +129,8 @@ interface ParticipantInfoProps {
   isSelected?: boolean;
   isLocalParticipant?: boolean;
   hideParticipant?: boolean;
+  isActivePlayer?: boolean;
+  isModerator?: boolean;
 }
 
 export default function ParticipantInfo({
@@ -140,6 +140,8 @@ export default function ParticipantInfo({
   children,
   isLocalParticipant,
   hideParticipant,
+  isActivePlayer,
+  isModerator,
 }: ParticipantInfoProps) {
   const publications = usePublications(participant);
 
@@ -174,12 +176,33 @@ export default function ParticipantInfo({
               <ScreenShareIcon />
             </span>
           )}
-          <span className={classes.identity}>
+          <span className={'flex pl-2 pb-2 text-base filter drop-shadow-xl items-center font-medium text-white'}>
+            {isModerator ? (
+              <span className="bg-orange p-2 w-8 h-8 flex items-center justify-center rounded-full">
+                {participant.identity[0].toUpperCase()}
+              </span>
+            ) : null}
             <AudioLevelIndicator audioTrack={audioTrack} />
-            <Typography variant="body1" className={classes.typeography} component="span">
+            <span>
               {participant.identity}
               {isLocalParticipant && ' (Sie)'}
-            </Typography>
+              {!isActivePlayer ? null : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 13l-7 7-7-7m14-8l-7 7-7-7"
+                  />
+                </svg>
+              )}
+            </span>
           </span>
         </div>
         <div>{isSelected && <PinIcon />}</div>

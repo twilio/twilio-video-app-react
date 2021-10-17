@@ -4,6 +4,8 @@ import cn from 'classnames';
 import useSessionContext from 'hooks/useSessionContext';
 import useVideoContext from 'hooks/useVideoContext/useVideoContext';
 import { setActiveCard, setCarouselPosition, subscribeToCarouselGame } from 'utils/firebase/game';
+import useGameContext from 'hooks/useGameContext';
+import { RevealedCard } from 'components/RevealedCard';
 
 /*
  * Read the blog post here:
@@ -12,18 +14,20 @@ import { setActiveCard, setCarouselPosition, subscribeToCarouselGame } from 'uti
 
 const VerticalCarousel = ({ data }: any) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [revealedQuestion, setRevealedQuestion] = useState('');
-  const [revealableIndex, setRevealableIndex] = useState<number>(-1);
+  const { revealedCard, setRevealedCard } = useGameContext();
+  const [revealableIndex, setRevealableIndex] = useState<number>();
   const { groupToken } = useSessionContext();
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
   const [currentPlayer, setCurrentPlayer] = useState<string>();
 
+  const screenWidth = window.screen.width;
+
   // Used to determine which items appear above the active item
   const halfwayIndex = Math.ceil(data.length / 2);
 
   // Usd to determine the height/spacing of each item
-  const itemHeight = 155;
+  let itemHeight = screenWidth > 1536 ? 150 : 100;
 
   // Used to determine at what point an item is moved from the top to the bottom
   const shuffleThreshold = halfwayIndex * itemHeight;
@@ -63,18 +67,49 @@ const VerticalCarousel = ({ data }: any) => {
   };
 
   const revealQuestion = () => {
-    setRevealedQuestion(data[activeIndex].name);
+    setRevealedCard(data[activeIndex].name);
   };
 
   const approveQuestion = () => {
     setActiveCard(groupToken as string, activeIndex);
   };
 
+  const spinTo = (newPos: number) => {
+    const diff = newPos - activeIndex;
+    const dir = diff >= 0;
+    const steps = diff;
+
+    console.log({ diff, dir, steps, newPos, activeIndex });
+
+    let last = activeIndex;
+    for (let i = 0; i < steps; i++) {
+      let next = last;
+      if (dir) {
+        next += 1;
+        if (next >= data.length) {
+          next = 0;
+        }
+      } else {
+        next -= 1;
+        if (next < 0) {
+          next = data.length - 1;
+        }
+      }
+
+      setTimeout(() => {
+        setActiveIndex(next);
+      }, 50 * i);
+      last = next;
+    }
+
+    // setActiveIndex(newPos);
+  };
+
   useEffect(() => {
     subscribeToCarouselGame(groupToken as string, game => {
       const currentCard = game.carouselPosition ?? 0;
       try {
-        setActiveIndex(currentCard);
+        spinTo(currentCard);
         setCurrentPlayer(game.currentPlayer);
         setRevealableIndex(game.activeCard);
       } catch (error) {
@@ -84,19 +119,17 @@ const VerticalCarousel = ({ data }: any) => {
   }, []);
 
   useEffect(() => {
-    if (data && revealableIndex >= 0 && data.length > revealableIndex && revealedQuestion === '') {
-      setRevealedQuestion(data[revealableIndex].name);
+    if (revealableIndex && data && revealableIndex >= 0 && data.length > revealableIndex) {
+      setRevealedCard(data[revealableIndex].name);
     } else if (revealableIndex === -1) {
-      setRevealedQuestion('');
+      setRevealedCard('');
     }
   }, [data, revealableIndex]);
-
-  console.log(data);
 
   const normalInvisible = currentPlayer !== localParticipant.sid ? ' invisible' : '';
 
   return (
-    <div className="container h-full shadow-lg mx-auto px-5 overflow-hidden">
+    <div className="container h-full shadow-lg mx-auto px-2 lg:px-5 overflow-hidden">
       <section className="outer-container flex justify-between items-center h-full w-full">
         <div className={'flex flex-col'}>
           <button
@@ -110,58 +143,57 @@ const VerticalCarousel = ({ data }: any) => {
             <img src="/assets/random-card.svg" alt="Neue Karte" />
           </button>
         </div>
-        <div className="h-full relative">
+        <div className="h-full relative px-20">
           {data.map((item: any, i: number) => {
+            const pos = determinePlacement(i);
+
             return (
               <button
-                className={cn('cursor-default z-0', 'carousel-item', {
+                className={cn('cursor-default z-0 relative', 'carousel-item', {
                   active: activeIndex === i,
-                  visible: Math.abs(determinePlacement(i)) <= visibleStyleThreshold,
+                  visible: Math.abs(pos) <= visibleStyleThreshold,
                 })}
                 key={item.id}
                 style={{
-                  transform: `translateY(${determinePlacement(i)}px) translateX(${-150 +
+                  transform: `translateY(${pos}px) translateX(${-80 +
                     (activeIndex === i
                       ? 0
-                      : determinePlacement(i) > 0
-                      ? 0.05 * determinePlacement(i)
-                      : -0.05 * determinePlacement(i))}px) rotate(${
-                    activeIndex === i ? 0 : -determinePlacement(i) / 30
+                      : (Math.sqrt(Math.abs(pos) * 0.11) * 0.05 * pos * pos) / Math.abs(pos))}px) rotate(${
+                    activeIndex === i ? 0 : -pos / 12
                   }deg)`,
+                  zIndex: -1 * Math.abs(pos / itemHeight) + data.length,
                 }}
               >
-                <div className="absolute -left-12 w-16 h-16 border-8 border-white text-white flex justify-center items-center rounded-full bg-red shadow-lg">
-                  {i + 1}
+                <div className="absolute -left-12 xl:-left-8 top-0 bottom-0 flex items-center">
+                  <div className="w-16 h-16 border-4 text-3xl shadow-xl border-white text-white flex justify-center items-center rounded-full bg-purple">
+                    {i + 1}
+                  </div>
                 </div>
+
                 <p>{item.category}</p>
               </button>
             );
           })}
         </div>
         <button
-          className={'w-16 h-16 rounded-full turn-card-btn transform translate-x-0' + normalInvisible}
+          className={
+            'w-16 h-16 rounded-full bg-purple text-white transform translate-x-0 shadow-xl hover:shadow-none transition-shadow duration-500' +
+            normalInvisible
+          }
           onClick={() => revealQuestion()}
         >
           <p className="text-3xl z-40">-{`>`}</p>
         </button>
         <div className="flex justify-center items-center space-x-5">
           <div className="flex-col h-full">
-            <div
-              className="flex justify-center items-center text-center px-5 py-3 shadow-lg bg-red h-60 w-96 rounded-lg"
-              style={{
-                backgroundImage: "url('/assets/globe.svg')",
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: '50%',
-                backgroundPosition: 'center',
-              }}
-            >
-              <p className="text-white text-lg font-bold">{revealedQuestion}</p>
+            <div className="w-56 h-32 lg:h-60 lg:w-96">
+              <RevealedCard />
             </div>
           </div>
           <button
             className={
-              'cursor-pointer w-16 h-16 flex items-center justify-center rounded-full bg-red text-white' +
-              (revealedQuestion === '' ? ' invisible' : '') +
+              'cursor-pointer w-16 h-16 flex items-center justify-center rounded-full bg-purple text-white' +
+              (revealedCard === '' ? ' invisible' : '') +
               normalInvisible
             }
             onClick={approveQuestion}

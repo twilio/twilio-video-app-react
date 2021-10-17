@@ -50,31 +50,23 @@ export default function RoomNameScreen({ name, roomName, setName, handleSubmit }
       <Typography variant="h5" className={classes.gutterBottom}>
         DemokraTisch beitreten
       </Typography>
-      {/* <Typography variant="body1">
-        {hasUsername
-          ? "Enter the name of a room you'd like to join."
-          : "Enter your name and the name of a room you'd like to join"}
-      </Typography> */}
       <form onSubmit={handleSubmit}>
         <div className={classes.inputContainer}>
           {!hasUsername && (
             <div className={classes.textFieldContainer}>
-              <InputLabel shrink htmlFor="input-user-name">
-                Dein Name
-              </InputLabel>
-              <TextField
+              <input
                 id="input-user-name"
-                variant="outlined"
-                fullWidth
-                size="small"
-                value={name}
                 onChange={handleNameChange}
+                className="rounded-full border border-gray-500 px-3 py-1"
+                placeholder="Ihr Name"
               />
             </div>
           )}
         </div>
-        <div className="flex text-red hover:underline justify-center">
-          <button type="submit">Weiter</button>
+        <div className="flex text-purple hover:underline justify-center">
+          <button type="submit" className="font-medium">
+            Weiter
+          </button>
         </div>
       </form>
     </>

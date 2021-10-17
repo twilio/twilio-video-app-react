@@ -6,24 +6,15 @@ import { Button } from '@material-ui/core';
 
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    button: {
-      background: theme.brand,
-      color: 'white',
-      '&:hover': {
-        background: '#600101',
-      },
-    },
-  })
-);
-
 export default function EndCallButton(props: { className?: string }) {
-  const classes = useStyles();
   const { room } = useVideoContext();
 
   return (
-    <button onClick={() => room!.disconnect()} className={'rounded-full bg-red p-5'} data-cy-disconnect>
+    <button
+      onClick={() => room!.disconnect()}
+      className={'rounded-full bg-purple hover:shadow-xl p-5 transition-all duration-500'}
+      data-cy-disconnect
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-5 w-5 text-white"

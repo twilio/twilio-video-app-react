@@ -5,11 +5,16 @@ module.exports = {
     extend: {
       colors: {
         red: '#E60037',
-        grayish: '#F5F7FB'
+        grayish: '#F5F7FB',
+        purple: "#821B82",
+        orange: "#F7A70A",
+        "dark-blue": "#354052",
       },
     },
     variants: {
-      extend: {},
+      extend: {
+        scale: ['group-focus']
+      },
     },
     plugins: [
       require('@tailwindcss/aspect-ratio'),

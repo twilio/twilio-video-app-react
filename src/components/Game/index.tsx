@@ -1,35 +1,14 @@
+import useGameContext from 'hooks/useGameContext';
 import React, { useState, useEffect } from 'react';
 import { getFirebase } from 'utils/firebase/base';
+import { fetchQuestions } from 'utils/firebase/game';
 // import getFirebase from '../../firebase.config';
 import VerticalCarousel from '../VerticalCarousel';
 
 const firebase = getFirebase();
 
 function Game() {
-  const [questions, setQuestions] = useState<any>([]);
-
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        if (!firebase) return;
-        const db = firebase.firestore();
-        const ref = db.collection('questions');
-
-        const docs = await ref.get();
-
-        let allQuestions: any[] = [];
-        docs.forEach((doc: any) => {
-          const data = doc.data();
-          allQuestions.push(data);
-        });
-        setQuestions(allQuestions);
-      } catch (error) {
-        console.log('error', error);
-      }
-    };
-
-    fetchQuestions();
-  }, []);
+  const { questions } = useGameContext();
 
   return (
     <div className="w-full h-full z-0 bg-grayish">

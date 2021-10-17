@@ -67,7 +67,7 @@ export interface ISession {
   startDate: firestore.Timestamp;
   endDate: firestore.Timestamp;
   activeScreen: ScreenType;
-  moderator: string;
+  moderators: string[];
 }
 
 export enum ScreenType {
@@ -79,4 +79,9 @@ export interface ICarouselGame {
   currentPlayer: string;
   carouselPosition: number;
   activeCard: number;
+}
+
+export interface IQuestion {
+  category: string;
+  name: string;
 }

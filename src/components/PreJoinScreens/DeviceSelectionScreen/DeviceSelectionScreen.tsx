@@ -9,8 +9,6 @@ import ToggleVideoButton from '../../Buttons/ToggleVideoButton/ToggleVideoButton
 import { useAppState } from '../../../state';
 import useChatContext from '../../../hooks/useChatContext/useChatContext';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
-import useSessionContext from 'hooks/useSessionContext';
-import { setSessionModerator } from 'utils/firebase/session';
 
 const useStyles = makeStyles((theme: Theme) => ({
   gutterBottom: {
@@ -66,7 +64,6 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
   const { connect: chatConnect } = useChatContext();
   const { connect: videoConnect, isAcquiringLocalTracks, isConnecting } = useVideoContext();
   const disableButtons = isFetching || isAcquiringLocalTracks || isConnecting;
-  const { userGroup, groupToken } = useSessionContext();
 
   const handleJoin = () => {
     getToken(name, roomName).then(({ token }) => {
@@ -90,44 +87,32 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
     );
   }
 
+  const buttonClassName = 'rounded-full bg-white flex items-center justify-center w-12 h-12 shadow-lg';
+
   return (
     <>
       <Typography variant="h5" className={classes.gutterBottom}>
         {roomName} beitreten
       </Typography>
 
-      <Grid container justifyContent="center">
-        <Grid item md={7} sm={12} xs={12}>
-          <div className={classes.localPreviewContainer}>
-            <LocalVideoPreview identity={name} />
-          </div>
-          <div className={classes.mobileButtonBar}>
-            <Hidden mdUp>
-              <ToggleAudioButton className={classes.mobileButton} disabled={disableButtons} />
-              <ToggleVideoButton className={classes.mobileButton} disabled={disableButtons} />
-            </Hidden>
-            <SettingsMenu mobileButtonClass={classes.mobileButton} />
-          </div>
-        </Grid>
-        <Grid item md={5} sm={12} xs={12}>
-          <Grid container direction="column" justifyContent="space-between" style={{ height: '100%' }}>
-            <div>
-              <Hidden smDown>
-                <ToggleAudioButton className={classes.deviceButton} disabled={disableButtons} />
-                <ToggleVideoButton className={classes.deviceButton} disabled={disableButtons} />
-              </Hidden>
-            </div>
-          </Grid>
-        </Grid>
-        <div className={'flex space-x-5 pt-10'}>
-          <button className="hover:underline" onClick={() => setStep(Steps.roomNameStep)}>
-            Zurück
-          </button>
-          <button className="text-red hover:underline" onClick={handleJoin} disabled={disableButtons}>
-            Jetzt beitreten
-          </button>
+      <div className="flex flex-col items-center">
+        <div className={'h-36 w-52'}>
+          <LocalVideoPreview identity={name} />
         </div>
-      </Grid>
+        <div className="flex items-center justify-center space-x-3">
+          <ToggleAudioButton className={buttonClassName} disabled={disableButtons} />
+          <ToggleVideoButton className={buttonClassName} disabled={disableButtons} />
+          <SettingsMenu className={buttonClassName} />
+        </div>
+      </div>
+      <div className={'flex space-x-5 pt-10'}>
+        <button className="hover:underline font-medium" onClick={() => setStep(Steps.roomNameStep)}>
+          Zurück
+        </button>
+        <button className="text-purple hover:underline font-medium" onClick={handleJoin} disabled={disableButtons}>
+          Jetzt beitreten
+        </button>
+      </div>
     </>
   );
 }

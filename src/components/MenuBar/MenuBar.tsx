@@ -80,7 +80,7 @@ export default function MenuBar() {
 
   const ScreenToggleButton = () => (
     <button className={buttonClassName} onClick={toggleGameScreen}>
-      <img src={`/assets/${sessionData?.activeScreen === ScreenType.VideoChat ? 'grid-view' : 'carousel'}.svg`} />
+      <img src={`/assets/${sessionData?.activeScreen === ScreenType.Game ? 'grid-view' : 'carousel'}.svg`} />
     </button>
   );
 
@@ -94,9 +94,6 @@ export default function MenuBar() {
       )}
       <footer className={'fixed bottom-0 z-30 flex flex-col py-5 w-full justify-center items-center space-y-5'}>
         <div className="flex space-x-5 items-center w-full justify-center relative">
-          <span className="absolute left-10">
-            <Typography variant="body1">{room!.name}</Typography>
-          </span>
           <ToggleAudioButton disabled={isReconnecting} className={buttonClassName} />
           <ToggleVideoButton disabled={isReconnecting} className={buttonClassName} />
           <EndCallButton />
