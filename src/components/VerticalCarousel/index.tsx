@@ -111,12 +111,12 @@ const VerticalCarousel = ({ data }: any) => {
         }
         last = next;
         setActiveIndex(next);
-      }, i * i * 50 + i * 2);
+      }, i * i + i * 2);
     }
 
     setTimeout(() => {
       setActiveIndex(newPos);
-    }, steps * steps * 50 + steps * 2);
+    }, steps * steps + steps * 2);
   };
 
   useEffect(() => {
@@ -164,19 +164,19 @@ const VerticalCarousel = ({ data }: any) => {
             <img src="/assets/random-card.svg" alt="Neue Karte" />
           </button>
         </div>
-        <div className="h-full relative px-20">
+        <div className="h-full relative px-20 transform -translate-x-20">
           {data.map((item: any, i: number) => {
             const pos = determinePlacement(i);
             const visible = Math.abs(pos) <= visibleStyleThreshold;
 
             let tx, ty;
             if (visible) {
-              tx = -80 + (activeIndex === i ? 0 : (Math.sqrt(Math.abs(pos) * 0.11) * 0.05 * pos * pos) / Math.abs(pos));
+              tx = activeIndex === i ? 0 : (Math.sqrt(Math.abs(pos) * 0.11) * 0.05 * pos * pos) / Math.abs(pos);
               ty = pos;
             } else {
               const edgePos = (visibleStyleThreshold * Math.abs(pos)) / pos;
               ty = edgePos;
-              tx = -80 + (Math.sqrt(Math.abs(edgePos) * 0.11) * 0.05 * edgePos * edgePos) / Math.abs(edgePos);
+              tx = (Math.sqrt(Math.abs(edgePos) * 0.11) * 0.05 * edgePos * edgePos) / Math.abs(edgePos);
             }
 
             return (
