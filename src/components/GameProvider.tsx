@@ -39,7 +39,6 @@ export function GameProvider({ children }: GameProviderProps) {
       value={{
         revealedCard,
         setRevealedCard: (val: string) => {
-          console.log('set', val);
           setRevealedCard(val);
         },
         questions,

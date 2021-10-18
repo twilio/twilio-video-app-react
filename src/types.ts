@@ -79,6 +79,7 @@ export interface ICarouselGame {
   currentPlayer: string;
   carouselPosition: number;
   activeCard: number;
+  seed: number;
 }
 
 export interface IQuestion {

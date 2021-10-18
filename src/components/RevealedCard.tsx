@@ -3,7 +3,6 @@ import React from 'react';
 
 export const RevealedCard = () => {
   const { revealedCard } = useGameContext();
-  console.log(revealedCard);
 
   return (
     <div
