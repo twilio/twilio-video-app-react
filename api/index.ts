@@ -1,8 +1,8 @@
-import './bootstrap-globals';
-import { createExpressHandler } from './createExpressHandler';
+import './utils/bootstrap-globals';
+import { createExpressHandler } from './utils/createExpressHandler';
 import express, { RequestHandler } from 'express';
 import path from 'path';
-import { ServerlessFunction } from './types';
+import { ServerlessFunction } from './utils/types';
 
 const PORT = process.env.PORT ?? 8081;
 
@@ -22,8 +22,8 @@ const noopMiddleware: RequestHandler = (_, __, next) => next();
 const authMiddleware =
   process.env.REACT_APP_SET_AUTH === 'firebase' ? require('./firebaseAuthMiddleware') : noopMiddleware;
 
-app.all('/token', authMiddleware, tokenEndpoint);
-app.all('/recordingrules', authMiddleware, recordingRulesEndpoint);
+app.all('/api/token', authMiddleware, tokenEndpoint);
+app.all('/api/recordingrules', authMiddleware, recordingRulesEndpoint);
 
 app.use((req, res, next) => {
   // Here we add Cache-Control headers in accordance with the create-react-app best practices.
@@ -38,7 +38,7 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, '../build')));
 
 app.get('*', (_, res) => {
-  // Don't cache index.html
+  // Don't cache index.htmln
   res.set('Cache-Control', 'no-cache');
   res.sendFile(path.join(__dirname, '../build/index.html'));
 });

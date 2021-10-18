@@ -1,5 +1,4 @@
-import React from 'react';
-import { ReactNode } from 'react-transition-group/node_modules/@types/react';
+import React, { ReactNode } from 'react';
 import { UserGroup } from 'types';
 import { startSession } from 'utils/firebase/session';
 import useSessionContext from '../hooks/useSessionContext';

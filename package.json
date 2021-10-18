@@ -87,7 +87,7 @@
     "test": "cross-env TZ=utc jest",
     "eject": "react-scripts eject",
     "lint": "eslint src server",
-    "server": "ts-node -T -P server/tsconfig.json server/index.ts",
+    "server": "ts-node -T -P api/tsconfig.json api/index.ts",
     "typescript:server": "tsc --noEmit -p server/",
     "test:ci": "cross-env TZ=utc jest --ci --runInBand --reporters=default --reporters=jest-junit --coverage --silent",
     "cypress:open": "cypress open",
