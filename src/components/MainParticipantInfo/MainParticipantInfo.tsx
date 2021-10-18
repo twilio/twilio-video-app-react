@@ -140,13 +140,7 @@ export default function MainParticipantInfo({ participant, children }: MainParti
   const isRecording = useIsRecording();
 
   return (
-    <div
-      data-cy-main-participant
-      data-cy-participant={participant.identity}
-      className={clsx(classes.container, {
-        [classes.fullWidth]: !isRemoteParticipantScreenSharing,
-      })}
-    >
+    <div data-cy-main-participant data-cy-participant={participant.identity} className={'relative'}>
       <div className={classes.infoContainer}>
         <div style={{ display: 'flex' }}>
           <div className={classes.identity}>

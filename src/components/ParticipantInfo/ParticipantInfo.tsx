@@ -23,15 +23,11 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       height: 0,
       overflow: 'hidden',
-      marginBottom: '0.5em',
       '& video': {
         filter: 'none',
         objectFit: 'contain !important',
       },
-      borderRadius: '4px',
-      border: `${theme.participantBorderWidth}px solid rgb(245, 248, 255)`,
       paddingTop: `calc(${(9 / 16) * 100}% - ${theme.participantBorderWidth}px)`,
-      background: 'black',
       [theme.breakpoints.down('sm')]: {
         height: theme.sidebarMobileHeight,
         width: `${(theme.sidebarMobileHeight * 16) / 9}px`,
@@ -98,7 +94,6 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     identity: {
-      background: 'rgba(0, 0, 0, 0.5)',
       color: 'white',
       padding: '0.18em 0.3em',
       margin: 0,
@@ -134,6 +129,8 @@ interface ParticipantInfoProps {
   isSelected?: boolean;
   isLocalParticipant?: boolean;
   hideParticipant?: boolean;
+  isActivePlayer?: boolean;
+  isModerator?: boolean;
 }
 
 export default function ParticipantInfo({
@@ -143,6 +140,8 @@ export default function ParticipantInfo({
   children,
   isLocalParticipant,
   hideParticipant,
+  isActivePlayer,
+  isModerator,
 }: ParticipantInfoProps) {
   const publications = usePublications(participant);
 
@@ -162,7 +161,7 @@ export default function ParticipantInfo({
 
   return (
     <div
-      className={clsx(classes.container, {
+      className={clsx('rounded-sm', classes.container, {
         [classes.hideParticipant]: hideParticipant,
         [classes.cursorPointer]: Boolean(onClick),
       })}
@@ -170,19 +169,40 @@ export default function ParticipantInfo({
       data-cy-participant={participant.identity}
     >
       <div className={classes.infoContainer}>
-        <NetworkQualityLevel participant={participant} />
+        {/* <NetworkQualityLevel participant={participant} /> */}
         <div className={classes.infoRowBottom}>
           {isScreenShareEnabled && (
             <span className={classes.screenShareIconContainer}>
               <ScreenShareIcon />
             </span>
           )}
-          <span className={classes.identity}>
+          <span className={'flex pl-2 pb-2 text-base filter drop-shadow-xl items-center font-medium text-white'}>
+            {isModerator ? (
+              <span className="bg-orange p-2 w-8 h-8 flex items-center justify-center rounded-full">
+                {participant.identity[0].toUpperCase()}
+              </span>
+            ) : null}
             <AudioLevelIndicator audioTrack={audioTrack} />
-            <Typography variant="body1" className={classes.typeography} component="span">
+            <span>
               {participant.identity}
-              {isLocalParticipant && ' (You)'}
-            </Typography>
+              {isLocalParticipant && ' (Sie)'}
+              {!isActivePlayer ? null : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 13l-7 7-7-7m14-8l-7 7-7-7"
+                  />
+                </svg>
+              )}
+            </span>
           </span>
         </div>
         <div>{isSelected && <PinIcon />}</div>

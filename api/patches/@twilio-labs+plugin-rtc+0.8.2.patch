@@ -1,0 +1,14 @@
+diff --git a/node_modules/@twilio-labs/plugin-rtc/src/serverless/functions/token.js b/node_modules/@twilio-labs/plugin-rtc/src/serverless/functions/token.js
+index 3c1db55..0b2490a 100644
+--- a/node_modules/@twilio-labs/plugin-rtc/src/serverless/functions/token.js
++++ b/node_modules/@twilio-labs/plugin-rtc/src/serverless/functions/token.js
+@@ -9,9 +9,6 @@ const MAX_ALLOWED_SESSION_DURATION = 14400;
+ module.exports.handler = async (context, event, callback) => {
+   const { ACCOUNT_SID, TWILIO_API_KEY_SID, TWILIO_API_KEY_SECRET, ROOM_TYPE, CONVERSATIONS_SERVICE_SID } = context;
+ 
+-  const authHandler = require(Runtime.getAssets()['/auth-handler.js'].path);
+-  authHandler(context, event, callback);
+-
+   const { user_identity, room_name, create_room = true, create_conversation = false } = event;
+ 
+   let response = new Twilio.Response();

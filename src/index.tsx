@@ -14,11 +14,11 @@ import theme from './theme';
 import './types';
 import { ChatProvider } from './components/ChatProvider';
 import { VideoProvider } from './components/VideoProvider';
-import { GameProvider } from './components/GameProvider';
 import useConnectionOptions from './hooks/useConnectionOptions/useConnectionOptions';
 import UnsupportedBrowserWarning from './components/UnsupportedBrowserWarning/UnsupportedBrowserWarning';
 import { SessionProvider } from './components/SessionProvider';
 import { SessionWrapper } from './components/SessionWrapper';
+import { GameProvider } from './components/GameProvider';
 
 const VideoApp = () => {
   const { error, setError } = useAppState();
@@ -43,12 +43,6 @@ ReactDOM.render(
       <Router>
         <AppStateProvider>
           <Switch>
-            {/* <PrivateRoute exact path="/">
-              <VideoApp />
-            </PrivateRoute> */}
-            {/* <PrivateRoute path="/room/:URLRoomName">
-              <VideoApp />
-            </PrivateRoute> */}
             <PrivateRoute path="/r/:URLShareToken">
               <SessionProvider>
                 <SessionWrapper>
@@ -56,9 +50,6 @@ ReactDOM.render(
                 </SessionWrapper>
               </SessionProvider>
             </PrivateRoute>
-            {/* <Route path="/login">
-              <LoginPage />
-            </Route> */}
             <Redirect to="/" />
           </Switch>
         </AppStateProvider>

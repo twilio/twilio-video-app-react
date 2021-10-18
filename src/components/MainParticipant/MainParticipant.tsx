@@ -5,13 +5,15 @@ import useMainParticipant from '../../hooks/useMainParticipant/useMainParticipan
 import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
 import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import { Participant, RemoteParticipant } from 'twilio-video';
 
-export default function MainParticipant() {
-  const mainParticipant = useMainParticipant();
+export default function MainParticipant(props: { participant: RemoteParticipant | Participant }) {
+  // const mainParticipant = useMainParticipant();
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
   const [selectedParticipant] = useSelectedParticipant();
   const screenShareParticipant = useScreenShareParticipant();
+  const mainParticipant = props.participant;
 
   const videoPriority =
     (mainParticipant === selectedParticipant || mainParticipant === screenShareParticipant) &&

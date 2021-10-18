@@ -1,5 +1,5 @@
 import '../bootstrap-globals';
-import { TwilioResponse } from '../bootstrap-globals';
+import { TwilioResponse } from '../utils/bootstrap-globals';
 
 describe('the "Twilio.Response" global variable', () => {
   let response: TwilioResponse;

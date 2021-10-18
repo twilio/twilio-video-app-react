@@ -4,8 +4,8 @@ process.env.TWILIO_API_KEY_SID = 'mockApiKeySid';
 process.env.TWILIO_API_KEY_SECRET = 'mockApiKeySecret';
 process.env.TWILIO_CONVERSATIONS_SERVICE_SID = 'mockConversationsServiceSid';
 
-import { createExpressHandler } from '../createExpressHandler';
-import { ServerlessFunction } from '../types';
+import { createExpressHandler } from '../utils/createExpressHandler';
+import { ServerlessFunction } from '../utils/types';
 import Twilio from 'twilio';
 
 jest.mock('twilio', () => jest.fn(() => 'mockTwilioClient'));

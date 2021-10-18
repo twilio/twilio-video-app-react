@@ -53,7 +53,7 @@ export default function Menu(props: { buttonClassName?: string }) {
 
   return (
     <>
-      <Button
+      <button
         onClick={() => setMenuOpen(isOpen => !isOpen)}
         ref={anchorRef}
         className={props.buttonClassName}
@@ -63,11 +63,10 @@ export default function Menu(props: { buttonClassName?: string }) {
           <MoreIcon />
         ) : (
           <>
-            Mehr
             <ExpandMoreIcon />
           </>
         )}
-      </Button>
+      </button>
       <MenuContainer
         open={menuOpen}
         onClose={() => setMenuOpen(isOpen => !isOpen)}

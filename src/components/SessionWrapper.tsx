@@ -1,11 +1,13 @@
-import React from 'react';
-import { ReactNode } from 'react-transition-group/node_modules/@types/react';
+import React, { ReactNode } from 'react';
+import { UserGroup } from 'types';
+import { startSession } from 'utils/firebase/session';
 import useSessionContext from '../hooks/useSessionContext';
 import { LoadingSpinner } from './LoadingSpinner';
+import { PopupScreen } from './PopupScreen';
 import { ISessionStatus } from './SessionProvider';
 
 export const SessionWrapper = (props: { children: ReactNode }) => {
-  const { sessionStatus, loading } = useSessionContext();
+  const { sessionStatus, loading, userGroup, groupToken } = useSessionContext();
 
   if (loading) {
     return <LoadingSpinner></LoadingSpinner>;
@@ -18,44 +20,38 @@ export const SessionWrapper = (props: { children: ReactNode }) => {
   if (sessionStatus === ISessionStatus.SESSION_NOT_STARTED) {
     return (
       <>
-        <div className="w-full h-screen flex justify-center items-center">
-          <div className="flex flex-col items-center space-y-8">
-            <p className="text-2xl text-center leading-relaxed font-bold">Dieser DemokraTisch beginnt in Kürze.</p>
-            <div
-              style={{ borderTopColor: 'transparent' }}
-              className="w-12 h-12 border-4 border-primary border-solid rounded-full animate-spin"
-            />
-          </div>
-        </div>
+        <PopupScreen>
+          <p>Dieser DemokraTisch beginnt in Kürze.</p>
+
+          {userGroup === UserGroup.Moderator ? (
+            <button className="bg-red text-white py-3 px-5 text-sm" onClick={() => startSession(groupToken as string)}>
+              Jetzt Starten
+            </button>
+          ) : null}
+        </PopupScreen>
       </>
     );
   }
 
   if (sessionStatus === ISessionStatus.SESSION_ENDED) {
     return (
-      <div className="w-full h-screen flex justify-center items-center">
-        <div className="flex flex-col items-center justify-center space-y-8">
-          <p className="text-2xl text-center leading-relaxed font-bold">Dieser DemokraTisch ist bereits beendet.</p>
-        </div>
-      </div>
+      <PopupScreen>
+        <span>Dieser DemokraTisch ist bereits beendet.</span>
+      </PopupScreen>
     );
   }
 
   if (sessionStatus === ISessionStatus.SESSION_PAUSED) {
     return (
-      <div className="w-full h-screen flex justify-center items-center">
-        <div className="flex flex-col items-center justify-center space-y-8">
-          <p className="text-2xl text-center leading-relaxed font-bold">Dieser DemokraTisch ist aktuell pausiert.</p>
-        </div>
-      </div>
+      <PopupScreen>
+        <span>Dieser DemokraTisch ist aktuell pausiert.</span>
+      </PopupScreen>
     );
   }
 
   return (
-    <div className="w-full h-screen flex justify-center items-center">
-      <p className="text-2xl text-center leading-relaxed font-bold">
-        Der gewünschte DemokraTisch konnte nicht gefunden werden.
-      </p>
-    </div>
+    <PopupScreen>
+      <span>Der gewünschte DemokraTisch konnte nicht gefunden werden.</span>
+    </PopupScreen>
   );
 };

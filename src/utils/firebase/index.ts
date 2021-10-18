@@ -1,3 +1,3 @@
-import { subscribeToSession, fetchSession } from './base';
+import { subscribeToSession, getSessionStore } from './session';
 
-export { subscribeToSession, fetchSession };
+export { subscribeToSession, getSessionStore };

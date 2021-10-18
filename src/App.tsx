@@ -1,34 +1,38 @@
-import React from 'react';
-import { styled, Theme } from '@material-ui/core/styles';
+import React, { useEffect } from 'react';
+import { styled } from '@material-ui/core/styles';
 
 import MenuBar from './components/MenuBar/MenuBar';
-import MobileTopMenuBar from './components/MobileTopMenuBar/MobileTopMenuBar';
 import PreJoinScreens from './components/PreJoinScreens/PreJoinScreens';
 import ReconnectingNotification from './components/ReconnectingNotification/ReconnectingNotification';
 import RecordingNotifications from './components/RecordingNotifications/RecordingNotifications';
 import Room from './components/Room/Room';
 
 import useHeight from './hooks/useHeight/useHeight';
-import useRoomState from './hooks/useRoomState/useRoomState';
 
 import './index.css';
+import useVideoContext from 'hooks/useVideoContext/useVideoContext';
+import useSessionContext from 'hooks/useSessionContext';
+import { UserGroup } from 'types';
+import { addSessionModerator } from 'utils/firebase/session';
+import useRoomState from 'hooks/useRoomState/useRoomState';
+import { PopupScreen } from './components/PopupScreen';
 
 const Container = styled('div')({
   display: 'grid',
   gridTemplateRows: '1fr auto',
 });
 
-const Main = styled('main')(({ theme }: { theme: Theme }) => ({
-  overflow: 'hidden',
-  paddingBottom: `${theme.footerHeight}px`, // Leave some space for the footer
-  background: 'black',
-  [theme.breakpoints.down('sm')]: {
-    paddingBottom: `${theme.mobileFooterHeight + theme.mobileTopBarHeight}px`, // Leave some space for the mobile header and footer
-  },
-}));
-
 export default function App() {
+  const { groupToken, userGroup } = useSessionContext();
+  const { room } = useVideoContext();
+  const localParticipant = room?.localParticipant;
   const roomState = useRoomState();
+
+  useEffect(() => {
+    if (groupToken && userGroup === UserGroup.Moderator && localParticipant) {
+      addSessionModerator(groupToken, localParticipant.sid);
+    }
+  }, [localParticipant]);
 
   // Here we would like the height of the main container to be the height of the viewport.
   // On some mobile browsers, 'height: 100vh' sets the height equal to that of the screen,
@@ -38,18 +42,31 @@ export default function App() {
   const height = useHeight();
 
   return (
-    <Container style={{ height }}>
-      {roomState === 'disconnected' ? (
-        <PreJoinScreens />
-      ) : (
-        <Main>
-          <ReconnectingNotification />
-          <RecordingNotifications />
-          <MobileTopMenuBar />
-          <Room />
-          <MenuBar />
-        </Main>
-      )}
-    </Container>
+    <>
+      <div className="hidden w-full h-full md:block">
+        <Container style={{ height }}>
+          {roomState === 'disconnected' ? (
+            <PreJoinScreens />
+          ) : (
+            <div className="flex flex-col w-full h-full">
+              <ReconnectingNotification />
+              <RecordingNotifications />
+              <div className="flex flex-col h-screen space-y-2 bg-grayish">
+                {/* <MobileTopMenuBar /> */}
+                <div className="flex-grow w-full">
+                  <Room />
+                </div>
+                <MenuBar />
+              </div>
+            </div>
+          )}
+        </Container>
+      </div>
+      <div className="md:hidden flex items-center justify-center w-full h-full">
+        <PopupScreen>
+          <h1 className="text-lg text-center">Bitte treten Sie dem DemokraTisch Raum auf einem größeren Gerät bei.</h1>
+        </PopupScreen>
+      </div>
+    </>
   );
 }

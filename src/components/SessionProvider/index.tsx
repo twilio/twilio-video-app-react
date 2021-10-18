@@ -1,5 +1,5 @@
 import { ISession, ISessionLabels, UserGroup } from '../../types';
-import { fetchSession, subscribeToSession } from '../../utils/firebase';
+import { getSessionStore, subscribeToSession } from '../../utils/firebase';
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -19,6 +19,7 @@ export interface ISessionContext {
   labels: ISessionLabels | undefined;
   sessionData: ISession | undefined;
   loading: boolean;
+  groupToken: string | undefined;
 }
 
 export const SessionContext = createContext<ISessionContext>(null!);
@@ -34,7 +35,6 @@ export function SessionProvider({ children }: SessionProviderProps) {
   const [sessionToken, setSessionToken] = useState<string | null>(null);
   const [sessionStatus, setSessionStatus] = useState<ISessionStatus>(ISessionStatus.AWAITING_STATUS);
   const [userGroup, setUserGroup] = useState<UserGroup>();
-  const [labels, setLabels] = useState<ISessionLabels>();
   const [sessionData, setSessionData] = useState<ISession>();
 
   const onSessionData = (data: ISession, group: UserGroup) => {
@@ -42,29 +42,26 @@ export function SessionProvider({ children }: SessionProviderProps) {
       return;
     }
 
-    console.log(data, Date.now());
-
     setLoading(false);
     if (data.isPaused) {
       setSessionStatus(ISessionStatus.SESSION_PAUSED);
-    } else if (data.startDate.seconds > Date.now() / 1000) {
+    } else if (data.startDate !== null && data.startDate.seconds > Date.now() / 1000) {
       setSessionStatus(ISessionStatus.SESSION_NOT_STARTED);
-    } else if (data.endDate.seconds < Date.now() / 1000) {
+    } else if (data.startDate !== null && data.endDate.seconds < Date.now() / 1000) {
       setSessionStatus(ISessionStatus.SESSION_ENDED);
     } else {
       setSessionStatus(ISessionStatus.SESSION_RUNNING);
     }
 
-    setLabels(data.labels);
-    setUserGroup(userGroup);
+    setUserGroup(group);
     setSessionData(data);
   };
 
   useEffect(() => {
     if (typeof URLShareToken === 'string' && URLShareToken.length !== 0) {
-      fetchSession(URLShareToken)
-        .then(dataAndGroup => {
-          onSessionData(dataAndGroup.data, dataAndGroup.group);
+      getSessionStore(URLShareToken)
+        .then(store => {
+          onSessionData(store.data, store.group);
           subscribeToSession(URLShareToken, onSessionData);
         })
         .catch(() => {
@@ -84,8 +81,9 @@ export function SessionProvider({ children }: SessionProviderProps) {
         sessionStatus,
         loading,
         userGroup,
-        labels,
+        labels: sessionData?.labels,
         sessionData,
+        groupToken: URLShareToken,
       }}
     >
       {children}

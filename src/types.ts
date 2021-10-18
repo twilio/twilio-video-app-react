@@ -1,3 +1,4 @@
+import { firestore } from 'firebase';
 import { LocalVideoTrack, RemoteVideoTrack, TwilioError } from 'twilio-video';
 
 declare module 'twilio-video' {
@@ -63,6 +64,25 @@ export interface ISession {
   roomId: string;
   labels: ISessionLabels;
   isPaused?: boolean;
-  startDate: string;
-  endDate: string;
+  startDate: firestore.Timestamp;
+  endDate: firestore.Timestamp;
+  activeScreen: ScreenType;
+  moderators: string[];
+}
+
+export enum ScreenType {
+  VideoChat = 'VIDEOCHAT',
+  Game = 'GAME',
+}
+
+export interface ICarouselGame {
+  currentPlayer: string;
+  carouselPosition: number;
+  activeCard: number;
+  seed: number;
+}
+
+export interface IQuestion {
+  category: string;
+  name: string;
 }

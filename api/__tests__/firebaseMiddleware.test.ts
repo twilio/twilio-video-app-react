@@ -1,7 +1,7 @@
 /* eslint-disable import/first */
 process.env.REACT_APP_FIREBASE_DATABASE_URL = 'mockURL';
 
-import firebaseAuthMiddleware from '../firebaseAuthMiddleware';
+import firebaseAuthMiddleware from '../utils/firebaseAuthMiddleware';
 import firebaseAdmin from 'firebase-admin';
 
 jest.mock('../serviceAccountKey.json', () => ({ mockCertificate: 'foo' }), { virtual: true });
