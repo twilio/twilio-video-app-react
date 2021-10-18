@@ -10,7 +10,9 @@ export const SessionInfo = () => {
   const startDate = sessionData?.startDate.toDate();
   const endDate = sessionData?.endDate.toDate();
 
-  const interval = setInterval(() => setNow(Date.now()), 1000 * 60);
+  const interval = setInterval(() => {
+    setNow(Date.now());
+  }, 1000 * 60);
 
   return (
     <div className="flex flex-col text-dark-blue space-y-3 items-end">

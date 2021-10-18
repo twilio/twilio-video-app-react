@@ -49,6 +49,7 @@ export const setCarouselPosition = (groupToken: string, nextIndex: number) => {
       .set(
         {
           carouselPosition: nextIndex,
+          seed: Date.now(),
         },
         { merge: true }
       );

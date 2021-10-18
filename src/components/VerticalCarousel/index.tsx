@@ -13,13 +13,15 @@ import { RevealedCard } from 'components/RevealedCard';
  */
 
 const VerticalCarousel = ({ data }: any) => {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState<number>();
   const { revealedCard, setRevealedCard } = useGameContext();
   const [revealableIndex, setRevealableIndex] = useState<number>();
   const { groupToken } = useSessionContext();
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
   const [currentPlayer, setCurrentPlayer] = useState<string>();
+  const [initialized, setInitialized] = useState(false);
+  const [seed, setSeed] = useState<number>();
 
   const screenWidth = window.screen.width;
 
@@ -36,6 +38,9 @@ const VerticalCarousel = ({ data }: any) => {
   const visibleStyleThreshold = shuffleThreshold / 2;
 
   const determinePlacement = (itemIndex: number) => {
+    if (!activeIndex) {
+      return 0;
+    }
     // If these match, the item is active
     if (activeIndex === itemIndex) return 0;
 
@@ -67,14 +72,22 @@ const VerticalCarousel = ({ data }: any) => {
   };
 
   const revealQuestion = () => {
-    setRevealedCard(data[activeIndex].name);
+    if (activeIndex) {
+      setRevealedCard(data[activeIndex].name);
+    }
   };
 
   const approveQuestion = () => {
-    setActiveCard(groupToken as string, activeIndex);
+    if (activeIndex) {
+      setActiveCard(groupToken as string, activeIndex);
+    }
   };
 
   const spinTo = (newPos: number) => {
+    if (!activeIndex) {
+      return;
+    }
+
     const diff = newPos - activeIndex;
     const dir = diff >= 0;
     const steps = diff;
@@ -98,23 +111,28 @@ const VerticalCarousel = ({ data }: any) => {
         }
         last = next;
         setActiveIndex(next);
-      }, (i * i) / 100 + i * 2);
+      }, i * i + i * 2);
     }
 
     setTimeout(() => {
       setActiveIndex(newPos);
-    }, (steps * steps) / 50 + steps * 2);
+    }, steps * steps + steps * 2);
   };
 
   useEffect(() => {
     subscribeToCarouselGame(groupToken as string, game => {
       const currentCard = game.carouselPosition ?? 0;
       try {
-        if (activeIndex !== currentCard) {
-          spinTo(currentCard);
-          setCurrentPlayer(game.currentPlayer);
-          setRevealableIndex(game.activeCard);
+        if (!initialized) {
+          setActiveIndex(currentCard);
+          setInitialized(true);
         }
+        if (seed !== game.seed) {
+          spinTo(currentCard);
+          setSeed(game.seed);
+        }
+        setCurrentPlayer(game.currentPlayer);
+        setRevealableIndex(game.activeCard);
       } catch (error) {
         console.error(error);
       }
@@ -146,19 +164,19 @@ const VerticalCarousel = ({ data }: any) => {
             <img src="/assets/random-card.svg" alt="Neue Karte" />
           </button>
         </div>
-        <div className="h-full relative px-20">
+        <div className="h-full relative px-20 transform -translate-x-20">
           {data.map((item: any, i: number) => {
             const pos = determinePlacement(i);
             const visible = Math.abs(pos) <= visibleStyleThreshold;
 
             let tx, ty;
             if (visible) {
-              tx = -80 + (activeIndex === i ? 0 : (Math.sqrt(Math.abs(pos) * 0.11) * 0.05 * pos * pos) / Math.abs(pos));
+              tx = activeIndex === i ? 0 : (Math.sqrt(Math.abs(pos) * 0.11) * 0.05 * pos * pos) / Math.abs(pos);
               ty = pos;
             } else {
               const edgePos = (visibleStyleThreshold * Math.abs(pos)) / pos;
               ty = edgePos;
-              tx = -80 + (Math.sqrt(Math.abs(edgePos) * 0.11) * 0.05 * edgePos * edgePos) / Math.abs(edgePos);
+              tx = (Math.sqrt(Math.abs(edgePos) * 0.11) * 0.05 * edgePos * edgePos) / Math.abs(edgePos);
             }
 
             return (
@@ -167,7 +185,7 @@ const VerticalCarousel = ({ data }: any) => {
                   active: activeIndex === i,
                   visible,
                 })}
-                key={item.id}
+                key={i}
                 style={{
                   transform: `translateY(${pos}px) translateX(${tx}px) rotate(${activeIndex === i ? 0 : -pos / 12}deg)`,
                   zIndex: -1 * Math.abs(pos / itemHeight) + data.length,
