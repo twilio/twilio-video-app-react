@@ -39,11 +39,12 @@
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "4.0.3",
+    "react-spring": "^9.3.0",
     "rimraf": "3.0.2",
     "strip-color": "^0.1.0",
     "ts-node": "^9.1.1",
     "twilio": "^3.63.1",
-    "twilio-video": "github:twilio/twilio-video.js#2.18.0-rc2",
+    "twilio-video": "github:twilio/twilio-video.js#2.19.0-rc1",
     "typescript": "^3.8.3"
   },
   "devDependencies": {
