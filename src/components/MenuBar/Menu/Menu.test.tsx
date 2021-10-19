@@ -160,7 +160,7 @@ describe('the Menu component', () => {
         expect(
           wrapper
             .find(MenuItem)
-            .at(0)
+            .at(1)
             .prop('disabled')
         ).toBe(true);
       });
@@ -188,7 +188,7 @@ describe('the Menu component', () => {
       expect(wrapper.find(AboutDialog).prop('open')).toBe(false);
       wrapper
         .find(MenuItem)
-        .at(2)
+        .at(3)
         .simulate('click');
       expect(wrapper.find(AboutDialog).prop('open')).toBe(true);
     });
@@ -198,7 +198,7 @@ describe('the Menu component', () => {
       expect(wrapper.find(DeviceSelectionDialog).prop('open')).toBe(false);
       wrapper
         .find(MenuItem)
-        .at(1)
+        .at(0)
         .simulate('click');
       expect(wrapper.find(DeviceSelectionDialog).prop('open')).toBe(true);
     });
