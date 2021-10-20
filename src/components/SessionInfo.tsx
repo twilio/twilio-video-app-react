@@ -34,10 +34,12 @@ export const SessionInfo = () => {
       <div className="flex items-center space-x-3 text-purple text-base">
         <img src="/assets/clock.svg" alt="Uhr Icon" />
 
-        <p>
-          {sessionData?.endDate ? Math.floor((sessionData?.endDate.toMillis() - now) / 1000 / 60) : null}
-          min verbleiben
-        </p>
+        {sessionData?.endDate && sessionData.endDate.toMillis() > Date.now() ? (
+          <p>
+            {sessionData?.endDate ? Math.floor((sessionData?.endDate.toMillis() - now) / 1000 / 60) : null}
+            min verbleiben
+          </p>
+        ) : null}
       </div>
     </div>
   );

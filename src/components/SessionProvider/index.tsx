@@ -28,7 +28,7 @@ interface SessionProviderProps {
   children: ReactNode;
 }
 
-export function SessionProvider({ children }: SessionProviderProps) {
+export const SessionProvider = React.memo(({ children }: SessionProviderProps) => {
   const { URLShareToken } = useParams() as { URLShareToken: string };
 
   const [loading, setLoading] = useState(true);
@@ -62,7 +62,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
       getSessionStore(URLShareToken)
         .then(store => {
           onSessionData(store.data, store.group);
-          subscribeToSession(URLShareToken, onSessionData);
+          subscribeToSession('sprov', URLShareToken, onSessionData);
         })
         .catch(() => {
           setSessionStatus(ISessionStatus.NOT_FOUND);
@@ -89,4 +89,4 @@ export function SessionProvider({ children }: SessionProviderProps) {
       {children}
     </SessionContext.Provider>
   );
-}
+});

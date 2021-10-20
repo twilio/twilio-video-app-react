@@ -15,7 +15,7 @@ interface GameProviderProps {
   children: ReactNode;
 }
 
-export function GameProvider({ children }: GameProviderProps) {
+export const GameProvider = React.memo(({ children }: GameProviderProps) => {
   const [revealedCard, setRevealedCard] = useState<string>();
   const [questions, setQuestions] = useState<IQuestion[]>([]);
   const [fetched, setFetched] = useState(false);
@@ -47,4 +47,4 @@ export function GameProvider({ children }: GameProviderProps) {
       {children}
     </GameContext.Provider>
   );
-}
+});

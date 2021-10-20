@@ -15,33 +15,37 @@ export interface ParticipantProps {
   isModerator?: boolean;
 }
 
-export default function Participant({
-  participant,
-  videoOnly,
-  enableScreenShare,
-  onClick,
-  isSelected,
-  isLocalParticipant,
-  hideParticipant,
-  isActivePlayer,
-  isModerator,
-}: ParticipantProps) {
-  return (
-    <ParticipantInfo
-      participant={participant}
-      onClick={onClick}
-      isSelected={isSelected}
-      isLocalParticipant={isLocalParticipant}
-      hideParticipant={hideParticipant}
-      isActivePlayer={isActivePlayer}
-      isModerator={isModerator}
-    >
-      <ParticipantTracks
+const Participant = React.memo(
+  ({
+    participant,
+    videoOnly,
+    enableScreenShare,
+    onClick,
+    isSelected,
+    isLocalParticipant,
+    hideParticipant,
+    isActivePlayer,
+    isModerator,
+  }: ParticipantProps) => {
+    return (
+      <ParticipantInfo
         participant={participant}
-        videoOnly={videoOnly}
-        enableScreenShare={enableScreenShare}
+        onClick={onClick}
+        isSelected={isSelected}
         isLocalParticipant={isLocalParticipant}
-      />
-    </ParticipantInfo>
-  );
-}
+        hideParticipant={hideParticipant}
+        isActivePlayer={isActivePlayer}
+        isModerator={isModerator}
+      >
+        <ParticipantTracks
+          participant={participant}
+          videoOnly={videoOnly}
+          enableScreenShare={enableScreenShare}
+          isLocalParticipant={isLocalParticipant}
+        />
+      </ParticipantInfo>
+    );
+  }
+);
+
+export default Participant;

@@ -66,7 +66,11 @@ export const GridVideoChatLayout = () => {
       >
         <div className="col-span-3 row-span-3 overflow-hidden aspect-w-16 aspect-h-9 h-full">
           {moderatorParitcipants.length >= 1 ? (
-            <ChooseableParticipant participant={moderatorParitcipants[0]} isModerator />
+            <ChooseableParticipant
+              participant={moderatorParitcipants[0]}
+              isModerator
+              isLocalParticipant={localParticipant.sid === moderatorParitcipants[0].sid}
+            />
           ) : null}
         </div>
         <RevealedCard />

@@ -3,6 +3,7 @@ import { getSessionStore } from '.';
 import { db } from './base';
 
 let _game: ICarouselGame;
+const _subscriptions: { [key: string]: any } = {};
 
 export const fetchQuestions = () =>
   new Promise<IQuestion[]>((resolve, reject) => {
@@ -73,9 +74,17 @@ export const setActiveCard = (groupToken: string, index: number) => {
   });
 };
 
-export const subscribeToCarouselGame = (groupToken: string, callback: (game: ICarouselGame) => void) => {
+export const subscribeToCarouselGame = (
+  subName: string,
+  groupToken: string,
+  callback: (game: ICarouselGame) => void
+) => {
   getSessionStore(groupToken).then(store => {
-    db()
+    if (_subscriptions[subName]) {
+      _subscriptions[subName]();
+      delete _subscriptions[subName];
+    }
+    _subscriptions[subName] = db()
       .collection('sessions')
       .doc(store.doc.id)
       .collection('games')
