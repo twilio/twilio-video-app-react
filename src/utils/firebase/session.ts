@@ -1,10 +1,11 @@
-import firebase, { firestore } from 'firebase';
+import { firestore } from 'firebase';
 import { ISession, UserGroup } from 'types';
 import { db } from './base';
 
 type Store = { data: ISession; group: UserGroup; doc: firestore.QueryDocumentSnapshot<firestore.DocumentData> };
 
 let _sessionStore: Store | null;
+const _subscriptions: { [key: string]: any } = {};
 
 const groupTokenValid = (groupToken: string) => {
   return typeof groupToken === 'string' && groupToken.length === 0;
@@ -46,12 +47,20 @@ export const getSessionStore = (groupToken: string) =>
       .catch(reject);
   });
 
-export const subscribeToSession = (groupToken: string, callback: (data: ISession, userGroup: UserGroup) => void) => {
+export const subscribeToSession = (
+  subName: string,
+  groupToken: string,
+  callback: (data: ISession, userGroup: UserGroup) => void
+) => {
+  if (_subscriptions[subName]) {
+    _subscriptions[subName]();
+  }
+
   if (groupTokenValid(groupToken)) {
     throw new Error('shareToken undefined.');
   }
 
-  db()
+  _subscriptions[subName] = db()
     .collection('sessions')
     .where('shareTokens.' + groupToken, '!=', null)
     .onSnapshot(snapshot => {

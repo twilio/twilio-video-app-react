@@ -1,8 +1,6 @@
 import useGameContext from 'hooks/useGameContext';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { getFirebase } from 'utils/firebase/base';
-import { fetchQuestions } from 'utils/firebase/game';
-// import getFirebase from '../../firebase.config';
 import VerticalCarousel from '../VerticalCarousel';
 
 const firebase = getFirebase();

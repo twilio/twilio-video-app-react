@@ -1,8 +1,4 @@
 import React from 'react';
-import clsx from 'clsx';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-
-import { Button } from '@material-ui/core';
 
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 

@@ -13,7 +13,7 @@ export default function ParticipantList() {
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
   const participants = useParticipants();
-  const [selectedParticipant, setSelectedParticipant] = useSelectedParticipant();
+  const [selectedParticipant] = useSelectedParticipant();
   // const screenShareParticipant = useScreenShareParticipant();
   const { sessionData } = useSessionContext();
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 import useSessionContext from 'hooks/useSessionContext';
@@ -6,6 +6,14 @@ import useVideoContext from 'hooks/useVideoContext/useVideoContext';
 import { setActiveCard, setCarouselPosition, subscribeToCarouselGame } from 'utils/firebase/game';
 import useGameContext from 'hooks/useGameContext';
 import { RevealedCard } from 'components/RevealedCard';
+import { ISessionStatus } from 'components/SessionProvider';
+
+const InfoRow = (props: { iconSrc: string; text: string }) => (
+  <div className="flex items-center space-x-4 py-2">
+    <img src={props.iconSrc} alt="Info Icon" />
+    <span>{props.text}</span>
+  </div>
+);
 
 /*
  * Read the blog post here:
@@ -13,15 +21,17 @@ import { RevealedCard } from 'components/RevealedCard';
  */
 
 const VerticalCarousel = ({ data }: any) => {
-  const [activeIndex, setActiveIndex] = useState<number>();
+  const [activeIndex, setActiveIndex] = useState<number>(-1);
   const { revealedCard, setRevealedCard } = useGameContext();
   const [revealableIndex, setRevealableIndex] = useState<number>();
-  const { groupToken } = useSessionContext();
+  const { groupToken, sessionStatus } = useSessionContext();
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
   const [currentPlayer, setCurrentPlayer] = useState<string>();
-  const [initialized, setInitialized] = useState(false);
-  const [seed, setSeed] = useState<number>();
+  const [, setSeed] = useState<number>();
+  const [spinTimeouts, setSpinTimeouts] = useState([] as NodeJS.Timeout[]);
+  const activeIndexRef = useRef<number>();
+  activeIndexRef.current = activeIndex;
 
   const screenWidth = window.screen.width;
 
@@ -67,6 +77,10 @@ const VerticalCarousel = ({ data }: any) => {
   };
 
   const handleClick = () => {
+    if (spinTimeouts.length > 0) {
+      return;
+    }
+
     const nextCard = Math.round(Math.random() * (data.length - 1));
     setCarouselPosition(groupToken as string, nextCard);
   };
@@ -88,54 +102,66 @@ const VerticalCarousel = ({ data }: any) => {
       return;
     }
 
-    const diff = newPos - activeIndex;
-    const dir = diff >= 0;
-    const steps = diff;
-
-    console.log({ diff, dir, steps, newPos, activeIndex });
-
-    let last = activeIndex;
-    for (let i = 0; i < steps; i++) {
-      setTimeout(() => {
-        let next = last;
-        if (dir) {
-          next += 1;
-          if (next >= data.length) {
-            next = 0;
-          }
-        } else {
-          next -= 1;
-          if (next < 0) {
-            next = data.length - 1;
-          }
-        }
-        last = next;
-        setActiveIndex(next);
-      }, i * i + i * 2);
+    if (spinTimeouts.length > 0) {
+      for (let _t of spinTimeouts) {
+        clearTimeout(_t);
+      }
+      setSpinTimeouts([]);
     }
 
-    setTimeout(() => {
-      setActiveIndex(newPos);
-    }, steps * steps + steps * 2);
+    const diff = newPos - activeIndex;
+    const dir = diff >= 0 ? 1 : -1;
+    const steps = Math.abs(diff);
+
+    const startTime = Date.now();
+    const duration = 10000;
+    const sqDuration = Math.sqrt(duration * 0.1);
+
+    let next: number;
+    const timeouts = [];
+    for (let i = 0; i < duration; i += 20) {
+      timeouts.push(
+        setTimeout(() => {
+          const dt = Date.now() - startTime;
+          const doneSteps = (Math.sqrt(dt * 0.1) / sqDuration) * steps;
+          const dirSteps = doneSteps * dir;
+
+          next = (activeIndex + dirSteps) % data.length;
+          if (next < 0) {
+            next = data.length - 1 + next;
+          }
+
+          setActiveIndex(next);
+        }, i)
+      );
+    }
+
+    timeouts.push(
+      setTimeout(() => {
+        setActiveIndex(newPos);
+        setSpinTimeouts([]);
+      }, duration + 50)
+    );
+
+    setSpinTimeouts(timeouts);
   };
 
   useEffect(() => {
-    subscribeToCarouselGame(groupToken as string, game => {
+    subscribeToCarouselGame('game', groupToken as string, game => {
       const currentCard = game.carouselPosition ?? 0;
-      try {
-        if (!initialized) {
-          setActiveIndex(currentCard);
-          setInitialized(true);
-        }
-        if (seed !== game.seed) {
-          spinTo(currentCard);
-          setSeed(game.seed);
-        }
-        setCurrentPlayer(game.currentPlayer);
-        setRevealableIndex(game.activeCard);
-      } catch (error) {
-        console.error(error);
+      const _activeIndex = activeIndexRef.current;
+      if (_activeIndex === -1) {
+        setActiveIndex(currentCard);
       }
+      setSeed(_seed => {
+        if (_seed !== undefined && _seed !== game.seed) {
+          spinTo(currentCard);
+        }
+        return game.seed;
+      });
+
+      setCurrentPlayer(game.currentPlayer);
+      setRevealableIndex(game.activeCard);
     });
   }, []);
 
@@ -147,7 +173,11 @@ const VerticalCarousel = ({ data }: any) => {
     }
   }, [data, revealableIndex]);
 
-  const normalInvisible = currentPlayer !== localParticipant.sid ? ' invisible' : '';
+  const normalInvisible = localParticipant.sid === currentPlayer ? ' opacity-100' : ' opacity-0';
+
+  if (sessionStatus !== ISessionStatus.SESSION_RUNNING || activeIndex === -1) {
+    return null;
+  }
 
   return (
     <div className="container h-full shadow-lg mx-auto px-2 lg:px-5 overflow-hidden">
@@ -156,8 +186,7 @@ const VerticalCarousel = ({ data }: any) => {
           <button
             type="button"
             className={
-              'shadow-lg rounded-full bg-white w-16 h-16 hover:shadow-sm transition-shadow duration-500' +
-              normalInvisible
+              'shadow-lg rounded-full bg-white w-16 h-16 hover:shadow-sm transition-all duration-500' + normalInvisible
             }
             onClick={handleClick}
           >
@@ -182,7 +211,7 @@ const VerticalCarousel = ({ data }: any) => {
             return (
               <button
                 className={cn('cursor-default z-0 relative', 'carousel-item', {
-                  active: activeIndex === i,
+                  active: Math.round(activeIndex ?? 0) === i,
                   visible,
                 })}
                 key={i}
@@ -204,7 +233,7 @@ const VerticalCarousel = ({ data }: any) => {
         </div>
         <button
           className={
-            'w-16 h-16 rounded-full bg-purple text-white transform translate-x-0 shadow-xl hover:shadow-none transition-shadow duration-500' +
+            'w-16 h-16 rounded-full bg-purple text-white transform translate-x-0 shadow-xl hover:shadow-none transition-all duration-500' +
             normalInvisible
           }
           onClick={() => revealQuestion()}
@@ -212,16 +241,25 @@ const VerticalCarousel = ({ data }: any) => {
           <p className="text-3xl z-40">-{`>`}</p>
         </button>
         <div className="flex justify-center items-center space-x-5">
-          <div className="flex-col h-full">
-            <div className="w-56 h-32 lg:h-60 lg:w-96">
+          <div className="flex flex-col justify-center space-y-3 w-56 lg:w-96">
+            <InfoRow
+              iconSrc="/assets/info.svg"
+              text="Lorem ipsum dolor sit amet, consectet uer adipiscing elit, sed diam nonummy nibheuismod tincidunt ut laoreet"
+            />
+            <div className="w-full h-32 lg:h-60">
               <RevealedCard />
             </div>
+            <InfoRow
+              iconSrc="/assets/info.svg"
+              text="Lorem ipsum dolor sit amet, consectet uer adipiscing elit, sed diam nonummy nibheuismod tincidunt ut laoreet"
+            />
           </div>
           <button
             className={
-              'cursor-pointer w-16 h-16 flex items-center justify-center rounded-full bg-purple text-white' +
-              (revealedCard === '' ? ' invisible' : '') +
-              normalInvisible
+              'cursor-pointer w-16 h-16 flex items-center justify-center rounded-full bg-purple text-white transition-opacity duration-500' +
+              (revealedCard === '' || spinTimeouts.length !== 0 || currentPlayer !== localParticipant.sid
+                ? ' opacity-0'
+                : ' opacity-100')
             }
             onClick={approveQuestion}
           >

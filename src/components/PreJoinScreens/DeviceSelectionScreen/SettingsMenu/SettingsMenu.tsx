@@ -1,8 +1,6 @@
 import React, { useState, useRef } from 'react';
-import Button from '@material-ui/core/Button';
 import MenuContainer from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import MoreIcon from '@material-ui/icons/MoreVert';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, Theme, useMediaQuery } from '@material-ui/core';
 
@@ -18,13 +16,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function SettingsMenu({
-  mobileButtonClass,
-  className,
-}: {
-  mobileButtonClass?: string;
-  className?: string;
-}) {
+export default function SettingsMenu({ className }: { mobileButtonClass?: string; className?: string }) {
   const classes = useStyles();
   const { roomType } = useAppState();
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));

@@ -11,6 +11,10 @@ export const ChooseableParticipant = (props: ParticipantProps) => {
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
 
+  if (!userGroup) {
+    return null;
+  }
+
   return (
     <div className="relative rounded-xl overflow-hidden">
       {userGroup === UserGroup.Moderator && props.participant.sid !== localParticipant.sid ? (
@@ -22,7 +26,7 @@ export const ChooseableParticipant = (props: ParticipantProps) => {
           }}
         >
           <button className="text-black bg-white rounded-full p-2 cursor-pointer">
-            <img src="/assets/carousel.svg" className="w-12 transform group-hover:scale-50" />
+            <img src="/assets/carousel.svg" className="w-12 transform group-hover:scale-50" alt="Gluecksrad Icon" />
           </button>
         </div>
       ) : null}

@@ -138,7 +138,7 @@ img {
   padding: 0;
   opacity: 0;
   top: 42.5%;
-  transition: transform 0.4s ease, opacity 0.4s ease;
+  /* transition: opacity 0.4s ease; */
   box-shadow: 0px 0px 45px rgba(42, 56, 90, 0.1);
   border-radius: 3px;
 }
