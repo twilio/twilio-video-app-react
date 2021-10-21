@@ -7,8 +7,6 @@ import ReconnectingNotification from './components/ReconnectingNotification/Reco
 import RecordingNotifications from './components/RecordingNotifications/RecordingNotifications';
 import Room from './components/Room/Room';
 
-import useHeight from './hooks/useHeight/useHeight';
-
 import './index.css';
 import useVideoContext from 'hooks/useVideoContext/useVideoContext';
 import useSessionContext from 'hooks/useSessionContext';

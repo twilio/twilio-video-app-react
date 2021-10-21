@@ -1,4 +1,4 @@
-import { ICarouselGame, IQuestion, ScreenType, UserGroup } from 'types';
+import { ICarouselGame, IQuestion } from 'types';
 import { getSessionStore } from '.';
 import { db } from './base';
 

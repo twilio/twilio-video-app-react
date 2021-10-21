@@ -1,12 +1,9 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 import DeviceSelectionScreen from './DeviceSelectionScreen/DeviceSelectionScreen';
-import IntroContainer from '../IntroContainer/IntroContainer';
 import MediaErrorSnackbar from './MediaErrorSnackbar/MediaErrorSnackbar';
 import RoomNameScreen from './RoomNameScreen/RoomNameScreen';
 import { useAppState } from '../../state';
-import { useParams } from 'react-router-dom';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
-import { subscribeToSession } from '../../utils/firebase';
 import useSessionContext from 'hooks/useSessionContext';
 import { getUid } from 'utils/firebase/base';
 import { PopupScreen } from 'components/PopupScreen';

@@ -13,7 +13,6 @@ export enum ISessionStatus {
 }
 
 export interface ISessionContext {
-  sessionToken: string | null;
   sessionStatus: ISessionStatus;
   userGroup: UserGroup | undefined;
   labels: ISessionLabels | undefined;
@@ -32,7 +31,6 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
   const { URLShareToken } = useParams() as { URLShareToken: string };
 
   const [loading, setLoading] = useState(true);
-  const [sessionToken, setSessionToken] = useState<string | null>(null);
   const [sessionStatus, setSessionStatus] = useState<ISessionStatus>(ISessionStatus.AWAITING_STATUS);
   const [userGroup, setUserGroup] = useState<UserGroup>();
   const [sessionData, setSessionData] = useState<ISession>();
@@ -77,7 +75,6 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
   return (
     <SessionContext.Provider
       value={{
-        sessionToken,
         sessionStatus,
         loading,
         userGroup,

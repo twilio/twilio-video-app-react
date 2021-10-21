@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 import useSessionContext from 'hooks/useSessionContext';
@@ -6,9 +6,10 @@ import useVideoContext from 'hooks/useVideoContext/useVideoContext';
 import { setActiveCard, setCarouselPosition, subscribeToCarouselGame } from 'utils/firebase/game';
 import useGameContext from 'hooks/useGameContext';
 import { RevealedCard } from 'components/RevealedCard';
+import { ISessionStatus } from 'components/SessionProvider';
 
 const InfoRow = (props: { iconSrc: string; text: string }) => (
-  <div className="flex items-center h-20 space-x-4">
+  <div className="flex items-center space-x-4 py-2">
     <img src={props.iconSrc} alt="Info Icon" />
     <span>{props.text}</span>
   </div>
@@ -23,11 +24,11 @@ const VerticalCarousel = ({ data }: any) => {
   const [activeIndex, setActiveIndex] = useState<number>(-1);
   const { revealedCard, setRevealedCard } = useGameContext();
   const [revealableIndex, setRevealableIndex] = useState<number>();
-  const { groupToken } = useSessionContext();
+  const { groupToken, sessionStatus } = useSessionContext();
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
   const [currentPlayer, setCurrentPlayer] = useState<string>();
-  const [seed, setSeed] = useState<number>();
+  const [, setSeed] = useState<number>();
   const [spinTimeouts, setSpinTimeouts] = useState([] as NodeJS.Timeout[]);
   const activeIndexRef = useRef<number>();
   activeIndexRef.current = activeIndex;
@@ -148,19 +149,19 @@ const VerticalCarousel = ({ data }: any) => {
   useEffect(() => {
     subscribeToCarouselGame('game', groupToken as string, game => {
       const currentCard = game.carouselPosition ?? 0;
-      try {
-        if (activeIndex === -1) {
-          setActiveIndex(currentCard);
-        }
-        if (seed !== game.seed) {
-          spinTo(currentCard);
-          setSeed(game.seed);
-        }
-        setCurrentPlayer(game.currentPlayer);
-        setRevealableIndex(game.activeCard);
-      } catch (error) {
-        console.error(error);
+      const _activeIndex = activeIndexRef.current;
+      if (_activeIndex === -1) {
+        setActiveIndex(currentCard);
       }
+      setSeed(_seed => {
+        if (_seed !== undefined && _seed !== game.seed) {
+          spinTo(currentCard);
+        }
+        return game.seed;
+      });
+
+      setCurrentPlayer(game.currentPlayer);
+      setRevealableIndex(game.activeCard);
     });
   }, []);
 
@@ -172,9 +173,9 @@ const VerticalCarousel = ({ data }: any) => {
     }
   }, [data, revealableIndex]);
 
-  const normalInvisible = localParticipant.sid === currentPlayer ? ' opacity-100' : ' opacity-0';
+  const normalInvisible = localParticipant.sid === currentPlayer ? ' opacity-100' : ' opacity-100';
 
-  if (activeIndex === -1) {
+  if (sessionStatus !== ISessionStatus.SESSION_RUNNING || activeIndex === -1) {
     return null;
   }
 
@@ -185,8 +186,7 @@ const VerticalCarousel = ({ data }: any) => {
           <button
             type="button"
             className={
-              'shadow-lg rounded-full bg-white w-16 h-16 hover:shadow-sm transition-shadow duration-500' +
-              normalInvisible
+              'shadow-lg rounded-full bg-white w-16 h-16 hover:shadow-sm transition-all duration-500' + normalInvisible
             }
             onClick={handleClick}
           >
@@ -233,7 +233,7 @@ const VerticalCarousel = ({ data }: any) => {
         </div>
         <button
           className={
-            'w-16 h-16 rounded-full bg-purple text-white transform translate-x-0 shadow-xl hover:shadow-none transition-shadow duration-500' +
+            'w-16 h-16 rounded-full bg-purple text-white transform translate-x-0 shadow-xl hover:shadow-none transition-all duration-500' +
             normalInvisible
           }
           onClick={() => revealQuestion()}

@@ -3,8 +3,7 @@ import useVideoContext from 'hooks/useVideoContext/useVideoContext';
 import React from 'react';
 import useSessionContext from 'hooks/useSessionContext';
 import { ChooseableParticipant } from 'components/ChooseableParticipant';
-import { subscribeToCarouselGame } from 'utils/firebase/game';
-import { ISession } from 'types';
+import { ISession, UserGroup } from 'types';
 import { sortedParticipantsByCategorie } from 'utils/participants';
 import { RevealedCard } from 'components/RevealedCard';
 import { SessionInfo } from 'components/SessionInfo';
@@ -13,7 +12,11 @@ export const GridVideoChatLayout = () => {
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
   const participants = useParticipants();
-  const { sessionData, groupToken } = useSessionContext();
+  const { sessionData, userGroup } = useSessionContext();
+
+  if (userGroup === UserGroup.Moderator && !sessionData?.moderators.includes(localParticipant.sid)) {
+    return null;
+  }
 
   const { moderatorParitcipants, normalParticipants } = sortedParticipantsByCategorie(
     sessionData as ISession,
@@ -64,7 +67,7 @@ export const GridVideoChatLayout = () => {
         className="flex-grow h-full grid grid-cols-4 grid-rows-4 gap-2 justify-start items-start"
         style={{ width: 'calc(' }}
       >
-        <div className="col-span-3 row-span-3 overflow-hidden aspect-w-16 aspect-h-9 h-full">
+        <div className="col-span-3 row-span-3 overflow-hidden h-full">
           {moderatorParitcipants.length >= 1 ? (
             <ChooseableParticipant
               participant={moderatorParitcipants[0]}
@@ -78,7 +81,7 @@ export const GridVideoChatLayout = () => {
         {moderatorParitcipants
           .filter((part, i) => i > 0)
           .map(participant => (
-            <div className="aspect-w-16 aspect-h-9 h-full">
+            <div className="h-full">
               <ChooseableParticipant
                 participant={participant}
                 key={participant.sid}

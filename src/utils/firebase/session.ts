@@ -1,4 +1,4 @@
-import firebase, { firestore } from 'firebase';
+import { firestore } from 'firebase';
 import { ISession, UserGroup } from 'types';
 import { db } from './base';
 

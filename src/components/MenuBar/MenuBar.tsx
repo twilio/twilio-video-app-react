@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import Menu from './Menu/Menu';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
-import { Typography, Grid, Hidden } from '@material-ui/core';
+import { Typography, Grid } from '@material-ui/core';
 import ToggleAudioButton from '../Buttons/ToggleAudioButton/ToggleAudioButton';
 import ToggleVideoButton from '../Buttons/ToggleVideoButton/ToggleVideoButton';
 // import useGameContext from '../../hooks/useGameContext/useGameContext';
@@ -62,10 +62,8 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function MenuBar() {
   const classes = useStyles();
   const { isSharingScreen, toggleScreenShare } = useVideoContext();
-  // const { isGameVisible, toggleGameVisible } = useGameContext();
   const roomState = useRoomState();
   const isReconnecting = roomState === 'reconnecting';
-  const { room } = useVideoContext();
   const { userGroup, sessionData, groupToken } = useSessionContext();
 
   const toggleGameScreen = () => {

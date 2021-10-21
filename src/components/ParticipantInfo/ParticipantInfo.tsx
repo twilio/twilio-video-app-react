@@ -5,7 +5,6 @@ import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, Remote
 
 import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
 import AvatarIcon from '../../icons/AvatarIcon';
-import NetworkQualityLevel from '../NetworkQualityLevel/NetworkQualityLevel';
 import PinIcon from './PinIcon/PinIcon';
 import ScreenShareIcon from '../../icons/ScreenShareIcon';
 import Typography from '@material-ui/core/Typography';
@@ -28,14 +27,6 @@ const useStyles = makeStyles((theme: Theme) =>
         objectFit: 'contain !important',
       },
       paddingTop: `calc(${(9 / 16) * 100}% - ${theme.participantBorderWidth}px)`,
-      [theme.breakpoints.down('sm')]: {
-        height: theme.sidebarMobileHeight,
-        width: `${(theme.sidebarMobileHeight * 16) / 9}px`,
-        marginRight: '8px',
-        marginBottom: '0',
-        fontSize: '12px',
-        paddingTop: `${theme.sidebarMobileHeight - 2}px`,
-      },
     },
     innerContainer: {
       position: 'absolute',
