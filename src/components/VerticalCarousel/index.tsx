@@ -173,7 +173,7 @@ const VerticalCarousel = ({ data }: any) => {
     }
   }, [data, revealableIndex]);
 
-  const normalInvisible = localParticipant.sid === currentPlayer ? ' opacity-100' : ' opacity-100';
+  const normalInvisible = localParticipant.sid === currentPlayer ? ' opacity-100' : ' opacity-0';
 
   if (sessionStatus !== ISessionStatus.SESSION_RUNNING || activeIndex === -1) {
     return null;
