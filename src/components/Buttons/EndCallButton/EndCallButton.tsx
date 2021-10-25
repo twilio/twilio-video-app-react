@@ -1,13 +1,24 @@
+import useSessionContext from 'hooks/useSessionContext';
 import React from 'react';
+import { UserGroup } from 'types';
+import { endSession } from 'utils/firebase/session';
 
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
 export default function EndCallButton(props: { className?: string }) {
   const { room } = useVideoContext();
+  const { groupToken, userGroup } = useSessionContext();
+
+  const onEndCall = () => {
+    if (groupToken && userGroup === UserGroup.Moderator) {
+      endSession(groupToken);
+    }
+    room!.disconnect();
+  };
 
   return (
     <button
-      onClick={() => room!.disconnect()}
+      onClick={onEndCall}
       className={'rounded-full bg-purple hover:shadow-xl p-5 transition-all duration-500'}
       data-cy-disconnect
     >

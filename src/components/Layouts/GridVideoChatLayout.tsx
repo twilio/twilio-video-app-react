@@ -91,10 +91,9 @@ export const GridVideoChatLayout = () => {
             </div>
           ))}
         {normalParticipants.map(participant => (
-          <div>
+          <div key={participant.sid}>
             <ChooseableParticipant
               participant={participant}
-              key={participant.sid}
               isLocalParticipant={localParticipant.sid === participant.sid}
             />
           </div>

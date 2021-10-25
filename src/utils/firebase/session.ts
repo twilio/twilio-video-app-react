@@ -71,32 +71,27 @@ export const subscribeToSession = (
     });
 };
 
-export const startSession = (groupToken: string) => {
+const updateSession = (groupToken: string, payload: firestore.UpdateData) => {
   if (groupTokenValid(groupToken)) {
     throw new Error('shareToken undefined.');
   }
 
   getSessionStore(groupToken).then(store => {
-    const time = firestore.FieldValue.serverTimestamp();
     db()
       .collection('sessions')
       .doc(store.doc.id)
-      .set(
-        {
-          startDate: time,
-        },
-        { merge: true }
-      );
+      .update(payload);
   });
 };
 
+export const startSession = (groupToken: string) => {
+  updateSession(groupToken, { startDate: firestore.FieldValue.serverTimestamp() });
+};
+
 export const addSessionModerator = (groupToken: string, sid: string) => {
-  getSessionStore(groupToken).then(store => {
-    db()
-      .collection('sessions')
-      .doc(store.doc.id)
-      .update({
-        moderators: firestore.FieldValue.arrayUnion(sid),
-      });
-  });
+  updateSession(groupToken, { moderators: firestore.FieldValue.arrayUnion(sid) });
+};
+
+export const endSession = (groupToken: string) => {
+  updateSession(groupToken, { endDate: firestore.FieldValue.serverTimestamp() });
 };

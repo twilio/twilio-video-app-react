@@ -2,6 +2,7 @@ import { ISession, ISessionLabels, UserGroup } from '../../types';
 import { getSessionStore, subscribeToSession } from '../../utils/firebase';
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { firestore } from 'firebase';
 
 export enum ISessionStatus {
   SESSION_NOT_STARTED = 'SESSION_NOT_STARTED',
@@ -43,9 +44,9 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
     setLoading(false);
     if (data.isPaused) {
       setSessionStatus(ISessionStatus.SESSION_PAUSED);
-    } else if (data.startDate !== null && data.startDate.seconds > Date.now() / 1000) {
+    } else if (data.startDate !== null && data.startDate.toMillis() > firestore.Timestamp.now().toMillis()) {
       setSessionStatus(ISessionStatus.SESSION_NOT_STARTED);
-    } else if (data.startDate !== null && data.endDate.seconds < Date.now() / 1000) {
+    } else if (data.endDate !== null && data.endDate.toMillis() < firestore.Timestamp.now().toMillis()) {
       setSessionStatus(ISessionStatus.SESSION_ENDED);
     } else {
       setSessionStatus(ISessionStatus.SESSION_RUNNING);

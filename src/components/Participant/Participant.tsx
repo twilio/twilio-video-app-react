@@ -11,8 +11,8 @@ export interface ParticipantProps {
   isSelected?: boolean;
   isLocalParticipant?: boolean;
   hideParticipant?: boolean;
-  isActivePlayer?: boolean;
   isModerator?: boolean;
+  noName?: boolean;
 }
 
 const Participant = React.memo(
@@ -24,8 +24,8 @@ const Participant = React.memo(
     isSelected,
     isLocalParticipant,
     hideParticipant,
-    isActivePlayer,
     isModerator,
+    noName,
   }: ParticipantProps) => {
     return (
       <ParticipantInfo
@@ -34,8 +34,8 @@ const Participant = React.memo(
         isSelected={isSelected}
         isLocalParticipant={isLocalParticipant}
         hideParticipant={hideParticipant}
-        isActivePlayer={isActivePlayer}
         isModerator={isModerator}
+        noName={noName ?? false}
       >
         <ParticipantTracks
           participant={participant}

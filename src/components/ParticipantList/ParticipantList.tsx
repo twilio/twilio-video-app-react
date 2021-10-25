@@ -8,6 +8,7 @@ import useSessionContext from 'hooks/useSessionContext';
 import { ChooseableParticipant } from 'components/ChooseableParticipant';
 import { sortedParticipantsByCategorie } from 'utils/participants';
 import { ISession } from 'types';
+import useGameContext from 'hooks/useGameContext';
 
 export default function ParticipantList() {
   const { room } = useVideoContext();
@@ -24,13 +25,14 @@ export default function ParticipantList() {
   );
 
   const SmallParticipant = (props: ParticipantProps) => (
-    <div className="w-40 relative">
-      <ChooseableParticipant {...props} />
+    <div className="w-40 relative flex flex-col">
+      <ChooseableParticipant {...props} noName />
+      <span className="w-full text-center text-gray-700 mt-1">{props.participant.identity}</span>
     </div>
   );
 
   return (
-    <div className="flex justify-center items-center overflow-x-auto gap-x-5 bg-grayish my-">
+    <div className="flex justify-center overflow-x-auto gap-x-5 bg-grayish my-">
       {moderatorParitcipants.map(participant => {
         return (
           <SmallParticipant
