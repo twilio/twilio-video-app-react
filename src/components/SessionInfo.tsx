@@ -1,3 +1,4 @@
+import { firestore } from 'firebase';
 import useSessionContext from 'hooks/useSessionContext';
 import React, { useState } from 'react';
 
@@ -5,13 +6,13 @@ const td = (x: number) => (x < 10 ? '0' + x : '' + x);
 
 export const SessionInfo = () => {
   const { sessionData, labels } = useSessionContext();
-  const [now, setNow] = useState(Date.now());
+  const [now, setNow] = useState(firestore.Timestamp.now().toMillis());
 
   const startDate = sessionData?.startDate.toDate();
   const endDate = sessionData?.endDate.toDate();
 
   const interval = setInterval(() => {
-    setNow(Date.now());
+    setNow(firestore.Timestamp.now().toMillis());
   }, 1000 * 60);
 
   return (
@@ -34,7 +35,7 @@ export const SessionInfo = () => {
       <div className="flex items-center space-x-3 text-purple text-base">
         <img src="/assets/clock.svg" alt="Uhr Icon" />
 
-        {sessionData?.endDate && sessionData.endDate.toMillis() > Date.now() ? (
+        {sessionData?.endDate && sessionData.endDate.toMillis() > firestore.Timestamp.now().toMillis() ? (
           <p>
             {sessionData?.endDate ? Math.floor((sessionData?.endDate.toMillis() - now) / 1000 / 60) : null}
             min verbleiben

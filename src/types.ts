@@ -80,9 +80,11 @@ export interface ICarouselGame {
   carouselPosition: number;
   activeCard: number;
   seed: number;
+  currentSpinCount: number;
 }
 
 export interface IQuestion {
+  //TODO: add categorie color
   category: string;
   name: string;
 }

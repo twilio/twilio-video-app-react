@@ -7,6 +7,10 @@ import { setActiveCard, setCarouselPosition, subscribeToCarouselGame } from 'uti
 import useGameContext from 'hooks/useGameContext';
 import { RevealedCard } from 'components/RevealedCard';
 import { ISessionStatus } from 'components/SessionProvider';
+import { firestore } from 'firebase';
+import { ICarouselGame } from 'types';
+
+const MAX_SPIN_COUNT = 3;
 
 const InfoRow = (props: { iconSrc: string; text: string }) => (
   <div className="flex items-center space-x-4 py-2">
@@ -27,9 +31,10 @@ const VerticalCarousel = ({ data }: any) => {
   const { groupToken, sessionStatus } = useSessionContext();
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
-  const [currentPlayer, setCurrentPlayer] = useState<string>();
-  const [, setSeed] = useState<number>();
+  const [, setSeed] = useState<ICarouselGame['seed']>();
   const [spinTimeouts, setSpinTimeouts] = useState([] as NodeJS.Timeout[]);
+  const [canSpin, setCanSpin] = useState<boolean>(false);
+  const [remainingSpins, setRemainingSpins] = useState<number>(MAX_SPIN_COUNT);
   const activeIndexRef = useRef<number>();
   activeIndexRef.current = activeIndex;
 
@@ -160,7 +165,8 @@ const VerticalCarousel = ({ data }: any) => {
         return game.seed;
       });
 
-      setCurrentPlayer(game.currentPlayer);
+      setCanSpin(localParticipant.sid === game.currentPlayer && game.currentSpinCount < MAX_SPIN_COUNT);
+      setRemainingSpins(MAX_SPIN_COUNT - game.currentSpinCount);
       setRevealableIndex(game.activeCard);
     });
   }, []);
@@ -173,7 +179,7 @@ const VerticalCarousel = ({ data }: any) => {
     }
   }, [data, revealableIndex]);
 
-  const normalInvisible = localParticipant.sid === currentPlayer ? ' opacity-100' : ' opacity-0';
+  const normalInvisible = canSpin ? ' opacity-100' : ' opacity-0';
 
   if (sessionStatus !== ISessionStatus.SESSION_RUNNING || activeIndex === -1) {
     return null;
@@ -186,11 +192,15 @@ const VerticalCarousel = ({ data }: any) => {
           <button
             type="button"
             className={
-              'shadow-lg rounded-full bg-white w-16 h-16 hover:shadow-sm transition-all duration-500' + normalInvisible
+              'relative shadow-lg rounded-full bg-white w-16 h-16 hover:shadow-sm transition-all duration-500' +
+              normalInvisible
             }
             onClick={handleClick}
           >
-            <img src="/assets/random-card.svg" alt="Neue Karte" />
+            <span className="absolute top-0 right-0 w-5 h-5 bg-purple text-white rounded-full">
+              {remainingSpins > 0 ? remainingSpins : ''}
+            </span>
+            <img src="/assets/random-card.svg" alt="Neue Kategorie" />
           </button>
         </div>
         <div className="h-full relative px-20 transform -translate-x-20">
@@ -257,9 +267,7 @@ const VerticalCarousel = ({ data }: any) => {
           <button
             className={
               'cursor-pointer w-16 h-16 flex items-center justify-center rounded-full bg-purple text-white transition-opacity duration-500' +
-              (revealedCard === '' || spinTimeouts.length !== 0 || currentPlayer !== localParticipant.sid
-                ? ' opacity-0'
-                : ' opacity-100')
+              (revealedCard === '' || spinTimeouts.length !== 0 || !canSpin ? ' opacity-0' : ' opacity-100')
             }
             onClick={approveQuestion}
           >

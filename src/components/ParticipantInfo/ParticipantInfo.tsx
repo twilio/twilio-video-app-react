@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
@@ -13,6 +13,8 @@ import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackS
 import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
 import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
+import { subscribeToCarouselGame } from 'utils/firebase/game';
+import useSessionContext from 'hooks/useSessionContext';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -120,8 +122,8 @@ interface ParticipantInfoProps {
   isSelected?: boolean;
   isLocalParticipant?: boolean;
   hideParticipant?: boolean;
-  isActivePlayer?: boolean;
   isModerator?: boolean;
+  noName: boolean;
 }
 
 export default function ParticipantInfo({
@@ -131,8 +133,8 @@ export default function ParticipantInfo({
   children,
   isLocalParticipant,
   hideParticipant,
-  isActivePlayer,
   isModerator,
+  noName,
 }: ParticipantInfoProps) {
   const publications = usePublications(participant);
 
@@ -150,6 +152,25 @@ export default function ParticipantInfo({
 
   const classes = useStyles();
 
+  const { groupToken } = useSessionContext();
+  const [activePlayer, setActivePlayer] = useState<string>('');
+
+  useEffect(() => {
+    if (groupToken === undefined) {
+      return;
+    }
+
+    subscribeToCarouselGame(participant.sid, groupToken, game =>
+      setActivePlayer(prev => {
+        if (prev !== game.currentPlayer) {
+          return game.currentPlayer;
+        } else {
+          return prev;
+        }
+      })
+    );
+  }, [groupToken]);
+
   return (
     <div
       className={clsx('rounded-sm', classes.container, {
@@ -160,6 +181,19 @@ export default function ParticipantInfo({
       data-cy-participant={participant.identity}
     >
       <div className={classes.infoContainer}>
+        {activePlayer !== participant.sid ? null : (
+          <span className="absolute top-1 right-1 text-orange filter drop-shadow-lg">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </span>
+        )}
         {/* <NetworkQualityLevel participant={participant} /> */}
         <div className={classes.infoRowBottom}>
           {isScreenShareEnabled && (
@@ -170,29 +204,13 @@ export default function ParticipantInfo({
           <span className={'flex pl-2 pb-2 text-base filter drop-shadow-xl items-center font-medium text-white'}>
             {isModerator ? (
               <span className="bg-orange p-2 w-8 h-8 flex items-center justify-center rounded-full">
-                {participant.identity[0].toUpperCase()}
+                {participant.identity.charAt(0).toUpperCase()}
               </span>
             ) : null}
             <AudioLevelIndicator audioTrack={audioTrack} />
             <span>
-              {participant.identity}
+              {noName ? '' : participant.identity}
               {isLocalParticipant && ' (Sie)'}
-              {!isActivePlayer ? null : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 13l-7 7-7-7m14-8l-7 7-7-7"
-                  />
-                </svg>
-              )}
             </span>
           </span>
         </div>
