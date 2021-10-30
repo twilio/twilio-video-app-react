@@ -18,9 +18,16 @@ interface PublicationProps {
   isLocalParticipant?: boolean;
   videoOnly?: boolean;
   videoPriority?: Track.Priority | null;
+  isActivePlayer?: boolean;
 }
 
-export default function Publication({ publication, isLocalParticipant, videoOnly, videoPriority }: PublicationProps) {
+export default function Publication({
+  publication,
+  isLocalParticipant,
+  videoOnly,
+  videoPriority,
+  isActivePlayer,
+}: PublicationProps) {
   const track = useTrack(publication);
 
   if (!track) return null;
@@ -32,6 +39,7 @@ export default function Publication({ publication, isLocalParticipant, videoOnly
           track={track as IVideoTrack}
           priority={videoPriority}
           isLocal={!track.name.includes('screen') && isLocalParticipant}
+          className={isActivePlayer ? 'bg-purple' : 'bg-grayish'}
         />
       );
     case 'audio':

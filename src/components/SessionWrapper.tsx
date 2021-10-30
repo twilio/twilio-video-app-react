@@ -1,6 +1,7 @@
-import React, { ReactNode } from 'react';
+import useVideoContext from 'hooks/useVideoContext/useVideoContext';
+import React, { ReactNode, useEffect } from 'react';
 import { UserGroup } from 'types';
-import { startSession } from 'utils/firebase/session';
+import { reactivateSession, startSession } from 'utils/firebase/session';
 import useSessionContext from '../hooks/useSessionContext';
 import { LoadingSpinner } from './LoadingSpinner';
 import { PopupScreen } from './PopupScreen';
@@ -8,6 +9,13 @@ import { ISessionStatus } from './SessionProvider';
 
 export const SessionWrapper = (props: { children: ReactNode }) => {
   const { sessionStatus, loading, userGroup, groupToken } = useSessionContext();
+  const { room } = useVideoContext();
+
+  useEffect(() => {
+    if (!loading && sessionStatus !== ISessionStatus.SESSION_RUNNING && room) {
+      room.disconnect();
+    }
+  }, [sessionStatus]);
 
   if (loading) {
     return <LoadingSpinner></LoadingSpinner>;
@@ -37,6 +45,15 @@ export const SessionWrapper = (props: { children: ReactNode }) => {
     return (
       <PopupScreen>
         <span>Dieser DemokraTisch ist bereits beendet.</span>
+
+        {userGroup === UserGroup.Moderator ? (
+          <button
+            className="bg-red text-white py-3 px-5 text-sm"
+            onClick={() => reactivateSession(groupToken as string)}
+          >
+            DemokraTisch reaktivieren
+          </button>
+        ) : null}
       </PopupScreen>
     );
   }

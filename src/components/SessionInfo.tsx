@@ -5,11 +5,11 @@ import React, { useState } from 'react';
 const td = (x: number) => (x < 10 ? '0' + x : '' + x);
 
 export const SessionInfo = () => {
-  const { sessionData, labels } = useSessionContext();
+  const { startDate, endDate, labels } = useSessionContext();
   const [now, setNow] = useState(firestore.Timestamp.now().toMillis());
 
-  const startDate = sessionData?.startDate.toDate();
-  const endDate = sessionData?.endDate.toDate();
+  const start = startDate?.toDate();
+  const end = endDate?.toDate();
 
   const interval = setInterval(() => {
     setNow(firestore.Timestamp.now().toMillis());
@@ -21,23 +21,23 @@ export const SessionInfo = () => {
         <h1>{labels?.title}</h1>
         <span>·</span>
         <p>
-          {startDate && endDate
-            ? td(startDate.getHours()) +
+          {start && end
+            ? td(start.getHours()) +
               ':' +
-              td(startDate.getMinutes()) +
+              td(start.getMinutes()) +
               ' bis ' +
-              td(endDate.getHours()) +
+              td(end.getHours()) +
               ':' +
-              td(endDate.getMinutes())
+              td(end.getMinutes())
             : null}
         </p>
       </div>
       <div className="flex items-center space-x-3 text-purple text-base">
         <img src="/assets/clock.svg" alt="Uhr Icon" />
 
-        {sessionData?.endDate && sessionData.endDate.toMillis() > firestore.Timestamp.now().toMillis() ? (
+        {endDate && endDate.toMillis() > firestore.Timestamp.now().toMillis() ? (
           <p>
-            {sessionData?.endDate ? Math.floor((sessionData?.endDate.toMillis() - now) / 1000 / 60) : null}
+            {endDate ? Math.floor((endDate.toMillis() - now) / 1000 / 60) : null}
             min verbleiben
           </p>
         ) : null}

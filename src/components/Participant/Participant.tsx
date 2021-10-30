@@ -13,6 +13,7 @@ export interface ParticipantProps {
   hideParticipant?: boolean;
   isModerator?: boolean;
   noName?: boolean;
+  isActivePlayer?: boolean;
 }
 
 const Participant = React.memo(
@@ -26,6 +27,7 @@ const Participant = React.memo(
     hideParticipant,
     isModerator,
     noName,
+    isActivePlayer,
   }: ParticipantProps) => {
     return (
       <ParticipantInfo
@@ -36,12 +38,14 @@ const Participant = React.memo(
         hideParticipant={hideParticipant}
         isModerator={isModerator}
         noName={noName ?? false}
+        isActivePlayer={isActivePlayer}
       >
         <ParticipantTracks
           participant={participant}
           videoOnly={videoOnly}
           enableScreenShare={enableScreenShare}
           isLocalParticipant={isLocalParticipant}
+          isActivePlayer={isActivePlayer}
         />
       </ParticipantInfo>
     );

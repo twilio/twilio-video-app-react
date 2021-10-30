@@ -68,6 +68,13 @@ export interface ISession {
   endDate: firestore.Timestamp;
   activeScreen: ScreenType;
   moderators: string[];
+  muted: string[];
+}
+
+export interface ISessionStore {
+  data: ISession;
+  group: UserGroup;
+  doc: firestore.QueryDocumentSnapshot<firestore.DocumentData> | firestore.DocumentSnapshot<firestore.DocumentData>;
 }
 
 export enum ScreenType {

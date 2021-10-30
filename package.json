@@ -5,8 +5,11 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@craco/craco": "^6.3.0",
+    "@headlessui/react": "^1.4.1",
+    "@heroicons/react": "^1.0.5",
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
+    "@tailwindcss/aspect-ratio": "^0.3.0",
     "@twilio-labs/plugin-rtc": "^0.8.2",
     "@twilio/conversations": "^1.2.3",
     "@twilio/video-processors": "^1.0.1",

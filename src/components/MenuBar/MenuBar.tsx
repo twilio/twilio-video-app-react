@@ -13,6 +13,8 @@ import useSessionContext from 'hooks/useSessionContext';
 import { ScreenType, UserGroup } from 'types';
 import { setActiveScreen } from 'utils/firebase/screen';
 import EndCallButton from 'components/Buttons/EndCallButton/EndCallButton';
+import { EndSessionButton } from 'components/Buttons/EndSessionButton';
+import { ScreenToggleButton } from 'components/Buttons/ScreenSwitchButton';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -64,23 +66,13 @@ export default function MenuBar() {
   const { isSharingScreen, toggleScreenShare } = useVideoContext();
   const roomState = useRoomState();
   const isReconnecting = roomState === 'reconnecting';
-  const { userGroup, sessionData, groupToken } = useSessionContext();
-
-  const toggleGameScreen = () => {
-    setActiveScreen(
-      groupToken as string,
-      sessionData?.activeScreen === ScreenType.VideoChat ? ScreenType.Game : ScreenType.VideoChat
-    );
-  };
+  const { userGroup } = useSessionContext();
 
   const buttonClassName =
     'bg-white w-12 h-12 flex justify-center items-center rounded-full shadow-lg hover:shadow-xl transition-shadow duration-500';
 
-  const ScreenToggleButton = () => (
-    <button className={buttonClassName} onClick={toggleGameScreen}>
-      <img src={`/assets/${sessionData?.activeScreen === ScreenType.Game ? 'grid-view' : 'carousel'}.svg`} />
-    </button>
-  );
+  const featuredButtonClassName =
+    'rounded-full bg-purple hover:shadow-xl w-16 h-16 transition-all duration-500 text-white flex justify-center items-center';
 
   return (
     <>
@@ -94,12 +86,14 @@ export default function MenuBar() {
         <div className="flex space-x-5 items-center w-full justify-center relative">
           <ToggleAudioButton disabled={isReconnecting} className={buttonClassName} />
           <ToggleVideoButton disabled={isReconnecting} className={buttonClassName} />
-          <EndCallButton />
+          <EndCallButton className={buttonClassName} />
+
           {/* {!isSharingScreen && !isMobile && <ToggleScreenShareButton disabled={isReconnecting} />}
               {process.env.REACT_APP_DISABLE_TWILIO_CONVERSATIONS !== 'true' && <ToggleChatButton />} */}
           {userGroup === UserGroup.Moderator ? (
             <>
-              <ScreenToggleButton />
+              <ScreenToggleButton className={featuredButtonClassName} />
+              <EndSessionButton className={buttonClassName} />
               <Menu buttonClassName={buttonClassName} />
             </>
           ) : null}

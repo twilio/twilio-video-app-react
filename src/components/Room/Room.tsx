@@ -7,12 +7,12 @@ import { GridVideoChatLayout } from 'components/Layouts/GridVideoChatLayout';
 import { CarouselGameLayout } from 'components/Layouts/CarouselGameLayout';
 
 export default function Room() {
-  const { sessionData } = useSessionContext();
+  const { activeScreen } = useSessionContext();
 
   const CurrentScreen = () => {
-    if (sessionData?.activeScreen === ScreenType.Game) {
+    if (activeScreen === ScreenType.Game) {
       return <CarouselGameLayout />;
-    } else if (sessionData?.activeScreen === ScreenType.VideoChat) {
+    } else if (activeScreen === ScreenType.VideoChat) {
       return <GridVideoChatLayout />;
     }
 

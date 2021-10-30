@@ -26,12 +26,16 @@ const VideoApp = () => {
 
   return (
     <VideoProvider options={connectionOptions} onError={setError}>
-      <GameProvider>
-        <ErrorDialog dismissError={() => setError(null)} error={error} />
-        <ChatProvider>
-          <App />
-        </ChatProvider>
-      </GameProvider>
+      <SessionProvider>
+        <SessionWrapper>
+          <GameProvider>
+            <ErrorDialog dismissError={() => setError(null)} error={error} />
+            <ChatProvider>
+              <App />
+            </ChatProvider>
+          </GameProvider>
+        </SessionWrapper>
+      </SessionProvider>
     </VideoProvider>
   );
 };
@@ -44,11 +48,7 @@ ReactDOM.render(
         <AppStateProvider>
           <Switch>
             <PrivateRoute path="/r/:URLShareToken">
-              <SessionProvider>
-                <SessionWrapper>
-                  <VideoApp />
-                </SessionWrapper>
-              </SessionProvider>
+              <VideoApp />
             </PrivateRoute>
             <Redirect to="/" />
           </Switch>
