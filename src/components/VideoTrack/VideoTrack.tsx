@@ -14,9 +14,10 @@ interface VideoTrackProps {
   track: IVideoTrack;
   isLocal?: boolean;
   priority?: Track.Priority | null;
+  className?: string;
 }
 
-export default function VideoTrack({ track, isLocal, priority }: VideoTrackProps) {
+export default function VideoTrack({ track, isLocal, priority, className }: VideoTrackProps) {
   const ref = useRef<HTMLVideoElement>(null!);
   const mediaStreamTrack = useMediaStreamTrack(track);
   const dimensions = useVideoTrackDimensions(track);
@@ -50,5 +51,5 @@ export default function VideoTrack({ track, isLocal, priority }: VideoTrackProps
     objectFit: isPortrait || track.name.includes('screen') ? ('contain' as const) : ('cover' as const),
   };
 
-  return <Video ref={ref} style={style} className="bg-grayish" />;
+  return <Video ref={ref} style={style} className={className} />;
 }

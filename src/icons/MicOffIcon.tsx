@@ -1,8 +1,8 @@
 import React from 'react';
 
-export default function MicOffIcon() {
+export default function MicOffIcon(props: { className: string }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24">
+    <svg xmlns="http://www.w3.org/2000/svg" className={props.className} viewBox="0 0 25 24">
       <g fill="none" fillRule="evenodd">
         <path
           fill="#707578"

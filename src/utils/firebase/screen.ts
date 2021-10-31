@@ -1,6 +1,6 @@
 import { ScreenType } from 'types';
-import { getSessionStore } from '.';
 import { db } from './base';
+import { getSessionStore } from './session';
 
 export const setActiveScreen = (groupToken: string, screen: ScreenType) => {
   getSessionStore(groupToken).then(store => {

@@ -1,32 +1,44 @@
 import useParticipants from 'hooks/useParticipants/useParticipants';
 import useVideoContext from 'hooks/useVideoContext/useVideoContext';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import useSessionContext from 'hooks/useSessionContext';
 import { ChooseableParticipant } from 'components/ChooseableParticipant';
 import { ISession, UserGroup } from 'types';
 import { sortedParticipantsByCategorie } from 'utils/participants';
 import { RevealedCard } from 'components/RevealedCard';
 import { SessionInfo } from 'components/SessionInfo';
+import { subscribeToSessionStore } from 'utils/firebase/session';
 
 export const GridVideoChatLayout = () => {
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
   const participants = useParticipants();
-  const { sessionData, userGroup } = useSessionContext();
+  const { groupToken } = useSessionContext();
+  const [moderators, setModerators] = useState<string[]>([]);
 
-  if (userGroup === UserGroup.Moderator && !sessionData?.moderators.includes(localParticipant.sid)) {
-    return null;
-  }
+  useEffect(() => {
+    if (groupToken) {
+      subscribeToSessionStore('participant-list', groupToken, store => {
+        setModerators(prev => {
+          if (JSON.stringify(prev) !== JSON.stringify(store.data.moderators)) {
+            return store.data.moderators ?? [];
+          } else {
+            return prev;
+          }
+        });
+      });
+    }
+  }, []);
 
   const { moderatorParitcipants, normalParticipants } = sortedParticipantsByCategorie(
-    sessionData as ISession,
+    moderators,
     localParticipant,
     participants
   );
 
   const ModeratorLetterInfo = (props: { participant: { identity: string } }) => (
     <div className="flex justify-center items-center space-x-3">
-      <span className="text-lg font-medium bg-orange rounded-full p-4 w-12 h-12 text-white flex justify-center items-center">
+      <span className="text-xl font-medium bg-orange rounded-full p-4 w-12 h-12 text-white flex justify-center items-center">
         {props.participant.identity[0].toUpperCase()}
       </span>
       <div className="flex flex-col">
@@ -38,7 +50,7 @@ export const GridVideoChatLayout = () => {
 
   const ParticipantLetterInfo = (props: { participant: { identity: string } }) => (
     <div className="flex flex-col items-center space-y-1">
-      <span className="uppercase rounded-full bg-purple text-2xl font-semibold w-12 h-12 text-white flex justify-center items-center">
+      <span className="uppercase rounded-full text-xl bg-purple font-medium w-12 h-12 text-white flex justify-center items-center">
         {props.participant.identity[0]}
       </span>
       <span className="">{props.participant.identity}</span>
@@ -64,10 +76,10 @@ export const GridVideoChatLayout = () => {
         <SessionInfo />
       </div>
       <div
-        className="flex-grow h-full grid grid-cols-4 grid-rows-4 gap-2 justify-start items-start"
+        className="flex-grow h-full grid grid-cols-4 grid-rows-4 gap-2 justify-center items-center"
         style={{ width: 'calc(' }}
       >
-        <div className="col-span-3 row-span-3 overflow-hidden h-full">
+        <div className="col-span-3 row-span-3 overflow-hidden">
           {moderatorParitcipants.length >= 1 ? (
             <ChooseableParticipant
               participant={moderatorParitcipants[0]}
@@ -76,7 +88,9 @@ export const GridVideoChatLayout = () => {
             />
           ) : null}
         </div>
-        <RevealedCard />
+        <div className="aspect-w-16 aspect-h-9">
+          <RevealedCard />
+        </div>
         {/* <Participant isLocalParticipant participant={localParticipant} /> */}
         {moderatorParitcipants
           .filter((part, i) => i > 0)

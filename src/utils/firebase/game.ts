@@ -1,7 +1,7 @@
 import { ICarouselGame, IQuestion } from 'types';
-import { getSessionStore } from '.';
 import { db } from './base';
 import { firestore } from 'firebase';
+import { getSessionStore } from './session';
 
 let _game: ICarouselGame;
 let _baseSubscription: any;

@@ -119,7 +119,7 @@ const VerticalCarousel = ({ data }: any) => {
     const steps = Math.abs(diff);
 
     const startTime = Date.now();
-    const duration = 10000;
+    const duration = 7000;
     const sqDuration = Math.sqrt(duration * 0.1);
 
     let next: number;
@@ -179,7 +179,7 @@ const VerticalCarousel = ({ data }: any) => {
     }
   }, [data, revealableIndex]);
 
-  const normalInvisible = canSpin ? ' opacity-100' : ' opacity-0';
+  const normalInvisible = canSpin ? ' opacity-100 cursor-pointer' : ' opacity-0 cursor-default';
 
   if (sessionStatus !== ISessionStatus.SESSION_RUNNING || activeIndex === -1) {
     return null;
@@ -196,6 +196,7 @@ const VerticalCarousel = ({ data }: any) => {
               normalInvisible
             }
             onClick={handleClick}
+            disabled={!canSpin}
           >
             <span className="absolute top-0 right-0 w-5 h-5 bg-purple text-white rounded-full">
               {remainingSpins > 0 ? remainingSpins : ''}
@@ -246,6 +247,7 @@ const VerticalCarousel = ({ data }: any) => {
             'w-16 h-16 rounded-full bg-purple text-white transform translate-x-0 shadow-xl hover:shadow-none transition-all duration-500' +
             normalInvisible
           }
+          disabled={!canSpin}
           onClick={() => revealQuestion()}
         >
           <p className="text-3xl z-40">-{`>`}</p>
@@ -254,22 +256,25 @@ const VerticalCarousel = ({ data }: any) => {
           <div className="flex flex-col justify-center space-y-3 w-56 lg:w-96">
             <InfoRow
               iconSrc="/assets/info.svg"
-              text="Lorem ipsum dolor sit amet, consectet uer adipiscing elit, sed diam nonummy nibheuismod tincidunt ut laoreet"
+              text="Sollte dir die angezeigte Frage nicht gefallen, ist das keine Problem. Du kannst insgesamt 3 x am DemokraTisch-Rad drehen, da ist auf jeden Fall die passende Frage für dich dabei. Los gehts!"
             />
             <div className="w-full h-32 lg:h-60">
               <RevealedCard />
             </div>
             <InfoRow
               iconSrc="/assets/info.svg"
-              text="Lorem ipsum dolor sit amet, consectet uer adipiscing elit, sed diam nonummy nibheuismod tincidunt ut laoreet"
+              text="Bitte bedenke: Drehst du mehrmals, kannst du nicht zwischen den Fragen wählen. Die Frage ist nur solange für dich sichtbar, bis du sie mit dem Haken links für alle zur Diskussion freigibst. Viel Spaß!"
             />
           </div>
           <button
             className={
-              'cursor-pointer w-16 h-16 flex items-center justify-center rounded-full bg-purple text-white transition-opacity duration-500' +
-              (revealedCard === '' || spinTimeouts.length !== 0 || !canSpin ? ' opacity-0' : ' opacity-100')
+              'w-16 h-16 flex items-center justify-center rounded-full bg-purple text-white transition-opacity duration-500' +
+              (revealedCard === '' || spinTimeouts.length !== 0 || !canSpin
+                ? ' opacity-0 cursor-default'
+                : ' opacity-100 cursor-pointer')
             }
             onClick={approveQuestion}
+            disabled={revealedCard === '' || spinTimeouts.length !== 0 || !canSpin}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

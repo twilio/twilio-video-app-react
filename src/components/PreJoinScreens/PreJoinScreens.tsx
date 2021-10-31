@@ -20,15 +20,15 @@ export default function PreJoinScreens() {
   const [name, setName] = useState<string>(user?.displayName || '');
   const [roomName, setRoomName] = useState<string>('');
   const [mediaError, setMediaError] = useState<Error>();
-  const { sessionData } = useSessionContext();
+  const { roomId } = useSessionContext();
   const [uid, setUid] = useState<string>();
 
   useEffect(() => {
-    if (sessionData) {
-      setRoomName(sessionData.roomId);
+    if (roomId) {
+      setRoomName(roomId);
       getUid().then(setUid);
     }
-  }, [sessionData]);
+  }, [roomId]);
 
   useEffect(() => {
     if (user?.displayName) {

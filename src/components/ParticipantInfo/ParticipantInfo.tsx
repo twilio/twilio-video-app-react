@@ -13,8 +13,7 @@ import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackS
 import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
 import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
-import { subscribeToCarouselGame } from 'utils/firebase/game';
-import useSessionContext from 'hooks/useSessionContext';
+import { ReactComponent as CarouselIcon } from '../../assets/carousel.svg';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -124,6 +123,7 @@ interface ParticipantInfoProps {
   hideParticipant?: boolean;
   isModerator?: boolean;
   noName: boolean;
+  isActivePlayer?: boolean;
 }
 
 export default function ParticipantInfo({
@@ -135,6 +135,7 @@ export default function ParticipantInfo({
   hideParticipant,
   isModerator,
   noName,
+  isActivePlayer,
 }: ParticipantInfoProps) {
   const publications = usePublications(participant);
 
@@ -152,25 +153,6 @@ export default function ParticipantInfo({
 
   const classes = useStyles();
 
-  const { groupToken } = useSessionContext();
-  const [activePlayer, setActivePlayer] = useState<string>('');
-
-  useEffect(() => {
-    if (groupToken === undefined) {
-      return;
-    }
-
-    subscribeToCarouselGame(participant.sid, groupToken, game =>
-      setActivePlayer(prev => {
-        if (prev !== game.currentPlayer) {
-          return game.currentPlayer;
-        } else {
-          return prev;
-        }
-      })
-    );
-  }, [groupToken]);
-
   return (
     <div
       className={clsx('rounded-sm', classes.container, {
@@ -180,20 +162,12 @@ export default function ParticipantInfo({
       onClick={onClick}
       data-cy-participant={participant.identity}
     >
-      <div className={classes.infoContainer}>
-        {activePlayer !== participant.sid ? null : (
-          <span className="absolute top-1 right-1 text-orange filter drop-shadow-lg">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
+      <div className={classes.infoContainer + ` ${isActivePlayer ? '' : ''}`}>
+        {/* {!isActivePlayer ? null : (
+          <span className="absolute top-1 right-1 bg-white rounded-full filter drop-shadow-lg text-gray-900 w-7 h-7 flex items-center justify-center">
+            <CarouselIcon strokeWidth={2} className="w-9 h-9" />
           </span>
-        )}
+        )} */}
         {/* <NetworkQualityLevel participant={participant} /> */}
         <div className={classes.infoRowBottom}>
           {isScreenShareEnabled && (

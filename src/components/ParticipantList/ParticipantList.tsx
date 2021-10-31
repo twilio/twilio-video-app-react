@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ParticipantProps } from '../Participant/Participant';
 import useParticipants from '../../hooks/useParticipants/useParticipants';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
@@ -7,8 +7,7 @@ import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useS
 import useSessionContext from 'hooks/useSessionContext';
 import { ChooseableParticipant } from 'components/ChooseableParticipant';
 import { sortedParticipantsByCategorie } from 'utils/participants';
-import { ISession } from 'types';
-import useGameContext from 'hooks/useGameContext';
+import { subscribeToSessionStore } from 'utils/firebase/session';
 
 export default function ParticipantList() {
   const { room } = useVideoContext();
@@ -16,10 +15,11 @@ export default function ParticipantList() {
   const participants = useParticipants();
   const [selectedParticipant] = useSelectedParticipant();
   // const screenShareParticipant = useScreenShareParticipant();
-  const { sessionData } = useSessionContext();
+  const [moderators, setModerators] = useState<string[]>([]);
+  const { groupToken } = useSessionContext();
 
   const { moderatorParitcipants, normalParticipants } = sortedParticipantsByCategorie(
-    sessionData as ISession,
+    moderators,
     localParticipant,
     participants
   );
@@ -30,6 +30,20 @@ export default function ParticipantList() {
       <span className="w-full text-center text-gray-700 mt-1">{props.participant.identity}</span>
     </div>
   );
+
+  useEffect(() => {
+    if (groupToken) {
+      subscribeToSessionStore('participant-list', groupToken, store => {
+        setModerators(prev => {
+          if (JSON.stringify(prev) !== JSON.stringify(store.data.moderators)) {
+            return store.data.moderators ?? [];
+          } else {
+            return prev;
+          }
+        });
+      });
+    }
+  }, []);
 
   return (
     <div className="flex justify-center overflow-x-auto gap-x-5 bg-grayish my-">
