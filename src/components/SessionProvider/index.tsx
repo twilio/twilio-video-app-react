@@ -33,7 +33,6 @@ interface SessionProviderProps {
 
 const updateDate = (prev: firestore.Timestamp | undefined, newDate: firestore.Timestamp) => {
   if (!prev || (newDate && prev && prev.isEqual(newDate) === false)) {
-    console.log('new date');
     return newDate;
   } else {
     return prev;
@@ -61,7 +60,6 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
 
     if (loadingRef.current === true) {
       //only at the inital fetch
-      console.log('update labels');
       setLabels(store.data.labels);
       setLoading(false);
     }

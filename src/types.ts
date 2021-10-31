@@ -91,8 +91,17 @@ export interface ICarouselGame {
   playerRoundCount?: { [key: string]: number };
 }
 
+export const DEFAULT_QUESTION_COLOR = '#f00';
+
 export interface IQuestion {
   //TODO: add categorie color
   category: string;
+  name: string;
+  catId: string;
+  color: string; //not in db
+}
+
+export interface ICategory {
+  color: string;
   name: string;
 }

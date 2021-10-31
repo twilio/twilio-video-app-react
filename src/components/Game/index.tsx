@@ -10,7 +10,7 @@ function Game() {
 
   return (
     <div className="w-full h-full z-0 bg-grayish">
-      <VerticalCarousel data={questions} />
+      <VerticalCarousel questions={questions} />
     </div>
   );
 }

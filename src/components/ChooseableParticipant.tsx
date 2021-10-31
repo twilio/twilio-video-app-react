@@ -46,7 +46,6 @@ export const ChooseableParticipant = (props: ParticipantProps) => {
   }
 
   const isActivePlayer = activePlayer === props.participant.sid;
-  console.log(props.participant.identity, roundsPlayed);
 
   return (
     <div className={'relative rounded-xl' + (isActivePlayer ? ' border-4 border-purple box-border' : '')}>

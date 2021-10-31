@@ -16,6 +16,7 @@ import usePublications from '../../hooks/usePublications/usePublications';
 import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 import useTrack from '../../hooks/useTrack/useTrack';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import { nameFromIdentity } from 'utils/participants';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -140,13 +141,13 @@ export default function MainParticipantInfo({ participant, children }: MainParti
   const isRecording = useIsRecording();
 
   return (
-    <div data-cy-main-participant data-cy-participant={participant.identity} className={'relative'}>
+    <div data-cy-main-participant data-cy-participant={nameFromIdentity(participant.identity)} className={'relative'}>
       <div className={classes.infoContainer}>
         <div style={{ display: 'flex' }}>
           <div className={classes.identity}>
             <AudioLevelIndicator audioTrack={audioTrack} />
             <Typography variant="body1" color="inherit">
-              {participant.identity}
+              {nameFromIdentity(participant.identity)}
               {isLocal && ' (You)'}
               {screenSharePublication && ' - Screen'}
             </Typography>

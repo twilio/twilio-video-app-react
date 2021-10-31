@@ -11,8 +11,6 @@ export const SessionInfo = () => {
   const start = startDate?.toDate();
   const end = endDate?.toDate();
 
-  console.log(start, end);
-
   const interval = setInterval(() => {
     setNow(firestore.Timestamp.now().toMillis());
   }, 1000 * 60);

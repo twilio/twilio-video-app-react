@@ -11,7 +11,7 @@ export const EndSessionButton = (props: { className?: string }) => {
     <>
       <Alert
         title={'DemokraTisch Raum schließen'}
-        text="Als Moderator können Sie diesen DemokraTisch Raum für alle Teilnehmer schließen. Möchten Sie dies tun?"
+        text="Als Moderator kannnst du diesen DemokraTisch Raum für alle Teilnehmer schließen. Möchtest du das tun?"
         onApprove={() => groupToken !== undefined && endSession(groupToken)}
         open={showAlert}
         setOpen={setShowAlert}

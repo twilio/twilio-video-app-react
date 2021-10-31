@@ -7,8 +7,7 @@ import { setActiveCard, setCarouselPosition, subscribeToCarouselGame } from 'uti
 import useGameContext from 'hooks/useGameContext';
 import { RevealedCard } from 'components/RevealedCard';
 import { ISessionStatus } from 'components/SessionProvider';
-import { firestore } from 'firebase';
-import { ICarouselGame } from 'types';
+import { ICarouselGame, IQuestion } from 'types';
 
 const MAX_SPIN_COUNT = 3;
 
@@ -24,7 +23,7 @@ const InfoRow = (props: { iconSrc: string; text: string }) => (
  * https://letsbuildui.dev/articles/building-a-vertical-carousel-component-in-react
  */
 
-const VerticalCarousel = ({ data }: any) => {
+const VerticalCarousel = ({ questions }: { questions: IQuestion[] }) => {
   const [activeIndex, setActiveIndex] = useState<number>(-1);
   const { revealedCard, setRevealedCard } = useGameContext();
   const [revealableIndex, setRevealableIndex] = useState<number>();
@@ -41,7 +40,7 @@ const VerticalCarousel = ({ data }: any) => {
   const screenWidth = window.screen.width;
 
   // Used to determine which items appear above the active item
-  const halfwayIndex = Math.ceil(data.length / 2);
+  const halfwayIndex = Math.ceil(questions.length / 2);
 
   // Usd to determine the height/spacing of each item
   let itemHeight = screenWidth > 1536 ? 150 : 100;
@@ -63,7 +62,7 @@ const VerticalCarousel = ({ data }: any) => {
       if (activeIndex > itemIndex - halfwayIndex) {
         return (itemIndex - activeIndex) * itemHeight;
       } else {
-        return -(data.length + activeIndex - itemIndex) * itemHeight;
+        return -(questions.length + activeIndex - itemIndex) * itemHeight;
       }
     }
 
@@ -73,7 +72,7 @@ const VerticalCarousel = ({ data }: any) => {
 
     if (itemIndex < activeIndex) {
       if ((activeIndex - itemIndex) * itemHeight >= shuffleThreshold) {
-        return (data.length - (activeIndex - itemIndex)) * itemHeight;
+        return (questions.length - (activeIndex - itemIndex)) * itemHeight;
       }
       return -(activeIndex - itemIndex) * itemHeight;
     }
@@ -86,13 +85,13 @@ const VerticalCarousel = ({ data }: any) => {
       return;
     }
 
-    const nextCard = Math.round(Math.random() * (data.length - 1));
+    const nextCard = Math.round(Math.random() * (questions.length - 1));
     setCarouselPosition(groupToken as string, nextCard);
   };
 
   const revealQuestion = () => {
     if (activeIndex) {
-      setRevealedCard(data[activeIndex].name);
+      setRevealedCard(questions[activeIndex]);
     }
   };
 
@@ -131,9 +130,9 @@ const VerticalCarousel = ({ data }: any) => {
           const doneSteps = (Math.sqrt(dt * 0.1) / sqDuration) * steps;
           const dirSteps = doneSteps * dir;
 
-          next = (activeIndex + dirSteps) % data.length;
+          next = (activeIndex + dirSteps) % questions.length;
           if (next < 0) {
-            next = data.length - 1 + next;
+            next = questions.length - 1 + next;
           }
 
           setActiveIndex(next);
@@ -172,12 +171,12 @@ const VerticalCarousel = ({ data }: any) => {
   }, []);
 
   useEffect(() => {
-    if (revealableIndex && data && revealableIndex >= 0 && data.length > revealableIndex) {
-      setRevealedCard(data[revealableIndex].name);
+    if (revealableIndex && questions && revealableIndex >= 0 && questions.length > revealableIndex) {
+      setRevealedCard(questions[revealableIndex]);
     } else if (revealableIndex === -1) {
-      setRevealedCard('');
+      setRevealedCard(undefined);
     }
-  }, [data, revealableIndex]);
+  }, [questions, revealableIndex]);
 
   if (sessionStatus !== ISessionStatus.SESSION_RUNNING || activeIndex === -1) {
     return null;
@@ -185,14 +184,10 @@ const VerticalCarousel = ({ data }: any) => {
 
   const canSpin = isActivePlayer && remainingSpins > 0 && spinTimeouts.length <= 0;
   const canChoose = isActivePlayer && remainingSpins >= 0 && spinTimeouts.length <= 0;
-  const canReveal = revealedCard !== '' && canChoose;
+  const canReveal = revealedCard !== undefined && canChoose;
   const spinVisibility = canSpin ? ' opacity-100 cursor-pointer' : ' opacity-0 cursor-default';
   const chooseVisibility = canChoose ? ' opacity-100 cursor-pointer' : ' opacity-0 cursor-default';
   const revealVisibility = canReveal ? ' opacity-100 cursor-pointer' : ' opacity-0 cursor-default';
-
-  console.log('isactive', isActivePlayer);
-  console.log(remainingSpins, spinTimeouts);
-  console.log(canSpin, canChoose, canReveal);
 
   return (
     <div className="container h-full shadow-lg mx-auto px-2 lg:px-5 overflow-hidden">
@@ -214,9 +209,10 @@ const VerticalCarousel = ({ data }: any) => {
           </button>
         </div>
         <div className="h-full relative px-20 transform -translate-x-20">
-          {data.map((item: any, i: number) => {
+          {questions.map((item, i) => {
             const pos = determinePlacement(i);
             const visible = Math.abs(pos) <= visibleStyleThreshold;
+            const isActive = Math.round(activeIndex ?? 0) === i;
 
             let tx, ty;
             if (visible) {
@@ -229,25 +225,34 @@ const VerticalCarousel = ({ data }: any) => {
             }
 
             return (
-              <button
-                className={cn('cursor-default z-0 relative', 'carousel-item', {
-                  active: Math.round(activeIndex ?? 0) === i,
+              <div
+                className={cn('cursor-default z-0 relative flex items-center justify-center', 'carousel-item', {
                   visible,
                 })}
                 key={i}
                 style={{
                   transform: `translateY(${pos}px) translateX(${tx}px) rotate(${activeIndex === i ? 0 : -pos / 12}deg)`,
-                  zIndex: -1 * Math.abs(pos / itemHeight) + data.length,
+                  zIndex: -1 * Math.abs(pos / itemHeight) + questions.length,
                 }}
               >
                 <div className="absolute -left-12 2xl:-left-8 top-0 bottom-0 flex items-center">
-                  <div className="w-16 h-16 border-4 text-3xl shadow-xl border-white text-white flex justify-center items-center rounded-full bg-purple">
-                    {i + 1}
-                  </div>
+                  <div
+                    className="w-16 h-16 text-3xl shadow-xl flex justify-center items-center rounded-full"
+                    style={{
+                      backgroundColor: item.color,
+                    }}
+                  />
                 </div>
 
-                <p>{item.category}</p>
-              </button>
+                <p
+                  style={{
+                    color: item.color,
+                    opacity: isActive ? 1 : 0.6,
+                  }}
+                >
+                  {item.category}
+                </p>
+              </div>
             );
           })}
         </div>
@@ -305,10 +310,6 @@ const VerticalCarousel = ({ data }: any) => {
       </section>
     </div>
   );
-};
-
-VerticalCarousel.propTypes = {
-  data: PropTypes.array.isRequired,
 };
 
 export default VerticalCarousel;

@@ -1,4 +1,4 @@
-import { ICarouselGame, IQuestion } from 'types';
+import { DEFAULT_QUESTION_COLOR, ICarouselGame, ICategory, IQuestion } from 'types';
 import { db } from './base';
 import { firestore } from 'firebase';
 import { getSessionStore } from './session';
@@ -10,13 +10,16 @@ const _subscriptions: { [key: string]: any } = {};
 export const fetchQuestions = () =>
   new Promise<IQuestion[]>((resolve, reject) => {
     try {
-      const ref = db().collection('questions');
+      const questionsRef = db().collection('questions');
+      const categoriesRef = db().collection('categories');
 
-      ref.get().then(docs => {
+      Promise.all([questionsRef.get(), categoriesRef.get()]).then(([questionDocs, categoryDocs]) => {
         let allQuestions: IQuestion[] = [];
-        docs.forEach((doc: any) => {
-          const data = doc.data();
-          allQuestions.push(data);
+        questionDocs.forEach((doc: any) => {
+          const question = doc.data() as IQuestion;
+          const category = categoryDocs.docs.find(c => c.id === question.catId);
+          question.color = category !== undefined ? (category.data() as ICategory).color : DEFAULT_QUESTION_COLOR;
+          allQuestions.push(question);
         });
         resolve(allQuestions);
       });
@@ -135,3 +138,61 @@ export const fetchCarouselGame = (groupToken: string) =>
       });
     });
   });
+
+// create colored categories from all questions
+// export const createCategories = () => {
+//   const colors = [
+//     "#821C82",
+//     "#C9084D",
+//     "#F7A70A",
+//     "#EE4A23",
+//     "#E60037",
+//     "#F27817",
+//   ]
+
+//   const categories: { [key: string]: string } = {};
+
+//   const qRef = db().collection('questions');
+//   const cRef = db().collection('categories');
+
+//   qRef.get().then(docs => {
+//     let i = 0;
+//     docs.forEach(qDoc => {
+//       const data = qDoc.data() as IQuestion;
+//       if (!Object.values(categories).includes(data.category)) {
+//         if (i >= colors.length) {
+//           i = 0;
+//           console.error("not enough unique categorie colors!");
+//         }
+//         const cDoc = cRef.doc();
+//         categories[cDoc.id] = data.category;
+//         cDoc.set({
+//           name: data.category,
+//           color: colors[i],
+//         });
+
+//         i++;
+//       }
+
+//       const cat = Object.entries(categories).find(([key, cat]) => cat == data.category);
+//       if (cat && cat.length == 2) {
+//         qRef.doc(qDoc.id).update({
+//           catId: cat[0],
+//         });
+//       } else {
+//         console.error("could not find category for", qDoc);
+//       }
+
+//       // Object.entries(categories).forEach(([key, cat]) => {
+//       //   console.log
+//       //   if (cat === data.category) {
+//       //     console.log("matched", cat, data.category);
+//       //     questions[key] = { catId: key, name: data.name };
+//       //   }
+//       // });
+//     })
+
+//     // console.log(categories);
+//     // console.log(questions);
+//   });
+// }
