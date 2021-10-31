@@ -237,7 +237,7 @@ const VerticalCarousel = ({ questions }: { questions: IQuestion[] }) => {
               >
                 <div className="absolute -left-12 2xl:-left-8 top-0 bottom-0 flex items-center">
                   <div
-                    className="w-16 h-16 text-3xl shadow-xl flex justify-center items-center rounded-full"
+                    className="w-16 h-16 text-3xl shadow-xl flex justify-center items-center rounded-full border-8 border-white"
                     style={{
                       backgroundColor: item.color,
                     }}
