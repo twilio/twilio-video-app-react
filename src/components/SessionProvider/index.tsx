@@ -32,8 +32,7 @@ interface SessionProviderProps {
 }
 
 const updateDate = (prev: firestore.Timestamp | undefined, newDate: firestore.Timestamp) => {
-  if (prev && prev?.isEqual(newDate) === false) {
-    console.log('new date');
+  if (!prev || (newDate && prev && prev.isEqual(newDate) === false)) {
     return newDate;
   } else {
     return prev;
@@ -61,7 +60,6 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
 
     if (loadingRef.current === true) {
       //only at the inital fetch
-      console.log('update labels');
       setLabels(store.data.labels);
       setLoading(false);
     }
@@ -83,7 +81,7 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
     setRoomId(store.data.roomId);
     setActiveScreen(store.data.activeScreen);
     setStartDate(prev => updateDate(prev, store.data.startDate));
-    setEndDate(prev => updateDate(prev, store.data.startDate));
+    setEndDate(prev => updateDate(prev, store.data.endDate));
   };
 
   useEffect(() => {

@@ -14,6 +14,7 @@ import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
 import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
 import { ReactComponent as CarouselIcon } from '../../assets/carousel.svg';
+import { nameFromIdentity } from 'utils/participants';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,7 +23,6 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       alignItems: 'center',
       height: 0,
-      overflow: 'hidden',
       '& video': {
         filter: 'none',
         objectFit: 'contain !important',
@@ -124,6 +124,7 @@ interface ParticipantInfoProps {
   isModerator?: boolean;
   noName: boolean;
   isActivePlayer?: boolean;
+  roundsPlayed?: number;
 }
 
 export default function ParticipantInfo({
@@ -136,6 +137,7 @@ export default function ParticipantInfo({
   isModerator,
   noName,
   isActivePlayer,
+  roundsPlayed,
 }: ParticipantInfoProps) {
   const publications = usePublications(participant);
 
@@ -153,21 +155,23 @@ export default function ParticipantInfo({
 
   const classes = useStyles();
 
+  const name = nameFromIdentity(participant.identity);
+
   return (
     <div
-      className={clsx('rounded-sm', classes.container, {
+      className={clsx('rounded-xl', classes.container, {
         [classes.hideParticipant]: hideParticipant,
         [classes.cursorPointer]: Boolean(onClick),
       })}
       onClick={onClick}
-      data-cy-participant={participant.identity}
+      data-cy-participant={name}
     >
-      <div className={classes.infoContainer + ` ${isActivePlayer ? '' : ''}`}>
-        {/* {!isActivePlayer ? null : (
-          <span className="absolute top-1 right-1 bg-white rounded-full filter drop-shadow-lg text-gray-900 w-7 h-7 flex items-center justify-center">
-            <CarouselIcon strokeWidth={2} className="w-9 h-9" />
+      <div className={classes.infoContainer}>
+        {!roundsPlayed || roundsPlayed <= 0 ? null : (
+          <span className="absolute -top-3 -right-3 bg-purple rounded-full filter drop-shadow-lg text-white w-7 h-7 flex items-center justify-center">
+            {roundsPlayed}
           </span>
-        )} */}
+        )}
         {/* <NetworkQualityLevel participant={participant} /> */}
         <div className={classes.infoRowBottom}>
           {isScreenShareEnabled && (
@@ -178,13 +182,13 @@ export default function ParticipantInfo({
           <span className={'flex pl-2 pb-2 text-base filter drop-shadow-xl items-center font-medium text-white'}>
             {isModerator ? (
               <span className="bg-orange p-2 w-8 h-8 flex items-center justify-center rounded-full">
-                {participant.identity.charAt(0).toUpperCase()}
+                {name.charAt(0).toUpperCase()}
               </span>
             ) : null}
             <AudioLevelIndicator audioTrack={audioTrack} />
             <span>
-              {noName ? '' : participant.identity}
-              {isLocalParticipant && ' (Sie)'}
+              {noName ? '' : name}
+              {isLocalParticipant && ' (Du)'}
             </span>
           </span>
         </div>
@@ -192,7 +196,9 @@ export default function ParticipantInfo({
       </div>
       <div className={classes.innerContainer}>
         {(!isVideoEnabled || isVideoSwitchedOff) && (
-          <div className={classes.avatarContainer}>
+          <div
+            className={classes.avatarContainer + (isActivePlayer ? ' bg-purple rounded-lg' : ' bg-grayish rounded-xl')}
+          >
             <AvatarIcon />
           </div>
         )}

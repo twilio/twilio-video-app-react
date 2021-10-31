@@ -67,8 +67,8 @@ export interface ISession {
   startDate: firestore.Timestamp;
   endDate: firestore.Timestamp;
   activeScreen: ScreenType;
-  moderators: string[];
-  muted: string[];
+  moderators?: string[];
+  muted?: string[];
 }
 
 export interface ISessionStore {
@@ -88,10 +88,20 @@ export interface ICarouselGame {
   activeCard: number;
   seed: number;
   currentSpinCount: number;
+  playerRoundCount?: { [key: string]: number };
 }
+
+export const DEFAULT_QUESTION_COLOR = '#f00';
 
 export interface IQuestion {
   //TODO: add categorie color
   category: string;
+  name: string;
+  catId: string;
+  color: string; //not in db
+}
+
+export interface ICategory {
+  color: string;
   name: string;
 }

@@ -35,7 +35,7 @@ interface RoomNameScreenProps {
   handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
 }
 
-export default function RoomNameScreen({ name, roomName, setName, handleSubmit }: RoomNameScreenProps) {
+export default function RoomNameScreen({ setName, handleSubmit }: RoomNameScreenProps) {
   const classes = useStyles();
   const { user } = useAppState();
 
@@ -58,7 +58,8 @@ export default function RoomNameScreen({ name, roomName, setName, handleSubmit }
                 id="input-user-name"
                 onChange={handleNameChange}
                 className="rounded-full border border-gray-500 px-3 py-1"
-                placeholder="Ihr Name"
+                placeholder="Dein Name"
+                required
               />
             </div>
           )}

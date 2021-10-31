@@ -3,11 +3,11 @@ import useVideoContext from 'hooks/useVideoContext/useVideoContext';
 import React, { useEffect, useState } from 'react';
 import useSessionContext from 'hooks/useSessionContext';
 import { ChooseableParticipant } from 'components/ChooseableParticipant';
-import { ISession, UserGroup } from 'types';
 import { sortedParticipantsByCategorie } from 'utils/participants';
 import { RevealedCard } from 'components/RevealedCard';
 import { SessionInfo } from 'components/SessionInfo';
 import { subscribeToSessionStore } from 'utils/firebase/session';
+import { nameFromIdentity } from 'utils/participants';
 
 export const GridVideoChatLayout = () => {
   const { room } = useVideoContext();
@@ -39,10 +39,12 @@ export const GridVideoChatLayout = () => {
   const ModeratorLetterInfo = (props: { participant: { identity: string } }) => (
     <div className="flex justify-center items-center space-x-3">
       <span className="text-xl font-medium bg-orange rounded-full p-4 w-12 h-12 text-white flex justify-center items-center">
-        {props.participant.identity[0].toUpperCase()}
+        {nameFromIdentity(props.participant.identity)
+          .charAt(0)
+          .toUpperCase()}
       </span>
       <div className="flex flex-col">
-        <span className="font-semibold">{props.participant.identity}</span>
+        <span className="font-semibold">{nameFromIdentity(props.participant.identity)}</span>
         <span className="font-light">Moderator</span>
       </div>
     </div>
@@ -51,9 +53,11 @@ export const GridVideoChatLayout = () => {
   const ParticipantLetterInfo = (props: { participant: { identity: string } }) => (
     <div className="flex flex-col items-center space-y-1">
       <span className="uppercase rounded-full text-xl bg-purple font-medium w-12 h-12 text-white flex justify-center items-center">
-        {props.participant.identity[0]}
+        {nameFromIdentity(props.participant.identity)
+          .charAt(0)
+          .toUpperCase()}
       </span>
-      <span className="">{props.participant.identity}</span>
+      <span className="">{nameFromIdentity(props.participant.identity)}</span>
     </div>
   );
 

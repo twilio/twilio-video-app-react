@@ -6,7 +6,7 @@ import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useS
 // import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 import useSessionContext from 'hooks/useSessionContext';
 import { ChooseableParticipant } from 'components/ChooseableParticipant';
-import { sortedParticipantsByCategorie } from 'utils/participants';
+import { nameFromIdentity, sortedParticipantsByCategorie } from 'utils/participants';
 import { subscribeToSessionStore } from 'utils/firebase/session';
 
 export default function ParticipantList() {
@@ -27,7 +27,7 @@ export default function ParticipantList() {
   const SmallParticipant = (props: ParticipantProps) => (
     <div className="w-40 relative flex flex-col">
       <ChooseableParticipant {...props} noName />
-      <span className="w-full text-center text-gray-700 mt-1">{props.participant.identity}</span>
+      <span className="w-full text-center text-gray-700 mt-1">{nameFromIdentity(props.participant.identity)}</span>
     </div>
   );
 
@@ -46,7 +46,7 @@ export default function ParticipantList() {
   }, []);
 
   return (
-    <div className="flex justify-center overflow-x-auto gap-x-5 bg-grayish my-">
+    <div className="flex justify-center overflow-x-auto overflow-y-visible pr-5 pt-5 gap-x-5 bg-grayish my-">
       {moderatorParitcipants.map(participant => {
         return (
           <SmallParticipant

@@ -4,8 +4,8 @@ import { IQuestion } from 'types';
 import { fetchCarouselGame, fetchQuestions, subscribeToCarouselGame } from 'utils/firebase/game';
 
 type GameContext = {
-  revealedCard: string | undefined;
-  setRevealedCard: (content: string) => void;
+  revealedCard: IQuestion | undefined;
+  setRevealedCard: (content: IQuestion | undefined) => void;
   questions: IQuestion[];
 };
 
@@ -16,7 +16,7 @@ interface GameProviderProps {
 }
 
 export const GameProvider = React.memo(({ children }: GameProviderProps) => {
-  const [revealedCard, setRevealedCard] = useState<string>();
+  const [revealedCard, setRevealedCard] = useState<IQuestion>();
   const [questions, setQuestions] = useState<IQuestion[]>([]);
   const [fetched, setFetched] = useState(false);
   const { groupToken } = useSessionContext();
@@ -27,7 +27,7 @@ export const GameProvider = React.memo(({ children }: GameProviderProps) => {
       Promise.all([fetchCarouselGame(groupToken), fetchQuestions()]).then(([game, questions]) => {
         const active = game.activeCard;
         if (active >= 0 && active < questions.length) {
-          setRevealedCard(questions[active].name);
+          setRevealedCard(questions[active]);
         }
         setQuestions(questions);
       });
@@ -38,9 +38,7 @@ export const GameProvider = React.memo(({ children }: GameProviderProps) => {
     <GameContext.Provider
       value={{
         revealedCard,
-        setRevealedCard: (val: string) => {
-          setRevealedCard(val);
-        },
+        setRevealedCard,
         questions,
       }}
     >
