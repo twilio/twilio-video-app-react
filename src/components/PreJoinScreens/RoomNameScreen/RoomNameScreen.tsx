@@ -58,7 +58,7 @@ export default function RoomNameScreen({ setName, handleSubmit }: RoomNameScreen
                 id="input-user-name"
                 onChange={handleNameChange}
                 className="rounded-full border border-gray-500 px-3 py-1"
-                placeholder="Ihr Name"
+                placeholder="Dein Name"
                 required
               />
             </div>

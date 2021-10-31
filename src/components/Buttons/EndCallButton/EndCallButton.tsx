@@ -19,7 +19,7 @@ export default function EndCallButton(props: { className?: string }) {
     <>
       <Alert
         title={'DemokraTisch verlassen'}
-        text="Möchtest du den DekokraTisch Raum verlassen?"
+        text="Möchtest du diesen DekokraTisch Raum wirklich verlassen?"
         onApprove={onEndCall}
         open={showAlert}
         setOpen={setShowAlert}

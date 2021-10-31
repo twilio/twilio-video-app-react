@@ -55,7 +55,9 @@ export default function App() {
       </div>
       <div className="md:hidden flex items-center justify-center w-full h-full">
         <PopupScreen>
-          <h1 className="text-lg text-center">Bitte treten Sie dem DemokraTisch Raum auf einem größeren Gerät bei.</h1>
+          <h1 className="text-lg text-center">
+            Bitte nutze dein Tablet oder Desktop für die Teilnahme am DemokraTisch.
+          </h1>
         </PopupScreen>
       </div>
     </>

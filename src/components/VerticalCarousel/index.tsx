@@ -278,7 +278,7 @@ const VerticalCarousel = ({ questions }: { questions: IQuestion[] }) => {
           <div className="flex flex-col justify-center space-y-3 w-56 lg:w-96">
             <InfoRow
               iconSrc="/assets/info.svg"
-              text="Sollte dir die angezeigte Frage nicht gefallen, ist das keine Problem. Du kannst insgesamt 3 x am DemokraTisch-Rad drehen, da ist auf jeden Fall die passende Frage für dich dabei. Los gehts!"
+              text="Sollte dir die angezeigte Frage nicht gefallen, ist das kein Problem. Du kannst insgesamt 3x am DemokraTisch-Rad drehen, da ist auf jeden Fall die passende Frage für dich dabei. Los gehts!"
             />
             <div className="w-full h-32 lg:h-60">
               <RevealedCard />
