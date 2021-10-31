@@ -32,7 +32,7 @@ interface SessionProviderProps {
 }
 
 const updateDate = (prev: firestore.Timestamp | undefined, newDate: firestore.Timestamp) => {
-  if (prev && prev?.isEqual(newDate) === false) {
+  if (!prev || (newDate && prev && prev.isEqual(newDate) === false)) {
     console.log('new date');
     return newDate;
   } else {
@@ -83,7 +83,7 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
     setRoomId(store.data.roomId);
     setActiveScreen(store.data.activeScreen);
     setStartDate(prev => updateDate(prev, store.data.startDate));
-    setEndDate(prev => updateDate(prev, store.data.startDate));
+    setEndDate(prev => updateDate(prev, store.data.endDate));
   };
 
   useEffect(() => {

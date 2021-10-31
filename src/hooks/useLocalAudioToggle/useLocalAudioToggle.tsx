@@ -22,7 +22,7 @@ export default function useLocalAudioToggle() {
 
   const toggleAudioEnabled = useCallback(() => {
     if (audioTrack) {
-      audioTrack.isEnabled ? audioTrack.disable() : enableAudio();
+      audioTrack.isEnabled ? audioTrack?.disable() : enableAudio();
     }
   }, [audioTrack]);
 
@@ -33,7 +33,7 @@ export default function useLocalAudioToggle() {
 
     subscribeToSessionStore('useLocalAudioToggle', groupToken, store => {
       if (room?.localParticipant && store.data.muted?.includes(room?.localParticipant.sid)) {
-        audioTrack.disable();
+        audioTrack?.disable();
       }
     });
   }, [groupToken]);

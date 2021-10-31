@@ -25,7 +25,7 @@ export const fetchQuestions = () =>
     }
   });
 
-export const setCurrentPlayer = (groupToken: string, playerSid: string) => {
+export const setCurrentPlayer = (groupToken: string, playerSid: string, currentPlayer?: string) => {
   getSessionStore(groupToken).then(store => {
     db()
       .collection('sessions')
@@ -37,6 +37,11 @@ export const setCurrentPlayer = (groupToken: string, playerSid: string) => {
           currentSpinCount: 0,
           currentPlayer: playerSid,
           activeCard: -1,
+          ...(currentPlayer !== playerSid && {
+            playerRoundCount: {
+              [playerSid]: firestore.FieldValue.increment(1),
+            },
+          }),
         },
         { merge: true }
       );

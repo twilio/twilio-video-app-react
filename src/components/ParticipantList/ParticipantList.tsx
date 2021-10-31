@@ -46,7 +46,7 @@ export default function ParticipantList() {
   }, []);
 
   return (
-    <div className="flex justify-center overflow-x-auto gap-x-5 bg-grayish my-">
+    <div className="flex justify-center overflow-x-auto overflow-y-visible pr-5 pt-5 gap-x-5 bg-grayish my-">
       {moderatorParitcipants.map(participant => {
         return (
           <SmallParticipant

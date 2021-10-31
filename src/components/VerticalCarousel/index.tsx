@@ -33,8 +33,8 @@ const VerticalCarousel = ({ data }: any) => {
   const localParticipant = room!.localParticipant;
   const [, setSeed] = useState<ICarouselGame['seed']>();
   const [spinTimeouts, setSpinTimeouts] = useState([] as NodeJS.Timeout[]);
-  const [canSpin, setCanSpin] = useState<boolean>(false);
   const [remainingSpins, setRemainingSpins] = useState<number>(MAX_SPIN_COUNT);
+  const [isActivePlayer, setIsActivePlayer] = useState(false);
   const activeIndexRef = useRef<number>();
   activeIndexRef.current = activeIndex;
 
@@ -165,7 +165,7 @@ const VerticalCarousel = ({ data }: any) => {
         return game.seed;
       });
 
-      setCanSpin(localParticipant.sid === game.currentPlayer && game.currentSpinCount < MAX_SPIN_COUNT);
+      setIsActivePlayer(localParticipant.sid === game.currentPlayer);
       setRemainingSpins(MAX_SPIN_COUNT - game.currentSpinCount);
       setRevealableIndex(game.activeCard);
     });
@@ -179,11 +179,20 @@ const VerticalCarousel = ({ data }: any) => {
     }
   }, [data, revealableIndex]);
 
-  const normalInvisible = canSpin ? ' opacity-100 cursor-pointer' : ' opacity-0 cursor-default';
-
   if (sessionStatus !== ISessionStatus.SESSION_RUNNING || activeIndex === -1) {
     return null;
   }
+
+  const canSpin = isActivePlayer && remainingSpins > 0 && spinTimeouts.length <= 0;
+  const canChoose = isActivePlayer && remainingSpins >= 0 && spinTimeouts.length <= 0;
+  const canReveal = revealedCard !== '' && canChoose;
+  const spinVisibility = canSpin ? ' opacity-100 cursor-pointer' : ' opacity-0 cursor-default';
+  const chooseVisibility = canChoose ? ' opacity-100 cursor-pointer' : ' opacity-0 cursor-default';
+  const revealVisibility = canReveal ? ' opacity-100 cursor-pointer' : ' opacity-0 cursor-default';
+
+  console.log('isactive', isActivePlayer);
+  console.log(remainingSpins, spinTimeouts);
+  console.log(canSpin, canChoose, canReveal);
 
   return (
     <div className="container h-full shadow-lg mx-auto px-2 lg:px-5 overflow-hidden">
@@ -193,7 +202,7 @@ const VerticalCarousel = ({ data }: any) => {
             type="button"
             className={
               'relative shadow-lg rounded-full bg-white w-16 h-16 hover:shadow-sm transition-all duration-500' +
-              normalInvisible
+              spinVisibility
             }
             onClick={handleClick}
             disabled={!canSpin}
@@ -244,13 +253,21 @@ const VerticalCarousel = ({ data }: any) => {
         </div>
         <button
           className={
-            'w-16 h-16 rounded-full bg-purple text-white transform translate-x-0 shadow-xl hover:shadow-none transition-all duration-500' +
-            normalInvisible
+            'w-16 h-16 rounded-full bg-purple text-white transform translate-x-0 shadow-xl hover:shadow-none transition-all duration-500 flex items-center justify-center' +
+            chooseVisibility
           }
-          disabled={!canSpin}
+          disabled={!canChoose}
           onClick={() => revealQuestion()}
         >
-          <p className="text-3xl z-40">-{`>`}</p>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-10 w-10"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
         </button>
         <div className="flex justify-center items-center space-x-5">
           <div className="flex flex-col justify-center space-y-3 w-56 lg:w-96">
@@ -269,12 +286,10 @@ const VerticalCarousel = ({ data }: any) => {
           <button
             className={
               'w-16 h-16 flex items-center justify-center rounded-full bg-purple text-white transition-opacity duration-500' +
-              (revealedCard === '' || spinTimeouts.length !== 0 || !canSpin
-                ? ' opacity-0 cursor-default'
-                : ' opacity-100 cursor-pointer')
+              revealVisibility
             }
             onClick={approveQuestion}
-            disabled={revealedCard === '' || spinTimeouts.length !== 0 || !canSpin}
+            disabled={!canReveal}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

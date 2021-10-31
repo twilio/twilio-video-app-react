@@ -14,6 +14,7 @@ export interface ParticipantProps {
   isModerator?: boolean;
   noName?: boolean;
   isActivePlayer?: boolean;
+  roundsPlayed?: number;
 }
 
 const Participant = React.memo(
@@ -28,6 +29,7 @@ const Participant = React.memo(
     isModerator,
     noName,
     isActivePlayer,
+    roundsPlayed,
   }: ParticipantProps) => {
     return (
       <ParticipantInfo
@@ -39,6 +41,7 @@ const Participant = React.memo(
         isModerator={isModerator}
         noName={noName ?? false}
         isActivePlayer={isActivePlayer}
+        roundsPlayed={roundsPlayed}
       >
         <ParticipantTracks
           participant={participant}

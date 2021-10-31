@@ -67,8 +67,8 @@ export interface ISession {
   startDate: firestore.Timestamp;
   endDate: firestore.Timestamp;
   activeScreen: ScreenType;
-  moderators: string[];
-  muted: string[];
+  moderators?: string[];
+  muted?: string[];
 }
 
 export interface ISessionStore {
@@ -88,6 +88,7 @@ export interface ICarouselGame {
   activeCard: number;
   seed: number;
   currentSpinCount: number;
+  playerRoundCount?: { [key: string]: number };
 }
 
 export interface IQuestion {

@@ -11,6 +11,8 @@ export const SessionInfo = () => {
   const start = startDate?.toDate();
   const end = endDate?.toDate();
 
+  console.log(start, end);
+
   const interval = setInterval(() => {
     setNow(firestore.Timestamp.now().toMillis());
   }, 1000 * 60);
@@ -32,16 +34,16 @@ export const SessionInfo = () => {
             : null}
         </p>
       </div>
-      <div className="flex items-center space-x-3 text-purple text-base">
-        <img src="/assets/clock.svg" alt="Uhr Icon" />
+      {endDate && endDate.toMillis() > firestore.Timestamp.now().toMillis() ? (
+        <div className="flex items-center space-x-3 text-purple text-base">
+          <img src="/assets/clock.svg" alt="Uhr Icon" />
 
-        {endDate && endDate.toMillis() > firestore.Timestamp.now().toMillis() ? (
           <p>
             {endDate ? Math.floor((endDate.toMillis() - now) / 1000 / 60) : null}
             min verbleiben
           </p>
-        ) : null}
-      </div>
+        </div>
+      ) : null}
     </div>
   );
 };
