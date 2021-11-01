@@ -48,7 +48,9 @@ export const ChooseableParticipant = (props: ParticipantProps) => {
   const isActivePlayer = activePlayer === props.participant.sid;
 
   return (
-    <div className={'relative rounded-xl' + (isActivePlayer ? ' border-4 border-purple box-border' : '')}>
+    <div
+      className={'relative rounded-lg' + (isActivePlayer ? ' ring-4 ring-offset-2 ring-purple ring-opacity-80' : '')}
+    >
       {userGroup === UserGroup.Moderator && props.participant.sid !== localParticipant.sid ? (
         <div className="group transition-all duration-500 bg-white opacity-0 hover:opacity-95 bg-opacity-30 absolute top-0 left-0 w-full h-full z-30 flex space-x-2 items-center justify-center rounded-lg">
           <button

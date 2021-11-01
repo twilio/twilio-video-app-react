@@ -39,7 +39,7 @@ export default function Publication({
           track={track as IVideoTrack}
           priority={videoPriority}
           isLocal={!track.name.includes('screen') && isLocalParticipant}
-          className={isActivePlayer ? 'bg-purple rounded-lg' : 'bg-grayish rounded-xl'}
+          className={'bg-grayish rounded-xl'}
         />
       );
     case 'audio':
