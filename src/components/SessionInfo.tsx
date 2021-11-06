@@ -37,7 +37,7 @@ export const SessionInfo = () => {
           <img src="/assets/clock.svg" alt="Uhr Icon" />
 
           <p>
-            {endDate ? Math.floor((endDate.toMillis() - now) / 1000 / 60) : null}
+            {endDate ? Math.round((endDate.toMillis() - now) / 1000 / 60) : null}
             min verbleiben
           </p>
         </div>
