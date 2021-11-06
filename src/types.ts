@@ -64,9 +64,12 @@ export interface ISession {
   roomId: string;
   labels: ISessionLabels;
   isPaused?: boolean;
-  startDate: firestore.Timestamp;
-  endDate: firestore.Timestamp;
+  startDate?: firestore.Timestamp;
+  endDate?: firestore.Timestamp;
+  hasEnded?: boolean;
   activeScreen: ScreenType;
+
+  //user sid's:
   moderators?: string[];
   muted?: string[];
 }
