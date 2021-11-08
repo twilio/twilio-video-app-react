@@ -96,24 +96,23 @@ const updateSession = (groupToken: string, payload: firestore.UpdateData) => {
 };
 
 export const startSession = (groupToken: string) => {
-  updateSession(groupToken, { startDate: firestore.FieldValue.serverTimestamp() });
-};
-
-export const reactivateSession = (groupToken: string) => {
   updateSession(groupToken, {
     startDate: firestore.FieldValue.serverTimestamp(),
     endDate: firestore.Timestamp.fromDate(
       firestore.Timestamp.fromMillis(firestore.Timestamp.now().toMillis() + 1000 * 60 * 60).toDate()
     ),
+    hasEnded: false,
   });
 };
+
+export const reactivateSession = (groupToken: string) => startSession(groupToken);
 
 export const addSessionModerator = (groupToken: string, sid: string) => {
   updateSession(groupToken, { moderators: firestore.FieldValue.arrayUnion(sid) });
 };
 
 export const endSession = (groupToken: string) => {
-  updateSession(groupToken, { endDate: firestore.FieldValue.serverTimestamp() });
+  updateSession(groupToken, { hasEnded: true });
 };
 
 export const muteParticipant = (groupToken: string, sid: string) => {

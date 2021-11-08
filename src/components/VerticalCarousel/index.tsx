@@ -118,7 +118,7 @@ const VerticalCarousel = ({ questions }: { questions: IQuestion[] }) => {
     const steps = Math.abs(diff);
 
     const startTime = Date.now();
-    const duration = 7000;
+    const duration = 6000;
     const sqDuration = Math.sqrt(duration * 0.1);
 
     let next: number;

@@ -31,8 +31,8 @@ interface SessionProviderProps {
   children: ReactNode;
 }
 
-const updateDate = (prev: firestore.Timestamp | undefined, newDate: firestore.Timestamp) => {
-  if (!prev || (newDate && prev && prev.isEqual(newDate) === false)) {
+const updateDate = (prev: firestore.Timestamp | undefined, newDate: firestore.Timestamp | undefined) => {
+  if (!prev || (newDate && prev && prev.isEqual(newDate) === false) || (!prev && !newDate)) {
     return newDate;
   } else {
     return prev;
@@ -67,11 +67,11 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
     if (store.data.isPaused) {
       setSessionStatus(ISessionStatus.SESSION_PAUSED);
     } else if (
-      store.data.startDate !== null &&
-      store.data.startDate.toMillis() > firestore.Timestamp.now().toMillis()
+      store.data.startDate === undefined ||
+      (store.data.startDate && store.data.startDate.toMillis() > firestore.Timestamp.now().toMillis())
     ) {
       setSessionStatus(ISessionStatus.SESSION_NOT_STARTED);
-    } else if (store.data.endDate !== null && store.data.endDate.toMillis() < firestore.Timestamp.now().toMillis()) {
+    } else if (store.data.hasEnded) {
       setSessionStatus(ISessionStatus.SESSION_ENDED);
     } else {
       setSessionStatus(ISessionStatus.SESSION_RUNNING);

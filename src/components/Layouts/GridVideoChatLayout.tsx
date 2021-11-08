@@ -45,7 +45,7 @@ export const GridVideoChatLayout = () => {
       </span>
       <div className="flex flex-col">
         <span className="font-semibold">{nameFromIdentity(props.participant.identity)}</span>
-        <span className="font-light">Moderator</span>
+        <span className="font-light">Moderation</span>
       </div>
     </div>
   );
