@@ -8,7 +8,7 @@
     "@material-ui/icons": "^4.11.2",
     "@twilio-labs/plugin-rtc": "^0.8.2",
     "@twilio/conversations": "^1.2.3",
-    "@twilio/video-processors": "^1.0.1",
+    "@twilio/video-processors": "^1.0.2",
     "@twilio/video-room-monitor": "^1.0.0-beta.1",
     "@types/d3-timer": "^1.0.9",
     "@types/dotenv": "^8.2.0",
@@ -39,11 +39,12 @@
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "4.0.3",
+    "react-spring": "^9.3.0",
     "rimraf": "3.0.2",
     "strip-color": "^0.1.0",
     "ts-node": "^9.1.1",
     "twilio": "^3.63.1",
-    "twilio-video": "^2.17.1",
+    "twilio-video": "github:twilio/twilio-video.js#2.19.0-rc2",
     "typescript": "^3.8.3"
   },
   "devDependencies": {

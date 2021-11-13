@@ -17,13 +17,17 @@ export default function useScreenShareToggle(room: Room | null, onError: ErrorCa
       .getDisplayMedia({
         audio: false,
         video: {
-          frameRate: 10,
+          frameRate: 30,
           height: 1080,
           width: 1920,
         },
       })
       .then(stream => {
-        const track = stream.getTracks()[0];
+        const track = stream.getTracks()[0] as any;
+
+        // text, detail, or motion
+        // See https://www.w3.org/TR/mst-content-hint/#video-content-hints
+        track.contentHint = 'text';
 
         // All video tracks are published with 'low' priority. This works because the video
         // track that is displayed in the 'MainParticipant' component will have it's priority
