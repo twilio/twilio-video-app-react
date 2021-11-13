@@ -128,15 +128,15 @@ export default function ChatInput({ conversation, isChatWindowOpen }: ChatInputP
   };
 
   return (
-    <div className={classes.chatInputContainer}>
-      <Snackbar
+    <div className="flex w-full bg-white py-3">
+      {/* <Snackbar
         open={Boolean(fileSendError)}
         headline="Error"
         message={fileSendError || ''}
         variant="error"
         handleClose={() => setFileSendError(null)}
-      />
-      <div className={clsx(classes.textAreaContainer, { [classes.isTextareaFocused]: isTextareaFocused })}>
+      /> */}
+      <div className="bg-white p-2 focus-within:ring-1 flex-grow w-full">
         {/* 
         Here we add the "isTextareaFocused" class when the user is focused on the TextareaAutosize component.
         This helps to ensure a consistent appearance across all browsers. Adding padding to the TextareaAutosize
@@ -145,7 +145,7 @@ export default function ChatInput({ conversation, isChatWindowOpen }: ChatInputP
         <TextareaAutosize
           minRows={1}
           maxRows={3}
-          className={classes.textArea}
+          className="w-full bg-white focus:outline-none resize-none"
           aria-label="chat input"
           placeholder="Write a message..."
           onKeyPress={handleReturnKeyPress}
@@ -158,38 +158,38 @@ export default function ChatInput({ conversation, isChatWindowOpen }: ChatInputP
         />
       </div>
 
-      <Grid container alignItems="flex-end" justifyContent="flex-end" wrap="nowrap">
+      <div className="flex px-2 items-center justify-center">
         {/* Since the file input element is invisible, we can hardcode an empty string as its value.
         This allows users to upload the same file multiple times. */}
-        <input
+        {/* <input
           ref={fileInputRef}
           type="file"
           style={{ display: 'none' }}
           onChange={handleSendFile}
           value={''}
           accept={ALLOWED_FILE_TYPES}
-        />
-        <div className={classes.buttonContainer}>
-          <div className={classes.fileButtonContainer}>
+        /> */}
+        <div className="">
+          {/* <div className={classes.fileButtonContainer}>
             <Button className={classes.button} onClick={() => fileInputRef.current?.click()} disabled={isSendingFile}>
               <FileAttachmentIcon />
             </Button>
 
             {isSendingFile && <CircularProgress size={24} className={classes.fileButtonLoadingSpinner} />}
-          </div>
+          </div> */}
 
-          <Button
-            className={classes.button}
+          <button
+            className={'rounded-full bg-purple w-8 h-8 flex items-center justify-center'}
             onClick={() => handleSendMessage(messageBody)}
             color="primary"
-            variant="contained"
             disabled={!isValidMessage}
+            style={{ opacity: isValidMessage ? '1' : '0.5' }}
             data-cy-send-message-button
           >
             <SendMessageIcon />
-          </Button>
+          </button>
         </div>
-      </Grid>
+      </div>
     </div>
   );
 }

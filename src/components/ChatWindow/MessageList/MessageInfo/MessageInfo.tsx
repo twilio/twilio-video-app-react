@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { nameFromIdentity } from 'utils/participants';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -23,9 +24,10 @@ interface MessageInfoProps {
 export default function MessageInfo({ author, dateCreated, isLocalParticipant }: MessageInfoProps) {
   const classes = useStyles();
 
+  const name = nameFromIdentity(author);
   return (
     <div className={classes.messageInfoContainer}>
-      <div>{isLocalParticipant ? `${author} (You)` : author}</div>
+      <div>{isLocalParticipant ? `${name} (You)` : name}</div>
       <div>{dateCreated}</div>
     </div>
   );
