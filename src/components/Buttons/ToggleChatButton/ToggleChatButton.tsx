@@ -56,7 +56,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ToggleChatButton() {
+export default function ToggleChatButton(props: { className?: string }) {
   const classes = useStyles();
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const { isChatWindowOpen, setIsChatWindowOpen, conversation, hasUnreadMessages } = useChatContext();
@@ -84,19 +84,24 @@ export default function ToggleChatButton() {
   }, [conversation, isChatWindowOpen]);
 
   return (
-    <Button
+    <button
       data-cy-chat-button
       onClick={toggleChatWindow}
+      className={props.className + ' relative'}
       disabled={!conversation}
-      startIcon={
-        <div className={classes.iconContainer}>
-          <ChatIcon />
-          <div className={clsx(classes.ring, { [classes.animateRing]: shouldAnimate })} />
-          <div className={clsx(classes.circle, { [classes.hasUnreadMessages]: hasUnreadMessages })} />
-        </div>
-      }
+      // startIcon={
+      //   <div className={classes.iconContainer}>
+
+      //     <div className={clsx(classes.ring, { [classes.animateRing]: shouldAnimate })} />
+      //     <div className={clsx(classes.circle, { [classes.hasUnreadMessages]: hasUnreadMessages })} />
+      //   </div>
+      // }
     >
-      Chat
-    </Button>
+      <div
+        className="absolute top-0 right-0 h-3 w-3 bg-red rounded-full"
+        style={{ display: hasUnreadMessages ? 'block' : 'none' }}
+      />
+      <ChatIcon />
+    </button>
   );
 }

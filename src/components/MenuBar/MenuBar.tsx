@@ -15,6 +15,7 @@ import { setActiveScreen } from 'utils/firebase/screen';
 import EndCallButton from 'components/Buttons/EndCallButton/EndCallButton';
 import { EndSessionButton } from 'components/Buttons/EndSessionButton';
 import { ScreenToggleButton } from 'components/Buttons/ScreenSwitchButton';
+import ToggleChatButton from 'components/Buttons/ToggleChatButton/ToggleChatButton';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -93,6 +94,13 @@ export default function MenuBar() {
           {userGroup === UserGroup.Moderator ? (
             <>
               <ScreenToggleButton className={featuredButtonClassName} />
+            </>
+          ) : null}
+
+          <ToggleChatButton className={buttonClassName} />
+
+          {userGroup === UserGroup.Moderator ? (
+            <>
               <EndSessionButton className={buttonClassName} />
               <Menu buttonClassName={buttonClassName} />
             </>

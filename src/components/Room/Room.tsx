@@ -21,10 +21,10 @@ export default function Room() {
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="flex-grow pb-32">
+      <div className="flex-grow pb-32 flex">
         <CurrentScreen />
+        <ChatWindow />
       </div>
-      <ChatWindow />
       <BackgroundSelectionDialog />
     </div>
   );
