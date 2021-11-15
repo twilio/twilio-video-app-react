@@ -82,12 +82,12 @@ export const subscribeToSessionStore = (
   }
 };
 
-const updateSession = (groupToken: string, payload: firestore.UpdateData) => {
+const updateSession = async (groupToken: string, payload: firestore.UpdateData) => {
   if (groupTokenValid(groupToken)) {
     throw new Error('shareToken undefined.');
   }
 
-  getSessionStore(groupToken).then(store => {
+  await getSessionStore(groupToken).then(store => {
     db()
       .collection('sessions')
       .doc(store.doc.id)
@@ -95,7 +95,7 @@ const updateSession = (groupToken: string, payload: firestore.UpdateData) => {
   });
 };
 
-export const startSession = (groupToken: string) => {
+export const startSession = (groupToken: string) =>
   updateSession(groupToken, {
     startDate: firestore.FieldValue.serverTimestamp(),
     endDate: firestore.Timestamp.fromDate(
@@ -103,22 +103,30 @@ export const startSession = (groupToken: string) => {
     ),
     hasEnded: false,
   });
-};
 
-export const reactivateSession = (groupToken: string) => startSession(groupToken);
+export const reactivateSession = async (groupToken: string) => startSession(groupToken);
 
-export const addSessionModerator = (groupToken: string, sid: string) => {
+export const addSessionModerator = async (groupToken: string, sid: string) =>
   updateSession(groupToken, { moderators: firestore.FieldValue.arrayUnion(sid) });
-};
 
-export const endSession = (groupToken: string) => {
-  updateSession(groupToken, { hasEnded: true });
-};
+export const endSession = async (groupToken: string) => updateSession(groupToken, { hasEnded: true });
 
-export const muteParticipant = (groupToken: string, sid: string) => {
+export const muteParticipant = async (groupToken: string, sid: string) =>
   updateSession(groupToken, { muted: firestore.FieldValue.arrayUnion(sid) });
-};
 
-export const unmuteParticipant = (groupToken: string, sid: string) => {
+export const unmuteParticipant = async (groupToken: string, sid: string) =>
   updateSession(groupToken, { muted: firestore.FieldValue.arrayRemove(sid) });
-};
+
+export const setRoomSid = async (groupToken: string, roomSid: string) => updateSession(groupToken, { roomSid });
+
+export const raiseHand = async (groupToken: string, identity: string) =>
+  updateSession(groupToken, { raisedHands: firestore.FieldValue.arrayUnion(identity) });
+
+export const unraiseHand = async (groupToken: string, identity: string) =>
+  updateSession(groupToken, { raisedHands: firestore.FieldValue.arrayRemove(identity) });
+
+export const inviteAudienceMember = async (groupToken: string, identity: string) =>
+  updateSession(groupToken, { audienceInvites: firestore.FieldValue.arrayUnion(identity) });
+
+export const removeAudienceMemberInvitation = async (groupToken: string, identity: string) =>
+  updateSession(groupToken, { audienceInvites: firestore.FieldValue.arrayRemove(identity) });

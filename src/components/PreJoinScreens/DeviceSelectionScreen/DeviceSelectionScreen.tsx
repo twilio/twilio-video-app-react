@@ -7,9 +7,8 @@ import { Steps } from '../PreJoinScreens';
 import ToggleAudioButton from '../../Buttons/ToggleAudioButton/ToggleAudioButton';
 import ToggleVideoButton from '../../Buttons/ToggleVideoButton/ToggleVideoButton';
 import { useAppState } from '../../../state';
-import useChatContext from '../../../hooks/useChatContext/useChatContext';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
-import { generateIdentity } from 'utils/participants';
+import useSessionContext from 'hooks/useSessionContext';
 
 const useStyles = makeStyles((theme: Theme) => ({
   gutterBottom: {
@@ -54,26 +53,17 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 interface DeviceSelectionScreenProps {
-  name: string;
-  roomName: string;
   setStep: (step: Steps) => void;
+  handleJoin: () => void;
+  name: string;
 }
 
-export default function DeviceSelectionScreen({ name, roomName, setStep }: DeviceSelectionScreenProps) {
+export default function DeviceSelectionScreen({ setStep, handleJoin, name }: DeviceSelectionScreenProps) {
   const classes = useStyles();
-  const { getToken, isFetching } = useAppState();
-  const { connect: chatConnect } = useChatContext();
-  const { connect: videoConnect, isAcquiringLocalTracks, isConnecting } = useVideoContext();
+  const { isFetching } = useAppState();
+  const { isAcquiringLocalTracks, isConnecting } = useVideoContext();
   const disableButtons = isFetching || isAcquiringLocalTracks || isConnecting;
-
-  const handleJoin = () => {
-    generateIdentity(name).then(identity => {
-      getToken(identity, roomName).then(({ token }) => {
-        videoConnect(token);
-        process.env.REACT_APP_DISABLE_TWILIO_CONVERSATIONS !== 'true' && chatConnect(token);
-      });
-    });
-  };
+  const { labels } = useSessionContext();
 
   if (isFetching || isConnecting) {
     return (
@@ -95,7 +85,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
   return (
     <>
       <Typography variant="h5" className={classes.gutterBottom}>
-        {roomName} beitreten
+        {labels?.title} beitreten
       </Typography>
 
       <div className="flex flex-col items-center">

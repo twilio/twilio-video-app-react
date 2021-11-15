@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -7,6 +7,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import enhanceMessage from './enhanceMessage';
 import { TwilioError } from 'twilio-video';
+import useSessionContext from 'hooks/useSessionContext';
+import { UserGroup } from 'types';
 
 interface ErrorDialogProps {
   dismissError: Function;
@@ -16,6 +18,15 @@ interface ErrorDialogProps {
 function ErrorDialog({ dismissError, error }: PropsWithChildren<ErrorDialogProps>) {
   const { message, code } = error || {};
   const enhancedMessage = enhanceMessage(message, code);
+  const { userGroup } = useSessionContext();
+
+  useEffect(() => {
+    if (userGroup == UserGroup.StreamServer) {
+      setTimeout(() => {
+        dismissError();
+      }, 5000);
+    }
+  }, [message]);
 
   return (
     <Dialog open={error !== null} onClose={() => dismissError()} fullWidth={true} maxWidth="xs">

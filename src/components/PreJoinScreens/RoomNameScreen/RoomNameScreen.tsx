@@ -29,9 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface RoomNameScreenProps {
   name: string;
-  roomName: string;
   setName: (name: string) => void;
-  setRoomName: (roomName: string) => void;
   handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
 }
 

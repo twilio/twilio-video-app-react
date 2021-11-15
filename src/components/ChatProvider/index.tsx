@@ -3,6 +3,7 @@ import { Client } from '@twilio/conversations';
 import { Conversation } from '@twilio/conversations/lib/conversation';
 import { Message } from '@twilio/conversations/lib/message';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import useSessionContext from 'hooks/useSessionContext';
 
 type ChatContextType = {
   isChatWindowOpen: boolean;
@@ -23,6 +24,7 @@ export const ChatProvider: React.FC = ({ children }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
   const [chatClient, setChatClient] = useState<Client>();
+  const { roomSid } = useSessionContext();
 
   const connect = useCallback(
     (token: string) => {
@@ -64,9 +66,11 @@ export const ChatProvider: React.FC = ({ children }) => {
   }, [isChatWindowOpen]);
 
   useEffect(() => {
-    if (room && chatClient) {
+    if ((room || roomSid) && chatClient) {
+      const sid = room?.sid ?? (roomSid as string);
+
       chatClient
-        .getConversationByUniqueName(room.sid)
+        .getConversationByUniqueName(sid)
         .then(newConversation => {
           //@ts-ignore
           window.chatConversation = newConversation;
@@ -77,7 +81,7 @@ export const ChatProvider: React.FC = ({ children }) => {
           onError(new Error('There was a problem getting the Conversation associated with this room.'));
         });
     }
-  }, [room, chatClient, onError]);
+  }, [room, chatClient, onError, roomSid]);
 
   return (
     <ChatContext.Provider
