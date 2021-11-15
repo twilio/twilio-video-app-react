@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 const td = (x: number) => (x < 10 ? '0' + x : '' + x);
 
 export const SessionInfo = () => {
-  const { startDate, endDate, labels } = useSessionContext();
+  const { startDate, endDate, resources } = useSessionContext();
   const [now, setNow] = useState(firestore.Timestamp.now().toMillis());
 
   const start = startDate?.toDate();
@@ -18,7 +18,7 @@ export const SessionInfo = () => {
   return (
     <div className="flex flex-col text-dark-blue space-y-3 items-end">
       <div className="flex items-center space-x-2 text-lg font-medium">
-        <h1>{labels?.title}</h1>
+        <h1>{resources.title}</h1>
         <span>·</span>
         <p>
           {start && end

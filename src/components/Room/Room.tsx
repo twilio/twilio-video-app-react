@@ -7,6 +7,13 @@ import { GridVideoChatLayout } from 'components/Layouts/GridVideoChatLayout';
 import { CarouselGameLayout } from 'components/Layouts/CarouselGameLayout';
 import { RaisedHandsWindow } from 'components/RaisedHandsWindow';
 
+const PoweredByBar = () => (
+  <div className="fixed bottom-2 px-2 z-0 w-full flex items-center justify-between h-12 lg:h-20">
+    <img src="/assets/artikel1.png" className="h-full" />
+    <img src="/assets/demokratie-plattform.png" className="h-full" />
+  </div>
+);
+
 export default function Room() {
   const { activeScreen, userGroup } = useSessionContext();
 
@@ -29,6 +36,7 @@ export default function Room() {
         <CurrentScreen />
         <RaisedHandsWindow />
         <ChatWindow />
+        <PoweredByBar />
       </div>
       <BackgroundSelectionDialog />
     </div>
