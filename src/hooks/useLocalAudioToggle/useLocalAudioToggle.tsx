@@ -12,11 +12,10 @@ export default function useLocalAudioToggle() {
   const { groupToken } = useSessionContext();
 
   const enableAudio = () => {
-    if (!groupToken || !room) {
-      return;
+    if (groupToken !== undefined && room !== null) {
+      unmuteParticipant(groupToken, room!.localParticipant.sid);
     }
 
-    unmuteParticipant(groupToken, room!.localParticipant.sid);
     audioTrack.enable();
   };
 
