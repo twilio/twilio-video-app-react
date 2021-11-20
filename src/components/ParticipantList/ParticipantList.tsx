@@ -7,7 +7,14 @@ import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useS
 import useSessionContext from 'hooks/useSessionContext';
 import { ChooseableParticipant } from 'components/ChooseableParticipant';
 import { nameFromIdentity, sortedParticipantsByCategorie } from 'utils/participants';
-import { subscribeToSessionStore } from 'utils/firebase/session';
+import { subscribeToSessionStore, unsubscribeFromSessionStore } from 'utils/firebase/session';
+
+const SmallParticipant = (props: ParticipantProps) => (
+  <div className="w-40 relative flex flex-col">
+    <ChooseableParticipant {...props} noName />
+    <span className="w-full text-center text-gray-700 mt-1">{nameFromIdentity(props.participant.identity)}</span>
+  </div>
+);
 
 export default function ParticipantList() {
   const { room } = useVideoContext();
@@ -24,25 +31,26 @@ export default function ParticipantList() {
     participants
   );
 
-  const SmallParticipant = (props: ParticipantProps) => (
-    <div className="w-40 relative flex flex-col">
-      <ChooseableParticipant {...props} noName />
-      <span className="w-full text-center text-gray-700 mt-1">{nameFromIdentity(props.participant.identity)}</span>
-    </div>
-  );
-
   useEffect(() => {
-    if (groupToken) {
-      subscribeToSessionStore('participant-list', groupToken, store => {
-        setModerators(prev => {
-          if (JSON.stringify(prev) !== JSON.stringify(store.data.moderators)) {
-            return store.data.moderators ?? [];
-          } else {
-            return prev;
-          }
-        });
-      });
+    if (!groupToken) {
+      return;
     }
+
+    const subId = 'PART_LIST';
+
+    subscribeToSessionStore(subId, groupToken, store => {
+      setModerators(prev => {
+        if (JSON.stringify(prev) !== JSON.stringify(store.data.moderators)) {
+          return store.data.moderators ?? [];
+        } else {
+          return prev;
+        }
+      });
+    });
+
+    return () => {
+      unsubscribeFromSessionStore(subId);
+    };
   }, []);
 
   return (

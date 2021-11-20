@@ -9,6 +9,7 @@ import {
   removeAudienceMemberInvitation,
   subscribeToSessionStore,
   unraiseHand,
+  unsubscribeFromSessionStore,
 } from 'utils/firebase/session';
 import { generateIdentity } from 'utils/participants';
 import ToggleChatButton from './Buttons/ToggleChatButton/ToggleChatButton';
@@ -70,8 +71,10 @@ export const AudienceLayout = () => {
   };
 
   useEffect(() => {
+    const subId = 'AUDIENCE_LAYOUT';
+
     if (groupToken !== undefined) {
-      subscribeToSessionStore('AUDIENCE_LAYOUT', groupToken, store => {
+      subscribeToSessionStore(subId, groupToken, store => {
         const id = identityRef.current;
         if (id === undefined) {
           return;
@@ -86,10 +89,8 @@ export const AudienceLayout = () => {
 
         if (audienceInvites.includes(id)) {
           const [participantRoute] = Object.entries(store.data.shareTokens).find(([token, group]) => {
-            console.log(group.toUpperCase(), UserGroup.Participant, group.toUpperCase() === UserGroup.Participant);
             return group.toUpperCase() === UserGroup.Participant;
           }) ?? [undefined];
-          console.log(participantRoute, UserGroup.Participant);
 
           if (participantRoute !== undefined) {
             joinCall(participantRoute);
@@ -97,6 +98,10 @@ export const AudienceLayout = () => {
         }
       });
     }
+
+    return () => {
+      unsubscribeFromSessionStore(subId);
+    };
   }, [groupToken]);
 
   return !ready ? (

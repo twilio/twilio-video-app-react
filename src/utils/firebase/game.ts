@@ -115,6 +115,10 @@ export const subscribeToCarouselGame = (subId: string, groupToken: string, callb
   }
 };
 
+export const unsubscribeFromCarouselGame = (subId: string) => {
+  delete _subscriptions[subId];
+};
+
 export const fetchCarouselGame = (groupToken: string) =>
   new Promise<ICarouselGame>((resolve, reject) => {
     getSessionStore(groupToken).then(store => {

@@ -1,7 +1,7 @@
 import useRaisedHands from 'hooks/useRaisedHands';
 import useSessionContext from 'hooks/useSessionContext';
 import React, { useEffect, useState } from 'react';
-import { inviteAudienceMember, subscribeToSessionStore } from 'utils/firebase/session';
+import { inviteAudienceMember, subscribeToSessionStore, unsubscribeFromSessionStore } from 'utils/firebase/session';
 import { nameFromIdentity } from 'utils/participants';
 
 export const RaisedHandsWindow = () => {
@@ -10,13 +10,17 @@ export const RaisedHandsWindow = () => {
   const { groupToken } = useSessionContext();
 
   useEffect(() => {
-    if (groupToken === undefined) {
-      return;
+    const subId = 'RH-Window';
+
+    if (groupToken !== undefined) {
+      subscribeToSessionStore(subId, groupToken, store => {
+        setRaisedHands(store.data.raisedHands ?? []);
+      });
     }
 
-    subscribeToSessionStore('RH-Window', groupToken, store => {
-      setRaisedHands(store.data.raisedHands ?? []);
-    });
+    return () => {
+      unsubscribeFromSessionStore(subId);
+    };
   }, []);
 
   return !raisedHandsWindowOpen ? null : (

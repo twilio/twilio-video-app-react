@@ -6,7 +6,7 @@ import { ChooseableParticipant } from 'components/ChooseableParticipant';
 import { sortedParticipantsByCategorie } from 'utils/participants';
 import { RevealedCard } from 'components/RevealedCard';
 import { SessionInfo } from 'components/SessionInfo';
-import { subscribeToSessionStore } from 'utils/firebase/session';
+import { subscribeToSessionStore, unsubscribeFromSessionStore } from 'utils/firebase/session';
 import { nameFromIdentity } from 'utils/participants';
 
 export const GridVideoChatLayout = () => {
@@ -17,8 +17,10 @@ export const GridVideoChatLayout = () => {
   const [moderators, setModerators] = useState<string[]>([]);
 
   useEffect(() => {
-    if (groupToken) {
-      subscribeToSessionStore('participant-list', groupToken, store => {
+    const subId = 'participant-list';
+
+    if (groupToken !== undefined) {
+      subscribeToSessionStore(subId, groupToken, store => {
         setModerators(prev => {
           if (JSON.stringify(prev) !== JSON.stringify(store.data.moderators)) {
             return store.data.moderators ?? [];
@@ -28,6 +30,10 @@ export const GridVideoChatLayout = () => {
         });
       });
     }
+
+    return () => {
+      unsubscribeFromSessionStore(subId);
+    };
   }, []);
 
   const { moderatorParitcipants, normalParticipants } = sortedParticipantsByCategorie(

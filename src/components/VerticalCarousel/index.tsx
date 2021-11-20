@@ -3,11 +3,17 @@ import PropTypes from 'prop-types';
 import cn from 'classnames';
 import useSessionContext from 'hooks/useSessionContext';
 import useVideoContext from 'hooks/useVideoContext/useVideoContext';
-import { setActiveCard, setCarouselPosition, subscribeToCarouselGame } from 'utils/firebase/game';
+import {
+  setActiveCard,
+  setCarouselPosition,
+  subscribeToCarouselGame,
+  unsubscribeFromCarouselGame,
+} from 'utils/firebase/game';
 import useGameContext from 'hooks/useGameContext';
 import { RevealedCard } from 'components/RevealedCard';
 import { ISessionStatus } from 'components/SessionProvider';
 import { ICarouselGame, IQuestion } from 'types';
+import { unsubscribeFromSessionStore } from 'utils/firebase/session';
 
 const MAX_SPIN_COUNT = 3;
 
@@ -151,7 +157,9 @@ const VerticalCarousel = ({ questions }: { questions: IQuestion[] }) => {
   };
 
   useEffect(() => {
-    subscribeToCarouselGame('game', groupToken as string, game => {
+    const subId = 'GAME';
+
+    subscribeToCarouselGame(subId, groupToken as string, game => {
       const currentCard = game.carouselPosition ?? 0;
       const _activeIndex = activeIndexRef.current;
       if (_activeIndex === -1) {
@@ -168,6 +176,10 @@ const VerticalCarousel = ({ questions }: { questions: IQuestion[] }) => {
       setRemainingSpins(MAX_SPIN_COUNT - game.currentSpinCount);
       setRevealableIndex(game.activeCard);
     });
+
+    return () => {
+      unsubscribeFromCarouselGame(subId);
+    };
   }, []);
 
   useEffect(() => {
