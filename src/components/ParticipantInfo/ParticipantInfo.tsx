@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
 
 import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
-import AvatarIcon from '../../icons/AvatarIcon';
 import PinIcon from './PinIcon/PinIcon';
 import ScreenShareIcon from '../../icons/ScreenShareIcon';
-import Typography from '@material-ui/core/Typography';
 
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
 import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
 import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
-import { ReactComponent as CarouselIcon } from '../../assets/carousel.svg';
 import { nameFromIdentity } from 'utils/participants';
-import { Transition } from '@headlessui/react';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -47,18 +43,6 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '100%',
       background: 'transparent',
       top: 0,
-    },
-    reconnectingContainer: {
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: 'rgba(40, 42, 43, 0.75)',
-      zIndex: 1,
     },
     screenShareIconContainer: {
       background: 'rgba(0, 0, 0, 0.5)',
@@ -193,10 +177,8 @@ export default function ParticipantInfo({
           </div>
         </Transition> */}
         {isParticipantReconnecting && (
-          <div className={classes.reconnectingContainer}>
-            <Typography variant="body1" className={classes.typeography}>
-              Reconnecting...
-            </Typography>
+          <div className="rounded-xl text-white absolute w-full h-full bg-black bg-opacity-60 flex items-center justify-center">
+            Reconnecting...
           </div>
         )}
         {children}

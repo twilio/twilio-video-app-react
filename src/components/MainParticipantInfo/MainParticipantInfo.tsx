@@ -41,18 +41,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: '100%',
     width: '100%',
   },
-  reconnectingContainer: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: 'rgba(40, 42, 43, 0.75)',
-    zIndex: 1,
-  },
   fullWidth: {
     gridArea: '1 / 1 / 2 / 3',
     [theme.breakpoints.down('sm')]: {
@@ -142,7 +130,7 @@ export default function MainParticipantInfo({ participant, children }: MainParti
 
   return (
     <div data-cy-main-participant data-cy-participant={nameFromIdentity(participant.identity)} className={'relative'}>
-      <div className={classes.infoContainer}>
+      <div className={classes.infoContainer + ' rounded-xl'}>
         <div style={{ display: 'flex' }}>
           <div className={classes.identity}>
             <AudioLevelIndicator audioTrack={audioTrack} />
@@ -174,10 +162,8 @@ export default function MainParticipantInfo({ participant, children }: MainParti
         </div>
       )}
       {isParticipantReconnecting && (
-        <div className={classes.reconnectingContainer}>
-          <Typography variant="body1" style={{ color: 'white' }}>
-            Reconnecting...
-          </Typography>
+        <div className="rounded-xl text-white absoulte w-full h-full bg-black bg-opacity-60 flex items-center justify-center">
+          Reconnecting...
         </div>
       )}
       {children}
