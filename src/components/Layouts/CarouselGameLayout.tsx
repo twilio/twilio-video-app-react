@@ -10,7 +10,7 @@ export const CarouselGameLayout = () => {
         <ParticipantList />
         <SessionInfo />
       </div>
-      <div className="flex-grow">
+      <div className="flex-grow h-full">
         <Game />
       </div>
     </div>

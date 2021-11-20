@@ -15,6 +15,7 @@ import useTrack from '../../hooks/useTrack/useTrack';
 import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
 import { ReactComponent as CarouselIcon } from '../../assets/carousel.svg';
 import { nameFromIdentity } from 'utils/participants';
+import { Transition } from '@headlessui/react';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -46,23 +47,6 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '100%',
       background: 'transparent',
       top: 0,
-    },
-    avatarContainer: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: 'black',
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-      zIndex: 1,
-      [theme.breakpoints.down('sm')]: {
-        '& svg': {
-          transform: 'scale(0.7)',
-        },
-      },
     },
     reconnectingContainer: {
       position: 'absolute',
@@ -136,7 +120,6 @@ export default function ParticipantInfo({
   hideParticipant,
   isModerator,
   noName,
-  isActivePlayer,
   roundsPlayed,
 }: ParticipantInfoProps) {
   const publications = usePublications(participant);
@@ -195,13 +178,20 @@ export default function ParticipantInfo({
         <div>{isSelected && <PinIcon />}</div>
       </div>
       <div className={classes.innerContainer}>
-        {(!isVideoEnabled || isVideoSwitchedOff) && (
-          <div
-            className={classes.avatarContainer + (isActivePlayer ? ' bg-purple rounded-lg' : ' bg-grayish rounded-xl')}
-          >
-            <AvatarIcon />
+        {/* <Transition
+          show={!isVideoEnabled || isVideoSwitchedOff}
+          className="transition-all duration-1000 absolute w-full h-full"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="w-full h-full bg-black flex items-center justify-center rounded-xl">
+            <div className="w-12 h-12">
+              <AvatarIcon />
+            </div>
           </div>
-        )}
+        </Transition> */}
         {isParticipantReconnecting && (
           <div className={classes.reconnectingContainer}>
             <Typography variant="body1" className={classes.typeography}>

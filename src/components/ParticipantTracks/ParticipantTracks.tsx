@@ -2,6 +2,7 @@ import React from 'react';
 import { Participant, Track } from 'twilio-video';
 import Publication from '../Publication/Publication';
 import usePublications from '../../hooks/usePublications/usePublications';
+import { useEffect } from 'react';
 
 interface ParticipantTracksProps {
   participant: Participant;
@@ -42,7 +43,7 @@ export default function ParticipantTracks({
   }
 
   return (
-    <>
+    <div className="w-full h-full bg-black rounded-xl">
       {filteredPublications.map(publication => (
         <Publication
           key={publication.kind}
@@ -54,6 +55,6 @@ export default function ParticipantTracks({
           isActivePlayer={isActivePlayer}
         />
       ))}
-    </>
+    </div>
   );
 }

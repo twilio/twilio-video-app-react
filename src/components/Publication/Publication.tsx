@@ -11,6 +11,7 @@ import {
   RemoteTrackPublication,
   Track,
 } from 'twilio-video';
+import { Transition } from '@headlessui/react';
 
 interface PublicationProps {
   publication: LocalTrackPublication | RemoteTrackPublication;
@@ -21,30 +22,33 @@ interface PublicationProps {
   isActivePlayer?: boolean;
 }
 
-export default function Publication({
-  publication,
-  isLocalParticipant,
-  videoOnly,
-  videoPriority,
-  isActivePlayer,
-}: PublicationProps) {
+export default function Publication({ publication, isLocalParticipant, videoOnly, videoPriority }: PublicationProps) {
   const track = useTrack(publication);
 
-  if (!track) return null;
+  if (!track) return <div className="h-full w-full bg-black rounded-xl" />;
 
   switch (track.kind) {
     case 'video':
       return (
-        <VideoTrack
-          track={track as IVideoTrack}
-          priority={videoPriority}
-          isLocal={!track.name.includes('screen') && isLocalParticipant}
-          className={'bg-grayish rounded-xl'}
-        />
+        <Transition
+          appear
+          show
+          className="transition-all duration-500 absolute w-full h-full"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <VideoTrack
+            track={track as IVideoTrack}
+            priority={videoPriority}
+            isLocal={!track.name.includes('screen') && isLocalParticipant}
+          />
+        </Transition>
       );
     case 'audio':
       return videoOnly ? null : <AudioTrack track={track as IAudioTrack} />;
     default:
-      return null;
+      return <div className="h-full w-full bg-black rounded-xl" />;
   }
 }

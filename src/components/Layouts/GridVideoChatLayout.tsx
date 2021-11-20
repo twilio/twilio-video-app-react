@@ -86,43 +86,43 @@ export const GridVideoChatLayout = () => {
 
         <SessionInfo />
       </div>
-      <div
-        className="flex-grow h-full grid grid-cols-4 grid-rows-4 gap-2 justify-center items-center"
-        style={{ width: 'calc(' }}
-      >
-        <div className="col-span-3 row-span-3 overflow-hidden">
-          {moderatorParitcipants.length >= 1 ? (
-            <ChooseableParticipant
-              participant={moderatorParitcipants[0]}
-              isModerator
-              isLocalParticipant={localParticipant.sid === moderatorParitcipants[0].sid}
-            />
-          ) : null}
-        </div>
-        <div className="aspect-w-16 aspect-h-9">
-          <RevealedCard />
-        </div>
-        {/* <Participant isLocalParticipant participant={localParticipant} /> */}
-        {moderatorParitcipants
-          .filter((part, i) => i > 0)
-          .map(participant => (
+      <div className="h-5 lg:h-10" />
+      <div className="w-full aspect-w-16 aspect-h-9">
+        <div className="grid grid-cols-4 grid-rows-4 gap-2 justify-center items-center">
+          <div className="col-span-3 row-span-3 overflow-hidden">
+            {moderatorParitcipants.length >= 1 ? (
+              <ChooseableParticipant
+                participant={moderatorParitcipants[0]}
+                isModerator
+                isLocalParticipant={localParticipant.sid === moderatorParitcipants[0].sid}
+              />
+            ) : null}
+          </div>
+          <div className="aspect-w-16 aspect-h-9">
+            <RevealedCard />
+          </div>
+          {/* <Participant isLocalParticipant participant={localParticipant} /> */}
+          {moderatorParitcipants
+            .filter((part, i) => i > 0)
+            .map(participant => (
+              <div key={participant.sid}>
+                <ChooseableParticipant
+                  participant={participant}
+                  key={participant.sid}
+                  isLocalParticipant={localParticipant.sid === participant.sid}
+                  isModerator
+                />
+              </div>
+            ))}
+          {normalParticipants.map(participant => (
             <div key={participant.sid}>
               <ChooseableParticipant
                 participant={participant}
-                key={participant.sid}
                 isLocalParticipant={localParticipant.sid === participant.sid}
-                isModerator
               />
             </div>
           ))}
-        {normalParticipants.map(participant => (
-          <div key={participant.sid}>
-            <ChooseableParticipant
-              participant={participant}
-              isLocalParticipant={localParticipant.sid === participant.sid}
-            />
-          </div>
-        ))}
+        </div>
       </div>
     </div>
   );

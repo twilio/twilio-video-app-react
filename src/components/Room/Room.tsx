@@ -29,10 +29,7 @@ export default function Room() {
 
   return (
     <div className="flex flex-col h-screen">
-      <div
-        className="flex-grow flex"
-        style={{ paddingBottom: userGroup === UserGroup.StreamServer ? '2rem' : '32rem' }}
-      >
+      <div className="flex-grow flex" style={{ paddingBottom: userGroup === UserGroup.StreamServer ? '2rem' : '8rem' }}>
         <CurrentScreen />
         <RaisedHandsWindow />
         <ChatWindow />
