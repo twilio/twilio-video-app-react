@@ -1,9 +1,10 @@
-import { ISession, ISessionLabels, ISessionStore, ScreenType, UserGroup } from '../../types';
+import { ISession, ISessionResources, ISessionStore, ScreenType, UserGroup } from '../../types';
 import React, { createContext, ReactNode, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { firestore } from 'firebase';
 import { getSessionStore, subscribeToSessionStore } from 'utils/firebase/session';
 import useVideoContext from 'hooks/useVideoContext/useVideoContext';
+import { initSessionResources } from 'utils/resources';
 
 export enum ISessionStatus {
   SESSION_NOT_STARTED = 'SESSION_NOT_STARTED',
@@ -17,7 +18,7 @@ export enum ISessionStatus {
 export interface ISessionContext {
   sessionStatus: ISessionStatus;
   userGroup: UserGroup | undefined;
-  labels: ISessionLabels | undefined;
+  resources: ISessionResources;
   loading: boolean;
   groupToken: string | undefined;
   roomId: string | undefined;
@@ -49,7 +50,7 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
   const [sessionStatus, setSessionStatus] = useState<ISessionStatus>(ISessionStatus.AWAITING_STATUS);
   const [userGroup, setUserGroup] = useState<UserGroup>();
   const [roomId, setRoomId] = useState<string>();
-  const [labels, setLabels] = useState<ISessionLabels>();
+  const [resources, setResources] = useState<ISessionResources>(initSessionResources(undefined));
   const [activeScreen, setActiveScreen] = useState<ScreenType>();
   const [startDate, setStartDate] = useState<ISession['startDate']>();
   const [endDate, setEndDate] = useState<ISession['endDate']>();
@@ -64,10 +65,7 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
     }
 
     if (loadingRef.current === true) {
-      setLabels(store.data.labels);
-      if (store.group === UserGroup.Audience) {
-        setStreamId(store.data.streamId);
-      }
+      setResources(initSessionResources(store.data.resources));
 
       setLoading(false);
     }
@@ -92,6 +90,7 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
     setEndDate(prev => updateDate(prev, store.data.endDate));
 
     if (store.group === UserGroup.Audience) {
+      setStreamId(store.data.streamId);
       setRoomSid(store.data.roomSid);
     }
   };
@@ -120,13 +119,13 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
         sessionStatus,
         loading,
         userGroup,
-        labels,
         groupToken: URLShareToken,
         activeScreen,
         roomId,
         startDate,
         endDate,
         streamId,
+        resources,
       }}
     >
       {children}

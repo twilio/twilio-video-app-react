@@ -54,8 +54,9 @@ export enum UserGroup {
   StreamServer = 'STREAM_SERVER',
 }
 
-export interface ISessionLabels {
+export interface ISessionResources {
   title: string;
+  hostLogoSrc: string;
 }
 
 export interface ISession {
@@ -64,7 +65,7 @@ export interface ISession {
     [key: string]: UserGroup;
   };
   roomId: string;
-  labels: ISessionLabels;
+  resources?: ISessionResources;
   isPaused?: boolean;
   startDate?: firestore.Timestamp;
   endDate?: firestore.Timestamp;

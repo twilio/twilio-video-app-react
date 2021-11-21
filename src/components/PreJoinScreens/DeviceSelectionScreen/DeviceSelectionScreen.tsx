@@ -63,7 +63,7 @@ export default function DeviceSelectionScreen({ setStep, handleJoin, name }: Dev
   const { isFetching } = useAppState();
   const { isAcquiringLocalTracks, isConnecting } = useVideoContext();
   const disableButtons = isFetching || isAcquiringLocalTracks || isConnecting;
-  const { labels } = useSessionContext();
+  const { resources } = useSessionContext();
 
   if (isFetching || isConnecting) {
     return (
@@ -85,7 +85,7 @@ export default function DeviceSelectionScreen({ setStep, handleJoin, name }: Dev
   return (
     <>
       <Typography variant="h5" className={classes.gutterBottom}>
-        {labels?.title} beitreten
+        {resources.title} beitreten
       </Typography>
 
       <div className="flex flex-col items-center">

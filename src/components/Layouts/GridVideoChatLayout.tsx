@@ -13,7 +13,7 @@ export const GridVideoChatLayout = () => {
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
   const participants = useParticipants();
-  const { groupToken } = useSessionContext();
+  const { groupToken, resources } = useSessionContext();
   const [moderators, setModerators] = useState<string[]>([]);
 
   useEffect(() => {
@@ -37,15 +37,15 @@ export const GridVideoChatLayout = () => {
   );
 
   const ModeratorLetterInfo = (props: { participant: { identity: string } }) => (
-    <div className="flex justify-center items-center space-x-3">
+    <div className="flex flex-col justify-center items-center space-y-1">
       <span className="text-xl font-medium bg-orange rounded-full p-4 w-12 h-12 text-white flex justify-center items-center">
         {nameFromIdentity(props.participant.identity)
           .charAt(0)
           .toUpperCase()}
       </span>
-      <div className="flex flex-col">
+      <div className="flex flex-col items-center">
         <span className="font-semibold">{nameFromIdentity(props.participant.identity)}</span>
-        <span className="font-light">Moderation</span>
+        {/* <span className="font-light">Moderation</span> */}
       </div>
     </div>
   );
@@ -63,17 +63,18 @@ export const GridVideoChatLayout = () => {
 
   return (
     <div className="flex flex-col container mx-auto lg:px-32">
-      <div className="flex space-x-6 py-10 items-center justify-between">
-        <div className="flex space-x-6 items-start">
-          <div className="flex items-center space-x-6 pr-10">
-            {moderatorParitcipants.map(participant => (
-              <ModeratorLetterInfo participant={participant} key={participant.sid} />
-            ))}
-          </div>
-          <div className="flex items-center space-x-8 pr-10">
-            {normalParticipants.map(participant => (
-              <ParticipantLetterInfo participant={participant} key={participant.sid} />
-            ))}
+      <div className="flex space-x-6 pb-5 pt-10 items-center justify-between">
+        <div className="flex space-x-10 items-center">
+          <img src={resources.hostLogoSrc} className="h-12" />
+          <div className="flex space-x-6 items-start">
+            <div className="flex items-center space-x-8 pr-10">
+              {moderatorParitcipants.map(participant => (
+                <ModeratorLetterInfo participant={participant} key={participant.sid} />
+              ))}
+              {normalParticipants.map(participant => (
+                <ParticipantLetterInfo participant={participant} key={participant.sid} />
+              ))}
+            </div>
           </div>
         </div>
 
