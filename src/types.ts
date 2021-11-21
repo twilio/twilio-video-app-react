@@ -74,11 +74,12 @@ export interface ISession {
   streamId?: string;
   roomSid?: string;
 
-  //user sid's:
-  moderators?: string[];
-  muted?: string[];
-  raisedHands?: string[];
-  audienceInvites?: string[];
+  //user groups
+  moderators?: string[]; //sid
+  muted?: string[]; //identity
+  raisedHands?: string[]; //identity
+  audienceInvites?: string[]; //identity
+  banned?: string[]; //idenity - uid based ban system
 }
 
 export interface ISessionStore {
@@ -114,4 +115,8 @@ export interface IQuestion {
 export interface ICategory {
   color: string;
   name: string;
+}
+
+export enum LOCAL_STORAGE_KEY {
+  USER_NAME = 'USER_NAME',
 }

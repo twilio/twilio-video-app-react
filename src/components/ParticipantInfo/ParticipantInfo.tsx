@@ -177,7 +177,7 @@ export default function ParticipantInfo({
           </div>
         </Transition> */}
         {isParticipantReconnecting && (
-          <div className="rounded-xl text-white absolute w-full h-full bg-black bg-opacity-60 flex items-center justify-center">
+          <div className="rounded-xl text-white absolute top-0 w-full h-full bg-black bg-opacity-60 flex items-center justify-center">
             Reconnecting...
           </div>
         )}

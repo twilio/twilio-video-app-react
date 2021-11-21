@@ -5,7 +5,7 @@ import useSessionContext from 'hooks/useSessionContext';
 import { ScreenType, UserGroup } from 'types';
 import { GridVideoChatLayout } from 'components/Layouts/GridVideoChatLayout';
 import { CarouselGameLayout } from 'components/Layouts/CarouselGameLayout';
-import { RaisedHandsWindow } from 'components/RaisedHandsWindow';
+import { AdminWindow } from 'components/AdminWindow';
 
 const PoweredByBar = () => (
   <div className="fixed bottom-2 px-2 z-0 w-full flex items-center justify-between h-12 lg:h-20">
@@ -31,7 +31,6 @@ export default function Room() {
     <div className="flex flex-col h-screen">
       <div className="flex-grow flex" style={{ paddingBottom: userGroup === UserGroup.StreamServer ? '2rem' : '8rem' }}>
         <CurrentScreen />
-        <RaisedHandsWindow />
         <ChatWindow />
         <PoweredByBar />
       </div>

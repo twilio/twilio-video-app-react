@@ -13,6 +13,8 @@ import {
 } from 'twilio-video';
 import { Transition } from '@headlessui/react';
 
+const Placeholder = () => <div className="h-full w-full bg-black rounded-xl absolute top-0" />;
+
 interface PublicationProps {
   publication: LocalTrackPublication | RemoteTrackPublication;
   participant: Participant;
@@ -25,7 +27,7 @@ interface PublicationProps {
 export default function Publication({ publication, isLocalParticipant, videoOnly, videoPriority }: PublicationProps) {
   const track = useTrack(publication);
 
-  if (!track) return <div className="h-full w-full bg-black rounded-xl" />;
+  if (!track) return <Placeholder />;
 
   switch (track.kind) {
     case 'video':
@@ -49,6 +51,6 @@ export default function Publication({ publication, isLocalParticipant, videoOnly
     case 'audio':
       return videoOnly ? null : <AudioTrack track={track as IAudioTrack} />;
     default:
-      return <div className="h-full w-full bg-black rounded-xl" />;
+      return <Placeholder />;
   }
 }

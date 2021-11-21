@@ -7,6 +7,7 @@ import { isMobile } from '../../../utils';
 import SendMessageIcon from '../../../icons/SendMessageIcon';
 import Snackbar from '../../Snackbar/Snackbar';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import { RoundButton, ROUND_BUTTON_SIZE } from 'components/Buttons/RoundButton';
 
 const useStyles = makeStyles(theme => ({
   chatInputContainer: {
@@ -136,7 +137,7 @@ export default function ChatInput({ conversation, isChatWindowOpen }: ChatInputP
         variant="error"
         handleClose={() => setFileSendError(null)}
       /> */}
-      <div className="bg-white p-2 focus-within:ring-1 flex-grow w-full">
+      <div className="bg-grayish px-2 pt-3 pb-2 focus-within:ring-1 flex-grow w-full rounded-2xl">
         {/* 
         Here we add the "isTextareaFocused" class when the user is focused on the TextareaAutosize component.
         This helps to ensure a consistent appearance across all browsers. Adding padding to the TextareaAutosize
@@ -145,7 +146,7 @@ export default function ChatInput({ conversation, isChatWindowOpen }: ChatInputP
         <TextareaAutosize
           minRows={1}
           maxRows={3}
-          className="w-full bg-white focus:outline-none resize-none"
+          className="w-full bg-grayish focus:outline-none resize-none"
           aria-label="chat input"
           placeholder="Write a message..."
           onKeyPress={handleReturnKeyPress}
@@ -178,16 +179,14 @@ export default function ChatInput({ conversation, isChatWindowOpen }: ChatInputP
             {isSendingFile && <CircularProgress size={24} className={classes.fileButtonLoadingSpinner} />}
           </div> */}
 
-          <button
-            className={'rounded-full bg-purple w-8 h-8 flex items-center justify-center'}
+          <RoundButton
+            active
+            size={ROUND_BUTTON_SIZE.SEMI_SMALL}
             onClick={() => handleSendMessage(messageBody)}
-            color="primary"
             disabled={!isValidMessage}
-            style={{ opacity: isValidMessage ? '1' : '0.5' }}
-            data-cy-send-message-button
           >
             <SendMessageIcon />
-          </button>
+          </RoundButton>
         </div>
       </div>
     </div>

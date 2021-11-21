@@ -130,7 +130,16 @@ export const unraiseHand = async (groupToken: string, identity: string) =>
   updateSession(groupToken, { raisedHands: firestore.FieldValue.arrayRemove(identity) });
 
 export const inviteAudienceMember = async (groupToken: string, identity: string) =>
-  updateSession(groupToken, { audienceInvites: firestore.FieldValue.arrayUnion(identity) });
+  updateSession(groupToken, {
+    audienceInvites: firestore.FieldValue.arrayUnion(identity),
+    raisedHands: firestore.FieldValue.arrayRemove(identity),
+  });
 
 export const removeAudienceMemberInvitation = async (groupToken: string, identity: string) =>
   updateSession(groupToken, { audienceInvites: firestore.FieldValue.arrayRemove(identity) });
+
+export const banParticipant = async (groupToken: string, identity: string) =>
+  updateSession(groupToken, { banned: firestore.FieldValue.arrayUnion(identity) });
+
+export const unbanParticipant = async (groupToken: string, identity: string) =>
+  updateSession(groupToken, { banned: firestore.FieldValue.arrayRemove(identity) });
