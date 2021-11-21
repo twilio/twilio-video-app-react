@@ -2,7 +2,7 @@ import { LocalAudioTrack } from 'twilio-video';
 import { useCallback, useEffect } from 'react';
 import useIsTrackEnabled from '../useIsTrackEnabled/useIsTrackEnabled';
 import useVideoContext from '../useVideoContext/useVideoContext';
-import { subscribeToSessionStore, unmuteParticipant } from 'utils/firebase/session';
+import { subscribeToSessionStore, unmuteParticipant, unsubscribeFromSessionStore } from 'utils/firebase/session';
 import useSessionContext from 'hooks/useSessionContext';
 
 export default function useLocalAudioToggle() {
@@ -12,11 +12,10 @@ export default function useLocalAudioToggle() {
   const { groupToken } = useSessionContext();
 
   const enableAudio = () => {
-    if (!groupToken || !room) {
-      return;
+    if (groupToken !== undefined && room !== null) {
+      unmuteParticipant(groupToken, room!.localParticipant.sid);
     }
 
-    unmuteParticipant(groupToken, room!.localParticipant.sid);
     audioTrack.enable();
   };
 
@@ -27,15 +26,19 @@ export default function useLocalAudioToggle() {
   }, [audioTrack]);
 
   useEffect(() => {
-    if (!groupToken) {
-      return;
+    const subId = 'USE_LOCAL_AUDIO_TOGGLE';
+
+    if (groupToken) {
+      subscribeToSessionStore('useLocalAudioToggle', groupToken, store => {
+        if (room?.localParticipant && store.data.muted?.includes(room?.localParticipant.sid)) {
+          audioTrack?.disable();
+        }
+      });
     }
 
-    subscribeToSessionStore('useLocalAudioToggle', groupToken, store => {
-      if (room?.localParticipant && store.data.muted?.includes(room?.localParticipant.sid)) {
-        audioTrack?.disable();
-      }
-    });
+    return () => {
+      unsubscribeFromSessionStore(subId);
+    };
   }, [groupToken]);
 
   return [isEnabled, toggleAudioEnabled] as const;

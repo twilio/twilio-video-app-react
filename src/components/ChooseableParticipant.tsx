@@ -4,41 +4,44 @@ import MicIcon from 'icons/MicIcon';
 import MicOffIcon from 'icons/MicOffIcon';
 import React, { useEffect, useState } from 'react';
 import { ScreenType, UserGroup } from 'types';
-import { setCurrentPlayer, subscribeToCarouselGame } from 'utils/firebase/game';
+import { setCurrentPlayer, subscribeToCarouselGame, unsubscribeFromCarouselGame } from 'utils/firebase/game';
 import { setActiveScreen } from 'utils/firebase/screen';
 import { muteParticipant } from 'utils/firebase/session';
 import Participant, { ParticipantProps } from './Participant/Participant';
 import { ReactComponent as CarouselIcon } from '../assets/carousel.svg';
 
 export const ChooseableParticipant = (props: ParticipantProps) => {
-  const { userGroup, groupToken } = useSessionContext();
+  const { userGroup, groupToken, activeScreen } = useSessionContext();
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
   const [activePlayer, setActivePlayer] = useState<string>('');
   const [roundsPlayed, setRoundsPlayed] = useState<number>(0);
 
   useEffect(() => {
-    if (groupToken === undefined) {
-      return;
+    const subId = activeScreen + props.participant.sid;
+    if (groupToken !== undefined) {
+      subscribeToCarouselGame(subId, groupToken, game => {
+        setActivePlayer(prev => {
+          if (prev !== game.currentPlayer) {
+            return game.currentPlayer;
+          } else {
+            return prev;
+          }
+        });
+
+        setRoundsPlayed(prev => {
+          if (game.playerRoundCount !== undefined && typeof game.playerRoundCount[props.participant.sid] === 'number') {
+            return game.playerRoundCount[props.participant.sid]!;
+          }
+
+          return prev;
+        });
+      });
     }
 
-    subscribeToCarouselGame(props.participant.sid, groupToken, game => {
-      setActivePlayer(prev => {
-        if (prev !== game.currentPlayer) {
-          return game.currentPlayer;
-        } else {
-          return prev;
-        }
-      });
-
-      setRoundsPlayed(prev => {
-        if (game.playerRoundCount !== undefined && typeof game.playerRoundCount[props.participant.sid] === 'number') {
-          return game.playerRoundCount[props.participant.sid]!;
-        }
-
-        return prev;
-      });
-    });
+    return () => {
+      unsubscribeFromCarouselGame(subId);
+    };
   }, [groupToken]);
 
   if (!userGroup) {

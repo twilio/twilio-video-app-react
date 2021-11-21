@@ -82,6 +82,10 @@ export const subscribeToSessionStore = (
   }
 };
 
+export const unsubscribeFromSessionStore = (subId: string) => {
+  delete _subscriptions[subId];
+};
+
 const updateSession = async (groupToken: string, payload: firestore.UpdateData) => {
   if (groupTokenValid(groupToken)) {
     throw new Error('shareToken undefined.');

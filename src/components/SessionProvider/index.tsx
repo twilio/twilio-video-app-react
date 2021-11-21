@@ -2,7 +2,7 @@ import { ISession, ISessionResources, ISessionStore, ScreenType, UserGroup } fro
 import React, { createContext, ReactNode, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { firestore } from 'firebase';
-import { getSessionStore, subscribeToSessionStore } from 'utils/firebase/session';
+import { getSessionStore, subscribeToSessionStore, unsubscribeFromSessionStore } from 'utils/firebase/session';
 import useVideoContext from 'hooks/useVideoContext/useVideoContext';
 import { initSessionResources } from 'utils/resources';
 
@@ -96,11 +96,13 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
   };
 
   useEffect(() => {
+    const subId = 'sprov';
+
     if (typeof URLShareToken === 'string' && URLShareToken.length !== 0) {
       getSessionStore(URLShareToken)
         .then(store => {
           onSessionStore(store);
-          subscribeToSessionStore('sprov', URLShareToken, onSessionStore);
+          subscribeToSessionStore(subId, URLShareToken, onSessionStore);
         })
         .catch(() => {
           setSessionStatus(ISessionStatus.NOT_FOUND);
@@ -110,6 +112,10 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
       setSessionStatus(ISessionStatus.NOT_FOUND);
       setLoading(false);
     }
+
+    return () => {
+      unsubscribeFromSessionStore(subId);
+    };
   }, [URLShareToken]);
 
   return (
