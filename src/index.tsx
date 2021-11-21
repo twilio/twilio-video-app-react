@@ -19,6 +19,7 @@ import UnsupportedBrowserWarning from './components/UnsupportedBrowserWarning/Un
 import { SessionProvider } from './components/SessionProvider';
 import { SessionWrapper } from './components/SessionWrapper';
 import { GameProvider } from './components/GameProvider';
+import { RaisedHandsProvider } from 'components/RaisedHandsProvider';
 
 const VideoApp = () => {
   const { error, setError } = useAppState();
@@ -31,7 +32,9 @@ const VideoApp = () => {
           <GameProvider>
             <ErrorDialog dismissError={() => setError(null)} error={error} />
             <ChatProvider>
-              <App />
+              <RaisedHandsProvider>
+                <App />
+              </RaisedHandsProvider>
             </ChatProvider>
           </GameProvider>
         </SessionWrapper>

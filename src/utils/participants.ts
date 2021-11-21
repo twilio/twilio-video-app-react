@@ -1,5 +1,5 @@
 import { LocalParticipant, RemoteParticipant } from 'twilio-video';
-import { ISession } from 'types';
+import { ISession, UserGroup } from 'types';
 import { getUid } from './firebase/base';
 
 const identityComperator = (a: { identity: string }, b: { identity: string }) => a.identity.localeCompare(b.identity);
@@ -9,8 +9,9 @@ export const sortedParticipantsByCategorie = (
   localParticipant: LocalParticipant,
   participants: RemoteParticipant[]
 ) => {
-  const allParticipants: (LocalParticipant | RemoteParticipant)[] = [...participants];
+  let allParticipants: (LocalParticipant | RemoteParticipant)[] = [...participants];
   allParticipants.push(localParticipant);
+  allParticipants = allParticipants.filter(part => nameFromIdentity(part.identity) !== UserGroup.StreamServer);
   allParticipants.sort(identityComperator);
 
   const moderatorParitcipants = allParticipants.filter(part => moderators?.includes(part.sid)) as (
@@ -28,7 +29,7 @@ export const sortedParticipantsByCategorie = (
   };
 };
 
-const IDENTITY_SPLITTER = '#*#';
+export const IDENTITY_SPLITTER = '#*#';
 
 export const nameFromIdentity = (identity: string) => {
   const split = identity.split(IDENTITY_SPLITTER, 2);

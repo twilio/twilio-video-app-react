@@ -99,7 +99,7 @@ export const GridVideoChatLayout = () => {
         {moderatorParitcipants
           .filter((part, i) => i > 0)
           .map(participant => (
-            <div className="h-full">
+            <div key={participant.sid}>
               <ChooseableParticipant
                 participant={participant}
                 key={participant.sid}

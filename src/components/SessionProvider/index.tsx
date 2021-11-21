@@ -3,6 +3,7 @@ import React, { createContext, ReactNode, useEffect, useRef, useState } from 're
 import { useParams } from 'react-router-dom';
 import { firestore } from 'firebase';
 import { getSessionStore, subscribeToSessionStore } from 'utils/firebase/session';
+import useVideoContext from 'hooks/useVideoContext/useVideoContext';
 
 export enum ISessionStatus {
   SESSION_NOT_STARTED = 'SESSION_NOT_STARTED',
@@ -23,6 +24,8 @@ export interface ISessionContext {
   activeScreen: ScreenType | undefined;
   startDate: ISession['startDate'] | undefined;
   endDate: ISession['endDate'] | undefined;
+  streamId: string | undefined;
+  roomSid: string | undefined;
 }
 
 export const SessionContext = createContext<ISessionContext>(null!);
@@ -50,6 +53,8 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
   const [activeScreen, setActiveScreen] = useState<ScreenType>();
   const [startDate, setStartDate] = useState<ISession['startDate']>();
   const [endDate, setEndDate] = useState<ISession['endDate']>();
+  const [streamId, setStreamId] = useState<string>();
+  const [roomSid, setRoomSid] = useState<string>();
   const loadingRef = useRef<boolean>();
   loadingRef.current = loading;
 
@@ -59,8 +64,11 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
     }
 
     if (loadingRef.current === true) {
-      //only at the inital fetch
       setLabels(store.data.labels);
+      if (store.group === UserGroup.Audience) {
+        setStreamId(store.data.streamId);
+      }
+
       setLoading(false);
     }
 
@@ -82,6 +90,10 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
     setActiveScreen(store.data.activeScreen);
     setStartDate(prev => updateDate(prev, store.data.startDate));
     setEndDate(prev => updateDate(prev, store.data.endDate));
+
+    if (store.group === UserGroup.Audience) {
+      setRoomSid(store.data.roomSid);
+    }
   };
 
   useEffect(() => {
@@ -104,6 +116,7 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
   return (
     <SessionContext.Provider
       value={{
+        roomSid,
         sessionStatus,
         loading,
         userGroup,
@@ -113,6 +126,7 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
         roomId,
         startDate,
         endDate,
+        streamId,
       }}
     >
       {children}

@@ -5,6 +5,7 @@ import MessageListScrollContainer from './MessageListScrollContainer/MessageList
 import TextMessage from './TextMessage/TextMessage';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 import MediaMessage from './MediaMessage/MediaMessage';
+import useChatContext from 'hooks/useChatContext/useChatContext';
 
 interface MessageListProps {
   messages: Message[];
@@ -15,7 +16,7 @@ const getFormattedTime = (message?: Message) =>
 
 export default function MessageList({ messages }: MessageListProps) {
   const { room } = useVideoContext();
-  const localParticipant = room!.localParticipant;
+  // const localParticipant = room!.localParticipant;
 
   return (
     <MessageListScrollContainer messages={messages}>
@@ -26,7 +27,7 @@ export default function MessageList({ messages }: MessageListProps) {
         // Display the MessageInfo component when the author or formatted timestamp differs from the previous message
         const shouldDisplayMessageInfo = time !== previousTime || message.author !== messages[idx - 1]?.author;
 
-        const isLocalParticipant = localParticipant.identity === message.author;
+        const isLocalParticipant = '' === message.author;
 
         return (
           <React.Fragment key={message.sid}>

@@ -48,8 +48,10 @@ export type RecordingRule = {
 export type RecordingRules = RecordingRule[];
 
 export enum UserGroup {
-  Viewer = 'VIEWER',
+  Participant = 'PARTICIPANT',
   Moderator = 'MODERATOR',
+  Audience = 'AUDIENCE',
+  StreamServer = 'STREAM_SERVER',
 }
 
 export interface ISessionLabels {
@@ -68,10 +70,14 @@ export interface ISession {
   endDate?: firestore.Timestamp;
   hasEnded?: boolean;
   activeScreen: ScreenType;
+  streamId?: string;
+  roomSid?: string;
 
   //user sid's:
   moderators?: string[];
   muted?: string[];
+  raisedHands?: string[];
+  audienceInvites?: string[];
 }
 
 export interface ISessionStore {

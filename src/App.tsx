@@ -14,6 +14,7 @@ import { UserGroup } from 'types';
 import { addSessionModerator } from 'utils/firebase/session';
 import useRoomState from 'hooks/useRoomState/useRoomState';
 import { PopupScreen } from './components/PopupScreen';
+import { AudienceLayout } from 'components/AudienceLayout';
 
 const Container = styled('div')({
   display: 'grid',
@@ -31,6 +32,10 @@ export default function App() {
       addSessionModerator(groupToken, localParticipant.sid);
     }
   }, [localParticipant]);
+
+  if (userGroup == UserGroup.Audience) {
+    return <AudienceLayout />;
+  }
 
   return (
     <>

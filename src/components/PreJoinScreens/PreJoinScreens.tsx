@@ -7,28 +7,27 @@ import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import useSessionContext from 'hooks/useSessionContext';
 import { getUid } from 'utils/firebase/base';
 import { PopupScreen } from 'components/PopupScreen';
+import { UserGroup } from 'types';
+import { IDENTITY_SPLITTER } from 'utils/participants';
+import useChatContext from 'hooks/useChatContext/useChatContext';
+import { generateIdentity } from 'utils/participants';
+import { setRoomSid } from 'utils/firebase/session';
 
 export enum Steps {
   roomNameStep,
   deviceSelectionStep,
 }
 
-export default function PreJoinScreens() {
+export default function PreJoinScreens(props: { onReady?: (name: string) => void }) {
   const { user } = useAppState();
   const { getAudioAndVideoTracks } = useVideoContext();
   const [step, setStep] = useState(Steps.roomNameStep);
-  const [name, setName] = useState<string>(user?.displayName || '');
-  const [roomName, setRoomName] = useState<string>('');
   const [mediaError, setMediaError] = useState<Error>();
-  const { roomId } = useSessionContext();
-  const [uid, setUid] = useState<string>();
-
-  useEffect(() => {
-    if (roomId) {
-      setRoomName(roomId);
-      getUid().then(setUid);
-    }
-  }, [roomId]);
+  const { roomId, userGroup, groupToken, roomSid } = useSessionContext();
+  const [name, setName] = useState<string>(user?.displayName || '');
+  const { getToken } = useAppState();
+  const { connect: chatConnect } = useChatContext();
+  const { connect: videoConnect, room } = useVideoContext();
 
   useEffect(() => {
     if (user?.displayName) {
@@ -52,24 +51,69 @@ export default function PreJoinScreens() {
     if (!window.location.origin.includes('twil.io')) {
       // window.history.replaceState(null, '', window.encodeURI(`/room/${roomName}${window.location.search || ''}`));
     }
-    setStep(Steps.deviceSelectionStep);
+
+    if (userGroup === UserGroup.Audience) {
+      handleJoin();
+    } else {
+      setStep(Steps.deviceSelectionStep);
+    }
   };
+
+  const handleJoin = () => {
+    if (roomId === undefined) {
+      return;
+    }
+
+    generateIdentity(name).then(identity => {
+      console.log('handle join for', identity);
+      getToken(identity, roomId).then(({ token }) => {
+        if (userGroup !== UserGroup.Audience) {
+          videoConnect(token).then();
+        }
+        if (process.env.REACT_APP_DISABLE_TWILIO_CONVERSATIONS !== 'true' && userGroup !== UserGroup.StreamServer) {
+          chatConnect(token);
+        }
+
+        props.onReady && props.onReady(name);
+      });
+    });
+  };
+
+  useEffect(() => {
+    if (userGroup === UserGroup.StreamServer) {
+      setName(UserGroup.StreamServer + IDENTITY_SPLITTER + Date.now());
+    }
+  }, []);
+
+  useEffect(() => {
+    if (userGroup === UserGroup.StreamServer) {
+      setName(UserGroup.StreamServer);
+    }
+  }, [userGroup]);
+
+  useEffect(() => {
+    if (room?.sid && groupToken) {
+      setRoomSid(groupToken, room.sid);
+    }
+  }, [room?.sid, groupToken]);
+
+  useEffect(() => {
+    if (roomId === undefined || userGroup == undefined) {
+      return;
+    }
+
+    if (userGroup === UserGroup.StreamServer && roomId) {
+      handleJoin();
+    }
+  }, [userGroup, roomId]);
 
   return (
     <PopupScreen>
       <MediaErrorSnackbar error={mediaError} />
-      {step === Steps.roomNameStep && (
-        <RoomNameScreen
-          name={name}
-          roomName={roomName}
-          setName={setName}
-          setRoomName={setRoomName}
-          handleSubmit={handleSubmit}
-        />
-      )}
+      {step === Steps.roomNameStep && <RoomNameScreen name={name} setName={setName} handleSubmit={handleSubmit} />}
 
       {step === Steps.deviceSelectionStep && (
-        <DeviceSelectionScreen name={name} roomName={roomName} setStep={setStep} />
+        <DeviceSelectionScreen handleJoin={handleJoin} setStep={setStep} name={name} />
       )}
     </PopupScreen>
   );
