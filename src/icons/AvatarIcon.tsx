@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function AvatarIcon() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="73" height="73" viewBox="0 0 73 73">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 73 73">
       <g fill="none" fillRule="evenodd">
         <circle cx="36.5" cy="36.5" r="36.5" fill="#FFF" />
         <path

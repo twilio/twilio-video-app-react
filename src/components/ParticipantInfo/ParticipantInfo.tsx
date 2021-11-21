@@ -1,19 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
 
 import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
-import AvatarIcon from '../../icons/AvatarIcon';
 import PinIcon from './PinIcon/PinIcon';
 import ScreenShareIcon from '../../icons/ScreenShareIcon';
-import Typography from '@material-ui/core/Typography';
 
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
 import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
 import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
-import { ReactComponent as CarouselIcon } from '../../assets/carousel.svg';
 import { nameFromIdentity } from 'utils/participants';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -46,35 +43,6 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '100%',
       background: 'transparent',
       top: 0,
-    },
-    avatarContainer: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: 'black',
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-      zIndex: 1,
-      [theme.breakpoints.down('sm')]: {
-        '& svg': {
-          transform: 'scale(0.7)',
-        },
-      },
-    },
-    reconnectingContainer: {
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: 'rgba(40, 42, 43, 0.75)',
-      zIndex: 1,
     },
     screenShareIconContainer: {
       background: 'rgba(0, 0, 0, 0.5)',
@@ -136,7 +104,6 @@ export default function ParticipantInfo({
   hideParticipant,
   isModerator,
   noName,
-  isActivePlayer,
   roundsPlayed,
 }: ParticipantInfoProps) {
   const publications = usePublications(participant);
@@ -195,18 +162,23 @@ export default function ParticipantInfo({
         <div>{isSelected && <PinIcon />}</div>
       </div>
       <div className={classes.innerContainer}>
-        {(!isVideoEnabled || isVideoSwitchedOff) && (
-          <div
-            className={classes.avatarContainer + (isActivePlayer ? ' bg-purple rounded-lg' : ' bg-grayish rounded-xl')}
-          >
-            <AvatarIcon />
+        {/* <Transition
+          show={!isVideoEnabled || isVideoSwitchedOff}
+          className="transition-all duration-1000 absolute w-full h-full"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="w-full h-full bg-black flex items-center justify-center rounded-xl">
+            <div className="w-12 h-12">
+              <AvatarIcon />
+            </div>
           </div>
-        )}
+        </Transition> */}
         {isParticipantReconnecting && (
-          <div className={classes.reconnectingContainer}>
-            <Typography variant="body1" className={classes.typeography}>
-              Reconnecting...
-            </Typography>
+          <div className="rounded-xl text-white absolute w-full h-full bg-black bg-opacity-60 flex items-center justify-center">
+            Reconnecting...
           </div>
         )}
         {children}

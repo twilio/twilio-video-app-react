@@ -5,11 +5,6 @@ import { Track } from 'twilio-video';
 import useMediaStreamTrack from '../../hooks/useMediaStreamTrack/useMediaStreamTrack';
 import useVideoTrackDimensions from '../../hooks/useVideoTrackDimensions/useVideoTrackDimensions';
 
-const Video = styled('video')({
-  width: '100%',
-  height: '100%',
-});
-
 interface VideoTrackProps {
   track: IVideoTrack;
   isLocal?: boolean;
@@ -51,5 +46,11 @@ export default function VideoTrack({ track, isLocal, priority, className }: Vide
     objectFit: isPortrait || track.name.includes('screen') ? ('contain' as const) : ('cover' as const),
   };
 
-  return <Video ref={ref} style={style} className={className} />;
+  return (
+    <div className="relative w-full h-full overflow-hidden rounded-xl">
+      <div className="absolute -top-5 -left-5 -bottom-5 -right-5 ">
+        <video ref={ref} style={style} className={'w-full h-full outline-none'} />
+      </div>
+    </div>
+  );
 }

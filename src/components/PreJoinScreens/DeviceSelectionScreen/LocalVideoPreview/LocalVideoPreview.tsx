@@ -62,18 +62,18 @@ export default function LocalVideoPreview({ identity }: { identity: string }) {
   ) as LocalVideoTrack;
 
   return (
-    <div className={classes.container}>
-      <div className={classes.innerContainer}>
+    <div className={classes.container + ' rounded-xl'}>
+      <div className="absolute top-0 w-full h-full flex justify-center items-center">
         {videoTrack ? (
           <VideoTrack track={videoTrack} isLocal />
         ) : (
-          <div className={classes.avatarContainer}>
+          <div className="w-10 h-10">
             <AvatarIcon />
           </div>
         )}
       </div>
 
-      <div className={classes.identityContainer}>
+      <div className={classes.identityContainer + ' rounded-bl-xl overflow-hidden'}>
         <span className={classes.identity}>
           <LocalAudioLevelIndicator />
           <Typography variant="body1" color="inherit" component="span">
