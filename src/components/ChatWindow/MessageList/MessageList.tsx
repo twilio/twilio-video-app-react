@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Message } from '@twilio/conversations/lib/message';
 import MessageInfo from './MessageInfo/MessageInfo';
 import MessageListScrollContainer from './MessageListScrollContainer/MessageListScrollContainer';
@@ -6,6 +6,8 @@ import TextMessage from './TextMessage/TextMessage';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 import MediaMessage from './MediaMessage/MediaMessage';
 import useChatContext from 'hooks/useChatContext/useChatContext';
+import { uidFromIdentity } from 'utils/participants';
+import { getUid } from 'utils/firebase/base';
 
 interface MessageListProps {
   messages: Message[];
@@ -17,6 +19,11 @@ const getFormattedTime = (message?: Message) =>
 export default function MessageList({ messages }: MessageListProps) {
   const { room } = useVideoContext();
   // const localParticipant = room!.localParticipant;
+  const [uid, setUid] = useState<string>();
+
+  useEffect(() => {
+    getUid().then(setUid);
+  }, []);
 
   return (
     <MessageListScrollContainer messages={messages}>
@@ -27,7 +34,7 @@ export default function MessageList({ messages }: MessageListProps) {
         // Display the MessageInfo component when the author or formatted timestamp differs from the previous message
         const shouldDisplayMessageInfo = time !== previousTime || message.author !== messages[idx - 1]?.author;
 
-        const isLocalParticipant = '' === message.author;
+        const isLocalParticipant = uidFromIdentity(message.author) === uid;
 
         return (
           <React.Fragment key={message.sid}>

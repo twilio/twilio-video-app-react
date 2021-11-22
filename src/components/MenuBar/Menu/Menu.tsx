@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import AboutDialog from '../../AboutDialog/AboutDialog';
 import BackgroundIcon from '../../../icons/BackgroundIcon';
-import DeviceSelectionDialog from '../../DeviceSelectionDialog/DeviceSelectionDialog';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import InfoIconOutlined from '../../../icons/InfoIconOutlined';
 import MoreIcon from '@material-ui/icons/MoreVert';
@@ -19,6 +18,7 @@ import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 import FlipCameraIcon from '../../../icons/FlipCameraIcon';
 import useFlipCameraToggle from '../../../hooks/useFlipCameraToggle/useFlipCameraToggle';
 import { VideoRoomMonitor } from '@twilio/video-room-monitor';
+import { RoundButton } from 'components/Buttons/RoundButton';
 
 export const IconContainer = styled('div')({
   display: 'flex',
@@ -27,7 +27,7 @@ export const IconContainer = styled('div')({
   marginRight: '0.3em',
 });
 
-export default function Menu(props: { buttonClassName?: string }) {
+export default function Menu() {
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
 
   const [aboutOpen, setAboutOpen] = useState(false);
@@ -44,12 +44,7 @@ export default function Menu(props: { buttonClassName?: string }) {
 
   return (
     <>
-      <button
-        onClick={() => setMenuOpen(isOpen => !isOpen)}
-        ref={anchorRef}
-        className={props.buttonClassName}
-        data-cy-more-button
-      >
+      <RoundButton onClick={() => setMenuOpen(isOpen => !isOpen)} ref={anchorRef} data-cy-more-button>
         {isMobile ? (
           <MoreIcon />
         ) : (
@@ -57,7 +52,7 @@ export default function Menu(props: { buttonClassName?: string }) {
             <ExpandMoreIcon />
           </>
         )}
-      </button>
+      </RoundButton>
       <MenuContainer
         open={menuOpen}
         onClose={() => setMenuOpen(isOpen => !isOpen)}
@@ -71,13 +66,6 @@ export default function Menu(props: { buttonClassName?: string }) {
           horizontal: 'center',
         }}
       >
-        <MenuItem onClick={() => setSettingsOpen(true)}>
-          <IconContainer>
-            <SettingsIcon />
-          </IconContainer>
-          <Typography variant="body1">Audio and Video Settings</Typography>
-        </MenuItem>
-
         {isSupported && (
           <MenuItem
             onClick={() => {
@@ -102,7 +90,7 @@ export default function Menu(props: { buttonClassName?: string }) {
           </MenuItem>
         )}
 
-        {roomType !== 'peer-to-peer' && roomType !== 'go' && (
+        {/* {roomType !== 'peer-to-peer' && roomType !== 'go' && (
           <MenuItem
             disabled={isFetching}
             onClick={() => {
@@ -118,7 +106,7 @@ export default function Menu(props: { buttonClassName?: string }) {
             <IconContainer>{isRecording ? <StopRecordingIcon /> : <StartRecordingIcon />}</IconContainer>
             <Typography variant="body1">{isRecording ? 'Stop' : 'Start'} Recording</Typography>
           </MenuItem>
-        )}
+        )} */}
 
         <Hidden smDown>
           <MenuItem
@@ -145,13 +133,6 @@ export default function Menu(props: { buttonClassName?: string }) {
         open={aboutOpen}
         onClose={() => {
           setAboutOpen(false);
-          setMenuOpen(false);
-        }}
-      />
-      <DeviceSelectionDialog
-        open={settingsOpen}
-        onClose={() => {
-          setSettingsOpen(false);
           setMenuOpen(false);
         }}
       />

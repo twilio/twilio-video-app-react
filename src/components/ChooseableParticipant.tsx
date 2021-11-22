@@ -9,8 +9,12 @@ import { setActiveScreen } from 'utils/firebase/screen';
 import { muteParticipant } from 'utils/firebase/session';
 import Participant, { ParticipantProps } from './Participant/Participant';
 import { ReactComponent as CarouselIcon } from '../assets/carousel.svg';
+import { RoundButton, ROUND_BUTTON_SIZE } from './Buttons/RoundButton';
+import { BanParticipantButton } from './Buttons/BanParticipantButton';
 
-export const ChooseableParticipant = (props: ParticipantProps) => {
+export type ChooseableParticipantProps = ParticipantProps;
+
+export const ChooseableParticipant = (props: ChooseableParticipantProps) => {
   const { userGroup, groupToken, activeScreen } = useSessionContext();
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
@@ -54,23 +58,30 @@ export const ChooseableParticipant = (props: ParticipantProps) => {
     <div
       className={'relative rounded-lg' + (isActivePlayer ? ' ring-4 ring-offset-2 ring-purple ring-opacity-80' : '')}
     >
-      {userGroup === UserGroup.Moderator && props.participant.sid !== localParticipant.sid ? (
+      {userGroup === UserGroup.Moderator ? (
         <div className="group transition-all duration-500 bg-white opacity-0 hover:opacity-95 bg-opacity-30 absolute top-0 left-0 w-full h-full z-30 flex space-x-2 items-center justify-center rounded-lg">
-          <button
-            className="text-black bg-white rounded-full cursor-pointer w-10 h-10 flex items-center justify-center"
+          <RoundButton
+            active
+            size={ROUND_BUTTON_SIZE.SEMI_SMALL}
             onClick={() => {
               setCurrentPlayer(groupToken as string, props.participant.sid, activePlayer);
               setActiveScreen(groupToken as string, ScreenType.Game);
             }}
           >
             <CarouselIcon />
-          </button>
-          <button
-            className="text-black bg-white rounded-full cursor-pointer w-10 h-10 flex items-center justify-center"
-            onClick={() => muteParticipant(groupToken!, props.participant.sid)}
-          >
-            {false ? <MicIcon className="w-7 h-7" /> : <MicOffIcon className="w-7 h-7" />}
-          </button>
+          </RoundButton>
+
+          {userGroup === UserGroup.Moderator && props.participant.sid !== localParticipant.sid ? (
+            <>
+              <RoundButton
+                size={ROUND_BUTTON_SIZE.SEMI_SMALL}
+                onClick={() => muteParticipant(groupToken!, props.participant.sid)}
+              >
+                {false ? <MicIcon className="w-7 h-7" /> : <MicOffIcon className="w-7 h-7" />}
+              </RoundButton>
+              <BanParticipantButton identity={props.participant.identity} />
+            </>
+          ) : null}
         </div>
       ) : null}
       <Participant {...props} isActivePlayer={isActivePlayer} roundsPlayed={roundsPlayed} />

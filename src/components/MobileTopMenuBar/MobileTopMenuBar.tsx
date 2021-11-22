@@ -38,8 +38,8 @@ export default function MobileTopMenuBar() {
     <Grid container alignItems="center" justifyContent="space-between" className={classes.container}>
       <Typography variant="subtitle1">{room!.name}</Typography>
       <div>
-        <EndCallButton className={classes.endCallButton} />
-        <Menu buttonClassName={classes.settingsButton} />
+        <EndCallButton />
+        <Menu />
       </div>
     </Grid>
   );

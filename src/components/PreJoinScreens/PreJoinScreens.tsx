@@ -7,7 +7,7 @@ import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import useSessionContext from 'hooks/useSessionContext';
 import { getUid } from 'utils/firebase/base';
 import { PopupScreen } from 'components/PopupScreen';
-import { UserGroup } from 'types';
+import { LOCAL_STORAGE_KEY, UserGroup } from 'types';
 import { IDENTITY_SPLITTER } from 'utils/participants';
 import useChatContext from 'hooks/useChatContext/useChatContext';
 import { generateIdentity } from 'utils/participants';
@@ -24,7 +24,9 @@ export default function PreJoinScreens(props: { onReady?: (name: string) => void
   const [step, setStep] = useState(Steps.roomNameStep);
   const [mediaError, setMediaError] = useState<Error>();
   const { roomId, userGroup, groupToken, roomSid } = useSessionContext();
-  const [name, setName] = useState<string>(user?.displayName || '');
+  const [name, setName] = useState<string>(
+    user?.displayName || (localStorage.getItem(LOCAL_STORAGE_KEY.USER_NAME) ?? '')
+  );
   const { getToken } = useAppState();
   const { connect: chatConnect } = useChatContext();
   const { connect: videoConnect, room } = useVideoContext();
@@ -60,12 +62,13 @@ export default function PreJoinScreens(props: { onReady?: (name: string) => void
   };
 
   const handleJoin = () => {
+    localStorage.setItem(LOCAL_STORAGE_KEY.USER_NAME, name);
+
     if (roomId === undefined) {
       return;
     }
 
     generateIdentity(name).then(identity => {
-      console.log('handle join for', identity);
       getToken(identity, roomId).then(({ token }) => {
         if (userGroup !== UserGroup.Audience) {
           videoConnect(token).then();
@@ -82,12 +85,6 @@ export default function PreJoinScreens(props: { onReady?: (name: string) => void
   useEffect(() => {
     if (userGroup === UserGroup.StreamServer) {
       setName(UserGroup.StreamServer + IDENTITY_SPLITTER + Date.now());
-    }
-  }, []);
-
-  useEffect(() => {
-    if (userGroup === UserGroup.StreamServer) {
-      setName(UserGroup.StreamServer);
     }
   }, [userGroup]);
 
@@ -108,13 +105,15 @@ export default function PreJoinScreens(props: { onReady?: (name: string) => void
   }, [userGroup, roomId]);
 
   return (
-    <PopupScreen>
-      <MediaErrorSnackbar error={mediaError} />
-      {step === Steps.roomNameStep && <RoomNameScreen name={name} setName={setName} handleSubmit={handleSubmit} />}
+    <div className={`w-full h-full ${userGroup === UserGroup.StreamServer ? 'invisible' : ''}`}>
+      <PopupScreen>
+        <MediaErrorSnackbar error={mediaError} />
+        {step === Steps.roomNameStep && <RoomNameScreen name={name} setName={setName} handleSubmit={handleSubmit} />}
 
-      {step === Steps.deviceSelectionStep && (
-        <DeviceSelectionScreen handleJoin={handleJoin} setStep={setStep} name={name} />
-      )}
-    </PopupScreen>
+        {step === Steps.deviceSelectionStep && (
+          <DeviceSelectionScreen handleJoin={handleJoin} setStep={setStep} name={name} />
+        )}
+      </PopupScreen>
+    </div>
   );
 }

@@ -39,6 +39,14 @@ export const nameFromIdentity = (identity: string) => {
   return split[1];
 };
 
+export const uidFromIdentity = (identity: string) => {
+  const split = identity.split(IDENTITY_SPLITTER, 2);
+  if (split.length !== 2) {
+    throw new Error('Identity not correctly formated: ' + identity);
+  }
+  return split[0];
+};
+
 export const generateIdentity = (name: string) =>
   getUid().then(uid => {
     return uid + IDENTITY_SPLITTER + name;

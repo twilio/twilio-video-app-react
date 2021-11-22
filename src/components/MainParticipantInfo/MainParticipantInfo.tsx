@@ -162,7 +162,7 @@ export default function MainParticipantInfo({ participant, children }: MainParti
         </div>
       )}
       {isParticipantReconnecting && (
-        <div className="rounded-xl text-white absoulte w-full h-full bg-black bg-opacity-60 flex items-center justify-center">
+        <div className="rounded-xl text-white absoulte top-0 w-full h-full bg-black bg-opacity-60 flex items-center justify-center">
           Reconnecting...
         </div>
       )}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ChatIcon from '../../../icons/ChatIcon';
 import useChatContext from '../../../hooks/useChatContext/useChatContext';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import { RoundButton } from '../RoundButton';
 
 export const ANIMATION_DURATION = 700;
 
@@ -13,7 +14,6 @@ export default function ToggleChatButton(props: { className?: string }) {
   const toggleChatWindow = () => {
     setIsChatWindowOpen(!isChatWindowOpen);
     setIsBackgroundSelectionOpen(false);
-    console.log('toggle');
   };
 
   useEffect(() => {
@@ -33,24 +33,13 @@ export default function ToggleChatButton(props: { className?: string }) {
   }, [conversation, isChatWindowOpen]);
 
   return (
-    <button
-      data-cy-chat-button
+    <RoundButton
       onClick={toggleChatWindow}
-      className={props.className + ' relative'}
       disabled={!conversation}
-      // startIcon={
-      //   <div className={classes.iconContainer}>
-
-      //     <div className={clsx(classes.ring, { [classes.animateRing]: shouldAnimate })} />
-      //     <div className={clsx(classes.circle, { [classes.hasUnreadMessages]: hasUnreadMessages })} />
-      //   </div>
-      // }
+      indicator={hasUnreadMessages}
+      active={isChatWindowOpen}
     >
-      <div
-        className="absolute top-0 right-0 h-3 w-3 bg-red rounded-full"
-        style={{ display: hasUnreadMessages ? 'block' : 'none' }}
-      />
       <ChatIcon />
-    </button>
+    </RoundButton>
   );
 }

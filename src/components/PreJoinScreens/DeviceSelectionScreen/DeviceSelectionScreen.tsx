@@ -93,8 +93,8 @@ export default function DeviceSelectionScreen({ setStep, handleJoin, name }: Dev
           <LocalVideoPreview identity={name} />
         </div>
         <div className="flex items-center justify-center space-x-3">
-          <ToggleAudioButton className={buttonClassName} disabled={disableButtons} />
-          <ToggleVideoButton className={buttonClassName} disabled={disableButtons} />
+          <ToggleAudioButton disabled={disableButtons} />
+          <ToggleVideoButton disabled={disableButtons} />
           <SettingsMenu className={buttonClassName} />
         </div>
       </div>

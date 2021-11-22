@@ -27,7 +27,7 @@ export default function MessageInfo({ author, dateCreated, isLocalParticipant }:
   const name = nameFromIdentity(author);
   return (
     <div className={classes.messageInfoContainer}>
-      <div>{isLocalParticipant ? `${name} (You)` : name}</div>
+      <div>{isLocalParticipant ? `${name} (Du)` : name}</div>
       <div>{dateCreated}</div>
     </div>
   );

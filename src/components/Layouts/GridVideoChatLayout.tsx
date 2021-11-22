@@ -89,7 +89,7 @@ export const GridVideoChatLayout = () => {
       <div className="h-5 lg:h-10" />
       <div className="w-full aspect-w-16 aspect-h-9">
         <div className="grid grid-cols-4 grid-rows-4 gap-2 justify-center items-center">
-          <div className="col-span-3 row-span-3 overflow-hidden">
+          <div className="col-span-3 row-span-3">
             {moderatorParitcipants.length >= 1 ? (
               <ChooseableParticipant
                 participant={moderatorParitcipants[0]}
