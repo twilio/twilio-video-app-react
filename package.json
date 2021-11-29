@@ -44,7 +44,7 @@
     "strip-color": "^0.1.0",
     "ts-node": "^9.1.1",
     "twilio": "^3.63.1",
-    "twilio-video": "github:twilio/twilio-video.js#2.19.0-rc1",
+    "twilio-video": "github:twilio/twilio-video.js#2.19.0-rc3",
     "typescript": "^3.8.3"
   },
   "devDependencies": {
