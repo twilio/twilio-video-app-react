@@ -6,7 +6,7 @@ export const ToggleAdminWindowButton = () => {
   const { toggleAdminWindow, adminWindowOpen } = useAdminWindow();
 
   return (
-    <RoundButton onClick={toggleAdminWindow} active={adminWindowOpen}>
+    <RoundButton title="Moderator Verwaltungsleiste öffnen" onClick={toggleAdminWindow} active={adminWindowOpen}>
       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path
           strokeLinecap="round"

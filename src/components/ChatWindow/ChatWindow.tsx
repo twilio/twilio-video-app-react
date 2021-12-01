@@ -9,7 +9,7 @@ export default function ChatWindow() {
 
   return (
     <div
-      className="bg-white z-50 shadow-xl flex flex-col h-screen w-full md:w-[400px] fixed left-0 pl-2"
+      className="bg-white z-50 shadow-xl flex flex-col h-screen w-full md:w-[200px] xl:w-[250px] 2xl:w-[300px] fixed left-0 pl-2"
       style={{ display: isChatWindowOpen ? '' : 'none' }}
     >
       <ChatWindowHeader />

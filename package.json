@@ -48,6 +48,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "4.0.3",
     "react-spring": "^9.2.4",
+    "react-tooltip": "^4.2.21",
     "rimraf": "3.0.2",
     "strip-color": "^0.1.0",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.16",

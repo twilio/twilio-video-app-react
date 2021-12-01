@@ -17,7 +17,12 @@ export const ScreenSwitchButton = () => {
   };
 
   return (
-    <RoundButton active size={ROUND_BUTTON_SIZE.LARGE} onClick={toggleGameScreen}>
+    <RoundButton
+      title={`Zum ${activeScreen === ScreenType.VideoChat ? 'Videokonferenz' : 'Spielrad'} Bildschirm wechseln`}
+      active
+      size={ROUND_BUTTON_SIZE.LARGE}
+      onClick={toggleGameScreen}
+    >
       {activeScreen === ScreenType.Game ? (
         <GridViewIcon className="w-22 h-22" />
       ) : (

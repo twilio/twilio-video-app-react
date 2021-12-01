@@ -17,7 +17,7 @@ export const EndSessionButton = () => {
         open={showAlert}
         setOpen={setShowAlert}
       />
-      <RoundButton onClick={() => setShowAlert(true)}>
+      <RoundButton title="DemokraTisch beenden" onClick={() => setShowAlert(true)}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6"

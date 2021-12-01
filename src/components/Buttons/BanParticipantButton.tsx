@@ -29,6 +29,7 @@ export const BanParticipantButton = (props: BanParticipantButtonProps) => {
         setOpen={setShowAlert}
       />
       <RoundButton
+        title="Spieler aus dem DemokraTisch ausschließen"
         size={ROUND_BUTTON_SIZE.SEMI_SMALL}
         style={ROUND_BUTTON_STYLE.DECILE}
         onClick={() => setShowAlert(true)}

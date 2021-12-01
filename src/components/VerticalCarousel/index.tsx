@@ -14,6 +14,7 @@ import { RevealedCard } from 'components/RevealedCard';
 import { ISessionStatus } from 'components/SessionProvider';
 import { ICarouselGame, IQuestion } from 'types';
 import { unsubscribeFromSessionStore } from 'utils/firebase/session';
+import { RoundButton } from 'components/Buttons/RoundButton';
 
 const MAX_SPIN_COUNT = 3;
 
@@ -58,7 +59,7 @@ const VerticalCarousel = ({ questions }: { questions: IQuestion[] }) => {
   const visibleStyleThreshold = shuffleThreshold / 2;
 
   const determinePlacement = (itemIndex: number) => {
-    if (!activeIndex) {
+    if (activeIndex === undefined) {
       return 0;
     }
     // If these match, the item is active
@@ -197,28 +198,20 @@ const VerticalCarousel = ({ questions }: { questions: IQuestion[] }) => {
   const canSpin = isActivePlayer && remainingSpins > 0 && spinTimeouts.length <= 0;
   const canChoose = isActivePlayer && remainingSpins >= 0 && spinTimeouts.length <= 0;
   const canReveal = revealedCard !== undefined && canChoose;
-  const spinVisibility = canSpin ? ' opacity-100 cursor-pointer' : ' opacity-0 cursor-default';
-  const chooseVisibility = canChoose ? ' opacity-100 cursor-pointer' : ' opacity-0 cursor-default';
-  const revealVisibility = canReveal ? ' opacity-100 cursor-pointer' : ' opacity-0 cursor-default';
 
   return (
     <div className="container h-full shadow-lg mx-auto px-2 lg:px-5 overflow-hidden">
       <section className="outer-container flex justify-between items-center h-full w-full">
         <div className={'flex flex-col'}>
-          <button
-            type="button"
-            className={
-              'relative shadow-lg rounded-full bg-white w-16 h-16 hover:shadow-sm transition-all duration-500' +
-              spinVisibility
-            }
+          <RoundButton
+            title="Zum Drehen des Rads hier klicken"
             onClick={handleClick}
             disabled={!canSpin}
+            invisible={!canSpin}
+            indicator={remainingSpins > 0 ? remainingSpins : undefined}
           >
-            <span className="absolute top-0 right-0 w-5 h-5 bg-purple text-white rounded-full">
-              {remainingSpins > 0 ? remainingSpins : ''}
-            </span>
             <img src="/assets/random-card.svg" alt="Neue Kategorie" />
-          </button>
+          </RoundButton>
         </div>
         <div className="h-full relative px-20 transform -translate-x-20">
           {questions.map((item, i) => {
@@ -268,13 +261,12 @@ const VerticalCarousel = ({ questions }: { questions: IQuestion[] }) => {
             );
           })}
         </div>
-        <button
-          className={
-            'w-16 h-16 rounded-full bg-purple text-white transform translate-x-0 shadow-xl hover:shadow-none transition-all duration-500 flex items-center justify-center' +
-            chooseVisibility
-          }
+        <RoundButton
+          title="Zum Anzeigen der Frage hier klicken"
+          invisible={!canChoose}
           disabled={!canChoose}
           onClick={() => revealQuestion()}
+          active
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -285,7 +277,7 @@ const VerticalCarousel = ({ questions }: { questions: IQuestion[] }) => {
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
-        </button>
+        </RoundButton>
         <div className="flex justify-center items-center space-x-5">
           <div className="flex flex-col justify-center space-y-3 w-56 lg:w-96">
             <InfoRow
@@ -300,13 +292,12 @@ const VerticalCarousel = ({ questions }: { questions: IQuestion[] }) => {
               text="Bitte bedenke: Drehst du mehrmals, kannst du nicht zwischen den Fragen wählen. Die Frage ist nur solange für dich sichtbar, bis du sie mit dem Haken links für alle zur Diskussion freigibst. Viel Spaß!"
             />
           </div>
-          <button
-            className={
-              'w-16 h-16 flex items-center justify-center rounded-full bg-purple text-white transition-opacity duration-500' +
-              revealVisibility
-            }
+          <RoundButton
+            title="Hier Klicken zum Freigeben der Frage für alle zur Diskussion. Frage ist für alle sichtbar."
             onClick={approveQuestion}
             disabled={!canReveal}
+            active
+            invisible={!canReveal}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -317,7 +308,7 @@ const VerticalCarousel = ({ questions }: { questions: IQuestion[] }) => {
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
-          </button>
+          </RoundButton>
         </div>
       </section>
     </div>

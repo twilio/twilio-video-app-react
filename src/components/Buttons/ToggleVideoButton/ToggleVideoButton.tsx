@@ -19,7 +19,11 @@ export default function ToggleVideoButton(props: { disabled: boolean }) {
   }, [toggleVideoEnabled]);
 
   return (
-    <RoundButton onClick={toggleVideo} disabled={!hasVideoInputDevices || props.disabled}>
+    <RoundButton
+      title={isVideoEnabled ? 'Kamera deaktivieren' : 'Kamera einschalten'}
+      onClick={toggleVideo}
+      disabled={!hasVideoInputDevices || props.disabled}
+    >
       {isVideoEnabled ? <VideoOnIcon /> : <VideoOffIcon />}
     </RoundButton>
   );

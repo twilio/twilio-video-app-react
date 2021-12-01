@@ -135,7 +135,7 @@ export default function ParticipantInfo({
     >
       <div className={classes.infoContainer}>
         {!roundsPlayed || roundsPlayed <= 0 ? null : (
-          <span className="absolute -top-3 -right-3 bg-purple rounded-full filter drop-shadow-lg text-white w-7 h-7 flex items-center justify-center">
+          <span className="absolute -top-3 -right-3 bg-purple rounded-full filter drop-shadow-lg text-white w-7 h-7 flex items-center justify-center z-30">
             {roundsPlayed}
           </span>
         )}

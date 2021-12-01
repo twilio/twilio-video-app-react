@@ -22,7 +22,7 @@ export default function EndCallButton() {
         open={showAlert}
         setOpen={setShowAlert}
       />
-      <RoundButton onClick={() => setShowAlert(true)}>
+      <RoundButton title="Anruf verlassen" onClick={() => setShowAlert(true)}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-5 w-5"

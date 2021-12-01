@@ -8,7 +8,7 @@ export const ToggleSettingsButton = () => {
 
   return (
     <>
-      <RoundButton onClick={() => setSettingsOpen(true)}>
+      <RoundButton title="Einstellungen öffnen" onClick={() => setSettingsOpen(true)}>
         <SettingsIcon />
       </RoundButton>
       <DeviceSelectionDialog

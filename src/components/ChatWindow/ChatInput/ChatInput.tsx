@@ -180,6 +180,7 @@ export default function ChatInput({ conversation, isChatWindowOpen }: ChatInputP
           </div> */}
 
           <RoundButton
+            title="Nachricht senden"
             active
             size={ROUND_BUTTON_SIZE.SEMI_SMALL}
             onClick={() => handleSendMessage(messageBody)}

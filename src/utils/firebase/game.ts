@@ -98,7 +98,7 @@ export const subscribeToCarouselGame = (subId: string, groupToken: string, callb
             return;
           }
 
-          _game = doc.data() as ICarouselGame;
+          _game = fillWithDefaultValues(doc.data() as ICarouselGame);
           if (_game !== null) {
             Object.entries(_subscriptions).forEach(([key, cb]) => {
               if (typeof cb === 'function') {
@@ -133,15 +133,24 @@ export const fetchCarouselGame = (groupToken: string) =>
           return;
         }
 
-        _game = doc.data() as ICarouselGame;
-        if (_game !== null) {
-          resolve(_game);
-        } else {
-          reject({ empty: true });
-        }
+        _game = fillWithDefaultValues(doc.data() as ICarouselGame);
+        resolve(_game);
       });
     });
   });
+
+const fillWithDefaultValues = (game?: ICarouselGame) => {
+  const filled = game ?? ({} as ICarouselGame);
+
+  filled.activeCard = game?.activeCard ?? 0;
+  filled.carouselPosition = game?.carouselPosition ?? 0;
+  filled.currentPlayer = game?.currentPlayer ?? '#';
+  filled.currentSpinCount = game?.currentSpinCount ?? 0;
+  filled.playerRoundCount = game?.playerRoundCount ?? {};
+  filled.seed = game?.seed ?? 0;
+
+  return filled;
+};
 
 // create colored categories from all questions
 // export const createCategories = () => {
