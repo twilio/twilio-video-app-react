@@ -10,7 +10,7 @@ export default function ChatWindow() {
   return (
     <>
       <div
-        className="px-10 h-1 w-full md:w-[200px] xl:w-[250px] 2xl:w-[300px]"
+        className="px-16 h-1 w-full md:w-[200px] xl:w-[250px] 2xl:w-[300px]"
         style={{ display: isChatWindowOpen ? '' : 'none' }}
       />
       <div
