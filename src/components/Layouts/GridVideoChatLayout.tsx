@@ -36,7 +36,7 @@ export const GridVideoChatLayout = () => {
     };
   }, []);
 
-  const { moderatorParitcipants, normalParticipants } = sortedParticipantsByCategorie(
+  const { moderatorParitcipants, normalParticipants, participantCount } = sortedParticipantsByCategorie(
     moderators,
     localParticipant,
     participants
@@ -68,7 +68,7 @@ export const GridVideoChatLayout = () => {
   );
 
   return (
-    <div className="flex flex-col container mx-auto lg:px-32">
+    <div className="flex flex-col">
       <div className="flex space-x-6 pb-5 pt-10 items-center justify-between">
         <div className="flex space-x-10 items-center">
           <img src={resources.hostLogoSrc} className="h-12" />
@@ -89,7 +89,7 @@ export const GridVideoChatLayout = () => {
       <div className="h-5 lg:h-10" />
       <div className="w-full aspect-w-16 aspect-h-9">
         <div className="grid grid-cols-4 grid-rows-4 gap-2 justify-center items-center">
-          <div className="col-span-3 row-span-3">
+          <div className={participantCount < 8 ? 'col-span-3 row-span-3' : 'col-span-2 row-span-2'}>
             {moderatorParitcipants.length >= 1 ? (
               <ChooseableParticipant
                 participant={moderatorParitcipants[0]}
@@ -98,7 +98,7 @@ export const GridVideoChatLayout = () => {
               />
             ) : null}
           </div>
-          <div className="aspect-w-16 aspect-h-9">
+          <div className="aspect-w-16 aspect-h-9 col-start-4 row-start-1">
             <RevealedCard />
           </div>
           {/* <Participant isLocalParticipant participant={localParticipant} /> */}

@@ -12,7 +12,12 @@ export default function ToggleAudioButton(props: { disabled: boolean }) {
   const hasAudioTrack = localTracks.some(track => track.kind === 'audio');
 
   return (
-    <RoundButton onClick={toggleAudioEnabled} disabled={!hasAudioTrack || props.disabled} data-cy-audio-toggle>
+    <RoundButton
+      title={isAudioEnabled ? 'Stummschalten' : 'Mikrofon aktivieren'}
+      onClick={toggleAudioEnabled}
+      disabled={!hasAudioTrack || props.disabled}
+      data-cy-audio-toggle
+    >
       {isAudioEnabled ? <MicIcon className="w-3" /> : <MicOffIcon className="w-5" />}
     </RoundButton>
   );

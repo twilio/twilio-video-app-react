@@ -44,7 +44,12 @@ export default function Menu() {
 
   return (
     <>
-      <RoundButton onClick={() => setMenuOpen(isOpen => !isOpen)} ref={anchorRef} data-cy-more-button>
+      <RoundButton
+        title="Mehr Optionen anzeigen"
+        onClick={() => setMenuOpen(isOpen => !isOpen)}
+        ref={anchorRef}
+        data-cy-more-button
+      >
         {isMobile ? (
           <MoreIcon />
         ) : (

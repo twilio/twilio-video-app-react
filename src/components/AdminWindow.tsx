@@ -76,6 +76,7 @@ export const AdminWindow = () => {
       {banned.map(identity => (
         <Line identity={identity} key={identity}>
           <RoundButton
+            title="Ausschluss aufheben"
             size={ROUND_BUTTON_SIZE.SMALL}
             style={ROUND_BUTTON_STYLE.DECILE}
             onClick={() => groupToken && unbanParticipant(groupToken, identity)}
@@ -102,6 +103,7 @@ export const AdminWindow = () => {
       {raisedHands.map(identity => (
         <Line key={identity} identity={identity}>
           <RoundButton
+            title="Zum DemokraTisch einladen"
             size={ROUND_BUTTON_SIZE.SMALL}
             style={ROUND_BUTTON_STYLE.APPROVE}
             onClick={() => groupToken && inviteAudienceMember(groupToken, identity)}
@@ -117,6 +119,7 @@ export const AdminWindow = () => {
             </svg>
           </RoundButton>
           <RoundButton
+            title="Anfrage ablehnen"
             size={ROUND_BUTTON_SIZE.SMALL}
             style={ROUND_BUTTON_STYLE.DECILE}
             onClick={() => groupToken && unraiseHand(groupToken, identity)}

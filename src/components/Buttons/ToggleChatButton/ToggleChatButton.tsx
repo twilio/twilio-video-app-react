@@ -34,6 +34,7 @@ export default function ToggleChatButton(props: { className?: string }) {
 
   return (
     <RoundButton
+      title="Chat Fenster öffnen"
       onClick={toggleChatWindow}
       disabled={!conversation}
       indicator={hasUnreadMessages}

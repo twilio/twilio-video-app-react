@@ -30,11 +30,13 @@ export default function Room() {
   return (
     <div className="flex flex-col h-screen">
       <div className="flex-grow flex" style={{ paddingBottom: userGroup === UserGroup.StreamServer ? '2rem' : '8rem' }}>
-        <CurrentScreen />
         <ChatWindow />
+        <div className="px-5 container mx-auto lg:px-32">
+          <CurrentScreen />
+        </div>
         <PoweredByBar />
       </div>
-      <BackgroundSelectionDialog />
+      {/* <BackgroundSelectionDialog /> */}
     </div>
   );
 }

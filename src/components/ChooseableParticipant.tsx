@@ -56,11 +56,14 @@ export const ChooseableParticipant = (props: ChooseableParticipantProps) => {
 
   return (
     <div
-      className={'relative rounded-lg' + (isActivePlayer ? ' ring-4 ring-offset-2 ring-purple ring-opacity-80' : '')}
+      className={
+        'relative rounded-lg' + (isActivePlayer ? ' ring-4 ring-offset-2 ring-purple ring-opacity-80 z-20' : '')
+      }
     >
       {userGroup === UserGroup.Moderator ? (
-        <div className="group transition-all duration-500 bg-white opacity-0 hover:opacity-95 bg-opacity-30 absolute top-0 left-0 w-full h-full z-30 flex space-x-2 items-center justify-center rounded-lg">
+        <div className="group transition-all duration-500 bg-white opacity-0 hover:opacity-95 bg-opacity-30 absolute top-0 left-0 w-full h-full z-20 flex space-x-2 items-center justify-center rounded-lg">
           <RoundButton
+            title="Drehberechtigung erteilen"
             active
             size={ROUND_BUTTON_SIZE.SEMI_SMALL}
             onClick={() => {
@@ -74,6 +77,7 @@ export const ChooseableParticipant = (props: ChooseableParticipantProps) => {
           {userGroup === UserGroup.Moderator && props.participant.sid !== localParticipant.sid ? (
             <>
               <RoundButton
+                title="Spieler stummschalten"
                 size={ROUND_BUTTON_SIZE.SEMI_SMALL}
                 onClick={() => muteParticipant(groupToken!, props.participant.sid)}
               >

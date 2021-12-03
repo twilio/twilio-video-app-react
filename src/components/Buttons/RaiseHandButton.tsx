@@ -74,7 +74,12 @@ export const RaiseHandButton = (props: IRaiseHandButtonProps) => {
   }, [groupToken, props.identityRef.current]);
 
   return (
-    <RoundButton active={handRaised} onClick={onClick} disabled={cooldown}>
+    <RoundButton
+      title="Anfrage senden, um dem Raum beizutreten"
+      active={handRaised}
+      onClick={onClick}
+      disabled={cooldown}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-6 w-6"
