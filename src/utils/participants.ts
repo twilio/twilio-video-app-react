@@ -26,8 +26,7 @@ export const sortedParticipantsByCategorie = (
   return {
     moderatorParitcipants,
     normalParticipants,
-    // participantCount: allParticipants.length,
-    participantCount: 8,
+    participantCount: allParticipants.length,
   };
 };
 

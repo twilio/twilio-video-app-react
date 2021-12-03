@@ -18,7 +18,7 @@ export const ScreenSwitchButton = () => {
 
   return (
     <RoundButton
-      title={`Zum ${activeScreen === ScreenType.VideoChat ? 'Videokonferenz' : 'Spielrad'} Bildschirm wechseln`}
+      title={`${activeScreen === ScreenType.VideoChat ? 'Zur Videokonferenz' : 'Zum Spielrad'} wechseln`}
       active
       size={ROUND_BUTTON_SIZE.LARGE}
       onClick={toggleGameScreen}

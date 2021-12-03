@@ -114,13 +114,6 @@ export const GridVideoChatLayout = () => {
                 />
               </div>
             ))}
-          <div className="bg-red w-full h-full" />
-          <div className="bg-red w-full h-full" />
-          <div className="bg-red w-full h-full" />
-          <div className="bg-red w-full h-full" />
-          <div className="bg-red w-full h-full" />
-          <div className="bg-red w-full h-full" />
-          <div className="bg-red w-full h-full" />
           {normalParticipants.map(participant => (
             <div key={participant.sid}>
               <ChooseableParticipant
