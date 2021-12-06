@@ -1,8 +1,5 @@
+import React, { MutableRefObject, useEffect, useState } from 'react';
 import useSessionContext from 'hooks/useSessionContext';
-import React from 'react';
-import { useEffect, useState } from 'react';
-import { MutableRefObject } from 'react-transition-group/node_modules/@types/react';
-import { UserGroup } from 'types';
 import { raiseHand, subscribeToSessionStore, unraiseHand, unsubscribeFromSessionStore } from 'utils/firebase/session';
 import { RoundButton } from './RoundButton';
 

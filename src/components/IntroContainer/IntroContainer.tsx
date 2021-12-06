@@ -1,8 +1,5 @@
 import React from 'react';
 import { makeStyles, Theme, Typography } from '@material-ui/core';
-import Swoosh from './swoosh';
-import VideoLogo from './VideoLogo';
-import TwilioLogo from './TwilioLogo';
 import { useAppState } from '../../state';
 import UserMenu from './UserMenu/UserMenu';
 import { useLocation } from 'react-router-dom';
@@ -106,12 +103,7 @@ const IntroContainer = (props: IntroContainerProps) => {
         <div className={classes.innerContainer}>
           <div className={classes.swooshContainer}>
             <div className={classes.logoContainer}>
-              {/* <VideoLogo /> */}
-              <img
-                src="https://images.squarespace-cdn.com/content/5f22903d49055f4257ab4f36/1600414044617-D9WYCVH8LODE8VC6MPMD/Logo_Demokratie_Plattform.png?format=1500w&content-type=image%2Fpng"
-                alt="Video"
-                width="200"
-              />
+              <img src="/assets/demokratisch.png" alt="DemokraTisch Logo" width="200" />
               <Typography variant="h6" className={classes.title}>
                 DemokraTisch
               </Typography>

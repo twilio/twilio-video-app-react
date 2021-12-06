@@ -7,29 +7,31 @@ let _game: ICarouselGame;
 let _baseSubscription: any;
 const _subscriptions: { [key: string]: any } = {};
 
-export const fetchQuestions = () =>
+export const fetchQuestions = (groupToken: string) =>
   new Promise<IQuestion[]>((resolve, reject) => {
     try {
       const questionsRef = db().collection('questions');
       const categoriesRef = db().collection('categories');
 
-      Promise.all([questionsRef.get(), categoriesRef.get()]).then(([questionDocs, categoryDocs]) => {
-        let allQuestions: IQuestion[] = [];
-        questionDocs.forEach((doc: any) => {
-          const question = doc.data() as IQuestion;
-          const category = categoryDocs.docs.find(c => c.id === question.catId);
-          question.color = category !== undefined ? (category.data() as ICategory).color : DEFAULT_QUESTION_COLOR;
+      Promise.all([questionsRef.get(), categoriesRef.get(), fetchCarouselGame(groupToken)]).then(
+        ([questionDocs, categoryDocs, game]) => {
+          let allQuestions: IQuestion[] = [];
+          questionDocs.forEach((doc: any) => {
+            const question = doc.data() as IQuestion;
+            const category = categoryDocs.docs.find(c => c.id === question.catId);
+            question.color = category !== undefined ? (category.data() as ICategory).color : DEFAULT_QUESTION_COLOR;
 
-          if (_game && _game.categoryIds && _game.categoryIds.length > 0) {
-            if (_game.categoryIds.includes(question.catId)) {
+            if (game && game.categoryIds && game.categoryIds.length > 0) {
+              if (game.categoryIds.includes(question.catId)) {
+                allQuestions.push(question);
+              }
+            } else {
               allQuestions.push(question);
             }
-          } else {
-            allQuestions.push(question);
-          }
-        });
-        resolve(allQuestions);
-      });
+          });
+          resolve(allQuestions);
+        }
+      );
     } catch (error) {
       reject(error);
     }
