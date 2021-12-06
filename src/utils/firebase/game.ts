@@ -19,7 +19,14 @@ export const fetchQuestions = () =>
           const question = doc.data() as IQuestion;
           const category = categoryDocs.docs.find(c => c.id === question.catId);
           question.color = category !== undefined ? (category.data() as ICategory).color : DEFAULT_QUESTION_COLOR;
-          allQuestions.push(question);
+
+          if (_game && _game.categoryIds && _game.categoryIds.length > 0) {
+            if (_game.categoryIds.includes(question.catId)) {
+              allQuestions.push(question);
+            }
+          } else {
+            allQuestions.push(question);
+          }
         });
         resolve(allQuestions);
       });
@@ -148,6 +155,7 @@ const fillWithDefaultValues = (game?: ICarouselGame) => {
   filled.currentSpinCount = game?.currentSpinCount ?? 0;
   filled.playerRoundCount = game?.playerRoundCount ?? {};
   filled.seed = game?.seed ?? 0;
+  filled.categoryIds = game?.categoryIds ?? [];
 
   return filled;
 };
