@@ -88,7 +88,7 @@ export default function PreJoinScreens(props: { onReady?: (name: string) => void
     } else if (userGroup === UserGroup.StreamServerTranslated) {
       setName(UserGroup.StreamServerTranslated + IDENTITY_SPLITTER + Date.now());
     } else if (userGroup === UserGroup.Translator) {
-      setName(UserGroup.Translator + IDENTITY_SPLITTER + Date.now());
+      setName(UserGroup.Translator);
       setStep(Steps.deviceSelectionStep);
     }
   }, [userGroup]);

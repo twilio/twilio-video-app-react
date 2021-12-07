@@ -18,8 +18,8 @@ export const SessionInfo = () => {
   return (
     <div className="flex flex-col text-dark-blue space-y-3 items-end">
       <div className="flex items-center space-x-2 text-lg font-medium">
-        <h1>{resources.title}</h1>
-        <span>·</span>
+        {/* <h1>{resources.title}</h1>
+        <span>·</span> */}
         <p>
           {start && end
             ? td(start.getHours()) +
