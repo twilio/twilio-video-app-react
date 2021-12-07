@@ -7,22 +7,31 @@ let _game: ICarouselGame;
 let _baseSubscription: any;
 const _subscriptions: { [key: string]: any } = {};
 
-export const fetchQuestions = () =>
+export const fetchQuestions = (groupToken: string) =>
   new Promise<IQuestion[]>((resolve, reject) => {
     try {
       const questionsRef = db().collection('questions');
       const categoriesRef = db().collection('categories');
 
-      Promise.all([questionsRef.get(), categoriesRef.get()]).then(([questionDocs, categoryDocs]) => {
-        let allQuestions: IQuestion[] = [];
-        questionDocs.forEach((doc: any) => {
-          const question = doc.data() as IQuestion;
-          const category = categoryDocs.docs.find(c => c.id === question.catId);
-          question.color = category !== undefined ? (category.data() as ICategory).color : DEFAULT_QUESTION_COLOR;
-          allQuestions.push(question);
-        });
-        resolve(allQuestions);
-      });
+      Promise.all([questionsRef.get(), categoriesRef.get(), fetchCarouselGame(groupToken)]).then(
+        ([questionDocs, categoryDocs, game]) => {
+          let allQuestions: IQuestion[] = [];
+          questionDocs.forEach((doc: any) => {
+            const question = doc.data() as IQuestion;
+            const category = categoryDocs.docs.find(c => c.id === question.catId);
+            question.color = category !== undefined ? (category.data() as ICategory).color : DEFAULT_QUESTION_COLOR;
+
+            if (game && game.categoryIds && game.categoryIds.length > 0) {
+              if (game.categoryIds.includes(question.catId)) {
+                allQuestions.push(question);
+              }
+            } else {
+              allQuestions.push(question);
+            }
+          });
+          resolve(allQuestions);
+        }
+      );
     } catch (error) {
       reject(error);
     }
@@ -148,6 +157,7 @@ const fillWithDefaultValues = (game?: ICarouselGame) => {
   filled.currentSpinCount = game?.currentSpinCount ?? 0;
   filled.playerRoundCount = game?.playerRoundCount ?? {};
   filled.seed = game?.seed ?? 0;
+  filled.categoryIds = game?.categoryIds ?? [];
 
   return filled;
 };

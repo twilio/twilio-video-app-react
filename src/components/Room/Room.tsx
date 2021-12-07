@@ -1,16 +1,14 @@
 import React from 'react';
 import ChatWindow from '../ChatWindow/ChatWindow';
-import BackgroundSelectionDialog from '../BackgroundSelectionDialog/BackgroundSelectionDialog';
 import useSessionContext from 'hooks/useSessionContext';
 import { ScreenType, UserGroup } from 'types';
 import { GridVideoChatLayout } from 'components/Layouts/GridVideoChatLayout';
 import { CarouselGameLayout } from 'components/Layouts/CarouselGameLayout';
-import { AdminWindow } from 'components/AdminWindow';
 
 const PoweredByBar = () => (
   <div className="fixed bottom-2 px-2 z-0 w-full flex items-center justify-between h-12 lg:h-20">
-    <img src="/assets/artikel1.png" className="h-full" />
-    <img src="/assets/demokratie-plattform.png" className="h-full" />
+    <img src="/assets/artikel1.png" alt="Artikel1 Logo" className="h-full" />
+    <img src="/assets/demokratisch.png" alt="DemokraTisch Logo" className="h-full" />
   </div>
 );
 

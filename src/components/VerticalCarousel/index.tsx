@@ -254,6 +254,7 @@ const VerticalCarousel = ({ questions }: { questions: IQuestion[] }) => {
                     color: item.color,
                     opacity: isActive ? 1 : 0.6,
                   }}
+                  className="text-lg"
                 >
                   {item.category}
                 </p>

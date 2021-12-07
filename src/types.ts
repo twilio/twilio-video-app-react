@@ -100,6 +100,7 @@ export interface ICarouselGame {
   seed: number;
   currentSpinCount: number;
   playerRoundCount?: { [key: string]: number };
+  categoryIds: string[];
 }
 
 export const DEFAULT_QUESTION_COLOR = '#f00';
