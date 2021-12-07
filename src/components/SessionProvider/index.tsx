@@ -90,8 +90,11 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
     setEndDate(prev => updateDate(prev, store.data.endDate));
 
     if (store.group === UserGroup.Audience) {
-      setStreamId(store.data.streamId);
+      setStreamId(store.data.streamIds?.original);
       setRoomSid(store.data.roomSid);
+    } else if (store.group === UserGroup.AudienceTranslated) {
+      setStreamId(store.data.streamIds?.translated);
+      setRoomId(store.data.roomId);
     }
   };
 

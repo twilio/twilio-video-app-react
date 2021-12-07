@@ -5,7 +5,7 @@ import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useS
 // import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 import useSessionContext from 'hooks/useSessionContext';
 import { ChooseableParticipant, ChooseableParticipantProps } from 'components/ChooseableParticipant';
-import { nameFromIdentity, sortedParticipantsByCategorie } from 'utils/participants';
+import { nameFromIdentity, categorizeParticipants } from 'utils/participants';
 import { subscribeToSessionStore, unsubscribeFromSessionStore } from 'utils/firebase/session';
 
 const SmallParticipant = (props: ChooseableParticipantProps) => (
@@ -24,10 +24,10 @@ export default function ParticipantList() {
   const [moderators, setModerators] = useState<string[]>([]);
   const { groupToken } = useSessionContext();
 
-  const { moderatorParitcipants, normalParticipants } = sortedParticipantsByCategorie(
-    moderators,
+  const { moderatorParitcipants, normalParticipants } = categorizeParticipants(
+    participants,
     localParticipant,
-    participants
+    moderators
   );
 
   useEffect(() => {

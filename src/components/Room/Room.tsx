@@ -4,6 +4,9 @@ import useSessionContext from 'hooks/useSessionContext';
 import { ScreenType, UserGroup } from 'types';
 import { GridVideoChatLayout } from 'components/Layouts/GridVideoChatLayout';
 import { CarouselGameLayout } from 'components/Layouts/CarouselGameLayout';
+import useParticipants from 'hooks/useParticipants/useParticipants';
+import { categorizeParticipants } from 'utils/participants';
+import ParticipantTracks from 'components/ParticipantTracks/ParticipantTracks';
 
 const PoweredByBar = () => (
   <div className="fixed bottom-2 px-2 z-0 w-full flex items-center justify-between h-12 lg:h-20">
@@ -14,6 +17,8 @@ const PoweredByBar = () => (
 
 export default function Room() {
   const { activeScreen, userGroup } = useSessionContext();
+  const participants = useParticipants();
+  const { translatorParticipant } = categorizeParticipants(participants);
 
   const CurrentScreen = () => {
     if (activeScreen === ScreenType.Game) {
@@ -26,15 +31,28 @@ export default function Room() {
   };
 
   return (
-    <div className="flex flex-col h-screen">
-      <div className="flex-grow flex" style={{ paddingBottom: userGroup === UserGroup.StreamServer ? '2rem' : '8rem' }}>
-        <ChatWindow />
-        <div className="px-5 container mx-auto lg:px-32">
-          <CurrentScreen />
+    <>
+      {userGroup === UserGroup.StreamServerTranslated && translatorParticipant ? (
+        <div className="fixed top-0 h-0 w-0">
+          <ParticipantTracks participant={translatorParticipant} audioOnly />
         </div>
-        <PoweredByBar />
+      ) : null}
+      <div className="flex flex-col h-screen">
+        <div
+          className="flex-grow flex"
+          style={{
+            paddingBottom:
+              userGroup === UserGroup.StreamServer || userGroup === UserGroup.StreamServerTranslated ? '2rem' : '8rem',
+          }}
+        >
+          <ChatWindow />
+          <div className="px-5 container mx-auto lg:px-32">
+            <CurrentScreen />
+          </div>
+          <PoweredByBar />
+        </div>
+        {/* <BackgroundSelectionDialog /> */}
       </div>
-      {/* <BackgroundSelectionDialog /> */}
-    </div>
+    </>
   );
 }

@@ -52,6 +52,9 @@ export enum UserGroup {
   Moderator = 'MODERATOR',
   Audience = 'AUDIENCE',
   StreamServer = 'STREAM_SERVER',
+  Translator = 'TRANSLATOR',
+  StreamServerTranslated = 'STREAM_SERVER_TRANSLATED',
+  AudienceTranslated = 'AUDIENCE_TRANSLATED',
 }
 
 export interface ISessionResources {
@@ -71,7 +74,10 @@ export interface ISession {
   endDate?: firestore.Timestamp;
   hasEnded?: boolean;
   activeScreen: ScreenType;
-  streamId?: string;
+  streamIds?: {
+    original?: string;
+    translated?: string;
+  };
   roomSid?: string;
 
   //user groups

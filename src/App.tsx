@@ -70,7 +70,7 @@ export default function App() {
     );
   }
 
-  if (userGroup == UserGroup.Audience) {
+  if (userGroup === UserGroup.Audience || userGroup === UserGroup.AudienceTranslated) {
     return <AudienceLayout />;
   }
 

@@ -3,6 +3,9 @@ import { Participant, Track } from 'twilio-video';
 import Publication from '../Publication/Publication';
 import usePublications from '../../hooks/usePublications/usePublications';
 import { useEffect } from 'react';
+import useSessionContext from 'hooks/useSessionContext';
+import { UserGroup } from 'types';
+import { nameFromIdentity } from 'utils/participants';
 
 interface ParticipantTracksProps {
   participant: Participant;
@@ -11,6 +14,7 @@ interface ParticipantTracksProps {
   videoPriority?: Track.Priority | null;
   isLocalParticipant?: boolean;
   isActivePlayer?: boolean;
+  audioOnly?: boolean;
 }
 
 /*
@@ -28,18 +32,33 @@ export default function ParticipantTracks({
   videoPriority,
   isLocalParticipant,
   isActivePlayer,
+  audioOnly,
 }: ParticipantTracksProps) {
   const publications = usePublications(participant);
+  const { userGroup } = useSessionContext();
 
   let filteredPublications;
+  filteredPublications = publications.filter(p => {
+    if (p.track?.kind === 'audio') {
+      const name = nameFromIdentity(participant.identity);
+      if (userGroup === UserGroup.StreamServerTranslated && name !== UserGroup.Translator) {
+        return false;
+      }
+    }
+    return true;
+  });
 
-  if (enableScreenShare && publications.some(p => p.trackName.includes('screen'))) {
+  if (audioOnly) {
+    filteredPublications = filteredPublications.filter(p => p.track?.kind === 'audio');
+  }
+
+  if (enableScreenShare && filteredPublications.some(p => p.trackName.includes('screen'))) {
     // When displaying a screenshare track is allowed, and a screen share track exists,
     // remove all video tracks without the name 'screen'.
-    filteredPublications = publications.filter(p => p.trackName.includes('screen') || p.kind !== 'video');
+    filteredPublications = filteredPublications.filter(p => p.trackName.includes('screen') || p.kind !== 'video');
   } else {
     // Else, remove all screenshare tracks
-    filteredPublications = publications.filter(p => !p.trackName.includes('screen'));
+    filteredPublications = filteredPublications.filter(p => !p.trackName.includes('screen'));
   }
 
   return (

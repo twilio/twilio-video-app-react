@@ -72,7 +72,7 @@ export default function MenuBar() {
   const isReconnecting = roomState === 'reconnecting';
   const { userGroup } = useSessionContext();
 
-  if (userGroup === UserGroup.StreamServer) {
+  if (userGroup === UserGroup.StreamServer || userGroup === UserGroup.StreamServerTranslated) {
     return null;
   }
 

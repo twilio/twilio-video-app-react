@@ -3,7 +3,7 @@ import useVideoContext from 'hooks/useVideoContext/useVideoContext';
 import React, { useEffect, useState } from 'react';
 import useSessionContext from 'hooks/useSessionContext';
 import { ChooseableParticipant } from 'components/ChooseableParticipant';
-import { sortedParticipantsByCategorie } from 'utils/participants';
+import { categorizeParticipants } from 'utils/participants';
 import { RevealedCard } from 'components/RevealedCard';
 import { SessionInfo } from 'components/SessionInfo';
 import { subscribeToSessionStore, unsubscribeFromSessionStore } from 'utils/firebase/session';
@@ -36,10 +36,10 @@ export const GridVideoChatLayout = () => {
     };
   }, []);
 
-  const { moderatorParitcipants, normalParticipants, participantCount } = sortedParticipantsByCategorie(
-    moderators,
+  const { moderatorParitcipants, normalParticipants, speakerParticipants } = categorizeParticipants(
+    participants,
     localParticipant,
-    participants
+    moderators
   );
 
   const ModeratorLetterInfo = (props: { participant: { identity: string } }) => (
@@ -89,7 +89,7 @@ export const GridVideoChatLayout = () => {
       <div className="h-5 lg:h-10" />
       <div className="w-full aspect-w-16 aspect-h-9">
         <div className="grid grid-cols-4 grid-rows-4 gap-2 justify-center items-center">
-          <div className={participantCount < 8 ? 'col-span-3 row-span-3' : 'col-span-2 row-span-2'}>
+          <div className={speakerParticipants.length < 8 ? 'col-span-3 row-span-3' : 'col-span-2 row-span-2'}>
             {moderatorParitcipants.length >= 1 ? (
               <ChooseableParticipant
                 participant={moderatorParitcipants[0]}

@@ -54,7 +54,7 @@ export default function PreJoinScreens(props: { onReady?: (name: string) => void
       // window.history.replaceState(null, '', window.encodeURI(`/room/${roomName}${window.location.search || ''}`));
     }
 
-    if (userGroup === UserGroup.Audience) {
+    if (userGroup === UserGroup.Audience || userGroup === UserGroup.AudienceTranslated) {
       handleJoin();
     } else {
       setStep(Steps.deviceSelectionStep);
@@ -70,7 +70,7 @@ export default function PreJoinScreens(props: { onReady?: (name: string) => void
 
     generateIdentity(name).then(identity => {
       getToken(identity, roomId).then(({ token }) => {
-        if (userGroup !== UserGroup.Audience) {
+        if (userGroup !== UserGroup.Audience && userGroup !== UserGroup.AudienceTranslated) {
           videoConnect(token).then();
         }
         if (process.env.REACT_APP_DISABLE_TWILIO_CONVERSATIONS !== 'true' && userGroup !== UserGroup.StreamServer) {
@@ -85,6 +85,11 @@ export default function PreJoinScreens(props: { onReady?: (name: string) => void
   useEffect(() => {
     if (userGroup === UserGroup.StreamServer) {
       setName(UserGroup.StreamServer + IDENTITY_SPLITTER + Date.now());
+    } else if (userGroup === UserGroup.StreamServerTranslated) {
+      setName(UserGroup.StreamServerTranslated + IDENTITY_SPLITTER + Date.now());
+    } else if (userGroup === UserGroup.Translator) {
+      setName(UserGroup.Translator + IDENTITY_SPLITTER + Date.now());
+      setStep(Steps.deviceSelectionStep);
     }
   }, [userGroup]);
 
@@ -99,13 +104,17 @@ export default function PreJoinScreens(props: { onReady?: (name: string) => void
       return;
     }
 
-    if (userGroup === UserGroup.StreamServer && roomId) {
+    if ((userGroup === UserGroup.StreamServer || userGroup === UserGroup.StreamServerTranslated) && roomId) {
       handleJoin();
     }
   }, [userGroup, roomId]);
 
   return (
-    <div className={`w-full h-full ${userGroup === UserGroup.StreamServer ? 'invisible' : ''}`}>
+    <div
+      className={`w-full h-full ${
+        userGroup === UserGroup.StreamServer || userGroup === UserGroup.StreamServerTranslated ? 'invisible' : ''
+      }`}
+    >
       <PopupScreen>
         <MediaErrorSnackbar error={mediaError} />
         {step === Steps.roomNameStep && <RoomNameScreen name={name} setName={setName} handleSubmit={handleSubmit} />}

@@ -21,7 +21,7 @@ function ErrorDialog({ dismissError, error }: PropsWithChildren<ErrorDialogProps
   const { userGroup } = useSessionContext();
 
   useEffect(() => {
-    if (userGroup == UserGroup.StreamServer) {
+    if (userGroup == UserGroup.StreamServer || userGroup === UserGroup.StreamServerTranslated) {
       setTimeout(() => {
         dismissError();
       }, 5000);
