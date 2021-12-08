@@ -1,6 +1,6 @@
 import useParticipants from 'hooks/useParticipants/useParticipants';
 import useVideoContext from 'hooks/useVideoContext/useVideoContext';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import useSessionContext from 'hooks/useSessionContext';
 import { ChooseableParticipant } from 'components/ChooseableParticipant';
 import { categorizeParticipants } from 'utils/participants';
@@ -8,6 +8,28 @@ import { RevealedCard } from 'components/RevealedCard';
 import { SessionInfo } from 'components/SessionInfo';
 import { subscribeToSessionStore, unsubscribeFromSessionStore } from 'utils/firebase/session';
 import { nameFromIdentity } from 'utils/participants';
+import cn from 'classnames';
+
+const LetterInfo = (props: { participant: { identity: string }; isModerator?: boolean }) => {
+  const name = nameFromIdentity(props.participant.identity);
+
+  return (
+    <div className="space-y-1 w-24 flex flex-col items-center">
+      <span
+        className={cn(
+          'uppercase rounded-full text-xl font-medium w-12 h-12 text-white flex justify-center items-center',
+          {
+            'bg-purple': !props.isModerator,
+            'bg-orange': props.isModerator,
+          }
+        )}
+      >
+        {name.charAt(0).toUpperCase()}
+      </span>
+      <span className="break-words w-full text-center">{name}</span>
+    </div>
+  );
+};
 
 export const GridVideoChatLayout = () => {
   const { room } = useVideoContext();
@@ -42,54 +64,46 @@ export const GridVideoChatLayout = () => {
     moderators
   );
 
-  const ModeratorLetterInfo = (props: { participant: { identity: string } }) => (
-    <div className="flex flex-col justify-center items-center space-y-1">
-      <span className="text-xl font-medium bg-orange rounded-full p-4 w-12 h-12 text-white flex justify-center items-center">
-        {nameFromIdentity(props.participant.identity)
-          .charAt(0)
-          .toUpperCase()}
-      </span>
-      <div className="flex flex-col items-center">
-        <span className="font-semibold">{nameFromIdentity(props.participant.identity)}</span>
-        {/* <span className="font-light">Moderation</span> */}
-      </div>
-    </div>
-  );
-
-  const ParticipantLetterInfo = (props: { participant: { identity: string } }) => (
-    <div className="flex flex-col items-center space-y-1">
-      <span className="uppercase rounded-full text-xl bg-purple font-medium w-12 h-12 text-white flex justify-center items-center">
-        {nameFromIdentity(props.participant.identity)
-          .charAt(0)
-          .toUpperCase()}
-      </span>
-      <span className="">{nameFromIdentity(props.participant.identity)}</span>
-    </div>
-  );
-
   return (
     <div className="flex flex-col">
       <div className="flex space-x-6 pb-5 pt-10 items-center justify-between">
-        <div className="flex space-x-10 items-center">
-          <img src={resources.hostLogoSrc} className="h-12" />
-          <div className="flex space-x-6 items-start">
-            <div className="flex items-center space-x-8 pr-10">
+        <div className="flex space-x-10 w-full items-center pr-2">
+          <div className="flex flex-col space-y-5">
+            <img src={resources.hostLogoSrc} className="h-12" />
+          </div>
+          <div className="flex space-x-6 items-start overflow-y-auto flex-grow">
+            <div className="flex items-start space-x-8 pr-10">
               {moderatorParitcipants.map(participant => (
-                <ModeratorLetterInfo participant={participant} key={participant.sid} />
+                <>
+                  <LetterInfo isModerator participant={participant} key={participant.sid} />
+                </>
               ))}
               {normalParticipants.map(participant => (
-                <ParticipantLetterInfo participant={participant} key={participant.sid} />
+                <LetterInfo participant={participant} key={participant.sid} />
               ))}
             </div>
           </div>
+          <SessionInfo />
         </div>
-
-        <SessionInfo />
       </div>
-      <div className="h-5 lg:h-10" />
+      <div className="h-5" />
       <div className="w-full aspect-w-16 aspect-h-9">
         <div className="grid grid-cols-4 grid-rows-4 gap-2 justify-center items-center">
-          <div className={speakerParticipants.length < 8 ? 'col-span-3 row-span-3' : 'col-span-2 row-span-2'}>
+          {normalParticipants.map(participant => (
+            <div key={participant.sid}>
+              <ChooseableParticipant
+                participant={participant}
+                isLocalParticipant={localParticipant.sid === participant.sid}
+              />
+            </div>
+          ))}
+          <div
+            className={
+              speakerParticipants.length < 8
+                ? 'col-span-3 row-span-3 col-start-1 row-start-1'
+                : 'col-start-2 col-span-2 row-span-2'
+            }
+          >
             {moderatorParitcipants.length >= 1 ? (
               <ChooseableParticipant
                 participant={moderatorParitcipants[0]}
@@ -102,26 +116,6 @@ export const GridVideoChatLayout = () => {
             <RevealedCard />
           </div>
           {/* <Participant isLocalParticipant participant={localParticipant} /> */}
-          {moderatorParitcipants
-            .filter((part, i) => i > 0)
-            .map(participant => (
-              <div key={participant.sid}>
-                <ChooseableParticipant
-                  participant={participant}
-                  key={participant.sid}
-                  isLocalParticipant={localParticipant.sid === participant.sid}
-                  isModerator
-                />
-              </div>
-            ))}
-          {normalParticipants.map(participant => (
-            <div key={participant.sid}>
-              <ChooseableParticipant
-                participant={participant}
-                isLocalParticipant={localParticipant.sid === participant.sid}
-              />
-            </div>
-          ))}
         </div>
       </div>
     </div>

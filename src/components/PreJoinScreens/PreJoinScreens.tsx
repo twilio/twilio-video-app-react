@@ -7,11 +7,12 @@ import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import useSessionContext from 'hooks/useSessionContext';
 import { getUid } from 'utils/firebase/base';
 import { PopupScreen } from 'components/PopupScreen';
-import { LOCAL_STORAGE_KEY, UserGroup } from 'types';
 import { IDENTITY_SPLITTER } from 'utils/participants';
 import useChatContext from 'hooks/useChatContext/useChatContext';
 import { generateIdentity } from 'utils/participants';
 import { setRoomSid } from 'utils/firebase/session';
+import { UserGroup } from 'types/UserGroup';
+import { LOCAL_STORAGE_KEY } from 'types/LocalStorage';
 
 export enum Steps {
   roomNameStep,

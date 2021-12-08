@@ -1,11 +1,14 @@
 import { firestore } from 'firebase';
+import useLanguageContext from 'hooks/useLanguageContext';
 import useSessionContext from 'hooks/useSessionContext';
 import React, { useState } from 'react';
+import { LANGUAGE_CODE } from 'types/Language';
 
 const td = (x: number) => (x < 10 ? '0' + x : '' + x);
 
 export const SessionInfo = () => {
   const { startDate, endDate, resources } = useSessionContext();
+  const { langCode } = useLanguageContext();
   const [now, setNow] = useState(firestore.Timestamp.now().toMillis());
 
   const start = startDate?.toDate();
@@ -15,25 +18,23 @@ export const SessionInfo = () => {
     setNow(firestore.Timestamp.now().toMillis());
   }, 1000 * 60);
 
+  const localTimeString = (date: Date) => {
+    return date.toLocaleTimeString(langCode, { hour: 'numeric', minute: 'numeric' }).toLowerCase();
+  };
+
   return (
-    <div className="flex flex-col text-dark-blue space-y-3 items-end">
-      <div className="flex items-center space-x-2 text-lg font-medium">
+    <div className="flex flex-col text-dark-blue space-y-3 items-center w-48">
+      <div className="flex items-center space-x-2 text-base font-medium whitespace-nowrap">
         {/* <h1>{resources.title}</h1>
         <span>·</span> */}
         <p>
           {start && end
-            ? td(start.getHours()) +
-              ':' +
-              td(start.getMinutes()) +
-              ' bis ' +
-              td(end.getHours()) +
-              ':' +
-              td(end.getMinutes())
+            ? `${localTimeString(start)} ${langCode === LANGUAGE_CODE.de_DE ? 'bis' : 'till'} ${localTimeString(end)}`
             : null}
         </p>
       </div>
       {endDate && endDate.toMillis() > firestore.Timestamp.now().toMillis() ? (
-        <div className="flex items-center space-x-3 text-purple text-base">
+        <div className="flex items-center space-x-3 text-purple text-sm whitespace-nowrap">
           <img src="/assets/clock.svg" alt="Uhr Icon" />
 
           <p>

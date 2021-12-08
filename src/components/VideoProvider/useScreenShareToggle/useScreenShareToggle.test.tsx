@@ -1,7 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import useScreenShareToggle from './useScreenShareToggle';
 import { EventEmitter } from 'events';
-import { ErrorCallback } from '../../../types';
+import { ErrorCallback } from '../../../types/types';
 
 const mockLocalParticipant = new EventEmitter() as any;
 mockLocalParticipant.publishTrack = jest.fn(() => Promise.resolve('mockPublication'));

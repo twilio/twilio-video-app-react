@@ -3,7 +3,6 @@ import useVideoContext from 'hooks/useVideoContext/useVideoContext';
 import MicIcon from 'icons/MicIcon';
 import MicOffIcon from 'icons/MicOffIcon';
 import React, { useEffect, useState } from 'react';
-import { ScreenType, UserGroup } from 'types';
 import { setCurrentPlayer, subscribeToCarouselGame, unsubscribeFromCarouselGame } from 'utils/firebase/game';
 import { setActiveScreen } from 'utils/firebase/screen';
 import { muteParticipant } from 'utils/firebase/session';
@@ -11,6 +10,8 @@ import Participant, { ParticipantProps } from './Participant/Participant';
 import { ReactComponent as CarouselIcon } from '../assets/carousel.svg';
 import { RoundButton, ROUND_BUTTON_SIZE } from './Buttons/RoundButton';
 import { BanParticipantButton } from './Buttons/BanParticipantButton';
+import { UserGroup } from 'types/UserGroup';
+import { ScreenType } from 'types/ScreenType';
 
 export type ChooseableParticipantProps = ParticipantProps;
 

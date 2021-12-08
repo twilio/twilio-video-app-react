@@ -10,7 +10,7 @@ import { BrowserRouter as Router, Redirect, Switch } from 'react-router-dom';
 import ErrorDialog from './components/ErrorDialog/ErrorDialog';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import theme from './theme';
-import './types';
+import './types/types';
 import { ChatProvider } from './components/ChatProvider';
 import { VideoProvider } from './components/VideoProvider';
 import useConnectionOptions from './hooks/useConnectionOptions/useConnectionOptions';
@@ -19,26 +19,29 @@ import { SessionProvider } from './components/SessionProvider';
 import { SessionWrapper } from './components/SessionWrapper';
 import { GameProvider } from './components/GameProvider';
 import { RaisedHandsProvider } from 'components/AdminWindowProvider';
+import { LanguageProvider } from 'components/LanguageProvider';
 
 const VideoApp = () => {
   const { error, setError } = useAppState();
   const connectionOptions = useConnectionOptions();
 
   return (
-    <VideoProvider options={connectionOptions} onError={setError}>
-      <SessionProvider>
-        <SessionWrapper>
-          <GameProvider>
-            <ErrorDialog dismissError={() => setError(null)} error={error} />
-            <ChatProvider>
-              <RaisedHandsProvider>
-                <App />
-              </RaisedHandsProvider>
-            </ChatProvider>
-          </GameProvider>
-        </SessionWrapper>
-      </SessionProvider>
-    </VideoProvider>
+    <LanguageProvider>
+      <VideoProvider options={connectionOptions} onError={setError}>
+        <SessionProvider>
+          <SessionWrapper>
+            <GameProvider>
+              <ErrorDialog dismissError={() => setError(null)} error={error} />
+              <ChatProvider>
+                <RaisedHandsProvider>
+                  <App />
+                </RaisedHandsProvider>
+              </ChatProvider>
+            </GameProvider>
+          </SessionWrapper>
+        </SessionProvider>
+      </VideoProvider>
+    </LanguageProvider>
   );
 };
 

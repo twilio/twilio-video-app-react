@@ -1,6 +1,6 @@
 import useSessionContext from 'hooks/useSessionContext';
 import React, { createContext, ReactNode, useState, useEffect } from 'react';
-import { IQuestion } from 'types';
+import { IQuestion } from 'types/CarouselGame';
 import { fetchCarouselGame, fetchQuestions } from 'utils/firebase/game';
 
 type GameContext = {

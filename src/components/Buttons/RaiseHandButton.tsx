@@ -2,6 +2,8 @@ import React, { MutableRefObject, useEffect, useState } from 'react';
 import useSessionContext from 'hooks/useSessionContext';
 import { raiseHand, subscribeToSessionStore, unraiseHand, unsubscribeFromSessionStore } from 'utils/firebase/session';
 import { RoundButton } from './RoundButton';
+import useLanguageContext from 'hooks/useLanguageContext';
+import { LANGUAGE_CODE } from 'types/Language';
 
 interface IRaiseHandButtonProps {
   identityRef: MutableRefObject<string | undefined>;
@@ -9,6 +11,7 @@ interface IRaiseHandButtonProps {
 
 export const RaiseHandButton = (props: IRaiseHandButtonProps) => {
   const { groupToken } = useSessionContext();
+  const { langCode } = useLanguageContext();
   const [handRaised, setHandRaised] = useState(false);
   const [cooldown, setCooldown] = useState<boolean>(false);
   const [cooldownTimeout, setCooldownTimeout] = useState<NodeJS.Timeout>();
@@ -72,7 +75,11 @@ export const RaiseHandButton = (props: IRaiseHandButtonProps) => {
 
   return (
     <RoundButton
-      title="Anfrage senden, um dem Raum beizutreten"
+      title={
+        langCode === LANGUAGE_CODE.de_DE
+          ? 'Anfrage senden, um dem Raum beizutreten'
+          : 'Send request to join the discussion'
+      }
       active={handRaised}
       onClick={onClick}
       disabled={cooldown}

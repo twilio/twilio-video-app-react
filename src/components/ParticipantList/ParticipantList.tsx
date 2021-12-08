@@ -11,7 +11,9 @@ import { subscribeToSessionStore, unsubscribeFromSessionStore } from 'utils/fire
 const SmallParticipant = (props: ChooseableParticipantProps) => (
   <div className="w-40 relative flex flex-col">
     <ChooseableParticipant {...props} noName />
-    <span className="w-full text-center text-gray-700 mt-1">{nameFromIdentity(props.participant.identity)}</span>
+    <span className="w-full text-center text-gray-700 mt-1 break-words">
+      {nameFromIdentity(props.participant.identity)}
+    </span>
   </div>
 );
 
@@ -53,16 +55,32 @@ export default function ParticipantList() {
   }, []);
 
   return (
-    <div className="flex justify-center overflow-x-auto overflow-y-visible pr-5 pt-5 gap-x-5 bg-grayish pl-2">
+    <div className="flex overflow-x-auto pr-5 pt-5 gap-x-5 bg-grayish pl-2">
       {moderatorParitcipants.map((participant, i) => {
         return (
-          <SmallParticipant
-            key={participant.sid}
-            participant={participant}
-            isSelected={participant === selectedParticipant}
-            isModerator
-            isLocalParticipant={localParticipant.sid === participant.sid}
-          />
+          <>
+            <SmallParticipant
+              key={participant.sid}
+              participant={participant}
+              isSelected={participant === selectedParticipant}
+              isModerator
+              isLocalParticipant={localParticipant.sid === participant.sid}
+            />
+            <SmallParticipant
+              key={participant.sid}
+              participant={participant}
+              isSelected={participant === selectedParticipant}
+              isModerator
+              isLocalParticipant={localParticipant.sid === participant.sid}
+            />
+            <SmallParticipant
+              key={participant.sid}
+              participant={participant}
+              isSelected={participant === selectedParticipant}
+              isModerator
+              isLocalParticipant={localParticipant.sid === participant.sid}
+            />
+          </>
         );
       })}
       {normalParticipants.map(participant => {

@@ -1,6 +1,8 @@
 import React, { ChangeEvent, FormEvent } from 'react';
 import { Typography, makeStyles, Theme } from '@material-ui/core';
 import { useAppState } from '../../../state';
+import useLanguageContext from 'hooks/useLanguageContext';
+import { LANGUAGE_CODE } from 'types/Language';
 
 const useStyles = makeStyles((theme: Theme) => ({
   gutterBottom: {
@@ -36,6 +38,7 @@ interface RoomNameScreenProps {
 export default function RoomNameScreen({ setName, handleSubmit, name }: RoomNameScreenProps) {
   const classes = useStyles();
   const { user } = useAppState();
+  const { langCode } = useLanguageContext();
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -46,7 +49,7 @@ export default function RoomNameScreen({ setName, handleSubmit, name }: RoomName
   return (
     <>
       <Typography variant="h5" className={classes.gutterBottom}>
-        DemokraTisch beitreten
+        {`${langCode === LANGUAGE_CODE.de_DE ? 'DemokraTisch beitreten' : 'Join DemokraTisch'}`}
       </Typography>
       <form onSubmit={handleSubmit}>
         <div className={classes.inputContainer}>
@@ -58,6 +61,7 @@ export default function RoomNameScreen({ setName, handleSubmit, name }: RoomName
                 className="rounded-full border border-gray-500 px-3 py-1"
                 placeholder="Dein Name"
                 required
+                maxLength={30}
                 defaultValue={name}
               />
             </div>
@@ -65,7 +69,7 @@ export default function RoomNameScreen({ setName, handleSubmit, name }: RoomName
         </div>
         <div className="flex text-purple hover:underline justify-center">
           <button type="submit" className="font-medium">
-            Weiter
+            {`${langCode === LANGUAGE_CODE.de_DE ? 'Weiter' : 'Next'}`}
           </button>
         </div>
       </form>

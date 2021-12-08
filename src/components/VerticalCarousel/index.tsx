@@ -12,9 +12,8 @@ import {
 import useGameContext from 'hooks/useGameContext';
 import { RevealedCard } from 'components/RevealedCard';
 import { ISessionStatus } from 'components/SessionProvider';
-import { ICarouselGame, IQuestion } from 'types';
-import { unsubscribeFromSessionStore } from 'utils/firebase/session';
 import { RoundButton } from 'components/Buttons/RoundButton';
+import { ICarouselGame, IQuestion } from 'types/CarouselGame';
 
 const MAX_SPIN_COUNT = 3;
 
@@ -208,7 +207,7 @@ const VerticalCarousel = ({ questions }: { questions: IQuestion[] }) => {
             onClick={handleClick}
             disabled={!canSpin}
             invisible={!canSpin}
-            indicator={remainingSpins > 0 ? remainingSpins : undefined}
+            numberIndicator={remainingSpins > 0 ? remainingSpins : undefined}
           >
             <img src="/assets/random-card.svg" alt="Neue Kategorie" />
           </RoundButton>

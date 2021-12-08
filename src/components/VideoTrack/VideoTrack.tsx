@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { IVideoTrack } from '../../types';
+import { IVideoTrack } from 'types/types';
 import { styled } from '@material-ui/core/styles';
 import { Track } from 'twilio-video';
 import useMediaStreamTrack from '../../hooks/useMediaStreamTrack/useMediaStreamTrack';

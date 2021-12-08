@@ -1,6 +1,6 @@
 import useVideoContext from 'hooks/useVideoContext/useVideoContext';
 import React, { ReactNode, useEffect } from 'react';
-import { UserGroup } from 'types';
+import { UserGroup } from 'types/UserGroup';
 import { reactivateSession, startSession } from 'utils/firebase/session';
 import useSessionContext from '../hooks/useSessionContext';
 import { LoadingSpinner } from './LoadingSpinner';

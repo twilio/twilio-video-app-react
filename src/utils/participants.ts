@@ -1,5 +1,5 @@
 import { LocalParticipant, RemoteParticipant } from 'twilio-video';
-import { ISession, UserGroup } from 'types';
+import { UserGroup } from 'types/UserGroup';
 import { getUid } from './firebase/base';
 
 const identityComperator = (a: { identity: string }, b: { identity: string }) => a.identity.localeCompare(b.identity);

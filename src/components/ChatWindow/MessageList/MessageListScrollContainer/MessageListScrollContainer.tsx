@@ -141,7 +141,7 @@ export class MessageListScrollContainer extends React.Component<
     return (
       <div className={classes.outerContainer}>
         <div className={classes.innerScrollContainer} ref={this.chatThreadRef} data-cy-message-list-inner-scroll>
-          <div className={classes.messageListContainer}>
+          <div className="flex flex-col w-full">
             {this.props.children}
             <Button
               className={clsx(classes.button, { [classes.showButton]: this.state.showButton })}

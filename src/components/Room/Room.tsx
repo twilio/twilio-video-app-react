@@ -1,12 +1,13 @@
 import React from 'react';
 import ChatWindow from '../ChatWindow/ChatWindow';
 import useSessionContext from 'hooks/useSessionContext';
-import { ScreenType, UserGroup } from 'types';
 import { GridVideoChatLayout } from 'components/Layouts/GridVideoChatLayout';
 import { CarouselGameLayout } from 'components/Layouts/CarouselGameLayout';
 import useParticipants from 'hooks/useParticipants/useParticipants';
 import { categorizeParticipants } from 'utils/participants';
 import ParticipantTracks from 'components/ParticipantTracks/ParticipantTracks';
+import { ScreenType } from 'types/ScreenType';
+import { UserGroup } from 'types/UserGroup';
 
 const PoweredByBar = () => (
   <div className="fixed bottom-2 px-2 z-0 w-full flex items-center justify-between h-12 lg:h-20">

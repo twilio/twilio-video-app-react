@@ -1,4 +1,4 @@
-import { ScreenType } from 'types';
+import { ScreenType } from 'types/ScreenType';
 import { db } from './base';
 import { getSessionStore } from './session';
 

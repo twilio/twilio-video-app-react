@@ -1,0 +1,3 @@
+export enum LOCAL_STORAGE_KEY {
+  USER_NAME = 'USER_NAME',
+}

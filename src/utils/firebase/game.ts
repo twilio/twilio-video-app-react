@@ -1,7 +1,7 @@
-import { DEFAULT_QUESTION_COLOR, ICarouselGame, ICategory, IQuestion } from 'types';
 import { db } from './base';
 import { firestore } from 'firebase';
 import { getSessionStore } from './session';
+import { DEFAULT_QUESTION_COLOR, ICarouselGame, ICategory, IQuestion } from 'types/CarouselGame';
 
 let _game: ICarouselGame;
 let _baseSubscription: any;

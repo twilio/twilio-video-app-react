@@ -6,7 +6,7 @@ import React from 'react';
 export const CarouselGameLayout = () => {
   return (
     <div className="flex flex-col container mx-auto h-full space-y-10 pt-5">
-      <div className="flex justify-between w-full items-center">
+      <div className="flex justify-between w-full items-center pr-2 space-x-10">
         <ParticipantList />
         <SessionInfo />
       </div>

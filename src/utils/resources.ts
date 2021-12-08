@@ -1,4 +1,4 @@
-import { ISessionResources } from 'types';
+import { ISessionResources } from 'types/Session';
 
 const defaults: ISessionResources = {
   title: 'Digitaler DemokraTisch',

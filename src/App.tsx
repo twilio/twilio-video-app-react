@@ -10,7 +10,7 @@ import Room from './components/Room/Room';
 import './index.css';
 import useVideoContext from 'hooks/useVideoContext/useVideoContext';
 import useSessionContext from 'hooks/useSessionContext';
-import { UserGroup } from 'types';
+import { UserGroup } from 'types/UserGroup';
 import { addSessionModerator, subscribeToSessionStore } from 'utils/firebase/session';
 import useRoomState from 'hooks/useRoomState/useRoomState';
 import { PopupScreen } from './components/PopupScreen';
