@@ -9,6 +9,7 @@ import { SessionInfo } from 'components/SessionInfo';
 import { subscribeToSessionStore, unsubscribeFromSessionStore } from 'utils/firebase/session';
 import { nameFromIdentity } from 'utils/participants';
 import cn from 'classnames';
+import { UserGroup } from 'types/UserGroup';
 
 const LetterInfo = (props: { participant: { identity: string }; isModerator?: boolean }) => {
   const name = nameFromIdentity(props.participant.identity);
@@ -35,7 +36,7 @@ export const GridVideoChatLayout = () => {
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
   const participants = useParticipants();
-  const { groupToken, resources } = useSessionContext();
+  const { groupToken, resources, userGroup } = useSessionContext();
   const [moderators, setModerators] = useState<string[]>([]);
 
   useEffect(() => {
@@ -66,7 +67,16 @@ export const GridVideoChatLayout = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="flex space-x-6 pb-5 pt-10 items-center justify-between">
+      {userGroup === UserGroup.StreamServer || userGroup === UserGroup.StreamServerTranslated ? (
+        <div className="h-10" />
+      ) : null}
+      <div className="pt-5">
+        <SessionInfo />
+      </div>
+      {userGroup === UserGroup.StreamServer || userGroup === UserGroup.StreamServerTranslated ? (
+        <div className="h-5" />
+      ) : null}
+      <div className="flex space-x-6 pb-5 pt-5 items-center justify-between">
         <div className="flex space-x-10 w-full items-center pr-2">
           <div className="flex flex-col space-y-5">
             <img src={resources.hostLogoSrc} className="h-12" />
@@ -83,10 +93,12 @@ export const GridVideoChatLayout = () => {
               ))}
             </div>
           </div>
-          <SessionInfo />
         </div>
       </div>
       <div className="h-5" />
+      {userGroup === UserGroup.StreamServer || userGroup === UserGroup.StreamServerTranslated ? (
+        <div className="h-5" />
+      ) : null}
       <div className="w-full aspect-w-16 aspect-h-9">
         <div className="grid grid-cols-4 grid-rows-4 gap-2 justify-center items-center">
           {normalParticipants.map(participant => (

@@ -23,13 +23,13 @@ export const SessionInfo = () => {
   };
 
   return (
-    <div className="flex flex-col text-dark-blue space-y-3 items-center w-48">
+    <div className="flex text-dark-blue items-center w-full justify-center space-x-10">
       <div className="flex items-center space-x-2 text-base font-medium whitespace-nowrap">
         {/* <h1>{resources.title}</h1>
         <span>·</span> */}
         <p>
           {start && end
-            ? `${localTimeString(start)} ${langCode === LANGUAGE_CODE.de_DE ? 'bis' : 'till'} ${localTimeString(end)}`
+            ? `${localTimeString(start)} ${langCode === LANGUAGE_CODE.de_DE ? 'bis' : 'until'} ${localTimeString(end)}`
             : null}
         </p>
       </div>
