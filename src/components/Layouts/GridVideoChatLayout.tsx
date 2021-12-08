@@ -101,7 +101,7 @@ export const GridVideoChatLayout = () => {
             className={
               speakerParticipants.length < 8
                 ? 'col-span-3 row-span-3 col-start-1 row-start-1'
-                : 'col-start-2 col-span-2 row-span-2'
+                : 'col-start-2 row-start-1 col-span-2 row-span-2'
             }
           >
             {moderatorParitcipants.length >= 1 ? (
