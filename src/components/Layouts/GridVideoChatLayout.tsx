@@ -69,10 +69,12 @@ export const GridVideoChatLayout = () => {
     <div className="flex flex-col">
       {userGroup === UserGroup.StreamServer || userGroup === UserGroup.StreamServerTranslated ? (
         <div className="h-10" />
-      ) : null}
-      <div className="pt-5">
+      ) : (
+        <div className="pt-5" />
+      )}
+      {/* <div className="pt-5">
         <SessionInfo />
-      </div>
+      </div> */}
       {userGroup === UserGroup.StreamServer || userGroup === UserGroup.StreamServerTranslated ? (
         <div className="h-5" />
       ) : null}
