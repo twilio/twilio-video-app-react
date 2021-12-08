@@ -36,10 +36,9 @@ export const SessionInfo = () => {
       {endDate && endDate.toMillis() > firestore.Timestamp.now().toMillis() ? (
         <div className="flex items-center space-x-3 text-purple text-sm whitespace-nowrap">
           <img src="/assets/clock.svg" alt="Uhr Icon" />
-
           <p>
-            {endDate ? Math.round((endDate.toMillis() - now) / 1000 / 60) : null}
-            min verbleiben
+            {endDate ? Math.round((endDate.toMillis() - now) / 1000 / 60) : null} min{' '}
+            {langCode === LANGUAGE_CODE.de_DE ? 'verbleiben' : 'remaining'}
           </p>
         </div>
       ) : null}

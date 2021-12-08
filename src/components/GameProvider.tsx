@@ -26,7 +26,7 @@ export const GameProvider = React.memo(({ children }: GameProviderProps) => {
       setFetched(true);
       Promise.all([fetchCarouselGame(groupToken), fetchQuestions(groupToken)]).then(([game, questions]) => {
         const active = game.activeCard;
-        if (active >= 0 && active < questions.length) {
+        if (active !== undefined && active >= 0 && active < questions.length) {
           setRevealedCard(questions[active]);
         }
         setQuestions(questions);

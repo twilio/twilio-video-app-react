@@ -1,7 +1,7 @@
 export interface ICarouselGame {
   currentPlayer: string;
   carouselPosition: number;
-  activeCard: number;
+  activeCard?: number;
   seed: number;
   currentSpinCount: number;
   playerRoundCount?: { [key: string]: number };

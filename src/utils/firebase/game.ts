@@ -85,6 +85,25 @@ export const setActiveCard = (groupToken: string, index: number) => {
       .set(
         {
           activeCard: index,
+          // currentPlayer: '',
+          currentSpinCount: 4,
+        },
+        { merge: true }
+      );
+  });
+
+  setTimeout(resetCurrentPlayer, 15 * 1000);
+};
+
+export const resetCurrentPlayer = (groupToken: string) => {
+  getSessionStore(groupToken).then(store => {
+    db()
+      .collection('sessions')
+      .doc(store.doc.id)
+      .collection('games')
+      .doc('carousel')
+      .set(
+        {
           currentPlayer: '',
         },
         { merge: true }
@@ -151,7 +170,7 @@ export const fetchCarouselGame = (groupToken: string) =>
 const fillWithDefaultValues = (game?: ICarouselGame) => {
   const filled = game ?? ({} as ICarouselGame);
 
-  filled.activeCard = game?.activeCard ?? 0;
+  filled.activeCard = game?.activeCard ?? undefined;
   filled.carouselPosition = game?.carouselPosition ?? 0;
   filled.currentPlayer = game?.currentPlayer ?? '#';
   filled.currentSpinCount = game?.currentSpinCount ?? 0;
