@@ -58,29 +58,13 @@ export default function ParticipantList() {
     <div className="flex overflow-x-auto pr-5 pt-5 gap-x-5 bg-grayish pl-2">
       {moderatorParitcipants.map((participant, i) => {
         return (
-          <>
-            <SmallParticipant
-              key={participant.sid}
-              participant={participant}
-              isSelected={participant === selectedParticipant}
-              isModerator
-              isLocalParticipant={localParticipant.sid === participant.sid}
-            />
-            <SmallParticipant
-              key={participant.sid}
-              participant={participant}
-              isSelected={participant === selectedParticipant}
-              isModerator
-              isLocalParticipant={localParticipant.sid === participant.sid}
-            />
-            <SmallParticipant
-              key={participant.sid}
-              participant={participant}
-              isSelected={participant === selectedParticipant}
-              isModerator
-              isLocalParticipant={localParticipant.sid === participant.sid}
-            />
-          </>
+          <SmallParticipant
+            key={participant.sid}
+            participant={participant}
+            isSelected={participant === selectedParticipant}
+            isModerator
+            isLocalParticipant={localParticipant.sid === participant.sid}
+          />
         );
       })}
       {normalParticipants.map(participant => {

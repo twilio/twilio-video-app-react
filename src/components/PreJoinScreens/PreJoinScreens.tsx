@@ -24,7 +24,7 @@ export default function PreJoinScreens(props: { onReady?: (name: string) => void
   const { getAudioAndVideoTracks } = useVideoContext();
   const [step, setStep] = useState(Steps.roomNameStep);
   const [mediaError, setMediaError] = useState<Error>();
-  const { roomId, userGroup, groupToken, roomSid } = useSessionContext();
+  const { roomId, userGroup, groupToken } = useSessionContext();
   const [name, setName] = useState<string>(
     user?.displayName || (localStorage.getItem(LOCAL_STORAGE_KEY.USER_NAME) ?? '')
   );
