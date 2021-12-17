@@ -1,3 +1,14 @@
+## 0.6.1 (December 17, 2021)
+
+### Dependency Upgrades
+
+- `twilio-video` has been upgraded from 2.17.1 to 2.18.2.
+- `@twilio/video-room-monitor` has been updated from version `1.0.0-beta.1` to `1.0.0`. The [Twilio Video Room Monitor](https://github.com/twilio/twilio-video-room-monitor.js) is out of beta and is now Generally Available.
+
+### Enhancements
+
+- The Twilio Video Room Monitor can now be used on mobile devices.
+
 ## 0.6.0 (September 24, 2021)
 
 ### New Feature
