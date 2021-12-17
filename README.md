@@ -18,7 +18,7 @@ This application demonstrates a multi-party video application built with [Twilio
 
 You must have the following installed:
 
-- [Node.js v12.22.1+](https://nodejs.org/en/download/)
+- [Node.js v14+](https://nodejs.org/en/download/)
 - NPM v6+ (comes installed with newer Node versions)
 
 You can check which versions of Node.js and NPM you currently have installed with the following commands:
