@@ -1,41 +1,43 @@
 import React from 'react';
 import ParticipantInfo from '../ParticipantInfo/ParticipantInfo';
 import ParticipantTracks from '../ParticipantTracks/ParticipantTracks';
-import { Participant as IParticipant } from 'twilio-video';
+import { Participant as IParticipant, Track } from 'twilio-video';
 
 export interface ParticipantProps {
   participant: IParticipant;
   videoOnly?: boolean;
   enableScreenShare?: boolean;
   onClick?: () => void;
-  isSelected?: boolean;
+  // isSelected?: boolean;
   isLocalParticipant?: boolean;
   hideParticipant?: boolean;
   isModerator?: boolean;
   noName?: boolean;
   isActivePlayer?: boolean;
   roundsPlayed?: number;
+  videoPriority?: Track.Priority;
 }
 
 const Participant = React.memo(
   ({
     participant,
     videoOnly,
-    enableScreenShare,
+    // enableScreenShare,
     onClick,
-    isSelected,
+    // isSelected,
     isLocalParticipant,
     hideParticipant,
     isModerator,
     noName,
     isActivePlayer,
     roundsPlayed,
+    videoPriority,
   }: ParticipantProps) => {
     return (
       <ParticipantInfo
         participant={participant}
         onClick={onClick}
-        isSelected={isSelected}
+        // isSelected={isSelected}
         isLocalParticipant={isLocalParticipant}
         hideParticipant={hideParticipant}
         isModerator={isModerator}
@@ -46,7 +48,8 @@ const Participant = React.memo(
         <ParticipantTracks
           participant={participant}
           videoOnly={videoOnly}
-          enableScreenShare={enableScreenShare}
+          // enableScreenShare={enableScreenShare}
+          videoPriority={videoPriority}
           isLocalParticipant={isLocalParticipant}
           isActivePlayer={isActivePlayer}
         />

@@ -1,7 +1,7 @@
 import React, { createContext, ReactNode, useCallback, useState } from 'react';
 import { CreateLocalTrackOptions, ConnectOptions, LocalAudioTrack, LocalVideoTrack, Room } from 'twilio-video';
 import { ErrorCallback } from 'types/types';
-import { SelectedParticipantProvider } from './useSelectedParticipant/useSelectedParticipant';
+// import { SelectedParticipantProvider } from './useSelectedParticipant/useSelectedParticipant';
 
 import AttachVisibilityHandler from './AttachVisibilityHandler/AttachVisibilityHandler';
 import useBackgroundSettings, { BackgroundSettings } from './useBackgroundSettings/useBackgroundSettings';
@@ -98,16 +98,17 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
         connect,
         isAcquiringLocalTracks,
         removeLocalVideoTrack,
+        getAudioAndVideoTracks,
         isSharingScreen,
         toggleScreenShare,
-        getAudioAndVideoTracks,
         isBackgroundSelectionOpen,
         setIsBackgroundSelectionOpen,
         backgroundSettings,
         setBackgroundSettings,
       }}
     >
-      <SelectedParticipantProvider room={room}>{children}</SelectedParticipantProvider>
+      {children}
+      {/* <SelectedParticipantProvider room={room}>{children}</SelectedParticipantProvider> */}
       {/* 
         The AttachVisibilityHandler component is using the useLocalVideoToggle hook
         which must be used within the VideoContext Provider.

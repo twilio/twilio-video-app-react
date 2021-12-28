@@ -21,7 +21,7 @@ export default function useConnectionOptions() {
         clientTrackSwitchOffControl: settings.clientTrackSwitchOffControl,
       },
     },
-    dominantSpeaker: true,
+    dominantSpeaker: false,
     networkQuality: { local: 1, remote: 1 },
 
     // Comment this line if you are playing music.

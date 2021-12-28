@@ -1,12 +1,10 @@
 import useParticipants from 'hooks/useParticipants/useParticipants';
 import useVideoContext from 'hooks/useVideoContext/useVideoContext';
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import useSessionContext from 'hooks/useSessionContext';
 import { ChooseableParticipant } from 'components/ChooseableParticipant';
 import { categorizeParticipants } from 'utils/participants';
 import { RevealedCard } from 'components/RevealedCard';
-import { SessionInfo } from 'components/SessionInfo';
-import { subscribeToSessionStore, unsubscribeFromSessionStore } from 'utils/firebase/session';
 import { nameFromIdentity } from 'utils/participants';
 import cn from 'classnames';
 import { UserGroup } from 'types/UserGroup';
@@ -36,28 +34,7 @@ export const GridVideoChatLayout = () => {
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
   const participants = useParticipants();
-  const { groupToken, resources, userGroup } = useSessionContext();
-  const [moderators, setModerators] = useState<string[]>([]);
-
-  useEffect(() => {
-    const subId = 'participant-list';
-
-    if (groupToken !== undefined) {
-      subscribeToSessionStore(subId, groupToken, store => {
-        setModerators(prev => {
-          if (JSON.stringify(prev) !== JSON.stringify(store.data.moderators)) {
-            return store.data.moderators ?? [];
-          } else {
-            return prev;
-          }
-        });
-      });
-    }
-
-    return () => {
-      unsubscribeFromSessionStore(subId);
-    };
-  }, []);
+  const { resources, userGroup, moderators } = useSessionContext();
 
   const { moderatorParitcipants, normalParticipants, speakerParticipants } = categorizeParticipants(
     participants,
@@ -123,6 +100,7 @@ export const GridVideoChatLayout = () => {
                 participant={moderatorParitcipants[0]}
                 isModerator
                 isLocalParticipant={localParticipant.sid === moderatorParitcipants[0].sid}
+                isMainSpeaker
               />
             ) : null}
           </div>

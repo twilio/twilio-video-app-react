@@ -9,7 +9,7 @@ import { UserGroup } from 'types/UserGroup';
 interface ParticipantTracksProps {
   participant: Participant;
   videoOnly?: boolean;
-  enableScreenShare?: boolean;
+  // enableScreenShare?: boolean;
   videoPriority?: Track.Priority | null;
   isLocalParticipant?: boolean;
   isActivePlayer?: boolean;
@@ -27,7 +27,7 @@ interface ParticipantTracksProps {
 export default function ParticipantTracks({
   participant,
   videoOnly,
-  enableScreenShare,
+  // enableScreenShare,
   videoPriority,
   isLocalParticipant,
   isActivePlayer,
@@ -51,14 +51,14 @@ export default function ParticipantTracks({
     filteredPublications = filteredPublications.filter(p => p.track?.kind === 'audio');
   }
 
-  if (enableScreenShare && filteredPublications.some(p => p.trackName.includes('screen'))) {
-    // When displaying a screenshare track is allowed, and a screen share track exists,
-    // remove all video tracks without the name 'screen'.
-    filteredPublications = filteredPublications.filter(p => p.trackName.includes('screen') || p.kind !== 'video');
-  } else {
-    // Else, remove all screenshare tracks
-    filteredPublications = filteredPublications.filter(p => !p.trackName.includes('screen'));
-  }
+  // if (enableScreenShare && filteredPublications.some(p => p.trackName.includes('screen'))) {
+  //   // When displaying a screenshare track is allowed, and a screen share track exists,
+  //   // remove all video tracks without the name 'screen'.
+  //   filteredPublications = filteredPublications.filter(p => p.trackName.includes('screen') || p.kind !== 'video');
+  // } else {
+  //   // Else, remove all screenshare tracks
+  //   filteredPublications = filteredPublications.filter(p => !p.trackName.includes('screen'));
+  // }
 
   return (
     <div className="w-full h-full bg-black rounded-xl">
