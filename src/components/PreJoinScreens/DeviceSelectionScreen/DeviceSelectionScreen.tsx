@@ -8,6 +8,7 @@ import ToggleAudioButton from '../../Buttons/ToggleAudioButton/ToggleAudioButton
 import ToggleVideoButton from '../../Buttons/ToggleVideoButton/ToggleVideoButton';
 import { useAppState } from '../../../state';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import { wrapPeerConnectionEvent } from '../../../utils';
 
 import watchRTC from '@testrtc/watchrtc-sdk';
 
@@ -69,10 +70,22 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
       (queryString.parse(window.location.search)?.apiKey as string) || (process.env.REACT_APP_RTC_API_KEY as string),
     rtcRoomId: roomName,
     rtcPeerId: name,
+    keys: {
+      searchPeer: name,
+    },
   };
 
   React.useEffect(() => {
     watchRTC.init(wrtcConfig);
+    wrapPeerConnectionEvent(window, 'addstream', (e: any) => {
+      if (e?.stream?.id) {
+        watchRTC.mapStream(e?.stream?.id, name);
+      }
+    });
+
+    setTimeout(() => {
+      watchRTC.addKeys({ peer: name });
+    }, 4000);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -81,6 +94,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
     watchRTC.setConfig({
       ...wrtcConfig,
       keys: {
+        ...wrtcConfig?.keys,
         ...(getCustomKeys() || {}),
       },
     });
