@@ -1,10 +1,13 @@
-import { ISession, ISessionResources, ISessionStore, ScreenType, UserGroup } from '../../types';
 import React, { createContext, ReactNode, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { firestore } from 'firebase';
 import { getSessionStore, subscribeToSessionStore, unsubscribeFromSessionStore } from 'utils/firebase/session';
-import useVideoContext from 'hooks/useVideoContext/useVideoContext';
 import { initSessionResources } from 'utils/resources';
+import { UserGroup } from 'types/UserGroup';
+import { ISession, ISessionResources, ISessionStore } from 'types/Session';
+import { ScreenType } from 'types/ScreenType';
+import useLanguageContext from 'hooks/useLanguageContext';
+import { LANGUAGE_CODE } from 'types/Language';
 
 export enum ISessionStatus {
   SESSION_NOT_STARTED = 'SESSION_NOT_STARTED',
@@ -45,6 +48,7 @@ const updateDate = (prev: firestore.Timestamp | undefined, newDate: firestore.Ti
 
 export const SessionProvider = React.memo(({ children }: SessionProviderProps) => {
   const { URLShareToken } = useParams() as { URLShareToken: string };
+  const { setLangCode } = useLanguageContext();
 
   const [loading, setLoading] = useState(true);
   const [sessionStatus, setSessionStatus] = useState<ISessionStatus>(ISessionStatus.AWAITING_STATUS);
@@ -66,7 +70,9 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
 
     if (loadingRef.current === true) {
       setResources(initSessionResources(store.data.resources));
-
+      if (store.group === UserGroup.StreamServerTranslated || store.group === UserGroup.AudienceTranslated) {
+        setLangCode(LANGUAGE_CODE.en_US);
+      }
       setLoading(false);
     }
 
@@ -90,7 +96,10 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
     setEndDate(prev => updateDate(prev, store.data.endDate));
 
     if (store.group === UserGroup.Audience) {
-      setStreamId(store.data.streamId);
+      setStreamId(store.data.streamIds?.original);
+      setRoomSid(store.data.roomSid);
+    } else if (store.group === UserGroup.AudienceTranslated) {
+      setStreamId(store.data.streamIds?.translated);
       setRoomSid(store.data.roomSid);
     }
   };

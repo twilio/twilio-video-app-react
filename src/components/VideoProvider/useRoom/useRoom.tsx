@@ -1,4 +1,4 @@
-import { Callback } from '../../../types';
+import { Callback } from 'types/types';
 import { isMobile } from '../../../utils';
 import Video, { ConnectOptions, LocalTrack, Room } from 'twilio-video';
 import { VideoRoomMonitor } from '@twilio/video-room-monitor';

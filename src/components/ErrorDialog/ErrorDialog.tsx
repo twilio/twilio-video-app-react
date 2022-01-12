@@ -8,7 +8,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import enhanceMessage from './enhanceMessage';
 import { TwilioError } from 'twilio-video';
 import useSessionContext from 'hooks/useSessionContext';
-import { UserGroup } from 'types';
+import { UserGroup } from 'types/UserGroup';
 
 interface ErrorDialogProps {
   dismissError: Function;
@@ -21,7 +21,7 @@ function ErrorDialog({ dismissError, error }: PropsWithChildren<ErrorDialogProps
   const { userGroup } = useSessionContext();
 
   useEffect(() => {
-    if (userGroup == UserGroup.StreamServer) {
+    if (userGroup == UserGroup.StreamServer || userGroup === UserGroup.StreamServerTranslated) {
       setTimeout(() => {
         dismissError();
       }, 5000);

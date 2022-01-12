@@ -3,13 +3,16 @@ import ChatIcon from '../../../icons/ChatIcon';
 import useChatContext from '../../../hooks/useChatContext/useChatContext';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 import { RoundButton } from '../RoundButton';
+import useLanguageContext from 'hooks/useLanguageContext';
+import { LANGUAGE_CODE } from 'types/Language';
 
 export const ANIMATION_DURATION = 700;
 
-export default function ToggleChatButton(props: { className?: string }) {
+export default function ToggleChatButton() {
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const { isChatWindowOpen, setIsChatWindowOpen, conversation, hasUnreadMessages } = useChatContext();
   const { setIsBackgroundSelectionOpen } = useVideoContext();
+  const { langCode } = useLanguageContext();
 
   const toggleChatWindow = () => {
     setIsChatWindowOpen(!isChatWindowOpen);
@@ -34,7 +37,7 @@ export default function ToggleChatButton(props: { className?: string }) {
 
   return (
     <RoundButton
-      title="Chat Fenster öffnen"
+      title={langCode === LANGUAGE_CODE.de_DE ? 'Chat Fenster öffnen' : 'Open the chat window'}
       onClick={toggleChatWindow}
       disabled={!conversation}
       indicator={hasUnreadMessages}

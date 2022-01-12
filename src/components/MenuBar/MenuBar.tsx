@@ -10,15 +10,13 @@ import ToggleAudioButton from '../Buttons/ToggleAudioButton/ToggleAudioButton';
 import ToggleVideoButton from '../Buttons/ToggleVideoButton/ToggleVideoButton';
 // import useGameContext from '../../hooks/useGameContext/useGameContext';
 import useSessionContext from 'hooks/useSessionContext';
-import { ScreenType, UserGroup } from 'types';
-import { setActiveScreen } from 'utils/firebase/screen';
 import EndCallButton from 'components/Buttons/EndCallButton/EndCallButton';
 import { EndSessionButton } from 'components/Buttons/EndSessionButton';
 import { ScreenSwitchButton } from 'components/Buttons/ScreenSwitchButton';
 import ToggleChatButton from 'components/Buttons/ToggleChatButton/ToggleChatButton';
-import useRaisedHands from 'hooks/useAdminWindow';
 import { ToggleAdminWindowButton } from 'components/Buttons/ToggleAdminWindowButton';
 import { ToggleSettingsButton } from 'components/Buttons/ToggleSettingsButton';
+import { UserGroup } from 'types/UserGroup';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -72,7 +70,7 @@ export default function MenuBar() {
   const isReconnecting = roomState === 'reconnecting';
   const { userGroup } = useSessionContext();
 
-  if (userGroup === UserGroup.StreamServer) {
+  if (userGroup === UserGroup.StreamServer || userGroup === UserGroup.StreamServerTranslated) {
     return null;
   }
 

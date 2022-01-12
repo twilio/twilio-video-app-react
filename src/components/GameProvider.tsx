@@ -1,6 +1,6 @@
 import useSessionContext from 'hooks/useSessionContext';
 import React, { createContext, ReactNode, useState, useEffect } from 'react';
-import { IQuestion } from 'types';
+import { IQuestion } from 'types/CarouselGame';
 import { fetchCarouselGame, fetchQuestions } from 'utils/firebase/game';
 
 type GameContext = {
@@ -26,7 +26,7 @@ export const GameProvider = React.memo(({ children }: GameProviderProps) => {
       setFetched(true);
       Promise.all([fetchCarouselGame(groupToken), fetchQuestions(groupToken)]).then(([game, questions]) => {
         const active = game.activeCard;
-        if (active >= 0 && active < questions.length) {
+        if (active !== undefined && active >= 0 && active < questions.length) {
           setRevealedCard(questions[active]);
         }
         setQuestions(questions);

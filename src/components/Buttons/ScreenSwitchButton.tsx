@@ -1,6 +1,6 @@
 import useSessionContext from 'hooks/useSessionContext';
 import React from 'react';
-import { ScreenType } from 'types';
+import { ScreenType } from 'types/ScreenType';
 import { setActiveScreen } from 'utils/firebase/screen';
 import { ReactComponent as CarouselIcon } from '../../assets/carousel.svg';
 import { ReactComponent as GridViewIcon } from '../../assets/grid-view.svg';

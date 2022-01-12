@@ -1,7 +1,7 @@
 import { RaiseHandButton } from 'components/Buttons/RaiseHandButton';
 import useSessionContext from 'hooks/useSessionContext';
 import React, { useState, useEffect, useRef } from 'react';
-import { UserGroup } from 'types';
+import { UserGroup } from 'types/UserGroup';
 import {
   removeAudienceMemberInvitation,
   subscribeToSessionStore,
@@ -72,7 +72,7 @@ export const AudienceLayout = () => {
   ) : (
     <div className="bg-grayish h-full">
       <div className="fixed bottom-10 w-full flex items-center justify-center space-x-2 z-50">
-        <ToggleChatButton className={' bg-white'} />
+        <ToggleChatButton />
         <RaiseHandButton identityRef={identityRef} />
       </div>
       <ChatWindow />

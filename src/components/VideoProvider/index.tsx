@@ -1,6 +1,6 @@
 import React, { createContext, ReactNode, useCallback, useState } from 'react';
 import { CreateLocalTrackOptions, ConnectOptions, LocalAudioTrack, LocalVideoTrack, Room } from 'twilio-video';
-import { ErrorCallback } from '../../types';
+import { ErrorCallback } from 'types/types';
 import { SelectedParticipantProvider } from './useSelectedParticipant/useSelectedParticipant';
 
 import AttachVisibilityHandler from './AttachVisibilityHandler/AttachVisibilityHandler';

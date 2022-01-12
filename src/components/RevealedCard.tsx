@@ -1,6 +1,6 @@
 import useGameContext from 'hooks/useGameContext';
 import React from 'react';
-import { DEFAULT_QUESTION_COLOR } from 'types';
+import { DEFAULT_QUESTION_COLOR } from 'types/CarouselGame';
 
 export const RevealedCard = () => {
   const { revealedCard } = useGameContext();

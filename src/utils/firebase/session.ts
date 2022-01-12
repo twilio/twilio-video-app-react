@@ -1,5 +1,6 @@
 import { firestore } from 'firebase';
-import { ISession, ISessionStore, UserGroup } from 'types';
+import { ISession, ISessionStore } from 'types/Session';
+import { UserGroup } from 'types/UserGroup';
 import { db } from './base';
 
 let _sessionStore: ISessionStore | null;

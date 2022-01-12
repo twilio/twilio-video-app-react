@@ -1,24 +1,31 @@
 import { LocalParticipant, RemoteParticipant } from 'twilio-video';
-import { ISession, UserGroup } from 'types';
+import { UserGroup } from 'types/UserGroup';
 import { getUid } from './firebase/base';
 
 const identityComperator = (a: { identity: string }, b: { identity: string }) => a.identity.localeCompare(b.identity);
 
-export const sortedParticipantsByCategorie = (
-  moderators: string[],
-  localParticipant: LocalParticipant,
-  participants: RemoteParticipant[]
+export const categorizeParticipants = (
+  participants: RemoteParticipant[],
+  localParticipant?: LocalParticipant,
+  moderators?: string[]
 ) => {
   let allParticipants: (LocalParticipant | RemoteParticipant)[] = [...participants];
-  allParticipants.push(localParticipant);
-  allParticipants = allParticipants.filter(part => nameFromIdentity(part.identity) !== UserGroup.StreamServer);
+  if (localParticipant) {
+    allParticipants.push(localParticipant);
+  }
+  allParticipants = allParticipants.filter(part => {
+    const name = nameFromIdentity(part.identity);
+    return name !== UserGroup.StreamServer && name !== UserGroup.StreamServerTranslated;
+  });
   allParticipants.sort(identityComperator);
 
-  const moderatorParitcipants = allParticipants.filter(part => moderators?.includes(part.sid)) as (
+  const translatorParticipant = allParticipants.find(part => nameFromIdentity(part.identity) === UserGroup.Translator);
+  const speakerParticipants = allParticipants.filter(part => nameFromIdentity(part.identity) !== UserGroup.Translator);
+  const moderatorParitcipants = speakerParticipants.filter(part => moderators?.includes(part.sid)) as (
     | LocalParticipant
     | RemoteParticipant
   )[];
-  const normalParticipants = allParticipants.filter(part => !moderators?.includes(part.sid)) as (
+  const normalParticipants = speakerParticipants.filter(part => !moderators?.includes(part.sid)) as (
     | LocalParticipant
     | RemoteParticipant
   )[];
@@ -26,7 +33,8 @@ export const sortedParticipantsByCategorie = (
   return {
     moderatorParitcipants,
     normalParticipants,
-    participantCount: allParticipants.length,
+    translatorParticipant,
+    speakerParticipants,
   };
 };
 

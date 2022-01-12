@@ -55,14 +55,16 @@ export const ChatProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     // If the chat window is closed and there are new messages, set hasUnreadMessages to true
-    if (!isChatWindowOpenRef.current && messages.length) {
+    if (isChatWindowOpenRef.current === false && messages.length) {
       setHasUnreadMessages(true);
     }
   }, [messages]);
 
   useEffect(() => {
     isChatWindowOpenRef.current = isChatWindowOpen;
-    if (isChatWindowOpen) setHasUnreadMessages(false);
+    if (isChatWindowOpen) {
+      setHasUnreadMessages(false);
+    }
   }, [isChatWindowOpen]);
 
   useEffect(() => {
