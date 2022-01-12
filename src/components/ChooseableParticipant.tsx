@@ -13,7 +13,9 @@ import { BanParticipantButton } from './Buttons/BanParticipantButton';
 import { UserGroup } from 'types/UserGroup';
 import { ScreenType } from 'types/ScreenType';
 
-export type ChooseableParticipantProps = ParticipantProps;
+export interface ChooseableParticipantProps extends ParticipantProps {
+  isMainSpeaker?: boolean;
+}
 
 export const ChooseableParticipant = (props: ChooseableParticipantProps) => {
   const { userGroup, groupToken, activeScreen } = useSessionContext();
@@ -89,7 +91,12 @@ export const ChooseableParticipant = (props: ChooseableParticipantProps) => {
           ) : null}
         </div>
       ) : null}
-      <Participant {...props} isActivePlayer={isActivePlayer} roundsPlayed={roundsPlayed} />
+      <Participant
+        {...props}
+        isActivePlayer={isActivePlayer}
+        roundsPlayed={roundsPlayed}
+        videoPriority={props.isMainSpeaker ? 'high' : undefined}
+      />
     </div>
   );
 };

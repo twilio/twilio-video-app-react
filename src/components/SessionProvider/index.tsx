@@ -30,6 +30,7 @@ export interface ISessionContext {
   endDate: ISession['endDate'] | undefined;
   streamId: string | undefined;
   roomSid: string | undefined;
+  moderators: string[];
 }
 
 export const SessionContext = createContext<ISessionContext>(null!);
@@ -60,6 +61,7 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
   const [endDate, setEndDate] = useState<ISession['endDate']>();
   const [streamId, setStreamId] = useState<string>();
   const [roomSid, setRoomSid] = useState<string>();
+  const [moderators, setModerators] = useState<string[]>([]);
   const loadingRef = useRef<boolean>();
   loadingRef.current = loading;
 
@@ -95,6 +97,10 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
     setStartDate(prev => updateDate(prev, store.data.startDate));
     setEndDate(prev => updateDate(prev, store.data.endDate));
 
+    if (store.data.moderators !== undefined && JSON.stringify(moderators) !== JSON.stringify(store.data.moderators)) {
+      setModerators(store.data.moderators);
+    }
+
     if (store.group === UserGroup.Audience) {
       setStreamId(store.data.streamIds?.original);
       setRoomSid(store.data.roomSid);
@@ -105,7 +111,7 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
   };
 
   useEffect(() => {
-    const subId = 'sprov';
+    const subId = 'SESSION_PROVIDER';
 
     if (typeof URLShareToken === 'string' && URLShareToken.length !== 0) {
       getSessionStore(URLShareToken)
@@ -141,6 +147,7 @@ export const SessionProvider = React.memo(({ children }: SessionProviderProps) =
         endDate,
         streamId,
         resources,
+        moderators,
       }}
     >
       {children}

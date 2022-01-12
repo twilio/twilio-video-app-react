@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import useParticipants from '../../hooks/useParticipants/useParticipants';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
-import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
+// import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
 // import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 import useSessionContext from 'hooks/useSessionContext';
 import { ChooseableParticipant, ChooseableParticipantProps } from 'components/ChooseableParticipant';
 import { nameFromIdentity, categorizeParticipants } from 'utils/participants';
-import { subscribeToSessionStore, unsubscribeFromSessionStore } from 'utils/firebase/session';
 
 const SmallParticipant = (props: ChooseableParticipantProps) => (
   <div className="w-40 relative flex flex-col">
@@ -21,38 +20,15 @@ export default function ParticipantList() {
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
   const participants = useParticipants();
-  const [selectedParticipant] = useSelectedParticipant();
+  // const [selectedParticipant] = useSelectedParticipant();
   // const screenShareParticipant = useScreenShareParticipant();
-  const [moderators, setModerators] = useState<string[]>([]);
-  const { groupToken } = useSessionContext();
+  const { moderators } = useSessionContext();
 
   const { moderatorParitcipants, normalParticipants } = categorizeParticipants(
     participants,
     localParticipant,
     moderators
   );
-
-  useEffect(() => {
-    if (!groupToken) {
-      return;
-    }
-
-    const subId = 'PART_LIST';
-
-    subscribeToSessionStore(subId, groupToken, store => {
-      setModerators(prev => {
-        if (JSON.stringify(prev) !== JSON.stringify(store.data.moderators)) {
-          return store.data.moderators ?? [];
-        } else {
-          return prev;
-        }
-      });
-    });
-
-    return () => {
-      unsubscribeFromSessionStore(subId);
-    };
-  }, []);
 
   return (
     <div className="flex overflow-x-auto pr-5 pt-5 gap-x-5 bg-grayish pl-2">
@@ -61,7 +37,7 @@ export default function ParticipantList() {
           <SmallParticipant
             key={participant.sid}
             participant={participant}
-            isSelected={participant === selectedParticipant}
+            // isSelected={participant === selectedParticipant}
             isModerator
             isLocalParticipant={localParticipant.sid === participant.sid}
           />
@@ -72,7 +48,7 @@ export default function ParticipantList() {
           <SmallParticipant
             key={participant.sid}
             participant={participant}
-            isSelected={participant === selectedParticipant}
+            // isSelected={participant === selectedParticipant}
             isLocalParticipant={localParticipant.sid === participant.sid}
           />
         );

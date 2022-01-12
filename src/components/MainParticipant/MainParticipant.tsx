@@ -1,14 +1,12 @@
 import MainParticipantInfo from '../MainParticipantInfo/MainParticipantInfo';
 import ParticipantTracks from '../ParticipantTracks/ParticipantTracks';
 import React from 'react';
-import useMainParticipant from '../../hooks/useMainParticipant/useMainParticipant';
 import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
 import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { Participant, RemoteParticipant } from 'twilio-video';
 
 export default function MainParticipant(props: { participant: RemoteParticipant | Participant }) {
-  // const mainParticipant = useMainParticipant();
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
   const [selectedParticipant] = useSelectedParticipant();
@@ -28,7 +26,7 @@ export default function MainParticipant(props: { participant: RemoteParticipant 
       <ParticipantTracks
         participant={mainParticipant}
         videoOnly
-        enableScreenShare={mainParticipant !== localParticipant}
+        // enableScreenShare={mainParticipant !== localParticipant}
         videoPriority={videoPriority}
         isLocalParticipant={mainParticipant === localParticipant}
       />
