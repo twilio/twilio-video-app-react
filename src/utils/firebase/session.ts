@@ -1,11 +1,62 @@
 import { firestore } from 'firebase';
-import { ISession, ISessionStore } from 'types/Session';
+import { TCategoryStore } from 'types/CategoryDeck';
+import { ScreenType } from 'types/ScreenType';
+import { ISession, ISessionResources, ISessionStore } from 'types/Session';
 import { UserGroup } from 'types/UserGroup';
-import { db } from './base';
+import { randomString } from 'utils/string';
+import { db, getUid } from './base';
+import { addQuestionDeck } from './game';
 
 let _sessionStore: ISessionStore | null;
 let _baseSubscription: any;
 const _subscriptions: { [key: string]: any } = {};
+
+export const createSession = (title: string, categoryStore: TCategoryStore, hostLogoUrl?: string) =>
+  new Promise<{ shareTokens: Record<string, string>; sessionDocId: string }>((resolve, reject) => {
+    Promise.all([addQuestionDeck(categoryStore), getUid()]).then(([categoryIds, uid]) => {
+      const batch = db().batch();
+
+      const sessionRef = db()
+        .collection('sessions')
+        .doc();
+      const gameRef = sessionRef.collection('games').doc('carousel');
+
+      const shareTokens: Record<string, string> = {};
+      for (let group in UserGroup) {
+        shareTokens[randomString(10)] = group;
+      }
+
+      const sessionData: ISession = {
+        author: uid,
+        resources: {
+          title,
+        } as ISessionResources,
+        shareTokens: shareTokens as Record<string, UserGroup>,
+        activeScreen: ScreenType.VideoChat,
+        roomId: title,
+      };
+
+      if (hostLogoUrl) {
+        sessionData.resources!.hostLogoSrc = hostLogoUrl;
+      }
+
+      batch.set(sessionRef, sessionData);
+
+      batch.set(gameRef, {
+        activeCard: 0,
+        carouselPosition: 0,
+        seed: 0,
+        categoryIds,
+      });
+
+      batch.commit();
+
+      resolve({
+        sessionDocId: sessionRef.id,
+        shareTokens,
+      });
+    });
+  });
 
 const groupTokenValid = (groupToken: string) => {
   return typeof groupToken === 'string' && groupToken.length === 0;

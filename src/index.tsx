@@ -6,7 +6,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 
 import App from './App';
 import AppStateProvider, { useAppState } from './state';
-import { BrowserRouter as Router, Redirect, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import ErrorDialog from './components/ErrorDialog/ErrorDialog';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import theme from './theme';
@@ -20,6 +20,7 @@ import { SessionWrapper } from './components/SessionWrapper';
 import { GameProvider } from './components/GameProvider';
 import { RaisedHandsProvider } from 'components/AdminWindowProvider';
 import { LanguageProvider } from 'components/LanguageProvider';
+import { CreateSession } from 'components/Layouts/CreateSession';
 
 const VideoApp = () => {
   const { error, setError } = useAppState();
@@ -52,8 +53,11 @@ ReactDOM.render(
       <Router>
         <AppStateProvider>
           <Switch>
-            <PrivateRoute path="/r/:URLShareToken">
+            <Route path="/r/:URLShareToken">
               <VideoApp />
+            </Route>
+            <PrivateRoute path="/create/:token">
+              <CreateSession />
             </PrivateRoute>
             <Redirect to="/" />
           </Switch>
