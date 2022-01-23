@@ -2,6 +2,7 @@ import { db } from './base';
 import { firestore } from 'firebase';
 import { getSessionStore } from './session';
 import { DEFAULT_QUESTION_COLOR, ICarouselGame, ICategory, IQuestion } from 'types/CarouselGame';
+import { TCategoryStore } from 'types/CategoryDeck';
 
 let _game: ICarouselGame;
 let _baseSubscription: any;
@@ -18,17 +19,24 @@ export const fetchQuestions = (groupToken: string) =>
           let allQuestions: IQuestion[] = [];
           questionDocs.forEach((doc: any) => {
             const question = doc.data() as IQuestion;
-            const category = categoryDocs.docs.find(c => c.id === question.catId);
-            question.color = category !== undefined ? (category.data() as ICategory).color : DEFAULT_QUESTION_COLOR;
+            const categoryDoc = categoryDocs.docs.find(c => c.id === question.catId);
+            const category = categoryDoc !== undefined ? (categoryDoc.data() as ICategory) : undefined;
+
+            if (category !== undefined) {
+              question.category = category.name;
+              question.color = category.color;
+            } else {
+              question.category = 'CATEGORY_NOT_SET';
+              question.color = DEFAULT_QUESTION_COLOR;
+            }
 
             if (game && game.categoryIds && game.categoryIds.length > 0) {
               if (game.categoryIds.includes(question.catId)) {
                 allQuestions.push(question);
               }
-            } else {
-              allQuestions.push(question);
             }
           });
+          console.log(allQuestions);
           resolve(allQuestions);
         }
       );
@@ -180,6 +188,39 @@ const fillWithDefaultValues = (game?: ICarouselGame) => {
 
   return filled;
 };
+
+export const addQuestionDeck = (categoryStore: TCategoryStore) =>
+  new Promise<string[]>((resolve, reject) => {
+    const batch = db().batch();
+
+    const catIds: string[] = [];
+
+    Object.values(categoryStore).forEach(cat => {
+      const catRef = db()
+        .collection('categories')
+        .doc();
+      batch.set(catRef, {
+        name: cat.value,
+        color: '#f00',
+      });
+
+      Object.values(cat.questions).forEach(q => {
+        const qRef = db()
+          .collection('questions')
+          .doc();
+        batch.set(qRef, {
+          catId: catRef.id,
+          name: q.value,
+        });
+      });
+
+      catIds.push(catRef.id);
+    });
+
+    batch.commit();
+
+    resolve(catIds);
+  });
 
 // create colored categories from all questions
 // export const createCategories = () => {

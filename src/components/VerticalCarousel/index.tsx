@@ -228,6 +228,8 @@ const VerticalCarousel = ({ questions }: { questions: IQuestion[] }) => {
               tx = (Math.sqrt(Math.abs(edgePos) * 0.11) * 0.05 * edgePos * edgePos) / Math.abs(edgePos);
             }
 
+            console.log(i, item);
+
             return (
               <div
                 className={cn('cursor-default z-0 relative flex items-center justify-center', 'carousel-item', {
