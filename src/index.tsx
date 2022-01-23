@@ -56,7 +56,7 @@ ReactDOM.render(
             <Route path="/r/:URLShareToken">
               <VideoApp />
             </Route>
-            <PrivateRoute path="/create/:token">
+            <PrivateRoute path="/create/xrJIGtmpgV3nGTZQhHZQsdvfM/DHxsbJ1Nd6eTlRfOtJAJXPOB1">
               <CreateSession />
             </PrivateRoute>
             <Redirect to="/" />
