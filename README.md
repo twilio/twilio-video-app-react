@@ -18,28 +18,52 @@ This application demonstrates a multi-party video application built with [Twilio
 
 You must have the following installed:
 
-- [Node.js v12+](https://nodejs.org/en/download/)
+- [Node.js v14+](https://nodejs.org/en/download/)
 - NPM v6+ (comes installed with newer Node versions)
+
+You can check which versions of Node.js and NPM you currently have installed with the following commands:
+
+    node --version
+    npm --version
+
+## Clone the repository
+
+Clone this repository and cd into the project directory:
+
+    git clone https://github.com/twilio/twilio-video-app-react.git
+    cd twilio-video-app-react
 
 ## Install Dependencies
 
-Run `npm install` to install all dependencies from NPM.
+Run `npm install` inside the main project folder to install all dependencies from NPM.
 
 If you want to use `yarn` to install dependencies, first run the [yarn import](https://classic.yarnpkg.com/en/docs/cli/import/) command. This will ensure that yarn installs the package versions that are specified in `package-lock.json`.
 
-## Install Twilio CLI
+## Install Twilio CLI and RTC Plugin
 
-The app is deployed to Twilio using the Twilio CLI. Install twilio-cli with:
+### Install the Twilio CLI
 
-    $ npm install -g twilio-cli
+The app is deployed to Twilio using the Twilio CLI. You can [install the Twilio CLI using Homebrew on a Mac or npm](https://www.twilio.com/docs/twilio-cli/quickstart).
+
+To install twilio-cli using npm, run the following command:
+
+    npm install -g twilio-cli
+
+**Note**: If you run into permissions errors when installing the twilio-cli globally with the `npm install -g` command, you might need to change the permissions of your global `node_modules` directory or configure npm to use a different directory for globally installed npm packages. See [this StackOverflow thread](https://stackoverflow.com/a/51024493), which has more information about both options. This [code sample in GitHub](https://github.com/sindresorhus/guides/blob/main/npm-global-without-sudo.md) is also a helpful guide for how to install npm packages globally without needing to change directory permissions and without sudo.
+
+### Login to the Twilio CLI
 
 Login to the Twilio CLI. You will be prompted for your Account SID and Auth Token, both of which you can find on the dashboard of your [Twilio console](https://twilio.com/console).
 
-    $ twilio login
+    twilio login
+
+**Note**: If you installed the Twilio CLI using npm and you receive an error that the `twilio` command is not found, you might need to update your Node install prefix. See [this StackOverflow thread for more information](https://stackoverflow.com/a/15623632).
+
+### Install the RTC Plugin
 
 This app requires an additional plugin. Install the CLI plugin with:
 
-    $ twilio plugins:install @twilio-labs/plugin-rtc
+    twilio plugins:install @twilio-labs/plugin-rtc
 
 **Note:** If you have previously installed the `@twilio-labs/plugin-rtc` plugin, please make sure that you are using the most recent version. You can upgrade the plugin by running `twilio plugins:update`. The chat feature requires version 0.8.1 or greater of `@twilio-labs/plugin-rtc`.
 
@@ -48,7 +72,7 @@ This app requires an additional plugin. Install the CLI plugin with:
 Before deploying the app, make sure you are using the correct account on the Twilio CLI (using the command `twilio profiles:list` to check).
 The app is deployed to Twilio with a single command:
 
-    $ npm run deploy:twilio-cli
+    npm run deploy:twilio-cli
 
 This performs the following steps:
 
@@ -59,19 +83,19 @@ This performs the following steps:
 
 **NOTE:** The Twilio Function that provides access tokens via a passcode should _NOT_ be used in a production environment. This token server supports seamlessly getting started with the collaboration app, and while convenient, the passcode is not secure enough for production environments. You should use an authentication provider to securely provide access tokens to your client applications. You can find more information about Programmable Video access tokens [in this tutorial](https://www.twilio.com/docs/video/tutorials/user-identity-access-tokens). **As a precaution, the passcode will expire after one week**. To generate a new passcode, redeploy the app:
 
-    $ npm run deploy:twilio-cli -- --override
+    npm run deploy:twilio-cli -- --override
 
 ## View app details
 
 View the URL and passcode for the Video app with
 
-     $ twilio rtc:apps:video:view
+     twilio rtc:apps:video:view
 
 ## Delete the app
 
 Delete the app with
 
-    $ twilio rtc:apps:video:delete
+    twilio rtc:apps:video:delete
 
 This removes the Serverless app from Twilio. This will ensure that no further cost are incurred by the app.
 
@@ -89,7 +113,7 @@ After running the command [to deploy the app to Twilio](#deploy-the-app-to-twili
 
 _Group_ - The Group room type allows up to fifty participants to join a video room in the app. The Network Quality Level (NQL) indicators, dominant speaker, and start-stop recordings are demonstrated with this room type. Also, the VP8 video codec with simulcast enabled along with a bandwidth profile are set by default in order to provide an optimal group video app experience.
 
-_Small Group_ - The Small Group room type provides an identical group video app experience except for a smaller limit of four participants.
+_Small Group_ - **This is a legacy room type; we recommend using Group Rooms instead when developing multiparty applications.** The Small Group room type provides an identical group video app experience except for a smaller limit of four participants.
 
 _Peer-to-peer_ - Although up to ten participants can join a room using the Peer-to-peer (P2P) room type, it is ideal for a one to one video experience. The NQL indicators, bandwidth profiles, dominant speaker, and start-stop recordings cannot be used with this room type. Thus, they are not demonstrated in the video app. Also, the VP8 video codec with simulcast disabled and 720p minimum video capturing dimensions are also set by default in order to provide an optimal one to one video app experience. If more than ten participants join a room with this room type, then the video app will present an error.
 
@@ -142,14 +166,14 @@ Now the local token server (see [server/index.ts](server/index.ts)) can dispense
 
 Run the app locally with
 
-    $ npm start
+    npm start
 
 This will start the local token server and run the app in the development mode. Open [http://localhost:3000](http://localhost:3000) to see the application in the browser.
 
 The page will reload if you make changes to the source code in `src/`.
 You will also see any linting errors in the console. Start the token server locally with
 
-    $ npm run server
+    npm run server
 
 The token server runs on port 8081 and expects a `POST` request at the `/token` route with the following JSON parameters:
 
@@ -172,7 +196,7 @@ Additionally, if you would like to invite other participants to a room, each par
 
 Build the React app with
 
-    $ npm run build
+    npm run build
 
 This script will build the static assets for the application in the `build/` directory.
 
@@ -184,7 +208,7 @@ This application has unit tests (using [Jest](https://jestjs.io/)) and end-to-en
 
 Run unit tests with
 
-    $ npm test
+    npm test
 
 This will run all unit tests with Jest and output the results to the console.
 
@@ -192,7 +216,7 @@ This will run all unit tests with Jest and output the results to the console.
 
 Run end to end tests with
 
-    $ npm run cypress:open
+    npm run cypress:open
 
 This will open the Cypress test runner. When it's open, select a test file to run.
 

@@ -9,16 +9,7 @@ import StartRecordingIcon from '../../../icons/StartRecordingIcon';
 import StopRecordingIcon from '../../../icons/StopRecordingIcon';
 import SearchIcon from '@material-ui/icons/Search';
 import SettingsIcon from '../../../icons/SettingsIcon';
-import {
-  Button,
-  styled,
-  Theme,
-  useMediaQuery,
-  Menu as MenuContainer,
-  MenuItem,
-  Typography,
-  Hidden,
-} from '@material-ui/core';
+import { Button, styled, Theme, useMediaQuery, Menu as MenuContainer, MenuItem, Typography } from '@material-ui/core';
 import { isSupported } from '@twilio/video-processors';
 
 import { useAppState } from '../../../state';
@@ -130,19 +121,17 @@ export default function Menu(props: { buttonClassName?: string }) {
           </MenuItem>
         )}
 
-        <Hidden smDown>
-          <MenuItem
-            onClick={() => {
-              VideoRoomMonitor.toggleMonitor();
-              setMenuOpen(false);
-            }}
-          >
-            <IconContainer>
-              <SearchIcon style={{ fill: '#707578', width: '0.9em' }} />
-            </IconContainer>
-            <Typography variant="body1">Room Monitor</Typography>
-          </MenuItem>
-        </Hidden>
+        <MenuItem
+          onClick={() => {
+            VideoRoomMonitor.toggleMonitor();
+            setMenuOpen(false);
+          }}
+        >
+          <IconContainer>
+            <SearchIcon style={{ fill: '#707578', width: '0.9em' }} />
+          </IconContainer>
+          <Typography variant="body1">Room Monitor</Typography>
+        </MenuItem>
 
         <MenuItem onClick={() => setAboutOpen(true)}>
           <IconContainer>
