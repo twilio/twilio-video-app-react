@@ -3,7 +3,7 @@ import { isMobile, removeUndefineds } from '..';
 import { useAppState } from '../../state';
 
 export default function useConnectionOptions() {
-  const { roomType, settings } = useAppState();
+  const { settings } = useAppState();
 
   // See: https://sdk.twilio.com/js/video/releases/2.0.0/docs/global.html#ConnectOptions
   // for available connection options.
