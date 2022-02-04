@@ -136,6 +136,21 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
                 <MenuItem value="default">Server Default</MenuItem>
               </Select>
             </FormControl>
+
+            <FormControl className={classes.formControl}>
+              <InputLabel id={inputLabels.contentPreferencesMode}>Adaptive Simulcast:</InputLabel>
+              <Select
+                fullWidth
+                disabled={isDisabled}
+                name={inputLabels.adaptiveSimulcast}
+                label={inputLabels.adaptiveSimulcast}
+                value={withDefault(settings.adaptiveSimulcast)}
+                onChange={handleChange}
+              >
+                <MenuItem value="true">True</MenuItem>
+                <MenuItem value="false">False</MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
           <Grid item sm={6} xs={12}>
             <FormControl className={classes.formControl}>
@@ -166,22 +181,6 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
               >
                 <MenuItem value="auto">Auto</MenuItem>
                 <MenuItem value="manual">Manual</MenuItem>
-                <MenuItem value="default">Default</MenuItem>
-              </Select>
-            </FormControl>
-
-            <FormControl className={classes.formControl}>
-              <InputLabel id={inputLabels.contentPreferencesMode}>Adaptive Simulcast:</InputLabel>
-              <Select
-                fullWidth
-                disabled={isDisabled}
-                name={inputLabels.adaptiveSimulcast}
-                label={inputLabels.adaptiveSimulcast}
-                value={withDefault(settings.adaptiveSimulcast)}
-                onChange={handleChange}
-              >
-                <MenuItem value="true">True</MenuItem>
-                <MenuItem value="false">False</MenuItem>
                 <MenuItem value="default">Default</MenuItem>
               </Select>
             </FormControl>

@@ -4,6 +4,7 @@ describe('the settingsReducer', () => {
   it('should set a setting from the name/value pair provided', () => {
     const result = settingsReducer(initialSettings, { name: 'clientTrackSwitchOffControl', value: 'auto' });
     expect(result).toEqual({
+      adaptiveSimulcast: 'true',
       bandwidthProfileMode: 'collaboration',
       dominantSpeakerPriority: 'standard',
       maxAudioBitrate: '16000',
@@ -16,6 +17,7 @@ describe('the settingsReducer', () => {
   it('should set undefined when the value is "default"', () => {
     const result = settingsReducer(initialSettings, { name: 'bandwidthProfileMode', value: 'default' });
     expect(result).toEqual({
+      adaptiveSimulcast: 'true',
       bandwidthProfileMode: undefined,
       dominantSpeakerPriority: 'standard',
       maxAudioBitrate: '16000',

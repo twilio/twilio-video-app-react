@@ -151,6 +151,34 @@ exports[`the ConnectionOptionsDialog component when connected to a room should r
             </WithStyles(ForwardRef(MenuItem))>
           </WithStyles(ForwardRef(Select))>
         </WithStyles(ForwardRef(FormControl))>
+        <WithStyles(ForwardRef(FormControl))
+          className="makeStyles-formControl-4"
+        >
+          <WithStyles(ForwardRef(InputLabel))
+            id="contentPreferencesMode"
+          >
+            Adaptive Simulcast:
+          </WithStyles(ForwardRef(InputLabel))>
+          <WithStyles(ForwardRef(Select))
+            disabled={true}
+            fullWidth={true}
+            label="adaptiveSimulcast"
+            name="adaptiveSimulcast"
+            onChange={[Function]}
+            value="true"
+          >
+            <WithStyles(ForwardRef(MenuItem))
+              value="true"
+            >
+              True
+            </WithStyles(ForwardRef(MenuItem))>
+            <WithStyles(ForwardRef(MenuItem))
+              value="false"
+            >
+              False
+            </WithStyles(ForwardRef(MenuItem))>
+          </WithStyles(ForwardRef(Select))>
+        </WithStyles(ForwardRef(FormControl))>
       </WithStyles(ForwardRef(Grid))>
       <WithStyles(ForwardRef(Grid))
         item={true}
@@ -402,6 +430,34 @@ exports[`the ConnectionOptionsDialog component when not connected to a room shou
               value="default"
             >
               Server Default
+            </WithStyles(ForwardRef(MenuItem))>
+          </WithStyles(ForwardRef(Select))>
+        </WithStyles(ForwardRef(FormControl))>
+        <WithStyles(ForwardRef(FormControl))
+          className="makeStyles-formControl-4"
+        >
+          <WithStyles(ForwardRef(InputLabel))
+            id="contentPreferencesMode"
+          >
+            Adaptive Simulcast:
+          </WithStyles(ForwardRef(InputLabel))>
+          <WithStyles(ForwardRef(Select))
+            disabled={true}
+            fullWidth={true}
+            label="adaptiveSimulcast"
+            name="adaptiveSimulcast"
+            onChange={[Function]}
+            value="true"
+          >
+            <WithStyles(ForwardRef(MenuItem))
+              value="true"
+            >
+              True
+            </WithStyles(ForwardRef(MenuItem))>
+            <WithStyles(ForwardRef(MenuItem))
+              value="false"
+            >
+              False
             </WithStyles(ForwardRef(MenuItem))>
           </WithStyles(ForwardRef(Select))>
         </WithStyles(ForwardRef(FormControl))>
