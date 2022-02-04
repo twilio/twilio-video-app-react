@@ -1,3 +1,9 @@
+## 0.6.2 (February 4, 2022)
+
+### Dependency Upgrades
+
+- `twilio-video` has been upgraded from 2.18.2 to to 2.19.0. This new version introduces a new feature called Adaptive Simulcast. When this feature is enabled (by setting `preferredVideoCodecs: "auto"` in the [ConnectOptions](https://sdk.twilio.com/js/video/releases/2.19.0/docs/global.html#ConnectOptions)), the SDK will use VP8 simulcast, and will enable/disable simulcast layers dynamically, thus improving bandwidth and CPU usage for the publishing client. For more information, please see [this changelog entry](https://github.com/twilio/twilio-video.js/blob/master/CHANGELOG.md#2190-january-31-2022) for the [Twilio Video JS SDK](https://github.com/twilio/twilio-video.js).
+
 ## 0.6.1 (December 17, 2021)
 
 ### Dependency Upgrades

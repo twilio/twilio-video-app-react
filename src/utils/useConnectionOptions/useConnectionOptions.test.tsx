@@ -26,7 +26,7 @@ describe('the useConnectionOptions function', () => {
       dominantSpeaker: true,
       maxAudioBitrate: 0,
       networkQuality: { local: 1, remote: 1 },
-      preferredVideoCodecs: [{ codec: 'VP8', simulcast: true }],
+      preferredVideoCodecs: 'auto',
     };
 
     mockUseAppState.mockImplementationOnce(() => ({ settings }));
@@ -56,34 +56,10 @@ describe('the useConnectionOptions function', () => {
       dominantSpeaker: true,
       maxAudioBitrate: 0,
       networkQuality: { local: 1, remote: 1 },
-      preferredVideoCodecs: [{ codec: 'VP8', simulcast: true }],
+      preferredVideoCodecs: 'auto',
     };
 
     mockUseAppState.mockImplementationOnce(() => ({ settings }));
     expect(useConnectionOptions()).toEqual(result);
-  });
-
-  it('should disable simulcast when the room type is peer to peer', () => {
-    const settings: Settings = {
-      trackSwitchOffMode: 'detected',
-      dominantSpeakerPriority: 'high',
-      bandwidthProfileMode: 'collaboration',
-      maxAudioBitrate: '0',
-    };
-
-    mockUseAppState.mockImplementationOnce(() => ({ settings, roomType: 'peer-to-peer' }));
-    expect(useConnectionOptions()).toMatchObject({ preferredVideoCodecs: [{ codec: 'VP8', simulcast: false }] });
-  });
-
-  it('should disable simulcast when the room type is "go"', () => {
-    const settings: Settings = {
-      trackSwitchOffMode: 'detected',
-      dominantSpeakerPriority: 'high',
-      bandwidthProfileMode: 'collaboration',
-      maxAudioBitrate: '0',
-    };
-
-    mockUseAppState.mockImplementationOnce(() => ({ settings, roomType: 'go' }));
-    expect(useConnectionOptions()).toMatchObject({ preferredVideoCodecs: [{ codec: 'VP8', simulcast: false }] });
   });
 });
