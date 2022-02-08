@@ -47,6 +47,12 @@
     "typescript": "^3.8.3"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^6.4.18",
+    "@storybook/addon-essentials": "^6.4.18",
+    "@storybook/addon-links": "^6.4.18",
+    "@storybook/node-logger": "^6.4.18",
+    "@storybook/preset-create-react-app": "^3.2.0",
+    "@storybook/react": "^6.4.18",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/react-hooks": "^3.2.1",
@@ -87,7 +93,9 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --browser chrome",
     "cypress:ci": "cross-env CYPRESS_baseUrl=http://localhost:8081 start-server-and-test server http://localhost:8081 cypress:run",
-    "deploy:twilio-cli": "cross-env REACT_APP_SET_AUTH=passcode npm run build && twilio rtc:apps:video:deploy --authentication=passcode --app-directory ./build"
+    "deploy:twilio-cli": "cross-env REACT_APP_SET_AUTH=passcode npm run build && twilio rtc:apps:video:deploy --authentication=passcode --app-directory ./build",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": "react-app",
@@ -96,7 +104,17 @@
       "@typescript-eslint/no-shadow": [
         "warn"
       ]
-    }
+    },
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
+    ]
   },
   "browserslist": {
     "production": [
