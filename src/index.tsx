@@ -20,7 +20,7 @@ import UnsupportedBrowserWarning from './components/UnsupportedBrowserWarning/Un
 const VideoApp = () => {
   const { error, setError } = useAppState();
   const connectionOptions = useConnectionOptions();
-
+  console.log(1);
   return (
     <VideoProvider options={connectionOptions} onError={setError}>
       <ErrorDialog dismissError={() => setError(null)} error={error} />

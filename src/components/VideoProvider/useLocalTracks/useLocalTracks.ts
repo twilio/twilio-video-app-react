@@ -63,7 +63,7 @@ export default function useLocalTracks() {
     if (isAcquiringLocalTracks || audioTrack || videoTrack) return Promise.resolve();
 
     setIsAcquiringLocalTracks(true);
-
+    console.log(3);
     const selectedAudioDeviceId = window.localStorage.getItem(SELECTED_AUDIO_INPUT_KEY);
     const selectedVideoDeviceId = window.localStorage.getItem(SELECTED_VIDEO_INPUT_KEY);
 

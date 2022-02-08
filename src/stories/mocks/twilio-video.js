@@ -1,11 +1,33 @@
 import { action } from '@storybook/addon-actions';
 import EventEmitter from 'events';
 
+// navigator.permissions = false;
+Object.defineProperty(navigator, 'permissions', { value: false });
+
+navigator.mediaDevices.enumerateDevices = () => Promise.resolve([]);
+
+window.sessionStorage.setItem('passcode', 123412341234);
+
+// window.location.origin = window.location.origin + '?q=twil.io';
+
+const oldFetch = window.fetch;
+window.fetch = (...args) => {
+  console.log(args);
+  if (args[0] === '/token') {
+    return Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve({ token: 'yay' }),
+    });
+  } else {
+    return oldFetch(...args);
+  }
+};
+
 class MockTrack extends EventEmitter {
   constructor(kind) {
     super();
     this.name = kind;
-    this.kind = kind === 'video-composer-presentation' || kind === 'video' ? 'video' : 'audio';
+    this.kind = kind === 'screen' || kind === 'video' ? 'video' : 'audio';
     this.isEnabled = true;
     this.isSwitchedOff = false;
   }
@@ -13,7 +35,7 @@ class MockTrack extends EventEmitter {
   attach(el) {
     if (this.kind === 'video') {
       el.loop = true;
-      if (this.name === 'video-composer-presentation') {
+      if (this.name === 'screen') {
         // Change this URL to change the aspect ratio of the image.
         // To use a video source, set the 'el.src' property instead and uncomment el.play() below
         el.poster = 'https://dummyimage.com/800x450/c25050/ffffff.png&text=Screen+share';
@@ -23,11 +45,16 @@ class MockTrack extends EventEmitter {
       try {
         // el.play();
       } catch {}
+    } else {
+      return document.createElement('audio');
     }
   }
 
   detach(el) {
-    el.src = '';
+    if (el?.src) {
+      el.src = '';
+    }
+    return [];
   }
 
   disable() {
@@ -54,16 +81,24 @@ class MockTrack extends EventEmitter {
 class MockPublication extends EventEmitter {
   constructor(kind) {
     super();
-    this.kind = kind === 'video-composer-presentation' || kind === 'video' ? 'video' : 'audio';
+    this.kind = kind === 'screen' || kind === 'video' ? 'video' : 'audio';
     this.track = new MockTrack(kind);
     this.trackName = kind;
   }
+}
+
+class LocalParticipant extends EventEmitter {
+  videoTracks = new Map();
+  audioTracks = new Map();
+  tracks = new Map();
 }
 
 class MockRoom extends EventEmitter {
   name = 'test room';
   participants = new Map();
   dominantSpeaker = null;
+  state = 'connected';
+  localParticipant = new LocalParticipant();
 }
 
 const mockRoom = new MockRoom();
@@ -109,9 +144,14 @@ export const connect = (...params) => {
   }
 };
 
+export default {
+  isSupported: true,
+  connect,
+};
+
 // The decorator to be used in ./storybook/preview to apply the mock to all stories
 export function decorator(story, { args }) {
-  for (let i = 1; i <= 15; i++) {
+  for (let i = 1; i <= 50; i++) {
     const identity = `test-${i}`;
 
     if (i <= args.participants) {
@@ -138,12 +178,12 @@ export function decorator(story, { args }) {
         const presentationList = args.presentationParticipant.split(',');
 
         if (presentationList.includes(i.toString())) {
-          mockParticipant.publishTrack('video-composer-presentation');
+          mockParticipant.publishTrack('screen');
         } else {
-          mockParticipant.unpublishTrack('video-composer-presentation');
+          mockParticipant.unpublishTrack('screen');
         }
       } else {
-        mockParticipant.unpublishTrack('video-composer-presentation');
+        mockParticipant.unpublishTrack('screen');
       }
 
       if (args.disableAllAudio) {
