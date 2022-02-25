@@ -8,8 +8,6 @@ navigator.mediaDevices.enumerateDevices = () => Promise.resolve([]);
 
 window.sessionStorage.setItem('passcode', 123412341234);
 
-// window.location.origin = window.location.origin + '?q=twil.io';
-
 const oldFetch = window.fetch;
 window.fetch = (...args) => {
   console.log(args);

@@ -7,6 +7,8 @@ import MainParticipant from '../MainParticipant/MainParticipant';
 import BackgroundSelectionDialog from '../BackgroundSelectionDialog/BackgroundSelectionDialog';
 import useChatContext from '../../hooks/useChatContext/useChatContext';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import { ParticipantAudioTracks } from '../ParticipantAudioTracks/ParticipantAudioTracks';
+import { GridView } from '../GridView/GridView';
 
 const useStyles = makeStyles((theme: Theme) => {
   const totalMobileSidebarHeight = `${theme.sidebarMobileHeight +
@@ -32,14 +34,25 @@ export default function Room() {
   const classes = useStyles();
   const { isChatWindowOpen } = useChatContext();
   const { isBackgroundSelectionOpen } = useVideoContext();
+  const displayMode = 'grid';
+
   return (
     <div
       className={clsx(classes.container, {
         [classes.rightDrawerOpen]: isChatWindowOpen || isBackgroundSelectionOpen,
       })}
     >
-      <MainParticipant />
-      <ParticipantList />
+      <ParticipantAudioTracks />
+
+      {displayMode === 'grid' && <GridView />}
+
+      {displayMode === 'collaboration' && (
+        <>
+          <MainParticipant />
+          <ParticipantList />
+        </>
+      )}
+
       <ChatWindow />
       <BackgroundSelectionDialog />
     </div>
