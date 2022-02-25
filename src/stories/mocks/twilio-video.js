@@ -28,6 +28,8 @@ class MockTrack extends EventEmitter {
     this.kind = kind === 'screen' || kind === 'video' ? 'video' : 'audio';
     this.isEnabled = true;
     this.isSwitchedOff = false;
+
+    this._dummyAudioEl_ = document.createElement('audio');
   }
 
   attach(el) {
@@ -44,7 +46,7 @@ class MockTrack extends EventEmitter {
         // el.play();
       } catch {}
     } else {
-      return document.createElement('audio');
+      return this._dummyAudioEl_;
     }
   }
 
@@ -52,7 +54,8 @@ class MockTrack extends EventEmitter {
     if (el?.src) {
       el.src = '';
     }
-    return [];
+
+    if (!el) return [this._dummyAudioEl_];
   }
 
   disable() {
@@ -82,13 +85,25 @@ class MockPublication extends EventEmitter {
     this.kind = kind === 'screen' || kind === 'video' ? 'video' : 'audio';
     this.track = new MockTrack(kind);
     this.trackName = kind;
+    this.setPriority = () => {};
   }
 }
 
 class LocalParticipant extends EventEmitter {
-  videoTracks = new Map();
-  audioTracks = new Map();
-  tracks = new Map();
+  constructor() {
+    super();
+    const videoPublication = new MockPublication('video');
+    const audioPublication = new MockPublication('audio');
+
+    this.videoTracks = new Map([['video', videoPublication]]);
+    this.audioTracks = new Map([['audio', audioPublication]]);
+    this.tracks = new Map([
+      ['video', videoPublication],
+      ['audio', audioPublication],
+    ]);
+
+    this.identity = 'Local Participant';
+  }
 }
 
 class MockRoom extends EventEmitter {
@@ -97,6 +112,7 @@ class MockRoom extends EventEmitter {
   dominantSpeaker = null;
   state = 'connected';
   localParticipant = new LocalParticipant();
+  disconnect = () => {};
 }
 
 const mockRoom = new MockRoom();
@@ -116,6 +132,7 @@ class MockParticipant extends EventEmitter {
       const publication = new MockPublication(kind);
       this.tracks.set(kind, publication);
       this.emit('trackSubscribed', publication.track);
+      this.emit('trackPublished', publication);
       mockRoom.emit('trackPublished', publication, this);
     }
   }
@@ -125,6 +142,7 @@ class MockParticipant extends EventEmitter {
     if (publication) {
       this.tracks.delete(kind);
       this.emit('trackUnsubscribed', publication.track);
+      this.emit('trackUnpublished', publication);
       mockRoom.emit('trackUnpublished', publication, this);
     }
   }
@@ -136,7 +154,9 @@ export const connect = (...params) => {
   action('Connected to Twilio Video Room')(...params);
   if (!isConnected) {
     isConnected = true;
-    return Promise.resolve(mockRoom);
+    return new Promise(resolve => {
+      setTimeout(() => resolve(mockRoom), 1000);
+    });
   } else {
     return Promise.reject('Already connected to mock Twilio Room');
   }

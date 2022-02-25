@@ -14,7 +14,6 @@ export default function useScreenShareParticipant() {
   useEffect(() => {
     if (room) {
       const updateScreenShareParticipant = () => {
-        console.log(room.participants.values());
         setScreenShareParticipant(
           Array.from<Participant>(room.participants.values())
             // the screenshare participant could be the localParticipant

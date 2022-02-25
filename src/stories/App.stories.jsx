@@ -6,7 +6,7 @@ export default {
   layout: 'fullscreen',
   argTypes: {
     participants: {
-      control: { type: 'range', min: 0, max: 50, step: 1 },
+      control: { type: 'range', min: 0, max: 100, step: 1 },
     },
     dominantSpeaker: {
       control: { type: 'text' },
@@ -15,9 +15,6 @@ export default {
       control: { type: 'text' },
     },
     disableAllAudio: {
-      control: { type: 'boolean' },
-    },
-    disableAllVideo: {
       control: { type: 'boolean' },
     },
     unpublishAllAudio: {
@@ -40,7 +37,6 @@ Prod.args = {
   dominantSpeaker: null,
   presentationParticipant: null,
   disableAllAudio: false,
-  disableAllVideo: false,
   unpublishAllAudio: false,
   unpublishAllVideo: false,
   switchOffAllVideo: false,

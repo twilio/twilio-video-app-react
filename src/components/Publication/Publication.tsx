@@ -34,8 +34,8 @@ export default function Publication({ publication, isLocalParticipant, videoOnly
           isLocal={!track.name.includes('screen') && isLocalParticipant}
         />
       );
-    case 'audio':
-      return videoOnly ? null : <AudioTrack track={track as IAudioTrack} />;
+    // case 'audio':
+    //   return videoOnly ? null : <AudioTrack track={track as IAudioTrack} />;
     default:
       return null;
   }

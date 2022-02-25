@@ -9,6 +9,7 @@ import useChatContext from '../../hooks/useChatContext/useChatContext';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { ParticipantAudioTracks } from '../ParticipantAudioTracks/ParticipantAudioTracks';
 import { GridView } from '../GridView/GridView';
+import { useAppState } from '../../state';
 
 const useStyles = makeStyles((theme: Theme) => {
   const totalMobileSidebarHeight = `${theme.sidebarMobileHeight +
@@ -34,7 +35,7 @@ export default function Room() {
   const classes = useStyles();
   const { isChatWindowOpen } = useChatContext();
   const { isBackgroundSelectionOpen } = useVideoContext();
-  const displayMode = 'grid';
+  const { gridModeActive } = useAppState();
 
   return (
     <div
@@ -44,9 +45,9 @@ export default function Room() {
     >
       <ParticipantAudioTracks />
 
-      {displayMode === 'grid' && <GridView />}
-
-      {displayMode === 'collaboration' && (
+      {gridModeActive ? (
+        <GridView />
+      ) : (
         <>
           <MainParticipant />
           <ParticipantList />

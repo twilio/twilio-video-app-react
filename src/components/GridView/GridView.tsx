@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     left: '5em',
   },
   participant: {
-    '&:nth-child(n + 27)': {
+    '&:nth-child(n + 26)': {
       display: 'none',
     },
   },

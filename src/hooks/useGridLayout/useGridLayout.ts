@@ -35,6 +35,7 @@ export const layoutIsTooSmall = (
 export default function useGridLayout(participantCount: number, isPresentationModeActive: boolean) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [participantVideoWidth, setParticipantVideoWidth] = useState(0);
+
   useEffect(() => {
     const observer = new ResizeObserver(throttle(updateLayout, 20));
     observer.observe(containerRef.current!);
@@ -47,7 +48,6 @@ export default function useGridLayout(participantCount: number, isPresentationMo
     if (!containerRef.current) return;
     const containerWidth = containerRef.current.offsetWidth - MARGIN * 2;
     const containerHeight = containerRef.current.offsetHeight - MARGIN * 2;
-    console.log(participantCount, containerWidth, containerHeight);
 
     let newParticipantVideoWidth = 1;
 
