@@ -10,15 +10,13 @@ const ASPECT_RATIO = 9 / 16; // 16:9
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
-    position: 'absolute',
     display: 'flex',
+    width: 'calc(100% - 200px)',
+    margin: '0 auto',
     alignContent: 'center',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    top: '3px',
-    right: '5em',
-    bottom: '3px',
-    left: '5em',
+    gridArea: '1 / 1 / 2 / 3',
   },
   participant: {
     '&:nth-child(n + 26)': {
@@ -32,10 +30,7 @@ export function GridView() {
   const { room } = useVideoContext();
   const participants = useParticipants();
 
-  const { participantVideoWidth, containerRef } = useGridLayout(
-    Math.min(participants.length + 1, MAX_PARTICIPANTS),
-    false
-  );
+  const { participantVideoWidth, containerRef } = useGridLayout(Math.min(participants.length + 1, MAX_PARTICIPANTS));
 
   const participantWidth = `${participantVideoWidth}px`;
   const participantHeight = `${Math.floor(participantVideoWidth * ASPECT_RATIO)}px`;
@@ -43,7 +38,7 @@ export function GridView() {
   return (
     <div className={classes.container} ref={containerRef}>
       <div className={classes.participant} style={{ width: participantWidth, height: participantHeight, margin: 3 }}>
-        <Participant participant={room!.localParticipant} />
+        <Participant participant={room!.localParticipant} isLocalParticipant={true} />
       </div>
       {participants.map(participant => (
         <div className={classes.participant} style={{ width: participantWidth, height: participantHeight, margin: 3 }}>

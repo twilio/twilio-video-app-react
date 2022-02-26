@@ -1,6 +1,5 @@
-import { debounce } from '@material-ui/core';
 import throttle from 'lodash.throttle';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 export const ASPECT_RATIO = 9 / 16;
 export const MARGIN = 3;
@@ -32,19 +31,11 @@ export const layoutIsTooSmall = (
  * This ensures that the grid of participants' videos will always fit within the given screen size.
  */
 
-export default function useGridLayout(participantCount: number, isPresentationModeActive: boolean) {
+export default function useGridLayout(participantCount: number) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [participantVideoWidth, setParticipantVideoWidth] = useState(0);
 
-  useEffect(() => {
-    const observer = new ResizeObserver(throttle(updateLayout, 20));
-    observer.observe(containerRef.current!);
-    return () => {
-      observer.disconnect();
-    };
-  }, [participantCount]);
-
-  const updateLayout = () => {
+  const updateLayout = useCallback(() => {
     if (!containerRef.current) return;
     const containerWidth = containerRef.current.offsetWidth - MARGIN * 2;
     const containerHeight = containerRef.current.offsetHeight - MARGIN * 2;
@@ -58,9 +49,18 @@ export default function useGridLayout(participantCount: number, isPresentationMo
     }
 
     setParticipantVideoWidth(newParticipantVideoWidth - MARGIN * 2);
-  };
+  }, [participantCount]);
 
-  useLayoutEffect(updateLayout, [participantCount, isPresentationModeActive]);
+  useEffect(() => {
+    // @ts-ignore
+    const observer: any = new window.ResizeObserver(throttle(updateLayout, 60));
+    observer.observe(containerRef.current!);
+    return () => {
+      observer.disconnect();
+    };
+  }, [updateLayout]);
+
+  useLayoutEffect(updateLayout, [updateLayout]);
 
   return {
     participantVideoWidth,

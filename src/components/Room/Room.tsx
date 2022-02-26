@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles, Theme } from '@material-ui/core';
+import { makeStyles, Theme, useMediaQuery, useTheme } from '@material-ui/core';
 import ChatWindow from '../ChatWindow/ChatWindow';
 import ParticipantList from '../ParticipantList/ParticipantList';
 import MainParticipant from '../MainParticipant/MainParticipant';
@@ -36,6 +36,8 @@ export default function Room() {
   const { isChatWindowOpen } = useChatContext();
   const { isBackgroundSelectionOpen } = useVideoContext();
   const { gridModeActive } = useAppState();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <div
@@ -45,7 +47,7 @@ export default function Room() {
     >
       <ParticipantAudioTracks />
 
-      {gridModeActive ? (
+      {gridModeActive && !isMobile ? (
         <GridView />
       ) : (
         <>

@@ -16,5 +16,11 @@ function Participant({ participant }: { participant: RemoteParticipant }) {
 export function ParticipantAudioTracks() {
   const participants = useParticipants();
 
-  return participants.map(participant => <Participant key={participant.sid} participant={participant} />);
+  return (
+    <>
+      {participants.map(participant => (
+        <Participant key={participant.sid} participant={participant} />
+      ))}
+    </>
+  );
 }
