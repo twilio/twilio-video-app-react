@@ -17,7 +17,7 @@ const mockToggleChatWindow = jest.fn();
 const mockOpenBackgroundSelection = jest.fn();
 mockUseChatContext.mockImplementation(() => ({ setIsChatWindowOpen: mockToggleChatWindow }));
 mockUseVideoContext.mockImplementation(() => ({ setIsBackgroundSelectionOpen: mockOpenBackgroundSelection }));
-mockUseAppState.mockImplementation(() => ({ gridModeActive: false }));
+mockUseAppState.mockImplementation(() => ({ isGridModeActive: false }));
 
 describe('the Room component', () => {
   it('should render correctly when the chat window and background selection windows are closed', () => {
@@ -47,7 +47,7 @@ describe('the Room component', () => {
 
   it('should render correctly when grid mode is active', () => {
     mockUseVideoContext.mockImplementationOnce(() => ({ isBackgroundSelectionOpen: true }));
-    mockUseAppState.mockImplementationOnce(() => ({ gridModeActive: true }));
+    mockUseAppState.mockImplementationOnce(() => ({ isGridModeActive: true }));
     const wrapper = shallow(<Room />);
     expect(wrapper.find('MainParticipant').exists()).toBe(false);
     expect(wrapper.find('ParticipantList').exists()).toBe(false);

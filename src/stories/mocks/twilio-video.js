@@ -160,10 +160,12 @@ export const connect = (...params) => {
   }
 };
 
-export default {
+const defaults = {
   isSupported: true,
   connect,
 };
+
+export default defaults;
 
 // Disable conversations
 process.env.REACT_APP_DISABLE_TWILIO_CONVERSATIONS = 'true';
