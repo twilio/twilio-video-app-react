@@ -44,7 +44,7 @@
     "ts-node": "^9.1.1",
     "twilio": "^3.63.1",
     "twilio-video": "^2.19.0",
-    "typescript": "^3.8.3"
+    "typescript": "^4.6.2"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^6.4.18",
