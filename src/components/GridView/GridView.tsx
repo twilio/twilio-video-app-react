@@ -45,10 +45,11 @@ export function GridView() {
       </div>
       {participants.map(participant => (
         <div
+          key={participant.sid}
           className={classes.participant}
           style={{ width: participantWidth, height: participantHeight, margin: GRID_MODE_MARGIN }}
         >
-          <Participant key={participant.sid} participant={participant} />
+          <Participant participant={participant} />
         </div>
       ))}
     </div>
