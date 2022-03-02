@@ -35,37 +35,4 @@ describe('the Publication component', () => {
       expect(wrapper.find({ isLocal: true }).length).toBe(1);
     });
   });
-  describe('when track.kind is "audio"', () => {
-    it('should render an AudioTrack', () => {
-      mockUseTrack.mockImplementation(() => ({ kind: 'audio', name: '123456' }));
-      const wrapper = shallow(
-        <Publication isLocalParticipant publication={'mockPublication' as any} participant={'mockParticipant' as any} />
-      );
-      expect(useTrack).toHaveBeenCalledWith('mockPublication');
-      expect(wrapper.find('AudioTrack').length).toBe(1);
-    });
-
-    it('should render null when videoOnly is true', () => {
-      mockUseTrack.mockImplementation(() => ({ kind: 'audio' }));
-      const wrapper = shallow(
-        <Publication
-          isLocalParticipant
-          publication={'mockPublication' as any}
-          participant={'mockParticipant' as any}
-          videoOnly={true}
-        />
-      );
-      expect(useTrack).toHaveBeenCalledWith('mockPublication');
-      expect(wrapper.find('AudioTrack').length).toBe(0);
-    });
-  });
-
-  it('should render null when there is no track', () => {
-    mockUseTrack.mockImplementation(() => null);
-    const wrapper = shallow(
-      <Publication isLocalParticipant publication={'mockPublication' as any} participant={'mockParticipant' as any} />
-    );
-    expect(useTrack).toHaveBeenCalledWith('mockPublication');
-    expect(wrapper.find('*').length).toBe(0);
-  });
 });

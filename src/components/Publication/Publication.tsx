@@ -18,6 +18,8 @@ export default function Publication({ publication, isLocalParticipant, videoPrio
 
   if (!track) return null;
 
+  // Even though we only have one case here, let's keep this switch() in case
+  // we even need to add a 'data' case for rendering DataTracks.
   switch (track.kind) {
     case 'video':
       return (
@@ -27,8 +29,7 @@ export default function Publication({ publication, isLocalParticipant, videoPrio
           isLocal={!track.name.includes('screen') && isLocalParticipant}
         />
       );
-    // case 'audio':
-    //   return videoOnly ? null : <AudioTrack track={track as IAudioTrack} />;
+    // All participant audio tracks are rendered in ParticipantAudioTracks.tsx
     default:
       return null;
   }
