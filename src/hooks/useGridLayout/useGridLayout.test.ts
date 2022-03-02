@@ -2,6 +2,14 @@ import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import useGridLayout, { layoutIsTooSmall } from './useGridLayout';
 
+class MockResizeObserver {
+  observe() {}
+  disconnect() {}
+}
+
+// @ts-ignore
+window.ResizeObserver = MockResizeObserver as any;
+
 describe('the layoutIsTooSmall function', () => {
   it('should return false if the grid is taller than the height of the app container', () => {
     expect(layoutIsTooSmall(989, 3, 1280, 720)).toBe(false);
@@ -39,7 +47,7 @@ describe('the useGridLayout hook', () => {
 
   testInputs.forEach(test => {
     it(`should return a participantVideoWidth of ${test.expectedWidth} when rendering ${test.participants} participant(s)`, () => {
-      const { result } = renderHook(() => useGridLayout(test.participants, false));
+      const { result } = renderHook(() => useGridLayout(test.participants));
       expect(result.current.participantVideoWidth).toBe(test.expectedWidth);
     });
   });
@@ -48,20 +56,7 @@ describe('the useGridLayout hook', () => {
     jest.spyOn(React, 'useRef').mockReturnValueOnce({
       current: null,
     });
-    const { result } = renderHook(() => useGridLayout(3, false));
+    const { result } = renderHook(() => useGridLayout(3));
     expect(result.current.participantVideoWidth).toBe(0);
-  });
-
-  it('should rerender when isPresentationModeActive changes', () => {
-    const { result, rerender } = renderHook(
-      ({ participants, isPresentationModeActive }) => useGridLayout(participants, isPresentationModeActive),
-      { initialProps: { participants: 3, isPresentationModeActive: false } }
-    );
-    expect(result.current.participantVideoWidth).toBe(628);
-
-    mockContainerEl.offsetWidth = 128;
-    rerender({ participants: 3, isPresentationModeActive: true });
-
-    expect(result.current.participantVideoWidth).toBe(116);
   });
 });

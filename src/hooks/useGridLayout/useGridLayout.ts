@@ -1,8 +1,6 @@
 import throttle from 'lodash.throttle';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-
-export const ASPECT_RATIO = 9 / 16;
-export const MARGIN = 3;
+import { GRID_MODE_ASPECT_RATIO, GRID_MODE_MARGIN } from '../../constants';
 
 /**
  * This function determines how many columns and rows are to be used
@@ -16,7 +14,7 @@ export const layoutIsTooSmall = (
   containerHeight: number
 ) => {
   const videoWidth = newVideoSize;
-  const videoHeight = newVideoSize * ASPECT_RATIO;
+  const videoHeight = newVideoSize * GRID_MODE_ASPECT_RATIO;
 
   const columns = Math.floor(containerWidth / videoWidth);
   const rows = Math.ceil(participantCount / columns);
@@ -37,8 +35,8 @@ export default function useGridLayout(participantCount: number) {
 
   const updateLayout = useCallback(() => {
     if (!containerRef.current) return;
-    const containerWidth = containerRef.current.offsetWidth - MARGIN * 2;
-    const containerHeight = containerRef.current.offsetHeight - MARGIN * 2;
+    const containerWidth = containerRef.current.offsetWidth - GRID_MODE_MARGIN * 2;
+    const containerHeight = containerRef.current.offsetHeight - GRID_MODE_MARGIN * 2;
 
     let newParticipantVideoWidth = 1;
 
@@ -48,12 +46,11 @@ export default function useGridLayout(participantCount: number) {
       newParticipantVideoWidth++;
     }
 
-    setParticipantVideoWidth(newParticipantVideoWidth - MARGIN * 2);
+    setParticipantVideoWidth(newParticipantVideoWidth - GRID_MODE_MARGIN * 2);
   }, [participantCount]);
 
   useEffect(() => {
-    // @ts-ignore
-    const observer: any = new window.ResizeObserver(throttle(updateLayout, 60));
+    const observer = new window.ResizeObserver(throttle(updateLayout, 60));
     observer.observe(containerRef.current!);
     return () => {
       observer.disconnect();
