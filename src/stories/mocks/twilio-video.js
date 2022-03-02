@@ -6,8 +6,6 @@ Object.defineProperty(navigator, 'permissions', { value: false });
 
 navigator.mediaDevices.enumerateDevices = () => Promise.resolve([]);
 
-window.sessionStorage.setItem('passcode', 123412341234);
-
 const oldFetch = window.fetch;
 window.fetch = (...args) => {
   console.log(args);
