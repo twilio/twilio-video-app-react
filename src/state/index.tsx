@@ -22,7 +22,7 @@ export interface StateContextType {
   dispatchSetting: React.Dispatch<SettingsAction>;
   roomType?: RoomType;
   updateRecordingRules(room_sid: string, rules: RecordingRules): Promise<object>;
-  gridModeActive: boolean;
+  isGridModeActive: boolean;
   setIsGridModeActive: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -40,7 +40,7 @@ export const StateContext = createContext<StateContextType>(null!);
 export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const [error, setError] = useState<TwilioError | null>(null);
   const [isFetching, setIsFetching] = useState(false);
-  const [gridModeActive, setIsGridModeActive] = useState(false);
+  const [isGridModeActive, setIsGridModeActive] = useState(false);
   const [activeSinkId, setActiveSinkId] = useActiveSinkId();
   const [settings, dispatchSetting] = useReducer(settingsReducer, initialSettings);
   const [roomType, setRoomType] = useState<RoomType>();
@@ -54,7 +54,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     settings,
     dispatchSetting,
     roomType,
-    gridModeActive,
+    isGridModeActive,
     setIsGridModeActive,
   } as StateContextType;
 

@@ -35,7 +35,7 @@ export default function Room() {
   const classes = useStyles();
   const { isChatWindowOpen } = useChatContext();
   const { isBackgroundSelectionOpen } = useVideoContext();
-  const { gridModeActive } = useAppState();
+  const { isGridModeActive } = useAppState();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -47,7 +47,7 @@ export default function Room() {
     >
       <ParticipantAudioTracks />
 
-      {gridModeActive && !isMobile ? (
+      {isGridModeActive && !isMobile ? (
         <GridView />
       ) : (
         <>
