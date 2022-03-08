@@ -1,3 +1,13 @@
+## 0.6.3 (March 2, 2022)
+
+### Dependency Upgrades
+
+- `twilio-video` has been upgraded from 2.19.0 to 2.20.1.
+
+### Bugfix
+
+- A problem was fixed in the [local server](server/index.ts) that caused index.html to be erroneously cached.
+
 ## 0.6.2 (February 4, 2022)
 
 ### Dependency Upgrades
