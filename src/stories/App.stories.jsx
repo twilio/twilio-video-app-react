@@ -6,7 +6,7 @@ export default {
   layout: 'fullscreen',
   argTypes: {
     participants: {
-      control: { type: 'range', min: 0, max: 100, step: 1 },
+      control: { type: 'range', min: 0, max: 200, step: 1 },
     },
     dominantSpeaker: {
       control: { type: 'text' },
