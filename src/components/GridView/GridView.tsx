@@ -2,7 +2,7 @@ import React from 'react';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ArrowForward from '@material-ui/icons/ArrowForward';
 import clsx from 'clsx';
-import { GRID_MODE_ASPECT_RATIO, GRID_MODE_MARGIN, GRID_MODE_MAX_PARTICIPANTS } from '../../constants';
+import { GRID_MODE_ASPECT_RATIO, GRID_MODE_MARGIN } from '../../constants';
 import { IconButton, makeStyles } from '@material-ui/core';
 
 import { Pagination } from '@material-ui/lab';
@@ -81,9 +81,7 @@ export function GridView() {
     ...participants,
   ]);
 
-  const { participantVideoWidth, containerRef } = useGridLayout(
-    Math.min(participants.length + 1, GRID_MODE_MAX_PARTICIPANTS)
-  );
+  const { participantVideoWidth, containerRef } = useGridLayout(paginatedParticipants.length);
 
   const participantWidth = `${participantVideoWidth}px`;
   const participantHeight = `${Math.floor(participantVideoWidth * GRID_MODE_ASPECT_RATIO)}px`;

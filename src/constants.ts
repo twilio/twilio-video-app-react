@@ -14,4 +14,3 @@ export const SELECTED_BACKGROUND_SETTINGS_KEY = 'TwilioVideoApp-selectedBackgrou
 
 export const GRID_MODE_ASPECT_RATIO = 9 / 16; // 16:9
 export const GRID_MODE_MARGIN = 3;
-export const GRID_MODE_MAX_PARTICIPANTS = 25;

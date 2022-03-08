@@ -12,7 +12,7 @@ export function usePagination(participants: Participant[]) {
 
   useEffect(() => {
     if (isBeyondLastPage) {
-      setCurrentPage(page => page - 1);
+      setCurrentPage(totalPages);
     }
   }, [isBeyondLastPage]);
 
