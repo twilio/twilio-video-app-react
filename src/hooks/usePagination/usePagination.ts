@@ -14,7 +14,7 @@ export function usePagination(participants: Participant[]) {
     if (isBeyondLastPage) {
       setCurrentPage(totalPages);
     }
-  }, [isBeyondLastPage]);
+  }, [isBeyondLastPage, totalPages]);
 
   let paginatedParticipants;
 
