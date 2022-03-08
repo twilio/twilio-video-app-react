@@ -13,6 +13,11 @@ function Participant({ participant }: { participant: RemoteParticipant }) {
   return null;
 }
 
+/*
+  This ParticipantAudioTracks component will render the audio track for all participants in the room.
+  It is in a separate component so that the audio tracks will always be rendered, and that they will never be 
+  unnecessarily unmounted/mounted as the user switches between Grid View and Collaboration View.
+*/
 export function ParticipantAudioTracks() {
   const participants = useParticipants();
 

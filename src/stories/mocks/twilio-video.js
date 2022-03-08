@@ -1,7 +1,6 @@
 import { action } from '@storybook/addon-actions';
 import EventEmitter from 'events';
 
-// navigator.permissions = false;
 Object.defineProperty(navigator, 'permissions', { value: false });
 
 navigator.mediaDevices.enumerateDevices = () => Promise.resolve([]);
