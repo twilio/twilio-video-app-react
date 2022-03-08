@@ -1,107 +1,145 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`the GridView component should render correctly 1`] = `
-<div
-  className="makeStyles-container-1"
->
+<Fragment>
   <div
-    className="makeStyles-participant-2"
-    style={
-      Object {
-        "height": "405px",
-        "margin": 3,
-        "width": "720px",
-      }
-    }
+    className="makeStyles-buttonContainer-2 makeStyles-buttonContainerLeft-3"
   >
-    <Participant
-      isLocalParticipant={true}
-      participant={
-        Object {
-          "identity": "test-local-participant",
-        }
-      }
+    <WithStyles(ForwardRef(IconButton))
+      className="makeStyles-paginationButton-6"
+      onClick={[Function]}
+    >
+      <Memo([object Object]) />
+    </WithStyles(ForwardRef(IconButton))>
+  </div>
+  <div
+    className="makeStyles-buttonContainer-2 makeStyles-buttonContainerRight-4"
+  >
+    <WithStyles(ForwardRef(IconButton))
+      className="makeStyles-paginationButton-6"
+      onClick={[Function]}
+    >
+      <Memo([object Object]) />
+    </WithStyles(ForwardRef(IconButton))>
+  </div>
+  <div
+    className="makeStyles-paginationContainer-7"
+  >
+    <WithStyles(ForwardRef(Pagination))
+      className="makeStyles-pagination-5"
+      color="primary"
+      count={4}
+      hideNextButton={true}
+      hidePrevButton={true}
+      onChange={[Function]}
+      page={2}
+      shape="rounded"
+      size="small"
     />
   </div>
   <div
-    className="makeStyles-participant-2"
-    key="1"
-    style={
-      Object {
-        "height": "405px",
-        "margin": 3,
-        "width": "720px",
-      }
-    }
+    className="makeStyles-container-1"
   >
-    <Participant
-      participant={
+    <div
+      key="0"
+      style={
         Object {
-          "identity": "test-participant-1",
-          "sid": 1,
+          "height": "405px",
+          "margin": 3,
+          "width": "720px",
         }
       }
-    />
-  </div>
-  <div
-    className="makeStyles-participant-2"
-    key="2"
-    style={
-      Object {
-        "height": "405px",
-        "margin": 3,
-        "width": "720px",
-      }
-    }
-  >
-    <Participant
-      participant={
+    >
+      <Participant
+        isLocalParticipant={true}
+        participant={
+          Object {
+            "identity": "test-local-participant",
+            "sid": 0,
+          }
+        }
+      />
+    </div>
+    <div
+      key="1"
+      style={
         Object {
-          "identity": "test-participant-2",
-          "sid": 2,
+          "height": "405px",
+          "margin": 3,
+          "width": "720px",
         }
       }
-    />
-  </div>
-  <div
-    className="makeStyles-participant-2"
-    key="3"
-    style={
-      Object {
-        "height": "405px",
-        "margin": 3,
-        "width": "720px",
-      }
-    }
-  >
-    <Participant
-      participant={
+    >
+      <Participant
+        isLocalParticipant={false}
+        participant={
+          Object {
+            "identity": "test-participant-1",
+            "sid": 1,
+          }
+        }
+      />
+    </div>
+    <div
+      key="2"
+      style={
         Object {
-          "identity": "test-participant-3",
-          "sid": 3,
+          "height": "405px",
+          "margin": 3,
+          "width": "720px",
         }
       }
-    />
-  </div>
-  <div
-    className="makeStyles-participant-2"
-    key="4"
-    style={
-      Object {
-        "height": "405px",
-        "margin": 3,
-        "width": "720px",
-      }
-    }
-  >
-    <Participant
-      participant={
+    >
+      <Participant
+        isLocalParticipant={false}
+        participant={
+          Object {
+            "identity": "test-participant-2",
+            "sid": 2,
+          }
+        }
+      />
+    </div>
+    <div
+      key="3"
+      style={
         Object {
-          "identity": "test-participant-4",
-          "sid": 4,
+          "height": "405px",
+          "margin": 3,
+          "width": "720px",
         }
       }
-    />
+    >
+      <Participant
+        isLocalParticipant={false}
+        participant={
+          Object {
+            "identity": "test-participant-3",
+            "sid": 3,
+          }
+        }
+      />
+    </div>
+    <div
+      key="4"
+      style={
+        Object {
+          "height": "405px",
+          "margin": 3,
+          "width": "720px",
+        }
+      }
+    >
+      <Participant
+        isLocalParticipant={false}
+        participant={
+          Object {
+            "identity": "test-participant-4",
+            "sid": 4,
+          }
+        }
+      />
+    </div>
   </div>
-</div>
+</Fragment>
 `;

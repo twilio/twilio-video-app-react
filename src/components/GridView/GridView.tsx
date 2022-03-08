@@ -4,7 +4,6 @@ import ArrowForward from '@material-ui/icons/ArrowForward';
 import clsx from 'clsx';
 import { GRID_MODE_ASPECT_RATIO, GRID_MODE_MARGIN } from '../../constants';
 import { IconButton, makeStyles } from '@material-ui/core';
-
 import { Pagination } from '@material-ui/lab';
 import Participant from '../Participant/Participant';
 import useGridLayout from '../../hooks/useGridLayout/useGridLayout';
