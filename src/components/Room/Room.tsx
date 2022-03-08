@@ -1,12 +1,15 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles, Theme } from '@material-ui/core';
+import { makeStyles, Theme, useMediaQuery, useTheme } from '@material-ui/core';
 import ChatWindow from '../ChatWindow/ChatWindow';
 import ParticipantList from '../ParticipantList/ParticipantList';
 import MainParticipant from '../MainParticipant/MainParticipant';
 import BackgroundSelectionDialog from '../BackgroundSelectionDialog/BackgroundSelectionDialog';
 import useChatContext from '../../hooks/useChatContext/useChatContext';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import { ParticipantAudioTracks } from '../ParticipantAudioTracks/ParticipantAudioTracks';
+import { GridView } from '../GridView/GridView';
+import { useAppState } from '../../state';
 
 const useStyles = makeStyles((theme: Theme) => {
   const totalMobileSidebarHeight = `${theme.sidebarMobileHeight +
@@ -32,14 +35,32 @@ export default function Room() {
   const classes = useStyles();
   const { isChatWindowOpen } = useChatContext();
   const { isBackgroundSelectionOpen } = useVideoContext();
+  const { isGridModeActive } = useAppState();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
     <div
       className={clsx(classes.container, {
         [classes.rightDrawerOpen]: isChatWindowOpen || isBackgroundSelectionOpen,
       })}
     >
-      <MainParticipant />
-      <ParticipantList />
+      {/* 
+        This ParticipantAudioTracks component will render the audio track for all participants in the room.
+        It is in a separate component so that the audio tracks will always be rendered, and that they will never be 
+        unnecessarily unmounted/mounted as the user switches between Grid View and Collaboration View.
+      */}
+      <ParticipantAudioTracks />
+
+      {isGridModeActive && !isMobile ? (
+        <GridView />
+      ) : (
+        <>
+          <MainParticipant />
+          <ParticipantList />
+        </>
+      )}
+
       <ChatWindow />
       <BackgroundSelectionDialog />
     </div>

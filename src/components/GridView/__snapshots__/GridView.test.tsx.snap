@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`the GridView component should render correctly 1`] = `
+<div
+  className="makeStyles-container-1"
+>
+  <div
+    className="makeStyles-participant-2"
+    style={
+      Object {
+        "height": "405px",
+        "margin": 3,
+        "width": "720px",
+      }
+    }
+  >
+    <Participant
+      isLocalParticipant={true}
+      participant={
+        Object {
+          "identity": "test-local-participant",
+        }
+      }
+    />
+  </div>
+  <div
+    className="makeStyles-participant-2"
+    key="1"
+    style={
+      Object {
+        "height": "405px",
+        "margin": 3,
+        "width": "720px",
+      }
+    }
+  >
+    <Participant
+      participant={
+        Object {
+          "identity": "test-participant-1",
+          "sid": 1,
+        }
+      }
+    />
+  </div>
+  <div
+    className="makeStyles-participant-2"
+    key="2"
+    style={
+      Object {
+        "height": "405px",
+        "margin": 3,
+        "width": "720px",
+      }
+    }
+  >
+    <Participant
+      participant={
+        Object {
+          "identity": "test-participant-2",
+          "sid": 2,
+        }
+      }
+    />
+  </div>
+  <div
+    className="makeStyles-participant-2"
+    key="3"
+    style={
+      Object {
+        "height": "405px",
+        "margin": 3,
+        "width": "720px",
+      }
+    }
+  >
+    <Participant
+      participant={
+        Object {
+          "identity": "test-participant-3",
+          "sid": 3,
+        }
+      }
+    />
+  </div>
+  <div
+    className="makeStyles-participant-2"
+    key="4"
+    style={
+      Object {
+        "height": "405px",
+        "margin": 3,
+        "width": "720px",
+      }
+    }
+  >
+    <Participant
+      participant={
+        Object {
+          "identity": "test-participant-4",
+          "sid": 4,
+        }
+      }
+    />
+  </div>
+</div>
+`;

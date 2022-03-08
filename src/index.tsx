@@ -31,7 +31,7 @@ const VideoApp = () => {
   );
 };
 
-ReactDOM.render(
+export const ReactApp = () => (
   <MuiThemeProvider theme={theme}>
     <CssBaseline />
     <UnsupportedBrowserWarning>
@@ -52,6 +52,7 @@ ReactDOM.render(
         </AppStateProvider>
       </Router>
     </UnsupportedBrowserWarning>
-  </MuiThemeProvider>,
-  document.getElementById('root')
+  </MuiThemeProvider>
 );
+
+ReactDOM.render(<ReactApp />, document.getElementById('root'));

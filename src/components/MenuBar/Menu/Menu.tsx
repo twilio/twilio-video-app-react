@@ -1,8 +1,10 @@
 import React, { useState, useRef } from 'react';
 import AboutDialog from '../../AboutDialog/AboutDialog';
 import BackgroundIcon from '../../../icons/BackgroundIcon';
+import CollaborationViewIcon from '@material-ui/icons/AccountBox';
 import DeviceSelectionDialog from '../../DeviceSelectionDialog/DeviceSelectionDialog';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import GridViewIcon from '@material-ui/icons/Apps';
 import InfoIconOutlined from '../../../icons/InfoIconOutlined';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import StartRecordingIcon from '../../../icons/StartRecordingIcon';
@@ -34,7 +36,7 @@ export default function Menu(props: { buttonClassName?: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
-  const { isFetching, updateRecordingRules, roomType } = useAppState();
+  const { isFetching, updateRecordingRules, roomType, setIsGridModeActive, isGridModeActive } = useAppState();
   const { setIsChatWindowOpen } = useChatContext();
   const isRecording = useIsRecording();
   const { room, setIsBackgroundSelectionOpen } = useVideoContext();
@@ -132,6 +134,24 @@ export default function Menu(props: { buttonClassName?: string }) {
           </IconContainer>
           <Typography variant="body1">Room Monitor</Typography>
         </MenuItem>
+
+        {!isMobile && (
+          <MenuItem
+            onClick={() => {
+              setIsGridModeActive(isGrid => !isGrid);
+              setMenuOpen(false);
+            }}
+          >
+            <IconContainer>
+              {isGridModeActive ? (
+                <CollaborationViewIcon style={{ fill: '#707578', width: '0.9em' }} />
+              ) : (
+                <GridViewIcon style={{ fill: '#707578', width: '0.9em' }} />
+              )}
+            </IconContainer>
+            <Typography variant="body1">{isGridModeActive ? 'Collaboration Mode' : 'Grid Mode'}</Typography>
+          </MenuItem>
+        )}
 
         <MenuItem onClick={() => setAboutOpen(true)}>
           <IconContainer>
