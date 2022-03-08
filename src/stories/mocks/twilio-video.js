@@ -172,7 +172,7 @@ process.env.REACT_APP_DISABLE_TWILIO_CONVERSATIONS = 'true';
 
 // The decorator to be used in ./storybook/preview to apply the mock to all stories
 export function decorator(story, { args }) {
-  for (let i = 1; i <= 50; i++) {
+  for (let i = 1; i <= 200; i++) {
     const identity = `test-${i}`;
 
     if (i <= args.participants) {
