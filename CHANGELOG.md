@@ -1,3 +1,9 @@
+## 0.6.4 (March 9, 2022)
+
+### Dependency Upgrades
+
+- `twilio-video` has been upgraded from 2.20.1 to 2.21.0. With this update, the [twilio-video.js SDK](https://github.com/twilio/twilio-video.js) now supports WKWebView and SFSafariViewController on iOS version 14.3 or later. For more information, please refer to [this changelog entry](https://github.com/twilio/twilio-video.js/blob/master/CHANGELOG.md#2210-march-8-2022) from the twilio-video.js SDK.
+
 ## 0.6.3 (March 2, 2022)
 
 ### Dependency Upgrades
