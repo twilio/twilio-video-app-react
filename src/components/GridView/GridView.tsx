@@ -102,17 +102,19 @@ export function GridView() {
         )}
       </div>
       <div className={classes.paginationContainer}>
-        <Pagination
-          className={classes.pagination}
-          page={currentPage}
-          count={totalPages}
-          onChange={(_, value) => setCurrentPage(value)}
-          shape="rounded"
-          color="primary"
-          size="small"
-          hidePrevButton
-          hideNextButton
-        />
+        {totalPages > 1 && (
+          <Pagination
+            className={classes.pagination}
+            page={currentPage}
+            count={totalPages}
+            onChange={(_, value) => setCurrentPage(value)}
+            shape="rounded"
+            color="primary"
+            size="small"
+            hidePrevButton
+            hideNextButton
+          />
+        )}
       </div>
       <div className={classes.container} ref={containerRef}>
         {paginatedParticipants.map(participant => (

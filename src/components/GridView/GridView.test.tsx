@@ -92,4 +92,16 @@ describe('the GridView component', () => {
         .exists()
     ).toBe(false);
   });
+
+  it('should not render the Pagination component when there is only one page', () => {
+    mockUsePagination.mockImplementationOnce(() => ({
+      currentPage: 1,
+      totalPages: 1,
+      setCurrentPage: jest.fn(),
+      paginatedParticipants: [mockLocalParticipant, ...mockParticipants],
+    }));
+
+    const wrapper = shallow(<GridView />);
+    expect(wrapper.find('.makeStyles-pagination-5').exists()).toBe(false);
+  });
 });
