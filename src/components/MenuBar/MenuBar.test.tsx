@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Grid, Typography } from '@material-ui/core';
 import MenuBar from './MenuBar';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import ToggleAudioButton from '../Buttons/ToggleAudioButton/ToggleAudioButton';
 import ToggleChatButton from '../Buttons/ToggleChatButton/ToggleChatButton';
 import ToggleScreenShareButton from '../Buttons/ToogleScreenShareButton/ToggleScreenShareButton';
