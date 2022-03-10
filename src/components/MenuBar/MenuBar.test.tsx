@@ -25,9 +25,8 @@ mockUseVideoContext.mockImplementation(() => ({
   room: { name: 'Test Room' },
 }));
 
-mockUseParticipants.mockImplementation(() => ['mockRemoteParticpant']);
-
 mockUseRoomState.mockImplementation(() => 'connected');
+mockUseParticipants.mockImplementation(() => ['mockRemoteParticpant', 'mockRemoteParticpant2']);
 
 describe('the MenuBar component', () => {
   beforeEach(() => {
@@ -126,10 +125,11 @@ describe('the MenuBar component', () => {
         .find('WithStyles(ForwardRef(Typography))')
         .at(0)
         .text()
-    ).toBe('Test Room | 2 participants');
+    ).toBe('Test Room | 3 participants');
   });
 
-  it('should correctly display the number of participants in a room when there is exactly than 1 participant', () => {
+  it('should correctly display the number of participants in a room when there is exactly 1 participant', () => {
+    mockUseParticipants.mockImplementationOnce(() => []);
     const wrapper = shallow(<MenuBar />);
     expect(
       wrapper
