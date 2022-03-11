@@ -96,6 +96,7 @@ export const ChooseableParticipant = (props: ChooseableParticipantProps) => {
         isActivePlayer={isActivePlayer}
         roundsPlayed={roundsPlayed}
         videoPriority={props.isMainSpeaker ? 'high' : undefined}
+        videoOnly
       />
     </div>
   );

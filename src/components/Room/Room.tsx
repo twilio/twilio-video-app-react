@@ -18,8 +18,7 @@ const PoweredByBar = () => (
 
 export default function Room() {
   const { activeScreen, userGroup } = useSessionContext();
-  const participants = useParticipants();
-  const { translatorParticipant } = categorizeParticipants(participants);
+  const { translatorParticipant, speakerParticipants } = useParticipants();
 
   const CurrentScreen = () => {
     if (activeScreen === ScreenType.Game) {
@@ -33,11 +32,13 @@ export default function Room() {
 
   return (
     <>
-      {userGroup === UserGroup.StreamServerTranslated && translatorParticipant ? (
-        <div className="fixed top-0 h-0 w-0">
+      <div className="fixed top-0 h-0 w-0">
+        {userGroup === UserGroup.StreamServerTranslated && translatorParticipant ? (
           <ParticipantTracks participant={translatorParticipant} audioOnly />
-        </div>
-      ) : null}
+        ) : (
+          speakerParticipants.map(part => <ParticipantTracks participant={part} audioOnly />)
+        )}
+      </div>
       <div className="flex flex-col h-screen">
         <div
           className="flex-grow flex"

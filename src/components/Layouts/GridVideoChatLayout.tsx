@@ -33,14 +33,8 @@ const LetterInfo = (props: { participant: { identity: string }; isModerator?: bo
 export const GridVideoChatLayout = () => {
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
-  const participants = useParticipants();
-  const { resources, userGroup, moderators } = useSessionContext();
-
-  const { moderatorParitcipants, normalParticipants, speakerParticipants } = categorizeParticipants(
-    participants,
-    localParticipant,
-    moderators
-  );
+  const { moderatorParitcipants, normalParticipants, speakerParticipants } = useParticipants();
+  const { resources, userGroup } = useSessionContext();
 
   return (
     <div className="flex flex-col">
@@ -80,6 +74,15 @@ export const GridVideoChatLayout = () => {
       ) : null}
       <div className="w-full aspect-w-16 aspect-h-9">
         <div className="grid grid-cols-4 grid-rows-4 gap-2 justify-center items-center">
+          {moderatorParitcipants.slice(1).map(participant => (
+            <div key={participant.sid}>
+              <ChooseableParticipant
+                participant={participant}
+                isLocalParticipant={localParticipant.sid === participant.sid}
+              />
+            </div>
+          ))}
+
           {normalParticipants.map(participant => (
             <div key={participant.sid}>
               <ChooseableParticipant
