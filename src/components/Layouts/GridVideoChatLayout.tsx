@@ -3,7 +3,6 @@ import useVideoContext from 'hooks/useVideoContext/useVideoContext';
 import React from 'react';
 import useSessionContext from 'hooks/useSessionContext';
 import { ChooseableParticipant } from 'components/ChooseableParticipant';
-import { categorizeParticipants } from 'utils/participants';
 import { RevealedCard } from 'components/RevealedCard';
 import { nameFromIdentity } from 'utils/participants';
 import cn from 'classnames';

@@ -39,5 +39,5 @@ export default function useParticipants() {
     }
   }, [room]);
 
-  return { ...categorizeParticipants(participants, localParticipant, moderators) };
+  return { ...categorizeParticipants(participants, localParticipant, moderators), localParticipant };
 }

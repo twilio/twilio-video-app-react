@@ -4,10 +4,10 @@ import useSessionContext from 'hooks/useSessionContext';
 import { GridVideoChatLayout } from 'components/Layouts/GridVideoChatLayout';
 import { CarouselGameLayout } from 'components/Layouts/CarouselGameLayout';
 import useParticipants from 'hooks/useParticipants/useParticipants';
-import { categorizeParticipants } from 'utils/participants';
 import ParticipantTracks from 'components/ParticipantTracks/ParticipantTracks';
 import { ScreenType } from 'types/ScreenType';
 import { UserGroup } from 'types/UserGroup';
+import { RemoteParticipant } from 'twilio-video';
 
 const PoweredByBar = () => (
   <div className="fixed bottom-2 px-2 z-0 w-full flex items-center justify-between h-12 lg:h-20">
@@ -18,7 +18,7 @@ const PoweredByBar = () => (
 
 export default function Room() {
   const { activeScreen, userGroup } = useSessionContext();
-  const { translatorParticipant, speakerParticipants } = useParticipants();
+  const { translatorParticipant, speakerParticipants, localParticipant } = useParticipants();
 
   const CurrentScreen = () => {
     if (activeScreen === ScreenType.Game) {
@@ -30,14 +30,22 @@ export default function Room() {
     return null;
   };
 
+  const hearableParticipants: RemoteParticipant[] = [];
+
+  if (userGroup === UserGroup.StreamServer && translatorParticipant) {
+    hearableParticipants.push(translatorParticipant as RemoteParticipant);
+  } else {
+    hearableParticipants.concat(
+      speakerParticipants.filter(part => part.sid !== localParticipant!.sid) as RemoteParticipant[]
+    );
+  }
+
   return (
     <>
       <div className="fixed top-0 h-0 w-0">
-        {userGroup === UserGroup.StreamServerTranslated && translatorParticipant ? (
-          <ParticipantTracks participant={translatorParticipant} audioOnly />
-        ) : (
-          speakerParticipants.map(part => <ParticipantTracks participant={part} audioOnly />)
-        )}
+        {hearableParticipants.map(part => (
+          <ParticipantTracks participant={part} key={part.sid} audioOnly />
+        ))}
       </div>
       <div className="flex flex-col h-screen">
         <div

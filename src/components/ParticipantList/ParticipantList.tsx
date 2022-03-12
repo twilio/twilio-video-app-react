@@ -4,7 +4,7 @@ import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 // import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
 // import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 import { ChooseableParticipant, ChooseableParticipantProps } from 'components/ChooseableParticipant';
-import { nameFromIdentity, categorizeParticipants } from 'utils/participants';
+import { nameFromIdentity } from 'utils/participants';
 
 const SmallParticipant = (props: ChooseableParticipantProps) => (
   <div className="w-40 relative flex flex-col">
