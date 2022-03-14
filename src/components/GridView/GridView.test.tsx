@@ -70,7 +70,7 @@ describe('the GridView component', () => {
     ).toBe(true);
   });
 
-  it('should not render the previous page button when the user is viewing the last page', () => {
+  it('should not render the next page button when the user is viewing the last page', () => {
     mockUsePagination.mockImplementationOnce(() => ({
       currentPage: 4,
       totalPages: 4,
