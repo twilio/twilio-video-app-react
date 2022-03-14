@@ -15,6 +15,10 @@ const CONTAINER_GUTTER = '50px';
 
 const useStyles = makeStyles({
   container: {
+    position: 'relative',
+    gridArea: '1 / 1 / 2 / 3',
+  },
+  participantContainer: {
     position: 'absolute',
     display: 'flex',
     top: CONTAINER_GUTTER,
@@ -25,7 +29,6 @@ const useStyles = makeStyles({
     alignContent: 'center',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    gridArea: '1 / 1 / 2 / 3',
   },
   buttonContainer: {
     position: 'absolute',
@@ -86,7 +89,7 @@ export function GridView() {
   const participantHeight = `${Math.floor(participantVideoWidth * GRID_MODE_ASPECT_RATIO)}px`;
 
   return (
-    <>
+    <div className={classes.container}>
       <div className={clsx(classes.buttonContainer, classes.buttonContainerLeft)}>
         {!(currentPage === 1) && (
           <IconButton className={classes.paginationButton} onClick={() => setCurrentPage(page => page - 1)}>
@@ -116,7 +119,7 @@ export function GridView() {
           />
         )}
       </div>
-      <div className={classes.container} ref={containerRef}>
+      <div className={classes.participantContainer} ref={containerRef}>
         {paginatedParticipants.map(participant => (
           <div
             key={participant.sid}
@@ -126,6 +129,6 @@ export function GridView() {
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 }

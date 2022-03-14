@@ -58,13 +58,13 @@ describe('the GridView component', () => {
     const wrapper = shallow(<GridView />);
     expect(
       wrapper
-        .find('.makeStyles-buttonContainerLeft-3')
+        .find('.makeStyles-buttonContainerLeft-4')
         .childAt(0)
         .exists()
     ).toBe(false);
     expect(
       wrapper
-        .find('.makeStyles-buttonContainerRight-4')
+        .find('.makeStyles-buttonContainerRight-5')
         .childAt(0)
         .exists()
     ).toBe(true);
@@ -81,13 +81,13 @@ describe('the GridView component', () => {
     const wrapper = shallow(<GridView />);
     expect(
       wrapper
-        .find('.makeStyles-buttonContainerLeft-3')
+        .find('.makeStyles-buttonContainerLeft-4')
         .childAt(0)
         .exists()
     ).toBe(true);
     expect(
       wrapper
-        .find('.makeStyles-buttonContainerRight-4')
+        .find('.makeStyles-buttonContainerRight-5')
         .childAt(0)
         .exists()
     ).toBe(false);
@@ -102,6 +102,6 @@ describe('the GridView component', () => {
     }));
 
     const wrapper = shallow(<GridView />);
-    expect(wrapper.find('.makeStyles-pagination-5').exists()).toBe(false);
+    expect(wrapper.find('.makeStyles-pagination-8').exists()).toBe(false);
   });
 });
