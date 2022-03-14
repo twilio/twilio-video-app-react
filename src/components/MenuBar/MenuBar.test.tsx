@@ -6,14 +6,17 @@ import ToggleAudioButton from '../Buttons/ToggleAudioButton/ToggleAudioButton';
 import ToggleChatButton from '../Buttons/ToggleChatButton/ToggleChatButton';
 import ToggleScreenShareButton from '../Buttons/ToogleScreenShareButton/ToggleScreenShareButton';
 import ToggleVideoButton from '../Buttons/ToggleVideoButton/ToggleVideoButton';
+import useParticipants from '../../hooks/useParticipants/useParticipants';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import * as utils from '../../utils';
 
 jest.mock('../../hooks/useRoomState/useRoomState');
 jest.mock('../../hooks/useVideoContext/useVideoContext');
+jest.mock('../../hooks/useParticipants/useParticipants');
 
 const mockUseRoomState = useRoomState as jest.Mock<any>;
+const mockUseParticipants = useParticipants as jest.Mock<any>;
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 
 mockUseVideoContext.mockImplementation(() => ({
@@ -23,6 +26,7 @@ mockUseVideoContext.mockImplementation(() => ({
 }));
 
 mockUseRoomState.mockImplementation(() => 'connected');
+mockUseParticipants.mockImplementation(() => ['mockRemoteParticpant', 'mockRemoteParticpant2']);
 
 describe('the MenuBar component', () => {
   beforeEach(() => {
@@ -112,5 +116,26 @@ describe('the MenuBar component', () => {
       .simulate('click');
 
     expect(mockToggleScreenShare).toHaveBeenCalledTimes(1);
+  });
+
+  it('should correctly display the number of participants in a room when there is more than 1 participant', () => {
+    const wrapper = shallow(<MenuBar />);
+    expect(
+      wrapper
+        .find('WithStyles(ForwardRef(Typography))')
+        .at(0)
+        .text()
+    ).toBe('Test Room | 3 participants');
+  });
+
+  it('should correctly display the number of participants in a room when there is exactly 1 participant', () => {
+    mockUseParticipants.mockImplementationOnce(() => []);
+    const wrapper = shallow(<MenuBar />);
+    expect(
+      wrapper
+        .find('WithStyles(ForwardRef(Typography))')
+        .at(0)
+        .text()
+    ).toBe('Test Room | 1 participant');
   });
 });

@@ -24,6 +24,8 @@ export interface StateContextType {
   updateRecordingRules(room_sid: string, rules: RecordingRules): Promise<object>;
   isGridModeActive: boolean;
   setIsGridModeActive: React.Dispatch<React.SetStateAction<boolean>>;
+  maxGridParticipants: number;
+  setMaxGridParticipants: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const StateContext = createContext<StateContextType>(null!);
@@ -44,6 +46,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const [activeSinkId, setActiveSinkId] = useActiveSinkId();
   const [settings, dispatchSetting] = useReducer(settingsReducer, initialSettings);
   const [roomType, setRoomType] = useState<RoomType>();
+  const [maxGridParticipants, setMaxGridParticipants] = useState(25);
 
   let contextValue = {
     error,
@@ -56,6 +59,8 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     roomType,
     isGridModeActive,
     setIsGridModeActive,
+    maxGridParticipants,
+    setMaxGridParticipants,
   } as StateContextType;
 
   if (process.env.REACT_APP_SET_AUTH === 'firebase') {
