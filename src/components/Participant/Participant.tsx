@@ -18,44 +18,42 @@ export interface ParticipantProps {
   videoPriority?: Track.Priority;
 }
 
-const Participant = React.memo(
-  ({
-    participant,
-    videoOnly,
-    // enableScreenShare,
-    onClick,
-    // isSelected,
-    isLocalParticipant,
-    hideParticipant,
-    isModerator,
-    noName,
-    isActivePlayer,
-    roundsPlayed,
-    videoPriority,
-  }: ParticipantProps) => {
-    return (
-      <ParticipantInfo
+const Participant = ({
+  participant,
+  videoOnly,
+  // enableScreenShare,
+  onClick,
+  // isSelected,
+  isLocalParticipant,
+  hideParticipant,
+  isModerator,
+  noName,
+  isActivePlayer,
+  roundsPlayed,
+  videoPriority,
+}: ParticipantProps) => {
+  return (
+    <ParticipantInfo
+      participant={participant}
+      onClick={onClick}
+      // isSelected={isSelected}
+      isLocalParticipant={isLocalParticipant}
+      hideParticipant={hideParticipant}
+      isModerator={isModerator}
+      noName={noName ?? false}
+      isActivePlayer={isActivePlayer}
+      roundsPlayed={roundsPlayed}
+    >
+      <ParticipantTracks
         participant={participant}
-        onClick={onClick}
-        // isSelected={isSelected}
+        videoOnly={videoOnly}
+        // enableScreenShare={enableScreenShare}
+        videoPriority={videoPriority}
         isLocalParticipant={isLocalParticipant}
-        hideParticipant={hideParticipant}
-        isModerator={isModerator}
-        noName={noName ?? false}
         isActivePlayer={isActivePlayer}
-        roundsPlayed={roundsPlayed}
-      >
-        <ParticipantTracks
-          participant={participant}
-          videoOnly={videoOnly}
-          // enableScreenShare={enableScreenShare}
-          videoPriority={videoPriority}
-          isLocalParticipant={isLocalParticipant}
-          isActivePlayer={isActivePlayer}
-        />
-      </ParticipantInfo>
-    );
-  }
-);
+      />
+    </ParticipantInfo>
+  );
+};
 
 export default Participant;

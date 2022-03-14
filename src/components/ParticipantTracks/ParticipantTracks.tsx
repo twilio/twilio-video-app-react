@@ -2,9 +2,6 @@ import React from 'react';
 import { Participant, Track } from 'twilio-video';
 import Publication from '../Publication/Publication';
 import usePublications from '../../hooks/usePublications/usePublications';
-import useSessionContext from 'hooks/useSessionContext';
-import { nameFromIdentity } from 'utils/participants';
-import { UserGroup } from 'types/UserGroup';
 
 interface ParticipantTracksProps {
   participant: Participant;
@@ -24,55 +21,52 @@ interface ParticipantTracksProps {
  *  and the Publication component renders Tracks.
  */
 
-export default function ParticipantTracks({
-  participant,
-  videoOnly,
-  // enableScreenShare,
-  videoPriority,
-  isLocalParticipant,
-  isActivePlayer,
-  audioOnly,
-}: ParticipantTracksProps) {
-  const publications = usePublications(participant);
-  const { userGroup } = useSessionContext();
+const ParticipantTracks = React.memo(
+  ({
+    participant,
+    videoPriority,
+    isLocalParticipant,
+    isActivePlayer,
+    videoOnly,
+    audioOnly,
+  }: ParticipantTracksProps) => {
+    const publications = usePublications(participant);
 
-  let filteredPublications;
-  filteredPublications = publications.filter(p => {
-    if (p.track?.kind === 'audio') {
-      const name = nameFromIdentity(participant.identity);
-      if (userGroup === UserGroup.StreamServerTranslated && name !== UserGroup.Translator) {
-        return false;
-      }
+    let filteredPublications = publications;
+
+    if (audioOnly) {
+      filteredPublications = filteredPublications.filter(p => p.kind === 'audio');
+    } else if (videoOnly) {
+      filteredPublications = filteredPublications.filter(p => p.kind === 'video');
     }
-    return true;
-  });
 
-  if (audioOnly) {
-    filteredPublications = filteredPublications.filter(p => p.track?.kind === 'audio');
+    // if (enableScreenShare && filteredPublications.some(p => p.trackName.includes('screen'))) {
+    //   // When displaying a screenshare track is allowed, and a screen share track exists,
+    //   // remove all video tracks without the name 'screen'.
+    //   filteredPublications = filteredPublications.filter(p => p.trackName.includes('screen') || p.kind !== 'video');
+    // } else {
+    //   // Else, remove all screenshare tracks
+    //   filteredPublications = filteredPublications.filter(p => !p.trackName.includes('screen'));
+    // }
+
+    return (
+      <div className="w-full h-full bg-black rounded-xl">
+        {filteredPublications.map(publication => (
+          <Publication
+            key={publication.kind}
+            publication={publication}
+            participant={participant}
+            isLocalParticipant={isLocalParticipant}
+            videoPriority={videoPriority}
+            isActivePlayer={isActivePlayer}
+          />
+        ))}
+      </div>
+    );
+  },
+  (prev, next) => {
+    return prev.participant.sid !== next.participant.sid;
   }
+);
 
-  // if (enableScreenShare && filteredPublications.some(p => p.trackName.includes('screen'))) {
-  //   // When displaying a screenshare track is allowed, and a screen share track exists,
-  //   // remove all video tracks without the name 'screen'.
-  //   filteredPublications = filteredPublications.filter(p => p.trackName.includes('screen') || p.kind !== 'video');
-  // } else {
-  //   // Else, remove all screenshare tracks
-  //   filteredPublications = filteredPublications.filter(p => !p.trackName.includes('screen'));
-  // }
-
-  return (
-    <div className="w-full h-full bg-black rounded-xl">
-      {filteredPublications.map(publication => (
-        <Publication
-          key={publication.kind}
-          publication={publication}
-          participant={participant}
-          isLocalParticipant={isLocalParticipant}
-          videoOnly={videoOnly}
-          videoPriority={videoPriority}
-          isActivePlayer={isActivePlayer}
-        />
-      ))}
-    </div>
-  );
-}
+export default ParticipantTracks;

@@ -73,23 +73,13 @@ export const GridVideoChatLayout = () => {
       ) : null}
       <div className="w-full aspect-w-16 aspect-h-9">
         <div className="grid grid-cols-4 grid-rows-4 gap-2 justify-center items-center">
-          {moderatorParitcipants.slice(1).map(participant => (
-            <div key={participant.sid}>
-              <ChooseableParticipant
-                participant={participant}
-                isLocalParticipant={localParticipant.sid === participant.sid}
-              />
-            </div>
-          ))}
-
-          {normalParticipants.map(participant => (
-            <div key={participant.sid}>
-              <ChooseableParticipant
-                participant={participant}
-                isLocalParticipant={localParticipant.sid === participant.sid}
-              />
-            </div>
-          ))}
+          {speakerParticipants
+            .filter(part => part.sid !== moderatorParitcipants[0]?.sid)
+            .map(part => (
+              <div key={part.sid}>
+                <ChooseableParticipant participant={part} isLocalParticipant={localParticipant.sid === part.sid} />
+              </div>
+            ))}
           <div
             className={
               speakerParticipants.length < 8
@@ -99,6 +89,7 @@ export const GridVideoChatLayout = () => {
           >
             {moderatorParitcipants.length >= 1 ? (
               <ChooseableParticipant
+                key={'main'}
                 participant={moderatorParitcipants[0]}
                 isModerator
                 isLocalParticipant={localParticipant.sid === moderatorParitcipants[0].sid}

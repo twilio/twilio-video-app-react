@@ -30,19 +30,19 @@ export default function Room() {
     return null;
   };
 
-  const hearableParticipants: RemoteParticipant[] = [];
+  let hearableParticipants: RemoteParticipant[];
 
-  if (userGroup === UserGroup.StreamServer && translatorParticipant) {
-    hearableParticipants.push(translatorParticipant as RemoteParticipant);
+  if (userGroup === UserGroup.StreamServer && translatorParticipant !== undefined) {
+    hearableParticipants = [translatorParticipant as RemoteParticipant];
   } else {
-    hearableParticipants.concat(
-      speakerParticipants.filter(part => part.sid !== localParticipant!.sid) as RemoteParticipant[]
-    );
+    hearableParticipants = speakerParticipants.filter(
+      part => part.sid !== localParticipant!.sid
+    ) as RemoteParticipant[];
   }
 
   return (
     <>
-      <div className="fixed top-0 h-0 w-0">
+      <div className="fixed top-0 h-0 invisible w-full" style={{ zIndex: -1 }}>
         {hearableParticipants.map(part => (
           <ParticipantTracks participant={part} key={part.sid} audioOnly />
         ))}
