@@ -3,9 +3,8 @@ import useParticipants from '../../hooks/useParticipants/useParticipants';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 // import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
 // import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
-import useSessionContext from 'hooks/useSessionContext';
 import { ChooseableParticipant, ChooseableParticipantProps } from 'components/ChooseableParticipant';
-import { nameFromIdentity, categorizeParticipants } from 'utils/participants';
+import { nameFromIdentity } from 'utils/participants';
 
 const SmallParticipant = (props: ChooseableParticipantProps) => (
   <div className="w-40 relative flex flex-col">
@@ -19,16 +18,9 @@ const SmallParticipant = (props: ChooseableParticipantProps) => (
 export default function ParticipantList() {
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
-  const participants = useParticipants();
+  const { moderatorParitcipants, normalParticipants } = useParticipants();
   // const [selectedParticipant] = useSelectedParticipant();
   // const screenShareParticipant = useScreenShareParticipant();
-  const { moderators } = useSessionContext();
-
-  const { moderatorParitcipants, normalParticipants } = categorizeParticipants(
-    participants,
-    localParticipant,
-    moderators
-  );
 
   return (
     <div className="flex overflow-x-auto pr-5 pt-5 gap-x-5 bg-grayish pl-2">
@@ -48,8 +40,8 @@ export default function ParticipantList() {
           <SmallParticipant
             key={participant.sid}
             participant={participant}
-            // isSelected={participant === selectedParticipant}
             isLocalParticipant={localParticipant.sid === participant.sid}
+            // isSelected={participant === selectedParticipant}
           />
         );
       })}
