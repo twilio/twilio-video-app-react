@@ -9,7 +9,6 @@ import ToggleVideoButton from '../../Buttons/ToggleVideoButton/ToggleVideoButton
 import { useAppState } from '../../../state';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 import { wrapPeerConnectionEvent } from '../../../utils';
-import { WatchRTCSocket, WatchRTCHttp } from '../../../test-sdk-services';
 
 import watchRTC from '@testrtc/watchrtc-sdk';
 
@@ -74,12 +73,12 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
     keys: {
       searchPeer: name,
     },
+    debug: true,
   };
 
   React.useEffect(() => {
-    const socketService = new WatchRTCSocket({ debug: false });
-    const httpService = new WatchRTCHttp({ debug: false });
-    watchRTC.init(wrtcConfig, { socketService, httpService });
+    watchRTC.init(wrtcConfig);
+    console.log('test');
     wrapPeerConnectionEvent(window, 'addstream', (e: any) => {
       if (e?.stream?.id) {
         watchRTC.mapStream(e?.stream?.id, name);
@@ -124,6 +123,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
       });
       return result;
     } catch (err) {
+      // @ts-ignore
       console.error(err.message);
       return {};
     }

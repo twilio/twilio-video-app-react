@@ -49,7 +49,12 @@ export class WatchRTCHttp {
       }),
     });
 
-    response.then().catch(err => console.log(...logPrefix('error'), err.message, { err: err.stack }));
+    return response
+      .then(() => ({}))
+      .catch(err => {
+        console.log(...logPrefix('error'), err.message, { err: err.stack });
+        return { error: err };
+      });
   }
 }
 
@@ -69,6 +74,7 @@ export class WatchRTCSocket {
   private onClose: () => void = () => {};
   private debug = false;
   private dataCollection = true;
+  private sendPromises: any[] = [];
 
   constructor(options: IWatchRTCSocketOptions) {
     if (WatchRTCSocket._instance) {
@@ -104,7 +110,9 @@ export class WatchRTCSocket {
           WatchRTCSocket._instance.wasConnected = true;
         }
       } catch (err) {
+        // @ts-ignore
         console.info(...logPrefix('error'), { err: err.stack });
+        // @ts-ignore
         onError(err.message);
       }
     };
@@ -114,7 +122,7 @@ export class WatchRTCSocket {
     };
   }
 
-  trace(...data: any[]) {
+  trace = ({ data, options }: any) => {
     const args = Array.prototype.slice.call(data);
     args.push(Date.now());
     if (args[1] instanceof RTCPeerConnection) {
@@ -122,19 +130,32 @@ export class WatchRTCSocket {
     }
 
     if (!WatchRTCSocket._instance.dataCollection) {
+      if (options?.promiseFuncs) {
+        options.promiseFuncs.resolve({ error: 'Data collection disabled' });
+      }
       return;
     }
 
     if (!WatchRTCSocket._instance.connection) {
       if (WatchRTCSocket._instance.buffer.length > 1000) {
+        if (options?.promiseFuncs) {
+          options.promiseFuncs.resolve({ error: 'Message buffer size exceeded' });
+        }
         return;
       }
       WatchRTCSocket._instance.buffer.push(args);
+      if (options?.promiseFuncs) {
+        WatchRTCSocket._instance.sendPromises.push(options.promiseFuncs);
+      }
       return;
     }
 
     if (WatchRTCSocket._instance.connection.readyState === WebSocket.OPEN) {
       WatchRTCSocket._instance.buffer.push(args);
+
+      if (options?.promiseFuncs?.resolve) {
+        WatchRTCSocket._instance.sendPromises.push(options?.promiseFuncs);
+      }
 
       if (WatchRTCSocket._instance.buffer.length >= WatchRTCSocket._instance.sendInterval) {
         const lines = JSON.stringify(WatchRTCSocket._instance.buffer);
@@ -145,12 +166,17 @@ export class WatchRTCSocket {
         }
         WatchRTCSocket._instance.buffer = [];
         WatchRTCSocket._instance.connection.send(compressedMessage);
+        WatchRTCSocket._instance.sendPromises.forEach(({ resolve }) => resolve());
+        WatchRTCSocket._instance.sendPromises = [];
       }
     }
-  }
+  };
 
   close() {
     WatchRTCSocket._instance.buffer = [];
+
+    WatchRTCSocket._instance.sendPromises.forEach(({ resolve }) => resolve({ error: 'Connection was close' }));
+    WatchRTCSocket._instance.sendPromises = [];
 
     if (WatchRTCSocket._instance.connection) {
       WatchRTCSocket._instance.connection.close();
