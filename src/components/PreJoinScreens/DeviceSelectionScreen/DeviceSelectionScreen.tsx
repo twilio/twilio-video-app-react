@@ -74,6 +74,10 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
       searchPeer: name,
     },
     debug: true,
+    console: {
+      level: 'log',
+      override: true,
+    },
   };
 
   React.useEffect(() => {
