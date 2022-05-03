@@ -53,11 +53,7 @@ export function CaptionRenderer() {
         if (existingID) {
           const existingIdIndex = arrayCopy.indexOf(existingID);
           arrayCopy[existingIdIndex] = { transcript, id, timestamp, identity };
-        }
-        // else if (/* the last transcript has the same identity */){
-        //     /* append to that transcription instead of creating a new one */
-        // }
-        else {
+        } else {
           arrayCopy.push({ transcript, id, timestamp, identity });
         }
 
