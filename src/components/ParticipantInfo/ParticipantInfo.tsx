@@ -14,6 +14,9 @@ import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackS
 import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
 import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
+import { GRID_MODE_MARGIN } from '../../constants';
+
+const borderWidth = 3;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -124,6 +127,10 @@ const useStyles = makeStyles((theme: Theme) =>
     cursorPointer: {
       cursor: 'pointer',
     },
+    dominantSpeaker: {
+      border: `solid ${borderWidth}px #7BEAA5`,
+      margin: `${GRID_MODE_MARGIN} - borderWidth`,
+    },
   })
 );
 
@@ -134,6 +141,7 @@ interface ParticipantInfoProps {
   isSelected?: boolean;
   isLocalParticipant?: boolean;
   hideParticipant?: boolean;
+  isDominantSpeaker?: boolean;
 }
 
 export default function ParticipantInfo({
@@ -143,6 +151,7 @@ export default function ParticipantInfo({
   children,
   isLocalParticipant,
   hideParticipant,
+  isDominantSpeaker,
 }: ParticipantInfoProps) {
   const publications = usePublications(participant);
 
@@ -165,6 +174,7 @@ export default function ParticipantInfo({
       className={clsx(classes.container, {
         [classes.hideParticipant]: hideParticipant,
         [classes.cursorPointer]: Boolean(onClick),
+        [classes.dominantSpeaker]: isDominantSpeaker,
       })}
       onClick={onClick}
       data-cy-participant={participant.identity}

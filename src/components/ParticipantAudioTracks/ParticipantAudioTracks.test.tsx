@@ -2,7 +2,7 @@ import React from 'react';
 import { EventEmitter } from 'events';
 import { mount } from 'enzyme';
 import { ParticipantAudioTracks } from './ParticipantAudioTracks';
-import useParticipants from '../../hooks/useParticipants/useParticipants';
+import useParticipants from '../../hooks/useCollaborationParticipants/useCollaborationParticipants';
 
 function MockAudioTrack() {
   return <div>Mock Audio Track</div>;

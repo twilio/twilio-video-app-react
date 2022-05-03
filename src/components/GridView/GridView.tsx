@@ -7,9 +7,10 @@ import { IconButton, makeStyles } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import Participant from '../Participant/Participant';
 import useGridLayout from '../../hooks/useGridLayout/useGridLayout';
-import useParticipants from '../../hooks/useParticipants/useParticipants';
+import useParticipants from '../../hooks/useCollaborationParticipants/useCollaborationParticipants';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { usePagination } from '../../hooks/usePagination/usePagination';
+import useDominantSpeaker from '../../hooks/useDominantSpeaker/useDominantSpeaker';
 
 const CONTAINER_GUTTER = '50px';
 
@@ -77,6 +78,7 @@ export function GridView() {
   const classes = useStyles();
   const { room } = useVideoContext();
   const participants = useParticipants();
+  const dominantSpeaker = useDominantSpeaker();
 
   const { paginatedParticipants, setCurrentPage, currentPage, totalPages } = usePagination([
     room!.localParticipant,
@@ -125,7 +127,11 @@ export function GridView() {
             key={participant.sid}
             style={{ width: participantWidth, height: participantHeight, margin: GRID_MODE_MARGIN }}
           >
-            <Participant participant={participant} isLocalParticipant={participant === room!.localParticipant} />
+            <Participant
+              participant={participant}
+              isLocalParticipant={participant === room!.localParticipant}
+              isDominantSpeaker={participant === dominantSpeaker}
+            />
           </div>
         ))}
       </div>

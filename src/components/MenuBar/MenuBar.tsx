@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import EndCallButton from '../Buttons/EndCallButton/EndCallButton';
 import { isMobile } from '../../utils';
 import Menu from './Menu/Menu';
-import useParticipants from '../../hooks/useParticipants/useParticipants';
+import useParticipants from '../../hooks/useCollaborationParticipants/useCollaborationParticipants';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { Typography, Grid, Hidden } from '@material-ui/core';
