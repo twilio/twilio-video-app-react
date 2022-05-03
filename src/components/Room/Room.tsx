@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { makeStyles, Theme } from '@material-ui/core';
+import { CaptionRenderer } from '../CaptionRenderer/CaptionRenderer';
 import ChatWindow from '../ChatWindow/ChatWindow';
 import ParticipantList from '../ParticipantList/ParticipantList';
 import MainParticipant from '../MainParticipant/MainParticipant';
@@ -42,6 +43,7 @@ export default function Room() {
       <ParticipantList />
       <ChatWindow />
       <BackgroundSelectionDialog />
+      <CaptionRenderer />
     </div>
   );
 }
