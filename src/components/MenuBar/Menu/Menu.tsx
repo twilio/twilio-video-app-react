@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import AboutDialog from '../../AboutDialog/AboutDialog';
 import BackgroundIcon from '../../../icons/BackgroundIcon';
+import ClosedCaptionsIcon from '@material-ui/icons/ClosedCaption';
 import DeviceSelectionDialog from '../../DeviceSelectionDialog/DeviceSelectionDialog';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import InfoIconOutlined from '../../../icons/InfoIconOutlined';
@@ -34,7 +35,7 @@ export default function Menu(props: { buttonClassName?: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
-  const { isFetching, updateRecordingRules, roomType } = useAppState();
+  const { isFetching, updateRecordingRules, roomType, displayCaptions, setDisplayCaptions } = useAppState();
   const { setIsChatWindowOpen } = useChatContext();
   const isRecording = useIsRecording();
   const { room, setIsBackgroundSelectionOpen } = useVideoContext();
@@ -131,6 +132,13 @@ export default function Menu(props: { buttonClassName?: string }) {
             <SearchIcon style={{ fill: '#707578', width: '0.9em' }} />
           </IconContainer>
           <Typography variant="body1">Room Monitor</Typography>
+        </MenuItem>
+
+        <MenuItem onClick={() => setDisplayCaptions(prevDisplayCaptions => !prevDisplayCaptions)}>
+          <IconContainer>
+            <ClosedCaptionsIcon />
+          </IconContainer>
+          <Typography variant="body1">{displayCaptions ? 'Hide Captions' : 'Show Captions'}</Typography>
         </MenuItem>
 
         <MenuItem onClick={() => setAboutOpen(true)}>

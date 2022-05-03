@@ -22,6 +22,8 @@ export interface StateContextType {
   dispatchSetting: React.Dispatch<SettingsAction>;
   roomType?: RoomType;
   updateRecordingRules(room_sid: string, rules: RecordingRules): Promise<object>;
+  displayCaptions: boolean;
+  setDisplayCaptions: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const StateContext = createContext<StateContextType>(null!);
@@ -41,6 +43,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const [activeSinkId, setActiveSinkId] = useActiveSinkId();
   const [settings, dispatchSetting] = useReducer(settingsReducer, initialSettings);
   const [roomType, setRoomType] = useState<RoomType>();
+  const [displayCaptions, setDisplayCaptions] = useState(false);
 
   let contextValue = {
     error,
@@ -51,6 +54,8 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     settings,
     dispatchSetting,
     roomType,
+    displayCaptions,
+    setDisplayCaptions,
   } as StateContextType;
 
   if (process.env.REACT_APP_SET_AUTH === 'firebase') {
