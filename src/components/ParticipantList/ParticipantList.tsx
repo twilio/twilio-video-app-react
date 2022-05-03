@@ -45,7 +45,7 @@ export default function ParticipantList() {
   const classes = useStyles();
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
-  const participants = useParticipants();
+  const participants = useParticipants().filter(p => p.identity !== 'media-transcriber');
   const [selectedParticipant, setSelectedParticipant] = useSelectedParticipant();
   const screenShareParticipant = useScreenShareParticipant();
   const mainParticipant = useMainParticipant();

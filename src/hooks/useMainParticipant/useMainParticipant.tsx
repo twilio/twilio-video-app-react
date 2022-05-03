@@ -8,7 +8,7 @@ export default function useMainParticipant() {
   const [selectedParticipant] = useSelectedParticipant();
   const screenShareParticipant = useScreenShareParticipant();
   const dominantSpeaker = useDominantSpeaker();
-  const participants = useParticipants();
+  const participants = useParticipants().filter(p => p.identity !== 'media-transcriber');
   const { room } = useVideoContext();
   const localParticipant = room?.localParticipant;
   const remoteScreenShareParticipant = screenShareParticipant !== localParticipant ? screenShareParticipant : null;
