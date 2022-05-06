@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { TwilioCaptionResult } from './CaptionTypes';
 import { Typography } from '@material-ui/core';
 import useParticipants from '../../hooks/useParticipants/useParticipants';
-import useTracks from '../../hooks/useTracks/useTracks';
+import useParticipantTracks from '../../hooks/useParticipantTracks/useParticipantTracks';
 import { useAppState } from '../../state';
 
 interface Caption {
@@ -34,7 +34,7 @@ export function CaptionRenderer() {
   const [captions, setCaptions] = useState<Caption[]>([]);
   const participants = useParticipants();
   const transcriberParticipant = participants.find(p => p.identity === 'media-transcriber');
-  const transcriberTracks = useTracks(transcriberParticipant);
+  const transcriberTracks = useParticipantTracks(transcriberParticipant);
   const transcriberDataTrack = transcriberTracks.find(track => track.kind === 'data');
   const { displayCaptions } = useAppState();
 

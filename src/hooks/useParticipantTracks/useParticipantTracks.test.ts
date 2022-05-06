@@ -1,8 +1,8 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import EventEmitter from 'events';
-import useTracks from './useTracks';
+import useTracks from './useParticipantTracks';
 
-describe('the useTracks hook', () => {
+describe('the useParticipantTracks hook', () => {
   let mockParticipant: any;
 
   beforeEach(() => {

@@ -1,7 +1,7 @@
 import { RemoteParticipant, RemoteTrack } from 'twilio-video';
 import { useEffect, useState } from 'react';
 
-export default function useTracks(participant: RemoteParticipant | undefined) {
+export default function useParticipantTracks(participant: RemoteParticipant | undefined) {
   const [tracks, setTracks] = useState<RemoteTrack[]>([]);
 
   useEffect(() => {
