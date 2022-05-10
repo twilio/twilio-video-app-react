@@ -16,7 +16,7 @@ import useTrack from '../../hooks/useTrack/useTrack';
 import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
 import { GRID_MODE_MARGIN } from '../../constants';
 
-const borderWidth = 3;
+const borderWidth = 2;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
