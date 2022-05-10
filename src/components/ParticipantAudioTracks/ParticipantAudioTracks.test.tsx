@@ -8,7 +8,7 @@ function MockAudioTrack() {
   return <div>Mock Audio Track</div>;
 }
 
-jest.mock('../../hooks/useParticipants/useParticipants');
+jest.mock('../../hooks/useCollaborationParticipants/useCollaborationParticipants');
 jest.mock('../AudioTrack/AudioTrack', () => MockAudioTrack);
 
 const mockUseParticipants = useParticipants as jest.Mock<any>;

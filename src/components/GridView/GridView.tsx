@@ -77,7 +77,7 @@ const useStyles = makeStyles({
 export function GridView() {
   const classes = useStyles();
   const { room } = useVideoContext();
-  const gridParticipants = useGridParticipants(room);
+  const gridParticipants = useGridParticipants();
   const dominantSpeaker = useDominantSpeaker();
 
   const { paginatedParticipants, setCurrentPage, currentPage, totalPages } = usePagination([

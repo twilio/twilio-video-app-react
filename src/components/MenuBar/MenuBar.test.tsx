@@ -13,7 +13,7 @@ import * as utils from '../../utils';
 
 jest.mock('../../hooks/useRoomState/useRoomState');
 jest.mock('../../hooks/useVideoContext/useVideoContext');
-jest.mock('../../hooks/useParticipants/useParticipants');
+jest.mock('../../hooks/useCollaborationParticipants/useCollaborationParticipants');
 
 const mockUseRoomState = useRoomState as jest.Mock<any>;
 const mockUseParticipants = useParticipants as jest.Mock<any>;

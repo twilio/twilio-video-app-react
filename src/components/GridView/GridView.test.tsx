@@ -2,6 +2,7 @@ import React from 'react';
 import { GridView } from './GridView';
 import { shallow } from 'enzyme';
 import useGridLayout from '../../hooks/useGridLayout/useGridLayout';
+import { useAppState } from '../../state';
 import { usePagination } from '../../hooks/usePagination/usePagination';
 
 const mockLocalParticipant = { identity: 'test-local-participant', sid: 0 };
@@ -16,7 +17,7 @@ jest.mock('../../constants', () => ({
   GRID_MODE_ASPECT_RATIO: 9 / 16,
   GRID_MODE_MARGIN: 3,
 }));
-jest.mock('../../hooks/useParticipants/useParticipants', () => () => mockParticipants);
+jest.mock('../../hooks/useCollaborationParticipants/useCollaborationParticipants', () => () => mockParticipants);
 jest.mock('../../hooks/useVideoContext/useVideoContext', () => () => ({
   room: {
     localParticipant: mockLocalParticipant,
@@ -38,7 +39,12 @@ jest.mock('../../hooks/usePagination/usePagination', () => ({
   })),
 }));
 
+jest.mock('../../state');
+
 const mockUsePagination = usePagination as jest.Mock<any>;
+const mockUseAppState = useAppState as jest.Mock<any>;
+
+mockUseAppState.mockImplementation(() => ({ maxGridParticipants: 9 }));
 
 describe('the GridView component', () => {
   it('should render correctly', () => {
