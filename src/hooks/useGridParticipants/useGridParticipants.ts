@@ -1,7 +1,8 @@
-import { RemoteParticipant, Room } from 'twilio-video';
+import { RemoteParticipant } from 'twilio-video';
 import { useEffect, useState } from 'react';
 import useDominantSpeaker from '../useDominantSpeaker/useDominantSpeaker';
 import { useAppState } from '../../state';
+import useVideoContext from '../useVideoContext/useVideoContext';
 
 // If an offscreen participant becomes the dominant speaker, we
 // move them onscreen to where the least recent onscreen dominant
@@ -14,8 +15,9 @@ interface OrderedParticipant {
   dominantSpeakerStartTime: number;
 }
 
-export default function useGridParticipants(room: Room | null) {
+export default function useGridParticipants() {
   const [orderedParticipants, setOrderedParticipants] = useState<OrderedParticipant[]>([]);
+  const { room } = useVideoContext();
   const dominantSpeaker = useDominantSpeaker();
   const { maxGridParticipants } = useAppState();
 

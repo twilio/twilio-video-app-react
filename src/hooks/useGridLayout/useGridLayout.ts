@@ -37,8 +37,8 @@ export default function useGridLayout(participantCount: number) {
     const containerWidth = containerRef.current.offsetWidth - GRID_MODE_MARGIN * 2;
     const containerHeight = containerRef.current.offsetHeight - GRID_MODE_MARGIN * 2;
 
-    // Here we use binary search to guess the new size of each video's width in the grid
-    // so that they all fit nicely for any screen size up to a resolution of 16384px.
+    // Here we use binary search to guess the new size of each video in the grid
+    // so that they all fit nicely for any screen size up to a width of 16384px.
     let minVideoWidth = 0;
     let maxVideoWidth = 2 ** 14;
 
