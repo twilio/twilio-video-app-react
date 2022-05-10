@@ -6,12 +6,12 @@ import { GRID_MODE_ASPECT_RATIO, GRID_MODE_MARGIN } from '../../constants';
  * for the grid layout given a specific video size.
  */
 
-export function layoutIsTooSmall(
+export const layoutIsTooSmall = (
   newVideoSize: number,
   participantCount: number,
   containerWidth: number,
   containerHeight: number
-) {
+) => {
   const videoWidth = newVideoSize;
   const videoHeight = newVideoSize * GRID_MODE_ASPECT_RATIO;
 
@@ -20,7 +20,7 @@ export function layoutIsTooSmall(
 
   // Return false if the new grid size is taller than the app's container:
   return rows * videoHeight <= containerHeight;
-}
+};
 
 /**
  * This hook returns the appropriate width for each participant's video and a ref
