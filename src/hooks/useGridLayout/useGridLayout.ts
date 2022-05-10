@@ -1,4 +1,3 @@
-import throttle from 'lodash.throttle';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { GRID_MODE_ASPECT_RATIO, GRID_MODE_MARGIN } from '../../constants';
 
@@ -7,7 +6,7 @@ import { GRID_MODE_ASPECT_RATIO, GRID_MODE_MARGIN } from '../../constants';
  * for the grid layout given a specific video size.
  */
 
-function layoutIsTooSmall(
+export function layoutIsTooSmall(
   newVideoSize: number,
   participantCount: number,
   containerWidth: number,
@@ -19,8 +18,8 @@ function layoutIsTooSmall(
   const columns = Math.floor(containerWidth / videoWidth);
   const rows = Math.ceil(participantCount / columns);
 
-  // Return true if the new grid size is taller than or equal to the app's container:
-  return rows * videoHeight >= containerHeight;
+  // Return false if the new grid size is taller than the app's container:
+  return rows * videoHeight <= containerHeight;
 }
 
 /**
@@ -38,29 +37,29 @@ export default function useGridLayout(participantCount: number) {
     const containerWidth = containerRef.current.offsetWidth - GRID_MODE_MARGIN * 2;
     const containerHeight = containerRef.current.offsetHeight - GRID_MODE_MARGIN * 2;
 
-    // Here we try to guess the new size of each video by increasing the width .
-    // Once layoutIsTooSmall becomes false, we have found the correct video width:
-    let lowestVideoWidthGuess = 0;
-    let highestVideoWidthGuess = Number.MAX_SAFE_INTEGER;
-    let prevGuessTooHigh = false;
+    // Here we use binary search to guess the new size of each video's width in the grid
+    // so that they all fit nicely for any screen size up to a resolution of 16384px.
+    let minVideoWidth = 0;
+    let maxVideoWidth = 2 ** 14;
 
-    // what is this condition?
-    while (highestVideoWidthGuess > 2 ** -2) {
-      const isHigher = layoutIsTooSmall(lowestVideoWidthGuess, participantCount, containerWidth, containerHeight);
-      lowestVideoWidthGuess += isHigher ? -highestVideoWidthGuess : highestVideoWidthGuess;
-      if (isHigher !== prevGuessTooHigh) {
-        highestVideoWidthGuess /= 2;
+    while (maxVideoWidth - minVideoWidth > 1) {
+      let mid = (maxVideoWidth - minVideoWidth) / 2 + minVideoWidth;
+      const isLower = layoutIsTooSmall(mid, participantCount, containerWidth, containerHeight);
+
+      if (isLower) {
+        minVideoWidth = mid;
+      } else {
+        maxVideoWidth = mid;
       }
-      prevGuessTooHigh = isHigher;
     }
 
-    let newParticipantVideoWidth = Math.floor(lowestVideoWidthGuess);
+    let newParticipantVideoWidth = Math.ceil(minVideoWidth);
 
     setParticipantVideoWidth(newParticipantVideoWidth - GRID_MODE_MARGIN * 2);
   }, [participantCount]);
 
   useEffect(() => {
-    const observer = new window.ResizeObserver(throttle(updateLayout, 60));
+    const observer = new window.ResizeObserver(updateLayout);
     observer.observe(containerRef.current!);
     return () => {
       observer.disconnect();
