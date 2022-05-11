@@ -138,9 +138,9 @@ describe('the useGridParticipants hook', () => {
         'participant6',
         'participant7',
         'participant8',
+        'participant1',
         'participant9',
         'participant10',
-        'participant1',
       ]);
 
       // more dominant speaker updates:
@@ -162,9 +162,9 @@ describe('the useGridParticipants hook', () => {
         'participant6',
         'participant7',
         'participant8',
-        'participant9',
-        'participant2',
         'participant4',
+        'participant2',
+        'participant9',
       ]);
     });
   });
