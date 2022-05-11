@@ -1,9 +1,9 @@
-import { Track, VideoBandwidthProfileOptions } from 'twilio-video';
+import { Track, VideoBandwidthProfile } from 'twilio-video';
 
 export interface Settings {
-  trackSwitchOffMode: VideoBandwidthProfileOptions['trackSwitchOffMode'];
+  trackSwitchOffMode: VideoBandwidthProfile['trackSwitchOffMode'];
   dominantSpeakerPriority?: Track.Priority;
-  bandwidthProfileMode: VideoBandwidthProfileOptions['mode'];
+  bandwidthProfileMode: VideoBandwidthProfile['mode'];
   maxAudioBitrate: string;
   contentPreferencesMode?: 'auto' | 'manual';
   clientTrackSwitchOffControl?: 'auto' | 'manual';
