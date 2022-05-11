@@ -33,7 +33,7 @@ describe('the useDominantSpeaker hook', () => {
     expect(result.current).toBe('mockDominantSpeaker');
   });
 
-  it('should not set "null" when there is no dominant speaker and excludeNull is true', () => {
+  it('should set "null" when there is no dominant speaker and excludeNull is true', () => {
     const { result } = renderHook(() => useDominantSpeaker(true));
     expect(result.current).toBe('mockDominantSpeaker');
     act(() => {
