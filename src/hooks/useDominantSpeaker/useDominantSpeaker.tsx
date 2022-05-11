@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import useVideoContext from '../useVideoContext/useVideoContext';
 import { RemoteParticipant } from 'twilio-video';
 
-export default function useDominantSpeaker(excludeNull = false) {
+export default function useDominantSpeaker(includeNull = false) {
   const { room } = useVideoContext();
   const [dominantSpeaker, setDominantSpeaker] = useState(room?.dominantSpeaker ?? null);
 
@@ -13,7 +13,7 @@ export default function useDominantSpeaker(excludeNull = false) {
       // emitted, the effect can be jarring to the user. Here we ignore any 'null' values
       // and continue to display the previous dominant speaker as the main participant.
       const handleDominantSpeakerChanged = (newDominantSpeaker: RemoteParticipant) => {
-        if (newDominantSpeaker !== null || !excludeNull) {
+        if (newDominantSpeaker !== null || (newDominantSpeaker === null && includeNull)) {
           setDominantSpeaker(newDominantSpeaker);
         }
       };
@@ -33,7 +33,7 @@ export default function useDominantSpeaker(excludeNull = false) {
         room.off('participantDisconnected', handleParticipantDisconnected);
       };
     }
-  }, [room, excludeNull]);
+  }, [room, includeNull]);
 
   return dominantSpeaker;
 }
