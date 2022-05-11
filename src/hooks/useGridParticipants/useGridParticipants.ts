@@ -18,7 +18,7 @@ interface OrderedParticipant {
 export default function useGridParticipants() {
   const [orderedParticipants, setOrderedParticipants] = useState<OrderedParticipant[]>([]);
   const { room } = useVideoContext();
-  const dominantSpeaker = useDominantSpeaker();
+  const dominantSpeaker = useDominantSpeaker(true);
   const { maxGridParticipants } = useAppState();
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export default function useGridParticipants() {
             newDominantSpeakerWithStartTime!
           );
           // Add the least recent dominant speaker back into the  array at the end:
-          newParticipantsArray.push(leastRecentDominantSpeaker);
+          newParticipantsArray.splice(maxGridParticipants, 0, leastRecentDominantSpeaker);
         }
         return newParticipantsArray;
       });
