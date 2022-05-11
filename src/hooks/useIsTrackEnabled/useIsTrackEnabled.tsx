@@ -7,16 +7,22 @@ export default function useIsTrackEnabled(track: TrackType) {
   const [isEnabled, setIsEnabled] = useState(track ? track.isEnabled : false);
 
   useEffect(() => {
-    setIsEnabled(track ? track.isEnabled : false);
+    // @ts-ignore
+    setIsEnabled(track.mediaStreamTrack === null || track.switchOffReason !== 'DisabledByPublisher');
 
     if (track) {
-      const setEnabled = () => setIsEnabled(true);
-      const setDisabled = () => setIsEnabled(false);
-      track.on('enabled', setEnabled);
-      track.on('disabled', setDisabled);
+      const handleSwitchOff = (_track: TrackType) => {
+        // @ts-ignore
+        if (_track.switchOffReason === 'DisabledByPublisher') {
+          setIsEnabled(false);
+        }
+      };
+      const handleSwitchOn = () => setIsEnabled(true);
+      track.on('switchedOff', handleSwitchOff);
+      track.on('switchedOn', handleSwitchOn);
       return () => {
-        track.off('enabled', setEnabled);
-        track.off('disabled', setDisabled);
+        track.off('switchedOff', handleSwitchOff);
+        track.off('switchedOn', handleSwitchOn);
       };
     }
   }, [track]);
