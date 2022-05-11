@@ -57,7 +57,7 @@ export default function useGridParticipants() {
             1,
             newDominantSpeakerWithStartTime!
           );
-          // Add the least recent dominant speaker back into the  array at the end:
+          // Add the least recent dominant speaker back into the array after the last onscreen participant.
           newParticipantsArray.splice(maxGridParticipants - 1, 0, leastRecentDominantSpeaker);
         }
         return newParticipantsArray;
