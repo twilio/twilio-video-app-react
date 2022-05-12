@@ -7,13 +7,13 @@ export default function useIsTrackEnabled(track: TrackType) {
   const [isEnabled, setIsEnabled] = useState(track ? track.isEnabled : false);
 
   useEffect(() => {
-    // @ts-ignore
-    setIsEnabled(track?.mediaStreamTrack === null || track?.switchOffReason !== 'DisabledByPublisher');
+    //@ts-ignore
+    setIsEnabled(track?.switchOffReason !== 'disabled-by-publisher');
 
     if (track) {
       const handleSwitchOff = (_track: TrackType) => {
         // @ts-ignore
-        if (_track.switchOffReason === 'DisabledByPublisher') {
+        if (_track.switchOffReason === 'disabled-by-publisher') {
           setIsEnabled(false);
         }
       };
