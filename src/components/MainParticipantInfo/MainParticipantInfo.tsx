@@ -4,6 +4,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
 
 import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
+import AvatarIcon from '../../icons/AvatarIcon';
 import NetworkQualityLevel from '../NetworkQualityLevel/NetworkQualityLevel';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
@@ -149,7 +150,7 @@ export default function MainParticipantInfo({ participant, children }: MainParti
       data-cy-participant={participant.identity}
       className={clsx(classes.container, {
         [classes.fullWidth]: !isRemoteParticipantScreenSharing,
-        [classes.blurredVideo]: !isVideoEnabled || isVideoSwitchedOff,
+        [classes.blurredVideo]: isVideoSwitchedOff,
       })}
     >
       <div className={classes.infoContainer}>
@@ -178,6 +179,11 @@ export default function MainParticipantInfo({ participant, children }: MainParti
           </Tooltip>
         )}
       </div>
+      {!isVideoEnabled && (
+        <div className={classes.avatarContainer}>
+          <AvatarIcon />
+        </div>
+      )}
       {isParticipantReconnecting && (
         <div className={classes.reconnectingContainer}>
           <Typography variant="body1" style={{ color: 'white' }}>
