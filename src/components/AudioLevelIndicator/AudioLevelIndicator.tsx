@@ -3,6 +3,7 @@ import { AudioTrack, LocalAudioTrack, RemoteAudioTrack } from 'twilio-video';
 import { interval } from 'd3-timer';
 import useIsTrackEnabled from '../../hooks/useIsTrackEnabled/useIsTrackEnabled';
 import useMediaStreamTrack from '../../hooks/useMediaStreamTrack/useMediaStreamTrack';
+import useTrackSwitchOffReason from '../../hooks/useTrackSwitchOffReason/useTrackSwitchOffReason';
 
 let clipId = 0;
 const getUniqueClipId = () => clipId++;
@@ -28,6 +29,7 @@ function AudioLevelIndicator({ audioTrack, color = 'white' }: { audioTrack?: Aud
   const [analyser, setAnalyser] = useState<AnalyserNode>();
   const isTrackEnabled = useIsTrackEnabled(audioTrack as LocalAudioTrack | RemoteAudioTrack);
   const mediaStreamTrack = useMediaStreamTrack(audioTrack);
+  const trackSwitchOffReason = useTrackSwitchOffReason(audioTrack as LocalAudioTrack | RemoteAudioTrack);
 
   useEffect(() => {
     if (audioTrack && mediaStreamTrack && isTrackEnabled) {
@@ -90,6 +92,10 @@ function AudioLevelIndicator({ audioTrack, color = 'white' }: { audioTrack?: Aud
       };
     }
   }, [isTrackEnabled, analyser]);
+
+  if (trackSwitchOffReason && trackSwitchOffReason !== 'disabled-by-publisher') {
+    return null;
+  }
 
   // Each instance of this component will need a unique HTML ID
   const clipPathId = `audio-level-clip-${getUniqueClipId()}`;
