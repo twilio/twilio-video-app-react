@@ -8,22 +8,34 @@ export default function useIsTrackEnabled(track: TrackType) {
 
   useEffect(() => {
     //@ts-ignore
-    setIsEnabled(track?.switchOffReason !== 'disabled-by-publisher');
 
     if (track) {
-      const handleSwitchOff = (_track: TrackType) => {
-        // @ts-ignore
-        if (_track.switchOffReason === 'disabled-by-publisher') {
-          setIsEnabled(false);
-        }
-      };
-      const handleSwitchOn = () => setIsEnabled(true);
-      track.on('switchedOff', handleSwitchOff);
-      track.on('switchedOn', handleSwitchOn);
-      return () => {
-        track.off('switchedOff', handleSwitchOff);
-        track.off('switchedOn', handleSwitchOn);
-      };
+      if (track instanceof LocalAudioTrack || track instanceof LocalVideoTrack) {
+        setIsEnabled(track.isEnabled);
+        const setEnabled = () => setIsEnabled(true);
+        const setDisabled = () => setIsEnabled(false);
+        track.on('enabled', setEnabled);
+        track.on('disabled', setDisabled);
+        return () => {
+          track.off('enabled', setEnabled);
+          track.off('disabled', setDisabled);
+        };
+      } else {
+        setIsEnabled(track?.switchOffReason !== 'disabled-by-publisher');
+        const handleSwitchOff = (_track: TrackType) => {
+          // @ts-ignore
+          if (_track.switchOffReason === 'disabled-by-publisher') {
+            setIsEnabled(false);
+          }
+        };
+        const handleSwitchOn = () => setIsEnabled(true);
+        track.on('switchedOff', handleSwitchOff);
+        track.on('switchedOn', handleSwitchOn);
+        return () => {
+          track.off('switchedOff', handleSwitchOff);
+          track.off('switchedOn', handleSwitchOn);
+        };
+      }
     }
   }, [track]);
 
