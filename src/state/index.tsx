@@ -46,7 +46,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const [activeSinkId, setActiveSinkId] = useActiveSinkId();
   const [settings, dispatchSetting] = useReducer(settingsReducer, initialSettings);
   const [roomType, setRoomType] = useState<RoomType>();
-  const [maxGridParticipants, setMaxGridParticipants] = useState(25);
+  const [maxGridParticipants, setMaxGridParticipants] = useState(4);
 
   let contextValue = {
     error,
