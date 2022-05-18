@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react-hooks';
 import EventEmitter from 'events';
 import useDominantSpeaker from '../useDominantSpeaker/useDominantSpeaker';
-import useParticipants from './useCollaborationParticipants';
+import useCollaborationParticipants from './useCollaborationParticipants';
 import useVideoContext from '../useVideoContext/useVideoContext';
 
 jest.mock('../useVideoContext/useVideoContext');
@@ -10,7 +10,7 @@ jest.mock('../useDominantSpeaker/useDominantSpeaker');
 const mockUseDominantSpeaker = useDominantSpeaker as jest.Mock<any>;
 const mockedVideoContext = useVideoContext as jest.Mock<any>;
 
-describe('the useParticipants hook', () => {
+describe('the useCollaborationParticipants hook', () => {
   let mockRoom: any;
 
   beforeEach(() => {
@@ -25,12 +25,12 @@ describe('the useParticipants hook', () => {
   });
 
   it('should return an array of mockParticipant.tracks by default', () => {
-    const { result } = renderHook(useParticipants);
+    const { result } = renderHook(useCollaborationParticipants);
     expect(result.current).toEqual(['participant1', 'participant2']);
   });
 
   it('should return respond to "participantConnected" events', async () => {
-    const { result } = renderHook(useParticipants);
+    const { result } = renderHook(useCollaborationParticipants);
     act(() => {
       mockRoom.emit('participantConnected', 'newParticipant');
     });
@@ -38,7 +38,7 @@ describe('the useParticipants hook', () => {
   });
 
   it('should return respond to "participantDisconnected" events', async () => {
-    const { result } = renderHook(useParticipants);
+    const { result } = renderHook(useCollaborationParticipants);
     act(() => {
       mockRoom.emit('participantDisconnected', 'participant1');
     });
@@ -51,7 +51,7 @@ describe('the useParticipants hook', () => {
       [1, 'participant2'],
       [2, 'participant3'],
     ]);
-    const { result, rerender } = renderHook(useParticipants);
+    const { result, rerender } = renderHook(useCollaborationParticipants);
     expect(result.current).toEqual(['participant1', 'participant2', 'participant3']);
     mockUseDominantSpeaker.mockImplementation(() => 'participant2');
     rerender();
@@ -65,7 +65,7 @@ describe('the useParticipants hook', () => {
   });
 
   it('should clean up listeners on unmount', () => {
-    const { unmount } = renderHook(useParticipants);
+    const { unmount } = renderHook(useCollaborationParticipants);
     unmount();
     expect(mockRoom.listenerCount('participantConnected')).toBe(0);
     expect(mockRoom.listenerCount('participantDisconnected')).toBe(0);
