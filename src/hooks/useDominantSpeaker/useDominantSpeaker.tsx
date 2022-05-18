@@ -13,7 +13,7 @@ export default function useDominantSpeaker(includeNull = false) {
       // emitted, the effect can be jarring to the user. Here we ignore any 'null' values
       // and continue to display the previous dominant speaker as the main participant.
       const handleDominantSpeakerChanged = (newDominantSpeaker: RemoteParticipant) => {
-        if (newDominantSpeaker !== null || (newDominantSpeaker === null && includeNull)) {
+        if (includeNull || newDominantSpeaker !== null) {
           setDominantSpeaker(newDominantSpeaker);
         }
       };
