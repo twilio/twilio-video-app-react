@@ -135,23 +135,21 @@ export default function Menu(props: { buttonClassName?: string }) {
           <Typography variant="body1">Room Monitor</Typography>
         </MenuItem>
 
-        {!isMobile && (
-          <MenuItem
-            onClick={() => {
-              setIsGridModeActive(isGrid => !isGrid);
-              setMenuOpen(false);
-            }}
-          >
-            <IconContainer>
-              {isGridModeActive ? (
-                <CollaborationViewIcon style={{ fill: '#707578', width: '0.9em' }} />
-              ) : (
-                <GridViewIcon style={{ fill: '#707578', width: '0.9em' }} />
-              )}
-            </IconContainer>
-            <Typography variant="body1">{isGridModeActive ? 'Collaboration Mode' : 'Grid Mode'}</Typography>
-          </MenuItem>
-        )}
+        <MenuItem
+          onClick={() => {
+            setIsGridModeActive(isGrid => !isGrid);
+            setMenuOpen(false);
+          }}
+        >
+          <IconContainer>
+            {isGridModeActive ? (
+              <CollaborationViewIcon style={{ fill: '#707578', width: '0.9em' }} />
+            ) : (
+              <GridViewIcon style={{ fill: '#707578', width: '0.9em' }} />
+            )}
+          </IconContainer>
+          <Typography variant="body1">{isGridModeActive ? 'Collaboration Mode' : 'Grid Mode'}</Typography>
+        </MenuItem>
 
         <MenuItem onClick={() => setAboutOpen(true)}>
           <IconContainer>
