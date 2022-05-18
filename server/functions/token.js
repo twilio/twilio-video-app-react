@@ -96,6 +96,7 @@ module.exports.handler = async (context, event, callback) => {
             Type: 'group',
             LargeRoom: 'true',
             VideoCodecs: 'VP8',
+            MediaRegion: 'us2',
           }),
         });
         room = roomData.data;
