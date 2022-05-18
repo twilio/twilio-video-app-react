@@ -18,7 +18,7 @@ interface OrderedParticipant {
 export default function useGridParticipants() {
   const [orderedParticipants, setOrderedParticipants] = useState<OrderedParticipant[]>([]);
   const { room } = useVideoContext();
-  const dominantSpeaker = useDominantSpeaker(true);
+  const dominantSpeaker = useDominantSpeaker();
   const { maxGridParticipants } = useAppState();
 
   useEffect(() => {
@@ -32,31 +32,28 @@ export default function useGridParticipants() {
           // update the participant's dominantSpeakerStartTime to when they became the new dominant speaker:
           newDominantSpeaker.dominantSpeakerStartTime = Date.now();
         } else {
-          return newParticipantsArray;
+          return prevParticipants;
         }
 
         // Here we use maxGridParticipants - 1 since the localParticipant will always be the first in the grid
-        let maxOnScreenParticipants = maxGridParticipants - 1;
-        const onscreenParticipants = newParticipantsArray.slice(0, maxOnScreenParticipants);
+        const maxFirstPageParticipants = maxGridParticipants - 1;
+        const firstPageParticipants = newParticipantsArray.slice(0, maxFirstPageParticipants);
 
         // if the newest dominant speaker is not currently on screen, reorder the orderedParticipants array:
-        if (!onscreenParticipants.some(p => p.participant === dominantSpeaker)) {
+        if (!firstPageParticipants.some(p => p.participant === dominantSpeaker)) {
           // find the least recent dominant speaker by sorting the onscreen speakers by their dominantSpeakerStartTime:
-          const sortedOnscreenParticipants = onscreenParticipants.sort(
+          const sortedFirstPageParticipants = firstPageParticipants.sort(
             (a, b) => a.dominantSpeakerStartTime - b.dominantSpeakerStartTime
           );
-          const leastRecentDominantSpeaker = sortedOnscreenParticipants[0];
-          const newDominantSpeakerWithStartTime = newParticipantsArray.find(p => p.participant === dominantSpeaker);
+          const leastRecentDominantSpeaker = sortedFirstPageParticipants[0];
 
           /** Reorder the onscreen participants */
           // Temporarily remove the newest dominant speaker:
-          newParticipantsArray.splice(newParticipantsArray.indexOf(newDominantSpeakerWithStartTime!), 1);
+          newParticipantsArray.splice(newParticipantsArray.indexOf(newDominantSpeaker), 1);
+
           // Remove the least recent dominant speaker and replace them with the newest:
-          newParticipantsArray.splice(
-            newParticipantsArray.indexOf(leastRecentDominantSpeaker),
-            1,
-            newDominantSpeakerWithStartTime!
-          );
+          newParticipantsArray.splice(newParticipantsArray.indexOf(leastRecentDominantSpeaker), 1, newDominantSpeaker);
+
           // Add the least recent dominant speaker back into the array after the last onscreen participant.
           newParticipantsArray.splice(maxGridParticipants - 1, 0, leastRecentDominantSpeaker);
         }
