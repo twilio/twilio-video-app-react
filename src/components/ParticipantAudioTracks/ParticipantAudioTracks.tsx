@@ -1,6 +1,5 @@
-import React from 'react';
 import { RemoteAudioTrack, RemoteParticipant } from 'twilio-video';
-import useParticipants from '../../hooks/useCollaborationParticipants/useCollaborationParticipants';
+import useParticipants from '../../hooks/useParticipants/useParticipants';
 import useTracks from '../../hooks/useTracks/useTracks';
 import AudioTrack from '../AudioTrack/AudioTrack';
 

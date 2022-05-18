@@ -2,13 +2,13 @@ import React from 'react';
 import { EventEmitter } from 'events';
 import { mount } from 'enzyme';
 import { ParticipantAudioTracks } from './ParticipantAudioTracks';
-import useParticipants from '../../hooks/useCollaborationParticipants/useCollaborationParticipants';
+import useParticipants from '../../hooks/useParticipants/useParticipants';
 
 function MockAudioTrack() {
   return <div>Mock Audio Track</div>;
 }
 
-jest.mock('../../hooks/useCollaborationParticipants/useCollaborationParticipants');
+jest.mock('../../hooks/useParticipants/useParticipants');
 jest.mock('../AudioTrack/AudioTrack', () => MockAudioTrack);
 
 const mockUseParticipants = useParticipants as jest.Mock<any>;

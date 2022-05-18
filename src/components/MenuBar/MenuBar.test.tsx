@@ -6,14 +6,14 @@ import ToggleAudioButton from '../Buttons/ToggleAudioButton/ToggleAudioButton';
 import ToggleChatButton from '../Buttons/ToggleChatButton/ToggleChatButton';
 import ToggleScreenShareButton from '../Buttons/ToogleScreenShareButton/ToggleScreenShareButton';
 import ToggleVideoButton from '../Buttons/ToggleVideoButton/ToggleVideoButton';
-import useParticipants from '../../hooks/useCollaborationParticipants/useCollaborationParticipants';
+import useParticipants from '../../hooks/useParticipants/useParticipants';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import * as utils from '../../utils';
 
 jest.mock('../../hooks/useRoomState/useRoomState');
 jest.mock('../../hooks/useVideoContext/useVideoContext');
-jest.mock('../../hooks/useCollaborationParticipants/useCollaborationParticipants');
+jest.mock('../../hooks/useParticipants/useParticipants');
 
 const mockUseRoomState = useRoomState as jest.Mock<any>;
 const mockUseParticipants = useParticipants as jest.Mock<any>;
