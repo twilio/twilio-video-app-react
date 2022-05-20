@@ -9,6 +9,7 @@ import useChatContext from '../../hooks/useChatContext/useChatContext';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { ParticipantAudioTracks } from '../ParticipantAudioTracks/ParticipantAudioTracks';
 import { GridView } from '../GridView/GridView';
+import { MobileGridView } from '../MobileGridView/MobileGridView';
 import { useAppState } from '../../state';
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -52,8 +53,12 @@ export default function Room() {
       */}
       <ParticipantAudioTracks />
 
-      {isGridModeActive && !isMobile ? (
-        <GridView />
+      {isGridModeActive ? (
+        isMobile ? (
+          <MobileGridView />
+        ) : (
+          <GridView />
+        )
       ) : (
         <>
           <MainParticipant />
