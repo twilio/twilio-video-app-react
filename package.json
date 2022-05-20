@@ -10,7 +10,7 @@
     "@twilio-labs/plugin-rtc": "^0.8.2",
     "@twilio/conversations": "^1.2.3",
     "@twilio/video-processors": "^1.0.1",
-    "@twilio/video-room-monitor": "^1.0.0",
+    "@twilio/video-room-monitor": "file:twilio-video-room-monitor-1.0.0.tgz",
     "@types/d3-timer": "^1.0.9",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.11",
@@ -45,7 +45,7 @@
     "strip-color": "^0.1.0",
     "ts-node": "^9.1.1",
     "twilio": "^3.63.1",
-    "twilio-video": "https://github.com/twilio/twilio-video.js/archive/refs/tags/3.0.0-rc3.tar.gz",
+    "twilio-video": "https://github.com/twilio/twilio-video.js/archive/refs/tags/3.0.0-rc4.tar.gz",
     "typescript": "^4.6.2"
   },
   "devDependencies": {
