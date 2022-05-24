@@ -15,6 +15,7 @@ import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
 import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
 import { GRID_MODE_MARGIN } from '../../constants';
+import { useAppState } from '../../state';
 
 const borderWidth = 2;
 
@@ -131,6 +132,19 @@ const useStyles = makeStyles((theme: Theme) =>
       border: `solid ${borderWidth}px #7BEAA5`,
       margin: `${GRID_MODE_MARGIN} - borderWidth`,
     },
+    mobileGridMode: {
+      [theme.breakpoints.down('sm')]: {
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+        padding: '0',
+        fontSize: '12px',
+        margin: '0',
+        '& video': {
+          objectFit: 'cover !important',
+        },
+      },
+    },
   })
 );
 
@@ -167,6 +181,8 @@ export default function ParticipantInfo({
   const audioTrack = useTrack(audioPublication) as LocalAudioTrack | RemoteAudioTrack | undefined;
   const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
+  const { isGridModeActive } = useAppState();
+
   const classes = useStyles();
 
   return (
@@ -175,6 +191,7 @@ export default function ParticipantInfo({
         [classes.hideParticipant]: hideParticipant,
         [classes.cursorPointer]: Boolean(onClick),
         [classes.dominantSpeaker]: isDominantSpeaker,
+        [classes.mobileGridMode]: isGridModeActive,
       })}
       onClick={onClick}
       data-cy-participant={participant.identity}

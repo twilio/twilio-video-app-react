@@ -5,6 +5,16 @@ import Room from './Room';
 import useChatContext from '../../hooks/useChatContext/useChatContext';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { useAppState } from '../../state';
+
+jest.mock('swiper/react/swiper-react.js', () => ({
+  Swiper: jest.fn(),
+  SwiperSlide: jest.fn(),
+}));
+
+jest.mock('swiper', () => ({
+  Pagination: jest.fn(),
+}));
+
 jest.mock('../../hooks/useChatContext/useChatContext');
 jest.mock('../../hooks/useVideoContext/useVideoContext');
 jest.mock('../../state');
