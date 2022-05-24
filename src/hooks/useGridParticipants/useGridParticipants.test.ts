@@ -175,7 +175,7 @@ describe('the useGridParticipants hook', () => {
           [1, 'participant2'],
           [2, 'participant3'],
           [3, 'participant4'],
-          [3, 'participant5'],
+          [4, 'participant5'],
         ]);
         mockRoom.participants = mockParticipants;
         const mockParticipantsArray = Array.from(mockParticipants.values());
@@ -183,7 +183,7 @@ describe('the useGridParticipants hook', () => {
         const { result, rerender } = renderHook(() => useGridParticipants(true));
         expect(result.current).toEqual(mockParticipantsArray);
 
-        mockUseDominantSpeaker.mockImplementation(() => 'participant9');
+        mockUseDominantSpeaker.mockImplementation(() => 'participant3');
         rerender();
 
         expect(result.current).toEqual(mockParticipantsArray);
