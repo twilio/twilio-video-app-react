@@ -4,11 +4,11 @@ import useDominantSpeaker from '../useDominantSpeaker/useDominantSpeaker';
 import { useAppState } from '../../state';
 import useVideoContext from '../useVideoContext/useVideoContext';
 
-// If an offscreen participant becomes the dominant speaker, we
-// move them onscreen to where the least recent onscreen dominant
-// speaker was located. We are able to order the speakers appropriately
-// by keeping track of the timestamp from when they became the newest
-// dominant speaker.
+//  If a participant that is not currently on the first page becomes
+//  the dominant speaker, we move them to the first page where the least
+//  recent dominant speaker was located. We are able to order the
+//  participants appropriately by keeping track of the timestamp from when
+//  they became the newest dominant speaker.
 
 interface OrderedParticipant {
   participant: RemoteParticipant;
@@ -39,22 +39,22 @@ export default function useGridParticipants() {
         const maxFirstPageParticipants = maxGridParticipants - 1;
         const firstPageParticipants = newParticipantsArray.slice(0, maxFirstPageParticipants);
 
-        // if the newest dominant speaker is not currently on screen, reorder the orderedParticipants array:
+        // if the newest dominant speaker is not currently on the first page, reorder the orderedParticipants array:
         if (!firstPageParticipants.some(p => p.participant === dominantSpeaker)) {
-          // find the least recent dominant speaker by sorting the onscreen speakers by their dominantSpeakerStartTime:
+          // find the least recent dominant speaker by sorting the first page participants by their dominantSpeakerStartTime:
           const sortedFirstPageParticipants = firstPageParticipants.sort(
             (a, b) => a.dominantSpeakerStartTime - b.dominantSpeakerStartTime
           );
           const leastRecentDominantSpeaker = sortedFirstPageParticipants[0];
 
-          /** Reorder the onscreen participants */
+          /** Reorder the first page participants */
           // Temporarily remove the newest dominant speaker:
           newParticipantsArray.splice(newParticipantsArray.indexOf(newDominantSpeaker), 1);
 
           // Remove the least recent dominant speaker and replace them with the newest:
           newParticipantsArray.splice(newParticipantsArray.indexOf(leastRecentDominantSpeaker), 1, newDominantSpeaker);
 
-          // Add the least recent dominant speaker back into the array after the last onscreen participant.
+          // Add the least recent dominant speaker back into the array after the last participant on the first page.
           newParticipantsArray.splice(maxGridParticipants - 1, 0, leastRecentDominantSpeaker);
         }
         return newParticipantsArray;
