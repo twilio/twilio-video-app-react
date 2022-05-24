@@ -1,5 +1,6 @@
 import { makeStyles } from '@material-ui/core';
 import Participant from '../Participant/Participant';
+import useDominantSpeaker from '../../hooks/useDominantSpeaker/useDominantSpeaker';
 import useParticipants from '../../hooks/useParticipants/useParticipants';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
@@ -19,12 +20,13 @@ const useStyles = makeStyles({
     height: '100%',
     '& .swiper': {
       height: '100%',
+      '--swiper-pagination-bullet-inactive-color': 'white',
     },
     '& .swiper-wrapper': {
       height: '100%',
     },
     '& .swiper-slide': {
-      height: '90%',
+      height: '90%', // To leave room for the pagination indicators
       paddingBottom: '1em',
     },
   },
@@ -40,57 +42,34 @@ export function MobileGridView() {
   const classes = useStyles();
   const { room } = useVideoContext();
   const participants = useParticipants();
+  const dominantSpeaker = useDominantSpeaker(true);
+  const remoteParticipantCount = participants.length;
 
   const pages: IParticipant[][] = [[]];
+  // Add the localParticipant to the front of the array to ensure they are always the first participant:
   pages[0].push(room!.localParticipant);
 
-  for (let i = 0; i < participants.length; i++) {
-    const page = Math.floor(i / 6);
-    if (!pages[page]) {
-      pages[page] = [];
+  for (let i = 0; i < remoteParticipantCount; i++) {
+    const pageNumber = Math.floor(i / 6);
+    if (!pages[pageNumber]) {
+      pages[pageNumber] = [];
     }
-    if (pages[page].length < 6) {
-      pages[page].push(participants[i]);
+    // Each page should have a max of 6 participants:
+    if (pages[pageNumber].length < 6) {
+      pages[pageNumber].push(participants[i]);
     } else {
-      pages[page + 1] = [participants[i]];
+      pages[pageNumber + 1] = [participants[i]];
     }
   }
 
-  const getVideoWidth = () => {
-    let videoWidth;
-    let videoHeight;
-
-    switch (true) {
-      case participants.length < 1:
-        videoWidth = '97.5%';
-        videoHeight = '100%';
-        break;
-
-      case participants.length === 1:
-        videoWidth = '97.5%';
-        videoHeight = '48%';
-        break;
-
-      case participants.length === 2:
-        videoWidth = '97.5%';
-        videoHeight = '32%';
-        break;
-
-      case participants.length === 3:
-        videoWidth = '47.5%';
-        videoHeight = '47.5%';
-        break;
-
-      case participants.length > 3:
-        videoWidth = '47.5%';
-        videoHeight = '32%';
-        break;
-    }
-    return {
-      width: videoWidth,
-      margin: '0.2em',
-      height: videoHeight,
-    };
+  const participantVideoStyles = {
+    width: remoteParticipantCount < 3 ? '100%' : '50%',
+    // The height of each participant's video is determined by the number of participants on the grid
+    // page. Here the array indices represent a remoteParticipantCount. If the count is 4 or greater,
+    // the height will be 33.33%
+    height: ['100%', '50%', '33.33%', '50%', '33.33%'][Math.min(remoteParticipantCount, 4)],
+    padding: '0.2em',
+    'box-sizing': 'border-box',
   };
 
   return (
@@ -99,8 +78,12 @@ export function MobileGridView() {
         {pages.map((page, i) => (
           <SwiperSlide key={i} className={classes.swiperSlide}>
             {page.map(participant => (
-              <div style={getVideoWidth()} key={i}>
-                <Participant participant={participant} isLocalParticipant={room!.localParticipant === participant} />
+              <div style={participantVideoStyles} key={participant.sid}>
+                <Participant
+                  participant={participant}
+                  isLocalParticipant={room!.localParticipant === participant}
+                  isDominantSpeaker={dominantSpeaker === participant}
+                />
               </div>
             ))}
           </SwiperSlide>
