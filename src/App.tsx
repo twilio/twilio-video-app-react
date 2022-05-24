@@ -10,6 +10,8 @@ import Room from './components/Room/Room';
 import useHeight from './hooks/useHeight/useHeight';
 import useRoomState from './hooks/useRoomState/useRoomState';
 
+import watchRTC from '@testrtc/watchrtc-sdk';
+
 const Container = styled('div')({
   display: 'grid',
   gridTemplateRows: '1fr auto',
@@ -33,6 +35,10 @@ export default function App() {
   // We will dynamically set the height with 'window.innerHeight', which means that this
   // will look good on mobile browsers even after the location bar opens or closes.
   const height = useHeight();
+
+  React.useEffect(() => {
+    watchRTC.init({} as any);
+  }, []);
 
   return (
     <Container style={{ height }}>
