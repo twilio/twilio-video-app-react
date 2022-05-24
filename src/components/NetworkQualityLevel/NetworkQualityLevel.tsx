@@ -1,8 +1,5 @@
-import React from 'react';
-import clsx from 'clsx';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { Participant } from 'twilio-video';
-import { useAppState } from '../../state';
 import useParticipantNetworkQualityLevel from '../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -27,12 +24,6 @@ const useStyles = makeStyles((theme: Theme) =>
         },
       },
     },
-    mobileGridView: {
-      [theme.breakpoints.down('sm')]: {
-        width: '1.5em',
-        height: '1.5em',
-      },
-    },
   })
 );
 
@@ -42,12 +33,11 @@ const BARS_ARRAY = [0, 1, 2, 3, 4];
 export default function NetworkQualityLevel({ participant }: { participant: Participant }) {
   const classes = useStyles();
   const networkQualityLevel = useParticipantNetworkQualityLevel(participant);
-  const { isGridModeActive } = useAppState();
 
   if (networkQualityLevel === null) return null;
 
   return (
-    <div className={clsx(classes.outerContainer, { [classes.mobileGridView]: isGridModeActive })}>
+    <div className={classes.outerContainer}>
       <div className={classes.innerContainer}>
         {BARS_ARRAY.map(level => (
           <div
