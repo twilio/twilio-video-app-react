@@ -1,10 +1,5 @@
 import renderer from 'react-test-renderer';
 import NetworkQualityLevel from './NetworkQualityLevel';
-import { useAppState } from '../../state';
-jest.mock('../../state');
-
-const mockUseAppState = useAppState as jest.Mock<any>;
-mockUseAppState.mockImplementation(() => ({ isGridModeActive: false }));
 
 describe('the NetworkQualityLevel component', () => {
   it('should render correctly for level 5', () => {
