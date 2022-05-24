@@ -167,5 +167,68 @@ describe('the useGridParticipants hook', () => {
         'participant9',
       ]);
     });
+
+    describe('when isMobileGridActive is true', () => {
+      it('should not reorder participants when there are less than 6 remoteParticipants, and the dominant speaker changes', () => {
+        const mockParticipants = new Map([
+          [0, 'participant1'],
+          [1, 'participant2'],
+          [2, 'participant3'],
+          [3, 'participant4'],
+          [3, 'participant5'],
+        ]);
+        mockRoom.participants = mockParticipants;
+        const mockParticipantsArray = Array.from(mockParticipants.values());
+
+        const { result, rerender } = renderHook(() => useGridParticipants(true));
+        expect(result.current).toEqual(mockParticipantsArray);
+
+        mockUseDominantSpeaker.mockImplementation(() => 'participant9');
+        rerender();
+
+        expect(result.current).toEqual(mockParticipantsArray);
+      });
+
+      it('should replace the oldest dominantSpeaker with the newest if newest is not on page 1 & make the oldest the 6th remoteParticipant', () => {
+        const mockParticipants = new Map([
+          [0, 'participant1'],
+          [1, 'participant2'],
+          [2, 'participant3'],
+          [3, 'participant4'],
+          [4, 'participant5'],
+          [5, 'participant6'],
+          [6, 'participant7'],
+          [7, 'participant8'],
+          [8, 'participant9'],
+        ]);
+        mockRoom.participants = mockParticipants;
+        const mockParticipantsArray = Array.from(mockParticipants.values());
+
+        const { result, rerender } = renderHook(() => useGridParticipants(true));
+        expect(result.current).toEqual(mockParticipantsArray);
+
+        // dominant speaker updates:
+        mockUseDominantSpeaker.mockImplementation(() => 'participant1');
+        rerender();
+        mockUseDominantSpeaker.mockImplementation(() => 'participant3');
+        rerender();
+        mockUseDominantSpeaker.mockImplementation(() => 'participant5');
+        rerender();
+        mockUseDominantSpeaker.mockImplementation(() => 'participant9');
+        rerender();
+
+        expect(result.current).toEqual([
+          'participant1',
+          'participant9',
+          'participant3',
+          'participant4',
+          'participant5',
+          'participant2',
+          'participant6',
+          'participant7',
+          'participant8',
+        ]);
+      });
+    });
   });
 });

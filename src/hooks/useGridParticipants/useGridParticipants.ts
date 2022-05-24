@@ -16,10 +16,19 @@ interface OrderedParticipant {
 }
 
 export default function useGridParticipants(isMobileGridActive = false) {
-  const [orderedParticipants, setOrderedParticipants] = useState<OrderedParticipant[]>([]);
   const { room } = useVideoContext();
   const dominantSpeaker = useDominantSpeaker();
   const { maxGridParticipants } = useAppState();
+  const [orderedParticipants, setOrderedParticipants] = useState<OrderedParticipant[]>(() => {
+    if (room) {
+      return Array.from(room.participants.values(), p => ({
+        participant: p,
+        dominantSpeakerStartTime: 0,
+      }));
+    } else {
+      return [];
+    }
+  });
 
   useEffect(() => {
     if (dominantSpeaker !== null) {
