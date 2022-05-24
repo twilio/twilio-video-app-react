@@ -1,3 +1,4 @@
+import { CSSProperties } from 'react';
 import { makeStyles } from '@material-ui/core';
 import Participant from '../Participant/Participant';
 import useDominantSpeaker from '../../hooks/useDominantSpeaker/useDominantSpeaker';
@@ -62,14 +63,14 @@ export function MobileGridView() {
     }
   }
 
-  const participantVideoStyles = {
+  const participantVideoStyles: CSSProperties = {
     width: remoteParticipantCount < 3 ? '100%' : '50%',
     // The height of each participant's video is determined by the number of participants on the grid
     // page. Here the array indices represent a remoteParticipantCount. If the count is 4 or greater,
     // the height will be 33.33%
     height: ['100%', '50%', '33.33%', '50%', '33.33%'][Math.min(remoteParticipantCount, 4)],
     padding: '0.2em',
-    'box-sizing': 'border-box',
+    boxSizing: 'border-box',
   };
 
   return (
