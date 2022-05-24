@@ -135,9 +135,14 @@ const useStyles = makeStyles((theme: Theme) =>
     mobileGridMode: {
       [theme.breakpoints.down('sm')]: {
         position: 'relative',
-        width: 'auto',
-        margin: '2px',
+        width: '100%',
+        height: '100%',
+        padding: '0',
         fontSize: '12px',
+        margin: '0',
+        '& video': {
+          objectFit: 'cover !important',
+        },
       },
     },
   })

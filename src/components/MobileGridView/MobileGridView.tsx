@@ -1,4 +1,3 @@
-import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import Participant from '../Participant/Participant';
 import useParticipants from '../../hooks/useParticipants/useParticipants';
@@ -17,18 +16,23 @@ const useStyles = makeStyles({
     right: 0,
     bottom: 0,
     left: 0,
-  },
-  buttonContainer: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    height: '100%',
+    '& .swiper': {
+      height: '100%',
+    },
+    '& .swiper-wrapper': {
+      height: '100%',
+    },
+    '& .swiper-slide': {
+      height: '90%',
+      paddingBottom: '1em',
+    },
   },
   swiperSlide: {
     display: 'flex',
     flexWrap: 'wrap',
+    alignSelf: 'center',
+    alignContent: 'flex-start',
   },
 });
 
@@ -57,16 +61,34 @@ export function MobileGridView() {
     let videoHeight;
 
     switch (true) {
-      case participants.length <= 2:
-        videoWidth = '100%';
+      case participants.length < 1:
+        videoWidth = '97.5%';
+        videoHeight = '100%';
         break;
 
-      case participants.length > 2:
-        videoWidth = '50%';
+      case participants.length === 1:
+        videoWidth = '97.5%';
+        videoHeight = '48%';
+        break;
+
+      case participants.length === 2:
+        videoWidth = '97.5%';
+        videoHeight = '32%';
+        break;
+
+      case participants.length === 3:
+        videoWidth = '47.5%';
+        videoHeight = '47.5%';
+        break;
+
+      case participants.length > 3:
+        videoWidth = '47.5%';
+        videoHeight = '32%';
         break;
     }
     return {
       width: videoWidth,
+      margin: '0.2em',
       height: videoHeight,
     };
   };
@@ -77,7 +99,7 @@ export function MobileGridView() {
         {pages.map((page, i) => (
           <SwiperSlide key={i} className={classes.swiperSlide}>
             {page.map(participant => (
-              <div style={getVideoWidth()}>
+              <div style={getVideoWidth()} key={i}>
                 <Participant participant={participant} isLocalParticipant={room!.localParticipant === participant} />
               </div>
             ))}
