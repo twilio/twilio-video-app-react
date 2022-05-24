@@ -21,10 +21,10 @@ exports[`the MobileGridView component should render correctly when there are 3 o
         key="0"
         style={
           Object {
-            "box-sizing": "border-box",
-            "height": "100%",
+            "boxSizing": "border-box",
+            "height": "33.33%",
             "padding": "0.2em",
-            "width": "100%",
+            "width": "50%",
           }
         }
       >
@@ -35,6 +35,94 @@ exports[`the MobileGridView component should render correctly when there are 3 o
             Object {
               "identity": "test-local-participant",
               "sid": 0,
+            }
+          }
+        />
+      </div>
+      <div
+        key="1"
+        style={
+          Object {
+            "boxSizing": "border-box",
+            "height": "33.33%",
+            "padding": "0.2em",
+            "width": "50%",
+          }
+        }
+      >
+        <Participant
+          isDominantSpeaker={false}
+          isLocalParticipant={false}
+          participant={
+            Object {
+              "identity": "test-participant-1",
+              "sid": 1,
+            }
+          }
+        />
+      </div>
+      <div
+        key="2"
+        style={
+          Object {
+            "boxSizing": "border-box",
+            "height": "33.33%",
+            "padding": "0.2em",
+            "width": "50%",
+          }
+        }
+      >
+        <Participant
+          isDominantSpeaker={false}
+          isLocalParticipant={false}
+          participant={
+            Object {
+              "identity": "test-participant-2",
+              "sid": 2,
+            }
+          }
+        />
+      </div>
+      <div
+        key="3"
+        style={
+          Object {
+            "boxSizing": "border-box",
+            "height": "33.33%",
+            "padding": "0.2em",
+            "width": "50%",
+          }
+        }
+      >
+        <Participant
+          isDominantSpeaker={false}
+          isLocalParticipant={false}
+          participant={
+            Object {
+              "identity": "test-participant-3",
+              "sid": 3,
+            }
+          }
+        />
+      </div>
+      <div
+        key="4"
+        style={
+          Object {
+            "boxSizing": "border-box",
+            "height": "33.33%",
+            "padding": "0.2em",
+            "width": "50%",
+          }
+        }
+      >
+        <Participant
+          isDominantSpeaker={false}
+          isLocalParticipant={false}
+          participant={
+            Object {
+              "identity": "test-participant-4",
+              "sid": 4,
             }
           }
         />
@@ -65,8 +153,8 @@ exports[`the MobileGridView component should render correctly when there are two
         key="0"
         style={
           Object {
-            "box-sizing": "border-box",
-            "height": "100%",
+            "boxSizing": "border-box",
+            "height": "33.33%",
             "padding": "0.2em",
             "width": "100%",
           }
@@ -79,6 +167,50 @@ exports[`the MobileGridView component should render correctly when there are two
             Object {
               "identity": "test-local-participant",
               "sid": 0,
+            }
+          }
+        />
+      </div>
+      <div
+        key="1"
+        style={
+          Object {
+            "boxSizing": "border-box",
+            "height": "33.33%",
+            "padding": "0.2em",
+            "width": "100%",
+          }
+        }
+      >
+        <Participant
+          isDominantSpeaker={false}
+          isLocalParticipant={false}
+          participant={
+            Object {
+              "identity": "test-participant-1",
+              "sid": 1,
+            }
+          }
+        />
+      </div>
+      <div
+        key="2"
+        style={
+          Object {
+            "boxSizing": "border-box",
+            "height": "33.33%",
+            "padding": "0.2em",
+            "width": "100%",
+          }
+        }
+      >
+        <Participant
+          isDominantSpeaker={false}
+          isLocalParticipant={false}
+          participant={
+            Object {
+              "identity": "test-participant-2",
+              "sid": 2,
             }
           }
         />
@@ -109,8 +241,8 @@ exports[`the MobileGridView component should render correctly when there is one 
         key="0"
         style={
           Object {
-            "box-sizing": "border-box",
-            "height": "100%",
+            "boxSizing": "border-box",
+            "height": "50%",
             "padding": "0.2em",
             "width": "100%",
           }
@@ -123,6 +255,28 @@ exports[`the MobileGridView component should render correctly when there is one 
             Object {
               "identity": "test-local-participant",
               "sid": 0,
+            }
+          }
+        />
+      </div>
+      <div
+        key="1"
+        style={
+          Object {
+            "boxSizing": "border-box",
+            "height": "50%",
+            "padding": "0.2em",
+            "width": "100%",
+          }
+        }
+      >
+        <Participant
+          isDominantSpeaker={false}
+          isLocalParticipant={false}
+          participant={
+            Object {
+              "identity": "test-participant-1",
+              "sid": 1,
             }
           }
         />
@@ -153,7 +307,7 @@ exports[`the MobileGridView component should render correctly when there is only
         key="0"
         style={
           Object {
-            "box-sizing": "border-box",
+            "boxSizing": "border-box",
             "height": "100%",
             "padding": "0.2em",
             "width": "100%",
