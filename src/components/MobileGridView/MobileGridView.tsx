@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core';
 import Participant from '../Participant/Participant';
 import useDominantSpeaker from '../../hooks/useDominantSpeaker/useDominantSpeaker';
-import useParticipants from '../../hooks/useParticipants/useParticipants';
+import useGridParticipants from '../../hooks/useGridParticipants/useGridParticipants';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
@@ -41,7 +41,7 @@ const useStyles = makeStyles({
 export function MobileGridView() {
   const classes = useStyles();
   const { room } = useVideoContext();
-  const participants = useParticipants();
+  const participants = useGridParticipants(true);
   const dominantSpeaker = useDominantSpeaker(true);
   const remoteParticipantCount = participants.length;
 

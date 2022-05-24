@@ -1,5 +1,6 @@
 import { MobileGridView } from './MobileGridView';
 import { shallow } from 'enzyme';
+import { useAppState } from '../../state';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 const mockLocalParticipant = { identity: 'test-local-participant', sid: 0 };
@@ -16,8 +17,12 @@ jest.mock('swiper', () => ({
 
 jest.mock('../../hooks/useCollaborationParticipants/useCollaborationParticipants');
 jest.mock('../../hooks/useVideoContext/useVideoContext');
+jest.mock('../../state');
 
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
+const mockUseAppState = useAppState as jest.Mock<any>;
+
+mockUseAppState.mockImplementation(() => ({ maxGridParticipants: 9 }));
 
 mockUseVideoContext.mockImplementation(() => ({
   room: {

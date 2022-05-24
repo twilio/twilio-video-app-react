@@ -15,7 +15,7 @@ interface OrderedParticipant {
   dominantSpeakerStartTime: number;
 }
 
-export default function useGridParticipants() {
+export default function useGridParticipants(isMobileGridActive = false) {
   const [orderedParticipants, setOrderedParticipants] = useState<OrderedParticipant[]>([]);
   const { room } = useVideoContext();
   const dominantSpeaker = useDominantSpeaker();
@@ -36,7 +36,7 @@ export default function useGridParticipants() {
         }
 
         // Here we use maxGridParticipants - 1 since the localParticipant will always be the first in the grid
-        const maxFirstPageParticipants = maxGridParticipants - 1;
+        const maxFirstPageParticipants = isMobileGridActive ? 5 : maxGridParticipants - 1;
         const firstPageParticipants = newParticipantsArray.slice(0, maxFirstPageParticipants);
 
         // if the newest dominant speaker is not currently on the first page, reorder the orderedParticipants array:
@@ -55,12 +55,12 @@ export default function useGridParticipants() {
           newParticipantsArray.splice(newParticipantsArray.indexOf(leastRecentDominantSpeaker), 1, newDominantSpeaker);
 
           // Add the least recent dominant speaker back into the array after the last participant on the first page.
-          newParticipantsArray.splice(maxGridParticipants - 1, 0, leastRecentDominantSpeaker);
+          newParticipantsArray.splice(maxFirstPageParticipants, 0, leastRecentDominantSpeaker);
         }
         return newParticipantsArray;
       });
     }
-  }, [dominantSpeaker, maxGridParticipants]);
+  }, [dominantSpeaker, maxGridParticipants, isMobileGridActive]);
 
   useEffect(() => {
     if (room) {
