@@ -21,6 +21,7 @@ jest.mock('../../hooks/useCollaborationParticipants/useCollaborationParticipants
 jest.mock('../../hooks/useVideoContext/useVideoContext', () => () => ({
   room: {
     localParticipant: mockLocalParticipant,
+    participants: mockParticipants,
   },
 }));
 jest.mock('../../hooks/useGridLayout/useGridLayout', () =>
