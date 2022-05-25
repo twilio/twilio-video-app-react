@@ -6,6 +6,8 @@ import { Button } from '@material-ui/core';
 
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
+import watchRTC from '@testrtc/watchrtc-sdk';
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     button: {
@@ -23,7 +25,16 @@ export default function EndCallButton(props: { className?: string }) {
   const { room } = useVideoContext();
 
   return (
-    <Button onClick={() => room.disconnect()} className={clsx(classes.button, props.className)} data-cy-disconnect>
+    <Button
+      onClick={() => {
+        room.disconnect();
+
+        const rating = Math.floor(Math.random() * 5) as any;
+        watchRTC.setUserRating(rating, Math.random() ? `User rating is ${rating}` : ``);
+      }}
+      className={clsx(classes.button, props.className)}
+      data-cy-disconnect
+    >
       Disconnect
     </Button>
   );

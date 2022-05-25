@@ -8,7 +8,7 @@ import ToggleAudioButton from '../../Buttons/ToggleAudioButton/ToggleAudioButton
 import ToggleVideoButton from '../../Buttons/ToggleVideoButton/ToggleVideoButton';
 import { useAppState } from '../../../state';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
-import { wrapPeerConnectionEvent } from '../../../utils';
+// import { wrapPeerConnectionEvent } from '../../../utils';
 
 import watchRTC from '@testrtc/watchrtc-sdk';
 
@@ -81,22 +81,6 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
   };
 
   React.useEffect(() => {
-    watchRTC.init(wrtcConfig);
-    console.log('test');
-    wrapPeerConnectionEvent(window, 'addstream', (e: any) => {
-      if (e?.stream?.id) {
-        watchRTC.mapStream(e?.stream?.id, name);
-      }
-    });
-
-    setTimeout(() => {
-      watchRTC.addKeys({ peer: name });
-    }, 4000);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleJoin = () => {
     watchRTC.setConfig({
       ...wrtcConfig,
       keys: {
@@ -105,6 +89,16 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
       },
     });
 
+    // wrapPeerConnectionEvent(window, 'addstream', (e: any) => {
+    //   if (e?.stream?.id) {
+    //     watchRTC.mapStream(e?.stream?.id, name);
+    //   }
+    // });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleJoin = () => {
     getToken(name, roomName).then(token => connect(token));
   };
 
