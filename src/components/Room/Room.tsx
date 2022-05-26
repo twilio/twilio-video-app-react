@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import { makeStyles, Theme, useMediaQuery, useTheme } from '@material-ui/core';
 import ChatWindow from '../ChatWindow/ChatWindow';
@@ -11,6 +11,8 @@ import { ParticipantAudioTracks } from '../ParticipantAudioTracks/ParticipantAud
 import { GridView } from '../GridView/GridView';
 import { MobileGridView } from '../MobileGridView/MobileGridView';
 import { useAppState } from '../../state';
+import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
+import { Participant, LocalParticipant, RemoteParticipant, Room as IRoom } from 'twilio-video';
 
 const useStyles = makeStyles((theme: Theme) => {
   const totalMobileSidebarHeight = `${theme.sidebarMobileHeight +
@@ -32,13 +34,30 @@ const useStyles = makeStyles((theme: Theme) => {
   };
 });
 
+export function useSetCollaborationViewOnScreenShare(
+  screenShareParticipant: Participant | undefined,
+  room: IRoom | null,
+  setIsGridModeActive: React.Dispatch<React.SetStateAction<boolean>>
+) {
+  useEffect(() => {
+    if (screenShareParticipant && screenShareParticipant !== room!.localParticipant) {
+      setIsGridModeActive(false);
+    }
+  }, [screenShareParticipant, setIsGridModeActive, room]);
+}
+
 export default function Room() {
   const classes = useStyles();
   const { isChatWindowOpen } = useChatContext();
-  const { isBackgroundSelectionOpen } = useVideoContext();
-  const { isGridModeActive } = useAppState();
+  const { isBackgroundSelectionOpen, room } = useVideoContext();
+  const { isGridModeActive, setIsGridModeActive } = useAppState();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const screenShareParticipant = useScreenShareParticipant();
+
+  // Here we switch to collaboration view when a participant starts sharing their screen, but
+  // the user is still free to switch back to grid mode.
+  useSetCollaborationViewOnScreenShare(screenShareParticipant, room, setIsGridModeActive);
 
   return (
     <div

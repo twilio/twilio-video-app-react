@@ -1,7 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { renderHook } from '@testing-library/react-hooks';
 
-import Room from './Room';
+import Room, { useSetCollaborationViewOnScreenShare } from './Room';
 import useChatContext from '../../hooks/useChatContext/useChatContext';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { useAppState } from '../../state';
@@ -25,8 +26,11 @@ const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 
 const mockToggleChatWindow = jest.fn();
 const mockOpenBackgroundSelection = jest.fn();
+
 mockUseChatContext.mockImplementation(() => ({ setIsChatWindowOpen: mockToggleChatWindow }));
-mockUseVideoContext.mockImplementation(() => ({ setIsBackgroundSelectionOpen: mockOpenBackgroundSelection }));
+mockUseVideoContext.mockImplementation(() => ({
+  setIsBackgroundSelectionOpen: mockOpenBackgroundSelection,
+}));
 mockUseAppState.mockImplementation(() => ({ isGridModeActive: false }));
 
 describe('the Room component', () => {
@@ -62,5 +66,48 @@ describe('the Room component', () => {
     expect(wrapper.find('MainParticipant').exists()).toBe(false);
     expect(wrapper.find('ParticipantList').exists()).toBe(false);
     expect(wrapper.find('GridView').exists()).toBe(true);
+  });
+});
+
+describe('the useSetCollaborationViewOnScreenShare hook', () => {
+  const mockSetIsGridModeActive = jest.fn();
+  beforeEach(jest.clearAllMocks);
+
+  it('should not deactivate grid mode when there is no screen share participant', () => {
+    renderHook(() =>
+      useSetCollaborationViewOnScreenShare(undefined, { localParticipant: {} } as any, mockSetIsGridModeActive)
+    );
+    expect(mockSetIsGridModeActive).not.toBeCalled();
+  });
+
+  it('should deactivate grid mode when a remote participant shares their screen', () => {
+    const { rerender } = renderHook(
+      ({ screenShareParticipant }) =>
+        useSetCollaborationViewOnScreenShare(
+          screenShareParticipant,
+          { localParticipant: {} } as any,
+          mockSetIsGridModeActive
+        ),
+      { initialProps: { screenShareParticipant: undefined } }
+    );
+    expect(mockSetIsGridModeActive).not.toBeCalled();
+    rerender({ screenShareParticipant: {} } as any);
+    expect(mockSetIsGridModeActive).toBeCalledWith(false);
+  });
+
+  it('should not deactivate grid mode when the local participant shares their screen', () => {
+    const mockLocalParticipant = {};
+    const { rerender } = renderHook(
+      ({ screenShareParticipant }) =>
+        useSetCollaborationViewOnScreenShare(
+          screenShareParticipant,
+          { localParticipant: mockLocalParticipant } as any,
+          mockSetIsGridModeActive
+        ),
+      { initialProps: { screenShareParticipant: undefined } }
+    );
+    expect(mockSetIsGridModeActive).not.toBeCalled();
+    rerender({ screenShareParticipant: mockLocalParticipant } as any);
+    expect(mockSetIsGridModeActive).not.toBeCalled();
   });
 });
