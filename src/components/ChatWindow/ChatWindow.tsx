@@ -39,7 +39,6 @@ export default function ChatWindow() {
 
   return (
     <aside className={clsx(classes.chatWindowContainer, { [classes.hide]: !isChatWindowOpen })}>
-      <div>テスト入力</div>
       <ChatWindowHeader />
       <MessageList messages={messages} />
       <ChatInput conversation={conversation!} isChatWindowOpen={isChatWindowOpen} />

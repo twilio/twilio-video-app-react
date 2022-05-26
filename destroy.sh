@@ -1,0 +1,1 @@
+twilio rtc:apps:video:delete

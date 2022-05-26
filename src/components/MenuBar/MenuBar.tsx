@@ -12,6 +12,8 @@ import ToggleAudioButton from '../Buttons/ToggleAudioButton/ToggleAudioButton';
 import ToggleChatButton from '../Buttons/ToggleChatButton/ToggleChatButton';
 import ToggleVideoButton from '../Buttons/ToggleVideoButton/ToggleVideoButton';
 import ToggleScreenShareButton from '../Buttons/ToogleScreenShareButton/ToggleScreenShareButton';
+import TranscribeDialog from '../TranscribeDialog';
+import ToggleTranscriptionButton from '../Buttons/ToggleTranscriptionButton/ToggleTranscriptionButton';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -81,6 +83,7 @@ export default function MenuBar() {
         <Grid container justifyContent="space-around" alignItems="center">
           <Hidden smDown>
             <Grid style={{ flex: 1 }}>
+              {/* <Typography variant="body1">デプロイした2</Typography> */}
               <Typography variant="body1">{room!.name}</Typography>
             </Grid>
           </Hidden>
@@ -88,6 +91,7 @@ export default function MenuBar() {
             <Grid container justifyContent="center">
               <ToggleAudioButton disabled={isReconnecting} />
               <ToggleVideoButton disabled={isReconnecting} />
+              <ToggleTranscriptionButton />
               {!isSharingScreen && !isMobile && <ToggleScreenShareButton disabled={isReconnecting} />}
               {process.env.REACT_APP_DISABLE_TWILIO_CONVERSATIONS !== 'true' && <ToggleChatButton />}
               <Hidden smDown>

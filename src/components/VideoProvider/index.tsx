@@ -36,6 +36,8 @@ export interface IVideoContext {
   setIsBackgroundSelectionOpen: (value: boolean) => void;
   backgroundSettings: BackgroundSettings;
   setBackgroundSettings: (settings: BackgroundSettings) => void;
+  isTranscription?: boolean;
+  setIsTranscription?: (isTranscription?: boolean) => void;
 }
 
 export const VideoContext = createContext<IVideoContext>(null!);
