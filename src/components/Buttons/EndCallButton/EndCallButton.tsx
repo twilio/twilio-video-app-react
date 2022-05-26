@@ -42,7 +42,6 @@ export default function EndCallButton(props: { className?: string }) {
         if (typeof ratingMessageFromQuery === 'string') {
           message = decodeURI(ratingMessageFromQuery);
         }
-
         watchRTC.setUserRating(rating, message);
       }}
       className={clsx(classes.button, props.className)}
