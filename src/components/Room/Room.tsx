@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
-import clsx from 'clsx';
-import { makeStyles, Theme, useMediaQuery, useTheme } from '@material-ui/core';
-import ChatWindow from '../ChatWindow/ChatWindow';
-import ParticipantList from '../ParticipantList/ParticipantList';
-import MainParticipant from '../MainParticipant/MainParticipant';
 import BackgroundSelectionDialog from '../BackgroundSelectionDialog/BackgroundSelectionDialog';
-import useChatContext from '../../hooks/useChatContext/useChatContext';
-import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
-import { ParticipantAudioTracks } from '../ParticipantAudioTracks/ParticipantAudioTracks';
+import ChatWindow from '../ChatWindow/ChatWindow';
+import clsx from 'clsx';
 import { GridView } from '../GridView/GridView';
 import { MobileGridView } from '../MobileGridView/MobileGridView';
+import MainParticipant from '../MainParticipant/MainParticipant';
+import { makeStyles, Theme, useMediaQuery, useTheme } from '@material-ui/core';
+import { Participant, Room as IRoom } from 'twilio-video';
+import { ParticipantAudioTracks } from '../ParticipantAudioTracks/ParticipantAudioTracks';
+import ParticipantList from '../ParticipantList/ParticipantList';
 import { useAppState } from '../../state';
+import useChatContext from '../../hooks/useChatContext/useChatContext';
 import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
-import { Participant, LocalParticipant, RemoteParticipant, Room as IRoom } from 'twilio-video';
+import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 const useStyles = makeStyles((theme: Theme) => {
   const totalMobileSidebarHeight = `${theme.sidebarMobileHeight +

@@ -26,11 +26,8 @@ const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 
 const mockToggleChatWindow = jest.fn();
 const mockOpenBackgroundSelection = jest.fn();
-
 mockUseChatContext.mockImplementation(() => ({ setIsChatWindowOpen: mockToggleChatWindow }));
-mockUseVideoContext.mockImplementation(() => ({
-  setIsBackgroundSelectionOpen: mockOpenBackgroundSelection,
-}));
+mockUseVideoContext.mockImplementation(() => ({ setIsBackgroundSelectionOpen: mockOpenBackgroundSelection }));
 mockUseAppState.mockImplementation(() => ({ isGridModeActive: false }));
 
 describe('the Room component', () => {
