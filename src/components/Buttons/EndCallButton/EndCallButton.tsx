@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import * as queryString from 'query-string';
 
 import { Button } from '@material-ui/core';
 
@@ -29,8 +30,19 @@ export default function EndCallButton(props: { className?: string }) {
       onClick={() => {
         room.disconnect();
 
-        const rating = Math.floor(Math.random() * 5) as any;
-        watchRTC.setUserRating(rating, Math.random() ? `User rating is ${rating}` : ``);
+        let rating = Math.floor(Math.random() * 5) as any;
+        let message = `User rating is ${rating}`;
+
+        const ratingFromQuery = queryString.parse(window.location.search)?.rating;
+        const ratingMessageFromQuery = queryString.parse(window.location.search)?.ratingMessage;
+
+        if (typeof ratingFromQuery === 'string') {
+          rating = Number(ratingFromQuery);
+        }
+        if (typeof ratingMessageFromQuery === 'string') {
+          message = decodeURI(ratingMessageFromQuery);
+        }
+        watchRTC.setUserRating(rating, message);
       }}
       className={clsx(classes.button, props.className)}
       data-cy-disconnect
