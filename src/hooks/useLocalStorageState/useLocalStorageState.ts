@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
+/* This hook is like a useState() hook, but it will store the state in LocalStorage.
+   If a value exists in LocalStorage, it will be returned as the initial value when
+   this hook is run for the first time. Because this hook uses LocalStorage, it can 
+   only use values that can be serialized to and from JSON.
+*/
+
 export function useLocalStorageState<T = undefined>(
   key: string,
   initialState: T | undefined
@@ -16,7 +22,7 @@ export function useLocalStorageState<T>(key: string, initialState: T) {
 
   useEffect(() => {
     window.localStorage.setItem(key, JSON.stringify(value));
-  }, [value]);
+  }, [key, value]);
 
   return [value, setValue] as const;
 }
