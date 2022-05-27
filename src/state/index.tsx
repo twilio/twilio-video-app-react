@@ -4,9 +4,9 @@ import { TwilioError } from 'twilio-video';
 import { settingsReducer, initialSettings, Settings, SettingsAction } from './settings/settingsReducer';
 import useActiveSinkId from './useActiveSinkId/useActiveSinkId';
 import useFirebaseAuth from './useFirebaseAuth/useFirebaseAuth';
+import { useLocalStorageState } from '../hooks/useLocalStorageState/useLocalStorageState';
 import usePasscodeAuth from './usePasscodeAuth/usePasscodeAuth';
 import { User } from 'firebase';
-import { useLocalStorageState } from '../hooks/useLocalStorageState/useLocalStorageState';
 
 export interface StateContextType {
   error: TwilioError | Error | null;
