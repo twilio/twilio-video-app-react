@@ -6,6 +6,7 @@ import useActiveSinkId from './useActiveSinkId/useActiveSinkId';
 import useFirebaseAuth from './useFirebaseAuth/useFirebaseAuth';
 import usePasscodeAuth from './usePasscodeAuth/usePasscodeAuth';
 import { User } from 'firebase';
+import { useLocalStorageState } from '../hooks/useLocalStorageState/useLocalStorageState';
 
 export interface StateContextType {
   error: TwilioError | Error | null;
@@ -42,11 +43,11 @@ export const StateContext = createContext<StateContextType>(null!);
 export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const [error, setError] = useState<TwilioError | null>(null);
   const [isFetching, setIsFetching] = useState(false);
-  const [isGridModeActive, setIsGridModeActive] = useState(false);
+  const [isGridModeActive, setIsGridModeActive] = useLocalStorageState('grid-mode-active-key', false);
   const [activeSinkId, setActiveSinkId] = useActiveSinkId();
   const [settings, dispatchSetting] = useReducer(settingsReducer, initialSettings);
   const [roomType, setRoomType] = useState<RoomType>();
-  const [maxGridParticipants, setMaxGridParticipants] = useState(25);
+  const [maxGridParticipants, setMaxGridParticipants] = useLocalStorageState('max-grid-participants-key', 25);
 
   let contextValue = {
     error,
