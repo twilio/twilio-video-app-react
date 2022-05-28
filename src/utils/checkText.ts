@@ -1,5 +1,5 @@
 export const isZenkakuKana = (text: string) => {
-  return !!text.match(/^[ァ-ヶー　]+$/);
+  return !!text.match(/[ァ-ヶー　]+/);
 };
 
 export const ishankakuKana = (text: string) => {
