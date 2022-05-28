@@ -3,6 +3,7 @@ import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognitio
 import handleSendMessage from '../../utils/sendMessage';
 // import { Conversation } from '@twilio/conversations/lib/conversation';
 import useChatContext from '../../hooks/useChatContext/useChatContext';
+import useLocalAudioToggle from '../../hooks/useLocalAudioToggle/useLocalAudioToggle';
 
 interface TranscriberProps {}
 /**
@@ -13,19 +14,22 @@ const Transcriber: React.FC<TranscriberProps> = params => {
   // 音声認識関係変数
   const speechRecogState = useSpeechRecognition();
   const { conversation } = useChatContext();
+  // オーディオを聴けるかかどうか(これがfalseの時は音声認識しない)
+  const [isAudioEnabled] = useLocalAudioToggle();
 
   useEffect(() => {
-    if (!speechRecogState.listening) {
-      console.log(speechRecogState);
-      handleSendMessage({
-        message: speechRecogState.transcript,
-        conversation: conversation,
-        onFinished: speechRecogState.resetTranscript,
-      });
+    if (isAudioEnabled) {
+      if (!speechRecogState.listening) {
+        handleSendMessage({
+          message: speechRecogState.transcript,
+          conversation: conversation,
+          onFinished: speechRecogState.resetTranscript,
+        });
+      }
+      // 次の音声認識start
+      SpeechRecognition.startListening();
     }
-    // 次の音声認識start
-    SpeechRecognition.startListening();
-  }, [speechRecogState.listening]);
+  }, [speechRecogState.listening, isAudioEnabled]);
 
   return <></>;
 };
