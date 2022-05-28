@@ -1,12 +1,10 @@
 import React, { useEffect } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import handleSendMessage from '../../utils/sendMessage';
+// import { Conversation } from '@twilio/conversations/lib/conversation';
 import useChatContext from '../../hooks/useChatContext/useChatContext';
-import { Conversation } from '@twilio/conversations/lib/conversation';
 
-interface TranscriberProps {
-  conversation?: Conversation | null;
-}
+interface TranscriberProps {}
 /**
  * 音声認識して、チャットに送信するコンポーネント
  * DOMとしての機能はない
@@ -14,14 +12,14 @@ interface TranscriberProps {
 const Transcriber: React.FC<TranscriberProps> = params => {
   // 音声認識関係変数
   const speechRecogState = useSpeechRecognition();
-  // conversationがparamsにないときは、useChatContext()から取得する。
-  const conv = params.conversation === undefined ? useChatContext().conversation : params.conversation;
+  const { conversation } = useChatContext();
+
   useEffect(() => {
     if (!speechRecogState.listening) {
       console.log(speechRecogState);
       handleSendMessage({
         message: speechRecogState.transcript,
-        conversation: conv,
+        conversation: conversation,
         onFinished: speechRecogState.resetTranscript,
       });
     }

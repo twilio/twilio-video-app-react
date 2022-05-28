@@ -21,7 +21,7 @@ export default function ToggleTranscriptionButton(props: ToggleTranscriptionButt
       startIcon={<VideoOnIcon />}
     >
       英語禁止ゲーム{isTranscription ? '終了' : '開始'}
-      {isTranscription && <Transcriber conversation={conversation} />}
+      {isTranscription && <Transcriber />}
     </Button>
   );
 }
