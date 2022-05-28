@@ -1,3 +1,10 @@
+# ローカルで起動する方法 (2022/5/28)
+
+1. まず `.env.sample` というファイルが既にあるのでそれをコピーして `.env` という名前にしてください.
+2. `.env` の `TWILIO_API_KEY_SID`, `TWILIO_API_KEY_SECRET`, `TWILIO_CONVERSATIONS_SERVICE_SID` を設定してください.
+3. `npm start` コマンドを入力してください.
+4. ビルドが終わると勝手に起動します. 起動しなかったら `locallhost:3000` にアクセスしてください.
+
 # Twilio Video React App
 
 [![CircleCI](https://circleci.com/gh/twilio/twilio-video-app-react.svg?style=svg)](https://circleci.com/gh/twilio/twilio-video-app-react)
