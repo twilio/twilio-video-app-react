@@ -3,7 +3,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import VideoOnIcon from '../../../icons/VideoOnIcon';
 import Transcriber from '../../Transcriber';
-import useChatContext from '../../../hooks/useChatContext/useChatContext';
+// import useChatContext from '../../../hooks/useChatContext/useChatContext';
 
 export interface ToggleTranscriptionButtonProps {
   disabled?: boolean;
@@ -11,7 +11,7 @@ export interface ToggleTranscriptionButtonProps {
 }
 
 export default function ToggleTranscriptionButton(props: ToggleTranscriptionButtonProps) {
-  const { conversation } = useChatContext();
+  // const { conversation } = useChatContext();
   // 文字起こしを行うかどうか
   const [isTranscription, setIsTranscription] = React.useState<boolean>(false);
   return (
