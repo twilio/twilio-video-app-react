@@ -5,6 +5,9 @@
 3. `npm start` コマンドを入力してください.
 4. ビルドが終わると勝手に起動します. 起動しなかったら `locallhost:3000` にアクセスしてください.
 
+**※githubには絶対にアップロードしないでください!このkeyが世に出回ると、他の人に利用される可能性があるからです!**  
+(.gitignoreに記載しているので普通にやっていればアップロードされませんが)
+
 # Twilio Video React App
 
 [![CircleCI](https://circleci.com/gh/twilio/twilio-video-app-react.svg?style=svg)](https://circleci.com/gh/twilio/twilio-video-app-react)
