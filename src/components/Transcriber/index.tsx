@@ -8,7 +8,7 @@ import { isBannedText } from '../../utils/checkText';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 interface TranscriberProps {
-  onFinished?: () => void;
+  onFinished: () => void;
 }
 /**
  * 音声認識して、チャットに送信するコンポーネント
@@ -18,49 +18,42 @@ const Transcriber: React.FC<TranscriberProps> = params => {
   // 音声認識関係変数
   const speechRecogState = useSpeechRecognition();
   const { conversation } = useChatContext();
-  const { room, sendLooser } = useVideoContext();
+  const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
   // オーディオを聴けるかかどうか(これがfalseの時は音声認識しない)
   const [isAudioEnabled] = useLocalAudioToggle();
 
-  useEffect(() => {
-    // console.log(localParticipant.dataTracks)
-    // console.log(room)
-    const dataTracks = localParticipant.dataTracks;
-    console.log(dataTracks);
-    dataTracks.forEach(datat => {
-      console.log('こお');
-      console.log(datat);
-      datat.track.on('message', data => {
-        // リモートの描画を表示
-        // drawLine(context, JSON.parse(data));
-        console.log(data);
+  const onFinished = (transcription: string) => {
+    // 禁止文字の場合は、looserに変数を格納し、メッセージを送ってから終了
+    if (isBannedText(transcription)) {
+      // メッセージを送る
+      const looser = localParticipant.identity;
+      handleSendMessage({
+        message: `<英語禁止ゲーム終了>\n敗北者は「${looser}」さんでした。`,
+        conversation: conversation,
       });
-    });
-
-    if (isAudioEnabled) {
-      if (!speechRecogState.listening) {
-        // 禁止文字の場合は、looserに変数を格納し、メッセージを送ってから終了
-        if (isBannedText(speechRecogState.transcript)) {
-          sendLooser('test-user');
-          // メッセージは送る
-          handleSendMessage({
-            message: speechRecogState.transcript,
-            conversation: conversation,
-            onFinished: speechRecogState.resetTranscript,
-          });
-          return params.onFinished && params.onFinished();
-        }
-        // メッセージを送る
-        handleSendMessage({
-          message: speechRecogState.transcript,
-          conversation: conversation,
-          onFinished: speechRecogState.resetTranscript,
-        });
-      }
-      // 次の音声認識start
-      SpeechRecognition.startListening();
+      return params.onFinished();
     }
+  };
+
+  useEffect(() => {
+    if (!isAudioEnabled) return;
+    if (!speechRecogState.listening && speechRecogState.transcript) {
+      const transcription = speechRecogState.transcript;
+      // JSONで持たせて、ゲーム中かを判定させる
+      const gameText = {
+        message: speechRecogState.transcript,
+      };
+      // メッセージを送る
+      handleSendMessage({
+        message: JSON.stringify(gameText),
+        conversation: conversation,
+        onFinished: () => onFinished(transcription),
+      });
+      speechRecogState.resetTranscript();
+    }
+    // 次の音声認識start
+    SpeechRecognition.startListening();
   }, [speechRecogState.listening, isAudioEnabled]);
 
   return <></>;

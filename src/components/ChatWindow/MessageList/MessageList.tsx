@@ -27,7 +27,6 @@ export default function MessageList({ messages }: MessageListProps) {
         const shouldDisplayMessageInfo = time !== previousTime || message.author !== messages[idx - 1]?.author;
 
         const isLocalParticipant = localParticipant.identity === message.author;
-
         return (
           <React.Fragment key={message.sid}>
             {shouldDisplayMessageInfo && (

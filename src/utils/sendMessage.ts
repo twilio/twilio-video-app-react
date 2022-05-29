@@ -12,10 +12,12 @@ export default function handleSendMessage(p: {
     return;
   }
   if (isValidMessage(p.message)) {
-    p.conversation.sendMessage(p.message.trim());
-    if (p.onFinished) {
-      p.onFinished();
-    }
+    // 処理の順番を守る
+    p.conversation.sendMessage(p.message.trim()).then(() => {
+      if (p.onFinished) {
+        p.onFinished();
+      }
+    });
   }
 }
 

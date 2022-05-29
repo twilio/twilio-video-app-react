@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode, useCallback, useState } from 'react';
-import { CreateLocalTrackOptions, ConnectOptions, LocalAudioTrack, LocalVideoTrack, Room, Track } from 'twilio-video';
+import { CreateLocalTrackOptions, ConnectOptions, LocalAudioTrack, LocalVideoTrack, Room } from 'twilio-video';
 import { ErrorCallback } from '../../types';
 import { SelectedParticipantProvider } from './useSelectedParticipant/useSelectedParticipant';
 
@@ -11,7 +11,6 @@ import useLocalTracks from './useLocalTracks/useLocalTracks';
 import useRestartAudioTrackOnDeviceChange from './useRestartAudioTrackOnDeviceChange/useRestartAudioTrackOnDeviceChange';
 import useRoom from './useRoom/useRoom';
 import useScreenShareToggle from './useScreenShareToggle/useScreenShareToggle';
-import Video from 'twilio-video';
 
 /*
  *  The hooks used by the VideoProvider component are different than the hooks found in the 'hooks/' directory. The hooks
@@ -37,9 +36,10 @@ export interface IVideoContext {
   setIsBackgroundSelectionOpen: (value: boolean) => void;
   backgroundSettings: BackgroundSettings;
   setBackgroundSettings: (settings: BackgroundSettings) => void;
-  sendLooser: (looser: string) => void;
-  resetLooser: () => void;
-  dataTrack: Video.LocalDataTrack;
+  // sendLooser: (looser: string) => void;
+  // resetLooser: () => void;
+  setLooser: (looser: string) => void;
+  looser: string;
 }
 
 export const VideoContext = createContext<IVideoContext>(null!);
@@ -89,33 +89,28 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
     | LocalVideoTrack
     | undefined;
   const [backgroundSettings, setBackgroundSettings] = useBackgroundSettings(videoTrack, room);
+  const [looser, setLooser] = useState<string>('');
   // ゲームの敗北者を格納する(undefinedの時は敗北者はいない)
-  const dataTrack = new Video.LocalDataTrack();
-  if (room) {
-    console.log(room);
-    console.log('更新処理');
-    room.localParticipant.publishTrack(dataTrack);
-  }
+  // const dataTrack = new Video.LocalDataTrack();
+  // if (room) {
+  //   room.localParticipant.publishTrack(dataTrack);
+  // }
 
-  const sendLooser = (looser: string) => {
-    const d = {
-      looser: looser,
-      type: 'looser',
-    };
-    console.log(room);
-    console.log(room?.localParticipant);
-    dataTrack.send(JSON.stringify(d));
-    console.log(JSON.stringify(d));
-  };
+  // const sendLooser = (looser: string) => {
+  //   const d = {
+  //     looser: looser,
+  //     type: 'looser',
+  //   };
+  //   dataTrack.send(JSON.stringify(d));
+  // };
 
-  const resetLooser = () => {
-    const d = {
-      looser: '',
-      type: 'looser',
-    };
-    dataTrack.send(JSON.stringify(d));
-    console.log(dataTrack);
-  };
+  // const resetLooser = () => {
+  //   const d = {
+  //     looser: '',
+  //     type: 'looser',
+  //   };
+  //   dataTrack.send(JSON.stringify(d));
+  // };
 
   return (
     <VideoContext.Provider
@@ -136,9 +131,8 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
         setIsBackgroundSelectionOpen,
         backgroundSettings,
         setBackgroundSettings,
-        sendLooser,
-        resetLooser,
-        dataTrack,
+        looser,
+        setLooser,
       }}
     >
       <SelectedParticipantProvider room={room}>{children}</SelectedParticipantProvider>

@@ -24,6 +24,7 @@ const useStyles = makeStyles({
 
 interface TextMessageProps {
   body: string;
+  game?: boolean;
   isLocalParticipant: boolean;
 }
 
@@ -49,9 +50,28 @@ function addLinks(text: string) {
   return results;
 }
 
-export default function TextMessage({ body, isLocalParticipant }: TextMessageProps) {
+const loadJson = (body: string) => {
+  let d = {
+    message: '',
+    game: false,
+  };
+  try {
+    const data = JSON.parse(body);
+    d = {
+      message: data.message,
+      game: true,
+    };
+  } catch (e) {
+    d = {
+      message: body,
+      game: false,
+    };
+  }
+  return d;
+};
+export default function TextMessage({ body, isLocalParticipant, game }: TextMessageProps) {
+  const datas = loadJson(body);
   const classes = useStyles();
-
   return (
     <div>
       <div
@@ -61,10 +81,10 @@ export default function TextMessage({ body, isLocalParticipant }: TextMessagePro
       >
         <div
           style={{
-            color: isBannedText(body) ? 'red' : 'inherit',
+            color: isBannedText(datas.message) && datas.game ? 'red' : 'inherit',
           }}
         >
-          {addLinks(body)}
+          {addLinks(datas.message)}
         </div>
       </div>
     </div>
