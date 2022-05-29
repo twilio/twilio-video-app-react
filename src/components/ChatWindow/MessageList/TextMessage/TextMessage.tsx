@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { Link } from '@material-ui/core';
 import linkify from 'linkify-it';
 import { makeStyles } from '@material-ui/core/styles';
-import { isEnglish, ishankakuKana, isZenkakuKana } from '../../../../utils/checkText';
+import { isBannedText } from '../../../../utils/checkText';
 
 const useStyles = makeStyles({
   messageContainer: {
@@ -47,10 +47,6 @@ function addLinks(text: string) {
   results.push(text.slice(lastIndex, text.length));
 
   return results;
-}
-/**英語orカタカナを含む文字の場合はtrue **/
-function isBannedText(text: string) {
-  return ishankakuKana(text) || isZenkakuKana(text) || isEnglish(text);
 }
 
 export default function TextMessage({ body, isLocalParticipant }: TextMessageProps) {

@@ -102,7 +102,7 @@ export default function LoginPage() {
       {process.env.REACT_APP_SET_AUTH === 'passcode' && (
         <>
           <Typography variant="h5" className={classes.gutterBottom}>
-            Enter passcode to join a room111
+            Enter passcode to join a room
           </Typography>
           <form onSubmit={handleSubmit}>
             <Grid container justifyContent="space-between">
