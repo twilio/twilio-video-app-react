@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FormEvent } from 'react';
-import DeviceSelectionScreen from './DeviceSelectionScreen/DeviceSelectionScreen';
+import QuestionScreen from './QuestionScreen/QuestionScreen';
 import IntroContainer from '../IntroContainer/IntroContainer';
 import MediaErrorSnackbar from './MediaErrorSnackbar/MediaErrorSnackbar';
 import RoomNameScreen from './RoomNameScreen/RoomNameScreen';
@@ -64,9 +64,7 @@ export default function PreJoinScreens() {
         />
       )}
 
-      {step === Steps.deviceSelectionStep && (
-        <DeviceSelectionScreen name={name} roomName={roomName} setStep={setStep} />
-      )}
+      {step === Steps.deviceSelectionStep && <QuestionScreen name={name} roomName={roomName} setStep={setStep} />}
     </IntroContainer>
   );
 }
