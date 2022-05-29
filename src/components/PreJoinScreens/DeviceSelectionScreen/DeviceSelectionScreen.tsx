@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles, Typography, Grid, Button, Theme, Hidden } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LocalVideoPreview from './LocalVideoPreview/LocalVideoPreview';
@@ -65,6 +65,8 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
   const { connect: videoConnect, isAcquiringLocalTracks, isConnecting } = useVideoContext();
   const disableButtons = isFetching || isAcquiringLocalTracks || isConnecting;
 
+  const [isAnswerd, setAnswerd] = useState(false);
+
   const handleJoin = () => {
     getToken(name, roomName).then(({ token }) => {
       videoConnect(token);
@@ -72,7 +74,14 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
     });
   };
 
-  if (isFetching || isConnecting) {
+  const handleQuestion = () => {
+    setAnswerd(true);
+    console.log('unko deta');
+  };
+
+  //
+  if ((isFetching || isConnecting) && !isAnswerd) {
+    console.log(isFetching || isConnecting, (isFetching || isConnecting) && !isAnswerd);
     return (
       <Grid container justifyContent="center" alignItems="center" direction="column" style={{ height: '100%' }}>
         <div>
@@ -80,8 +89,11 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
         </div>
         <div>
           <Typography variant="body2" style={{ fontWeight: 'bold', fontSize: '16px' }}>
-            Joining Meeting
+            ウンチing now...
           </Typography>
+          <Button variant="contained" color="primary" onClick={handleQuestion} disabled={isAnswerd}>
+            ウンチ　done
+          </Button>
         </div>
       </Grid>
     );
