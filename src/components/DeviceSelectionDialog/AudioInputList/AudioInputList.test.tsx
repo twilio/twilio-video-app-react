@@ -77,7 +77,7 @@ describe('the AudioInputList component', () => {
   it('should save the deviceId in localStorage when the audio input device is changed', () => {
     mockUseDevices.mockImplementation(() => ({ audioInputDevices: [mockDevice, mockDevice] }));
     const wrapper = shallow(<AudioInputList />);
-    expect(window.localStorage.getItem(SELECTED_AUDIO_INPUT_KEY)).toBe(undefined);
+    expect(window.localStorage.getItem(SELECTED_AUDIO_INPUT_KEY)).toBe(null);
     wrapper.find(Select).simulate('change', { target: { value: 'mockDeviceID' } });
     expect(window.localStorage.getItem(SELECTED_AUDIO_INPUT_KEY)).toBe('mockDeviceID');
   });

@@ -11,7 +11,7 @@ class LocalStorage {
   store = {} as { [key: string]: string };
 
   getItem(key: string) {
-    return this.store[key];
+    return this.store[key] ? this.store[key] : null;
   }
 
   setItem(key: string, value: string) {

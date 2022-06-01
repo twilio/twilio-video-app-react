@@ -84,7 +84,7 @@ describe('the VideoInputList component', () => {
   it('should save the deviceId in localStorage when the video input device is changed', () => {
     mockUseDevices.mockImplementation(() => ({ videoInputDevices: [mockDevice, mockDevice] }));
     const wrapper = shallow(<VideoInputList />);
-    expect(window.localStorage.getItem(SELECTED_VIDEO_INPUT_KEY)).toBe(undefined);
+    expect(window.localStorage.getItem(SELECTED_VIDEO_INPUT_KEY)).toBe(null);
     wrapper.find(Select).simulate('change', { target: { value: 'mockDeviceID' } });
     expect(window.localStorage.getItem(SELECTED_VIDEO_INPUT_KEY)).toBe('mockDeviceID');
   });
