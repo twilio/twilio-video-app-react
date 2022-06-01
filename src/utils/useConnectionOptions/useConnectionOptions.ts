@@ -19,6 +19,10 @@ export default function useConnectionOptions() {
         trackSwitchOffMode: settings.trackSwitchOffMode,
         contentPreferencesMode: settings.contentPreferencesMode,
         clientTrackSwitchOffControl: settings.clientTrackSwitchOffControl,
+        maxSwitchedOnTracks: parseInt(settings.maxVideoTracks),
+      },
+      audio: {
+        maxSwitchedOnTracks: parseInt(settings.maxAudioTracks),
       },
     },
     dominantSpeaker: true,
@@ -27,7 +31,7 @@ export default function useConnectionOptions() {
     // Comment this line if you are playing music.
     maxAudioBitrate: Number(settings.maxAudioBitrate),
 
-    preferredVideoCodecs: 'auto',
+    preferredVideoCodecs: settings.adaptiveSimulcast === 'true' ? 'auto' : [{ codec: 'VP8', simulcast: true }],
 
     //@ts-ignore - Internal use only. This property is not exposed in type definitions.
     environment: process.env.REACT_APP_TWILIO_ENVIRONMENT,
@@ -45,5 +49,6 @@ export default function useConnectionOptions() {
 
   // Here we remove any 'undefined' values. The twilio-video SDK will only use defaults
   // when no value is passed for an option. It will throw an error when 'undefined' is passed.
+  console.log(removeUndefineds(connectionOptions));
   return removeUndefineds(connectionOptions);
 }

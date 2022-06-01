@@ -1,5 +1,7 @@
 import { Track, VideoBandwidthProfile } from 'twilio-video';
 
+const searchParams = new URLSearchParams(window.location.search);
+
 export interface Settings {
   trackSwitchOffMode: VideoBandwidthProfile['trackSwitchOffMode'];
   dominantSpeakerPriority?: Track.Priority;
@@ -7,6 +9,9 @@ export interface Settings {
   maxAudioBitrate: string;
   contentPreferencesMode?: 'auto' | 'manual';
   clientTrackSwitchOffControl?: 'auto' | 'manual';
+  adaptiveSimulcast: string;
+  maxAudioTracks: string;
+  maxVideoTracks: string;
 }
 
 type SettingsKeys = keyof Settings;
@@ -23,6 +28,9 @@ export const initialSettings: Settings = {
   maxAudioBitrate: '16000',
   contentPreferencesMode: 'auto',
   clientTrackSwitchOffControl: 'auto',
+  adaptiveSimulcast: searchParams.get('adaptiveSimulcast') ?? 'true',
+  maxAudioTracks: searchParams.get('maxAudioTracks') ?? '25',
+  maxVideoTracks: searchParams.get('maxVideoTracks') ?? '25',
 };
 
 // This inputLabels object is used by ConnectionOptions.tsx. It is used to populate the id, name, and label props

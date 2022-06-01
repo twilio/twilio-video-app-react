@@ -136,6 +136,20 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
                 <MenuItem value="default">Server Default</MenuItem>
               </Select>
             </FormControl>
+            <FormControl className={classes.formControl}>
+              <InputLabel id={inputLabels.adaptiveSimulcast}>Adaptive Simulcast:</InputLabel>
+              <Select
+                fullWidth
+                disabled={isDisabled}
+                name={inputLabels.adaptiveSimulcast}
+                label={inputLabels.adaptiveSimulcast}
+                value={settings.adaptiveSimulcast}
+                onChange={handleChange}
+              >
+                <MenuItem value="true">On</MenuItem>
+                <MenuItem value="false">Off</MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
           <Grid item sm={6} xs={12}>
             <FormControl className={classes.formControl}>
@@ -179,6 +193,28 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
                 placeholder="Leave blank for no limit"
                 name={inputLabels.maxAudioBitrate}
                 value={withDefault(settings.maxAudioBitrate)}
+                onChange={handleNumberChange}
+              />
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <TextField
+                disabled={isDisabled}
+                fullWidth
+                id={inputLabels.maxAudioTracks}
+                label="Max Audio Tracks"
+                name={inputLabels.maxAudioTracks}
+                value={withDefault(settings.maxAudioTracks)}
+                onChange={handleNumberChange}
+              />
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <TextField
+                disabled={isDisabled}
+                fullWidth
+                id={inputLabels.maxVideoTracks}
+                label="Max Video Tracks"
+                name={inputLabels.maxVideoTracks}
+                value={withDefault(settings.maxVideoTracks)}
                 onChange={handleNumberChange}
               />
             </FormControl>
