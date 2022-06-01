@@ -1,5 +1,5 @@
 import { LocalVideoTrack, Room } from 'twilio-video';
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 import { SELECTED_BACKGROUND_SETTINGS_KEY } from '../../../constants';
 import {
   GaussianBlurBackgroundProcessor,
@@ -40,6 +40,7 @@ import PlantThumb from '../../../images/thumb/Plant.jpg';
 import SanFrancisco from '../../../images/SanFrancisco.jpg';
 import SanFranciscoThumb from '../../../images/thumb/SanFrancisco.jpg';
 import { Thumbnail } from '../../BackgroundSelectionDialog/BackgroundThumbnail/BackgroundThumbnail';
+import { useLocalStorageState } from '../../../hooks/useLocalStorageState/useLocalStorageState';
 
 export interface BackgroundSettings {
   type: Thumbnail;
@@ -130,10 +131,10 @@ let blurProcessor: GaussianBlurBackgroundProcessor;
 let virtualBackgroundProcessor: VirtualBackgroundProcessor;
 
 export default function useBackgroundSettings(videoTrack: LocalVideoTrack | undefined, room?: Room | null) {
-  const [backgroundSettings, setBackgroundSettings] = useState<BackgroundSettings>(() => {
-    const localStorageSettings = window.localStorage.getItem(SELECTED_BACKGROUND_SETTINGS_KEY);
-    return localStorageSettings ? JSON.parse(localStorageSettings) : { type: 'none', index: 0 };
-  });
+  const [backgroundSettings, setBackgroundSettings] = useLocalStorageState<BackgroundSettings>(
+    SELECTED_BACKGROUND_SETTINGS_KEY,
+    { type: 'none', index: 0 }
+  );
 
   const removeProcessor = useCallback(() => {
     if (videoTrack && videoTrack.processor) {
@@ -187,7 +188,6 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
       }
     };
     handleProcessorChange();
-    window.localStorage.setItem(SELECTED_BACKGROUND_SETTINGS_KEY, JSON.stringify(backgroundSettings));
   }, [backgroundSettings, videoTrack, room, addProcessor, removeProcessor]);
 
   return [backgroundSettings, setBackgroundSettings] as const;

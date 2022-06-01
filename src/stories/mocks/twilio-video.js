@@ -18,6 +18,10 @@ window.fetch = (...args) => {
   }
 };
 
+const getRandomColor = () => {
+  return Math.floor(Math.random() * 16777215).toString(16);
+};
+
 class MockTrack extends EventEmitter {
   constructor(kind) {
     super();
@@ -25,6 +29,7 @@ class MockTrack extends EventEmitter {
     this.kind = kind === 'screen' || kind === 'video' ? 'video' : 'audio';
     this.isEnabled = true;
     this.isSwitchedOff = false;
+    this.backgroundColor = getRandomColor();
 
     this._dummyAudioEl_ = document.createElement('audio');
   }
@@ -37,7 +42,7 @@ class MockTrack extends EventEmitter {
         // To use a video source, set the 'el.src' property instead and uncomment el.play() below
         el.poster = 'https://dummyimage.com/800x450/c25050/ffffff.png&text=Screen+share';
       } else {
-        el.poster = 'https://dummyimage.com/800x450/439e3a/ffffff.png&text=Participant';
+        el.poster = `https://dummyimage.com/800x450/${this.backgroundColor}/ffffff.png&text=Participant`;
       }
       try {
         // el.play();

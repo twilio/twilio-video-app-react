@@ -1,15 +1,18 @@
-import React from 'react';
-import clsx from 'clsx';
-import { makeStyles, Theme, useMediaQuery, useTheme } from '@material-ui/core';
-import ChatWindow from '../ChatWindow/ChatWindow';
-import ParticipantList from '../ParticipantList/ParticipantList';
-import MainParticipant from '../MainParticipant/MainParticipant';
+import React, { useEffect } from 'react';
 import BackgroundSelectionDialog from '../BackgroundSelectionDialog/BackgroundSelectionDialog';
-import useChatContext from '../../hooks/useChatContext/useChatContext';
-import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
-import { ParticipantAudioTracks } from '../ParticipantAudioTracks/ParticipantAudioTracks';
+import ChatWindow from '../ChatWindow/ChatWindow';
+import clsx from 'clsx';
 import { GridView } from '../GridView/GridView';
+import { MobileGridView } from '../MobileGridView/MobileGridView';
+import MainParticipant from '../MainParticipant/MainParticipant';
+import { makeStyles, Theme, useMediaQuery, useTheme } from '@material-ui/core';
+import { Participant, Room as IRoom } from 'twilio-video';
+import { ParticipantAudioTracks } from '../ParticipantAudioTracks/ParticipantAudioTracks';
+import ParticipantList from '../ParticipantList/ParticipantList';
 import { useAppState } from '../../state';
+import useChatContext from '../../hooks/useChatContext/useChatContext';
+import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
+import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 const useStyles = makeStyles((theme: Theme) => {
   const totalMobileSidebarHeight = `${theme.sidebarMobileHeight +
@@ -31,13 +34,30 @@ const useStyles = makeStyles((theme: Theme) => {
   };
 });
 
+export function useSetCollaborationViewOnScreenShare(
+  screenShareParticipant: Participant | undefined,
+  room: IRoom | null,
+  setIsGridModeActive: React.Dispatch<React.SetStateAction<boolean>>
+) {
+  useEffect(() => {
+    if (screenShareParticipant && screenShareParticipant !== room!.localParticipant) {
+      setIsGridModeActive(false);
+    }
+  }, [screenShareParticipant, setIsGridModeActive, room]);
+}
+
 export default function Room() {
   const classes = useStyles();
   const { isChatWindowOpen } = useChatContext();
-  const { isBackgroundSelectionOpen } = useVideoContext();
-  const { isGridModeActive } = useAppState();
+  const { isBackgroundSelectionOpen, room } = useVideoContext();
+  const { isGridModeActive, setIsGridModeActive } = useAppState();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const screenShareParticipant = useScreenShareParticipant();
+
+  // Here we switch to collaboration view when a participant starts sharing their screen, but
+  // the user is still free to switch back to grid mode.
+  useSetCollaborationViewOnScreenShare(screenShareParticipant, room, setIsGridModeActive);
 
   return (
     <div
@@ -52,8 +72,12 @@ export default function Room() {
       */}
       <ParticipantAudioTracks />
 
-      {isGridModeActive && !isMobile ? (
-        <GridView />
+      {isGridModeActive ? (
+        isMobile ? (
+          <MobileGridView />
+        ) : (
+          <GridView />
+        )
       ) : (
         <>
           <MainParticipant />

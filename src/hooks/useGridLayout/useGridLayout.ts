@@ -1,4 +1,3 @@
-import throttle from 'lodash.throttle';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { GRID_MODE_ASPECT_RATIO, GRID_MODE_MARGIN } from '../../constants';
 
@@ -38,19 +37,29 @@ export default function useGridLayout(participantCount: number) {
     const containerWidth = containerRef.current.offsetWidth - GRID_MODE_MARGIN * 2;
     const containerHeight = containerRef.current.offsetHeight - GRID_MODE_MARGIN * 2;
 
-    let newParticipantVideoWidth = 1;
+    // Here we use binary search to guess the new size of each video in the grid
+    // so that they all fit nicely for any screen size up to a width of 16384px.
+    let minVideoWidth = 0;
+    let maxVideoWidth = 2 ** 14;
 
-    // Here we try to guess the new size of each video by increasing the width by 1.
-    // Once layoutIsTooSmall becomes false, we have found the correct video width:
-    while (layoutIsTooSmall(newParticipantVideoWidth + 1, participantCount, containerWidth, containerHeight)) {
-      newParticipantVideoWidth++;
+    while (maxVideoWidth - minVideoWidth > 1) {
+      let mid = (maxVideoWidth - minVideoWidth) / 2 + minVideoWidth;
+      const isLower = layoutIsTooSmall(mid, participantCount, containerWidth, containerHeight);
+
+      if (isLower) {
+        minVideoWidth = mid;
+      } else {
+        maxVideoWidth = mid;
+      }
     }
+
+    let newParticipantVideoWidth = Math.ceil(minVideoWidth);
 
     setParticipantVideoWidth(newParticipantVideoWidth - GRID_MODE_MARGIN * 2);
   }, [participantCount]);
 
   useEffect(() => {
-    const observer = new window.ResizeObserver(throttle(updateLayout, 60));
+    const observer = new window.ResizeObserver(updateLayout);
     observer.observe(containerRef.current!);
     return () => {
       observer.disconnect();

@@ -53,6 +53,7 @@ exports[`the GridView component should render correctly 1`] = `
       }
     >
       <Participant
+        isDominantSpeaker={false}
         isLocalParticipant={true}
         participant={
           Object {
@@ -73,6 +74,7 @@ exports[`the GridView component should render correctly 1`] = `
       }
     >
       <Participant
+        isDominantSpeaker={false}
         isLocalParticipant={false}
         participant={
           Object {
@@ -93,6 +95,7 @@ exports[`the GridView component should render correctly 1`] = `
       }
     >
       <Participant
+        isDominantSpeaker={false}
         isLocalParticipant={false}
         participant={
           Object {
@@ -113,6 +116,7 @@ exports[`the GridView component should render correctly 1`] = `
       }
     >
       <Participant
+        isDominantSpeaker={false}
         isLocalParticipant={false}
         participant={
           Object {
@@ -133,6 +137,7 @@ exports[`the GridView component should render correctly 1`] = `
       }
     >
       <Participant
+        isDominantSpeaker={false}
         isLocalParticipant={false}
         participant={
           Object {
