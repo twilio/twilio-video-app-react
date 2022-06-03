@@ -1,6 +1,6 @@
 {
   "name": "twilio-video-app-react",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "private": true,
   "license": "Apache-2.0",
   "dependencies": {
@@ -43,7 +43,7 @@
     "strip-color": "^0.1.0",
     "ts-node": "^9.1.1",
     "twilio": "^3.63.1",
-    "twilio-video": "^2.21.0",
+    "twilio-video": "^2.21.2",
     "typescript": "^3.8.3"
   },
   "devDependencies": {
