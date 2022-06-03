@@ -1,3 +1,13 @@
+## 0.6.5 (June 3, 2022)
+
+### Dependency Upgrade
+
+- `twilio-video` has been upgraded from 2.21.0 to 2.21.2. This new version fixes an issue where the `dimensionsChanged` event does not fire when the track dimensions first become available. This fixes an issue in this app where portrait-oriented video tracks are not displayed correctly. See [this issue](https://github.com/twilio/twilio-video.js/issues/1470).
+
+### Bugfix
+
+- Improves a problem where the local video track is not properly displayed in Safari. See [this issue](https://github.com/twilio/twilio-video.js/issues/1775). [#691](https://github.com/twilio/twilio-video-app-react/pull/691).
+
 ## 0.6.4 (March 9, 2022)
 
 ### Dependency Upgrades
