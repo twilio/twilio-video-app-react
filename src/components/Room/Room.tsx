@@ -37,27 +37,27 @@ const useStyles = makeStyles((theme: Theme) => {
 export function useSetCollaborationViewOnScreenShare(
   screenShareParticipant: Participant | undefined,
   room: IRoom | null,
-  setIsGridModeActive: React.Dispatch<React.SetStateAction<boolean>>
+  setIsGridViewActive: React.Dispatch<React.SetStateAction<boolean>>
 ) {
   useEffect(() => {
     if (screenShareParticipant && screenShareParticipant !== room!.localParticipant) {
-      setIsGridModeActive(false);
+      setIsGridViewActive(false);
     }
-  }, [screenShareParticipant, setIsGridModeActive, room]);
+  }, [screenShareParticipant, setIsGridViewActive, room]);
 }
 
 export default function Room() {
   const classes = useStyles();
   const { isChatWindowOpen } = useChatContext();
   const { isBackgroundSelectionOpen, room } = useVideoContext();
-  const { isGridModeActive, setIsGridModeActive } = useAppState();
+  const { isGridViewActive, setIsGridViewActive } = useAppState();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const screenShareParticipant = useScreenShareParticipant();
 
   // Here we switch to collaboration view when a participant starts sharing their screen, but
-  // the user is still free to switch back to grid mode.
-  useSetCollaborationViewOnScreenShare(screenShareParticipant, room, setIsGridModeActive);
+  // the user is still free to switch back to grid view.
+  useSetCollaborationViewOnScreenShare(screenShareParticipant, room, setIsGridViewActive);
 
   return (
     <div
@@ -72,7 +72,7 @@ export default function Room() {
       */}
       <ParticipantAudioTracks />
 
-      {isGridModeActive ? (
+      {isGridViewActive ? (
         isMobile ? (
           <MobileGridView />
         ) : (

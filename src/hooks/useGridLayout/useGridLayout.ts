@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { GRID_MODE_ASPECT_RATIO, GRID_MODE_MARGIN } from '../../constants';
+import { GRID_VIEW_ASPECT_RATIO, GRID_VIEW_MARGIN } from '../../constants';
 
 /**
  * This function determines how many columns and rows are to be used
@@ -13,7 +13,7 @@ export const layoutIsTooSmall = (
   containerHeight: number
 ) => {
   const videoWidth = newVideoSize;
-  const videoHeight = newVideoSize * GRID_MODE_ASPECT_RATIO;
+  const videoHeight = newVideoSize * GRID_VIEW_ASPECT_RATIO;
 
   const columns = Math.floor(containerWidth / videoWidth);
   const rows = Math.ceil(participantCount / columns);
@@ -34,8 +34,8 @@ export default function useGridLayout(participantCount: number) {
 
   const updateLayout = useCallback(() => {
     if (!containerRef.current) return;
-    const containerWidth = containerRef.current.offsetWidth - GRID_MODE_MARGIN * 2;
-    const containerHeight = containerRef.current.offsetHeight - GRID_MODE_MARGIN * 2;
+    const containerWidth = containerRef.current.offsetWidth - GRID_VIEW_MARGIN * 2;
+    const containerHeight = containerRef.current.offsetHeight - GRID_VIEW_MARGIN * 2;
 
     // Here we use binary search to guess the new size of each video in the grid
     // so that they all fit nicely for any screen size up to a width of 16384px.
@@ -55,7 +55,7 @@ export default function useGridLayout(participantCount: number) {
 
     let newParticipantVideoWidth = Math.ceil(minVideoWidth);
 
-    setParticipantVideoWidth(newParticipantVideoWidth - GRID_MODE_MARGIN * 2);
+    setParticipantVideoWidth(newParticipantVideoWidth - GRID_VIEW_MARGIN * 2);
   }, [participantCount]);
 
   useEffect(() => {

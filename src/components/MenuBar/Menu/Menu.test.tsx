@@ -38,7 +38,7 @@ mockUseLocalVideoToggle.mockImplementation(() => [true, () => {}]);
 
 describe('the Menu component', () => {
   let mockUpdateRecordingRules: jest.Mock<any>;
-  let mockSetIsGridModeActive = jest.fn();
+  let mockSetIsGridViewActive = jest.fn();
 
   beforeEach(() => jest.clearAllMocks());
 
@@ -48,7 +48,7 @@ describe('the Menu component', () => {
       isFetching: false,
       updateRecordingRules: mockUpdateRecordingRules,
       roomType: 'group',
-      setIsGridModeActive: mockSetIsGridModeActive,
+      setIsGridViewActive: mockSetIsGridViewActive,
     }));
     mockUseFlipCameraToggle.mockImplementation(() => ({
       flipCameraDisabled: false,
@@ -90,7 +90,7 @@ describe('the Menu component', () => {
           isFetching: false,
           updateRecordingRules: mockUpdateRecordingRules,
           roomType: 'group',
-          setIsGridModeActive: mockSetIsGridModeActive,
+          setIsGridViewActive: mockSetIsGridViewActive,
         }));
         const { getByText } = render(<Menu />);
         fireEvent.click(getByText('More'));
@@ -102,7 +102,7 @@ describe('the Menu component', () => {
           isFetching: false,
           updateRecordingRules: mockUpdateRecordingRules,
           roomType: 'group-small',
-          setIsGridModeActive: mockSetIsGridModeActive,
+          setIsGridViewActive: mockSetIsGridViewActive,
         }));
         const { getByText } = render(<Menu />);
         fireEvent.click(getByText('More'));
@@ -114,7 +114,7 @@ describe('the Menu component', () => {
           isFetching: false,
           updateRecordingRules: mockUpdateRecordingRules,
           roomType: 'go',
-          setIsGridModeActive: mockSetIsGridModeActive,
+          setIsGridViewActive: mockSetIsGridViewActive,
         }));
         const { getByText, queryByText } = render(<Menu />);
         fireEvent.click(getByText('More'));
@@ -126,7 +126,7 @@ describe('the Menu component', () => {
           isFetching: false,
           updateRecordingRules: mockUpdateRecordingRules,
           roomType: 'peer-to-peer',
-          setIsGridModeActive: mockSetIsGridModeActive,
+          setIsGridViewActive: mockSetIsGridViewActive,
         }));
         const { getByText, queryByText } = render(<Menu />);
         fireEvent.click(getByText('More'));
@@ -138,7 +138,7 @@ describe('the Menu component', () => {
           isFetching: false,
           updateRecordingRules: mockUpdateRecordingRules,
           roomType: undefined,
-          setIsGridModeActive: mockSetIsGridModeActive,
+          setIsGridViewActive: mockSetIsGridViewActive,
         }));
         const { getByText } = render(<Menu />);
         fireEvent.click(getByText('More'));
@@ -210,30 +210,30 @@ describe('the Menu component', () => {
       expect(wrapper.find(DeviceSelectionDialog).prop('open')).toBe(true);
     });
 
-    it('should show the Grid Mode button when grid mode is inactive', () => {
+    it('should show the Grid View button when grid view is inactive', () => {
       mockUseAppState.mockImplementation(() => ({
-        setIsGridModeActive: mockSetIsGridModeActive,
-        isGridModeActive: false,
+        setIsGridViewActive: mockSetIsGridViewActive,
+        isGridViewActive: false,
       }));
 
       const { getByText } = render(<Menu />);
       fireEvent.click(getByText('More'));
-      fireEvent.click(getByText('Grid Mode'));
+      fireEvent.click(getByText('Grid View'));
 
-      expect(mockSetIsGridModeActive.mock.calls[0][0](false)).toBe(true);
+      expect(mockSetIsGridViewActive.mock.calls[0][0](false)).toBe(true);
     });
 
-    it('should show the Collaboration Mode button when grid mode is active', () => {
+    it('should show the Collaboration View button when grid view is active', () => {
       mockUseAppState.mockImplementation(() => ({
-        setIsGridModeActive: mockSetIsGridModeActive,
-        isGridModeActive: true,
+        setIsGridViewActive: mockSetIsGridViewActive,
+        isGridViewActive: true,
       }));
 
       const { getByText } = render(<Menu />);
       fireEvent.click(getByText('More'));
-      fireEvent.click(getByText('Collaboration Mode'));
+      fireEvent.click(getByText('Collaboration View'));
 
-      expect(mockSetIsGridModeActive.mock.calls[0][0](true)).toBe(false);
+      expect(mockSetIsGridViewActive.mock.calls[0][0](true)).toBe(false);
     });
 
     it('should render the correct icon', () => {

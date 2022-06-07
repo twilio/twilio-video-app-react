@@ -14,8 +14,8 @@ const mockParticipants = [
 ];
 
 jest.mock('../../constants', () => ({
-  GRID_MODE_ASPECT_RATIO: 9 / 16,
-  GRID_MODE_MARGIN: 3,
+  GRID_VIEW_ASPECT_RATIO: 9 / 16,
+  GRID_VIEW_MARGIN: 3,
 }));
 jest.mock('../../hooks/useCollaborationParticipants/useCollaborationParticipants', () => () => mockParticipants);
 jest.mock('../../hooks/useVideoContext/useVideoContext', () => () => ({

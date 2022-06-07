@@ -36,7 +36,7 @@ export default function Menu(props: { buttonClassName?: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
-  const { isFetching, updateRecordingRules, roomType, setIsGridModeActive, isGridModeActive } = useAppState();
+  const { isFetching, updateRecordingRules, roomType, setIsGridViewActive, isGridViewActive } = useAppState();
   const { setIsChatWindowOpen } = useChatContext();
   const isRecording = useIsRecording();
   const { room, setIsBackgroundSelectionOpen } = useVideoContext();
@@ -137,18 +137,18 @@ export default function Menu(props: { buttonClassName?: string }) {
 
         <MenuItem
           onClick={() => {
-            setIsGridModeActive(isGrid => !isGrid);
+            setIsGridViewActive(isGrid => !isGrid);
             setMenuOpen(false);
           }}
         >
           <IconContainer>
-            {isGridModeActive ? (
+            {isGridViewActive ? (
               <CollaborationViewIcon style={{ fill: '#707578', width: '0.9em' }} />
             ) : (
               <GridViewIcon style={{ fill: '#707578', width: '0.9em' }} />
             )}
           </IconContainer>
-          <Typography variant="body1">{isGridModeActive ? 'Collaboration Mode' : 'Grid Mode'}</Typography>
+          <Typography variant="body1">{isGridViewActive ? 'Collaboration View' : 'Grid View'}</Typography>
         </MenuItem>
 
         <MenuItem onClick={() => setAboutOpen(true)}>
