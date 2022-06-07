@@ -13,6 +13,7 @@ import { Participant as IParticipant } from 'twilio-video';
 
 const useStyles = makeStyles({
   participantContainer: {
+    background: '#121C2D',
     position: 'absolute',
     top: 0,
     right: 0,

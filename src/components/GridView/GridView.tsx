@@ -2,7 +2,7 @@ import React from 'react';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ArrowForward from '@material-ui/icons/ArrowForward';
 import clsx from 'clsx';
-import { GRID_MODE_ASPECT_RATIO, GRID_MODE_MARGIN } from '../../constants';
+import { GRID_VIEW_ASPECT_RATIO, GRID_VIEW_MARGIN } from '../../constants';
 import { IconButton, makeStyles } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import Participant from '../Participant/Participant';
@@ -11,11 +11,13 @@ import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { usePagination } from '../../hooks/usePagination/usePagination';
 import useDominantSpeaker from '../../hooks/useDominantSpeaker/useDominantSpeaker';
 import useGridParticipants from '../../hooks/useGridParticipants/useGridParticipants';
+import { useAppState } from '../../state';
 
 const CONTAINER_GUTTER = '50px';
 
 const useStyles = makeStyles({
   container: {
+    background: '#121C2D',
     position: 'relative',
     gridArea: '1 / 1 / 2 / 3',
   },
@@ -72,23 +74,28 @@ const useStyles = makeStyles({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  lastPage: {
+    alignContent: 'flex-start',
+  },
 });
 
 export function GridView() {
   const classes = useStyles();
+  const { maxGridParticipants } = useAppState();
   const { room } = useVideoContext();
   const gridParticipants = useGridParticipants();
   const dominantSpeaker = useDominantSpeaker(true);
 
-  const { paginatedParticipants, setCurrentPage, currentPage, totalPages } = usePagination([
+  const { paginatedParticipants, setCurrentPage, currentPage, totalPages, isLastPage } = usePagination([
     room!.localParticipant,
     ...gridParticipants,
   ]);
 
-  const { participantVideoWidth, containerRef } = useGridLayout(paginatedParticipants.length);
+  const gridLayoutParticipantCount = currentPage === 1 ? paginatedParticipants.length : maxGridParticipants;
+  const { participantVideoWidth, containerRef } = useGridLayout(gridLayoutParticipantCount);
 
   const participantWidth = `${participantVideoWidth}px`;
-  const participantHeight = `${Math.floor(participantVideoWidth * GRID_MODE_ASPECT_RATIO)}px`;
+  const participantHeight = `${Math.floor(participantVideoWidth * GRID_VIEW_ASPECT_RATIO)}px`;
 
   return (
     <div className={classes.container}>
@@ -121,11 +128,14 @@ export function GridView() {
           />
         )}
       </div>
-      <div className={classes.participantContainer} ref={containerRef}>
+      <div
+        className={clsx(classes.participantContainer, { [classes.lastPage]: currentPage > 1 && isLastPage })}
+        ref={containerRef}
+      >
         {paginatedParticipants.map(participant => (
           <div
             key={participant.sid}
-            style={{ width: participantWidth, height: participantHeight, margin: GRID_MODE_MARGIN }}
+            style={{ width: participantWidth, height: participantHeight, margin: GRID_VIEW_MARGIN }}
           >
             <Participant
               participant={participant}

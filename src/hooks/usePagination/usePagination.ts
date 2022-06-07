@@ -16,16 +16,10 @@ export function usePagination(participants: Participant[]) {
     }
   }, [isBeyondLastPage, totalPages]);
 
-  let paginatedParticipants;
+  let paginatedParticipants = participants.slice(
+    (currentPage - 1) * maxGridParticipants,
+    currentPage * maxGridParticipants
+  );
 
-  if (isLastPage) {
-    paginatedParticipants = participants.slice(-maxGridParticipants);
-  } else {
-    paginatedParticipants = participants.slice(
-      (currentPage - 1) * maxGridParticipants,
-      currentPage * maxGridParticipants
-    );
-  }
-
-  return { paginatedParticipants, setCurrentPage, currentPage, totalPages };
+  return { paginatedParticipants, setCurrentPage, currentPage, totalPages, isLastPage };
 }
