@@ -1,7 +1,14 @@
 import React from 'react';
 import clsx from 'clsx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
+import {
+  LocalAudioTrack,
+  LocalVideoTrack,
+  Participant,
+  RemoteAudioTrack,
+  RemoteVideoTrack,
+  VideoTrack,
+} from 'twilio-video';
 
 import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
 import AvatarIcon from '../../icons/AvatarIcon';
@@ -16,8 +23,11 @@ import useTrack from '../../hooks/useTrack/useTrack';
 import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
 import { GRID_MODE_MARGIN } from '../../constants';
 import { useAppState } from '../../state';
+import useTrackSwitchOffReason from '../../hooks/useTrackSwitchOffReason/useTrackSwitchOffReason';
 
 const borderWidth = 2;
+
+const searchParams = new URLSearchParams(window.location.search);
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -188,6 +198,8 @@ export default function ParticipantInfo({
 
   const { isGridModeActive } = useAppState();
 
+  const switchOffReason = useTrackSwitchOffReason(videoTrack as LocalVideoTrack | RemoteVideoTrack);
+
   const classes = useStyles();
 
   return (
@@ -211,9 +223,9 @@ export default function ParticipantInfo({
             </span>
           )}
           <span className={classes.identity}>
-            <AudioLevelIndicator audioTrack={audioTrack} />
+            {searchParams.get('disableVolumeIndicators') !== 'true' && <AudioLevelIndicator audioTrack={audioTrack} />}
             <Typography variant="body1" className={classes.typeography} component="span">
-              {participant.identity}
+              {participant.identity + (switchOffReason ? ' ' + switchOffReason : '')}
               {isLocalParticipant && ' (You)'}
             </Typography>
           </span>
