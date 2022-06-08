@@ -32,7 +32,7 @@ describe('the usePagination hook', () => {
     act(() => {
       result.current.setCurrentPage(4);
     });
-    expect(result.current.paginatedParticipants).toEqual([8, 9, 10]);
+    expect(result.current.paginatedParticipants).toEqual([10]);
     expect(result.current.currentPage).toBe(4);
   });
 
@@ -45,12 +45,12 @@ describe('the usePagination hook', () => {
       result.current.setCurrentPage(4);
     });
 
-    expect(result.current.paginatedParticipants).toEqual([8, 9, 10]);
+    expect(result.current.paginatedParticipants).toEqual([10]);
     expect(result.current.totalPages).toBe(4);
 
     rerender({ participants: [1, 2, 3, 4, 5] });
 
-    expect(result.current.paginatedParticipants).toEqual([3, 4, 5]);
+    expect(result.current.paginatedParticipants).toEqual([4, 5]);
     expect(result.current.totalPages).toBe(2);
 
     rerender({ participants: [1, 2, 3] });
@@ -78,7 +78,7 @@ describe('the usePagination hook', () => {
       result.current.setCurrentPage(4);
     });
 
-    expect(result.current.paginatedParticipants).toEqual([8, 9, 10]);
+    expect(result.current.paginatedParticipants).toEqual([10]);
     expect(result.current.totalPages).toBe(4);
 
     mockUseAppState.mockImplementation(() => ({ maxGridParticipants: 2 }));
@@ -92,16 +92,16 @@ describe('the usePagination hook', () => {
     const { result, rerender } = renderHook(() => usePagination([1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as any[]));
 
     act(() => {
-      result.current.setCurrentPage(4);
+      result.current.setCurrentPage(3);
     });
 
-    expect(result.current.paginatedParticipants).toEqual([8, 9, 10]);
+    expect(result.current.paginatedParticipants).toEqual([7, 8, 9]);
     expect(result.current.totalPages).toBe(4);
 
     mockUseAppState.mockImplementation(() => ({ maxGridParticipants: 4 }));
     rerender();
 
-    expect(result.current.paginatedParticipants).toEqual([7, 8, 9, 10]);
+    expect(result.current.paginatedParticipants).toEqual([9, 10]);
     expect(result.current.totalPages).toBe(3);
   });
 });
