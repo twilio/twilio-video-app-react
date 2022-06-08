@@ -72,7 +72,7 @@ describe('the useSetCollaborationViewOnScreenShare hook', () => {
 
   it('should not deactivate grid view when there is no screen share participant', () => {
     renderHook(() =>
-      useSetCollaborationViewOnScreenShare(undefined, { localParticipant: {} } as any, mockSetIsGridViewActive)
+      useSetCollaborationViewOnScreenShare(undefined, { localParticipant: {} } as any, mockSetIsGridViewActive, true)
     );
     expect(mockSetIsGridViewActive).not.toBeCalled();
   });
@@ -83,13 +83,60 @@ describe('the useSetCollaborationViewOnScreenShare hook', () => {
         useSetCollaborationViewOnScreenShare(
           screenShareParticipant,
           { localParticipant: {} } as any,
-          mockSetIsGridViewActive
+          mockSetIsGridViewActive,
+          true
         ),
       { initialProps: { screenShareParticipant: undefined } }
     );
     expect(mockSetIsGridViewActive).not.toBeCalled();
     rerender({ screenShareParticipant: {} } as any);
     expect(mockSetIsGridViewActive).toBeCalledWith(false);
+  });
+
+  it('should reactivate grid view when screenshare ends if grid view was active before another participant started screensharing', () => {
+    jest.spyOn(React, 'useRef').mockReturnValue({
+      current: true,
+    });
+
+    const { rerender } = renderHook(
+      ({ screenShareParticipant }) =>
+        useSetCollaborationViewOnScreenShare(
+          screenShareParticipant,
+          { localParticipant: {} } as any,
+          mockSetIsGridViewActive,
+          true
+        ),
+      { initialProps: { screenShareParticipant: undefined } }
+    );
+    expect(mockSetIsGridViewActive).not.toBeCalled();
+    // screenshare starts
+    rerender({ screenShareParticipant: {} } as any);
+    expect(mockSetIsGridViewActive).toBeCalledWith(false);
+    // screenshare ends
+    rerender({ screenShareParticipant: {} } as any);
+    expect(mockSetIsGridViewActive).toBeCalledWith(true);
+  });
+
+  it('should not reactivate grid view when screenshare ends if grid view was active before another participant started screensharing', () => {
+    jest.spyOn(React, 'useRef').mockReturnValue({
+      current: false,
+    });
+
+    const { rerender } = renderHook(
+      ({ screenShareParticipant }) =>
+        useSetCollaborationViewOnScreenShare(
+          screenShareParticipant,
+          { localParticipant: {} } as any,
+          mockSetIsGridViewActive,
+          true
+        ),
+      { initialProps: { screenShareParticipant: undefined } }
+    );
+    expect(mockSetIsGridViewActive).not.toBeCalled();
+    rerender({ screenShareParticipant: {} } as any);
+    expect(mockSetIsGridViewActive).toBeCalledWith(false);
+    // mockSetIsGridViewActive should only be called once with "false" since we're not reactivating grid mode
+    expect(mockSetIsGridViewActive).toBeCalledTimes(1);
   });
 
   it('should not deactivate grid view when the local participant shares their screen', () => {
@@ -99,7 +146,8 @@ describe('the useSetCollaborationViewOnScreenShare hook', () => {
         useSetCollaborationViewOnScreenShare(
           screenShareParticipant,
           { localParticipant: mockLocalParticipant } as any,
-          mockSetIsGridViewActive
+          mockSetIsGridViewActive,
+          true
         ),
       { initialProps: { screenShareParticipant: undefined } }
     );
