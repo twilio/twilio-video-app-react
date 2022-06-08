@@ -1,8 +1,11 @@
 import { Callback } from '../../../types';
 import { isMobile } from '../../../utils';
-import Video, { ConnectOptions, LocalTrack, Room } from 'twilio-video';
+import Video, { ConnectOptions, LocalTrack, Room, Logger } from 'twilio-video';
 import { VideoRoomMonitor } from '@twilio/video-room-monitor';
 import { useCallback, useEffect, useRef, useState } from 'react';
+
+const logger = Logger.getLogger('twilio-video');
+logger.setLevel('debug');
 
 // @ts-ignore
 window.TwilioVideo = Video;

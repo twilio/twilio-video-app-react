@@ -11,7 +11,12 @@ export default function useTrack(publication: LocalTrackPublication | RemoteTrac
     if (publication) {
       const removeTrack = () => setTrack(null);
 
-      publication.on('subscribed', setTrack);
+      publication.on('subscribed', (t) => {
+        t.on('dimensionsChanged', () => {
+          // console.log('xxxxx dimensionsChanged', JSON.stringify(t.dimensions));
+        });
+        setTrack(t);
+      });
       publication.on('unsubscribed', removeTrack);
       return () => {
         publication.off('subscribed', setTrack);

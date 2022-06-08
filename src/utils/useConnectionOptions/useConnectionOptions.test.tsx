@@ -8,7 +8,7 @@ jest.mock('../../state');
 describe('the useConnectionOptions function', () => {
   it('should remove any undefined values from settings', () => {
     const settings: Settings = {
-      trackSwitchOffMode: undefined,
+      trackSwitchOffMode: 'detected',
       dominantSpeakerPriority: undefined,
       bandwidthProfileMode: undefined,
       maxAudioBitrate: '',

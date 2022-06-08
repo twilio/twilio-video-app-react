@@ -27,7 +27,7 @@ export default function useConnectionOptions() {
     // Comment this line if you are playing music.
     maxAudioBitrate: Number(settings.maxAudioBitrate),
 
-    preferredVideoCodecs: 'auto',
+    preferredVideoCodecs: [{"codec": "VP8", "simulcast": true}],
 
     //@ts-ignore - Internal use only. This property is not exposed in type definitions.
     environment: process.env.REACT_APP_TWILIO_ENVIRONMENT,
