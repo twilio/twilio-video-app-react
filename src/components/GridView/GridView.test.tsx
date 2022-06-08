@@ -50,7 +50,7 @@ describe('the GridView component', () => {
   it('should render correctly', () => {
     const wrapper = shallow(<GridView />);
     expect(wrapper).toMatchSnapshot();
-    expect(useGridLayout).toHaveBeenCalledWith(5);
+    expect(useGridLayout).toHaveBeenCalledWith(9);
   });
 
   it('should not render the previous page button when the user is viewing the first page', () => {
