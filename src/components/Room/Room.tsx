@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import BackgroundSelectionDialog from '../BackgroundSelectionDialog/BackgroundSelectionDialog';
 import ChatWindow from '../ChatWindow/ChatWindow';
 import clsx from 'clsx';
@@ -34,16 +34,40 @@ const useStyles = makeStyles((theme: Theme) => {
   };
 });
 
+/**
+ * This hook turns on collaboration view when screensharing is active, regardless of if the
+ * user was already using collaboration view or grid view. Once screensharing has ended, the user's
+ * view will return to whatever they were using prior to screenshare starting.
+ */
+
 export function useSetCollaborationViewOnScreenShare(
   screenShareParticipant: Participant | undefined,
   room: IRoom | null,
-  setIsGridViewActive: React.Dispatch<React.SetStateAction<boolean>>
+  setIsGridModeActive: React.Dispatch<React.SetStateAction<boolean>>,
+  isGridModeActive: boolean
 ) {
+  const isGridViewActiveRef = useRef(isGridModeActive);
+
+  // Save the user's view setting whenever they change to collaboration view or grid view:
+  useEffect(() => {
+    isGridViewActiveRef.current = isGridModeActive;
+  }, [isGridModeActive]);
+
   useEffect(() => {
     if (screenShareParticipant && screenShareParticipant !== room!.localParticipant) {
-      setIsGridViewActive(false);
+      // When screensharing starts, save the user's previous view setting (collaboration or grid):
+      const prevIsGridViewActive = isGridViewActiveRef.current;
+      // Turn off grid view so that the user can see the screen that is being shared:
+      setIsGridModeActive(false);
+      return () => {
+        // If the user was using grid view prior to screensharing, turn grid view back on
+        // once screensharing stops:
+        if (prevIsGridViewActive) {
+          setIsGridModeActive(prevIsGridViewActive);
+        }
+      };
     }
-  }, [screenShareParticipant, setIsGridViewActive, room]);
+  }, [screenShareParticipant, setIsGridModeActive, room]);
 }
 
 export default function Room() {
@@ -57,7 +81,7 @@ export default function Room() {
 
   // Here we switch to collaboration view when a participant starts sharing their screen, but
   // the user is still free to switch back to grid view.
-  useSetCollaborationViewOnScreenShare(screenShareParticipant, room, setIsGridViewActive);
+  useSetCollaborationViewOnScreenShare(screenShareParticipant, room, setIsGridViewActive, isGridViewActive);
 
   return (
     <div
