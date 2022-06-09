@@ -11,6 +11,7 @@ declare module '@material-ui/core/styles/createTheme' {
     sidebarMobilePadding: number;
     participantBorderWidth: number;
     rightDrawerWidth: number;
+    gridViewBackgroundColor: string;
   }
 
   // allow configuration using `createMuiTheme`
@@ -24,6 +25,7 @@ declare module '@material-ui/core/styles/createTheme' {
     sidebarMobilePadding: number;
     participantBorderWidth: number;
     rightDrawerWidth?: number;
+    gridViewBackgroundColor: string;
   }
 }
 
@@ -124,4 +126,5 @@ export default createTheme({
   participantBorderWidth: 2,
   mobileTopBarHeight: 52,
   rightDrawerWidth: 320,
+  gridViewBackgroundColor: '#121C2D',
 });

@@ -3,7 +3,7 @@ import { GridView } from './GridView';
 import { shallow } from 'enzyme';
 import useGridLayout from '../../hooks/useGridLayout/useGridLayout';
 import { useAppState } from '../../state';
-import { usePagination } from '../../hooks/usePagination/usePagination';
+import { usePagination } from './usePagination/usePagination';
 
 const mockLocalParticipant = { identity: 'test-local-participant', sid: 0 };
 const mockParticipants = [
@@ -17,7 +17,7 @@ jest.mock('../../constants', () => ({
   GRID_VIEW_ASPECT_RATIO: 9 / 16,
   GRID_VIEW_MARGIN: 3,
 }));
-jest.mock('../../hooks/useCollaborationParticipants/useCollaborationParticipants', () => () => mockParticipants);
+jest.mock('../../hooks/usePresentationParticipants/usePresentationParticipants', () => () => mockParticipants);
 jest.mock('../../hooks/useVideoContext/useVideoContext', () => () => ({
   room: {
     localParticipant: mockLocalParticipant,
@@ -30,7 +30,7 @@ jest.mock('../../hooks/useGridLayout/useGridLayout', () =>
   }))
 );
 
-jest.mock('../../hooks/usePagination/usePagination', () => ({
+jest.mock('./usePagination/usePagination', () => ({
   usePagination: jest.fn(() => ({
     currentPage: 2,
     totalPages: 4,
