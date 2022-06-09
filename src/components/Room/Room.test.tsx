@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { renderHook } from '@testing-library/react-hooks';
 
-import Room, { useSetCollaborationViewOnScreenShare } from './Room';
+import Room, { useSetPresentationViewOnScreenShare } from './Room';
 import useChatContext from '../../hooks/useChatContext/useChatContext';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { useAppState } from '../../state';
@@ -66,13 +66,13 @@ describe('the Room component', () => {
   });
 });
 
-describe('the useSetCollaborationViewOnScreenShare hook', () => {
+describe('the useSetPresentationViewOnScreenShare hook', () => {
   const mockSetIsGridViewActive = jest.fn();
   beforeEach(jest.clearAllMocks);
 
   it('should not deactivate grid view when there is no screen share participant', () => {
     renderHook(() =>
-      useSetCollaborationViewOnScreenShare(undefined, { localParticipant: {} } as any, mockSetIsGridViewActive, true)
+      useSetPresentationViewOnScreenShare(undefined, { localParticipant: {} } as any, mockSetIsGridViewActive, true)
     );
     expect(mockSetIsGridViewActive).not.toBeCalled();
   });
@@ -80,7 +80,7 @@ describe('the useSetCollaborationViewOnScreenShare hook', () => {
   it('should deactivate grid view when a remote participant shares their screen', () => {
     const { rerender } = renderHook(
       ({ screenShareParticipant }) =>
-        useSetCollaborationViewOnScreenShare(
+        useSetPresentationViewOnScreenShare(
           screenShareParticipant,
           { localParticipant: {} } as any,
           mockSetIsGridViewActive,
@@ -100,7 +100,7 @@ describe('the useSetCollaborationViewOnScreenShare hook', () => {
 
     const { rerender } = renderHook(
       ({ screenShareParticipant }) =>
-        useSetCollaborationViewOnScreenShare(
+        useSetPresentationViewOnScreenShare(
           screenShareParticipant,
           { localParticipant: {} } as any,
           mockSetIsGridViewActive,
@@ -124,7 +124,7 @@ describe('the useSetCollaborationViewOnScreenShare hook', () => {
 
     const { rerender } = renderHook(
       ({ screenShareParticipant }) =>
-        useSetCollaborationViewOnScreenShare(
+        useSetPresentationViewOnScreenShare(
           screenShareParticipant,
           { localParticipant: {} } as any,
           mockSetIsGridViewActive,
@@ -143,7 +143,7 @@ describe('the useSetCollaborationViewOnScreenShare hook', () => {
     const mockLocalParticipant = {};
     const { rerender } = renderHook(
       ({ screenShareParticipant }) =>
-        useSetCollaborationViewOnScreenShare(
+        useSetPresentationViewOnScreenShare(
           screenShareParticipant,
           { localParticipant: mockLocalParticipant } as any,
           mockSetIsGridViewActive,

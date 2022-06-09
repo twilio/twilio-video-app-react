@@ -223,7 +223,7 @@ describe('the Menu component', () => {
       expect(mockSetIsGridViewActive.mock.calls[0][0](false)).toBe(true);
     });
 
-    it('should show the Collaboration View button when grid view is active', () => {
+    it('should show the Presentation View button when grid view is active', () => {
       mockUseAppState.mockImplementation(() => ({
         setIsGridViewActive: mockSetIsGridViewActive,
         isGridViewActive: true,
@@ -231,7 +231,7 @@ describe('the Menu component', () => {
 
       const { getByText } = render(<Menu />);
       fireEvent.click(getByText('More'));
-      fireEvent.click(getByText('Collaboration View'));
+      fireEvent.click(getByText('Presentation View'));
 
       expect(mockSetIsGridViewActive.mock.calls[0][0](true)).toBe(false);
     });

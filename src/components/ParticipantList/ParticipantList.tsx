@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import Participant from '../Participant/Participant';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import useMainParticipant from '../../hooks/useMainParticipant/useMainParticipant';
-import useCollaborationParticipants from '../../hooks/useCollaborationParticipants/useCollaborationParticipants';
+import usePresentationParticipants from '../../hooks/usePresentationParticipants/usePresentationParticipants';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
 import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
@@ -45,7 +45,7 @@ export default function ParticipantList() {
   const classes = useStyles();
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
-  const participants = useCollaborationParticipants();
+  const participants = usePresentationParticipants();
   const [selectedParticipant, setSelectedParticipant] = useSelectedParticipant();
   const screenShareParticipant = useScreenShareParticipant();
   const mainParticipant = useMainParticipant();

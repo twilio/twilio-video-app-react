@@ -35,12 +35,12 @@ const useStyles = makeStyles((theme: Theme) => {
 });
 
 /**
- * This hook turns on collaboration view when screensharing is active, regardless of if the
- * user was already using collaboration view or grid view. Once screensharing has ended, the user's
+ * This hook turns on presentation view when screensharing is active, regardless of if the
+ * user was already using presentation view or grid view. Once screensharing has ended, the user's
  * view will return to whatever they were using prior to screenshare starting.
  */
 
-export function useSetCollaborationViewOnScreenShare(
+export function useSetPresentationViewOnScreenShare(
   screenShareParticipant: Participant | undefined,
   room: IRoom | null,
   setIsGridModeActive: React.Dispatch<React.SetStateAction<boolean>>,
@@ -48,14 +48,14 @@ export function useSetCollaborationViewOnScreenShare(
 ) {
   const isGridViewActiveRef = useRef(isGridModeActive);
 
-  // Save the user's view setting whenever they change to collaboration view or grid view:
+  // Save the user's view setting whenever they change to presentation view or grid view:
   useEffect(() => {
     isGridViewActiveRef.current = isGridModeActive;
   }, [isGridModeActive]);
 
   useEffect(() => {
     if (screenShareParticipant && screenShareParticipant !== room!.localParticipant) {
-      // When screensharing starts, save the user's previous view setting (collaboration or grid):
+      // When screensharing starts, save the user's previous view setting (presentation or grid):
       const prevIsGridViewActive = isGridViewActiveRef.current;
       // Turn off grid view so that the user can see the screen that is being shared:
       setIsGridModeActive(false);
@@ -79,9 +79,9 @@ export default function Room() {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const screenShareParticipant = useScreenShareParticipant();
 
-  // Here we switch to collaboration view when a participant starts sharing their screen, but
+  // Here we switch to presentation view when a participant starts sharing their screen, but
   // the user is still free to switch back to grid view.
-  useSetCollaborationViewOnScreenShare(screenShareParticipant, room, setIsGridViewActive, isGridViewActive);
+  useSetPresentationViewOnScreenShare(screenShareParticipant, room, setIsGridViewActive, isGridViewActive);
 
   return (
     <div
@@ -92,7 +92,7 @@ export default function Room() {
       {/* 
         This ParticipantAudioTracks component will render the audio track for all participants in the room.
         It is in a separate component so that the audio tracks will always be rendered, and that they will never be 
-        unnecessarily unmounted/mounted as the user switches between Grid View and Collaboration View.
+        unnecessarily unmounted/mounted as the user switches between Grid View and presentation View.
       */}
       <ParticipantAudioTracks />
 

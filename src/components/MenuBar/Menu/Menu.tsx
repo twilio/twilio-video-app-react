@@ -148,7 +148,7 @@ export default function Menu(props: { buttonClassName?: string }) {
               <GridViewIcon style={{ fill: '#707578', width: '0.9em' }} />
             )}
           </IconContainer>
-          <Typography variant="body1">{isGridViewActive ? 'Collaboration View' : 'Grid View'}</Typography>
+          <Typography variant="body1">{isGridViewActive ? 'Presentation View' : 'Grid View'}</Typography>
         </MenuItem>
 
         <MenuItem onClick={() => setAboutOpen(true)}>
