@@ -104,7 +104,7 @@ const useStyles = makeStyles((theme: Theme) =>
     identity: {
       background: 'rgba(0, 0, 0, 0.5)',
       color: 'white',
-      padding: '0.18em 0.3em',
+      padding: '0.18em 0.3em 0.18em 0',
       margin: 0,
       display: 'flex',
       alignItems: 'center',
@@ -129,8 +129,9 @@ const useStyles = makeStyles((theme: Theme) =>
       cursor: 'pointer',
     },
     gridView: {
-      background: '#121C2D',
+      background: '#000000',
       border: `${theme.participantBorderWidth}px solid transparent`,
+      borderRadius: '8px',
       [theme.breakpoints.down('sm')]: {
         position: 'relative',
         width: '100%',
