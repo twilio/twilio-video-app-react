@@ -129,8 +129,7 @@ const useStyles = makeStyles((theme: Theme) =>
       cursor: 'pointer',
     },
     gridView: {
-      background: '#000000',
-      border: `${theme.participantBorderWidth}px solid transparent`,
+      border: `${theme.participantBorderWidth}px solid ${theme.gridViewBackgroundColor}`,
       borderRadius: '8px',
       [theme.breakpoints.down('sm')]: {
         position: 'relative',
