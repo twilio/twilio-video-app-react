@@ -11,7 +11,11 @@ const getRoomName = () =>
 context('A video app user', () => {
   describe('before entering a room', () => {
     it('should see their audio level indicator moving in the media device panel', () => {
-      cy.visit('/');
+      cy.visit('/', {
+        onBeforeLoad: (window) => {
+          window.localStorage.setItem('grid-view-active-key', false)
+        }
+      });
 
       cy.get('#input-user-name').type('testuser');
       cy.get('#input-room-name').type(getRoomName());

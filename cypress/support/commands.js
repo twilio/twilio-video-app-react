@@ -1,7 +1,11 @@
 import detectSound from './detectSound';
 
 Cypress.Commands.add('joinRoom', (username, roomname) => {
-  cy.visit('/');
+  cy.visit('/', {
+    onBeforeLoad: (window) => {
+      window.localStorage.setItem('grid-view-active-key', false)
+    }
+  });
   cy.get('#input-user-name').type(username);
   cy.get('#input-room-name').type(roomname);
   cy.get('[type="submit"]').click();
