@@ -45,10 +45,6 @@ context('A video app user', () => {
       cy.task('addParticipant', { name: 'test1', roomName: ROOM_NAME });
     });
 
-    beforeEach(() => {
-      cy.window().then(win => win.localStorage.setItem('grid-view-active-key', false));
-    });
-
     after(() => {
       cy.leaveRoom();
     });
@@ -98,10 +94,6 @@ context('A video app user', () => {
         cy.wait(2000);
       });
 
-      beforeEach(() => {
-        cy.window().then(win => win.localStorage.setItem('grid-view-active-key', false));
-      });
-
       after(() => {
         cy.wait(3000);
       });
@@ -128,10 +120,6 @@ context('A video app user', () => {
     before(() => {
       cy.task('addParticipant', { name: 'test1', roomName: ROOM_NAME });
       cy.joinRoom('testuser', ROOM_NAME);
-    });
-
-    beforeEach(() => {
-      cy.window().then(win => win.localStorage.setItem('grid-view-active-key', false));
     });
 
     after(() => {
@@ -166,10 +154,6 @@ context('A video app user', () => {
         // Wait 1 second for the above to complete:
         cy.wait(1000);
         cy.contains('welcome to the chat! - 14');
-      });
-
-      beforeEach(() => {
-        cy.window().then(win => win.localStorage.setItem('grid-view-active-key', false));
       });
 
       after(() => {
@@ -234,10 +218,6 @@ context('A video app user', () => {
       cy.task('addParticipant', { name: 'test3', roomName: ROOM_NAME, color: 'green' });
     });
 
-    beforeEach(() => {
-      cy.window().then(win => win.localStorage.setItem('grid-view-active-key', false));
-    });
-
     after(() => {
       cy.leaveRoom();
     });
@@ -269,10 +249,6 @@ context('A video app user', () => {
       cy.task('addParticipant', { name: 'test2', roomName: ROOM_NAME, color: 'blue' });
       cy.task('addParticipant', { name: 'test3', roomName: ROOM_NAME, color: 'green' });
       cy.joinRoom('testuser', ROOM_NAME);
-    });
-
-    beforeEach(() => {
-      cy.window().then(win => win.localStorage.setItem('grid-view-active-key', false));
     });
 
     after(() => {
