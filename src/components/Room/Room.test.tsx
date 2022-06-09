@@ -135,23 +135,28 @@ describe('the useSetPresentationViewOnScreenShare hook', () => {
   });
 
   it('should not activate presentation view when screenshare ends if it was active before screensharing, but the user switched to grid view during the screenshare', () => {
-    const screenShareParticipant = {};
-    const room = { localParticipant: {} } as any;
+    const mockScreenShareParticipant = {};
+    const mockRoom = { localParticipant: {} } as any;
 
     const { rerender } = renderHook(
       ({ screenShareParticipant, isGridViewActive }) =>
-        useSetPresentationViewOnScreenShare(screenShareParticipant, room, mockSetIsGridViewActive, isGridViewActive),
+        useSetPresentationViewOnScreenShare(
+          screenShareParticipant,
+          mockRoom,
+          mockSetIsGridViewActive,
+          isGridViewActive
+        ),
       { initialProps: { screenShareParticipant: undefined, isGridViewActive: false } }
     );
 
     expect(mockSetIsGridViewActive).not.toBeCalled();
 
     // start screenshare
-    rerender({ screenShareParticipant, isGridViewActive: false } as any);
+    rerender({ screenShareParticipant: mockScreenShareParticipant, isGridViewActive: false } as any);
     expect(mockSetIsGridViewActive).toBeCalledWith(false);
 
     // enable grid mode
-    rerender({ screenShareParticipant, isGridViewActive: true } as any);
+    rerender({ screenShareParticipant: mockScreenShareParticipant, isGridViewActive: true } as any);
 
     // stop screenshare
     rerender({ screenShareParticipant: undefined, isGridViewActive: true } as any);
