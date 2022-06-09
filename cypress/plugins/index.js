@@ -19,6 +19,10 @@ module.exports = (on, config) => {
         args,
       });
       const page = (participants[name] = await browser.newPage()); // keep track of this participant for future use
+      await page.evaluateOnNewDocument(() => {
+        localStorage.clear();
+        localStorage.setItem('grid-view-active-key', false);
+      });
       await page.goto(config.baseUrl);
       await page.type('#input-user-name', name);
       await page.type('#input-room-name', roomName);
