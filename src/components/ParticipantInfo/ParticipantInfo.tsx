@@ -14,7 +14,7 @@ import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackS
 import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
 import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
-import { GRID_MODE_MARGIN } from '../../constants';
+import { GRID_VIEW_MARGIN } from '../../constants';
 import { useAppState } from '../../state';
 
 const borderWidth = 2;
@@ -104,7 +104,7 @@ const useStyles = makeStyles((theme: Theme) =>
     identity: {
       background: 'rgba(0, 0, 0, 0.5)',
       color: 'white',
-      padding: '0.18em 0.3em',
+      padding: '0.18em 0.3em 0.18em 0',
       margin: 0,
       display: 'flex',
       alignItems: 'center',
@@ -116,7 +116,7 @@ const useStyles = makeStyles((theme: Theme) =>
       bottom: 0,
       left: 0,
     },
-    typeography: {
+    typography: {
       color: 'white',
       [theme.breakpoints.down('sm')]: {
         fontSize: '0.75rem',
@@ -128,11 +128,9 @@ const useStyles = makeStyles((theme: Theme) =>
     cursorPointer: {
       cursor: 'pointer',
     },
-    dominantSpeaker: {
-      border: `solid ${borderWidth}px #7BEAA5`,
-      margin: `${GRID_MODE_MARGIN} - borderWidth`,
-    },
-    mobileGridMode: {
+    gridView: {
+      border: `${theme.participantBorderWidth}px solid ${theme.gridViewBackgroundColor}`,
+      borderRadius: '8px',
       [theme.breakpoints.down('sm')]: {
         position: 'relative',
         width: '100%',
@@ -144,6 +142,10 @@ const useStyles = makeStyles((theme: Theme) =>
           objectFit: 'cover !important',
         },
       },
+    },
+    dominantSpeaker: {
+      border: `solid ${borderWidth}px #7BEAA5`,
+      margin: `${GRID_VIEW_MARGIN} - borderWidth`,
     },
   })
 );
@@ -181,7 +183,7 @@ export default function ParticipantInfo({
   const audioTrack = useTrack(audioPublication) as LocalAudioTrack | RemoteAudioTrack | undefined;
   const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
-  const { isGridModeActive } = useAppState();
+  const { isGridViewActive } = useAppState();
 
   const classes = useStyles();
 
@@ -191,7 +193,7 @@ export default function ParticipantInfo({
         [classes.hideParticipant]: hideParticipant,
         [classes.cursorPointer]: Boolean(onClick),
         [classes.dominantSpeaker]: isDominantSpeaker,
-        [classes.mobileGridMode]: isGridModeActive,
+        [classes.gridView]: isGridViewActive,
       })}
       onClick={onClick}
       data-cy-participant={participant.identity}
@@ -206,7 +208,7 @@ export default function ParticipantInfo({
           )}
           <span className={classes.identity}>
             <AudioLevelIndicator audioTrack={audioTrack} />
-            <Typography variant="body1" className={classes.typeography} component="span">
+            <Typography variant="body1" className={classes.typography} component="span">
               {participant.identity}
               {isLocalParticipant && ' (You)'}
             </Typography>
@@ -222,7 +224,7 @@ export default function ParticipantInfo({
         )}
         {isParticipantReconnecting && (
           <div className={classes.reconnectingContainer}>
-            <Typography variant="body1" className={classes.typeography}>
+            <Typography variant="body1" className={classes.typography}>
               Reconnecting...
             </Typography>
           </div>

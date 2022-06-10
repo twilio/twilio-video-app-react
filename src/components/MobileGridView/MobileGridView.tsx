@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, createStyles, Theme } from '@material-ui/core';
 import Participant from '../Participant/Participant';
 import useDominantSpeaker from '../../hooks/useDominantSpeaker/useDominantSpeaker';
 import useGridParticipants from '../../hooks/useGridParticipants/useGridParticipants';
@@ -11,33 +11,36 @@ import 'swiper/modules/pagination/pagination.min.css';
 import { Pagination } from 'swiper';
 import { Participant as IParticipant } from 'twilio-video';
 
-const useStyles = makeStyles({
-  participantContainer: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    height: '100%',
-    '& .swiper': {
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    participantContainer: {
+      background: theme.gridViewBackgroundColor,
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
       height: '100%',
-      '--swiper-pagination-bullet-inactive-color': 'white',
+      '& .swiper': {
+        height: '100%',
+        '--swiper-pagination-bullet-inactive-color': 'white',
+      },
+      '& .swiper-wrapper': {
+        height: '100%',
+      },
+      '& .swiper-slide': {
+        height: '90%', // To leave room for the pagination indicators
+        paddingBottom: '1em',
+      },
     },
-    '& .swiper-wrapper': {
-      height: '100%',
+    swiperSlide: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      alignSelf: 'center',
+      alignContent: 'flex-start',
     },
-    '& .swiper-slide': {
-      height: '90%', // To leave room for the pagination indicators
-      paddingBottom: '1em',
-    },
-  },
-  swiperSlide: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    alignSelf: 'center',
-    alignContent: 'flex-start',
-  },
-});
+  })
+);
 
 export function MobileGridView() {
   const classes = useStyles();

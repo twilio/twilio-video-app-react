@@ -2,80 +2,85 @@ import React from 'react';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ArrowForward from '@material-ui/icons/ArrowForward';
 import clsx from 'clsx';
-import { GRID_MODE_ASPECT_RATIO, GRID_MODE_MARGIN } from '../../constants';
-import { IconButton, makeStyles } from '@material-ui/core';
+import { GRID_VIEW_ASPECT_RATIO, GRID_VIEW_MARGIN } from '../../constants';
+import { IconButton, makeStyles, createStyles, Theme } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import Participant from '../Participant/Participant';
 import useGridLayout from '../../hooks/useGridLayout/useGridLayout';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
-import { usePagination } from '../../hooks/usePagination/usePagination';
+import { usePagination } from './usePagination/usePagination';
 import useDominantSpeaker from '../../hooks/useDominantSpeaker/useDominantSpeaker';
 import useGridParticipants from '../../hooks/useGridParticipants/useGridParticipants';
+import { useAppState } from '../../state';
 
 const CONTAINER_GUTTER = '50px';
 
-const useStyles = makeStyles({
-  container: {
-    position: 'relative',
-    gridArea: '1 / 1 / 2 / 3',
-  },
-  participantContainer: {
-    position: 'absolute',
-    display: 'flex',
-    top: CONTAINER_GUTTER,
-    right: CONTAINER_GUTTER,
-    bottom: CONTAINER_GUTTER,
-    left: CONTAINER_GUTTER,
-    margin: '0 auto',
-    alignContent: 'center',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-  },
-  buttonContainer: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    container: {
+      background: theme.gridViewBackgroundColor,
+      position: 'relative',
+      gridArea: '1 / 1 / 2 / 3',
+    },
+    participantContainer: {
+      position: 'absolute',
+      display: 'flex',
+      top: CONTAINER_GUTTER,
+      right: CONTAINER_GUTTER,
+      bottom: CONTAINER_GUTTER,
+      left: CONTAINER_GUTTER,
+      margin: '0 auto',
+      alignContent: 'center',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+    },
+    buttonContainer: {
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
 
-  buttonContainerLeft: {
-    right: `calc(100% - ${CONTAINER_GUTTER})`,
-    left: 0,
-  },
-  buttonContainerRight: {
-    right: 0,
-    left: `calc(100% - ${CONTAINER_GUTTER})`,
-  },
-  pagination: {
-    '& .MuiPaginationItem-root': {
-      color: 'white',
+    buttonContainerLeft: {
+      right: `calc(100% - ${CONTAINER_GUTTER})`,
+      left: 0,
     },
-  },
-  paginationButton: {
-    color: 'black',
-    background: 'rgba(255, 255, 255, 0.8)',
-    width: '40px',
-    height: '40px',
-    '&:hover': {
-      background: 'rgba(255, 255, 255)',
+    buttonContainerRight: {
+      right: 0,
+      left: `calc(100% - ${CONTAINER_GUTTER})`,
     },
-  },
-  paginationContainer: {
-    position: 'absolute',
-    top: `calc(100% - ${CONTAINER_GUTTER})`,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    pagination: {
+      '& .MuiPaginationItem-root': {
+        color: 'white',
+      },
+    },
+    paginationButton: {
+      color: 'black',
+      background: 'rgba(255, 255, 255, 0.8)',
+      width: '40px',
+      height: '40px',
+      '&:hover': {
+        background: 'rgba(255, 255, 255)',
+      },
+    },
+    paginationContainer: {
+      position: 'absolute',
+      top: `calc(100% - ${CONTAINER_GUTTER})`,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  })
+);
 
 export function GridView() {
   const classes = useStyles();
+  const { maxGridParticipants } = useAppState();
   const { room } = useVideoContext();
   const gridParticipants = useGridParticipants();
   const dominantSpeaker = useDominantSpeaker(true);
@@ -85,10 +90,11 @@ export function GridView() {
     ...gridParticipants,
   ]);
 
-  const { participantVideoWidth, containerRef } = useGridLayout(paginatedParticipants.length);
+  const gridLayoutParticipantCount = currentPage === 1 ? paginatedParticipants.length : maxGridParticipants;
+  const { participantVideoWidth, containerRef } = useGridLayout(gridLayoutParticipantCount);
 
   const participantWidth = `${participantVideoWidth}px`;
-  const participantHeight = `${Math.floor(participantVideoWidth * GRID_MODE_ASPECT_RATIO)}px`;
+  const participantHeight = `${Math.floor(participantVideoWidth * GRID_VIEW_ASPECT_RATIO)}px`;
 
   return (
     <div className={classes.container}>
@@ -125,7 +131,7 @@ export function GridView() {
         {paginatedParticipants.map(participant => (
           <div
             key={participant.sid}
-            style={{ width: participantWidth, height: participantHeight, margin: GRID_MODE_MARGIN }}
+            style={{ width: participantWidth, height: participantHeight, margin: GRID_VIEW_MARGIN }}
           >
             <Participant
               participant={participant}
