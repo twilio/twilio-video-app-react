@@ -229,14 +229,24 @@ export function decorator(story, { args }) {
         mockParticipant.publishTrack('audio');
       }
 
-      if (args.unpublishAllVideo) {
-        mockParticipant.unpublishTrack('video');
+      if (args.unpublishVideo) {
+        const pList = args.unpublishVideo.split(',');
+        if (pList.includes(i.toString())) {
+          mockParticipant.unpublishTrack('video');
+        } else {
+          mockParticipant.publishTrack('video');
+        }
       } else {
         mockParticipant.publishTrack('video');
       }
 
-      if (args.switchOffAllVideo) {
-        videoTrack?.switchOff();
+      if (args.switchOffVideo) {
+        const pList = args.switchOffVideo.split(',');
+        if (pList.includes(i.toString())) {
+          videoTrack?.switchOff();
+        } else {
+          videoTrack?.switchOn();
+        }
       } else {
         videoTrack?.switchOn();
       }

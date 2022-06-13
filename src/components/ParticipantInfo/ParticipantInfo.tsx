@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
       position: 'relative',
+      filter: 'blur(0)',
       display: 'flex',
       alignItems: 'center',
       height: 0,
@@ -122,6 +123,9 @@ const useStyles = makeStyles((theme: Theme) =>
         fontSize: '0.75rem',
       },
     },
+    blur: {
+      filter: 'blur(10px)',
+    },
     hideParticipant: {
       display: 'none',
     },
@@ -216,8 +220,8 @@ export default function ParticipantInfo({
         </div>
         <div>{isSelected && <PinIcon />}</div>
       </div>
-      <div className={classes.innerContainer}>
-        {(!isVideoEnabled || isVideoSwitchedOff) && (
+      <div className={clsx(classes.innerContainer, { [classes.blur]: isVideoSwitchedOff })}>
+        {!isVideoEnabled && (
           <div className={classes.avatarContainer}>
             <AvatarIcon />
           </div>

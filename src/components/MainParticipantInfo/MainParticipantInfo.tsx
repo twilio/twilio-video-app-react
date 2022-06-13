@@ -89,6 +89,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       top: 0,
     },
   },
+  blur: { filter: 'blur(10px)' },
   circle: {
     height: '12px',
     width: '12px',
@@ -145,6 +146,7 @@ export default function MainParticipantInfo({ participant, children }: MainParti
       data-cy-participant={participant.identity}
       className={clsx(classes.container, {
         [classes.fullWidth]: !isRemoteParticipantScreenSharing,
+        [classes.blur]: isVideoSwitchedOff,
       })}
     >
       <div className={classes.infoContainer}>
@@ -173,7 +175,7 @@ export default function MainParticipantInfo({ participant, children }: MainParti
           </Tooltip>
         )}
       </div>
-      {(!isVideoEnabled || isVideoSwitchedOff) && (
+      {!isVideoEnabled && (
         <div className={classes.avatarContainer}>
           <AvatarIcon />
         </div>
