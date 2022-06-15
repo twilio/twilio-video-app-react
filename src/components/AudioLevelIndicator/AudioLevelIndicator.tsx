@@ -22,7 +22,12 @@ export function initializeAnalyser(stream: MediaStream) {
 
   // Here we provide a way for the audioContext to be closed.
   // Closing the audioContext allows the unused audioSource to be garbage collected.
-  stream.addEventListener('cleanup', () => audioContext.close());
+
+  stream.addEventListener('cleanup', () => {
+    if (audioContext.state !== 'closed') {
+      audioContext.close();
+    }
+  });
 
   return analyser;
 }
