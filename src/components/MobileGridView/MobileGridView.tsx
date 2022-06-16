@@ -70,7 +70,7 @@ export function MobileGridView() {
     }
   }
 
-  const participantVideoStyles: CSSProperties = {
+  const portraitParticipantVideoStyles: CSSProperties = {
     width: remoteParticipantCount < 3 ? '100%' : '50%',
     // The height of each participant's video is determined by the number of participants on the grid
     // page. Here the array indices represent a remoteParticipantCount. If the count is 4 or greater,
@@ -80,11 +80,11 @@ export function MobileGridView() {
     boxSizing: 'border-box',
   };
 
-  const landScape: CSSProperties = {
+  const landscapeParticipantVideoStyles: CSSProperties = {
     height: remoteParticipantCount <= 3 ? '100%' : '50%',
-    // The height of each participant's video is determined by the number of participants on the grid
+    // The width of each participant's video is determined by the number of participants on the grid
     // page. Here the array indices represent a remoteParticipantCount. If the count is 4 or greater,
-    // the height will be 33.33%
+    // the width will be 33.33%
     width: ['100%', '50%', '33.33%', '25%', '33.33%'][Math.min(remoteParticipantCount, 4)],
     padding: '0.2em 0.1em',
     boxSizing: 'border-box',
@@ -96,7 +96,10 @@ export function MobileGridView() {
         {pages.map((page, i) => (
           <SwiperSlide key={i} className={classes.swiperSlide}>
             {page.map(participant => (
-              <div style={isMobileLandscape ? landScape : participantVideoStyles} key={participant.sid}>
+              <div
+                style={isMobileLandscape ? landscapeParticipantVideoStyles : portraitParticipantVideoStyles}
+                key={participant.sid}
+              >
                 <Participant
                   participant={participant}
                   isLocalParticipant={room!.localParticipant === participant}
