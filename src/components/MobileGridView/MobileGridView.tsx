@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react';
-import { makeStyles, createStyles, Theme, useTheme, useMediaQuery } from '@material-ui/core';
+import { makeStyles, createStyles, Theme, useMediaQuery } from '@material-ui/core';
 import Participant from '../Participant/Participant';
 import useDominantSpeaker from '../../hooks/useDominantSpeaker/useDominantSpeaker';
 import useParticipantContext from '../../hooks/useParticipantsContext/useParticipantsContext';
@@ -44,10 +44,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export function MobileGridView() {
   const classes = useStyles();
-  const theme = useTheme();
-  const isMobileLandscape = useMediaQuery(
-    `screen and ${theme.breakpoints.down('sm')} and (orientation: landscape)` + theme.includeLandscapeMd
-  );
+  const isMobileLandscape = useMediaQuery('screen and (orientation: landscape)');
   const { room } = useVideoContext();
   const { mobileGridParticipants } = useParticipantContext();
   const dominantSpeaker = useDominantSpeaker(true);
