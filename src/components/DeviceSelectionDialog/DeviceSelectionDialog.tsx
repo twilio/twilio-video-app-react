@@ -11,6 +11,8 @@ import {
   Button,
   Theme,
   DialogTitle,
+  useMediaQuery,
+  useTheme,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import VideoInputList from './VideoInputList/VideoInputList';
@@ -49,6 +51,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default function DeviceSelectionDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
   const classes = useStyles();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <Dialog open={open} onClose={onClose} classes={{ paper: classes.paper }}>
@@ -72,12 +76,14 @@ export default function DeviceSelectionDialog({ open, onClose }: { open: boolean
           <AudioOutputList />
         </div>
         <Divider />
-        <div className={classes.listSection}>
-          <Typography variant="h6" className={classes.headline}>
-            Grid View
-          </Typography>
-          <MaxGridParticipants />
-        </div>
+        {!isMobile && (
+          <div className={classes.listSection}>
+            <Typography variant="h6" className={classes.headline}>
+              Grid View
+            </Typography>
+            <MaxGridParticipants />
+          </div>
+        )}
       </DialogContent>
       <Divider />
       <DialogActions>
