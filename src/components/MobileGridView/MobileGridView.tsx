@@ -1,4 +1,5 @@
 import { CSSProperties } from 'react';
+import clsx from 'clsx';
 import { makeStyles, createStyles, Theme, useMediaQuery } from '@material-ui/core';
 import Participant from '../Participant/Participant';
 import useDominantSpeaker from '../../hooks/useDominantSpeaker/useDominantSpeaker';
@@ -28,9 +29,15 @@ const useStyles = makeStyles((theme: Theme) =>
       '& .swiper-wrapper': {
         height: '100%',
       },
+      '& .swiper-pagination.swiper-pagination-bullets': {
+        bottom: '5px',
+      },
+    },
+    isPaginationActive: {
       '& .swiper-slide': {
-        height: '90%', // To leave room for the pagination indicators
-        paddingBottom: '1em',
+        // To leave room for the pagination indicators:
+        height: 'calc(100% - 21px)',
+        paddingBottom: '21px',
       },
     },
     swiperSlide: {
@@ -79,16 +86,13 @@ export function MobileGridView() {
 
   const landscapeParticipantVideoStyles: CSSProperties = {
     height: remoteParticipantCount <= 3 ? '100%' : '50%',
-    // The width of each participant's video is determined by the number of participants on the grid
-    // page. Here the array indices represent a remoteParticipantCount. If the count is 4 or greater,
-    // the width will be 33.33%
     width: ['100%', '50%', '33.33%', '25%', '33.33%'][Math.min(remoteParticipantCount, 4)],
     padding: '0.2em 0.1em',
     boxSizing: 'border-box',
   };
 
   return (
-    <div className={classes.participantContainer}>
+    <div className={clsx(classes.participantContainer, { [classes.isPaginationActive]: remoteParticipantCount > 5 })}>
       <Swiper pagination={true} modules={[Pagination]} className="mySwiper">
         {pages.map((page, i) => (
           <SwiperSlide key={i} className={classes.swiperSlide}>
