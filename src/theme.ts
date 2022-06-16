@@ -12,6 +12,7 @@ declare module '@material-ui/core/styles/createTheme' {
     participantBorderWidth: number;
     rightDrawerWidth: number;
     gridViewBackgroundColor: string;
+    includeLandscapeMd: string;
   }
 
   // allow configuration using `createMuiTheme`
@@ -26,10 +27,14 @@ declare module '@material-ui/core/styles/createTheme' {
     participantBorderWidth: number;
     rightDrawerWidth?: number;
     gridViewBackgroundColor: string;
+    includeLandscapeMd: string;
   }
 }
 
 const defaultTheme = createTheme();
+
+const includeLandscapeMd = `, screen and (orientation: landscape) and (max-width:${defaultTheme.breakpoints.values.lg -
+  0.05}px)`;
 
 export default createTheme({
   overrides: {
@@ -127,4 +132,5 @@ export default createTheme({
   mobileTopBarHeight: 52,
   rightDrawerWidth: 320,
   gridViewBackgroundColor: '#121C2D',
+  includeLandscapeMd,
 });

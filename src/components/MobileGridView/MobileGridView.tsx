@@ -1,8 +1,8 @@
 import { CSSProperties } from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core';
+import { makeStyles, createStyles, Theme, useTheme, useMediaQuery } from '@material-ui/core';
 import Participant from '../Participant/Participant';
 import useDominantSpeaker from '../../hooks/useDominantSpeaker/useDominantSpeaker';
-import useGridParticipants from '../../hooks/useGridParticipants/useGridParticipants';
+import useParticipantContext from '../../hooks/useParticipantsContext/useParticipantsContext';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
@@ -44,10 +44,14 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export function MobileGridView() {
   const classes = useStyles();
+  const theme = useTheme();
+  const isMobileLandscape = useMediaQuery(
+    `screen and ${theme.breakpoints.down('sm')} and (orientation: landscape)` + theme.includeLandscapeMd
+  );
   const { room } = useVideoContext();
-  const participants = useGridParticipants(true);
+  const { mobileGridParticipants } = useParticipantContext();
   const dominantSpeaker = useDominantSpeaker(true);
-  const remoteParticipantCount = participants.length;
+  const remoteParticipantCount = mobileGridParticipants.length;
 
   const pages: IParticipant[][] = [[]];
   // Add the localParticipant to the front of the array to ensure they are always the first participant:
@@ -60,9 +64,9 @@ export function MobileGridView() {
     }
     // Each page should have a max of 6 participants:
     if (pages[pageNumber].length < 6) {
-      pages[pageNumber].push(participants[i]);
+      pages[pageNumber].push(mobileGridParticipants[i]);
     } else {
-      pages[pageNumber + 1] = [participants[i]];
+      pages[pageNumber + 1] = [mobileGridParticipants[i]];
     }
   }
 
@@ -76,13 +80,23 @@ export function MobileGridView() {
     boxSizing: 'border-box',
   };
 
+  const landScape: CSSProperties = {
+    height: remoteParticipantCount <= 3 ? '100%' : '50%',
+    // The height of each participant's video is determined by the number of participants on the grid
+    // page. Here the array indices represent a remoteParticipantCount. If the count is 4 or greater,
+    // the height will be 33.33%
+    width: ['100%', '50%', '33.33%', '25%', '33.33%'][Math.min(remoteParticipantCount, 4)],
+    padding: '0.2em 0.1em',
+    boxSizing: 'border-box',
+  };
+
   return (
     <div className={classes.participantContainer}>
       <Swiper pagination={true} modules={[Pagination]} className="mySwiper">
         {pages.map((page, i) => (
           <SwiperSlide key={i} className={classes.swiperSlide}>
             {page.map(participant => (
-              <div style={participantVideoStyles} key={participant.sid}>
+              <div style={isMobileLandscape ? landScape : participantVideoStyles} key={participant.sid}>
                 <Participant
                   participant={participant}
                   isLocalParticipant={room!.localParticipant === participant}
