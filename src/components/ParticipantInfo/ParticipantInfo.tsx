@@ -22,6 +22,7 @@ const borderWidth = 2;
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
+      isolation: 'isolate',
       position: 'relative',
       display: 'flex',
       alignItems: 'center',
