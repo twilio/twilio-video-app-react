@@ -35,6 +35,7 @@ export default function useGridLayout(participantCount: number) {
   const updateLayout = useCallback(() => {
     if (!containerRef.current) return;
     const containerWidth = containerRef.current.offsetWidth - GRID_VIEW_MARGIN * 2;
+    // Ensure participant tiles cannot be collapsed down to 0 by giving the container a minimum height of 75:
     const containerHeight = Math.max(containerRef.current.offsetHeight - GRID_VIEW_MARGIN * 2, 75);
 
     // Here we use binary search to guess the new size of each video in the grid
