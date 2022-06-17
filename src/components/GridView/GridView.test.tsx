@@ -23,6 +23,11 @@ jest.mock('../../hooks/useVideoContext/useVideoContext', () => () => ({
     localParticipant: mockLocalParticipant,
   },
 }));
+
+jest.mock('../../hooks/useParticipantsContext/useParticipantsContext', () => () => ({
+  gridParticipants: mockParticipants,
+}));
+
 jest.mock('../../hooks/useGridLayout/useGridLayout', () =>
   jest.fn(() => ({
     participantVideoWidth: 720,

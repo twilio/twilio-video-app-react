@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import Participant from '../Participant/Participant';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import useMainParticipant from '../../hooks/useMainParticipant/useMainParticipant';
-import usePresentationParticipants from '../../hooks/usePresentationParticipants/usePresentationParticipants';
+import useParticipantsContext from '../../hooks/useParticipantsContext/useParticipantsContext';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
 import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
@@ -45,13 +45,13 @@ export default function ParticipantList() {
   const classes = useStyles();
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
-  const participants = usePresentationParticipants();
+  const { presentationParticipants } = useParticipantsContext();
   const [selectedParticipant, setSelectedParticipant] = useSelectedParticipant();
   const screenShareParticipant = useScreenShareParticipant();
   const mainParticipant = useMainParticipant();
   const isRemoteParticipantScreenSharing = screenShareParticipant && screenShareParticipant !== localParticipant;
 
-  if (participants.length === 0) return null; // Don't render this component if there are no remote participants.
+  if (presentationParticipants.length === 0) return null; // Don't render this component if there are no remote participants.
 
   return (
     <aside
@@ -62,7 +62,7 @@ export default function ParticipantList() {
       <div className={classes.scrollContainer}>
         <div className={classes.innerScrollContainer}>
           <Participant participant={localParticipant} isLocalParticipant={true} />
-          {participants.map(participant => {
+          {presentationParticipants.map(participant => {
             const isSelected = participant === selectedParticipant;
             const hideParticipant =
               participant === mainParticipant && participant !== screenShareParticipant && !isSelected;

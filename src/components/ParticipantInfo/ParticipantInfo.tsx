@@ -14,7 +14,6 @@ import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackS
 import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
 import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
-import { GRID_VIEW_MARGIN } from '../../constants';
 import { useAppState } from '../../state';
 
 const borderWidth = 2;
@@ -22,6 +21,7 @@ const borderWidth = 2;
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
+      isolation: 'isolate',
       position: 'relative',
       display: 'flex',
       alignItems: 'center',
@@ -29,7 +29,6 @@ const useStyles = makeStyles((theme: Theme) =>
       overflow: 'hidden',
       marginBottom: '0.5em',
       '& video': {
-        filter: 'none',
         objectFit: 'contain !important',
       },
       borderRadius: '4px',
@@ -145,7 +144,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     dominantSpeaker: {
       border: `solid ${borderWidth}px #7BEAA5`,
-      margin: `${GRID_VIEW_MARGIN} - borderWidth`,
     },
   })
 );

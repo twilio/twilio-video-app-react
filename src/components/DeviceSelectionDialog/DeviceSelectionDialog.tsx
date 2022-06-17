@@ -11,6 +11,7 @@ import {
   Button,
   Theme,
   DialogTitle,
+  Hidden,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import VideoInputList from './VideoInputList/VideoInputList';
@@ -71,13 +72,15 @@ export default function DeviceSelectionDialog({ open, onClose }: { open: boolean
         <div className={classes.listSection}>
           <AudioOutputList />
         </div>
-        <Divider />
-        <div className={classes.listSection}>
-          <Typography variant="h6" className={classes.headline}>
-            Grid View
-          </Typography>
-          <MaxGridParticipants />
-        </div>
+        <Hidden smDown>
+          <Divider />
+          <div className={classes.listSection}>
+            <Typography variant="h6" className={classes.headline}>
+              Grid View
+            </Typography>
+            <MaxGridParticipants />
+          </div>
+        </Hidden>
       </DialogContent>
       <Divider />
       <DialogActions>
