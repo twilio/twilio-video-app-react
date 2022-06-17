@@ -3,11 +3,11 @@ import { RemoteParticipant } from 'twilio-video';
 import useGridParticipants from '../../hooks/useGridParticipants/useGridParticipants';
 import usePresentationParticipants from '../../hooks/usePresentationParticipants/usePresentationParticipants';
 
-/*
- *  The hooks used by the VideoProvider component are different than the hooks found in the 'hooks/' directory. The hooks
- *  in the 'hooks/' directory can be used anywhere in a video application, and they can be used any number of times.
- *  the hooks in the 'VideoProvider/' directory are intended to be used by the VideoProvider component only. Using these hooks
- *  elsewhere in the application may cause problems as these hooks should not be used more than once in an application.
+/**
+ * The purpose of the ParticipantProvider component is to ensure that the hooks useGridParticipants
+ * and usePresentationParticipants are not unmounted as users switch between Grid View and Presentation View.
+ * This will make sure that the ordering of the participants on the screen will remain so that the most
+ * recent dominant speakers are always at the front of the list.
  */
 
 export interface IParticipantContext {
