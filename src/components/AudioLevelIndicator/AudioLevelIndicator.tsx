@@ -9,10 +9,9 @@ const getUniqueClipId = () => clipId++;
 
 // @ts-ignore
 const AudioContext = window.AudioContext || window.webkitAudioContext;
-let audioContext: AudioContext;
 
 export function initializeAnalyser(stream: MediaStream) {
-  audioContext = audioContext || new AudioContext();
+  const audioContext = new AudioContext(); // Create a new audioContext for each audio indicator
   const audioSource = audioContext.createMediaStreamSource(stream);
 
   const analyser = audioContext.createAnalyser();
@@ -20,6 +19,15 @@ export function initializeAnalyser(stream: MediaStream) {
   analyser.fftSize = 256;
 
   audioSource.connect(analyser);
+
+  // Here we provide a way for the audioContext to be closed.
+  // Closing the audioContext allows the unused audioSource to be garbage collected.
+  stream.addEventListener('cleanup', () => {
+    if (audioContext.state !== 'closed') {
+      audioContext.close();
+    }
+  });
+
   return analyser;
 }
 
@@ -40,7 +48,10 @@ function AudioLevelIndicator({ audioTrack, color = 'white' }: { audioTrack?: Aud
       // we stop the cloned track that is stored in 'newMediaStream'. It is important that we stop
       // all tracks when they are not in use. Browsers like Firefox don't let you create a new stream
       // from a new audio device while the active audio device still has active tracks.
-      const stopAllMediaStreamTracks = () => newMediaStream.getTracks().forEach(track => track.stop());
+      const stopAllMediaStreamTracks = () => {
+        newMediaStream.getTracks().forEach(track => track.stop());
+        newMediaStream.dispatchEvent(new Event('cleanup')); // Stop the audioContext
+      };
       audioTrack.on('stopped', stopAllMediaStreamTracks);
 
       const reinitializeAnalyser = () => {
