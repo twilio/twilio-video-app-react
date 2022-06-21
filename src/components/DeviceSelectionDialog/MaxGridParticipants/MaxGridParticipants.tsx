@@ -2,7 +2,7 @@ import React from 'react';
 import { FormControl, MenuItem, Typography, Select, Grid } from '@material-ui/core';
 import { useAppState } from '../../../state';
 
-const MAX_PARTICIPANT_OPTIONS = [4, 9, 16, 25, 36, 49];
+const MAX_PARTICIPANT_OPTIONS = [4, 9, 16, 25];
 
 export default function MaxGridParticipants() {
   const { maxGridParticipants, setMaxGridParticipants } = useAppState();

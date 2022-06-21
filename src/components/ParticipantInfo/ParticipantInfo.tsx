@@ -1,14 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import {
-  LocalAudioTrack,
-  LocalVideoTrack,
-  Participant,
-  RemoteAudioTrack,
-  RemoteVideoTrack,
-  VideoTrack,
-} from 'twilio-video';
+import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
 
 import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
 import AvatarIcon from '../../icons/AvatarIcon';
@@ -21,7 +14,6 @@ import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackS
 import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
 import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
-import { GRID_MODE_MARGIN } from '../../constants';
 import { useAppState } from '../../state';
 import useTrackSwitchOffReason from '../../hooks/useTrackSwitchOffReason/useTrackSwitchOffReason';
 
@@ -32,6 +24,7 @@ const searchParams = new URLSearchParams(window.location.search);
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
+      isolation: 'isolate',
       position: 'relative',
       display: 'flex',
       alignItems: 'center',
@@ -39,7 +32,6 @@ const useStyles = makeStyles((theme: Theme) =>
       overflow: 'hidden',
       marginBottom: '0.5em',
       '& video': {
-        filter: 'none',
         objectFit: 'contain !important',
       },
       borderRadius: '4px',
@@ -114,7 +106,7 @@ const useStyles = makeStyles((theme: Theme) =>
     identity: {
       background: 'rgba(0, 0, 0, 0.5)',
       color: 'white',
-      padding: '0.18em 0.3em',
+      padding: '0.18em 0.3em 0.18em 0',
       margin: 0,
       display: 'flex',
       alignItems: 'center',
@@ -126,7 +118,7 @@ const useStyles = makeStyles((theme: Theme) =>
       bottom: 0,
       left: 0,
     },
-    typeography: {
+    typography: {
       color: 'white',
       [theme.breakpoints.down('sm')]: {
         fontSize: '0.75rem',
@@ -145,9 +137,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     dominantSpeaker: {
       border: `solid ${borderWidth}px #7BEAA5`,
-      margin: `${GRID_MODE_MARGIN} - borderWidth`,
     },
-    mobileGridMode: {
+    gridView: {
+      border: `${theme.participantBorderWidth}px solid ${theme.gridViewBackgroundColor}`,
+      borderRadius: '8px',
       [theme.breakpoints.down('sm')]: {
         position: 'relative',
         width: '100%',
@@ -196,7 +189,7 @@ export default function ParticipantInfo({
   const audioTrack = useTrack(audioPublication) as LocalAudioTrack | RemoteAudioTrack | undefined;
   const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
-  const { isGridModeActive } = useAppState();
+  const { isGridViewActive } = useAppState();
 
   const switchOffReason = useTrackSwitchOffReason(videoTrack as LocalVideoTrack | RemoteVideoTrack);
 
@@ -209,7 +202,7 @@ export default function ParticipantInfo({
         [classes.cursorPointer]: Boolean(onClick),
         [classes.blurredVideo]: isVideoSwitchedOff,
         [classes.dominantSpeaker]: isDominantSpeaker,
-        [classes.mobileGridMode]: isGridModeActive,
+        [classes.gridView]: isGridViewActive,
       })}
       onClick={onClick}
       data-cy-participant={participant.identity}
@@ -224,7 +217,7 @@ export default function ParticipantInfo({
           )}
           <span className={classes.identity}>
             {searchParams.get('disableVolumeIndicators') !== 'true' && <AudioLevelIndicator audioTrack={audioTrack} />}
-            <Typography variant="body1" className={classes.typeography} component="span">
+            <Typography variant="body1" className={classes.typography} component="span">
               {participant.identity + (switchOffReason ? ' ' + switchOffReason : '')}
               {isLocalParticipant && ' (You)'}
             </Typography>
@@ -240,7 +233,7 @@ export default function ParticipantInfo({
         )}
         {isParticipantReconnecting && (
           <div className={classes.reconnectingContainer}>
-            <Typography variant="body1" className={classes.typeography}>
+            <Typography variant="body1" className={classes.typography}>
               Reconnecting...
             </Typography>
           </div>

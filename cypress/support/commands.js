@@ -1,7 +1,14 @@
 import detectSound from './detectSound';
 
 Cypress.Commands.add('joinRoom', (username, roomname) => {
-  cy.visit('/');
+  // These tests were written before Grid View was implemented. This app now activates
+  // Grid View by default, so here we activate Presentation View before visiting the app so
+  // that the tests can pass.
+  cy.visit('/', {
+    onBeforeLoad: window => {
+      window.localStorage.setItem('grid-view-active-key', false);
+    },
+  });
   cy.get('#input-user-name').type(username);
   cy.get('#input-room-name').type(roomname);
   cy.get('[type="submit"]').click();

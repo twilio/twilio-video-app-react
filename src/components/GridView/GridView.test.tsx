@@ -3,7 +3,7 @@ import { GridView } from './GridView';
 import { shallow } from 'enzyme';
 import useGridLayout from '../../hooks/useGridLayout/useGridLayout';
 import { useAppState } from '../../state';
-import { usePagination } from '../../hooks/usePagination/usePagination';
+import { usePagination } from './usePagination/usePagination';
 
 const mockLocalParticipant = { identity: 'test-local-participant', sid: 0 };
 const mockParticipants = [
@@ -14,15 +14,20 @@ const mockParticipants = [
 ];
 
 jest.mock('../../constants', () => ({
-  GRID_MODE_ASPECT_RATIO: 9 / 16,
-  GRID_MODE_MARGIN: 3,
+  GRID_VIEW_ASPECT_RATIO: 9 / 16,
+  GRID_VIEW_MARGIN: 3,
 }));
-jest.mock('../../hooks/useCollaborationParticipants/useCollaborationParticipants', () => () => mockParticipants);
+jest.mock('../../hooks/usePresentationParticipants/usePresentationParticipants', () => () => mockParticipants);
 jest.mock('../../hooks/useVideoContext/useVideoContext', () => () => ({
   room: {
     localParticipant: mockLocalParticipant,
   },
 }));
+
+jest.mock('../../hooks/useParticipantsContext/useParticipantsContext', () => () => ({
+  gridParticipants: mockParticipants,
+}));
+
 jest.mock('../../hooks/useGridLayout/useGridLayout', () =>
   jest.fn(() => ({
     participantVideoWidth: 720,
@@ -30,7 +35,7 @@ jest.mock('../../hooks/useGridLayout/useGridLayout', () =>
   }))
 );
 
-jest.mock('../../hooks/usePagination/usePagination', () => ({
+jest.mock('./usePagination/usePagination', () => ({
   usePagination: jest.fn(() => ({
     currentPage: 2,
     totalPages: 4,
@@ -50,7 +55,7 @@ describe('the GridView component', () => {
   it('should render correctly', () => {
     const wrapper = shallow(<GridView />);
     expect(wrapper).toMatchSnapshot();
-    expect(useGridLayout).toHaveBeenCalledWith(5);
+    expect(useGridLayout).toHaveBeenCalledWith(9);
   });
 
   it('should not render the previous page button when the user is viewing the first page', () => {

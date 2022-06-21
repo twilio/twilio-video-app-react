@@ -61,7 +61,7 @@ describe('the VideoTrack component', () => {
 
   it('should flip the video horizontally if the track is local', () => {
     const { container } = render(<VideoTrack track={mockTrack} isLocal />);
-    expect(container.querySelector('video')!.style.transform).toEqual('rotateY(180deg)');
+    expect(container.querySelector('video')!.style.transform).toEqual('scaleX(-1)');
   });
 
   it('should not flip the video horizontally if the track is the local rear-facing camera', () => {

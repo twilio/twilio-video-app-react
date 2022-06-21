@@ -23,8 +23,8 @@ export interface StateContextType {
   dispatchSetting: React.Dispatch<SettingsAction>;
   roomType?: RoomType;
   updateRecordingRules(room_sid: string, rules: RecordingRules): Promise<object>;
-  isGridModeActive: boolean;
-  setIsGridModeActive: React.Dispatch<React.SetStateAction<boolean>>;
+  isGridViewActive: boolean;
+  setIsGridViewActive: React.Dispatch<React.SetStateAction<boolean>>;
   maxGridParticipants: number;
   setMaxGridParticipants: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -43,11 +43,11 @@ export const StateContext = createContext<StateContextType>(null!);
 export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const [error, setError] = useState<TwilioError | null>(null);
   const [isFetching, setIsFetching] = useState(false);
-  const [isGridModeActive, setIsGridModeActive] = useLocalStorageState('grid-mode-active-key', false);
+  const [isGridViewActive, setIsGridViewActive] = useLocalStorageState('grid-view-active-key', true);
   const [activeSinkId, setActiveSinkId] = useActiveSinkId();
   const [settings, dispatchSetting] = useReducer(settingsReducer, initialSettings);
   const [roomType, setRoomType] = useState<RoomType>();
-  const [maxGridParticipants, setMaxGridParticipants] = useLocalStorageState('max-grid-participants-key', 25);
+  const [maxGridParticipants, setMaxGridParticipants] = useLocalStorageState('max-grid-participants-key', 9);
 
   let contextValue = {
     error,
@@ -58,8 +58,8 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     settings,
     dispatchSetting,
     roomType,
-    isGridModeActive,
-    setIsGridModeActive,
+    isGridViewActive,
+    setIsGridViewActive,
     maxGridParticipants,
     setMaxGridParticipants,
   } as StateContextType;

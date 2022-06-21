@@ -20,7 +20,7 @@ const mockUsePublications = usePublications as jest.Mock<any>;
 const mockUseIsTrackSwitchedOff = useIsTrackSwitchedOff as jest.Mock<any>;
 const mockUseParticipantIsReconnecting = useParticipantIsReconnecting as jest.Mock<boolean>;
 
-mockUseAppState.mockImplementation(() => ({ isGridModeActive: false }));
+mockUseAppState.mockImplementation(() => ({ isGridViewActive: false }));
 
 describe('the ParticipantInfo component', () => {
   it('should render the AvatarIcon component when no video tracks are published', () => {

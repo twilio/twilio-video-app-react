@@ -14,7 +14,7 @@ exports[`the MobileGridView component should render correctly when there are 3 o
     pagination={true}
   >
     <mockConstructor
-      className="makeStyles-swiperSlide-2"
+      className="makeStyles-swiperSlide-3"
       key="0"
     >
       <div
@@ -146,7 +146,7 @@ exports[`the MobileGridView component should render correctly when there are two
     pagination={true}
   >
     <mockConstructor
-      className="makeStyles-swiperSlide-2"
+      className="makeStyles-swiperSlide-3"
       key="0"
     >
       <div
@@ -234,7 +234,7 @@ exports[`the MobileGridView component should render correctly when there is one 
     pagination={true}
   >
     <mockConstructor
-      className="makeStyles-swiperSlide-2"
+      className="makeStyles-swiperSlide-3"
       key="0"
     >
       <div
@@ -300,7 +300,7 @@ exports[`the MobileGridView component should render correctly when there is only
     pagination={true}
   >
     <mockConstructor
-      className="makeStyles-swiperSlide-2"
+      className="makeStyles-swiperSlide-3"
       key="0"
     >
       <div

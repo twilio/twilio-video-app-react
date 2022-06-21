@@ -19,6 +19,14 @@ module.exports = (on, config) => {
         args,
       });
       const page = (participants[name] = await browser.newPage()); // keep track of this participant for future use
+
+      // These tests were written before Grid View was implemented. This app now activates
+      // Grid View by default, so here we activate Presentation View before visiting the app so
+      // that the tests can pass.
+      await page.evaluateOnNewDocument(() => {
+        localStorage.clear();
+        localStorage.setItem('grid-view-active-key', false);
+      });
       await page.goto(config.baseUrl);
       await page.type('#input-user-name', name);
       await page.type('#input-room-name', roomName);
