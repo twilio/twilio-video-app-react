@@ -8,9 +8,9 @@ import { Pagination } from '@material-ui/lab';
 import Participant from '../Participant/Participant';
 import useGridLayout from '../../hooks/useGridLayout/useGridLayout';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import useParticipantsContext from '../../hooks/useParticipantsContext/useParticipantsContext';
 import { usePagination } from './usePagination/usePagination';
 import useDominantSpeaker from '../../hooks/useDominantSpeaker/useDominantSpeaker';
-import useGridParticipants from '../../hooks/useGridParticipants/useGridParticipants';
 import { useAppState } from '../../state';
 
 const CONTAINER_GUTTER = '50px';
@@ -82,7 +82,7 @@ export function GridView() {
   const classes = useStyles();
   const { maxGridParticipants } = useAppState();
   const { room } = useVideoContext();
-  const gridParticipants = useGridParticipants();
+  const { gridParticipants } = useParticipantsContext();
   const dominantSpeaker = useDominantSpeaker(true);
 
   const { paginatedParticipants, setCurrentPage, currentPage, totalPages } = usePagination([

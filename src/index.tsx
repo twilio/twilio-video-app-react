@@ -13,6 +13,7 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import theme from './theme';
 import './types';
 import { ChatProvider } from './components/ChatProvider';
+import { ParticipantProvider } from './components/ParticipantProvider';
 import { VideoProvider } from './components/VideoProvider';
 import useConnectionOptions from './utils/useConnectionOptions/useConnectionOptions';
 import UnsupportedBrowserWarning from './components/UnsupportedBrowserWarning/UnsupportedBrowserWarning';
@@ -24,9 +25,11 @@ const VideoApp = () => {
   return (
     <VideoProvider options={connectionOptions} onError={setError}>
       <ErrorDialog dismissError={() => setError(null)} error={error} />
-      <ChatProvider>
-        <App />
-      </ChatProvider>
+      <ParticipantProvider>
+        <ChatProvider>
+          <App />
+        </ChatProvider>
+      </ParticipantProvider>
     </VideoProvider>
   );
 };
