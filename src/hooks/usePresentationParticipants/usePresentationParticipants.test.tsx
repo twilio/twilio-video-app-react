@@ -24,8 +24,24 @@ describe('the usePresentationParticipants hook', () => {
     }));
   });
 
-  it('should return an array of mockParticipant.tracks by default', () => {
+  it('should return an array of mockParticipants by default', () => {
     const { result } = renderHook(usePresentationParticipants);
+    expect(result.current).toEqual(['participant1', 'participant2']);
+  });
+
+  it('should return an array of mockParticipants after a room becomes available', () => {
+    mockedVideoContext.mockImplementation(() => ({
+      room: null,
+    }));
+
+    const { result, rerender } = renderHook(usePresentationParticipants);
+
+    mockedVideoContext.mockImplementation(() => ({
+      room: mockRoom,
+    }));
+
+    rerender();
+
     expect(result.current).toEqual(['participant1', 'participant2']);
   });
 

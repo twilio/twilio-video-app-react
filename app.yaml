@@ -1,4 +1,4 @@
-runtime: nodejs12
+runtime: nodejs16
 
 entrypoint: npm run server
 
