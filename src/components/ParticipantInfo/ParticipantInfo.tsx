@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme: Theme) =>
     container: {
       isolation: 'isolate',
       position: 'relative',
-      filter: 'blur(0)',
       display: 'flex',
       alignItems: 'center',
       height: 0,
@@ -31,6 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginBottom: '0.5em',
       '& video': {
         objectFit: 'contain !important',
+        filter: 'none',
       },
       borderRadius: '4px',
       border: `${theme.participantBorderWidth}px solid rgb(245, 248, 255)`,
@@ -92,6 +92,18 @@ const useStyles = makeStyles((theme: Theme) =>
       background: 'rgba(40, 42, 43, 0.75)',
       zIndex: 1,
     },
+    trackSwitchOffContainer: {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 1,
+      textAlign: 'center',
+    },
     screenShareIconContainer: {
       background: 'rgba(0, 0, 0, 0.5)',
       padding: '0.18em 0.3em',
@@ -123,7 +135,9 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     blur: {
-      filter: 'blur(10px)',
+      '& video': {
+        filter: 'blur(10px)',
+      },
     },
     hideParticipant: {
       display: 'none',
@@ -186,8 +200,19 @@ export default function ParticipantInfo({
   const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
   const { isGridViewActive } = useAppState();
+  const [showVideoSwitchOffMessage, setShowVideoSwitchedOffMessage] = useState(isVideoSwitchedOff);
 
   const classes = useStyles();
+
+  useEffect(() => {
+    if (!isVideoSwitchedOff) return;
+
+    const timer = setTimeout(() => {
+      setShowVideoSwitchedOffMessage(true);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [isVideoSwitchedOff]);
 
   return (
     <div
@@ -219,6 +244,13 @@ export default function ParticipantInfo({
         <div>{isSelected && <PinIcon />}</div>
       </div>
       <div className={clsx(classes.innerContainer, { [classes.blur]: isVideoSwitchedOff })}>
+        {isVideoSwitchedOff && showVideoSwitchOffMessage && (
+          <div className={classes.trackSwitchOffContainer}>
+            <Typography variant="body1" className={classes.typography}>
+              Video has been switched off to conserve bandwidth.
+            </Typography>
+          </div>
+        )}
         {!isVideoEnabled && (
           <div className={classes.avatarContainer}>
             <AvatarIcon />

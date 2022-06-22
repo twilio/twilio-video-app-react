@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
+    '& video': {
+      filter: 'none',
+    },
   },
   identity: {
     background: 'rgba(0, 0, 0, 0.5)',
@@ -51,6 +54,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'center',
     background: 'rgba(40, 42, 43, 0.75)',
     zIndex: 1,
+  },
+  trackSwitchOffContainer: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 1,
+    textAlign: 'center',
   },
   fullWidth: {
     gridArea: '1 / 1 / 2 / 3',
@@ -89,7 +104,11 @@ const useStyles = makeStyles((theme: Theme) => ({
       top: 0,
     },
   },
-  blur: { filter: 'blur(10px)' },
+  blur: {
+    '&video': {
+      filter: 'blur(10px)',
+    },
+  },
   circle: {
     height: '12px',
     width: '12px',
@@ -139,6 +158,17 @@ export default function MainParticipantInfo({ participant, children }: MainParti
   const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
   const isRecording = useIsRecording();
+  const [showVideoSwitchOffMessage, setShowVideoSwitchedOffMessage] = useState(isVideoSwitchedOff);
+
+  useEffect(() => {
+    if (!isVideoSwitchedOff) return;
+
+    const timer = setTimeout(() => {
+      setShowVideoSwitchedOffMessage(true);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [isVideoSwitchedOff]);
 
   return (
     <div
@@ -178,6 +208,13 @@ export default function MainParticipantInfo({ participant, children }: MainParti
       {!isVideoEnabled && (
         <div className={classes.avatarContainer}>
           <AvatarIcon />
+        </div>
+      )}
+      {isVideoSwitchedOff && showVideoSwitchOffMessage && (
+        <div className={classes.trackSwitchOffContainer}>
+          <Typography variant="body1" style={{ color: 'white' }}>
+            Video has been switched off to conserve bandwidth.
+          </Typography>
         </div>
       )}
       {isParticipantReconnecting && (
