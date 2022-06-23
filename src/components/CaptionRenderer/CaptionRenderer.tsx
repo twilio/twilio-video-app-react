@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import Snackbar from '../Snackbar/Snackbar';
 import { TwilioCaptionResult } from './CaptionTypes';
 import { Typography } from '@material-ui/core';
 import useParticipants from '../../hooks/useParticipants/useParticipants';
@@ -35,29 +36,34 @@ export function CaptionRenderer() {
   const participants = useParticipants();
   const transcriberParticipant = participants.find(p => p.identity === 'media-transcriber');
   const transcriberTracks = useParticipantTracks(transcriberParticipant);
-  const transcriberDataTrack = transcriberTracks.find(track => track.kind === 'data');
+  const transcriberDataTrack = transcriberTracks.find(
+    track => track.kind === 'data' && track.name !== 'transcriber-error'
+  );
+  const transcriberError = transcriberTracks.find(track => track.kind === 'data' && track.name === 'transcriber-error');
   const { displayCaptions } = useAppState();
 
-  const registerResult = useCallback((result: TwilioCaptionResult) => {
-    if (result.transcriptionResponse.TranscriptEvent.Transcript.Results.length) {
-      const transcript = result.transcriptionResponse.TranscriptEvent.Transcript.Results[0].Alternatives[0].Transcript;
-      const id = result.transcriptionResponse.TranscriptEvent.Transcript.Results[0].ResultId;
-      const timestamp = Date.now();
-      const identity = result.participantIdentity;
+  const registerResult = useCallback((captionResult: TwilioCaptionResult) => {
+    if (captionResult.transcriptionResponse.TranscriptEvent.Transcript.Results.length) {
+      captionResult.transcriptionResponse.TranscriptEvent.Transcript.Results.forEach(result => {
+        const transcript = result.Alternatives[0].Transcript;
+        const id = result.ResultId;
+        const timestamp = Date.now();
+        const identity = result.Identity;
 
-      setCaptions(prevCaptions => {
-        // Make a copy of the caption array, keeping only the 4 most recent captions
-        const arrayCopy = prevCaptions.slice(-4);
+        setCaptions(prevCaptions => {
+          // Make a copy of the caption array, keeping only the 4 most recent captions
+          const arrayCopy = prevCaptions.slice(-4);
 
-        const existingID = arrayCopy.find(item => item.id === id);
-        if (existingID) {
-          const existingIdIndex = arrayCopy.indexOf(existingID);
-          arrayCopy[existingIdIndex] = { transcript, id, timestamp, identity };
-        } else {
-          arrayCopy.push({ transcript, id, timestamp, identity });
-        }
+          const existingID = arrayCopy.find(item => item.id === id);
+          if (existingID) {
+            const existingIdIndex = arrayCopy.indexOf(existingID);
+            arrayCopy[existingIdIndex] = { transcript, id, timestamp, identity };
+          } else {
+            arrayCopy.push({ transcript, id, timestamp, identity });
+          }
 
-        return arrayCopy;
+          return arrayCopy;
+        });
       });
     }
   }, []);
@@ -101,6 +107,12 @@ export function CaptionRenderer() {
 
   return (
     <div className={classes.captionContainer}>
+      <Snackbar
+        variant="error"
+        headline="Transcriber Error"
+        message="Media transcriber is not connected."
+        open={Boolean(transcriberError)}
+      />
       {captions.map(caption => (
         <div>
           <Typography variant="h6" key={caption.id} className={classes.caption}>

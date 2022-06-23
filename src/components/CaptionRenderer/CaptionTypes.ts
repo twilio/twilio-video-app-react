@@ -1,6 +1,5 @@
 export interface TwilioCaptionResult {
   transcriptionResponse: TranscriptionResponse;
-  participantIdentity: string;
 }
 
 export interface TranscriptionResponse {
@@ -21,6 +20,7 @@ export interface Result {
   IsPartial: boolean;
   ResultId: string;
   StartTime: number;
+  Identity: string;
 }
 
 export interface Alternative {
