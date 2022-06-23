@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
@@ -104,8 +104,26 @@ const useStyles = makeStyles((theme: Theme) => ({
       top: 0,
     },
   },
+  switchedOffMessage: {
+    opacity: 0,
+    animationName: '$showMessage',
+    animationDuration: '0.5s',
+    animationDelay: '2s',
+    animationFillMode: 'forwards',
+    color: 'white',
+  },
+  '@keyframes showMessage': {
+    '0%': {
+      opacity: 0,
+      visibility: 'hidden',
+    },
+    '100%': {
+      opacity: 1,
+      visibility: 'visible',
+    },
+  },
   blur: {
-    '&video': {
+    '& video': {
       filter: 'blur(10px)',
     },
   },
@@ -158,17 +176,6 @@ export default function MainParticipantInfo({ participant, children }: MainParti
   const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
   const isRecording = useIsRecording();
-  const [showVideoSwitchOffMessage, setShowVideoSwitchedOffMessage] = useState(isVideoSwitchedOff);
-
-  useEffect(() => {
-    if (!isVideoSwitchedOff) return;
-
-    const timer = setTimeout(() => {
-      setShowVideoSwitchedOffMessage(true);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, [isVideoSwitchedOff]);
 
   return (
     <div
@@ -210,9 +217,9 @@ export default function MainParticipantInfo({ participant, children }: MainParti
           <AvatarIcon />
         </div>
       )}
-      {isVideoSwitchedOff && showVideoSwitchOffMessage && (
+      {isVideoSwitchedOff && (
         <div className={classes.trackSwitchOffContainer}>
-          <Typography variant="body1" style={{ color: 'white' }}>
+          <Typography variant="body1" className={classes.switchedOffMessage}>
             Video has been switched off to conserve bandwidth.
           </Typography>
         </div>

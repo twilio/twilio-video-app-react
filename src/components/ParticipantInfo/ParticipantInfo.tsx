@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
@@ -134,6 +134,23 @@ const useStyles = makeStyles((theme: Theme) =>
         fontSize: '0.75rem',
       },
     },
+    switchedOffMessage: {
+      opacity: 0,
+      animationName: '$showMessage',
+      animationDuration: '0.5s',
+      animationDelay: '2s',
+      animationFillMode: 'forwards',
+    },
+    '@keyframes showMessage': {
+      '0%': {
+        opacity: 0,
+        visibility: 'hidden',
+      },
+      '100%': {
+        opacity: 1,
+        visibility: 'visible',
+      },
+    },
     blur: {
       '& video': {
         filter: 'blur(10px)',
@@ -200,19 +217,8 @@ export default function ParticipantInfo({
   const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
   const { isGridViewActive } = useAppState();
-  const [showVideoSwitchOffMessage, setShowVideoSwitchedOffMessage] = useState(isVideoSwitchedOff);
 
   const classes = useStyles();
-
-  useEffect(() => {
-    if (!isVideoSwitchedOff) return;
-
-    const timer = setTimeout(() => {
-      setShowVideoSwitchedOffMessage(true);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, [isVideoSwitchedOff]);
 
   return (
     <div
@@ -244,9 +250,9 @@ export default function ParticipantInfo({
         <div>{isSelected && <PinIcon />}</div>
       </div>
       <div className={clsx(classes.innerContainer, { [classes.blur]: isVideoSwitchedOff })}>
-        {isVideoSwitchedOff && showVideoSwitchOffMessage && (
+        {isVideoSwitchedOff && (
           <div className={classes.trackSwitchOffContainer}>
-            <Typography variant="body1" className={classes.typography}>
+            <Typography variant="body1" className={clsx(classes.typography, classes.switchedOffMessage)}>
               Video has been switched off to conserve bandwidth.
             </Typography>
           </div>
