@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { styled, Theme } from '@material-ui/core/styles';
 
 import MenuBar from './components/MenuBar/MenuBar';
@@ -7,6 +7,10 @@ import PreJoinScreens from './components/PreJoinScreens/PreJoinScreens';
 import ReconnectingNotification from './components/ReconnectingNotification/ReconnectingNotification';
 import RecordingNotifications from './components/RecordingNotifications/RecordingNotifications';
 import Room from './components/Room/Room';
+import { useAppState } from './state';
+import useVideoContext from './hooks/useVideoContext/useVideoContext';
+import useLocalVideoToggle from './hooks/useLocalVideoToggle/useLocalVideoToggle';
+import { useParams } from 'react-router-dom';
 
 import useHeight from './hooks/useHeight/useHeight';
 import useRoomState from './hooks/useRoomState/useRoomState';
@@ -26,7 +30,11 @@ const Main = styled('main')(({ theme }: { theme: Theme }) => ({
 }));
 
 export default function App() {
+  const { getToken } = useAppState();
+  const { connect: videoConnect } = useVideoContext();
+  const [, toggleVideoEnabled] = useLocalVideoToggle();
   const roomState = useRoomState();
+  const params = useParams() as any;
 
   // Here we would like the height of the main container to be the height of the viewport.
   // On some mobile browsers, 'height: 100vh' sets the height equal to that of the screen,
@@ -34,20 +42,32 @@ export default function App() {
   // We will dynamically set the height with 'window.innerHeight', which means that this
   // will look good on mobile browsers even after the location bar opens or closes.
   const height = useHeight();
+  const [isConnecting, setIsConnecting] = useState(false);
+
+  if (isConnecting) {
+    return null;
+  }
+
+  if (roomState === 'disconnected') {
+    setIsConnecting(true);
+    getToken(`user-${Date.now()}`, params.URLRoomName).then(({ token }) => {
+      videoConnect(token).then(() => {
+        toggleVideoEnabled();
+        setIsConnecting(false);
+      });
+    });
+    return null;
+  }
 
   return (
     <Container style={{ height }}>
-      {roomState === 'disconnected' ? (
-        <PreJoinScreens />
-      ) : (
-        <Main>
-          <ReconnectingNotification />
-          <RecordingNotifications />
-          <MobileTopMenuBar />
-          <Room />
-          <MenuBar />
-        </Main>
-      )}
+      <Main>
+        <ReconnectingNotification />
+        <RecordingNotifications />
+        <MobileTopMenuBar />
+        <Room />
+        <MenuBar />
+      </Main>
     </Container>
   );
 }

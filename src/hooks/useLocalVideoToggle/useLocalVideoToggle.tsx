@@ -4,7 +4,6 @@ import useVideoContext from '../useVideoContext/useVideoContext';
 
 export default function useLocalVideoToggle() {
   const { room, localTracks, getLocalVideoTrack, removeLocalVideoTrack, onError } = useVideoContext();
-  const localParticipant = room?.localParticipant;
   const videoTrack = localTracks.find(
     track => !track.name.includes('screen') && track.kind === 'video'
   ) as LocalVideoTrack;
@@ -12,6 +11,8 @@ export default function useLocalVideoToggle() {
 
   const toggleVideoEnabled = useCallback(() => {
     if (!isPublishing) {
+      // @ts-ignore
+      const localParticipant = window.twilioRoom?.localParticipant;
       if (videoTrack) {
         const localTrackPublication = localParticipant?.unpublishTrack(videoTrack);
         // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
@@ -20,14 +21,18 @@ export default function useLocalVideoToggle() {
       } else {
         setIspublishing(true);
         getLocalVideoTrack()
-          .then((track: LocalVideoTrack) => localParticipant?.publishTrack(track, { priority: 'low' }))
-          .catch(onError)
+          .then((track: LocalVideoTrack) => {
+            localParticipant?.publishTrack(track, { priority: 'low' });
+          })
+          .catch(err => {
+            console.log('xxxxx error', err);
+          })
           .finally(() => {
             setIspublishing(false);
           });
       }
     }
-  }, [videoTrack, localParticipant, getLocalVideoTrack, isPublishing, onError, removeLocalVideoTrack]);
+  }, [videoTrack, getLocalVideoTrack, isPublishing, onError, removeLocalVideoTrack]);
 
   return [!!videoTrack, toggleVideoEnabled] as const;
 }
