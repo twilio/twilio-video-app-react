@@ -29,8 +29,8 @@ const useStyles = makeStyles((theme: Theme) =>
       overflow: 'hidden',
       marginBottom: '0.5em',
       '& video': {
-        objectFit: 'contain !important',
         filter: 'none',
+        transition: 'filter 1s cubic-bezier(0.22, 0.61, 0.36, 1)',
       },
       borderRadius: '4px',
       border: `${theme.participantBorderWidth}px solid rgb(245, 248, 255)`,
@@ -136,8 +136,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     switchedOffMessage: {
       opacity: 0,
+      textShadow: '0 0 3px rgba(0, 0, 0, 0.7)',
       animationName: '$showMessage',
-      animationDuration: '0.5s',
+      animationDuration: '0.8s',
       animationDelay: '2s',
       animationFillMode: 'forwards',
     },
