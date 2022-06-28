@@ -43,7 +43,7 @@
     "strip-color": "^0.1.0",
     "ts-node": "^9.1.1",
     "twilio": "^3.63.1",
-    "twilio-video": "file:../twilio-video.js",
+    "twilio-video": "^2.21.2",
     "typescript": "^3.8.3"
   },
   "devDependencies": {

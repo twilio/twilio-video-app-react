@@ -4,7 +4,6 @@ import { useAppState } from '../../state';
 
 export default function useConnectionOptions() {
   const { settings } = useAppState();
-  const params = new URLSearchParams(window.location.search);
 
   // See: https://sdk.twilio.com/js/video/releases/2.0.0/docs/global.html#ConnectOptions
   // for available connection options.
@@ -32,15 +31,6 @@ export default function useConnectionOptions() {
 
     //@ts-ignore - Internal use only. This property is not exposed in type definitions.
     environment: process.env.REACT_APP_TWILIO_ENVIRONMENT,
-
-    //@ts-ignore - Internal use only.
-    screenShareEncodingPriority: params.get('screenShareEncodingPriority') || 'low',
-
-    //@ts-ignore - Internal use only.
-    screenShareContentHint: params.get('screenShareContentHint') || '',
-
-    //@ts-ignore - Internal use only.
-    singleScreenShareActiveLayer: JSON.parse(params.get('singleScreenShareActiveLayer') || 'false'),
   };
 
   // For mobile browsers, limit the maximum incoming video bitrate to 2.5 Mbps.
