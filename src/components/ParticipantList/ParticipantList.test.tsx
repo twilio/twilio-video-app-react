@@ -34,7 +34,7 @@ describe('the ParticipantList component', () => {
     mockUseSelectedParticipant.mockImplementation(() => [mockParticipant, () => {}]);
     mockedVideoContext.mockImplementation(() => ({ room: mockRoom }));
     mockParticipantContext.mockImplementation(() => ({
-      presentationParticipants: [{ sid: 0 }, { sid: 1 }, mockParticipant],
+      speakerViewParticipants: [{ sid: 0 }, { sid: 1 }, mockParticipant],
     }));
 
     const wrapper = shallow(<ParticipantList />);
@@ -46,7 +46,7 @@ describe('the ParticipantList component', () => {
     mockUseSelectedParticipant.mockImplementation(() => [mockParticipant, () => {}]);
     mockedVideoContext.mockImplementation(() => ({ room: mockRoom }));
     mockParticipantContext.mockImplementation(() => ({
-      presentationParticipants: [mockParticipant, { sid: 1 }],
+      speakerViewParticipants: [mockParticipant, { sid: 1 }],
     }));
 
     const wrapper = shallow(<ParticipantList />);
@@ -61,7 +61,7 @@ describe('the ParticipantList component', () => {
   it('should not render anything when there are no remote particiants', () => {
     mockedVideoContext.mockImplementation(() => ({ room: mockRoom }));
     mockParticipantContext.mockImplementation(() => ({
-      presentationParticipants: [],
+      speakerViewParticipants: [],
     }));
 
     const wrapper = shallow(<ParticipantList />);
@@ -73,7 +73,7 @@ describe('the ParticipantList component', () => {
     mockUseMainParticipant.mockImplementation(() => mockParticipant);
     mockedVideoContext.mockImplementation(() => ({ room: mockRoom }));
     mockParticipantContext.mockImplementation(() => ({
-      presentationParticipants: [mockParticipant, { sid: 1 }],
+      speakerViewParticipants: [mockParticipant, { sid: 1 }],
     }));
 
     const wrapper = shallow(<ParticipantList />);
@@ -98,7 +98,7 @@ describe('the ParticipantList component', () => {
     mockUseSelectedParticipant.mockImplementation(() => [mockParticipant, () => {}]);
     mockedVideoContext.mockImplementation(() => ({ room: mockRoom }));
     mockParticipantContext.mockImplementation(() => ({
-      presentationParticipants: [mockParticipant, { sid: 1 }],
+      speakerViewParticipants: [mockParticipant, { sid: 1 }],
     }));
 
     const wrapper = shallow(<ParticipantList />);
@@ -116,7 +116,7 @@ describe('the ParticipantList component', () => {
     mockUseScreenShareParticipant.mockImplementation(() => mockParticipant);
     mockedVideoContext.mockImplementation(() => ({ room: mockRoom }));
     mockParticipantContext.mockImplementation(() => ({
-      presentationParticipants: [mockParticipant, { sid: 1 }],
+      speakerViewParticipants: [mockParticipant, { sid: 1 }],
     }));
 
     const wrapper = shallow(<ParticipantList />);

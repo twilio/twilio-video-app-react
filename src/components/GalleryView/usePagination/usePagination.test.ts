@@ -8,7 +8,7 @@ const mockUseAppState = useAppState as jest.Mock<any>;
 
 describe('the usePagination hook', () => {
   beforeEach(() => {
-    mockUseAppState.mockImplementation(() => ({ maxGridParticipants: 3 }));
+    mockUseAppState.mockImplementation(() => ({ maxGalleryViewParticipants: 3 }));
   });
 
   it('should function correctly', () => {
@@ -59,19 +59,19 @@ describe('the usePagination hook', () => {
     expect(result.current.totalPages).toBe(1);
   });
 
-  it('should correctly respond to the maxGridParticipants value being changed', () => {
+  it('should correctly respond to the maxGalleryViewParticipants value being changed', () => {
     const { result, rerender } = renderHook(() => usePagination([1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as any[]));
     expect(result.current.paginatedParticipants).toEqual([1, 2, 3]);
     expect(result.current.totalPages).toBe(4);
 
-    mockUseAppState.mockImplementation(() => ({ maxGridParticipants: 2 }));
+    mockUseAppState.mockImplementation(() => ({ maxGalleryViewParticipants: 2 }));
     rerender();
 
     expect(result.current.paginatedParticipants).toEqual([1, 2]);
     expect(result.current.totalPages).toBe(5);
   });
 
-  it('should correctly respond to the maxGridParticipants value being reduced when the user is on the last page', () => {
+  it('should correctly respond to the maxGalleryViewParticipants value being reduced when the user is on the last page', () => {
     const { result, rerender } = renderHook(() => usePagination([1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as any[]));
 
     act(() => {
@@ -81,14 +81,14 @@ describe('the usePagination hook', () => {
     expect(result.current.paginatedParticipants).toEqual([10]);
     expect(result.current.totalPages).toBe(4);
 
-    mockUseAppState.mockImplementation(() => ({ maxGridParticipants: 2 }));
+    mockUseAppState.mockImplementation(() => ({ maxGalleryViewParticipants: 2 }));
     rerender();
 
     expect(result.current.paginatedParticipants).toEqual([7, 8]);
     expect(result.current.totalPages).toBe(5);
   });
 
-  it('should correctly respond to the maxGridParticipants value being increased when the user is on the last page', () => {
+  it('should correctly respond to the maxGalleryViewParticipants value being increased when the user is on the last page', () => {
     const { result, rerender } = renderHook(() => usePagination([1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as any[]));
 
     act(() => {
@@ -98,7 +98,7 @@ describe('the usePagination hook', () => {
     expect(result.current.paginatedParticipants).toEqual([7, 8, 9]);
     expect(result.current.totalPages).toBe(4);
 
-    mockUseAppState.mockImplementation(() => ({ maxGridParticipants: 4 }));
+    mockUseAppState.mockImplementation(() => ({ maxGalleryViewParticipants: 4 }));
     rerender();
 
     expect(result.current.paginatedParticipants).toEqual([9, 10]);

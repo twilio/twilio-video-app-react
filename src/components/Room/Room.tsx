@@ -2,8 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import BackgroundSelectionDialog from '../BackgroundSelectionDialog/BackgroundSelectionDialog';
 import ChatWindow from '../ChatWindow/ChatWindow';
 import clsx from 'clsx';
-import { GridView } from '../GridView/GridView';
-import { MobileGridView } from '../MobileGridView/MobileGridView';
+import { GalleryView } from '../GalleryView/GalleryView';
+import { MobileGalleryView } from '../MobileGalleryView/MobileGalleryView';
 import MainParticipant from '../MainParticipant/MainParticipant';
 import { makeStyles, Theme, useMediaQuery, useTheme } from '@material-ui/core';
 import { Participant, Room as IRoom } from 'twilio-video';
@@ -35,53 +35,53 @@ const useStyles = makeStyles((theme: Theme) => {
 });
 
 /**
- * This hook turns on presentation view when screensharing is active, regardless of if the
- * user was already using presentation view or grid view. Once screensharing has ended, the user's
+ * This hook turns on speaker view when screensharing is active, regardless of if the
+ * user was already using speaker view or gallery view. Once screensharing has ended, the user's
  * view will return to whatever they were using prior to screenshare starting.
  */
 
-export function useSetPresentationViewOnScreenShare(
+export function useSetSpeakerViewOnScreenShare(
   screenShareParticipant: Participant | undefined,
   room: IRoom | null,
-  setIsGridModeActive: React.Dispatch<React.SetStateAction<boolean>>,
-  isGridModeActive: boolean
+  setIsGalleryViewActive: React.Dispatch<React.SetStateAction<boolean>>,
+  isGalleryViewActive: boolean
 ) {
-  const isGridViewActiveRef = useRef(isGridModeActive);
+  const isGalleryViewActiveRef = useRef(isGalleryViewActive);
 
-  // Save the user's view setting whenever they change to presentation view or grid view:
+  // Save the user's view setting whenever they change to speaker view or gallery view:
   useEffect(() => {
-    isGridViewActiveRef.current = isGridModeActive;
-  }, [isGridModeActive]);
+    isGalleryViewActiveRef.current = isGalleryViewActive;
+  }, [isGalleryViewActive]);
 
   useEffect(() => {
     if (screenShareParticipant && screenShareParticipant !== room!.localParticipant) {
-      // When screensharing starts, save the user's previous view setting (presentation or grid):
-      const prevIsGridViewActive = isGridViewActiveRef.current;
-      // Turn off grid view so that the user can see the screen that is being shared:
-      setIsGridModeActive(false);
+      // When screensharing starts, save the user's previous view setting (speaker or gallery):
+      const prevIsGalleryViewActive = isGalleryViewActiveRef.current;
+      // Turn off gallery view so that the user can see the screen that is being shared:
+      setIsGalleryViewActive(false);
       return () => {
-        // If the user was using grid view prior to screensharing, turn grid view back on
+        // If the user was using gallery view prior to screensharing, turn gallery view back on
         // once screensharing stops:
-        if (prevIsGridViewActive) {
-          setIsGridModeActive(prevIsGridViewActive);
+        if (prevIsGalleryViewActive) {
+          setIsGalleryViewActive(prevIsGalleryViewActive);
         }
       };
     }
-  }, [screenShareParticipant, setIsGridModeActive, room]);
+  }, [screenShareParticipant, setIsGalleryViewActive, room]);
 }
 
 export default function Room() {
   const classes = useStyles();
   const { isChatWindowOpen } = useChatContext();
   const { isBackgroundSelectionOpen, room } = useVideoContext();
-  const { isGridViewActive, setIsGridViewActive } = useAppState();
+  const { isGalleryViewActive, setIsGalleryViewActive } = useAppState();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const screenShareParticipant = useScreenShareParticipant();
 
-  // Here we switch to presentation view when a participant starts sharing their screen, but
-  // the user is still free to switch back to grid view.
-  useSetPresentationViewOnScreenShare(screenShareParticipant, room, setIsGridViewActive, isGridViewActive);
+  // Here we switch to speaker view when a participant starts sharing their screen, but
+  // the user is still free to switch back to gallery view.
+  useSetSpeakerViewOnScreenShare(screenShareParticipant, room, setIsGalleryViewActive, isGalleryViewActive);
 
   return (
     <div
@@ -92,15 +92,15 @@ export default function Room() {
       {/* 
         This ParticipantAudioTracks component will render the audio track for all participants in the room.
         It is in a separate component so that the audio tracks will always be rendered, and that they will never be 
-        unnecessarily unmounted/mounted as the user switches between Grid View and presentation View.
+        unnecessarily unmounted/mounted as the user switches between Gallery View and speaker View.
       */}
       <ParticipantAudioTracks />
 
-      {isGridViewActive ? (
+      {isGalleryViewActive ? (
         isMobile ? (
-          <MobileGridView />
+          <MobileGalleryView />
         ) : (
-          <GridView />
+          <GalleryView />
         )
       ) : (
         <>

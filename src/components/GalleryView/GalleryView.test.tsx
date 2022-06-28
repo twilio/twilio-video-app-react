@@ -1,7 +1,7 @@
 import React from 'react';
-import { GridView } from './GridView';
+import { GalleryView } from './GalleryView';
 import { shallow } from 'enzyme';
-import useGridLayout from '../../hooks/useGridLayout/useGridLayout';
+import useGalleryViewLayout from '../../hooks/useGalleryViewLayout/useGalleryViewLayout';
 import { useAppState } from '../../state';
 import { usePagination } from './usePagination/usePagination';
 
@@ -14,10 +14,10 @@ const mockParticipants = [
 ];
 
 jest.mock('../../constants', () => ({
-  GRID_VIEW_ASPECT_RATIO: 9 / 16,
-  GRID_VIEW_MARGIN: 3,
+  GALLERY_VIEW_ASPECT_RATIO: 9 / 16,
+  GALLERY_VIEW_MARGIN: 3,
 }));
-jest.mock('../../hooks/usePresentationParticipants/usePresentationParticipants', () => () => mockParticipants);
+jest.mock('../../hooks/useSpeakerViewParticipants/useSpeakerViewParticipants', () => () => mockParticipants);
 jest.mock('../../hooks/useVideoContext/useVideoContext', () => () => ({
   room: {
     localParticipant: mockLocalParticipant,
@@ -25,10 +25,10 @@ jest.mock('../../hooks/useVideoContext/useVideoContext', () => () => ({
 }));
 
 jest.mock('../../hooks/useParticipantsContext/useParticipantsContext', () => () => ({
-  gridParticipants: mockParticipants,
+  galleryViewParticipants: mockParticipants,
 }));
 
-jest.mock('../../hooks/useGridLayout/useGridLayout', () =>
+jest.mock('../../hooks/useGalleryViewLayout/useGalleryViewLayout', () =>
   jest.fn(() => ({
     participantVideoWidth: 720,
     containerRef: { current: null },
@@ -49,13 +49,13 @@ jest.mock('../../state');
 const mockUsePagination = usePagination as jest.Mock<any>;
 const mockUseAppState = useAppState as jest.Mock<any>;
 
-mockUseAppState.mockImplementation(() => ({ maxGridParticipants: 9 }));
+mockUseAppState.mockImplementation(() => ({ maxGalleryViewParticipants: 9 }));
 
-describe('the GridView component', () => {
+describe('the GalleryView component', () => {
   it('should render correctly', () => {
-    const wrapper = shallow(<GridView />);
+    const wrapper = shallow(<GalleryView />);
     expect(wrapper).toMatchSnapshot();
-    expect(useGridLayout).toHaveBeenCalledWith(9);
+    expect(useGalleryViewLayout).toHaveBeenCalledWith(9);
   });
 
   it('should not render the previous page button when the user is viewing the first page', () => {
@@ -66,7 +66,7 @@ describe('the GridView component', () => {
       paginatedParticipants: [mockLocalParticipant, ...mockParticipants],
     }));
 
-    const wrapper = shallow(<GridView />);
+    const wrapper = shallow(<GalleryView />);
     expect(
       wrapper
         .find('.makeStyles-buttonContainerLeft-4')
@@ -89,7 +89,7 @@ describe('the GridView component', () => {
       paginatedParticipants: [mockLocalParticipant, ...mockParticipants],
     }));
 
-    const wrapper = shallow(<GridView />);
+    const wrapper = shallow(<GalleryView />);
     expect(
       wrapper
         .find('.makeStyles-buttonContainerLeft-4')
@@ -112,7 +112,7 @@ describe('the GridView component', () => {
       paginatedParticipants: [mockLocalParticipant, ...mockParticipants],
     }));
 
-    const wrapper = shallow(<GridView />);
+    const wrapper = shallow(<GalleryView />);
     expect(wrapper.find('.makeStyles-pagination-8').exists()).toBe(false);
   });
 });

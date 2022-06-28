@@ -15,7 +15,7 @@ import { Participant as IParticipant } from 'twilio-video';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     participantContainer: {
-      background: theme.gridViewBackgroundColor,
+      background: theme.galleryViewBackgroundColor,
       position: 'absolute',
       top: 0,
       right: 0,
@@ -49,13 +49,13 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export function MobileGridView() {
+export function MobileGalleryView() {
   const classes = useStyles();
   const isMobileLandscape = useMediaQuery('screen and (orientation: landscape)');
   const { room } = useVideoContext();
-  const { mobileGridParticipants } = useParticipantContext();
+  const { mobileGalleryViewParticipants } = useParticipantContext();
   const dominantSpeaker = useDominantSpeaker(true);
-  const remoteParticipantCount = mobileGridParticipants.length;
+  const remoteParticipantCount = mobileGalleryViewParticipants.length;
 
   const pages: IParticipant[][] = [[]];
   // Add the localParticipant to the front of the array to ensure they are always the first participant:
@@ -68,15 +68,15 @@ export function MobileGridView() {
     }
     // Each page should have a max of 6 participants:
     if (pages[pageNumber].length < 6) {
-      pages[pageNumber].push(mobileGridParticipants[i]);
+      pages[pageNumber].push(mobileGalleryViewParticipants[i]);
     } else {
-      pages[pageNumber + 1] = [mobileGridParticipants[i]];
+      pages[pageNumber + 1] = [mobileGalleryViewParticipants[i]];
     }
   }
 
   const portraitParticipantVideoStyles: CSSProperties = {
     width: remoteParticipantCount < 3 ? '100%' : '50%',
-    // The height of each participant's video is determined by the number of participants on the grid
+    // The height of each participant's video is determined by the number of participants on the gallery view
     // page. Here the array indices represent a remoteParticipantCount. If the count is 4 or greater,
     // the height will be 33.33%
     height: ['100%', '50%', '33.33%', '50%', '33.33%'][Math.min(remoteParticipantCount, 4)],

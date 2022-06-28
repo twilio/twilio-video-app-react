@@ -2,8 +2,8 @@ import { act, renderHook } from '@testing-library/react-hooks';
 import EventEmitter from 'events';
 import { useAppState } from '../../state';
 import useDominantSpeaker from '../useDominantSpeaker/useDominantSpeaker';
-import useGridParticipants from './useGridParticipants';
-import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import useGalleryViewParticipants from './useGalleryViewParticipants';
+import useVideoContext from '../useVideoContext/useVideoContext';
 
 jest.mock('../../state');
 jest.mock('../../hooks/useVideoContext/useVideoContext');
@@ -13,9 +13,9 @@ const mockUseAppState = useAppState as jest.Mock<any>;
 const mockVideoContext = useVideoContext as jest.Mock<any>;
 const mockUseDominantSpeaker = useDominantSpeaker as jest.Mock<any>;
 
-mockUseAppState.mockImplementation(() => ({ maxGridParticipants: 9 }));
+mockUseAppState.mockImplementation(() => ({ maxGalleryViewParticipants: 9 }));
 
-describe('the useGridParticipants hook', () => {
+describe('the useGalleryViewParticipants hook', () => {
   let mockRoom: any;
 
   beforeEach(() => {
@@ -30,12 +30,12 @@ describe('the useGridParticipants hook', () => {
   });
 
   it('should return an array of mockParticipants by default', () => {
-    const { result } = renderHook(() => useGridParticipants());
+    const { result } = renderHook(() => useGalleryViewParticipants());
     expect(result.current).toEqual(['participant1', 'participant2']);
   });
 
   it('should handle "participantConnected" events', async () => {
-    const { result } = renderHook(() => useGridParticipants());
+    const { result } = renderHook(() => useGalleryViewParticipants());
     act(() => {
       mockRoom.emit('participantConnected', 'newParticipant');
     });
@@ -43,7 +43,7 @@ describe('the useGridParticipants hook', () => {
   });
 
   it('should handle "participantDisconnected" events', async () => {
-    const { result } = renderHook(() => useGridParticipants());
+    const { result } = renderHook(() => useGalleryViewParticipants());
     act(() => {
       mockRoom.emit('participantDisconnected', 'participant1');
     });
@@ -51,7 +51,7 @@ describe('the useGridParticipants hook', () => {
   });
 
   it('should clean up listeners on unmount', () => {
-    const { unmount } = renderHook(() => useGridParticipants());
+    const { unmount } = renderHook(() => useGalleryViewParticipants());
     unmount();
     expect(mockRoom.listenerCount('participantConnected')).toBe(0);
     expect(mockRoom.listenerCount('participantDisconnected')).toBe(0);
@@ -67,7 +67,7 @@ describe('the useGridParticipants hook', () => {
       mockRoom.participants = mockParticipants;
       const mockParticipantsArray = Array.from(mockParticipants.values());
 
-      const { result, rerender } = renderHook(() => useGridParticipants());
+      const { result, rerender } = renderHook(() => useGalleryViewParticipants());
       expect(result.current).toEqual(mockParticipantsArray);
 
       mockUseDominantSpeaker.mockImplementation(() => 'participant2');
@@ -76,7 +76,7 @@ describe('the useGridParticipants hook', () => {
       expect(result.current).toEqual(['participant1', 'participant3']);
     });
 
-    it('should not reorder participants when there are less than maxGridParticipants and the dominant speaker changes', () => {
+    it('should not reorder participants when there are less than maxGalleryViewParticipants and the dominant speaker changes', () => {
       const mockParticipants = new Map([
         [0, 'participant1'],
         [1, 'participant2'],
@@ -90,7 +90,7 @@ describe('the useGridParticipants hook', () => {
       mockRoom.participants = mockParticipants;
       const mockParticipantsArray = Array.from(mockParticipants.values());
 
-      const { result, rerender } = renderHook(() => useGridParticipants());
+      const { result, rerender } = renderHook(() => useGalleryViewParticipants());
       expect(result.current).toEqual(mockParticipantsArray);
 
       mockUseDominantSpeaker.mockImplementation(() => 'participant9');
@@ -116,7 +116,7 @@ describe('the useGridParticipants hook', () => {
       mockRoom.participants = mockParticipants;
       const mockParticipantsArray = Array.from(mockParticipants.values());
 
-      const { result, rerender } = renderHook(() => useGridParticipants());
+      const { result, rerender } = renderHook(() => useGalleryViewParticipants());
       expect(result.current).toEqual(mockParticipantsArray);
 
       // dominant speaker updates:
@@ -168,7 +168,7 @@ describe('the useGridParticipants hook', () => {
       ]);
     });
 
-    describe('when isMobileGridActive is true', () => {
+    describe('when isMobileGalleryViewActive is true', () => {
       it('should not reorder participants when there are less than 6 remoteParticipants, and the dominant speaker changes', () => {
         const mockParticipants = new Map([
           [0, 'participant1'],
@@ -180,7 +180,7 @@ describe('the useGridParticipants hook', () => {
         mockRoom.participants = mockParticipants;
         const mockParticipantsArray = Array.from(mockParticipants.values());
 
-        const { result, rerender } = renderHook(() => useGridParticipants(true));
+        const { result, rerender } = renderHook(() => useGalleryViewParticipants(true));
         expect(result.current).toEqual(mockParticipantsArray);
 
         mockUseDominantSpeaker.mockImplementation(() => 'participant3');
@@ -204,7 +204,7 @@ describe('the useGridParticipants hook', () => {
         mockRoom.participants = mockParticipants;
         const mockParticipantsArray = Array.from(mockParticipants.values());
 
-        const { result, rerender } = renderHook(() => useGridParticipants(true));
+        const { result, rerender } = renderHook(() => useGalleryViewParticipants(true));
         expect(result.current).toEqual(mockParticipantsArray);
 
         // dominant speaker updates:
