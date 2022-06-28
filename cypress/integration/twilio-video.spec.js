@@ -16,7 +16,7 @@ context('A video app user', () => {
       // that the tests can pass.
       cy.visit('/', {
         onBeforeLoad: window => {
-          window.localStorage.setItem('grid-view-active-key', false);
+          window.localStorage.setItem('gallery-view-active-key', false);
         },
       });
 
