@@ -16,11 +16,7 @@ export default function useScreenShareToggle(room: Room | null, onError: ErrorCa
     navigator.mediaDevices
       .getDisplayMedia({
         audio: false,
-        video: {
-          frameRate: 10,
-          height: 1080,
-          width: 1920,
-        },
+        video: true,
       })
       .then(stream => {
         const track = stream.getTracks()[0];
