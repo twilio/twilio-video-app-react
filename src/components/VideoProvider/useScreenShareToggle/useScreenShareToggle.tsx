@@ -16,11 +16,7 @@ export default function useScreenShareToggle(room: Room | null, onError: ErrorCa
     navigator.mediaDevices
       .getDisplayMedia({
         audio: false,
-        video: {
-          frameRate: 10,
-          height: 1080,
-          width: 1920,
-        },
+        video: true,
       })
       .then(stream => {
         const track = stream.getTracks()[0];
@@ -49,7 +45,11 @@ export default function useScreenShareToggle(room: Room | null, onError: ErrorCa
       })
       .catch(error => {
         // Don't display an error if the user closes the screen share dialog
-        if (error.name !== 'AbortError' && error.name !== 'NotAllowedError') {
+        if (
+          error.message === 'Permission denied by system' ||
+          (error.name !== 'AbortError' && error.name !== 'NotAllowedError')
+        ) {
+          console.error(error);
           onError(error);
         }
       });

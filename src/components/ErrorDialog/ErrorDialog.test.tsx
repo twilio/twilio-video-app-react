@@ -47,6 +47,14 @@ describe('the ErrorDialog component', () => {
     expect(wrapper.find('code').text()).toBe(`Error Code: ${20101}`);
   });
 
+  it('should display an enhanced error message when the error message is "Permission denied by system"', () => {
+    const error = { message: 'Permission denied by system', code: 0 } as TwilioError;
+    const wrapper = shallow(<ErrorDialog dismissError={() => {}} error={error} />);
+    expect(wrapper.find(DialogContentText).text()).toBe(
+      'Unable to share your screen. Please make sure that your operating system has the correct permissions enabled for screen sharing.'
+    );
+  });
+
   it('should invoke dismissError prop when the user clicks on OK button', () => {
     const error = { message, code } as TwilioError;
     const dismissError = jest.fn();
