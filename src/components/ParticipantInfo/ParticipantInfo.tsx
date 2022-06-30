@@ -138,7 +138,7 @@ const useStyles = makeStyles((theme: Theme) =>
       opacity: 0,
       textShadow: '0 0 3px rgba(0, 0, 0, 0.7)',
       animationName: '$showMessage',
-      animationDuration: '0.8s',
+      animationDuration: '0.5s',
       animationDelay: '2s',
       animationFillMode: 'forwards',
     },
@@ -154,7 +154,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     blur: {
       '& video': {
-        filter: 'blur(10px)',
+        filter: 'blur(5px)',
       },
     },
     hideParticipant: {

@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     '& video': {
       filter: 'none',
+      transition: 'filter 1s cubic-bezier(0.22, 0.61, 0.36, 1)',
     },
   },
   identity: {
@@ -106,6 +107,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   switchedOffMessage: {
     opacity: 0,
+    textShadow: '0 0 3px rgba(0, 0, 0, 0.7)',
     animationName: '$showMessage',
     animationDuration: '0.5s',
     animationDelay: '2s',
