@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Participant, Room } from 'twilio-video';
+import { useAppState } from '../../../state';
 
 type selectedParticipantContextType = [Participant | null, (participant: Participant) => void];
 
@@ -16,9 +17,16 @@ type SelectedParticipantProviderProps = {
 };
 
 export function SelectedParticipantProvider({ room, children }: SelectedParticipantProviderProps) {
+  const { isGalleryViewActive } = useAppState();
   const [selectedParticipant, _setSelectedParticipant] = useState<Participant | null>(null);
   const setSelectedParticipant = (participant: Participant) =>
     _setSelectedParticipant(prevParticipant => (prevParticipant === participant ? null : participant));
+
+  useEffect(() => {
+    if (isGalleryViewActive) {
+      _setSelectedParticipant(null);
+    }
+  }, [isGalleryViewActive]);
 
   useEffect(() => {
     if (room) {

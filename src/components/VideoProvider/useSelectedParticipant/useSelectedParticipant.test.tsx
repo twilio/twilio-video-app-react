@@ -1,8 +1,14 @@
 import { act, HookResult, renderHook } from '@testing-library/react-hooks';
 import { EventEmitter } from 'events';
-import React from 'react';
 import { Participant, Room } from 'twilio-video';
 import useSelectedParticipant, { SelectedParticipantProvider } from './useSelectedParticipant';
+import { useAppState } from '../../../state';
+
+jest.mock('../../../state');
+
+const mockUseAppState = useAppState as jest.Mock<any>;
+
+mockUseAppState.mockImplementation(() => ({ isGalleryViewActive: false }));
 
 describe('the useSelectedParticipant hook', () => {
   let mockRoom: Room;
@@ -55,5 +61,15 @@ describe('the useSelectedParticipant hook', () => {
       mockRoom.emit('participantDisconnected', 'otherMockParticipant');
     });
     expect(result.current[0]).toBe('mockParticipant');
+  });
+
+  it('should set "null" as the selected participant when gallery view is active', () => {
+    act(() => result.current[1]('mockParticipant' as any));
+    expect(result.current[0]).toBe('mockParticipant');
+
+    mockUseAppState.mockImplementationOnce(() => ({ isGalleryViewActive: true }));
+    act(() => result.current[1]('mockParticipant' as any));
+
+    expect(result.current[0]).toBe(null);
   });
 });
