@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`the GridView component should render correctly 1`] = `
+exports[`the GalleryView component should render correctly 1`] = `
 <div
   className="makeStyles-container-1"
 >

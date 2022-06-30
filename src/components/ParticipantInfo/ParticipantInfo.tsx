@@ -127,8 +127,8 @@ const useStyles = makeStyles((theme: Theme) =>
     cursorPointer: {
       cursor: 'pointer',
     },
-    gridView: {
-      border: `${theme.participantBorderWidth}px solid ${theme.gridViewBackgroundColor}`,
+    galleryView: {
+      border: `${theme.participantBorderWidth}px solid ${theme.galleryViewBackgroundColor}`,
       borderRadius: '8px',
       [theme.breakpoints.down('sm')]: {
         position: 'relative',
@@ -181,7 +181,7 @@ export default function ParticipantInfo({
   const audioTrack = useTrack(audioPublication) as LocalAudioTrack | RemoteAudioTrack | undefined;
   const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
-  const { isGridViewActive } = useAppState();
+  const { isGalleryViewActive } = useAppState();
 
   const classes = useStyles();
 
@@ -191,7 +191,7 @@ export default function ParticipantInfo({
         [classes.hideParticipant]: hideParticipant,
         [classes.cursorPointer]: Boolean(onClick),
         [classes.dominantSpeaker]: isDominantSpeaker,
-        [classes.gridView]: isGridViewActive,
+        [classes.galleryView]: isGalleryViewActive,
       })}
       onClick={onClick}
       data-cy-participant={participant.identity}

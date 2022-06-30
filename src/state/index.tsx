@@ -23,10 +23,10 @@ export interface StateContextType {
   dispatchSetting: React.Dispatch<SettingsAction>;
   roomType?: RoomType;
   updateRecordingRules(room_sid: string, rules: RecordingRules): Promise<object>;
-  isGridViewActive: boolean;
-  setIsGridViewActive: React.Dispatch<React.SetStateAction<boolean>>;
-  maxGridParticipants: number;
-  setMaxGridParticipants: React.Dispatch<React.SetStateAction<number>>;
+  isGalleryViewActive: boolean;
+  setIsGalleryViewActive: React.Dispatch<React.SetStateAction<boolean>>;
+  maxGalleryViewParticipants: number;
+  setMaxGalleryViewParticipants: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const StateContext = createContext<StateContextType>(null!);
@@ -43,11 +43,14 @@ export const StateContext = createContext<StateContextType>(null!);
 export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
   const [error, setError] = useState<TwilioError | null>(null);
   const [isFetching, setIsFetching] = useState(false);
-  const [isGridViewActive, setIsGridViewActive] = useLocalStorageState('grid-view-active-key', true);
+  const [isGalleryViewActive, setIsGalleryViewActive] = useLocalStorageState('gallery-view-active-key', true);
   const [activeSinkId, setActiveSinkId] = useActiveSinkId();
   const [settings, dispatchSetting] = useReducer(settingsReducer, initialSettings);
   const [roomType, setRoomType] = useState<RoomType>();
-  const [maxGridParticipants, setMaxGridParticipants] = useLocalStorageState('max-grid-participants-key', 9);
+  const [maxGalleryViewParticipants, setMaxGalleryViewParticipants] = useLocalStorageState(
+    'max-gallery-participants-key',
+    6
+  );
 
   let contextValue = {
     error,
@@ -58,10 +61,10 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     settings,
     dispatchSetting,
     roomType,
-    isGridViewActive,
-    setIsGridViewActive,
-    maxGridParticipants,
-    setMaxGridParticipants,
+    isGalleryViewActive,
+    setIsGalleryViewActive,
+    maxGalleryViewParticipants,
+    setMaxGalleryViewParticipants,
   } as StateContextType;
 
   if (process.env.REACT_APP_SET_AUTH === 'firebase') {

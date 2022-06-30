@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import VideoInputList from './VideoInputList/VideoInputList';
-import MaxGridParticipants from './MaxGridParticipants/MaxGridParticipants';
+import MaxGalleryViewParticipants from './MaxGalleryViewParticipants/MaxGalleryViewParticipants';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -76,9 +76,9 @@ export default function DeviceSelectionDialog({ open, onClose }: { open: boolean
           <Divider />
           <div className={classes.listSection}>
             <Typography variant="h6" className={classes.headline}>
-              Grid View
+              Gallery View
             </Typography>
-            <MaxGridParticipants />
+            <MaxGalleryViewParticipants />
           </div>
         </Hidden>
       </DialogContent>

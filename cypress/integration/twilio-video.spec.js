@@ -11,12 +11,12 @@ const getRoomName = () =>
 context('A video app user', () => {
   describe('before entering a room', () => {
     it('should see their audio level indicator moving in the media device panel', () => {
-      // These tests were written before Grid View was implemented. This app now activates
-      // Grid View by default, so here we activate Presentation View before visiting the app so 
+      // These tests were written before Gallery View was implemented. This app now activates
+      // Gallery View by default, so here we activate Speaker View before visiting the app so 
       // that the tests can pass.
       cy.visit('/', {
         onBeforeLoad: window => {
-          window.localStorage.setItem('grid-view-active-key', false);
+          window.localStorage.setItem('gallery-view-active-key', false);
         },
       });
 

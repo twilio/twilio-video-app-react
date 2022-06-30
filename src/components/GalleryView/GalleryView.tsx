@@ -2,11 +2,11 @@ import React from 'react';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ArrowForward from '@material-ui/icons/ArrowForward';
 import clsx from 'clsx';
-import { GRID_VIEW_ASPECT_RATIO, GRID_VIEW_MARGIN } from '../../constants';
+import { GALLERY_VIEW_ASPECT_RATIO, GALLERY_VIEW_MARGIN } from '../../constants';
 import { IconButton, makeStyles, createStyles, Theme } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import Participant from '../Participant/Participant';
-import useGridLayout from '../../hooks/useGridLayout/useGridLayout';
+import useGalleryViewLayout from '../../hooks/useGalleryViewLayout/useGalleryViewLayout';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import useParticipantsContext from '../../hooks/useParticipantsContext/useParticipantsContext';
 import { usePagination } from './usePagination/usePagination';
@@ -18,7 +18,7 @@ const CONTAINER_GUTTER = '50px';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
-      background: theme.gridViewBackgroundColor,
+      background: theme.galleryViewBackgroundColor,
       position: 'relative',
       gridArea: '1 / 1 / 2 / 3',
     },
@@ -78,23 +78,24 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export function GridView() {
+export function GalleryView() {
   const classes = useStyles();
-  const { maxGridParticipants } = useAppState();
+  const { maxGalleryViewParticipants } = useAppState();
   const { room } = useVideoContext();
-  const { gridParticipants } = useParticipantsContext();
+  const { galleryViewParticipants } = useParticipantsContext();
   const dominantSpeaker = useDominantSpeaker(true);
 
   const { paginatedParticipants, setCurrentPage, currentPage, totalPages } = usePagination([
     room!.localParticipant,
-    ...gridParticipants,
+    ...galleryViewParticipants,
   ]);
 
-  const gridLayoutParticipantCount = currentPage === 1 ? paginatedParticipants.length : maxGridParticipants;
-  const { participantVideoWidth, containerRef } = useGridLayout(gridLayoutParticipantCount);
+  const galleryViewLayoutParticipantCount =
+    currentPage === 1 ? paginatedParticipants.length : maxGalleryViewParticipants;
+  const { participantVideoWidth, containerRef } = useGalleryViewLayout(galleryViewLayoutParticipantCount);
 
   const participantWidth = `${participantVideoWidth}px`;
-  const participantHeight = `${Math.floor(participantVideoWidth * GRID_VIEW_ASPECT_RATIO)}px`;
+  const participantHeight = `${Math.floor(participantVideoWidth * GALLERY_VIEW_ASPECT_RATIO)}px`;
 
   return (
     <div className={classes.container}>
@@ -131,7 +132,7 @@ export function GridView() {
         {paginatedParticipants.map(participant => (
           <div
             key={participant.sid}
-            style={{ width: participantWidth, height: participantHeight, margin: GRID_VIEW_MARGIN }}
+            style={{ width: participantWidth, height: participantHeight, margin: GALLERY_VIEW_MARGIN }}
           >
             <Participant
               participant={participant}

@@ -45,13 +45,13 @@ export default function ParticipantList() {
   const classes = useStyles();
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
-  const { presentationParticipants } = useParticipantsContext();
+  const { speakerViewParticipants } = useParticipantsContext();
   const [selectedParticipant, setSelectedParticipant] = useSelectedParticipant();
   const screenShareParticipant = useScreenShareParticipant();
   const mainParticipant = useMainParticipant();
   const isRemoteParticipantScreenSharing = screenShareParticipant && screenShareParticipant !== localParticipant;
 
-  if (presentationParticipants.length === 0) return null; // Don't render this component if there are no remote participants.
+  if (speakerViewParticipants.length === 0) return null; // Don't render this component if there are no remote participants.
 
   return (
     <aside
@@ -62,7 +62,7 @@ export default function ParticipantList() {
       <div className={classes.scrollContainer}>
         <div className={classes.innerScrollContainer}>
           <Participant participant={localParticipant} isLocalParticipant={true} />
-          {presentationParticipants.map(participant => {
+          {speakerViewParticipants.map(participant => {
             const isSelected = participant === selectedParticipant;
             const hideParticipant =
               participant === mainParticipant && participant !== screenShareParticipant && !isSelected;

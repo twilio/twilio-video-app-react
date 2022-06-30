@@ -1,34 +1,34 @@
 import React, { createContext } from 'react';
 import { RemoteParticipant } from 'twilio-video';
-import useGridParticipants from '../../hooks/useGridParticipants/useGridParticipants';
-import usePresentationParticipants from '../../hooks/usePresentationParticipants/usePresentationParticipants';
+import useGalleryViewParticipants from '../../hooks/useGalleryViewParticipants/useGalleryViewParticipants';
+import useSpeakerViewParticipants from '../../hooks/useSpeakerViewParticipants/useSpeakerViewParticipants';
 
 /**
- * The purpose of the ParticipantProvider component is to ensure that the hooks useGridParticipants
- * and usePresentationParticipants are not unmounted as users switch between Grid View and Presentation View.
+ * The purpose of the ParticipantProvider component is to ensure that the hooks useGalleryViewParticipants
+ * and useSpeakerViewParticipants are not unmounted as users switch between Gallery View and Speaker View.
  * This will make sure that the ordering of the participants on the screen will remain so that the most
  * recent dominant speakers are always at the front of the list.
  */
 
 export interface IParticipantContext {
-  mobileGridParticipants: RemoteParticipant[];
-  gridParticipants: RemoteParticipant[];
-  presentationParticipants: RemoteParticipant[];
+  mobileGalleryViewParticipants: RemoteParticipant[];
+  galleryViewParticipants: RemoteParticipant[];
+  speakerViewParticipants: RemoteParticipant[];
 }
 
 export const ParticipantContext = createContext<IParticipantContext>(null!);
 
 export const ParticipantProvider: React.FC = ({ children }) => {
-  const mobileGridParticipants = useGridParticipants(true);
-  const gridParticipants = useGridParticipants();
-  const presentationParticipants = usePresentationParticipants();
+  const mobileGalleryViewParticipants = useGalleryViewParticipants(true);
+  const galleryViewParticipants = useGalleryViewParticipants();
+  const speakerViewParticipants = useSpeakerViewParticipants();
 
   return (
     <ParticipantContext.Provider
       value={{
-        mobileGridParticipants,
-        gridParticipants,
-        presentationParticipants,
+        mobileGalleryViewParticipants,
+        galleryViewParticipants,
+        speakerViewParticipants,
       }}
     >
       {children}
