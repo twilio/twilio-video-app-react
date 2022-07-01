@@ -28,7 +28,7 @@ exports[`the MobileGalleryView component should render correctly when there are 
           }
         }
       >
-        <Participant
+        <Memo(Participant)
           isDominantSpeaker={false}
           isLocalParticipant={true}
           participant={
@@ -50,7 +50,7 @@ exports[`the MobileGalleryView component should render correctly when there are 
           }
         }
       >
-        <Participant
+        <Memo(Participant)
           isDominantSpeaker={false}
           isLocalParticipant={false}
           participant={
@@ -72,7 +72,7 @@ exports[`the MobileGalleryView component should render correctly when there are 
           }
         }
       >
-        <Participant
+        <Memo(Participant)
           isDominantSpeaker={false}
           isLocalParticipant={false}
           participant={
@@ -94,7 +94,7 @@ exports[`the MobileGalleryView component should render correctly when there are 
           }
         }
       >
-        <Participant
+        <Memo(Participant)
           isDominantSpeaker={false}
           isLocalParticipant={false}
           participant={
@@ -116,7 +116,7 @@ exports[`the MobileGalleryView component should render correctly when there are 
           }
         }
       >
-        <Participant
+        <Memo(Participant)
           isDominantSpeaker={false}
           isLocalParticipant={false}
           participant={
@@ -160,7 +160,7 @@ exports[`the MobileGalleryView component should render correctly when there are 
           }
         }
       >
-        <Participant
+        <Memo(Participant)
           isDominantSpeaker={false}
           isLocalParticipant={true}
           participant={
@@ -182,7 +182,7 @@ exports[`the MobileGalleryView component should render correctly when there are 
           }
         }
       >
-        <Participant
+        <Memo(Participant)
           isDominantSpeaker={false}
           isLocalParticipant={false}
           participant={
@@ -204,7 +204,7 @@ exports[`the MobileGalleryView component should render correctly when there are 
           }
         }
       >
-        <Participant
+        <Memo(Participant)
           isDominantSpeaker={false}
           isLocalParticipant={false}
           participant={
@@ -248,7 +248,7 @@ exports[`the MobileGalleryView component should render correctly when there is o
           }
         }
       >
-        <Participant
+        <Memo(Participant)
           isDominantSpeaker={false}
           isLocalParticipant={true}
           participant={
@@ -270,7 +270,7 @@ exports[`the MobileGalleryView component should render correctly when there is o
           }
         }
       >
-        <Participant
+        <Memo(Participant)
           isDominantSpeaker={false}
           isLocalParticipant={false}
           participant={
@@ -314,7 +314,7 @@ exports[`the MobileGalleryView component should render correctly when there is o
           }
         }
       >
-        <Participant
+        <Memo(Participant)
           isDominantSpeaker={false}
           isLocalParticipant={true}
           participant={

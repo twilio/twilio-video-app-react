@@ -52,7 +52,7 @@ describe('the ParticipantList component', () => {
     const wrapper = shallow(<ParticipantList />);
     expect(
       wrapper
-        .find('Participant')
+        .find('Memo(Participant)')
         .at(1)
         .prop('isSelected')
     ).toBe(true);
@@ -79,14 +79,14 @@ describe('the ParticipantList component', () => {
     const wrapper = shallow(<ParticipantList />);
     expect(
       wrapper
-        .find('Participant')
+        .find('Memo(Participant)')
         .at(1)
         .prop('hideParticipant')
     ).toBe(true);
 
     expect(
       wrapper
-        .find('Participant')
+        .find('Memo(Participant)')
         .at(2)
         .prop('hideParticipant')
     ).toBe(false);
@@ -104,7 +104,7 @@ describe('the ParticipantList component', () => {
     const wrapper = shallow(<ParticipantList />);
     expect(
       wrapper
-        .find('Participant')
+        .find('Memo(Participant)')
         .at(1)
         .prop('hideParticipant')
     ).toBe(false);
@@ -122,7 +122,7 @@ describe('the ParticipantList component', () => {
     const wrapper = shallow(<ParticipantList />);
     expect(
       wrapper
-        .find('Participant')
+        .find('Memo(Participant)')
         .at(1)
         .prop('hideParticipant')
     ).toBe(false);

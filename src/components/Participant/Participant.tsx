@@ -14,7 +14,7 @@ interface ParticipantProps {
   isDominantSpeaker?: boolean;
 }
 
-export default function Participant({
+export function Participant({
   participant,
   videoOnly,
   enableScreenShare,
@@ -42,3 +42,5 @@ export default function Participant({
     </ParticipantInfo>
   );
 }
+
+export default React.memo(Participant);

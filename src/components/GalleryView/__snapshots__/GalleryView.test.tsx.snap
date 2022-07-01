@@ -52,7 +52,7 @@ exports[`the GalleryView component should render correctly 1`] = `
         }
       }
     >
-      <Participant
+      <Memo(Participant)
         isDominantSpeaker={false}
         isLocalParticipant={true}
         participant={
@@ -73,7 +73,7 @@ exports[`the GalleryView component should render correctly 1`] = `
         }
       }
     >
-      <Participant
+      <Memo(Participant)
         isDominantSpeaker={false}
         isLocalParticipant={false}
         participant={
@@ -94,7 +94,7 @@ exports[`the GalleryView component should render correctly 1`] = `
         }
       }
     >
-      <Participant
+      <Memo(Participant)
         isDominantSpeaker={false}
         isLocalParticipant={false}
         participant={
@@ -115,7 +115,7 @@ exports[`the GalleryView component should render correctly 1`] = `
         }
       }
     >
-      <Participant
+      <Memo(Participant)
         isDominantSpeaker={false}
         isLocalParticipant={false}
         participant={
@@ -136,7 +136,7 @@ exports[`the GalleryView component should render correctly 1`] = `
         }
       }
     >
-      <Participant
+      <Memo(Participant)
         isDominantSpeaker={false}
         isLocalParticipant={false}
         participant={
