@@ -13,7 +13,7 @@ import useRoomState from './hooks/useRoomState/useRoomState';
 
 import { Logger } from 'twilio-video';
 
-Logger.getLogger('twilio-video').setLevel('DEBUG');
+Logger.getLogger('twilio-video').setLevel('WARN');
 
 const Container = styled('div')({
   display: 'grid',
