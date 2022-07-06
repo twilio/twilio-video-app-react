@@ -16,7 +16,7 @@ describe('the useDominantSpeaker hook', () => {
     expect(result.current).toBe('mockDominantSpeaker');
   });
 
-  it('should respond to "dominantSpeakerChanged" events', async () => {
+  it('should respond to "dominantSpeakerChanged" events', () => {
     const { result } = renderHook(useDominantSpeaker);
     act(() => {
       mockRoom.emit('dominantSpeakerChanged', 'newDominantSpeaker');
@@ -24,13 +24,22 @@ describe('the useDominantSpeaker hook', () => {
     expect(result.current).toBe('newDominantSpeaker');
   });
 
-  it('should not set "null" when there is no dominant speaker', () => {
+  it('should not set "null" when there is no dominant speaker by default', () => {
     const { result } = renderHook(useDominantSpeaker);
     expect(result.current).toBe('mockDominantSpeaker');
     act(() => {
       mockRoom.emit('dominantSpeakerChanged', null);
     });
     expect(result.current).toBe('mockDominantSpeaker');
+  });
+
+  it('should set "null" when there is no dominant speaker and includeNull is true', () => {
+    const { result } = renderHook(() => useDominantSpeaker(true));
+    expect(result.current).toBe('mockDominantSpeaker');
+    act(() => {
+      mockRoom.emit('dominantSpeakerChanged', null);
+    });
+    expect(result.current).toBe(null);
   });
 
   it('should set "null" as the dominant speaker when the dominant speaker disconnects', () => {

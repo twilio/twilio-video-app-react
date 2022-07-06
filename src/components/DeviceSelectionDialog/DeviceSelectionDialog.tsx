@@ -11,9 +11,11 @@ import {
   Button,
   Theme,
   DialogTitle,
+  Hidden,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import VideoInputList from './VideoInputList/VideoInputList';
+import MaxGalleryViewParticipants from './MaxGalleryViewParticipants/MaxGalleryViewParticipants';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -70,6 +72,15 @@ export default function DeviceSelectionDialog({ open, onClose }: { open: boolean
         <div className={classes.listSection}>
           <AudioOutputList />
         </div>
+        <Hidden smDown>
+          <Divider />
+          <div className={classes.listSection}>
+            <Typography variant="h6" className={classes.headline}>
+              Gallery View
+            </Typography>
+            <MaxGalleryViewParticipants />
+          </div>
+        </Hidden>
       </DialogContent>
       <Divider />
       <DialogActions>

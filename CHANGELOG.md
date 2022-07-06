@@ -1,3 +1,18 @@
+## 0.7.0 (July 6, 2022)
+
+### New Feature
+
+- This release adds a Gallery View feature. Gallery View is an additional layout setting which allows users to view other participants' videos in the form of a grid. Users can update the max number of participants per page via the Audio and Video Settings > Gallery View. Users can also switch to Speaker View (the app's original layout) by accessing the More menu. Please note that Gallery View will be enabled by default.
+
+### Dependency Upgrade
+- `twilio-video` has been upgraded from 2.21.2 to 2.22.0. 
+
+### Bugfixes
+
+- Fixes an issue where the `<AudioLevelIndicator />` could cause a memory leak after it is mounted/unmounted many times. [#703](https://github.com/twilio/twilio-video-app-react/pull/703)
+- Provides a workaround for a bug introduced in Chrome 103, where calling `.stop()` on a cloned `MediaStreamTrack` could cause a loss of audio in the app. [#713](https://github.com/twilio/twilio-video-app-react/pull/713)
+- Removes the `frame rate` and `resolution` constraints when requesting a screen share track which should allow for higher quality screen share tracks to be published. [#715](https://github.com/twilio/twilio-video-app-react/pull/715)
+
 ## 0.6.5 (June 3, 2022)
 
 ### Dependency Upgrade

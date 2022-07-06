@@ -38,6 +38,7 @@ mockUseLocalVideoToggle.mockImplementation(() => [true, () => {}]);
 
 describe('the Menu component', () => {
   let mockUpdateRecordingRules: jest.Mock<any>;
+  let mockSetIsGalleryViewActive = jest.fn();
 
   beforeEach(() => jest.clearAllMocks());
 
@@ -47,6 +48,7 @@ describe('the Menu component', () => {
       isFetching: false,
       updateRecordingRules: mockUpdateRecordingRules,
       roomType: 'group',
+      setIsGalleryViewActive: mockSetIsGalleryViewActive,
     }));
     mockUseFlipCameraToggle.mockImplementation(() => ({
       flipCameraDisabled: false,
@@ -88,6 +90,7 @@ describe('the Menu component', () => {
           isFetching: false,
           updateRecordingRules: mockUpdateRecordingRules,
           roomType: 'group',
+          setIsGalleryViewActive: mockSetIsGalleryViewActive,
         }));
         const { getByText } = render(<Menu />);
         fireEvent.click(getByText('More'));
@@ -99,6 +102,7 @@ describe('the Menu component', () => {
           isFetching: false,
           updateRecordingRules: mockUpdateRecordingRules,
           roomType: 'group-small',
+          setIsGalleryViewActive: mockSetIsGalleryViewActive,
         }));
         const { getByText } = render(<Menu />);
         fireEvent.click(getByText('More'));
@@ -110,6 +114,7 @@ describe('the Menu component', () => {
           isFetching: false,
           updateRecordingRules: mockUpdateRecordingRules,
           roomType: 'go',
+          setIsGalleryViewActive: mockSetIsGalleryViewActive,
         }));
         const { getByText, queryByText } = render(<Menu />);
         fireEvent.click(getByText('More'));
@@ -121,6 +126,7 @@ describe('the Menu component', () => {
           isFetching: false,
           updateRecordingRules: mockUpdateRecordingRules,
           roomType: 'peer-to-peer',
+          setIsGalleryViewActive: mockSetIsGalleryViewActive,
         }));
         const { getByText, queryByText } = render(<Menu />);
         fireEvent.click(getByText('More'));
@@ -132,6 +138,7 @@ describe('the Menu component', () => {
           isFetching: false,
           updateRecordingRules: mockUpdateRecordingRules,
           roomType: undefined,
+          setIsGalleryViewActive: mockSetIsGalleryViewActive,
         }));
         const { getByText } = render(<Menu />);
         fireEvent.click(getByText('More'));
@@ -188,7 +195,7 @@ describe('the Menu component', () => {
       expect(wrapper.find(AboutDialog).prop('open')).toBe(false);
       wrapper
         .find(MenuItem)
-        .at(3)
+        .at(4)
         .simulate('click');
       expect(wrapper.find(AboutDialog).prop('open')).toBe(true);
     });
@@ -201,6 +208,32 @@ describe('the Menu component', () => {
         .at(0)
         .simulate('click');
       expect(wrapper.find(DeviceSelectionDialog).prop('open')).toBe(true);
+    });
+
+    it('should show the Gallery View button when gallery view is inactive', () => {
+      mockUseAppState.mockImplementation(() => ({
+        setIsGalleryViewActive: mockSetIsGalleryViewActive,
+        isGalleryViewActive: false,
+      }));
+
+      const { getByText } = render(<Menu />);
+      fireEvent.click(getByText('More'));
+      fireEvent.click(getByText('Gallery View'));
+
+      expect(mockSetIsGalleryViewActive.mock.calls[0][0](false)).toBe(true);
+    });
+
+    it('should show the Speaker View button when gallery view is active', () => {
+      mockUseAppState.mockImplementation(() => ({
+        setIsGalleryViewActive: mockSetIsGalleryViewActive,
+        isGalleryViewActive: true,
+      }));
+
+      const { getByText } = render(<Menu />);
+      fireEvent.click(getByText('More'));
+      fireEvent.click(getByText('Speaker View'));
+
+      expect(mockSetIsGalleryViewActive.mock.calls[0][0](true)).toBe(false);
     });
 
     it('should render the correct icon', () => {

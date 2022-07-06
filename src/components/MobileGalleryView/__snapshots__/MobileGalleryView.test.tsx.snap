@@ -1,0 +1,331 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`the MobileGalleryView component should render correctly when there are 3 or more participants plus the localParticipant 1`] = `
+<div
+  className="makeStyles-participantContainer-1"
+>
+  <mockConstructor
+    className="mySwiper"
+    modules={
+      Array [
+        [MockFunction],
+      ]
+    }
+    pagination={true}
+  >
+    <mockConstructor
+      className="makeStyles-swiperSlide-3"
+      key="0"
+    >
+      <div
+        key="0"
+        style={
+          Object {
+            "boxSizing": "border-box",
+            "height": "33.33%",
+            "padding": "0.2em",
+            "width": "50%",
+          }
+        }
+      >
+        <Memo(Participant)
+          isDominantSpeaker={false}
+          isLocalParticipant={true}
+          participant={
+            Object {
+              "identity": "test-local-participant",
+              "sid": 0,
+            }
+          }
+        />
+      </div>
+      <div
+        key="1"
+        style={
+          Object {
+            "boxSizing": "border-box",
+            "height": "33.33%",
+            "padding": "0.2em",
+            "width": "50%",
+          }
+        }
+      >
+        <Memo(Participant)
+          isDominantSpeaker={false}
+          isLocalParticipant={false}
+          participant={
+            Object {
+              "identity": "test-participant-1",
+              "sid": 1,
+            }
+          }
+        />
+      </div>
+      <div
+        key="2"
+        style={
+          Object {
+            "boxSizing": "border-box",
+            "height": "33.33%",
+            "padding": "0.2em",
+            "width": "50%",
+          }
+        }
+      >
+        <Memo(Participant)
+          isDominantSpeaker={false}
+          isLocalParticipant={false}
+          participant={
+            Object {
+              "identity": "test-participant-2",
+              "sid": 2,
+            }
+          }
+        />
+      </div>
+      <div
+        key="3"
+        style={
+          Object {
+            "boxSizing": "border-box",
+            "height": "33.33%",
+            "padding": "0.2em",
+            "width": "50%",
+          }
+        }
+      >
+        <Memo(Participant)
+          isDominantSpeaker={false}
+          isLocalParticipant={false}
+          participant={
+            Object {
+              "identity": "test-participant-3",
+              "sid": 3,
+            }
+          }
+        />
+      </div>
+      <div
+        key="4"
+        style={
+          Object {
+            "boxSizing": "border-box",
+            "height": "33.33%",
+            "padding": "0.2em",
+            "width": "50%",
+          }
+        }
+      >
+        <Memo(Participant)
+          isDominantSpeaker={false}
+          isLocalParticipant={false}
+          participant={
+            Object {
+              "identity": "test-participant-4",
+              "sid": 4,
+            }
+          }
+        />
+      </div>
+    </mockConstructor>
+  </mockConstructor>
+</div>
+`;
+
+exports[`the MobileGalleryView component should render correctly when there are two participants plus the localParticipant 1`] = `
+<div
+  className="makeStyles-participantContainer-1"
+>
+  <mockConstructor
+    className="mySwiper"
+    modules={
+      Array [
+        [MockFunction],
+      ]
+    }
+    pagination={true}
+  >
+    <mockConstructor
+      className="makeStyles-swiperSlide-3"
+      key="0"
+    >
+      <div
+        key="0"
+        style={
+          Object {
+            "boxSizing": "border-box",
+            "height": "33.33%",
+            "padding": "0.2em",
+            "width": "100%",
+          }
+        }
+      >
+        <Memo(Participant)
+          isDominantSpeaker={false}
+          isLocalParticipant={true}
+          participant={
+            Object {
+              "identity": "test-local-participant",
+              "sid": 0,
+            }
+          }
+        />
+      </div>
+      <div
+        key="1"
+        style={
+          Object {
+            "boxSizing": "border-box",
+            "height": "33.33%",
+            "padding": "0.2em",
+            "width": "100%",
+          }
+        }
+      >
+        <Memo(Participant)
+          isDominantSpeaker={false}
+          isLocalParticipant={false}
+          participant={
+            Object {
+              "identity": "test-participant-1",
+              "sid": 1,
+            }
+          }
+        />
+      </div>
+      <div
+        key="2"
+        style={
+          Object {
+            "boxSizing": "border-box",
+            "height": "33.33%",
+            "padding": "0.2em",
+            "width": "100%",
+          }
+        }
+      >
+        <Memo(Participant)
+          isDominantSpeaker={false}
+          isLocalParticipant={false}
+          participant={
+            Object {
+              "identity": "test-participant-2",
+              "sid": 2,
+            }
+          }
+        />
+      </div>
+    </mockConstructor>
+  </mockConstructor>
+</div>
+`;
+
+exports[`the MobileGalleryView component should render correctly when there is one participant plus the localParticipant 1`] = `
+<div
+  className="makeStyles-participantContainer-1"
+>
+  <mockConstructor
+    className="mySwiper"
+    modules={
+      Array [
+        [MockFunction],
+      ]
+    }
+    pagination={true}
+  >
+    <mockConstructor
+      className="makeStyles-swiperSlide-3"
+      key="0"
+    >
+      <div
+        key="0"
+        style={
+          Object {
+            "boxSizing": "border-box",
+            "height": "50%",
+            "padding": "0.2em",
+            "width": "100%",
+          }
+        }
+      >
+        <Memo(Participant)
+          isDominantSpeaker={false}
+          isLocalParticipant={true}
+          participant={
+            Object {
+              "identity": "test-local-participant",
+              "sid": 0,
+            }
+          }
+        />
+      </div>
+      <div
+        key="1"
+        style={
+          Object {
+            "boxSizing": "border-box",
+            "height": "50%",
+            "padding": "0.2em",
+            "width": "100%",
+          }
+        }
+      >
+        <Memo(Participant)
+          isDominantSpeaker={false}
+          isLocalParticipant={false}
+          participant={
+            Object {
+              "identity": "test-participant-1",
+              "sid": 1,
+            }
+          }
+        />
+      </div>
+    </mockConstructor>
+  </mockConstructor>
+</div>
+`;
+
+exports[`the MobileGalleryView component should render correctly when there is only the localParticipant 1`] = `
+<div
+  className="makeStyles-participantContainer-1"
+>
+  <mockConstructor
+    className="mySwiper"
+    modules={
+      Array [
+        [MockFunction],
+      ]
+    }
+    pagination={true}
+  >
+    <mockConstructor
+      className="makeStyles-swiperSlide-3"
+      key="0"
+    >
+      <div
+        key="0"
+        style={
+          Object {
+            "boxSizing": "border-box",
+            "height": "100%",
+            "padding": "0.2em",
+            "width": "100%",
+          }
+        }
+      >
+        <Memo(Participant)
+          isDominantSpeaker={false}
+          isLocalParticipant={true}
+          participant={
+            Object {
+              "identity": "test-local-participant",
+              "sid": 0,
+            }
+          }
+        />
+      </div>
+    </mockConstructor>
+  </mockConstructor>
+</div>
+`;

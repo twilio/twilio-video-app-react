@@ -1,11 +1,12 @@
 {
   "name": "twilio-video-app-react",
-  "version": "0.6.5",
+  "version": "0.7.0",
   "private": true,
   "license": "Apache-2.0",
   "dependencies": {
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.60",
     "@twilio-labs/plugin-rtc": "^0.8.2",
     "@twilio/conversations": "^1.2.3",
     "@twilio/video-processors": "^1.0.1",
@@ -41,12 +42,19 @@
     "react-scripts": "4.0.3",
     "rimraf": "3.0.2",
     "strip-color": "^0.1.0",
+    "swiper": "^8.1.5",
     "ts-node": "^9.1.1",
     "twilio": "^3.63.1",
-    "twilio-video": "^2.21.2",
-    "typescript": "^3.8.3"
+    "twilio-video": "^2.22.0",
+    "typescript": "^4.6.2"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^6.4.18",
+    "@storybook/addon-essentials": "^6.4.18",
+    "@storybook/addon-links": "^6.4.18",
+    "@storybook/node-logger": "^6.4.18",
+    "@storybook/preset-create-react-app": "^3.2.0",
+    "@storybook/react": "^6.4.18",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/react-hooks": "^3.2.1",
@@ -87,7 +95,9 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --browser chrome",
     "cypress:ci": "cross-env CYPRESS_baseUrl=http://localhost:8081 start-server-and-test server http://localhost:8081 cypress:run",
-    "deploy:twilio-cli": "cross-env REACT_APP_SET_AUTH=passcode npm run build && twilio rtc:apps:video:deploy --authentication=passcode --app-directory ./build"
+    "deploy:twilio-cli": "cross-env REACT_APP_SET_AUTH=passcode npm run build && twilio rtc:apps:video:deploy --authentication=passcode --app-directory ./build",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": "react-app",
@@ -96,7 +106,17 @@
       "@typescript-eslint/no-shadow": [
         "warn"
       ]
-    }
+    },
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
+    ]
   },
   "browserslist": {
     "production": [

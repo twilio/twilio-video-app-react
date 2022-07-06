@@ -1,31 +1,27 @@
 import { useEffect, useState } from 'react';
 import { RemoteParticipant } from 'twilio-video';
-import useDominantSpeaker from '../useDominantSpeaker/useDominantSpeaker';
 import useVideoContext from '../useVideoContext/useVideoContext';
+
+/**
+ * This hook returns an array of the video room's participants. Unlike the hooks
+ * "useSpeakerViewParticipants" and "useGalleryViewParticipants", this hook does not reorder
+ * the list of participants whenever the dominantSpeaker changes. This will prevent unnecessary
+ * re-renders because components that use this hook will only update when a participant connects
+ * to or disconnects from the room.
+ */
 
 export default function useParticipants() {
   const { room } = useVideoContext();
-  const dominantSpeaker = useDominantSpeaker();
   const [participants, setParticipants] = useState(Array.from(room?.participants.values() ?? []));
-
-  // When the dominant speaker changes, they are moved to the front of the participants array.
-  // This means that the most recent dominant speakers will always be near the top of the
-  // ParticipantStrip component.
-  useEffect(() => {
-    if (dominantSpeaker) {
-      setParticipants(prevParticipants => [
-        dominantSpeaker,
-        ...prevParticipants.filter(participant => participant !== dominantSpeaker),
-      ]);
-    }
-  }, [dominantSpeaker]);
 
   useEffect(() => {
     if (room) {
       const participantConnected = (participant: RemoteParticipant) =>
         setParticipants(prevParticipants => [...prevParticipants, participant]);
+
       const participantDisconnected = (participant: RemoteParticipant) =>
         setParticipants(prevParticipants => prevParticipants.filter(p => p !== participant));
+
       room.on('participantConnected', participantConnected);
       room.on('participantDisconnected', participantDisconnected);
       return () => {

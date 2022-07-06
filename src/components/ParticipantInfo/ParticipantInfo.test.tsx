@@ -3,19 +3,24 @@ import AvatarIcon from '../../icons/AvatarIcon';
 import ParticipantInfo from './ParticipantInfo';
 import PinIcon from './PinIcon/PinIcon';
 import { shallow } from 'enzyme';
+import { useAppState } from '../../state';
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
 import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
 import usePublications from '../../hooks/usePublications/usePublications';
 import ScreenShareIcon from '../../icons/ScreenShareIcon';
 
+jest.mock('../../state');
 jest.mock('../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel', () => () => 4);
 jest.mock('../../hooks/usePublications/usePublications');
 jest.mock('../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff');
 jest.mock('../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting');
 
+const mockUseAppState = useAppState as jest.Mock<any>;
 const mockUsePublications = usePublications as jest.Mock<any>;
 const mockUseIsTrackSwitchedOff = useIsTrackSwitchedOff as jest.Mock<any>;
 const mockUseParticipantIsReconnecting = useParticipantIsReconnecting as jest.Mock<boolean>;
+
+mockUseAppState.mockImplementation(() => ({ isGalleryViewActive: false }));
 
 describe('the ParticipantInfo component', () => {
   it('should render the AvatarIcon component when no video tracks are published', () => {
