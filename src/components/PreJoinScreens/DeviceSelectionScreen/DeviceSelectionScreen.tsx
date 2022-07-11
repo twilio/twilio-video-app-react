@@ -8,6 +8,7 @@ import ToggleAudioButton from '../../Buttons/ToggleAudioButton/ToggleAudioButton
 import ToggleVideoButton from '../../Buttons/ToggleVideoButton/ToggleVideoButton';
 import { useAppState } from '../../../state';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+
 // import { wrapPeerConnectionEvent } from '../../../utils';
 
 import watchRTC from '@testrtc/watchrtc-sdk';
@@ -94,6 +95,22 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
     //     watchRTC.mapStream(e?.stream?.id, name);
     //   }
     // });
+
+    setTimeout(() => {
+      let rating = Math.floor(Math.random() * 5) as any;
+      let message = `User rating is ${rating}`;
+
+      const ratingFromQuery = queryString.parse(window.location.search)?.rating;
+      const ratingMessageFromQuery = queryString.parse(window.location.search)?.ratingMessage;
+
+      if (typeof ratingFromQuery === 'string') {
+        rating = Number(ratingFromQuery);
+      }
+      if (typeof ratingMessageFromQuery === 'string') {
+        message = decodeURI(ratingMessageFromQuery);
+      }
+      watchRTC.setUserRating(rating, message);
+    }, 10000);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
