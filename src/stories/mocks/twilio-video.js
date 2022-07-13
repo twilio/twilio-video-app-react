@@ -105,6 +105,7 @@ class LocalParticipant extends EventEmitter {
     ]);
 
     this.identity = 'Local Participant';
+    this.sid = this.identity;
   }
 }
 
@@ -122,6 +123,7 @@ const mockRoom = new MockRoom();
 class MockParticipant extends EventEmitter {
   constructor(name) {
     super();
+    this.sid = name;
     this.identity = name;
     this.tracks = new Map([
       ['video', new MockPublication('video')],
