@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     '& video': {
       filter: 'none',
-      transition: 'filter 1s cubic-bezier(0.22, 0.61, 0.36, 1)',
+      transition: 'filter 0.25s cubic-bezier(0.22, 0.61, 0.36, 1)',
     },
   },
   identity: {
@@ -67,6 +67,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'center',
     zIndex: 1,
     textAlign: 'center',
+    opacity: 0,
+    visibility: 'hidden',
+    transition: 'all 0.25s cubic-bezier(0.22, 0.61, 0.36, 1)',
   },
   fullWidth: {
     gridArea: '1 / 1 / 2 / 3',
@@ -106,27 +109,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   switchedOffMessage: {
-    opacity: 0,
     textShadow: '0 0 3px rgba(0, 0, 0, 0.7)',
-    animationName: '$showMessage',
-    animationDuration: '0.5s',
-    animationDelay: '2s',
-    animationFillMode: 'forwards',
     color: 'white',
   },
-  '@keyframes showMessage': {
-    '0%': {
-      opacity: 0,
-      visibility: 'hidden',
-    },
-    '100%': {
-      opacity: 1,
-      visibility: 'visible',
-    },
+  isSwitchedOff: {
+    opacity: 1,
+    visibility: 'visible',
+    transition: 'all 0.5s linear 2s',
   },
   blur: {
     '& video': {
       filter: 'blur(10px)',
+      transition: 'filter 1s cubic-bezier(0.22, 0.61, 0.36, 1)',
     },
   },
   circle: {
@@ -220,7 +214,7 @@ export default function MainParticipantInfo({ participant, children }: MainParti
         </div>
       )}
       {isVideoSwitchedOff && (
-        <div className={classes.trackSwitchOffContainer}>
+        <div className={clsx(classes.trackSwitchOffContainer, { [classes.isSwitchedOff]: isVideoSwitchedOff })}>
           <Typography variant="body1" className={classes.switchedOffMessage}>
             Video has been switched off to conserve bandwidth.
           </Typography>

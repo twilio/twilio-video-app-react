@@ -2,22 +2,18 @@ import React from 'react';
 import clsx from 'clsx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
-
 import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
 import AvatarIcon from '../../icons/AvatarIcon';
 import NetworkQualityLevel from '../NetworkQualityLevel/NetworkQualityLevel';
 import PinIcon from './PinIcon/PinIcon';
 import ScreenShareIcon from '../../icons/ScreenShareIcon';
 import Typography from '@material-ui/core/Typography';
-
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
 import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
 import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
 import { useAppState } from '../../state';
-
 const borderWidth = 2;
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
@@ -30,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginBottom: '0.5em',
       '& video': {
         objectFit: 'contain !important',
-        transition: 'filter 1s cubic-bezier(0.22, 0.61, 0.36, 1)',
+        transition: 'filter 0.25s cubic-bezier(0.22, 0.61, 0.36, 1)',
       },
       borderRadius: '4px',
       border: `${theme.participantBorderWidth}px solid rgb(245, 248, 255)`,
@@ -103,6 +99,9 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'center',
       zIndex: 1,
       textAlign: 'center',
+      opacity: 0,
+      visibility: 'hidden',
+      transition: 'all 0.25s cubic-bezier(0.22, 0.61, 0.36, 1)',
     },
     screenShareIconContainer: {
       background: 'rgba(0, 0, 0, 0.5)',
@@ -135,26 +134,17 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     switchedOffMessage: {
-      opacity: 0,
       textShadow: '0 0 3px rgba(0, 0, 0, 0.7)',
-      animationName: '$showMessage',
-      animationDuration: '0.5s',
-      animationDelay: '2s',
-      animationFillMode: 'forwards',
     },
-    '@keyframes showMessage': {
-      '0%': {
-        opacity: 0,
-        visibility: 'hidden',
-      },
-      '100%': {
-        opacity: 1,
-        visibility: 'visible',
-      },
+    isSwitchedOff: {
+      opacity: 1,
+      visibility: 'visible',
+      transition: 'all 0.5s linear 2s',
     },
     blur: {
       '& video': {
         filter: 'blur(5px)',
+        transition: 'filter 1s cubic-bezier(0.22, 0.61, 0.36, 1)',
       },
     },
     hideParticipant: {
@@ -183,7 +173,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-
 interface ParticipantInfoProps {
   participant: Participant;
   children: React.ReactNode;
@@ -193,7 +182,6 @@ interface ParticipantInfoProps {
   hideParticipant?: boolean;
   isDominantSpeaker?: boolean;
 }
-
 export default function ParticipantInfo({
   participant,
   onClick,
@@ -204,23 +192,16 @@ export default function ParticipantInfo({
   isDominantSpeaker,
 }: ParticipantInfoProps) {
   const publications = usePublications(participant);
-
   const audioPublication = publications.find(p => p.kind === 'audio');
   const videoPublication = publications.find(p => !p.trackName.includes('screen') && p.kind === 'video');
-
   const isVideoEnabled = Boolean(videoPublication);
   const isScreenShareEnabled = publications.find(p => p.trackName.includes('screen'));
-
   const videoTrack = useTrack(videoPublication);
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
-
   const audioTrack = useTrack(audioPublication) as LocalAudioTrack | RemoteAudioTrack | undefined;
   const isParticipantReconnecting = useParticipantIsReconnecting(participant);
-
   const { isGalleryViewActive } = useAppState();
-
   const classes = useStyles();
-
   return (
     <div
       className={clsx(classes.container, {
@@ -251,13 +232,11 @@ export default function ParticipantInfo({
         <div>{isSelected && <PinIcon />}</div>
       </div>
       <div className={clsx(classes.innerContainer, { [classes.blur]: isVideoSwitchedOff })}>
-        {isVideoSwitchedOff && (
-          <div className={classes.trackSwitchOffContainer}>
-            <Typography variant="body1" className={clsx(classes.typography, classes.switchedOffMessage)}>
-              Video has been switched off to conserve bandwidth.
-            </Typography>
-          </div>
-        )}
+        <div className={clsx(classes.trackSwitchOffContainer, { [classes.isSwitchedOff]: isVideoSwitchedOff })}>
+          <Typography variant="body1" className={clsx(classes.typography, classes.switchedOffMessage)}>
+            Video has been switched off to conserve bandwidth.
+          </Typography>
+        </div>
         {!isVideoEnabled && (
           <div className={classes.avatarContainer}>
             <AvatarIcon />
