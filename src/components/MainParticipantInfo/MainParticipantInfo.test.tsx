@@ -60,12 +60,12 @@ describe('the MainParticipantInfo component', () => {
     expect(wrapper.find(AvatarIcon).exists()).toBe(false);
   });
 
-  it('should render the AvatarIcon component when video is switched off', () => {
+  it('should display the video has been switched off message when the video track is switchedOff', () => {
     mockUseIsTrackSwitchedOff.mockImplementationOnce(() => true);
     const wrapper = shallow(
       <MainParticipantInfo participant={{ identity: 'mockIdentity' } as any}>mock children</MainParticipantInfo>
     );
-    expect(wrapper.find(AvatarIcon).exists()).toBe(true);
+    expect(wrapper.text()).toContain('Video has been switched off to conserve bandwidth.');
   });
 
   it('should not render the reconnecting UI when the user is connected', () => {

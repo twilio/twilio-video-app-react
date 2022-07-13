@@ -22,6 +22,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
+    '& video': {
+      filter: 'none',
+      transition: 'filter 1s cubic-bezier(0.22, 0.61, 0.36, 1)',
+    },
   },
   identity: {
     background: 'rgba(0, 0, 0, 0.5)',
@@ -51,6 +55,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'center',
     background: 'rgba(40, 42, 43, 0.75)',
     zIndex: 1,
+  },
+  trackSwitchOffContainer: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 1,
+    textAlign: 'center',
   },
   fullWidth: {
     gridArea: '1 / 1 / 2 / 3',
@@ -87,6 +103,30 @@ const useStyles = makeStyles((theme: Theme) => ({
       bottom: 'auto',
       right: 0,
       top: 0,
+    },
+  },
+  switchedOffMessage: {
+    opacity: 0,
+    textShadow: '0 0 3px rgba(0, 0, 0, 0.7)',
+    animationName: '$showMessage',
+    animationDuration: '0.5s',
+    animationDelay: '2s',
+    animationFillMode: 'forwards',
+    color: 'white',
+  },
+  '@keyframes showMessage': {
+    '0%': {
+      opacity: 0,
+      visibility: 'hidden',
+    },
+    '100%': {
+      opacity: 1,
+      visibility: 'visible',
+    },
+  },
+  blur: {
+    '& video': {
+      filter: 'blur(10px)',
     },
   },
   circle: {
@@ -145,6 +185,7 @@ export default function MainParticipantInfo({ participant, children }: MainParti
       data-cy-participant={participant.identity}
       className={clsx(classes.container, {
         [classes.fullWidth]: !isRemoteParticipantScreenSharing,
+        [classes.blur]: isVideoSwitchedOff,
       })}
     >
       <div className={classes.infoContainer}>
@@ -173,9 +214,16 @@ export default function MainParticipantInfo({ participant, children }: MainParti
           </Tooltip>
         )}
       </div>
-      {(!isVideoEnabled || isVideoSwitchedOff) && (
+      {!isVideoEnabled && (
         <div className={classes.avatarContainer}>
           <AvatarIcon />
+        </div>
+      )}
+      {isVideoSwitchedOff && (
+        <div className={classes.trackSwitchOffContainer}>
+          <Typography variant="body1" className={classes.switchedOffMessage}>
+            Video has been switched off to conserve bandwidth.
+          </Typography>
         </div>
       )}
       {isParticipantReconnecting && (
