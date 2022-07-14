@@ -36,7 +36,7 @@ export default function Menu(props: { buttonClassName?: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
-  const { isFetching, updateRecordingRules, roomType, setIsGridViewActive, isGridViewActive } = useAppState();
+  const { isFetching, updateRecordingRules, roomType, setIsGalleryViewActive, isGalleryViewActive } = useAppState();
   const { setIsChatWindowOpen } = useChatContext();
   const isRecording = useIsRecording();
   const { room, setIsBackgroundSelectionOpen } = useVideoContext();
@@ -137,18 +137,18 @@ export default function Menu(props: { buttonClassName?: string }) {
 
         <MenuItem
           onClick={() => {
-            setIsGridViewActive(isGrid => !isGrid);
+            setIsGalleryViewActive(isGallery => !isGallery);
             setMenuOpen(false);
           }}
         >
           <IconContainer>
-            {isGridViewActive ? (
+            {isGalleryViewActive ? (
               <CollaborationViewIcon style={{ fill: '#707578', width: '0.9em' }} />
             ) : (
               <GridViewIcon style={{ fill: '#707578', width: '0.9em' }} />
             )}
           </IconContainer>
-          <Typography variant="body1">{isGridViewActive ? 'Presentation View' : 'Grid View'}</Typography>
+          <Typography variant="body1">{isGalleryViewActive ? 'Speaker View' : 'Gallery View'}</Typography>
         </MenuItem>
 
         <MenuItem onClick={() => setAboutOpen(true)}>

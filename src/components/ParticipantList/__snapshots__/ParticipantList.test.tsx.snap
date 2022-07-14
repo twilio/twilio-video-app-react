@@ -10,11 +10,11 @@ exports[`the ParticipantList component should correctly render Participant compo
     <div
       className="makeStyles-innerScrollContainer-4"
     >
-      <Participant
+      <Memo(Participant)
         isLocalParticipant={true}
         participant="localParticipant"
       />
-      <Participant
+      <Memo(Participant)
         hideParticipant={false}
         isSelected={false}
         key="0"
@@ -25,7 +25,7 @@ exports[`the ParticipantList component should correctly render Participant compo
           }
         }
       />
-      <Participant
+      <Memo(Participant)
         hideParticipant={false}
         isSelected={false}
         key="1"
@@ -36,7 +36,7 @@ exports[`the ParticipantList component should correctly render Participant compo
           }
         }
       />
-      <Participant
+      <Memo(Participant)
         hideParticipant={false}
         isSelected={true}
         key="2"

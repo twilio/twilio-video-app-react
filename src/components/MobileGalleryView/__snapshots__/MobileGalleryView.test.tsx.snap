@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`the MobileGridView component should render correctly when there are 3 or more participants plus the localParticipant 1`] = `
+exports[`the MobileGalleryView component should render correctly when there are 3 or more participants plus the localParticipant 1`] = `
 <div
   className="makeStyles-participantContainer-1"
 >
@@ -28,7 +28,7 @@ exports[`the MobileGridView component should render correctly when there are 3 o
           }
         }
       >
-        <Participant
+        <Memo(Participant)
           isDominantSpeaker={false}
           isLocalParticipant={true}
           participant={
@@ -50,7 +50,7 @@ exports[`the MobileGridView component should render correctly when there are 3 o
           }
         }
       >
-        <Participant
+        <Memo(Participant)
           isDominantSpeaker={false}
           isLocalParticipant={false}
           participant={
@@ -72,7 +72,7 @@ exports[`the MobileGridView component should render correctly when there are 3 o
           }
         }
       >
-        <Participant
+        <Memo(Participant)
           isDominantSpeaker={false}
           isLocalParticipant={false}
           participant={
@@ -94,7 +94,7 @@ exports[`the MobileGridView component should render correctly when there are 3 o
           }
         }
       >
-        <Participant
+        <Memo(Participant)
           isDominantSpeaker={false}
           isLocalParticipant={false}
           participant={
@@ -116,7 +116,7 @@ exports[`the MobileGridView component should render correctly when there are 3 o
           }
         }
       >
-        <Participant
+        <Memo(Participant)
           isDominantSpeaker={false}
           isLocalParticipant={false}
           participant={
@@ -132,7 +132,7 @@ exports[`the MobileGridView component should render correctly when there are 3 o
 </div>
 `;
 
-exports[`the MobileGridView component should render correctly when there are two participants plus the localParticipant 1`] = `
+exports[`the MobileGalleryView component should render correctly when there are two participants plus the localParticipant 1`] = `
 <div
   className="makeStyles-participantContainer-1"
 >
@@ -160,7 +160,7 @@ exports[`the MobileGridView component should render correctly when there are two
           }
         }
       >
-        <Participant
+        <Memo(Participant)
           isDominantSpeaker={false}
           isLocalParticipant={true}
           participant={
@@ -182,7 +182,7 @@ exports[`the MobileGridView component should render correctly when there are two
           }
         }
       >
-        <Participant
+        <Memo(Participant)
           isDominantSpeaker={false}
           isLocalParticipant={false}
           participant={
@@ -204,7 +204,7 @@ exports[`the MobileGridView component should render correctly when there are two
           }
         }
       >
-        <Participant
+        <Memo(Participant)
           isDominantSpeaker={false}
           isLocalParticipant={false}
           participant={
@@ -220,7 +220,7 @@ exports[`the MobileGridView component should render correctly when there are two
 </div>
 `;
 
-exports[`the MobileGridView component should render correctly when there is one participant plus the localParticipant 1`] = `
+exports[`the MobileGalleryView component should render correctly when there is one participant plus the localParticipant 1`] = `
 <div
   className="makeStyles-participantContainer-1"
 >
@@ -248,7 +248,7 @@ exports[`the MobileGridView component should render correctly when there is one 
           }
         }
       >
-        <Participant
+        <Memo(Participant)
           isDominantSpeaker={false}
           isLocalParticipant={true}
           participant={
@@ -270,7 +270,7 @@ exports[`the MobileGridView component should render correctly when there is one 
           }
         }
       >
-        <Participant
+        <Memo(Participant)
           isDominantSpeaker={false}
           isLocalParticipant={false}
           participant={
@@ -286,7 +286,7 @@ exports[`the MobileGridView component should render correctly when there is one 
 </div>
 `;
 
-exports[`the MobileGridView component should render correctly when there is only the localParticipant 1`] = `
+exports[`the MobileGalleryView component should render correctly when there is only the localParticipant 1`] = `
 <div
   className="makeStyles-participantContainer-1"
 >
@@ -314,7 +314,7 @@ exports[`the MobileGridView component should render correctly when there is only
           }
         }
       >
-        <Participant
+        <Memo(Participant)
           isDominantSpeaker={false}
           isLocalParticipant={true}
           participant={

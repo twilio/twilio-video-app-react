@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { renderHook } from '@testing-library/react-hooks';
 
-import Room, { useSetPresentationViewOnScreenShare } from './Room';
+import Room, { useSetSpeakerViewOnScreenShare } from './Room';
 import useChatContext from '../../hooks/useChatContext/useChatContext';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { useAppState } from '../../state';
@@ -28,7 +28,7 @@ const mockToggleChatWindow = jest.fn();
 const mockOpenBackgroundSelection = jest.fn();
 mockUseChatContext.mockImplementation(() => ({ setIsChatWindowOpen: mockToggleChatWindow }));
 mockUseVideoContext.mockImplementation(() => ({ setIsBackgroundSelectionOpen: mockOpenBackgroundSelection }));
-mockUseAppState.mockImplementation(() => ({ isGridViewActive: false }));
+mockUseAppState.mockImplementation(() => ({ isGalleryViewActive: false }));
 
 describe('the Room component', () => {
   it('should render correctly when the chat window and background selection windows are closed', () => {
@@ -48,137 +48,137 @@ describe('the Room component', () => {
     expect(wrapper.prop('className')).toContain('rightDrawerOpen');
   });
 
-  it('should render correctly when grid view is inactive', () => {
+  it('should render correctly when gallery view is inactive', () => {
     mockUseVideoContext.mockImplementationOnce(() => ({ isBackgroundSelectionOpen: true }));
     const wrapper = shallow(<Room />);
     expect(wrapper.find('MainParticipant').exists()).toBe(true);
     expect(wrapper.find('ParticipantList').exists()).toBe(true);
-    expect(wrapper.find('GridView').exists()).toBe(false);
+    expect(wrapper.find('GalleryView').exists()).toBe(false);
   });
 
-  it('should render correctly when grid view is active', () => {
+  it('should render correctly when gallery view is active', () => {
     mockUseVideoContext.mockImplementationOnce(() => ({ isBackgroundSelectionOpen: true }));
-    mockUseAppState.mockImplementationOnce(() => ({ isGridViewActive: true }));
+    mockUseAppState.mockImplementationOnce(() => ({ isGalleryViewActive: true }));
     const wrapper = shallow(<Room />);
     expect(wrapper.find('MainParticipant').exists()).toBe(false);
     expect(wrapper.find('ParticipantList').exists()).toBe(false);
-    expect(wrapper.find('GridView').exists()).toBe(true);
+    expect(wrapper.find('GalleryView').exists()).toBe(true);
   });
 });
 
-describe('the useSetPresentationViewOnScreenShare hook', () => {
-  const mockSetIsGridViewActive = jest.fn();
+describe('the useSetSpeakerViewOnScreenShare hook', () => {
+  const mockSetIsGalleryViewActive = jest.fn();
   beforeEach(jest.clearAllMocks);
 
-  it('should not deactivate grid view when there is no screen share participant', () => {
+  it('should not deactivate gallery view when there is no screen share participant', () => {
     renderHook(() =>
-      useSetPresentationViewOnScreenShare(undefined, { localParticipant: {} } as any, mockSetIsGridViewActive, true)
+      useSetSpeakerViewOnScreenShare(undefined, { localParticipant: {} } as any, mockSetIsGalleryViewActive, true)
     );
-    expect(mockSetIsGridViewActive).not.toBeCalled();
+    expect(mockSetIsGalleryViewActive).not.toBeCalled();
   });
 
-  it('should deactivate grid view when a remote participant shares their screen', () => {
+  it('should deactivate gallery view when a remote participant shares their screen', () => {
     const { rerender } = renderHook(
       ({ screenShareParticipant }) =>
-        useSetPresentationViewOnScreenShare(
+        useSetSpeakerViewOnScreenShare(
           screenShareParticipant,
           { localParticipant: {} } as any,
-          mockSetIsGridViewActive,
+          mockSetIsGalleryViewActive,
           true
         ),
       { initialProps: { screenShareParticipant: undefined } }
     );
-    expect(mockSetIsGridViewActive).not.toBeCalled();
+    expect(mockSetIsGalleryViewActive).not.toBeCalled();
     rerender({ screenShareParticipant: {} } as any);
-    expect(mockSetIsGridViewActive).toBeCalledWith(false);
+    expect(mockSetIsGalleryViewActive).toBeCalledWith(false);
   });
 
-  it('should reactivate grid view when screenshare ends if grid view was active before another participant started screensharing', () => {
+  it('should reactivate gallery view when screenshare ends if gallery view was active before another participant started screensharing', () => {
     const { rerender } = renderHook(
       ({ screenShareParticipant }) =>
-        useSetPresentationViewOnScreenShare(
+        useSetSpeakerViewOnScreenShare(
           screenShareParticipant,
           { localParticipant: {} } as any,
-          mockSetIsGridViewActive,
+          mockSetIsGalleryViewActive,
           true
         ),
       { initialProps: { screenShareParticipant: undefined } }
     );
-    expect(mockSetIsGridViewActive).not.toBeCalled();
+    expect(mockSetIsGalleryViewActive).not.toBeCalled();
     // screenshare starts
     rerender({ screenShareParticipant: {} } as any);
-    expect(mockSetIsGridViewActive).toBeCalledWith(false);
+    expect(mockSetIsGalleryViewActive).toBeCalledWith(false);
     // screenshare ends
     rerender({ screenShareParticipant: undefined } as any);
-    expect(mockSetIsGridViewActive).toBeCalledWith(true);
+    expect(mockSetIsGalleryViewActive).toBeCalledWith(true);
   });
 
-  it('should not activate grid view when screenshare ends if presentation view was active before another participant started screensharing', () => {
+  it('should not activate gallery view when screenshare ends if speaker view was active before another participant started screensharing', () => {
     const { rerender } = renderHook(
       ({ screenShareParticipant }) =>
-        useSetPresentationViewOnScreenShare(
+        useSetSpeakerViewOnScreenShare(
           screenShareParticipant,
           { localParticipant: {} } as any,
-          mockSetIsGridViewActive,
+          mockSetIsGalleryViewActive,
           false
         ),
       { initialProps: { screenShareParticipant: undefined } }
     );
-    expect(mockSetIsGridViewActive).not.toBeCalled();
+    expect(mockSetIsGalleryViewActive).not.toBeCalled();
     // screenshare starts
     rerender({ screenShareParticipant: {} } as any);
-    expect(mockSetIsGridViewActive).toBeCalledWith(false);
+    expect(mockSetIsGalleryViewActive).toBeCalledWith(false);
     // screenshare ends
     rerender({ screenShareParticipant: undefined } as any);
-    // mockSetIsGridViewActive should only be called once with "false" since we're not reactivating grid mode
-    expect(mockSetIsGridViewActive).toBeCalledTimes(1);
+    // mockSetIsGalleryViewActive should only be called once with "false" since we're not reactivating gallery mode
+    expect(mockSetIsGalleryViewActive).toBeCalledTimes(1);
   });
 
-  it('should not activate presentation view when screenshare ends if it was active before screensharing, but the user switched to grid view during the screenshare', () => {
+  it('should not activate speaker view when screenshare ends if it was active before screensharing, but the user switched to gallery view during the screenshare', () => {
     const mockScreenShareParticipant = {};
     const mockRoom = { localParticipant: {} } as any;
 
     const { rerender } = renderHook(
-      ({ screenShareParticipant, isGridViewActive }) =>
-        useSetPresentationViewOnScreenShare(
+      ({ screenShareParticipant, isGalleryViewActive }) =>
+        useSetSpeakerViewOnScreenShare(
           screenShareParticipant,
           mockRoom,
-          mockSetIsGridViewActive,
-          isGridViewActive
+          mockSetIsGalleryViewActive,
+          isGalleryViewActive
         ),
-      { initialProps: { screenShareParticipant: undefined, isGridViewActive: false } }
+      { initialProps: { screenShareParticipant: undefined, isGalleryViewActive: false } }
     );
 
-    expect(mockSetIsGridViewActive).not.toBeCalled();
+    expect(mockSetIsGalleryViewActive).not.toBeCalled();
 
     // start screenshare
-    rerender({ screenShareParticipant: mockScreenShareParticipant, isGridViewActive: false } as any);
-    expect(mockSetIsGridViewActive).toBeCalledWith(false);
+    rerender({ screenShareParticipant: mockScreenShareParticipant, isGalleryViewActive: false } as any);
+    expect(mockSetIsGalleryViewActive).toBeCalledWith(false);
 
-    // enable grid mode
-    rerender({ screenShareParticipant: mockScreenShareParticipant, isGridViewActive: true } as any);
+    // enable gallery view
+    rerender({ screenShareParticipant: mockScreenShareParticipant, isGalleryViewActive: true } as any);
 
     // stop screenshare
-    rerender({ screenShareParticipant: undefined, isGridViewActive: true } as any);
+    rerender({ screenShareParticipant: undefined, isGalleryViewActive: true } as any);
 
-    // mockSetIsGridViewActive should only be called once with "false" since we're not reactivating grid mode
-    expect(mockSetIsGridViewActive).toBeCalledTimes(1);
+    // mockSetIsGalleryViewActive should only be called once with "false" since we're not reactivating gallery view
+    expect(mockSetIsGalleryViewActive).toBeCalledTimes(1);
   });
 
-  it('should not deactivate grid view when the local participant shares their screen', () => {
+  it('should not deactivate gallery view when the local participant shares their screen', () => {
     const mockLocalParticipant = {};
     const { rerender } = renderHook(
       ({ screenShareParticipant }) =>
-        useSetPresentationViewOnScreenShare(
+        useSetSpeakerViewOnScreenShare(
           screenShareParticipant,
           { localParticipant: mockLocalParticipant } as any,
-          mockSetIsGridViewActive,
+          mockSetIsGalleryViewActive,
           true
         ),
       { initialProps: { screenShareParticipant: undefined } }
     );
-    expect(mockSetIsGridViewActive).not.toBeCalled();
+    expect(mockSetIsGalleryViewActive).not.toBeCalled();
     rerender({ screenShareParticipant: mockLocalParticipant } as any);
-    expect(mockSetIsGridViewActive).not.toBeCalled();
+    expect(mockSetIsGalleryViewActive).not.toBeCalled();
   });
 });

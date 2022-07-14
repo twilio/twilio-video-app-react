@@ -3,6 +3,7 @@ import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { Room, TwilioError } from 'twilio-video';
 import { VideoProvider } from './index';
+import { useAppState } from '../../state';
 import useLocalTracks from './useLocalTracks/useLocalTracks';
 import useRestartAudioTrackOnDeviceChange from './useRestartAudioTrackOnDeviceChange/useRestartAudioTrackOnDeviceChange';
 import useRoom from './useRoom/useRoom';
@@ -11,6 +12,7 @@ import useHandleTrackPublicationFailed from './useHandleTrackPublicationFailed/u
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 const mockRoom = new EventEmitter() as Room;
+
 jest.mock('./useRoom/useRoom', () => jest.fn(() => ({ room: mockRoom, isConnecting: false, connect: () => {} })));
 jest.mock('./useLocalTracks/useLocalTracks', () =>
   jest.fn(() => ({
@@ -22,6 +24,7 @@ jest.mock('./useLocalTracks/useLocalTracks', () =>
     removeLocalVideoTrack: () => {},
   }))
 );
+jest.mock('../../state');
 jest.mock('./useHandleRoomDisconnection/useHandleRoomDisconnection');
 jest.mock('./useHandleTrackPublicationFailed/useHandleTrackPublicationFailed');
 jest.mock('./useRestartAudioTrackOnDeviceChange/useRestartAudioTrackOnDeviceChange');
@@ -34,6 +37,10 @@ jest.mock('@twilio/video-processors', () => {
     }),
   };
 });
+
+const mockUseAppState = useAppState as jest.Mock<any>;
+
+mockUseAppState.mockImplementation(() => ({ isGalleryViewActive: false }));
 
 describe('the VideoProvider component', () => {
   it('should correctly return the Video Context object', () => {

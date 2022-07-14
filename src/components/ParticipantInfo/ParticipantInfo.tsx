@@ -138,8 +138,8 @@ const useStyles = makeStyles((theme: Theme) =>
     dominantSpeaker: {
       border: `solid ${borderWidth}px #7BEAA5`,
     },
-    gridView: {
-      border: `${theme.participantBorderWidth}px solid ${theme.gridViewBackgroundColor}`,
+    galleryView: {
+      border: `${theme.participantBorderWidth}px solid ${theme.galleryViewBackgroundColor}`,
       borderRadius: '8px',
       [theme.breakpoints.down('sm')]: {
         position: 'relative',
@@ -189,7 +189,7 @@ export default function ParticipantInfo({
   const audioTrack = useTrack(audioPublication) as LocalAudioTrack | RemoteAudioTrack | undefined;
   const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
-  const { isGridViewActive } = useAppState();
+  const { isGalleryViewActive } = useAppState();
 
   const switchOffReason = useTrackSwitchOffReason(videoTrack as LocalVideoTrack | RemoteVideoTrack);
 
@@ -202,7 +202,7 @@ export default function ParticipantInfo({
         [classes.cursorPointer]: Boolean(onClick),
         [classes.blurredVideo]: isVideoSwitchedOff,
         [classes.dominantSpeaker]: isDominantSpeaker,
-        [classes.gridView]: isGridViewActive,
+        [classes.galleryView]: isGalleryViewActive,
       })}
       onClick={onClick}
       data-cy-participant={participant.identity}

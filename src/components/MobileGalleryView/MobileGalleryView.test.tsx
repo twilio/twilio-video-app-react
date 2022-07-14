@@ -1,4 +1,4 @@
-import { MobileGridView } from './MobileGridView';
+import { MobileGalleryView } from './MobileGalleryView';
 import { shallow } from 'enzyme';
 import { useAppState } from '../../state';
 import useParticipantContext from '../../hooks/useParticipantsContext/useParticipantsContext';
@@ -23,19 +23,19 @@ const mockUseVideoContext = useVideoContext as jest.Mock<any>;
 const mockUseParticipantContext = useParticipantContext as jest.Mock<any>;
 const mockUseAppState = useAppState as jest.Mock<any>;
 
-mockUseAppState.mockImplementation(() => ({ maxGridParticipants: 9 }));
+mockUseAppState.mockImplementation(() => ({ maxGalleryViewParticipants: 9 }));
 mockUseVideoContext.mockImplementation(() => ({
   room: {
     localParticipant: mockLocalParticipant,
   },
 }));
 mockUseParticipantContext.mockImplementation(() => ({
-  mobileGridParticipants: [],
+  mobileGalleryViewParticipants: [],
 }));
 
-describe('the MobileGridView component', () => {
+describe('the MobileGalleryView component', () => {
   it('should render correctly when there is only the localParticipant', () => {
-    const wrapper = shallow(<MobileGridView />);
+    const wrapper = shallow(<MobileGalleryView />);
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -46,9 +46,9 @@ describe('the MobileGridView component', () => {
       },
     }));
     mockUseParticipantContext.mockImplementation(() => ({
-      mobileGridParticipants: [{ identity: 'test-participant-1', sid: 1 }],
+      mobileGalleryViewParticipants: [{ identity: 'test-participant-1', sid: 1 }],
     }));
-    const wrapper = shallow(<MobileGridView />);
+    const wrapper = shallow(<MobileGalleryView />);
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -59,12 +59,12 @@ describe('the MobileGridView component', () => {
       },
     }));
     mockUseParticipantContext.mockImplementation(() => ({
-      mobileGridParticipants: [
+      mobileGalleryViewParticipants: [
         { identity: 'test-participant-1', sid: 1 },
         { identity: 'test-participant-2', sid: 2 },
       ],
     }));
-    const wrapper = shallow(<MobileGridView />);
+    const wrapper = shallow(<MobileGalleryView />);
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -75,14 +75,14 @@ describe('the MobileGridView component', () => {
       },
     }));
     mockUseParticipantContext.mockImplementation(() => ({
-      mobileGridParticipants: [
+      mobileGalleryViewParticipants: [
         { identity: 'test-participant-1', sid: 1 },
         { identity: 'test-participant-2', sid: 2 },
         { identity: 'test-participant-3', sid: 3 },
         { identity: 'test-participant-4', sid: 4 },
       ],
     }));
-    const wrapper = shallow(<MobileGridView />);
+    const wrapper = shallow(<MobileGalleryView />);
     expect(wrapper).toMatchSnapshot();
   });
 });

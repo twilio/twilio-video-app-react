@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react-hooks';
 import EventEmitter from 'events';
 import useDominantSpeaker from '../useDominantSpeaker/useDominantSpeaker';
-import usePresentationParticipants from './usePresentationParticipants';
+import useSpeakerViewParticipants from './useSpeakerViewParticipants';
 import useVideoContext from '../useVideoContext/useVideoContext';
 
 jest.mock('../useVideoContext/useVideoContext');
@@ -10,7 +10,7 @@ jest.mock('../useDominantSpeaker/useDominantSpeaker');
 const mockUseDominantSpeaker = useDominantSpeaker as jest.Mock<any>;
 const mockedVideoContext = useVideoContext as jest.Mock<any>;
 
-describe('the usePresentationParticipants hook', () => {
+describe('the useSpeakerViewParticipants hook', () => {
   let mockRoom: any;
 
   beforeEach(() => {
@@ -25,7 +25,23 @@ describe('the usePresentationParticipants hook', () => {
   });
 
   it('should return an array of mockParticipants by default', () => {
-    const { result } = renderHook(usePresentationParticipants);
+    const { result } = renderHook(useSpeakerViewParticipants);
+    expect(result.current).toEqual(['participant1', 'participant2']);
+  });
+
+  it('should return an array of mockParticipants after a room becomes available', () => {
+    mockedVideoContext.mockImplementation(() => ({
+      room: null,
+    }));
+
+    const { result, rerender } = renderHook(useSpeakerViewParticipants);
+
+    mockedVideoContext.mockImplementation(() => ({
+      room: mockRoom,
+    }));
+
+    rerender();
+
     expect(result.current).toEqual(['participant1', 'participant2']);
   });
 
@@ -46,7 +62,7 @@ describe('the usePresentationParticipants hook', () => {
   });
 
   it('should return respond to "participantConnected" events', async () => {
-    const { result } = renderHook(usePresentationParticipants);
+    const { result } = renderHook(useSpeakerViewParticipants);
     act(() => {
       mockRoom.emit('participantConnected', 'newParticipant');
     });
@@ -54,7 +70,7 @@ describe('the usePresentationParticipants hook', () => {
   });
 
   it('should return respond to "participantDisconnected" events', async () => {
-    const { result } = renderHook(usePresentationParticipants);
+    const { result } = renderHook(useSpeakerViewParticipants);
     act(() => {
       mockRoom.emit('participantDisconnected', 'participant1');
     });
@@ -67,7 +83,7 @@ describe('the usePresentationParticipants hook', () => {
       [1, 'participant2'],
       [2, 'participant3'],
     ]);
-    const { result, rerender } = renderHook(usePresentationParticipants);
+    const { result, rerender } = renderHook(useSpeakerViewParticipants);
     expect(result.current).toEqual(['participant1', 'participant2', 'participant3']);
     mockUseDominantSpeaker.mockImplementation(() => 'participant2');
     rerender();
@@ -81,7 +97,7 @@ describe('the usePresentationParticipants hook', () => {
   });
 
   it('should clean up listeners on unmount', () => {
-    const { unmount } = renderHook(usePresentationParticipants);
+    const { unmount } = renderHook(useSpeakerViewParticipants);
     unmount();
     expect(mockRoom.listenerCount('participantConnected')).toBe(0);
     expect(mockRoom.listenerCount('participantDisconnected')).toBe(0);

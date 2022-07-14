@@ -1,6 +1,6 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import useGridLayout, { layoutIsTooSmall } from './useGridLayout';
+import useGalleryViewLayout, { layoutIsTooSmall } from './useGalleryViewLayout';
 
 class MockResizeObserver {
   observe() {}
@@ -11,11 +11,11 @@ class MockResizeObserver {
 window.ResizeObserver = MockResizeObserver as any;
 
 describe('the layoutIsTooSmall function', () => {
-  it('should return false if the grid is taller than the height of the app container', () => {
+  it('should return false if the gallery is taller than the height of the app container', () => {
     expect(layoutIsTooSmall(989, 3, 1280, 720)).toBe(false);
   });
 
-  it('should return true if the grid is not taller than the app container', () => {
+  it('should return true if the gallery is not taller than the app container', () => {
     expect(layoutIsTooSmall(418, 2, 1280, 720)).toBe(true);
   });
 });
@@ -26,7 +26,7 @@ jest.spyOn(React, 'useRef').mockReturnValue({
   current: mockContainerEl,
 });
 
-describe('the useGridLayout hook', () => {
+describe('the useGalleryViewLayout hook', () => {
   beforeEach(() => {
     // set the default offsetHeight and offsetWidth of the app's container:
     mockContainerEl.offsetHeight = 720;
@@ -47,7 +47,7 @@ describe('the useGridLayout hook', () => {
 
   testInputs.forEach(test => {
     it(`should return a participantVideoWidth of ${test.expectedWidth} when rendering ${test.participants} participant(s)`, () => {
-      const { result } = renderHook(() => useGridLayout(test.participants));
+      const { result } = renderHook(() => useGalleryViewLayout(test.participants));
       expect(result.current.participantVideoWidth).toBe(test.expectedWidth);
     });
   });
@@ -56,7 +56,7 @@ describe('the useGridLayout hook', () => {
     jest.spyOn(React, 'useRef').mockReturnValueOnce({
       current: null,
     });
-    const { result } = renderHook(() => useGridLayout(3));
+    const { result } = renderHook(() => useGalleryViewLayout(3));
     expect(result.current.participantVideoWidth).toBe(0);
   });
 });

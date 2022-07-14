@@ -3,7 +3,7 @@ import { RemoteParticipant } from 'twilio-video';
 import useDominantSpeaker from '../useDominantSpeaker/useDominantSpeaker';
 import useVideoContext from '../useVideoContext/useVideoContext';
 
-export default function usePresentationParticipants() {
+export default function useSpeakerViewParticipants() {
   const { room } = useVideoContext();
   const dominantSpeaker = useDominantSpeaker();
   const [participants, setParticipants] = useState(Array.from(room?.participants.values() ?? []));

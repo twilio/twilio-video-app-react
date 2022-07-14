@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { GRID_VIEW_ASPECT_RATIO, GRID_VIEW_MARGIN } from '../../constants';
+import { GALLERY_VIEW_ASPECT_RATIO, GALLERY_VIEW_MARGIN } from '../../constants';
 
 /**
  * This function determines how many columns and rows are to be used
- * for the grid layout given a specific video size.
+ * for the gallery view layout given a specific video size.
  */
 
 export const layoutIsTooSmall = (
@@ -13,32 +13,32 @@ export const layoutIsTooSmall = (
   containerHeight: number
 ) => {
   const videoWidth = newVideoSize;
-  const videoHeight = newVideoSize * GRID_VIEW_ASPECT_RATIO;
+  const videoHeight = newVideoSize * GALLERY_VIEW_ASPECT_RATIO;
 
   const columns = Math.floor(containerWidth / videoWidth);
   const rows = Math.ceil(participantCount / columns);
 
-  // Return false if the new grid size is taller than the app's container:
+  // Return false if the new gallery view size is taller than the app's container:
   return rows * videoHeight <= containerHeight;
 };
 
 /**
  * This hook returns the appropriate width for each participant's video and a ref
  * to be used for the app's container. The actual layout is determined by CSS Flexbox.
- * This ensures that the grid of participants' videos will always fit within the given screen size.
+ * This ensures that the gallery view of participants' videos will always fit within the given screen size.
  */
 
-export default function useGridLayout(participantCount: number) {
+export default function useGalleryViewLayout(participantCount: number) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [participantVideoWidth, setParticipantVideoWidth] = useState(0);
 
   const updateLayout = useCallback(() => {
     if (!containerRef.current) return;
-    const containerWidth = containerRef.current.offsetWidth - GRID_VIEW_MARGIN * 2;
+    const containerWidth = containerRef.current.offsetWidth - GALLERY_VIEW_MARGIN * 2;
     // Ensure participant tiles cannot be collapsed down to 0 by giving the container a minimum height of 75:
-    const containerHeight = Math.max(containerRef.current.offsetHeight - GRID_VIEW_MARGIN * 2, 75);
+    const containerHeight = Math.max(containerRef.current.offsetHeight - GALLERY_VIEW_MARGIN * 2, 75);
 
-    // Here we use binary search to guess the new size of each video in the grid
+    // Here we use binary search to guess the new size of each video in the gallery view
     // so that they all fit nicely for any screen size up to a width of 16384px.
     let minVideoWidth = 0;
     let maxVideoWidth = 2 ** 14;
@@ -56,7 +56,7 @@ export default function useGridLayout(participantCount: number) {
 
     let newParticipantVideoWidth = Math.ceil(minVideoWidth);
 
-    setParticipantVideoWidth(newParticipantVideoWidth - GRID_VIEW_MARGIN * 2);
+    setParticipantVideoWidth(newParticipantVideoWidth - GALLERY_VIEW_MARGIN * 2);
   }, [participantCount]);
 
   useEffect(() => {
