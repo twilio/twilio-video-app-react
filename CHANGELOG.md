@@ -1,8 +1,12 @@
-## 0.7.0 (July 5, 2022)
+## 0.7.0 (July 6, 2022)
 
 ### New Feature
 
 - This release adds a Gallery View feature. Gallery View is an additional layout setting which allows users to view other participants' videos in the form of a grid. Users can update the max number of participants per page via the Audio and Video Settings > Gallery View. Users can also switch to Speaker View (the app's original layout) by accessing the More menu. Please note that Gallery View will be enabled by default.
+
+### Dependency Upgrade
+
+- `twilio-video` has been upgraded from 2.21.2 to 2.22.0.
 
 ### Bugfixes
 
