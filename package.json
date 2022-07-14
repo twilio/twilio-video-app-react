@@ -46,7 +46,7 @@
     "swiper": "^8.1.5",
     "ts-node": "^9.1.1",
     "twilio": "^3.63.1",
-    "twilio-video": "https://github.com/twilio/twilio-video.js/archive/refs/tags/3.0.0-rc6.tar.gz",
+    "twilio-video": "https://github.com/twilio/twilio-video.js/archive/refs/tags/3.0.0-rc7.tar.gz",
     "typescript": "^4.6.2"
   },
   "devDependencies": {
