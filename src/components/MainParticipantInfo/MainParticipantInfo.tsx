@@ -213,13 +213,11 @@ export default function MainParticipantInfo({ participant, children }: MainParti
           <AvatarIcon />
         </div>
       )}
-      {isVideoSwitchedOff && (
-        <div className={clsx(classes.trackSwitchOffContainer, { [classes.isSwitchedOff]: isVideoSwitchedOff })}>
-          <Typography variant="body1" className={classes.switchedOffMessage}>
-            Video has been switched off to conserve bandwidth.
-          </Typography>
-        </div>
-      )}
+      <div className={clsx(classes.trackSwitchOffContainer, { [classes.isSwitchedOff]: isVideoSwitchedOff })}>
+        <Typography variant="body1" className={classes.switchedOffMessage}>
+          Video has been switched off to conserve bandwidth.
+        </Typography>
+      </div>
       {isParticipantReconnecting && (
         <div className={classes.reconnectingContainer}>
           <Typography variant="body1" style={{ color: 'white' }}>
