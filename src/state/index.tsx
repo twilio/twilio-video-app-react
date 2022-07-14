@@ -6,7 +6,7 @@ import useActiveSinkId from './useActiveSinkId/useActiveSinkId';
 import useFirebaseAuth from './useFirebaseAuth/useFirebaseAuth';
 import { useLocalStorageState } from '../hooks/useLocalStorageState/useLocalStorageState';
 import usePasscodeAuth from './usePasscodeAuth/usePasscodeAuth';
-import { User } from 'firebase';
+import { User } from 'firebase/auth';
 
 export interface StateContextType {
   error: TwilioError | Error | null;
