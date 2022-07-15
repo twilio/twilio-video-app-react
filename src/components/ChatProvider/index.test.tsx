@@ -5,6 +5,7 @@ import { Client } from '@twilio/conversations';
 import { mockConversation, mockClient } from '../../__mocks__/@twilio/conversations';
 import useChatContext from '../../hooks/useChatContext/useChatContext';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import { setImmediate } from 'timers';
 
 jest.mock('@twilio/conversations');
 jest.mock('../../hooks/useVideoContext/useVideoContext');

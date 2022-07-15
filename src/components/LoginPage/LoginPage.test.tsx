@@ -3,6 +3,7 @@ import LoginPage from './LoginPage';
 import { act, fireEvent, render, waitForElement } from '@testing-library/react';
 import { useAppState } from '../../state';
 import { useLocation, useHistory } from 'react-router-dom';
+import { setImmediate } from 'timers';
 
 jest.mock('react-router-dom', () => {
   return {

@@ -7,6 +7,7 @@ import { useAppState } from '../../../state';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 import ToggleVideoButton from '../../Buttons/ToggleVideoButton/ToggleVideoButton';
 import ToggleAudioButton from '../../Buttons/ToggleAudioButton/ToggleAudioButton';
+import { setImmediate } from 'timers';
 
 const mockUseAppState = useAppState as jest.Mock<any>;
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;

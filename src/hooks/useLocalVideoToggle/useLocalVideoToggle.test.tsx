@@ -3,6 +3,7 @@ import useLocalVideoToggle from './useLocalVideoToggle';
 import useVideoContext from '../useVideoContext/useVideoContext';
 import { EventEmitter } from 'events';
 import { LocalParticipant } from 'twilio-video';
+import { setImmediate } from 'timers';
 
 jest.mock('../useVideoContext/useVideoContext');
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
@@ -91,7 +92,7 @@ describe('the useLocalVideoToggle hook', () => {
       expect(mockGetLocalVideoTrack).toHaveBeenCalled();
     });
 
-    it('should call mockLocalParticipant.publishTrack when a localVideoTrack does not exist and localParticipant does exist', async done => {
+    it('should call mockLocalParticipant.publishTrack when a localVideoTrack does not exist and localParticipant does exist', async () => {
       const mockGetLocalVideoTrack = jest.fn(() => Promise.resolve('mockTrack'));
 
       const mockLocalParticipant = new EventEmitter() as LocalParticipant;
@@ -110,7 +111,7 @@ describe('the useLocalVideoToggle hook', () => {
       await waitForNextUpdate();
       setImmediate(() => {
         expect(mockLocalParticipant.publishTrack).toHaveBeenCalledWith('mockTrack', { priority: 'low' });
-        done();
+        return Promise.resolve();
       });
     });
 
