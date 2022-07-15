@@ -11,7 +11,7 @@ exports[`the GalleryView component should render correctly 1`] = `
       className="makeStyles-paginationButton-7"
       onClick={[Function]}
     >
-      <Memo([object Object]) />
+      <Memo(ForwardRef(ArrowBackIcon)) />
     </WithStyles(ForwardRef(IconButton))>
   </div>
   <div
@@ -21,7 +21,7 @@ exports[`the GalleryView component should render correctly 1`] = `
       className="makeStyles-paginationButton-7"
       onClick={[Function]}
     >
-      <Memo([object Object]) />
+      <Memo(ForwardRef(ArrowForwardIcon)) />
     </WithStyles(ForwardRef(IconButton))>
   </div>
   <div
