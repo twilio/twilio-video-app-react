@@ -7,7 +7,7 @@ import { shallow } from 'enzyme';
 import useHeight from './hooks/useHeight/useHeight';
 import useRoomState from './hooks/useRoomState/useRoomState';
 
-jest.mock('swiper/react/swiper-react.js', () => ({
+jest.mock('swiper/react', () => ({
   Swiper: jest.fn(),
   SwiperSlide: jest.fn(),
 }));
