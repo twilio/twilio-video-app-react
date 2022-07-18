@@ -18,7 +18,6 @@ module.exports = {
     '.+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$': '<rootDir>/src/__mocks__/fileMock.ts',
     "swiper/react": "<rootDir>/node_modules/swiper/react/swiper-react.js",
     "swiper/css": "<rootDir>/node_modules/swiper/swiper.min.css",
-    "swiper/css/bundle": "<rootDir>/node_modules/swiper/swiper-bundle.min.css",
     "swiper/css/pagination": "<rootDir>/node_modules/swiper/modules/autoplay/pagination.min.css"
   },
 };
