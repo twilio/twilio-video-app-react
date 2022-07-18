@@ -17,7 +17,7 @@ You may serve it with a static server:
 
 Find out more about deployment here:
 
-  bit.ly/CRA-deploy
+    https://cra.link/deployment
 
 `;
 
