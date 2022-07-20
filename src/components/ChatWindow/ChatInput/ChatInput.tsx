@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, CircularProgress, Grid, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
-import { Conversation } from '@twilio/conversations/lib/conversation';
+import { Conversation } from '@twilio/conversations';
 import FileAttachmentIcon from '../../../icons/FileAttachmentIcon';
 import { isMobile } from '../../../utils';
 import SendMessageIcon from '../../../icons/SendMessageIcon';
@@ -113,7 +113,7 @@ export default function ChatInput({ conversation, isChatWindowOpen }: ChatInputP
       setFileSendError(null);
       conversation
         .sendMessage(formData)
-        .catch(e => {
+        .catch((e: Error) => {
           if (e.code === 413) {
             setFileSendError('File size is too large. Maximum file size is 150MB.');
           } else {
