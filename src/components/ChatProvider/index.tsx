@@ -13,13 +13,6 @@ type ChatContextType = {
   conversation: Conversation | null;
 };
 
-type connectErrorObj = {
-  terminal: boolean;
-  message: string;
-  httpStatusCode?: number;
-  errorCode?: number;
-};
-
 export const ChatContext = createContext<ChatContextType>(null!);
 
 export const ChatProvider: React.FC = ({ children }) => {
@@ -36,24 +29,20 @@ export const ChatProvider: React.FC = ({ children }) => {
       const client = new Client(token);
 
       const handleClientInitialized = (state: string) => {
+        console.log('event emitted');
         if (state === 'initialized') {
           // @ts-ignore
           window.chatClient = client;
           setChatClient(client);
+        } else if (state === 'failed') {
+          onError(new Error("There was a problem connecting to Twilio's conversation service."));
         }
       };
 
-      const handleConnectionError = (error: connectErrorObj) => {
-        console.log(error.message);
-        onError(new Error("There was a problem connecting to Twilio's conversation service."));
-      };
-
       client.on('stateChanged', handleClientInitialized);
-      client.on('connectionError', handleConnectionError);
 
       return () => {
         client.off('stateChanged', handleClientInitialized);
-        client.off('connectionError', handleConnectionError);
       };
     },
     [onError]

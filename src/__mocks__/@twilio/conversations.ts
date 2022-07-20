@@ -7,8 +7,10 @@ const mockClient = {
   getConversationByUniqueName: jest.fn(() => Promise.resolve(mockConversation)),
 };
 
-const Client = {
-  create: jest.fn(() => Promise.resolve(mockClient)),
-};
+const mockGetConversationByUniqueName = jest.fn(() => Promise.resolve(mockConversation));
 
-export { Client, mockClient, mockConversation };
+class Client extends EventEmitter {
+  getConversationByUniqueName = mockGetConversationByUniqueName;
+}
+
+export { Client, mockClient, mockConversation, mockGetConversationByUniqueName };
