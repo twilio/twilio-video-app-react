@@ -29,7 +29,6 @@ export const ChatProvider: React.FC = ({ children }) => {
       const client = new Client(token);
 
       const handleClientInitialized = (state: string) => {
-        console.log('event emitted');
         if (state === 'initialized') {
           // @ts-ignore
           window.chatClient = client;

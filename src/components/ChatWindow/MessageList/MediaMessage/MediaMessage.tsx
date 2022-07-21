@@ -1,4 +1,3 @@
-import React from 'react';
 import FileDownloadIcon from '../../../../icons/FileDownloadIcon';
 import { makeStyles } from '@material-ui/core/styles';
 import { Media } from '@twilio/conversations';
@@ -51,8 +50,8 @@ export default function FileMessage({ media }: MediaMessageProps) {
   const classes = useStyles();
 
   const handleClick = () => {
-    media.map(m => {
-      return m.getContentTemporaryUrl().then(url => {
+    media.map(mediaMessage => {
+      return mediaMessage.getContentTemporaryUrl().then(url => {
         const anchorEl = document.createElement('a');
 
         anchorEl.href = url!;
@@ -69,15 +68,15 @@ export default function FileMessage({ media }: MediaMessageProps) {
 
   return (
     <div className={classes.messageContainer} onClick={handleClick}>
-      {media!.map(m => {
+      {media?.map((mediaMessage, i) => {
         return (
           <>
-            <div className={classes.iconContainer}>
+            <div className={classes.iconContainer} key={i}>
               <FileDownloadIcon />
             </div>
             <div className={classes.mediaInfo}>
-              <p className={classes.filename}>{m.filename}</p>
-              <p className={classes.size}>{formatFileSize(m.size)} - Click to open</p>
+              <p className={classes.filename}>{mediaMessage.filename}</p>
+              <p className={classes.size}>{formatFileSize(mediaMessage.size)} - Click to open</p>
             </div>
           </>
         );

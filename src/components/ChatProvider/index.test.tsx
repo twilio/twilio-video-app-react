@@ -1,18 +1,19 @@
 import React from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { ChatProvider } from './index';
-import { Client } from '@twilio/conversations';
-import { mockConversation, mockGetConversationByUniqueName, mockClient } from '../../__mocks__/@twilio/conversations';
 import useChatContext from '../../hooks/useChatContext/useChatContext';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { setImmediate } from 'timers';
 import EventEmitter from 'events';
 
+const mockConversation: any = new EventEmitter();
+mockConversation.getMessages = jest.fn(() => Promise.resolve({ items: ['mockMessage'] }));
+
 const mockConversationsClient: any = new EventEmitter();
 mockConversationsClient.getConversationByUniqueName = jest.fn(() => Promise.resolve(mockConversation));
 
 jest.mock('@twilio/conversations', () => {
-  return { Client: jest.fn().mockImplementation(() => mockConversationsClient) };
+  return { Client: jest.fn(() => mockConversationsClient) };
 });
 jest.mock('../../hooks/useVideoContext/useVideoContext');
 
@@ -28,12 +29,12 @@ describe('the ChatProvider component', () => {
     mockUseVideoContext.mockImplementation(() => ({ room: mockRoom, onError: mockOnError }));
   });
 
-  it.only('should return a Conversation after connect has been called and after a room exists', async () => {
+  it('should return a Conversation after connect has been called and after a room exists', async () => {
     // Setup mock as if user is not connected to a room
-    mockUseVideoContext.mockImplementation(() => ({}));
+    mockUseVideoContext.mockImplementation(() => ({ onError: mockOnError }));
     const { result, rerender, waitForNextUpdate } = renderHook(useChatContext, { wrapper });
 
-    act(() => {
+    await act(() => {
       result.current.connect('mockToken');
       mockConversationsClient.emit('stateChanged', 'initialized');
     });
@@ -53,7 +54,10 @@ describe('the ChatProvider component', () => {
 
   it('should load all messages after obtaining a conversation', async () => {
     const { result, waitForNextUpdate } = renderHook(useChatContext, { wrapper });
-    result.current.connect('mockToken');
+    act(() => {
+      result.current.connect('mockToken');
+      mockConversationsClient.emit('stateChanged', 'initialized');
+    });
     await waitForNextUpdate();
 
     expect(result.current.messages).toEqual(['mockMessage']);
@@ -61,7 +65,10 @@ describe('the ChatProvider component', () => {
 
   it('should add new messages to the "messages" array', async () => {
     const { result, waitForNextUpdate } = renderHook(useChatContext, { wrapper });
-    result.current.connect('mockToken');
+    act(() => {
+      result.current.connect('mockToken');
+      mockConversationsClient.emit('stateChanged', 'initialized');
+    });
     await waitForNextUpdate();
 
     act(() => {
@@ -76,7 +83,10 @@ describe('the ChatProvider component', () => {
 
     expect(result.current.hasUnreadMessages).toBe(false);
 
-    result.current.connect('mockToken');
+    act(() => {
+      result.current.connect('mockToken');
+      mockConversationsClient.emit('stateChanged', 'initialized');
+    });
     await waitForNextUpdate();
 
     expect(result.current.hasUnreadMessages).toBe(true);
@@ -90,7 +100,10 @@ describe('the ChatProvider component', () => {
       result.current.setIsChatWindowOpen(true);
     });
 
-    result.current.connect('mockToken');
+    act(() => {
+      result.current.connect('mockToken');
+      mockConversationsClient.emit('stateChanged', 'initialized');
+    });
     await waitForNextUpdate();
 
     expect(result.current.hasUnreadMessages).toBe(false);
@@ -100,7 +113,10 @@ describe('the ChatProvider component', () => {
     // Setup mock so that no messages are loaded after a conversation is obtained.
     mockConversation.getMessages.mockImplementationOnce(() => Promise.resolve({ items: [] }));
     const { result, waitForNextUpdate } = renderHook(useChatContext, { wrapper });
-    result.current.connect('mockToken');
+    act(() => {
+      result.current.connect('mockToken');
+      mockConversationsClient.emit('stateChanged', 'initialized');
+    });
     await waitForNextUpdate();
 
     expect(result.current.hasUnreadMessages).toBe(false);
@@ -116,7 +132,10 @@ describe('the ChatProvider component', () => {
     // Setup mock so that no messages are loaded after a conversation is obtained.
     mockConversation.getMessages.mockImplementationOnce(() => Promise.resolve({ items: [] }));
     const { result, waitForNextUpdate } = renderHook(useChatContext, { wrapper });
-    result.current.connect('mockToken');
+    act(() => {
+      result.current.connect('mockToken');
+      mockConversationsClient.emit('stateChanged', 'initialized');
+    });
     await waitForNextUpdate();
 
     expect(result.current.hasUnreadMessages).toBe(false);
@@ -132,7 +151,10 @@ describe('the ChatProvider component', () => {
 
   it('should set hasUnreadMessages to false when the chat window is opened', async () => {
     const { result, waitForNextUpdate } = renderHook(useChatContext, { wrapper });
-    result.current.connect('mockToken');
+    act(() => {
+      result.current.connect('mockToken');
+      mockConversationsClient.emit('stateChanged', 'initialized');
+    });
     await waitForNextUpdate();
 
     expect(result.current.hasUnreadMessages).toBe(true);
@@ -140,31 +162,34 @@ describe('the ChatProvider component', () => {
     act(() => {
       result.current.setIsChatWindowOpen(true);
     });
-
     expect(result.current.hasUnreadMessages).toBe(false);
   });
 
-  // it('should call onError when there is an error connecting with the conversations client', done => {
-  //   mockClientCreate.mockImplementationOnce(() => Promise.reject('mockError'));
-  //   const { result } = renderHook(useChatContext, { wrapper });
-  //   result.current.connect('mockToken');
+  it('should call onError when there is an error connecting with the conversations client', () => {
+    const { result } = renderHook(useChatContext, { wrapper });
 
-  //   setImmediate(() => {
-  //     expect(mockOnError).toHaveBeenCalledWith(
-  //       new Error("There was a problem connecting to Twilio's conversation service.")
-  //     );
-  //     done();
-  //   });
-  // });
-
-  it('should call onError when there is an error obtaining the conversation', async () => {
-    mockGetConversationByUniqueName.mockImplementationOnce(() => Promise.reject('mockError'));
-    const { result, waitForNextUpdate } = renderHook(useChatContext, { wrapper });
     result.current.connect('mockToken');
-    await waitForNextUpdate();
+    mockConversationsClient.emit('stateChanged', 'failed');
 
     expect(mockOnError).toHaveBeenCalledWith(
-      new Error('There was a problem getting the Conversation associated with this room.')
+      new Error("There was a problem connecting to Twilio's conversation service.")
     );
+  });
+
+  it('should call onError when there is an error getting the conversation', done => {
+    mockConversationsClient.getConversationByUniqueName.mockImplementationOnce(() => Promise.reject('mockError'));
+    const { result } = renderHook(useChatContext, { wrapper });
+
+    act(() => {
+      result.current.connect('mockToken');
+      mockConversationsClient.emit('stateChanged', 'initialized');
+    });
+
+    setImmediate(() => {
+      expect(mockOnError).toHaveBeenCalledWith(
+        new Error('There was a problem getting the Conversation associated with this room.')
+      );
+      done();
+    });
   });
 });

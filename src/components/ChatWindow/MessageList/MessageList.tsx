@@ -31,10 +31,10 @@ export default function MessageList({ messages }: MessageListProps) {
         return (
           <React.Fragment key={message.sid}>
             {shouldDisplayMessageInfo && (
-              <MessageInfo author={message!.author!} isLocalParticipant={isLocalParticipant} dateCreated={time} />
+              <MessageInfo author={message.author!} isLocalParticipant={isLocalParticipant} dateCreated={time} />
             )}
-            {message.type === 'text' && <TextMessage body={message!.body!} isLocalParticipant={isLocalParticipant} />}
-            {message.type === 'media' && <MediaMessage media={message!.attachedMedia!} />}
+            {message.type === 'text' && <TextMessage body={message.body!} isLocalParticipant={isLocalParticipant} />}
+            {message.type === 'media' && <MediaMessage media={message.attachedMedia!} />}
           </React.Fragment>
         );
       })}
