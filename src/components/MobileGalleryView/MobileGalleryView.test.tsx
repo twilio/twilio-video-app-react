@@ -6,7 +6,7 @@ import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 const mockLocalParticipant = { identity: 'test-local-participant', sid: 0 };
 
-jest.mock('swiper/react/swiper-react.js', () => ({
+jest.mock('swiper/react', () => ({
   Swiper: jest.fn(),
   SwiperSlide: jest.fn(),
 }));

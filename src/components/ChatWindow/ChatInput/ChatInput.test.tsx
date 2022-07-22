@@ -8,6 +8,7 @@ import FileAttachmentIcon from '../../../icons/FileAttachmentIcon';
 import SendMessageIcon from '../../../icons/SendMessageIcon';
 import Snackbar from '../../Snackbar/Snackbar';
 import * as utils from '../../../utils';
+import { setImmediate } from 'timers';
 
 jest.mock('@material-ui/core/useMediaQuery');
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Message } from '@twilio/conversations/lib/message';
+import { Message } from '@twilio/conversations';
 import MessageInfo from './MessageInfo/MessageInfo';
 import MessageListScrollContainer from './MessageListScrollContainer/MessageListScrollContainer';
 import TextMessage from './TextMessage/TextMessage';
@@ -11,7 +11,7 @@ interface MessageListProps {
 }
 
 const getFormattedTime = (message?: Message) =>
-  message?.dateCreated.toLocaleTimeString('en-us', { hour: 'numeric', minute: 'numeric' }).toLowerCase();
+  message?.dateCreated?.toLocaleTimeString('en-us', { hour: 'numeric', minute: 'numeric' }).toLowerCase();
 
 export default function MessageList({ messages }: MessageListProps) {
   const { room } = useVideoContext();
@@ -31,10 +31,10 @@ export default function MessageList({ messages }: MessageListProps) {
         return (
           <React.Fragment key={message.sid}>
             {shouldDisplayMessageInfo && (
-              <MessageInfo author={message.author} isLocalParticipant={isLocalParticipant} dateCreated={time} />
+              <MessageInfo author={message.author!} isLocalParticipant={isLocalParticipant} dateCreated={time} />
             )}
-            {message.type === 'text' && <TextMessage body={message.body} isLocalParticipant={isLocalParticipant} />}
-            {message.type === 'media' && <MediaMessage media={message.media} />}
+            {message.type === 'text' && <TextMessage body={message.body!} isLocalParticipant={isLocalParticipant} />}
+            {message.type === 'media' && <MediaMessage media={message.attachedMedia![0]} />}
           </React.Fragment>
         );
       })}
