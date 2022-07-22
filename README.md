@@ -63,9 +63,13 @@ Login to the Twilio CLI. You will be prompted for your Account SID and Auth Toke
 
 This app requires an additional plugin. Install the CLI plugin with:
 
-    twilio plugins:install @twilio-labs/plugin-rtc
+    twilio plugins:install https://github.com/twilio-labs/plugin-rtc.git#large-rooms
 
-**Note:** If you have previously installed the `@twilio-labs/plugin-rtc` plugin, please make sure that you are using the most recent version. You can upgrade the plugin by running `twilio plugins:update`. The chat feature requires version 0.8.1 or greater of `@twilio-labs/plugin-rtc`.
+This will install the `large-rooms` branch of the `plugin-rtc` Twilio CLI plugin.
+
+**Note:** When installing this Twilio CLI plugin, the Twilio CLI may warn you that you are install a plugin from an untrusted source. You may ignore this warning and proceed with installation.
+
+**Note:** If you have previously installed the `@twilio-labs/plugin-rtc` plugin, please make sure that you uninstall it first. You can uninstall the plugin by running `twilio plugins:uninstall @twilio/plugin-rtc`.
 
 ## Deploy the app to Twilio
 
