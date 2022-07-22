@@ -1,4 +1,3 @@
-import React from 'react';
 import FileDownloadIcon from '../../../../icons/FileDownloadIcon';
 import { makeStyles } from '@material-ui/core/styles';
 import { Media } from '@twilio/conversations';
@@ -38,7 +37,7 @@ const useStyles = makeStyles({
 });
 
 interface MediaMessageProps {
-  media: Media[];
+  media: Media;
 }
 
 export function formatFileSize(bytes: number, suffixIndex = 0): string {
@@ -51,37 +50,29 @@ export default function FileMessage({ media }: MediaMessageProps) {
   const classes = useStyles();
 
   const handleClick = () => {
-    media.map(mediaMessage => {
-      return mediaMessage.getContentTemporaryUrl().then(url => {
-        const anchorEl = document.createElement('a');
+    media.getContentTemporaryUrl().then(url => {
+      const anchorEl = document.createElement('a');
 
-        anchorEl.href = url!;
-        anchorEl.target = '_blank';
-        anchorEl.rel = 'noopener';
+      anchorEl.href = url!;
+      anchorEl.target = '_blank';
+      anchorEl.rel = 'noopener';
 
-        // setTimeout is needed in order to open files in iOS Safari.
-        setTimeout(() => {
-          anchorEl.click();
-        });
+      // setTimeout is needed in order to open files in iOS Safari.
+      setTimeout(() => {
+        anchorEl.click();
       });
     });
   };
 
   return (
     <div className={classes.messageContainer} onClick={handleClick}>
-      {media?.map((mediaMessage, i) => {
-        return (
-          <React.Fragment key={i}>
-            <div className={classes.iconContainer}>
-              <FileDownloadIcon />
-            </div>
-            <div className={classes.mediaInfo}>
-              <p className={classes.filename}>{mediaMessage.filename}</p>
-              <p className={classes.size}>{formatFileSize(mediaMessage.size)} - Click to open</p>
-            </div>
-          </React.Fragment>
-        );
-      })}
+      <div className={classes.iconContainer}>
+        <FileDownloadIcon />
+      </div>
+      <div className={classes.mediaInfo}>
+        <p className={classes.filename}>{media.filename}</p>
+        <p className={classes.size}>{formatFileSize(media.size)} - Click to open</p>
+      </div>
     </div>
   );
 }

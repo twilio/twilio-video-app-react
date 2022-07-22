@@ -26,13 +26,11 @@ describe('the formatFileSize function', () => {
 
 describe('the MediaMessage component', () => {
   it('should get the file URL and load it in a new tab when clicked', done => {
-    const mockMedia = [
-      {
-        filename: 'foo.txt',
-        size: 123,
-        getContentTemporaryUrl: () => Promise.resolve('http://twilio.com/foo.txt'),
-      },
-    ] as Media[];
+    const mockMedia = {
+      filename: 'foo.txt',
+      size: 123,
+      getContentTemporaryUrl: () => Promise.resolve('http://twilio.com/foo.txt'),
+    } as Media;
 
     const mockAnchorElement = document.createElement('a');
     mockAnchorElement.click = jest.fn();
