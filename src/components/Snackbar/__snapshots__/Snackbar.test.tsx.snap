@@ -47,7 +47,7 @@ exports[`the Snackbar component should render correctly with "error" variant 1`]
         onClick={[Function]}
         size="small"
       >
-        <Memo([object Object])
+        <Memo(ForwardRef(CloseIcon))
           fontSize="small"
         />
       </WithStyles(ForwardRef(IconButton))>
@@ -103,7 +103,7 @@ exports[`the Snackbar component should render correctly with "info" variant 1`] 
         onClick={[Function]}
         size="small"
       >
-        <Memo([object Object])
+        <Memo(ForwardRef(CloseIcon))
           fontSize="small"
         />
       </WithStyles(ForwardRef(IconButton))>
@@ -159,7 +159,7 @@ exports[`the Snackbar component should render correctly with "warning" variant 1
         onClick={[Function]}
         size="small"
       >
-        <Memo([object Object])
+        <Memo(ForwardRef(CloseIcon))
           fontSize="small"
         />
       </WithStyles(ForwardRef(IconButton))>

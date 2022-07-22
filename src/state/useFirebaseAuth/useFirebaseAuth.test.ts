@@ -1,22 +1,26 @@
 import useFirebaseAuth from './useFirebaseAuth';
 import { renderHook } from '@testing-library/react-hooks';
+import { setImmediate } from 'timers';
 
 const mockUser = { getIdToken: () => Promise.resolve('idToken') };
 
-jest.mock('firebase/app', () => {
+jest.mock('firebase/app', () => ({
+  initializeApp: jest.fn(),
+}));
+
+jest.mock('firebase/auth', () => {
   const mockAuth = () => ({
     onAuthStateChanged: (fn: Function) => setImmediate(() => fn('mockUser')),
-    signInWithPopup: jest.fn(() => Promise.resolve({ user: mockUser })),
     signOut: jest.fn(() => Promise.resolve()),
   });
-  mockAuth.GoogleAuthProvider = jest.fn(() => ({ addScope: jest.fn() }));
+  const mockSignInWithPopup = jest.fn(() => Promise.resolve({ user: mockUser }));
+  const mockGoogleAuthProvider = jest.fn(() => ({ addScope: jest.fn() }));
   return {
-    auth: mockAuth,
-    initializeApp: jest.fn(),
+    getAuth: mockAuth,
+    signInWithPopup: mockSignInWithPopup,
+    GoogleAuthProvider: mockGoogleAuthProvider,
   };
 });
-
-jest.mock('firebase/auth');
 
 // @ts-ignore
 window.fetch = jest.fn(() => Promise.resolve({ json: () => ({ token: 'mockVideoToken' }) }));
