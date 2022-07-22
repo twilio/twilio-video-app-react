@@ -196,28 +196,6 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
                 onChange={handleNumberChange}
               />
             </FormControl>
-            <FormControl className={classes.formControl}>
-              <TextField
-                disabled={isDisabled}
-                fullWidth
-                id={inputLabels.maxAudioTracks}
-                label="Max Audio Tracks"
-                name={inputLabels.maxAudioTracks}
-                value={withDefault(settings.maxAudioTracks)}
-                onChange={handleNumberChange}
-              />
-            </FormControl>
-            <FormControl className={classes.formControl}>
-              <TextField
-                disabled={isDisabled}
-                fullWidth
-                id={inputLabels.maxVideoTracks}
-                label="Max Video Tracks"
-                name={inputLabels.maxVideoTracks}
-                value={withDefault(settings.maxVideoTracks)}
-                onChange={handleNumberChange}
-              />
-            </FormControl>
           </Grid>
         </Grid>
       </DialogContent>

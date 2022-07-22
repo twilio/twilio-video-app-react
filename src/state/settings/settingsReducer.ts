@@ -10,8 +10,6 @@ export interface Settings {
   contentPreferencesMode?: 'auto' | 'manual';
   clientTrackSwitchOffControl?: 'auto' | 'manual';
   adaptiveSimulcast: string;
-  maxAudioTracks: string;
-  maxVideoTracks: string;
 }
 
 type SettingsKeys = keyof Settings;
@@ -29,8 +27,6 @@ export const initialSettings: Settings = {
   contentPreferencesMode: 'auto',
   clientTrackSwitchOffControl: 'auto',
   adaptiveSimulcast: searchParams.get('adaptiveSimulcast') ?? 'true',
-  maxAudioTracks: searchParams.get('maxAudioTracks') ?? '25',
-  maxVideoTracks: searchParams.get('maxVideoTracks') ?? '25',
 };
 
 // This inputLabels object is used by ConnectionOptions.tsx. It is used to populate the id, name, and label props

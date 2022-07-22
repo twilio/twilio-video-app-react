@@ -2,6 +2,8 @@ import { ConnectOptions } from 'twilio-video';
 import { isMobile, removeUndefineds } from '..';
 import { useAppState } from '../../state';
 
+const searchParams = new URLSearchParams(window.location.search);
+
 export default function useConnectionOptions() {
   const { settings } = useAppState();
 
@@ -19,10 +21,14 @@ export default function useConnectionOptions() {
         trackSwitchOffMode: settings.trackSwitchOffMode,
         contentPreferencesMode: settings.contentPreferencesMode,
         clientTrackSwitchOffControl: settings.clientTrackSwitchOffControl,
-        maxSwitchedOnTracks: parseInt(settings.maxVideoTracks),
+        maxSwitchedOnTracks: searchParams.get('maxVideoTracks')
+          ? parseInt(searchParams.get('maxVideoTracks')!)
+          : undefined,
       },
       audio: {
-        maxSwitchedOnTracks: parseInt(settings.maxAudioTracks),
+        maxSwitchedOnTracks: searchParams.get('maxAudioTracks')
+          ? parseInt(searchParams.get('maxAudioTracks')!)
+          : undefined,
       },
     },
     dominantSpeaker: true,
@@ -49,6 +55,5 @@ export default function useConnectionOptions() {
 
   // Here we remove any 'undefined' values. The twilio-video SDK will only use defaults
   // when no value is passed for an option. It will throw an error when 'undefined' is passed.
-  console.log(removeUndefineds(connectionOptions));
   return removeUndefineds(connectionOptions);
 }
