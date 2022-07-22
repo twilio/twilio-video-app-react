@@ -136,6 +136,20 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
                 <MenuItem value="default">Server Default</MenuItem>
               </Select>
             </FormControl>
+            <FormControl className={classes.formControl}>
+              <InputLabel id={inputLabels.adaptiveSimulcast}>Adaptive Simulcast:</InputLabel>
+              <Select
+                fullWidth
+                disabled={isDisabled}
+                name={inputLabels.adaptiveSimulcast}
+                label={inputLabels.adaptiveSimulcast}
+                value={settings.adaptiveSimulcast}
+                onChange={handleChange}
+              >
+                <MenuItem value="true">On</MenuItem>
+                <MenuItem value="false">Off</MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
           <Grid item sm={6} xs={12}>
             <FormControl className={classes.formControl}>

@@ -16,6 +16,7 @@ import usePublications from '../../hooks/usePublications/usePublications';
 import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 import useTrack from '../../hooks/useTrack/useTrack';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import useTrackSwitchOffReason from '../../hooks/useTrackSwitchOffReason/useTrackSwitchOffReason';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -108,12 +109,19 @@ const useStyles = makeStyles((theme: Theme) => ({
       background: '#A90000',
     },
   },
+  blurredVideo: {
+    '& video': {
+      filter: 'blur(3px) grayscale(1) brightness(0.5)',
+    },
+  },
 }));
 
 interface MainParticipantInfoProps {
   participant: Participant;
   children: React.ReactNode;
 }
+
+const searchParams = new URLSearchParams(window.location.search);
 
 export default function MainParticipantInfo({ participant, children }: MainParticipantInfoProps) {
   const classes = useStyles();
@@ -137,6 +145,8 @@ export default function MainParticipantInfo({ participant, children }: MainParti
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
   const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
+  const switchOffReason = useTrackSwitchOffReason(videoTrack as LocalVideoTrack | RemoteVideoTrack);
+
   const isRecording = useIsRecording();
 
   return (
@@ -145,14 +155,15 @@ export default function MainParticipantInfo({ participant, children }: MainParti
       data-cy-participant={participant.identity}
       className={clsx(classes.container, {
         [classes.fullWidth]: !isRemoteParticipantScreenSharing,
+        [classes.blurredVideo]: isVideoSwitchedOff,
       })}
     >
       <div className={classes.infoContainer}>
         <div style={{ display: 'flex' }}>
           <div className={classes.identity}>
-            <AudioLevelIndicator audioTrack={audioTrack} />
+            {searchParams.get('disableVolumeIndicators') !== 'true' && <AudioLevelIndicator audioTrack={audioTrack} />}
             <Typography variant="body1" color="inherit">
-              {participant.identity}
+              {participant.identity + (switchOffReason ? ' ' + switchOffReason : '')}
               {isLocal && ' (You)'}
               {screenSharePublication && ' - Screen'}
             </Typography>
@@ -173,7 +184,7 @@ export default function MainParticipantInfo({ participant, children }: MainParti
           </Tooltip>
         )}
       </div>
-      {(!isVideoEnabled || isVideoSwitchedOff) && (
+      {!isVideoEnabled && (
         <div className={classes.avatarContainer}>
           <AvatarIcon />
         </div>

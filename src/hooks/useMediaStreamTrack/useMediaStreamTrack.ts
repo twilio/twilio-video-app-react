@@ -9,16 +9,20 @@ import { AudioTrack, VideoTrack } from 'twilio-video';
  * to rerender in response to the mediaStreamTrack changing.
  */
 export default function useMediaStreamTrack(track?: AudioTrack | VideoTrack) {
-  const [mediaStreamTrack, setMediaStreamTrack] = useState(track?.mediaStreamTrack);
+  const [mediaStreamTrack, setMediaStreamTrack] = useState(track?.mediaStreamTrack || null);
 
   useEffect(() => {
-    setMediaStreamTrack(track?.mediaStreamTrack);
+    setMediaStreamTrack(track?.mediaStreamTrack || null);
 
     if (track) {
-      const handleStarted = () => setMediaStreamTrack(track.mediaStreamTrack);
-      track.on('started', handleStarted);
+      const handleEvent = () => setMediaStreamTrack(track.mediaStreamTrack);
+      track.on('started', handleEvent);
+      track.on('switchedOn', handleEvent);
+      track.on('switchedOff', handleEvent);
       return () => {
-        track.off('started', handleStarted);
+        track.off('started', handleEvent);
+        track.off('switchedOn', handleEvent);
+        track.off('switchedOff', handleEvent);
       };
     }
   }, [track]);

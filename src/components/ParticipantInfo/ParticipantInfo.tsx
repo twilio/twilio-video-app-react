@@ -15,8 +15,11 @@ import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
 import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
 import { useAppState } from '../../state';
+import useTrackSwitchOffReason from '../../hooks/useTrackSwitchOffReason/useTrackSwitchOffReason';
 
 const borderWidth = 2;
+
+const searchParams = new URLSearchParams(window.location.search);
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -127,6 +130,14 @@ const useStyles = makeStyles((theme: Theme) =>
     cursorPointer: {
       cursor: 'pointer',
     },
+    blurredVideo: {
+      '& video': {
+        filter: 'blur(3px) grayscale(1) brightness(0.5)',
+      },
+    },
+    dominantSpeaker: {
+      border: `solid ${borderWidth}px #7BEAA5`,
+    },
     galleryView: {
       border: `${theme.participantBorderWidth}px solid ${theme.galleryViewBackgroundColor}`,
       borderRadius: '8px',
@@ -141,9 +152,6 @@ const useStyles = makeStyles((theme: Theme) =>
           objectFit: 'cover !important',
         },
       },
-    },
-    dominantSpeaker: {
-      border: `solid ${borderWidth}px #7BEAA5`,
     },
   })
 );
@@ -183,6 +191,8 @@ export default function ParticipantInfo({
 
   const { isGalleryViewActive } = useAppState();
 
+  const switchOffReason = useTrackSwitchOffReason(videoTrack as LocalVideoTrack | RemoteVideoTrack);
+
   const classes = useStyles();
 
   return (
@@ -190,6 +200,7 @@ export default function ParticipantInfo({
       className={clsx(classes.container, {
         [classes.hideParticipant]: hideParticipant,
         [classes.cursorPointer]: Boolean(onClick),
+        [classes.blurredVideo]: isVideoSwitchedOff,
         [classes.dominantSpeaker]: isDominantSpeaker,
         [classes.galleryView]: isGalleryViewActive,
       })}
@@ -205,9 +216,9 @@ export default function ParticipantInfo({
             </span>
           )}
           <span className={classes.identity}>
-            <AudioLevelIndicator audioTrack={audioTrack} />
+            {searchParams.get('disableVolumeIndicators') !== 'true' && <AudioLevelIndicator audioTrack={audioTrack} />}
             <Typography variant="body1" className={classes.typography} component="span">
-              {participant.identity}
+              {participant.identity + (switchOffReason ? ' ' + switchOffReason : '')}
               {isLocalParticipant && ' (You)'}
             </Typography>
           </span>
@@ -215,7 +226,7 @@ export default function ParticipantInfo({
         <div>{isSelected && <PinIcon />}</div>
       </div>
       <div className={classes.innerContainer}>
-        {(!isVideoEnabled || isVideoSwitchedOff) && (
+        {!isVideoEnabled && (
           <div className={classes.avatarContainer}>
             <AvatarIcon />
           </div>

@@ -2,6 +2,8 @@ import { ConnectOptions } from 'twilio-video';
 import { isMobile, removeUndefineds } from '..';
 import { useAppState } from '../../state';
 
+const searchParams = new URLSearchParams(window.location.search);
+
 export default function useConnectionOptions() {
   const { settings } = useAppState();
 
@@ -19,6 +21,14 @@ export default function useConnectionOptions() {
         trackSwitchOffMode: settings.trackSwitchOffMode,
         contentPreferencesMode: settings.contentPreferencesMode,
         clientTrackSwitchOffControl: settings.clientTrackSwitchOffControl,
+        maxSwitchedOnTracks: searchParams.get('maxVideoTracks')
+          ? parseInt(searchParams.get('maxVideoTracks')!)
+          : undefined,
+      },
+      audio: {
+        maxSwitchedOnTracks: searchParams.get('maxAudioTracks')
+          ? parseInt(searchParams.get('maxAudioTracks')!)
+          : undefined,
       },
     },
     dominantSpeaker: true,
@@ -27,7 +37,7 @@ export default function useConnectionOptions() {
     // Comment this line if you are playing music.
     maxAudioBitrate: Number(settings.maxAudioBitrate),
 
-    preferredVideoCodecs: 'auto',
+    preferredVideoCodecs: settings.adaptiveSimulcast === 'true' ? 'auto' : [{ codec: 'VP8', simulcast: true }],
 
     //@ts-ignore - Internal use only. This property is not exposed in type definitions.
     environment: process.env.REACT_APP_TWILIO_ENVIRONMENT,

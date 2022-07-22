@@ -45,6 +45,22 @@ describe('the useSpeakerViewParticipants hook', () => {
     expect(result.current).toEqual(['participant1', 'participant2']);
   });
 
+  it('should return an array of mockParticipants after a room becomes available', () => {
+    mockedVideoContext.mockImplementation(() => ({
+      room: null,
+    }));
+
+    const { result, rerender } = renderHook(usePresentationParticipants);
+
+    mockedVideoContext.mockImplementation(() => ({
+      room: mockRoom,
+    }));
+
+    rerender();
+
+    expect(result.current).toEqual(['participant1', 'participant2']);
+  });
+
   it('should return respond to "participantConnected" events', async () => {
     const { result } = renderHook(useSpeakerViewParticipants);
     act(() => {
