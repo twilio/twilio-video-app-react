@@ -12,8 +12,10 @@ export default function AudioInputList() {
   const { localTracks } = useVideoContext();
 
   const localAudioTrack = localTracks.find(track => track.kind === 'audio') as LocalAudioTrack;
+  const srcMediaStreamTrack = localAudioTrack?.noiseCancellation?.sourceTrack;
   const mediaStreamTrack = useMediaStreamTrack(localAudioTrack);
-  const localAudioInputDeviceId = mediaStreamTrack?.getSettings().deviceId;
+  const localAudioInputDeviceId =
+    srcMediaStreamTrack?.getSettings().deviceId || mediaStreamTrack?.getSettings().deviceId;
 
   function replaceTrack(newDeviceId: string) {
     window.localStorage.setItem(SELECTED_AUDIO_INPUT_KEY, newDeviceId);

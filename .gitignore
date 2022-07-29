@@ -33,3 +33,4 @@ junit.xml
 serviceAccountKey.json
 
 public/virtualbackground/
+public/noisecancellation/*/**

@@ -1,7 +1,37 @@
 import { DEFAULT_VIDEO_CONSTRAINTS, SELECTED_AUDIO_INPUT_KEY, SELECTED_VIDEO_INPUT_KEY } from '../../../constants';
 import { getDeviceInfo, isPermissionDenied } from '../../../utils';
 import { useCallback, useState } from 'react';
-import Video, { LocalVideoTrack, LocalAudioTrack, CreateLocalTrackOptions } from 'twilio-video';
+import { getANCKind } from '../../../anc/anc';
+import Video, {
+  LocalVideoTrack,
+  LocalAudioTrack,
+  CreateLocalTrackOptions,
+  NoiseCancellationOptions,
+  CreateLocalAudioTrackOptions,
+} from 'twilio-video';
+
+const ancKind = getANCKind();
+
+function getNoiseCancellationOptions(): NoiseCancellationOptions | undefined {
+  switch (ancKind) {
+    case 'krisp':
+      return {
+        sdkAssetsPath: '/noisecancellation/twilio-krisp-audio-plugin/0.0.5/dist',
+        vendor: 'krisp',
+      };
+
+    case 'rnnoise':
+      return {
+        sdkAssetsPath: '/noisecancellation/rnnoise/2.0.0',
+        vendor: 'rnnoise',
+      };
+
+    default:
+      return undefined;
+  }
+}
+
+const noiseCancellationOptions = getNoiseCancellationOptions();
 
 export default function useLocalTracks() {
   const [audioTrack, setAudioTrack] = useState<LocalAudioTrack>();
@@ -9,7 +39,7 @@ export default function useLocalTracks() {
   const [isAcquiringLocalTracks, setIsAcquiringLocalTracks] = useState(false);
 
   const getLocalAudioTrack = useCallback((deviceId?: string) => {
-    const options: CreateLocalTrackOptions = {};
+    const options: CreateLocalAudioTrackOptions = { noiseCancellationOptions };
 
     if (deviceId) {
       options.deviceId = { exact: deviceId };
@@ -90,7 +120,9 @@ export default function useLocalTracks() {
       },
       audio:
         shouldAcquireAudio &&
-        (hasSelectedAudioDevice ? { deviceId: { exact: selectedAudioDeviceId! } } : hasAudioInputDevices),
+        (hasSelectedAudioDevice
+          ? { deviceId: { exact: selectedAudioDeviceId! }, noiseCancellationOptions }
+          : { noiseCancellationOptions }),
     };
 
     return Video.createLocalTracks(localTrackConstraints)
