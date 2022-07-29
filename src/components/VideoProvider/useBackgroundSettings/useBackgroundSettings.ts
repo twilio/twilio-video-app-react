@@ -148,7 +148,10 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
         return;
       }
       removeProcessor();
-      videoTrack.addProcessor(processor);
+      videoTrack.addProcessor(processor, {
+        renderingContextType: '2d',
+        inputType: 'canvas',
+      });
     },
     [videoTrack, removeProcessor]
   );
