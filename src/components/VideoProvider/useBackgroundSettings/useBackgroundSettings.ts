@@ -6,6 +6,7 @@ import {
   VirtualBackgroundProcessor,
   ImageFit,
   isSupported,
+  Pipeline,
 } from '@twilio/video-processors';
 import Abstract from '../../../images/Abstract.jpg';
 import AbstractThumb from '../../../images/thumb/Abstract.jpg';
@@ -126,9 +127,13 @@ export const backgroundConfig = {
   images,
 };
 
-const virtualBackgroundAssets = '/virtualbackground';
 let blurProcessor: GaussianBlurBackgroundProcessor;
 let virtualBackgroundProcessor: VirtualBackgroundProcessor;
+
+const virtualBackgroundAssets = '/virtualbackground';
+const pipeline = Pipeline.WebGL2;
+
+let intervalId: any = null;
 
 export default function useBackgroundSettings(videoTrack: LocalVideoTrack | undefined, room?: Room | null) {
   const [backgroundSettings, setBackgroundSettings] = useLocalStorageState<BackgroundSettings>(
@@ -149,12 +154,41 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
       }
       removeProcessor();
       videoTrack.addProcessor(processor, {
-        renderingContextType: '2d',
-        inputType: 'canvas',
+        outputFrameBufferContextType: 'webgl2',
+        inputFrameBufferType: 'video',
       });
     },
     [videoTrack, removeProcessor]
   );
+
+  useEffect(() => {
+    clearInterval(intervalId);
+    intervalId = setInterval(() => {
+      if (!videoTrack || !videoTrack.processor) {
+        return;
+      }
+      let stats = document.querySelector('#stats');
+      if (!stats) {
+        stats = document.createElement('pre');
+        stats.id = 'stats';
+        document.body.appendChild(stats);
+        (stats as any).style.position = 'fixed';
+        (stats as any).style.top = '0px';
+        (stats as any).style.backgroundColor = 'white';
+      }
+
+      const b = (videoTrack.processor as any)._benchmark;
+      (stats as any).innerText = `output fps: ${b.getRate('totalProcessingDelay').toFixed(2)}`;
+      ['segmentationDelay', 'requestFrame', 'processFrame', 'captureFrame',
+      'captureFrameDelay','inputImageResizeDelay', 'imageCompositionDelay', 'processFrameDelay', 'webglRender','totalProcessingDelay' ].forEach(stat => {
+        try {
+          (stats as any).innerText += `\n${stat}: ${b.getAverageDelay(stat).toFixed(2)}`;
+        } catch {
+
+        }
+      });
+    }, 1000);
+  }, [videoTrack]);
 
   useEffect(() => {
     // make sure localParticipant has joined room before applying video processors
@@ -163,12 +197,14 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
       if (!blurProcessor) {
         blurProcessor = new GaussianBlurBackgroundProcessor({
           assetsPath: virtualBackgroundAssets,
+          pipeline,
         });
         await blurProcessor.loadModel();
       }
       if (!virtualBackgroundProcessor) {
         virtualBackgroundProcessor = new VirtualBackgroundProcessor({
           assetsPath: virtualBackgroundAssets,
+          pipeline,
           backgroundImage: await getImage(0),
           fitType: ImageFit.Cover,
         });

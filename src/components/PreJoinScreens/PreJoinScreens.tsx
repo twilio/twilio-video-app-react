@@ -18,7 +18,7 @@ export default function PreJoinScreens() {
   const { URLRoomName } = useParams<{ URLRoomName?: string }>();
   const [step, setStep] = useState(Steps.deviceSelectionStep);
 
-  const [name, setName] = useState<string>(user?.displayName || 'Charlie-' + Date.now());
+  const [name, setName] = useState<string>(user?.displayName || 'User-' + Date.now());
   const [roomName, setRoomName] = useState<string>('testchar');
 
   const [mediaError, setMediaError] = useState<Error>();

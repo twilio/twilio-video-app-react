@@ -80,7 +80,7 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
   useHandleTrackPublicationFailed(room, onError);
   useRestartAudioTrackOnDeviceChange(localTracks);
 
-  const [isBackgroundSelectionOpen, setIsBackgroundSelectionOpen] = useState(false);
+  const [isBackgroundSelectionOpen, setIsBackgroundSelectionOpen] = useState(true);
   const videoTrack = localTracks.find(track => !track.name.includes('screen') && track.kind === 'video') as
     | LocalVideoTrack
     | undefined;
