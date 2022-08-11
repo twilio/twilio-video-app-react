@@ -49,12 +49,14 @@
     "typescript": "^4.6.2"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^6.4.18",
-    "@storybook/addon-essentials": "^6.4.18",
-    "@storybook/addon-links": "^6.4.18",
-    "@storybook/node-logger": "^6.4.18",
-    "@storybook/preset-create-react-app": "^3.2.0",
-    "@storybook/react": "^6.4.18",
+    "@storybook/addon-actions": "^6.5.10",
+    "@storybook/addon-essentials": "^6.5.10",
+    "@storybook/addon-links": "^6.5.10",
+    "@storybook/builder-webpack5": "^6.5.10",
+    "@storybook/manager-webpack5": "^6.5.10",
+    "@storybook/node-logger": "^6.5.10",
+    "@storybook/preset-create-react-app": "^4.1.2",
+    "@storybook/react": "^6.5.10",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/react-hooks": "^3.2.1",
@@ -73,7 +75,8 @@
     "puppeteer": "^5.3.1",
     "react-test-renderer": "^16.12.0",
     "start-server-and-test": "^1.10.8",
-    "ts-jest": "^27.0.1"
+    "ts-jest": "^27.0.1",
+    "webpack": "^5.74.0"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
