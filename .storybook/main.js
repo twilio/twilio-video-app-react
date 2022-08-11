@@ -13,4 +13,7 @@ module.exports = {
     config.resolve.alias['twilio-video'] = require.resolve('../src/stories/mocks/twilio-video.js');
     return config;
   },
+  core: {
+    builder: 'webpack5',
+  },
 };
