@@ -85,8 +85,8 @@ export function MobileGalleryView() {
   };
 
   const landscapeParticipantVideoStyles: CSSProperties = {
-    height: remoteParticipantCount <= 3 ? '100%' : '50%',
-    width: ['100%', '50%', '33.33%', '25%', '33.33%'][Math.min(remoteParticipantCount, 4)],
+    height: remoteParticipantCount < 3 ? '100%' : '50%',
+    width: ['100%', '50%', '33.33%', '50%', '33.33%'][Math.min(remoteParticipantCount, 4)],
     padding: '0.2em 0.1em',
     boxSizing: 'border-box',
   };
@@ -98,6 +98,7 @@ export function MobileGalleryView() {
           <SwiperSlide key={i} className={classes.swiperSlide}>
             {page.map(participant => (
               <div
+                data-test-id="participantContainer"
                 style={isMobileLandscape ? landscapeParticipantVideoStyles : portraitParticipantVideoStyles}
                 key={participant.sid}
               >
