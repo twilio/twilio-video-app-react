@@ -1,5 +1,5 @@
 import { LocalAudioTrack } from 'twilio-video';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import useVideoContext from '../useVideoContext/useVideoContext';
 
 export default function useANCToggle() {
@@ -9,12 +9,24 @@ export default function useANCToggle() {
   const vendor = noiseCancellation && noiseCancellation.vendor;
   const [isEnabled, setIsEnabled] = useState(noiseCancellation && noiseCancellation.isEnabled);
 
+  useEffect(() => {
+    if (audioTrack.noiseCancellation) {
+      const options: MediaTrackConstraints = { noiseSuppression: !isEnabled };
+
+      const deviceId = audioTrack.noiseCancellation.sourceTrack.getSettings().deviceId;
+
+      if (deviceId) {
+        options.deviceId = { exact: deviceId };
+      }
+      audioTrack.restart(options);
+    }
+  }, [isEnabled, audioTrack]);
+
   const toggleANC = useCallback(() => {
     if (noiseCancellation) {
-      noiseCancellation.isEnabled ? noiseCancellation.disable() : noiseCancellation.enable();
-      setTimeout(() => {
-        setIsEnabled(noiseCancellation.isEnabled);
-      }, 1000);
+      noiseCancellation[noiseCancellation.isEnabled ? 'disable' : 'enable']().then(() =>
+        setIsEnabled(noiseCancellation.isEnabled)
+      );
     }
   }, [noiseCancellation]);
 

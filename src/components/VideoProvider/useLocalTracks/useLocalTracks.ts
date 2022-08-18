@@ -16,7 +16,7 @@ function getNoiseCancellationOptions(): NoiseCancellationOptions | undefined {
   switch (ancKind) {
     case 'krisp':
       return {
-        sdkAssetsPath: '/noisecancellation/twilio-krisp-audio-plugin/0.0.5/dist',
+        sdkAssetsPath: '/noisecancellation/twilio-krisp-audio-plugin/1.0.0-rc1/dist',
         vendor: 'krisp',
       };
 
@@ -47,7 +47,17 @@ export default function useLocalTracks() {
 
     return Video.createLocalAudioTrack(options).then(newTrack => {
       setAudioTrack(newTrack);
-      return newTrack;
+      if (newTrack.noiseCancellation) {
+        const options: MediaTrackConstraints = { noiseSuppression: false };
+
+        if (deviceId) {
+          options.deviceId = { exact: deviceId };
+        }
+
+        return newTrack.restart(options).then(() => newTrack);
+      } else {
+        return newTrack;
+      }
     });
   }, []);
 
