@@ -21,11 +21,13 @@ export default function useConnectionOptions() {
         trackSwitchOffMode: settings.trackSwitchOffMode,
         contentPreferencesMode: settings.contentPreferencesMode,
         clientTrackSwitchOffControl: settings.clientTrackSwitchOffControl,
+        // @ts-ignore Internal Property
         maxSwitchedOnTracks: searchParams.get('maxVideoTracks')
           ? parseInt(searchParams.get('maxVideoTracks')!)
           : undefined,
       },
       audio: {
+        // @ts-ignore Internal Property
         maxSwitchedOnTracks: searchParams.get('maxAudioTracks')
           ? parseInt(searchParams.get('maxAudioTracks')!)
           : undefined,
