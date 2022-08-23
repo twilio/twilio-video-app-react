@@ -47,7 +47,7 @@ export default function useConnectionOptions() {
 
   // For mobile browsers, limit the maximum incoming video bitrate to 2.5 Mbps.
   if (isMobile && connectionOptions?.bandwidthProfile?.video) {
-    connectionOptions!.bandwidthProfile!.video!.maxSubscriptionBitrate = 2500000;
+    connectionOptions!.bandwidthProfile!.video!.maxSubscriptionBitrate = 2500;
   }
 
   if (process.env.REACT_APP_TWILIO_ENVIRONMENT === 'dev') {

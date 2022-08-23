@@ -23,7 +23,7 @@ export const initialSettings: Settings = {
   trackSwitchOffMode: undefined,
   dominantSpeakerPriority: 'standard',
   bandwidthProfileMode: 'collaboration',
-  maxAudioBitrate: '16000',
+  maxAudioBitrate: '16',
   contentPreferencesMode: 'auto',
   clientTrackSwitchOffControl: 'auto',
   adaptiveSimulcast: searchParams.get('adaptiveSimulcast') ?? 'true',
