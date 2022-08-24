@@ -5,6 +5,7 @@ import { useAppState } from '../../state';
 
 jest.mock('twilio-video', () => ({ version: '1.2', isSupported: true }));
 jest.mock('../../state');
+jest.mock('../../../package.json', () => ({ version: '1.3' }));
 
 const mockUseAppState = useAppState as jest.Mock<any>;
 mockUseAppState.mockImplementation(() => ({ roomType: undefined }));
