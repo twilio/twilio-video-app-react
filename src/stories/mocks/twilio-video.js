@@ -105,6 +105,7 @@ class LocalParticipant extends EventEmitter {
     ]);
 
     this.identity = 'Local Participant';
+    this.sid = this.identity;
   }
 }
 
@@ -122,6 +123,7 @@ const mockRoom = new MockRoom();
 class MockParticipant extends EventEmitter {
   constructor(name) {
     super();
+    this.sid = name;
     this.identity = name;
     this.tracks = new Map([
       ['video', new MockPublication('video')],
@@ -223,20 +225,24 @@ export function decorator(story, { args }) {
         videoTrack?.enable();
       }
 
-      if (args.unpublishAllAudio) {
-        mockParticipant.unpublishTrack('audio');
-      } else {
-        mockParticipant.publishTrack('audio');
-      }
-
-      if (args.unpublishAllVideo) {
-        mockParticipant.unpublishTrack('video');
+      if (args.unpublishVideo) {
+        const participantList = args.unpublishVideo.split(',');
+        if (participantList.includes(i.toString())) {
+          mockParticipant.unpublishTrack('video');
+        } else {
+          mockParticipant.publishTrack('video');
+        }
       } else {
         mockParticipant.publishTrack('video');
       }
 
-      if (args.switchOffAllVideo) {
-        videoTrack?.switchOff();
+      if (args.switchOffVideo) {
+        const participantList = args.switchOffVideo.split(',');
+        if (participantList.includes(i.toString())) {
+          videoTrack?.switchOff();
+        } else {
+          videoTrack?.switchOn();
+        }
       } else {
         videoTrack?.switchOn();
       }
