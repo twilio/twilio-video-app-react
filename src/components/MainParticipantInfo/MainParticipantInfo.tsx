@@ -108,6 +108,22 @@ const useStyles = makeStyles((theme: Theme) => ({
       background: '#A90000',
     },
   },
+  trackSwitchOffContainer: {
+    opacity: 0,
+    visibility: 'hidden',
+    transition: 'all 0.25s cubic-bezier(0.22, 0.61, 0.36, 1)',
+  },
+  isSwitchedOff: {
+    opacity: 1,
+    visibility: 'visible',
+    transition: 'all 0.5s linear 2s',
+  },
+  switchOffMessage: {
+    background: '#1F304C',
+    borderRadius: '100px',
+    padding: '0.3em 1.5em',
+    color: '#FFFFFF',
+  },
 }));
 
 interface MainParticipantInfoProps {
@@ -173,7 +189,17 @@ export default function MainParticipantInfo({ participant, children }: MainParti
           </Tooltip>
         )}
       </div>
-      {(!isVideoEnabled || isVideoSwitchedOff) && (
+      <div
+        className={clsx(classes.avatarContainer, classes.trackSwitchOffContainer, {
+          [classes.isSwitchedOff]: isVideoSwitchedOff,
+        })}
+      >
+        <Typography variant="body1" className={classes.switchOffMessage}>
+          Low bandwidth
+        </Typography>
+      </div>
+
+      {!isVideoEnabled && (
         <div className={classes.avatarContainer}>
           <AvatarIcon />
         </div>

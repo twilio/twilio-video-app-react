@@ -145,6 +145,22 @@ const useStyles = makeStyles((theme: Theme) =>
     dominantSpeaker: {
       border: `solid ${borderWidth}px #7BEAA5`,
     },
+    trackSwitchOffContainer: {
+      opacity: 0,
+      visibility: 'hidden',
+      transition: 'all 0.25s cubic-bezier(0.22, 0.61, 0.36, 1)',
+    },
+    isSwitchedOff: {
+      opacity: 1,
+      visibility: 'visible',
+      transition: 'all 0.5s linear 2s',
+    },
+    switchOffMessage: {
+      background: '#1F304C',
+      borderRadius: '100px',
+      padding: '0.3em 1.5em',
+      color: '#FFFFFF',
+    },
   })
 );
 
@@ -214,8 +230,19 @@ export default function ParticipantInfo({
         </div>
         <div>{isSelected && <PinIcon />}</div>
       </div>
+
       <div className={classes.innerContainer}>
-        {(!isVideoEnabled || isVideoSwitchedOff) && (
+        <div
+          className={clsx(classes.avatarContainer, classes.trackSwitchOffContainer, {
+            [classes.isSwitchedOff]: isVideoSwitchedOff,
+          })}
+        >
+          <Typography variant="body1" className={classes.switchOffMessage}>
+            Low bandwidth
+          </Typography>
+        </div>
+
+        {!isVideoEnabled && (
           <div className={classes.avatarContainer}>
             <AvatarIcon />
           </div>
