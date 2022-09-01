@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme: Theme) =>
       background: 'transparent',
       top: 0,
     },
-    avatarContainer: {
+    videoOffContainer: {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -145,21 +145,18 @@ const useStyles = makeStyles((theme: Theme) =>
     dominantSpeaker: {
       border: `solid ${borderWidth}px #7BEAA5`,
     },
-    trackSwitchOffContainer: {
+    switchOffMessage: {
       opacity: 0,
       visibility: 'hidden',
-      transition: 'all 0.25s cubic-bezier(0.22, 0.61, 0.36, 1)',
-    },
-    isSwitchedOff: {
-      opacity: 1,
-      visibility: 'visible',
-      transition: 'all 0.5s linear 2s',
-    },
-    switchOffMessage: {
       background: '#1F304C',
       borderRadius: '100px',
       padding: '0.3em 1.5em',
       color: '#FFFFFF',
+      transition: 'all 0.5s linear 2s',
+    },
+    isSwitchedOff: {
+      opacity: 1,
+      visibility: 'visible',
     },
   })
 );
@@ -232,18 +229,17 @@ export default function ParticipantInfo({
       </div>
 
       <div className={classes.innerContainer}>
-        <div
-          className={clsx(classes.avatarContainer, classes.trackSwitchOffContainer, {
-            [classes.isSwitchedOff]: isVideoSwitchedOff,
-          })}
-        >
-          <Typography variant="body1" className={classes.switchOffMessage}>
+        <div className={clsx({ [classes.videoOffContainer]: isVideoSwitchedOff })}>
+          <Typography
+            variant="body1"
+            className={clsx(classes.switchOffMessage, { [classes.isSwitchedOff]: isVideoSwitchedOff })}
+          >
             Low bandwidth
           </Typography>
         </div>
 
         {!isVideoEnabled && (
-          <div className={classes.avatarContainer}>
+          <div className={classes.videoOffContainer}>
             <AvatarIcon />
           </div>
         )}

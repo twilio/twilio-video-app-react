@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       gridArea: '1 / 1 / 3 / 3',
     },
   },
-  avatarContainer: {
+  videoOffContainer: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -116,7 +116,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   isSwitchedOff: {
     opacity: 1,
     visibility: 'visible',
-    transition: 'all 0.5s linear 2s',
+    transition: 'all 0.5s linear',
   },
   switchOffMessage: {
     background: '#1F304C',
@@ -190,7 +190,7 @@ export default function MainParticipantInfo({ participant, children }: MainParti
         )}
       </div>
       <div
-        className={clsx(classes.avatarContainer, classes.trackSwitchOffContainer, {
+        className={clsx(classes.videoOffContainer, classes.trackSwitchOffContainer, {
           [classes.isSwitchedOff]: isVideoSwitchedOff,
         })}
       >
@@ -200,7 +200,7 @@ export default function MainParticipantInfo({ participant, children }: MainParti
       </div>
 
       {!isVideoEnabled && (
-        <div className={classes.avatarContainer}>
+        <div className={classes.videoOffContainer}>
           <AvatarIcon />
         </div>
       )}
