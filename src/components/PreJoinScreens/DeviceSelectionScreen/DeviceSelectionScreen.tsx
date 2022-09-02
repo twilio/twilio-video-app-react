@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, Typography, Grid, Button, Theme, Hidden } from '@material-ui/core';
+import { makeStyles, Typography, Grid, Button, Theme, Hidden, Switch } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LocalVideoPreview from './LocalVideoPreview/LocalVideoPreview';
 import SettingsMenu from './SettingsMenu/SettingsMenu';
@@ -9,6 +9,8 @@ import ToggleVideoButton from '../../Buttons/ToggleVideoButton/ToggleVideoButton
 import { useAppState } from '../../../state';
 import useChatContext from '../../../hooks/useChatContext/useChatContext';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import { useKrispToggle } from '../../../hooks/useKrispToggle/useKrispToggle';
+import SmallCheckIcon from '../../../icons/SmallCheckIcon';
 
 const useStyles = makeStyles((theme: Theme) => ({
   gutterBottom: {
@@ -24,6 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   localPreviewContainer: {
     paddingRight: '2em',
+    marginBottom: '2em',
     [theme.breakpoints.down('sm')]: {
       padding: '0 2.5em',
     },
@@ -50,6 +53,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '0.8em 0',
     margin: 0,
   },
+  krispSwitch: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
 }));
 
 interface DeviceSelectionScreenProps {
@@ -63,6 +71,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
   const { getToken, isFetching } = useAppState();
   const { connect: chatConnect } = useChatContext();
   const { connect: videoConnect, isAcquiringLocalTracks, isConnecting } = useVideoContext();
+  const [_, isKrispEnabled, toggleKrisp] = useKrispToggle();
   const disableButtons = isFetching || isAcquiringLocalTracks || isConnecting;
 
   const handleJoin = () => {
@@ -103,6 +112,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
               <ToggleAudioButton className={classes.mobileButton} disabled={disableButtons} />
               <ToggleVideoButton className={classes.mobileButton} disabled={disableButtons} />
             </Hidden>
+            <Typography>Noise Suppression</Typography>
             <SettingsMenu mobileButtonClass={classes.mobileButton} />
           </div>
         </Grid>
@@ -113,6 +123,15 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
                 <ToggleAudioButton className={classes.deviceButton} disabled={disableButtons} />
                 <ToggleVideoButton className={classes.deviceButton} disabled={disableButtons} />
               </Hidden>
+            </div>
+            <div className={classes.krispSwitch}>
+              <Switch
+                checked={isKrispEnabled!}
+                onChange={toggleKrisp}
+                name="checkedA"
+                checkedIcon={<SmallCheckIcon />}
+              />
+              <Typography>{isKrispEnabled ? 'Active' : 'Inactive'}</Typography>
             </div>
             <div className={classes.joinButtons}>
               <Button variant="outlined" color="primary" onClick={() => setStep(Steps.roomNameStep)}>

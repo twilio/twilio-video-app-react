@@ -27,6 +27,7 @@ export interface StateContextType {
   setIsGalleryViewActive: React.Dispatch<React.SetStateAction<boolean>>;
   maxGalleryViewParticipants: number;
   setMaxGalleryViewParticipants: React.Dispatch<React.SetStateAction<number>>;
+  isKrispInstalled: boolean;
 }
 
 export const StateContext = createContext<StateContextType>(null!);
@@ -52,6 +53,14 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     6
   );
 
+  let isKrispInstalled;
+  try {
+    require('@twilio/krisp-audio-plugin');
+    isKrispInstalled = true;
+  } catch (e) {
+    isKrispInstalled = false;
+  }
+
   let contextValue = {
     error,
     setError,
@@ -65,6 +74,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     setIsGalleryViewActive,
     maxGalleryViewParticipants,
     setMaxGalleryViewParticipants,
+    isKrispInstalled,
   } as StateContextType;
 
   if (process.env.REACT_APP_SET_AUTH === 'firebase') {

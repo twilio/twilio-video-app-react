@@ -1,7 +1,18 @@
 import { DEFAULT_VIDEO_CONSTRAINTS, SELECTED_AUDIO_INPUT_KEY, SELECTED_VIDEO_INPUT_KEY } from '../../../constants';
 import { getDeviceInfo, isPermissionDenied } from '../../../utils';
 import { useCallback, useState } from 'react';
-import Video, { LocalVideoTrack, LocalAudioTrack, CreateLocalTrackOptions } from 'twilio-video';
+import Video, {
+  LocalVideoTrack,
+  LocalAudioTrack,
+  CreateLocalTrackOptions,
+  NoiseCancellationOptions,
+  CreateLocalAudioTrackOptions,
+} from 'twilio-video';
+
+const noiseCancellationOptions: NoiseCancellationOptions = {
+  sdkAssetsPath: '/noisecancellation/twilio-krisp-audio-plugin/1.0.0-rc1/dist',
+  vendor: 'krisp',
+};
 
 export default function useLocalTracks() {
   const [audioTrack, setAudioTrack] = useState<LocalAudioTrack>();
@@ -9,7 +20,7 @@ export default function useLocalTracks() {
   const [isAcquiringLocalTracks, setIsAcquiringLocalTracks] = useState(false);
 
   const getLocalAudioTrack = useCallback((deviceId?: string) => {
-    const options: CreateLocalTrackOptions = {};
+    const options: CreateLocalAudioTrackOptions = { noiseCancellationOptions };
 
     if (deviceId) {
       options.deviceId = { exact: deviceId };
@@ -17,7 +28,17 @@ export default function useLocalTracks() {
 
     return Video.createLocalAudioTrack(options).then(newTrack => {
       setAudioTrack(newTrack);
-      return newTrack;
+      if (newTrack.noiseCancellation) {
+        const options: MediaTrackConstraints = { noiseSuppression: false };
+
+        if (deviceId) {
+          options.deviceId = { exact: deviceId };
+        }
+
+        return newTrack.restart(options).then(() => newTrack);
+      } else {
+        return newTrack;
+      }
     });
   }, []);
 
@@ -90,7 +111,9 @@ export default function useLocalTracks() {
       },
       audio:
         shouldAcquireAudio &&
-        (hasSelectedAudioDevice ? { deviceId: { exact: selectedAudioDeviceId! } } : hasAudioInputDevices),
+        (hasSelectedAudioDevice
+          ? { deviceId: { exact: selectedAudioDeviceId! }, noiseCancellationOptions }
+          : { noiseCancellationOptions }),
     };
 
     return Video.createLocalTracks(localTrackConstraints)
