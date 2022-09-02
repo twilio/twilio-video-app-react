@@ -130,6 +130,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
                 onChange={toggleKrisp}
                 name="checkedA"
                 checkedIcon={<SmallCheckIcon />}
+                disableRipple={true}
               />
               <Typography>{isKrispEnabled ? 'Active' : 'Inactive'}</Typography>
             </div>

@@ -109,20 +109,39 @@ export default createTheme({
       },
     },
     MuiSwitch: {
+      root: {
+        width: 42,
+        height: 18,
+        padding: 0,
+        display: 'flex',
+      },
       switchBase: {
+        padding: 2,
         color: '#FFFFFF',
+        '&$checked': {
+          transform: 'translateX(18px)',
+          top: '50%',
+          marginTop: -24 / 2,
+        },
       },
       colorSecondary: {
         '&$checked': {
           // Controls checked color for the thumb
-          color: '#FFFFFF',
+          color: 'FFFFF',
         },
       },
+      thumb: {
+        width: 14,
+        height: 14,
+        boxShadow: 'none',
+      },
       track: {
+        borderRadius: 16 / 2,
+        opacity: 1,
+        backgroundColor: '#E1E3EA',
         '$checked$checked + &': {
-          // Controls checked color for the track
-          backgroundColor: '#14B053',
           opacity: 1,
+          backgroundColor: '#14B053',
         },
       },
     },
