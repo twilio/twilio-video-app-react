@@ -108,6 +108,24 @@ export default createTheme({
         borderColor: 'rgb(136, 140, 142)',
       },
     },
+    MuiSwitch: {
+      switchBase: {
+        color: '#FFFFFF',
+      },
+      colorSecondary: {
+        '&$checked': {
+          // Controls checked color for the thumb
+          color: '#FFFFFF',
+        },
+      },
+      track: {
+        '$checked$checked + &': {
+          // Controls checked color for the track
+          backgroundColor: '#14B053',
+          opacity: 1,
+        },
+      },
+    },
   },
   typography: {
     fontFamily: 'Inter, sans-serif',
