@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
@@ -15,6 +15,7 @@ import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
 import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
 import { useAppState } from '../../state';
+import { Fade } from '@material-ui/core';
 
 const borderWidth = 2;
 
@@ -146,13 +147,13 @@ const useStyles = makeStyles((theme: Theme) =>
       border: `solid ${borderWidth}px #7BEAA5`,
     },
     switchOffMessage: {
-      opacity: 0,
-      visibility: 'hidden',
+      // opacity: 0,
+      // visibility: 'hidden',
       background: '#1F304C',
       borderRadius: '100px',
       padding: '0.3em 1.5em',
       color: '#FFFFFF',
-      transition: 'all 0.5s linear 2s',
+      // transition: 'all 0.5s linear 2s',
     },
     isSwitchedOff: {
       opacity: 1,
@@ -195,8 +196,24 @@ export default function ParticipantInfo({
   const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
   const { isGalleryViewActive } = useAppState();
+  const [showVideoSwitchOffMessage, setShowVideoSwitchedOffMessage] = useState(isVideoSwitchedOff);
 
   const classes = useStyles();
+
+  // useEffect(() => {
+  //   if (!isVideoSwitchedOff) {
+  //     setShowVideoSwitchedOffMessage(false);
+  //     return;
+  //   }
+
+  //   const timer = setTimeout(() => {
+  //     setShowVideoSwitchedOffMessage(true);
+  //   }, 2000);
+
+  //   return () => clearTimeout(timer);
+  // }, [isVideoSwitchedOff]);
+
+  // console.log(showVideoSwitchOffMessage)
 
   return (
     <div
@@ -229,14 +246,15 @@ export default function ParticipantInfo({
       </div>
 
       <div className={classes.innerContainer}>
-        <div className={clsx({ [classes.videoOffContainer]: isVideoSwitchedOff })}>
-          <Typography
-            variant="body1"
-            className={clsx(classes.switchOffMessage, { [classes.isSwitchedOff]: isVideoSwitchedOff })}
-          >
-            Low bandwidth
-          </Typography>
-        </div>
+        {isVideoSwitchedOff && (
+          <div className={classes.videoOffContainer}>
+            <Fade in={isVideoSwitchedOff} timeout={{ enter: 2000 }} style={{ transitionDelay: '2000ms' }}>
+              <Typography variant="body1" className={classes.switchOffMessage}>
+                Low bandwidth
+              </Typography>
+            </Fade>
+          </div>
+        )}
 
         {!isVideoEnabled && (
           <div className={classes.videoOffContainer}>
