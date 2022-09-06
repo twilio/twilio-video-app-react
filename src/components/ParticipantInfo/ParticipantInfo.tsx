@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
@@ -147,17 +147,10 @@ const useStyles = makeStyles((theme: Theme) =>
       border: `solid ${borderWidth}px #7BEAA5`,
     },
     switchOffMessage: {
-      // opacity: 0,
-      // visibility: 'hidden',
       background: '#1F304C',
       borderRadius: '100px',
       padding: '0.3em 1.5em',
       color: '#FFFFFF',
-      // transition: 'all 0.5s linear 2s',
-    },
-    isSwitchedOff: {
-      opacity: 1,
-      visibility: 'visible',
     },
   })
 );
@@ -196,24 +189,8 @@ export default function ParticipantInfo({
   const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
   const { isGalleryViewActive } = useAppState();
-  const [showVideoSwitchOffMessage, setShowVideoSwitchedOffMessage] = useState(isVideoSwitchedOff);
 
   const classes = useStyles();
-
-  // useEffect(() => {
-  //   if (!isVideoSwitchedOff) {
-  //     setShowVideoSwitchedOffMessage(false);
-  //     return;
-  //   }
-
-  //   const timer = setTimeout(() => {
-  //     setShowVideoSwitchedOffMessage(true);
-  //   }, 2000);
-
-  //   return () => clearTimeout(timer);
-  // }, [isVideoSwitchedOff]);
-
-  // console.log(showVideoSwitchOffMessage)
 
   return (
     <div
