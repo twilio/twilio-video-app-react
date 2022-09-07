@@ -109,16 +109,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       background: '#A90000',
     },
   },
-  trackSwitchOffContainer: {
-    opacity: 0,
-    visibility: 'hidden',
-    transition: 'all 0.25s cubic-bezier(0.22, 0.61, 0.36, 1)',
-  },
-  isSwitchedOff: {
-    opacity: 1,
-    visibility: 'visible',
-    transition: 'all 0.5s linear',
-  },
   switchOffMessage: {
     background: '#1F304C',
     borderRadius: '100px',
