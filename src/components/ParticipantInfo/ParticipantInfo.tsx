@@ -225,7 +225,7 @@ export default function ParticipantInfo({
       <div className={classes.innerContainer}>
         {isVideoSwitchedOff && (
           <div className={classes.videoOffContainer}>
-            <Fade in={isVideoSwitchedOff} timeout={{ enter: 2000 }} style={{ transitionDelay: '2000ms' }}>
+            <Fade in={isVideoSwitchedOff} timeout={{ enter: 250 }}>
               <Typography variant="body1" className={classes.switchOffMessage}>
                 Low bandwidth
               </Typography>

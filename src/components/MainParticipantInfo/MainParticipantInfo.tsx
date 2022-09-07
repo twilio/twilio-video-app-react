@@ -17,7 +17,6 @@ import usePublications from '../../hooks/usePublications/usePublications';
 import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 import useTrack from '../../hooks/useTrack/useTrack';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
-import useDominantSpeaker from '../../hooks/useDominantSpeaker/useDominantSpeaker';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -154,7 +153,6 @@ export default function MainParticipantInfo({ participant, children }: MainParti
 
   const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
   const isParticipantReconnecting = useParticipantIsReconnecting(participant);
-  const dominantSpeaker = useDominantSpeaker();
 
   const isRecording = useIsRecording();
 
@@ -194,11 +192,7 @@ export default function MainParticipantInfo({ participant, children }: MainParti
       </div>
       {isVideoSwitchedOff && (
         <div className={classes.videoOffContainer}>
-          <Fade
-            in={isVideoSwitchedOff}
-            timeout={{ enter: dominantSpeaker === participant ? 0 : 2000 }}
-            style={{ transitionDelay: dominantSpeaker === participant ? '0ms' : '2000ms' }}
-          >
+          <Fade in={isVideoSwitchedOff} timeout={{ enter: 250 }}>
             <Typography variant="body1" className={classes.switchOffMessage}>
               Low bandwidth
             </Typography>
