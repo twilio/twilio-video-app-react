@@ -123,6 +123,11 @@ export default createTheme({
           transform: 'translateX(18px)',
           top: '50%',
           marginTop: -24 / 2,
+          '&$disabled': {
+            '& + $track': {
+              opacity: '0.5',
+            },
+          },
         },
       },
       colorSecondary: {
