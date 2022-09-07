@@ -114,6 +114,7 @@ export default createTheme({
         height: 18,
         padding: 0,
         display: 'flex',
+        marginRight: '0.5em',
       },
       switchBase: {
         padding: 2,
