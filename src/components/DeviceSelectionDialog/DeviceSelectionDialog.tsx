@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   krispInfoText: {
-    margin: '0 0 0.5em 0.5em',
+    margin: '0 0 1.5em 0.5em',
   },
 }));
 
