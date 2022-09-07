@@ -1,5 +1,6 @@
 import { LocalAudioTrack } from 'twilio-video';
 import { useCallback, useEffect, useState } from 'react';
+import { useAppState } from '../../state';
 import useVideoContext from '../useVideoContext/useVideoContext';
 
 export function useKrispToggle() {
@@ -7,28 +8,22 @@ export function useKrispToggle() {
   const audioTrack = localTracks.find(track => track.kind === 'audio') as LocalAudioTrack;
   const noiseCancellation = audioTrack && audioTrack.noiseCancellation;
   const vendor = noiseCancellation && noiseCancellation.vendor;
-  const [isKrispEnabled, setIsKrispEnabled] = useState(noiseCancellation && noiseCancellation.isEnabled);
+  const { isKrispInstalled, isKrispEnabled, setIsKrispEnabled } = useAppState();
 
   useEffect(() => {
-    if (audioTrack?.noiseCancellation) {
-      const options: MediaTrackConstraints = { noiseSuppression: !isKrispEnabled };
-
-      const deviceId = audioTrack.noiseCancellation.sourceTrack.getSettings().deviceId;
-
-      if (deviceId) {
-        options.deviceId = { exact: deviceId };
-      }
-      audioTrack.restart(options);
+    if (isKrispInstalled && noiseCancellation) {
+      noiseCancellation.enable();
+      setIsKrispEnabled(true);
     }
-  }, [isKrispEnabled, audioTrack]);
+  }, [isKrispInstalled, noiseCancellation]);
 
   const toggleKrisp = useCallback(() => {
-    if (noiseCancellation) {
-      noiseCancellation[noiseCancellation.isEnabled ? 'disable' : 'enable']().then(() =>
-        setIsKrispEnabled(noiseCancellation.isEnabled)
-      );
+    if (isKrispInstalled && noiseCancellation) {
+      noiseCancellation[noiseCancellation.isEnabled ? 'disable' : 'enable']().then(() => {
+        setIsKrispEnabled(noiseCancellation.isEnabled);
+      });
     }
-  }, [noiseCancellation]);
+  }, [noiseCancellation, isKrispInstalled]);
 
   return [vendor, isKrispEnabled, toggleKrisp] as const;
 }
