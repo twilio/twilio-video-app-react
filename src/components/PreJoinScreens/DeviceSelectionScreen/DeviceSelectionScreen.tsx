@@ -56,11 +56,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '0.8em 0',
     margin: 0,
   },
-  krispSwitch: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
   toolTipContainer: {
     display: 'flex',
     alignItems: 'center',
@@ -82,10 +77,10 @@ interface DeviceSelectionScreenProps {
 
 export default function DeviceSelectionScreen({ name, roomName, setStep }: DeviceSelectionScreenProps) {
   const classes = useStyles();
-  const { getToken, isFetching, isKrispInstalled } = useAppState();
+  const { getToken, isFetching, isKrispInstalled, isKrispEnabled } = useAppState();
   const { connect: chatConnect } = useChatContext();
   const { connect: videoConnect, isAcquiringLocalTracks, isConnecting } = useVideoContext();
-  const [_, isKrispEnabled, toggleKrisp] = useKrispToggle();
+  const { toggleKrisp } = useKrispToggle();
   const disableButtons = isFetching || isAcquiringLocalTracks || isConnecting;
 
   const handleJoin = () => {
@@ -125,6 +120,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
             <Hidden mdUp>
               <ToggleAudioButton className={classes.mobileButton} disabled={disableButtons} />
               <ToggleVideoButton className={classes.mobileButton} disabled={disableButtons} />
+              <SettingsMenu mobileButtonClass={classes.mobileButton} />
             </Hidden>
           </div>
         </Grid>
@@ -166,7 +162,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
                 />
               }
               label={isKrispEnabled ? 'Active' : 'Inactive'}
-              className={classes.krispSwitch}
+              style={{ marginRight: 0 }}
               disabled={!isKrispInstalled || isAcquiringLocalTracks}
             />
           </Grid>
@@ -175,9 +171,11 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
 
         <Grid item md={12} sm={12} xs={12}>
           <Grid container direction="row" alignItems="center" style={{ marginTop: '1em' }}>
-            <Grid item md={7} sm={12} xs={12}>
-              <SettingsMenu mobileButtonClass={classes.mobileButton} />
-            </Grid>
+            <Hidden smDown>
+              <Grid item md={7} sm={12} xs={12}>
+                <SettingsMenu mobileButtonClass={classes.mobileButton} />
+              </Grid>
+            </Hidden>
 
             <Grid item md={5} sm={12} xs={12}>
               <div className={classes.joinButtons}>
