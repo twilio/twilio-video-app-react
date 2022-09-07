@@ -28,17 +28,8 @@ export default function useLocalTracks() {
 
     return Video.createLocalAudioTrack(options).then(newTrack => {
       setAudioTrack(newTrack);
-      if (newTrack.noiseCancellation) {
-        const options: MediaTrackConstraints = { noiseSuppression: false };
 
-        if (deviceId) {
-          options.deviceId = { exact: deviceId };
-        }
-
-        return newTrack.restart(options).then(() => newTrack);
-      } else {
-        return newTrack;
-      }
+      return newTrack;
     });
   }, []);
 
