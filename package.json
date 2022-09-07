@@ -9,7 +9,6 @@
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@twilio-labs/plugin-rtc": "^0.8.4",
     "@twilio/conversations": "^2.1.0",
-    "@twilio/krisp-audio-plugin": "^1.0.0",
     "@twilio/video-processors": "^1.0.1",
     "@twilio/video-room-monitor": "^1.0.1",
     "@types/d3-timer": "^1.0.9",
