@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles, Typography, Grid, Button, Theme, Hidden, Switch } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Divider from '@material-ui/core/Divider';
 import LocalVideoPreview from './LocalVideoPreview/LocalVideoPreview';
 import SettingsMenu from './SettingsMenu/SettingsMenu';
 import { Steps } from '../PreJoinScreens';
@@ -9,6 +10,7 @@ import ToggleVideoButton from '../../Buttons/ToggleVideoButton/ToggleVideoButton
 import { useAppState } from '../../../state';
 import useChatContext from '../../../hooks/useChatContext/useChatContext';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { useKrispToggle } from '../../../hooks/useKrispToggle/useKrispToggle';
 import SmallCheckIcon from '../../../icons/SmallCheckIcon';
 
@@ -68,7 +70,7 @@ interface DeviceSelectionScreenProps {
 
 export default function DeviceSelectionScreen({ name, roomName, setStep }: DeviceSelectionScreenProps) {
   const classes = useStyles();
-  const { getToken, isFetching } = useAppState();
+  const { getToken, isFetching, isKrispInstalled } = useAppState();
   const { connect: chatConnect } = useChatContext();
   const { connect: videoConnect, isAcquiringLocalTracks, isConnecting } = useVideoContext();
   const [_, isKrispEnabled, toggleKrisp] = useKrispToggle();
@@ -112,42 +114,67 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
               <ToggleAudioButton className={classes.mobileButton} disabled={disableButtons} />
               <ToggleVideoButton className={classes.mobileButton} disabled={disableButtons} />
             </Hidden>
-            <Typography>Noise Suppression</Typography>
-            <SettingsMenu mobileButtonClass={classes.mobileButton} />
           </div>
         </Grid>
         <Grid item md={5} sm={12} xs={12}>
-          <Grid container direction="column" justifyContent="space-between" style={{ height: '100%' }}>
+          <Grid container direction="column" justifyContent="space-between" style={{ alignItems: 'normal' }}>
             <div>
               <Hidden smDown>
                 <ToggleAudioButton className={classes.deviceButton} disabled={disableButtons} />
                 <ToggleVideoButton className={classes.deviceButton} disabled={disableButtons} />
               </Hidden>
             </div>
-            <div className={classes.krispSwitch}>
-              <Switch
-                checked={isKrispEnabled!}
-                onChange={toggleKrisp}
-                name="checkedA"
-                checkedIcon={<SmallCheckIcon />}
-                disableRipple={true}
-              />
-              <Typography>{isKrispEnabled ? 'Active' : 'Inactive'}</Typography>
-            </div>
-            <div className={classes.joinButtons}>
-              <Button variant="outlined" color="primary" onClick={() => setStep(Steps.roomNameStep)}>
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                data-cy-join-now
-                onClick={handleJoin}
-                disabled={disableButtons}
-              >
-                Join Now
-              </Button>
-            </div>
+          </Grid>
+        </Grid>
+
+        <Grid item md={12} sm={12} xs={12}>
+          <Grid
+            container
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            style={{ marginBottom: '1em' }}
+          >
+            {isKrispInstalled && <Typography variant="subtitle2">Noise Suppression</Typography>}
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={!!isKrispEnabled}
+                  checkedIcon={<SmallCheckIcon />}
+                  disableRipple={true}
+                  onClick={toggleKrisp}
+                />
+              }
+              label={isKrispEnabled ? 'Active' : 'Inactive'}
+              className={classes.krispSwitch}
+              disabled={!isKrispInstalled || isAcquiringLocalTracks}
+            />
+          </Grid>
+          <Divider />
+        </Grid>
+
+        <Grid item md={12} sm={12} xs={12}>
+          <Grid container direction="row" alignItems="center" style={{ marginTop: '1em' }}>
+            <Grid item md={7} sm={12} xs={12}>
+              <SettingsMenu mobileButtonClass={classes.mobileButton} />
+            </Grid>
+
+            <Grid item md={5} sm={12} xs={12}>
+              <div className={classes.joinButtons}>
+                <Button variant="outlined" color="primary" onClick={() => setStep(Steps.roomNameStep)}>
+                  Cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  data-cy-join-now
+                  onClick={handleJoin}
+                  disabled={disableButtons}
+                >
+                  Join Now
+                </Button>
+              </div>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
