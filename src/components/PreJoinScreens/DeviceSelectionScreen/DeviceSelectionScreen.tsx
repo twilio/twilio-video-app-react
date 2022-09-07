@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, Typography, Grid, Button, Theme, Hidden, Switch } from '@material-ui/core';
+import { makeStyles, Typography, Grid, Button, Theme, Hidden, Switch, Tooltip } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Divider from '@material-ui/core/Divider';
 import LocalVideoPreview from './LocalVideoPreview/LocalVideoPreview';
@@ -13,6 +13,7 @@ import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { useKrispToggle } from '../../../hooks/useKrispToggle/useKrispToggle';
 import SmallCheckIcon from '../../../icons/SmallCheckIcon';
+import InfoIconOutlined from '../../../icons/InfoIconOutlined';
 
 const useStyles = makeStyles((theme: Theme) => ({
   gutterBottom: {
@@ -59,6 +60,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     justifyContent: 'flex-end',
     alignItems: 'center',
+  },
+  toolTipContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    '& div': {
+      display: 'flex',
+      alignItems: 'center',
+    },
+    '& svg': {
+      marginLeft: '0.3em',
+    },
   },
 }));
 
@@ -135,7 +147,15 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
             alignItems="center"
             style={{ marginBottom: '1em' }}
           >
-            {isKrispInstalled && <Typography variant="subtitle2">Noise Suppression</Typography>}
+            <div className={classes.toolTipContainer}>
+              <Typography variant="subtitle2">Noise Suppression</Typography>
+              <Tooltip title="noise" interactive leaveDelay={250} leaveTouchDelay={15000} enterTouchDelay={0}>
+                <div>
+                  <InfoIconOutlined />
+                </div>
+              </Tooltip>
+            </div>
+
             <FormControlLabel
               control={
                 <Switch
