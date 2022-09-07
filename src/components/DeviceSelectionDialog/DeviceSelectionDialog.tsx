@@ -96,19 +96,6 @@ export default function DeviceSelectionDialog({ open, onClose }: { open: boolean
             Audio
           </Typography>
 
-          <FormControlLabel
-            control={
-              <Switch
-                checked={!!isKrispEnabled}
-                checkedIcon={<SmallCheckIcon />}
-                disableRipple={true}
-                onClick={toggleKrisp}
-              />
-            }
-            label={isKrispEnabled ? 'Active' : 'Inactive'}
-            style={{ marginRight: 0 }}
-            disabled={!isKrispInstalled || isAcquiringLocalTracks}
-          />
           <div className={classes.noiseCancellationContainer}>
             <div className={classes.krispContainer}>
               <Typography variant="subtitle2">Noise Suppression powered by </Typography>
@@ -119,6 +106,19 @@ export default function DeviceSelectionDialog({ open, onClose }: { open: boolean
                 </div>
               </Tooltip>
             </div>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={!!isKrispEnabled}
+                  checkedIcon={<SmallCheckIcon />}
+                  disableRipple={true}
+                  onClick={toggleKrisp}
+                />
+              }
+              label={isKrispEnabled ? 'Active' : 'Inactive'}
+              style={{ marginRight: 0 }}
+              disabled={!isKrispInstalled || isAcquiringLocalTracks}
+            />
           </div>
           <Typography variant="body1" color="textSecondary" className={classes.krispInfoText}>
             Suppress background noise from your mic.

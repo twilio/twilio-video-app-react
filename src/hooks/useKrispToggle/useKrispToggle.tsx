@@ -15,8 +15,6 @@ export function useKrispToggle() {
     if (isKrispInstalled && noiseCancellation && isKrispEnabled) {
       noiseCancellation.enable();
       setIsKrispEnabled(true);
-    } else {
-      setIsKrispEnabled(false);
     }
   }, [isKrispInstalled, noiseCancellation]);
 
