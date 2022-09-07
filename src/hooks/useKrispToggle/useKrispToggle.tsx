@@ -1,5 +1,5 @@
 import { LocalAudioTrack } from 'twilio-video';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useAppState } from '../../state';
 import useVideoContext from '../useVideoContext/useVideoContext';
 
@@ -8,12 +8,15 @@ export function useKrispToggle() {
   const audioTrack = localTracks.find(track => track.kind === 'audio') as LocalAudioTrack;
   const noiseCancellation = audioTrack && audioTrack.noiseCancellation;
   const vendor = noiseCancellation && noiseCancellation.vendor;
-  const { isKrispInstalled, isKrispEnabled, setIsKrispEnabled } = useAppState();
+  const { isKrispInstalled, setIsKrispEnabled, isKrispEnabled } = useAppState();
 
   useEffect(() => {
-    if (isKrispInstalled && noiseCancellation) {
+    // ensure that Krisp is enabled by default if Krisp is installed:
+    if (isKrispInstalled && noiseCancellation && isKrispEnabled) {
       noiseCancellation.enable();
       setIsKrispEnabled(true);
+    } else {
+      setIsKrispEnabled(false);
     }
   }, [isKrispInstalled, noiseCancellation]);
 
@@ -25,5 +28,5 @@ export function useKrispToggle() {
     }
   }, [noiseCancellation, isKrispInstalled]);
 
-  return [vendor, isKrispEnabled, toggleKrisp] as const;
+  return { vendor, toggleKrisp };
 }
