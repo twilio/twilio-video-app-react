@@ -77,7 +77,7 @@ interface DeviceSelectionScreenProps {
 
 export default function DeviceSelectionScreen({ name, roomName, setStep }: DeviceSelectionScreenProps) {
   const classes = useStyles();
-  const { getToken, isFetching, isKrispInstalled, isKrispEnabled } = useAppState();
+  const { getToken, isFetching, isKrispEnabled } = useAppState();
   const { connect: chatConnect } = useChatContext();
   const { connect: videoConnect, isAcquiringLocalTracks, isConnecting } = useVideoContext();
   const { toggleKrisp } = useKrispToggle();
@@ -163,7 +163,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
               }
               label={isKrispEnabled ? 'Active' : 'Inactive'}
               style={{ marginRight: 0 }}
-              disabled={!isKrispInstalled || isAcquiringLocalTracks}
+              disabled={!isKrispEnabled || isAcquiringLocalTracks}
             />
           </Grid>
           <Divider />

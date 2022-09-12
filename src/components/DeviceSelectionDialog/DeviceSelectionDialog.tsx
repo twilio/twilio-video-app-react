@@ -25,6 +25,7 @@ import InfoIconOutlined from '../../icons/InfoIconOutlined';
 import KrispLogo from '../../icons/KrispLogo';
 import { useAppState } from '../../state';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import useLocalTracks from '../VideoProvider/useLocalTracks/useLocalTracks';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -75,8 +76,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default function DeviceSelectionDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { isAcquiringLocalTracks } = useVideoContext();
-  const { isKrispEnabled, isKrispInstalled } = useAppState();
+  const { isKrispEnabled } = useAppState();
   const { toggleKrisp } = useKrispToggle();
+  const { isKrispInstalled } = useLocalTracks();
   const classes = useStyles();
 
   return (
