@@ -8,23 +8,15 @@ export function useKrispToggle() {
   const audioTrack = localTracks.find(track => track.kind === 'audio') as LocalAudioTrack;
   const noiseCancellation = audioTrack && audioTrack.noiseCancellation;
   const vendor = noiseCancellation && noiseCancellation.vendor;
-  const { isKrispInstalled, setIsKrispEnabled, isKrispEnabled } = useAppState();
-
-  useEffect(() => {
-    // ensure that Krisp is enabled by default if Krisp is installed:
-    if (isKrispInstalled && noiseCancellation && isKrispEnabled) {
-      noiseCancellation.enable();
-      setIsKrispEnabled(true);
-    }
-  }, [isKrispInstalled, noiseCancellation]);
+  const { setIsKrispEnabled } = useAppState();
 
   const toggleKrisp = useCallback(() => {
-    if (isKrispInstalled && noiseCancellation) {
+    if (noiseCancellation) {
       noiseCancellation[noiseCancellation.isEnabled ? 'disable' : 'enable']().then(() => {
         setIsKrispEnabled(noiseCancellation.isEnabled);
       });
     }
-  }, [noiseCancellation, isKrispInstalled]);
+  }, [noiseCancellation]);
 
   return { vendor, toggleKrisp };
 }
