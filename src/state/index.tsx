@@ -27,7 +27,6 @@ export interface StateContextType {
   setIsGalleryViewActive: React.Dispatch<React.SetStateAction<boolean>>;
   maxGalleryViewParticipants: number;
   setMaxGalleryViewParticipants: React.Dispatch<React.SetStateAction<number>>;
-  isKrispInstalled: boolean;
   isKrispEnabled: boolean;
   setIsKrispEnabled: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -55,15 +54,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     6
   );
 
-  let isKrispInstalled;
-  try {
-    require('@twilio/krisp-audio-plugin');
-    isKrispInstalled = true;
-  } catch (e) {
-    isKrispInstalled = false;
-  }
-
-  const [isKrispEnabled, setIsKrispEnabled] = useState(isKrispInstalled);
+  const [isKrispEnabled, setIsKrispEnabled] = useState(false);
 
   let contextValue = {
     error,
@@ -78,7 +69,6 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     setIsGalleryViewActive,
     maxGalleryViewParticipants,
     setMaxGalleryViewParticipants,
-    isKrispInstalled,
     isKrispEnabled,
     setIsKrispEnabled,
   } as StateContextType;
