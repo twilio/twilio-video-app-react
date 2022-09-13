@@ -163,7 +163,9 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
               }
               label={isKrispEnabled ? 'Active' : 'Inactive'}
               style={{ marginRight: 0 }}
-              disabled={!isKrispEnabled || isAcquiringLocalTracks}
+              // Prevents <Switch /> from being temporarily enabled (and then quickly disabled) in unsupported browsers after
+              // isAcquiringLocalTracks becomes false:
+              disabled={isKrispEnabled && isAcquiringLocalTracks}
             />
           </Grid>
           <Divider />
