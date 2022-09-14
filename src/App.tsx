@@ -38,6 +38,15 @@ export default function App() {
 
   React.useEffect(() => {
     watchRTC.init({} as any);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('metric') && Boolean(urlParams.get('metric'))) {
+      watchRTC.addStatsListener(stats => {
+        console.log('%cMETRIC', `background: ${'green'}; color: black; padding: 2px 0.5em; border-radius: 0.5em;`, {
+          stats,
+        });
+      });
+    }
   }, []);
 
   return (
