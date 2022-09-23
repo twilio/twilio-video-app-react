@@ -1,3 +1,14 @@
+## 0.8.0 (in progress)
+
+### New Features
+
+- Krisp audio noise cancellation has been added. [#750](https://github.com/twilio/twilio-video-app-react/pull/750)
+
+### Dependency Changes
+
+- `twilio-video` has been upgraded from 2.23.0 to 2.24.1.
+- `krisp-audio-plugin` version 1.0.0 has been added.
+
 ## 0.7.1 (August 5, 2022)
 
 ### Dependency Upgrades
