@@ -32,4 +32,5 @@ test-reports
 junit.xml
 serviceAccountKey.json
 
+public/noisecancellation/
 public/virtualbackground/

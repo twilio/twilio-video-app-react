@@ -1,5 +1,5 @@
 import { LocalAudioTrack } from 'twilio-video';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useAppState } from '../../state';
 import useVideoContext from '../useVideoContext/useVideoContext';
 
@@ -16,7 +16,7 @@ export function useKrispToggle() {
         setIsKrispEnabled(noiseCancellation.isEnabled);
       });
     }
-  }, [noiseCancellation]);
+  }, [noiseCancellation, setIsKrispEnabled]);
 
   return { vendor, toggleKrisp };
 }

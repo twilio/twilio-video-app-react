@@ -6,12 +6,11 @@ import Video, {
   LocalAudioTrack,
   CreateLocalTrackOptions,
   NoiseCancellationOptions,
-  CreateLocalAudioTrackOptions,
 } from 'twilio-video';
 import { useAppState } from '../../../state';
 
 const noiseCancellationOptions: NoiseCancellationOptions = {
-  sdkAssetsPath: '/noisecancellation/twilio-krisp-audio-plugin/1.0.0-rc1/dist',
+  sdkAssetsPath: '/noisecancellation',
   vendor: 'krisp',
 };
 
@@ -143,7 +142,7 @@ export default function useLocalTracks() {
         }
       })
       .finally(() => setIsAcquiringLocalTracks(false));
-  }, [audioTrack, videoTrack, isAcquiringLocalTracks]);
+  }, [audioTrack, videoTrack, isAcquiringLocalTracks, isKrispInstalled, setIsKrispEnabled]);
 
   const localTracks = [audioTrack, videoTrack].filter(track => track !== undefined) as (
     | LocalAudioTrack
