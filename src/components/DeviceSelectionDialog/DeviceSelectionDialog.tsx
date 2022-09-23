@@ -102,7 +102,13 @@ export default function DeviceSelectionDialog({ open, onClose }: { open: boolean
             <div className={classes.krispContainer}>
               <Typography variant="subtitle2">Noise Suppression powered by </Typography>
               <KrispLogo />
-              <Tooltip title="noise" interactive leaveDelay={250} leaveTouchDelay={15000} enterTouchDelay={0}>
+              <Tooltip
+                title="Suppress background noise from your microphone"
+                interactive
+                leaveDelay={250}
+                leaveTouchDelay={15000}
+                enterTouchDelay={0}
+              >
                 <div>
                   <InfoIconOutlined />
                 </div>
@@ -117,13 +123,13 @@ export default function DeviceSelectionDialog({ open, onClose }: { open: boolean
                   onClick={toggleKrisp}
                 />
               }
-              label={isKrispEnabled ? 'Active' : 'Inactive'}
+              label={isKrispEnabled ? 'Enabled' : 'Disabled'}
               style={{ marginRight: 0 }}
               disabled={!isKrispInstalled || isAcquiringLocalTracks}
             />
           </div>
           <Typography variant="body1" color="textSecondary" className={classes.krispInfoText}>
-            Suppress background noise from your mic.
+            Suppress background noise from your microphone.
           </Typography>
 
           <AudioInputList />

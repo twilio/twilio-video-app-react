@@ -145,7 +145,13 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
           >
             <div className={classes.toolTipContainer}>
               <Typography variant="subtitle2">Noise Suppression</Typography>
-              <Tooltip title="noise" interactive leaveDelay={250} leaveTouchDelay={15000} enterTouchDelay={0}>
+              <Tooltip
+                title="Suppress background noise from your microphone"
+                interactive
+                leaveDelay={250}
+                leaveTouchDelay={15000}
+                enterTouchDelay={0}
+              >
                 <div>
                   <InfoIconOutlined />
                 </div>
@@ -161,7 +167,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
                   onClick={toggleKrisp}
                 />
               }
-              label={isKrispEnabled ? 'Active' : 'Inactive'}
+              label={isKrispEnabled ? 'Enabled' : 'Disabled'}
               style={{ marginRight: 0 }}
               // Prevents <Switch /> from being temporarily enabled (and then quickly disabled) in unsupported browsers after
               // isAcquiringLocalTracks becomes false:

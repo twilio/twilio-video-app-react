@@ -2,7 +2,7 @@
 
 ### New Features
 
-- Krisp audio noise cancellation has been added. [#750](https://github.com/twilio/twilio-video-app-react/pull/750)
+- Krisp audio noise suppression has been added. [#750](https://github.com/twilio/twilio-video-app-react/pull/750)
 
 ### Dependency Changes
 
