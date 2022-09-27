@@ -1,4 +1,4 @@
-## 0.8.0 (in progress)
+## 0.8.0 (September 27, 2022)
 
 ### New Features
 
