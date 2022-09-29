@@ -103,9 +103,11 @@ export default function useLocalTracks() {
         (hasSelectedAudioDevice
           ? {
               deviceId: { exact: selectedAudioDeviceId! },
-              noiseCancellationOptions: isKrispInstalled ? noiseCancellationOptions : {},
+              ...(isKrispInstalled ? { noiseCancellationOptions } : {}),
             }
-          : { noiseCancellationOptions: isKrispInstalled ? noiseCancellationOptions : {} }),
+          : isKrispInstalled
+          ? { noiseCancellationOptions }
+          : true),
     };
 
     return Video.createLocalTracks(localTrackConstraints)
