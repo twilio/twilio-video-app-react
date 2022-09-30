@@ -6,7 +6,7 @@
 
 ### Dependency Changes
 
-- `twilio-video` has been upgraded from 2.23.0 to 2.24.1.
+- `twilio-video` has been upgraded from 2.23.0 to 2.24.2.
 - `krisp-audio-plugin` version 1.0.0 has been added.
 
 ## 0.7.1 (August 5, 2022)
