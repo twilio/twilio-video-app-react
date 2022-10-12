@@ -96,6 +96,12 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
     //   }
     // });
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleJoin = () => {
+    getToken(name, roomName).then(token => connect(token));
+
     setTimeout(() => {
       let rating = Math.floor(Math.random() * 5) as any;
       let message = `User rating is ${rating}`;
@@ -110,13 +116,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
         message = decodeURI(ratingMessageFromQuery);
       }
       watchRTC.setUserRating(rating, message);
-    }, 10000);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleJoin = () => {
-    getToken(name, roomName).then(token => connect(token));
+    }, 5000);
   };
 
   const getCustomKeys = () => {
