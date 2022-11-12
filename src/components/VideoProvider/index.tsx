@@ -5,6 +5,7 @@ import { SelectedParticipantProvider } from './useSelectedParticipant/useSelecte
 
 import AttachVisibilityHandler from './AttachVisibilityHandler/AttachVisibilityHandler';
 import useBackgroundSettings, { BackgroundSettings } from './useBackgroundSettings/useBackgroundSettings';
+import useMaskSettings, { MaskSettings } from './useMaskSettings/useMaskSettings';
 import useHandleRoomDisconnection from './useHandleRoomDisconnection/useHandleRoomDisconnection';
 import useHandleTrackPublicationFailed from './useHandleTrackPublicationFailed/useHandleTrackPublicationFailed';
 import useLocalTracks from './useLocalTracks/useLocalTracks';
@@ -37,7 +38,9 @@ export interface IVideoContext {
   setIsBackgroundSelectionOpen: (value: boolean) => void;
   setIsMaskSelectionOpen: (value: boolean) => void;
   backgroundSettings: BackgroundSettings;
+  maskSettings: MaskSettings;
   setBackgroundSettings: (settings: BackgroundSettings) => void;
+  setMaskSettings: (settings: MaskSettings) => void;
 }
 
 export const VideoContext = createContext<IVideoContext>(null!);
@@ -88,6 +91,7 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
     | LocalVideoTrack
     | undefined;
   const [backgroundSettings, setBackgroundSettings] = useBackgroundSettings(videoTrack, room);
+  const [maskSettings, setMaskSettings] = useMaskSettings(videoTrack, room);
 
   return (
     <VideoContext.Provider
@@ -109,7 +113,9 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
         setIsBackgroundSelectionOpen,
         setIsMaskSelectionOpen,
         backgroundSettings,
+        maskSettings,
         setBackgroundSettings,
+        setMaskSettings,
       }}
     >
       <SelectedParticipantProvider room={room}>{children}</SelectedParticipantProvider>
