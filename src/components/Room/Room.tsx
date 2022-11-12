@@ -111,6 +111,7 @@ export default function Room() {
 
       <ChatWindow />
       <BackgroundSelectionDialog />
+      {/* TODO: Add Mask Selection Dialog here. */}
     </div>
   );
 }

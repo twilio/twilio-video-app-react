@@ -33,7 +33,9 @@ export interface IVideoContext {
   toggleScreenShare: () => void;
   getAudioAndVideoTracks: () => Promise<void>;
   isBackgroundSelectionOpen: boolean;
+  isMaskSelectionOpen: boolean;
   setIsBackgroundSelectionOpen: (value: boolean) => void;
+  setIsMaskSelectionOpen: (value: boolean) => void;
   backgroundSettings: BackgroundSettings;
   setBackgroundSettings: (settings: BackgroundSettings) => void;
 }
@@ -81,6 +83,7 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
   useRestartAudioTrackOnDeviceChange(localTracks);
 
   const [isBackgroundSelectionOpen, setIsBackgroundSelectionOpen] = useState(false);
+  const [isMaskSelectionOpen, setIsMaskSelectionOpen] = useState(false);
   const videoTrack = localTracks.find(track => !track.name.includes('screen') && track.kind === 'video') as
     | LocalVideoTrack
     | undefined;
@@ -102,7 +105,9 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
         toggleScreenShare,
         getAudioAndVideoTracks,
         isBackgroundSelectionOpen,
+        isMaskSelectionOpen,
         setIsBackgroundSelectionOpen,
+        setIsMaskSelectionOpen,
         backgroundSettings,
         setBackgroundSettings,
       }}

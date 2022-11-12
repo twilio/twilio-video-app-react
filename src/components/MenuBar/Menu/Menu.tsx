@@ -40,7 +40,7 @@ export default function Menu(props: { buttonClassName?: string }) {
   const { isFetching, updateRecordingRules, roomType, setIsGalleryViewActive, isGalleryViewActive } = useAppState();
   const { setIsChatWindowOpen } = useChatContext();
   const isRecording = useIsRecording();
-  const { room, setIsBackgroundSelectionOpen } = useVideoContext();
+  const { room, setIsBackgroundSelectionOpen, setIsMaskSelectionOpen } = useVideoContext();
 
   const anchorRef = useRef<HTMLButtonElement>(null);
   const { flipCameraDisabled, toggleFacingMode, flipCameraSupported } = useFlipCameraToggle();
@@ -86,6 +86,7 @@ export default function Menu(props: { buttonClassName?: string }) {
           <MenuItem
             onClick={() => {
               setIsBackgroundSelectionOpen(true);
+              setIsMaskSelectionOpen(false);
               setIsChatWindowOpen(false);
               setMenuOpen(false);
             }}
@@ -100,8 +101,8 @@ export default function Menu(props: { buttonClassName?: string }) {
         {isSupported && (
           <MenuItem
             onClick={() => {
-              // TODO: open face effects section.
               setIsBackgroundSelectionOpen(false);
+              setIsMaskSelectionOpen(true);
               setIsChatWindowOpen(false);
               setMenuOpen(false);
             }}
