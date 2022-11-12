@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import BackgroundSelectionDialog from '../BackgroundSelectionDialog/BackgroundSelectionDialog';
+import MaskSelectionDialog from '../MaskSelectionDialog/MaskSelectionDialog';
 import ChatWindow from '../ChatWindow/ChatWindow';
 import clsx from 'clsx';
 import { GalleryView } from '../GalleryView/GalleryView';
@@ -111,7 +112,7 @@ export default function Room() {
 
       <ChatWindow />
       <BackgroundSelectionDialog />
-      {/* TODO: Add Mask Selection Dialog here. */}
+      <MaskSelectionDialog />
     </div>
   );
 }
