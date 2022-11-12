@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import AboutDialog from '../../AboutDialog/AboutDialog';
 import BackgroundIcon from '../../../icons/BackgroundIcon';
+import MaskIcon from '../../../icons/MaskIcon';
 import CollaborationViewIcon from '@material-ui/icons/AccountBox';
 import DeviceSelectionDialog from '../../DeviceSelectionDialog/DeviceSelectionDialog';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -93,6 +94,22 @@ export default function Menu(props: { buttonClassName?: string }) {
               <BackgroundIcon />
             </IconContainer>
             <Typography variant="body1">Backgrounds</Typography>
+          </MenuItem>
+        )}
+
+        {isSupported && (
+          <MenuItem
+            onClick={() => {
+              // TODO: open face effects section.
+              setIsBackgroundSelectionOpen(false);
+              setIsChatWindowOpen(false);
+              setMenuOpen(false);
+            }}
+          >
+            <IconContainer>
+              <MaskIcon />
+            </IconContainer>
+            <Typography variant="body1">Face Effects</Typography>
           </MenuItem>
         )}
 
