@@ -1,9 +1,9 @@
 import React from 'react';
 import MaskSelectionHeader from './MaskSelectionHeader/MaskSelectionHeader';
-// import BackgroundThumbnail from './BackgroundThumbnail/BackgroundThumbnail';
+import MaskThumbnail from './MaskThumbnail/MaskThumbnail';
 import Drawer from '@material-ui/core/Drawer';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-// import { backgroundConfig } from '../VideoProvider/useBackgroundSettings/useBackgroundSettings';
+import { maskConfig } from '../VideoProvider/useMaskSettings/useMaskSettings';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -24,8 +24,8 @@ function MaskSelectionDialog() {
   const classes = useStyles();
   const { isMaskSelectionOpen, setIsMaskSelectionOpen } = useVideoContext();
 
-  //   const imageNames = backgroundConfig.imageNames;
-  //   const images = backgroundConfig.images;
+  const imageNames = maskConfig.imageNames;
+  const images = maskConfig.images;
 
   return (
     <Drawer
@@ -38,19 +38,12 @@ function MaskSelectionDialog() {
       }}
     >
       <MaskSelectionHeader onClose={() => setIsMaskSelectionOpen(false)} />
-      {/* <div className={classes.thumbnailContainer}>
-        <BackgroundThumbnail thumbnail={'none'} name={'None'} />
-        <BackgroundThumbnail thumbnail={'blur'} name={'Blur'} />
+      <div className={classes.thumbnailContainer}>
+        <MaskThumbnail thumbnail={'none'} name={'None'} />
         {images.map((image, index) => (
-          <BackgroundThumbnail
-            thumbnail={'image'}
-            name={imageNames[index]}
-            index={index}
-            imagePath={image}
-            key={image}
-          />
+          <MaskThumbnail thumbnail={'image'} name={imageNames[index]} index={index} imagePath={image} key={image} />
         ))}
-      </div> */}
+      </div>
     </Drawer>
   );
 }
