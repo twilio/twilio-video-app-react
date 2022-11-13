@@ -4,25 +4,15 @@ import useMaskSettings, { MaskSettings } from './useMaskSettings';
 
 const mockLoadModel = jest.fn();
 let mockIsSupported = true;
-jest.mock('@twilio/video-processors', () => {
+jest.mock('mask processor', () => {
   return {
-    GaussianBlurBackgroundProcessor: jest.fn().mockImplementation(() => {
+    MaskProcessor: jest.fn().mockImplementation(() => {
       return {
         loadModel: mockLoadModel,
-        // added name attribute for testing purposes
-        name: 'GaussianBlurBackgroundProcessor',
+        maskImage: '',
+        name: 'MaskProcessor',
       };
     }),
-    VirtualBackgroundProcessor: jest.fn().mockImplementation(() => {
-      return {
-        loadModel: mockLoadModel,
-        backgroundImage: '',
-        name: 'VirtualBackgroundProcessor',
-      };
-    }),
-    ImageFit: {
-      Cover: 'Cover',
-    },
     get isSupported() {
       return mockIsSupported;
     },
@@ -31,11 +21,6 @@ jest.mock('@twilio/video-processors', () => {
 
 const defaultSettings = {
   type: 'none',
-  index: 0,
-};
-
-const blurSettings = {
-  type: 'blur',
   index: 0,
 };
 
@@ -56,7 +41,7 @@ globalAny.Image = jest.fn().mockImplementation(() => {
 
 let mockVideoTrack: any;
 let mockRoom: any;
-let MaskSettings: any;
+let maskSettings: any;
 let setMaskSettings: any;
 let renderResult: any;
 
@@ -73,7 +58,7 @@ beforeEach(async () => {
   const { result } = renderHook(() => useMaskSettings(mockVideoTrack as any, mockRoom));
   renderResult = result;
   mockIsSupported = true;
-  [MaskSettings, setMaskSettings] = renderResult.current;
+  [maskSettings, setMaskSettings] = renderResult.current;
   await act(async () => {
     setMaskSettings(defaultSettings);
   });
@@ -83,54 +68,30 @@ describe('The useMaskSettings hook ', () => {
   it('should not call loadModel, addProcessor, or removeProcessor if isSupported is false', async () => {
     mockIsSupported = false;
     mockLoadModel.mockReset();
-    // update MaskSettings to trigger useEffect hook
+    // update maskSettings to trigger useEffect hook
     await act(async () => {
-      setMaskSettings(blurSettings);
+      setMaskSettings(defaultSettings);
     });
     expect(mockLoadModel).not.toHaveBeenCalled();
     expect(mockVideoTrack.addProcessor).not.toHaveBeenCalled();
     expect(mockVideoTrack.removeProcessor).not.toHaveBeenCalled();
   });
 
-  it('should return the MaskSettings and update function.', () => {
+  it('should return the maskSettings and update function.', () => {
     expect(renderResult.current).toEqual([defaultSettings, expect.any(Function)]);
   });
 
-  it('should set the background settings correctly and set the video processor when "blur" is selected', async () => {
-    await act(async () => {
-      setMaskSettings(blurSettings as MaskSettings);
-    });
-    MaskSettings = renderResult.current[0];
-    expect(MaskSettings.type).toEqual('blur');
-    expect(mockVideoTrack.addProcessor).toHaveBeenCalledWith({
-      loadModel: mockLoadModel,
-      name: 'GaussianBlurBackgroundProcessor',
-    });
-  });
-
-  it('should set the background settings correctly and remove the video processor when "none" is selected', async () => {
-    await act(async () => {
-      setMaskSettings(blurSettings as MaskSettings);
-    });
-    // set video processor to none
-    await act(async () => {
-      setMaskSettings(defaultSettings as MaskSettings);
-    });
-    MaskSettings = renderResult.current[0];
-    expect(MaskSettings.type).toEqual('none');
-  });
-
-  it('should set the background settings correctly and set the video processor when "image" is selected', async () => {
+  it('should set the mask settings correctly and set the video processor when "image" is selected', async () => {
     await act(async () => {
       setMaskSettings(imgSettings as MaskSettings);
     });
-    MaskSettings = renderResult.current[0];
-    expect(MaskSettings.type).toEqual('image');
-    expect(MaskSettings.index).toEqual(2);
+    maskSettings = renderResult.current[0];
+    expect(maskSettings.type).toEqual('image');
+    expect(maskSettings.index).toEqual(2);
     expect(mockVideoTrack.addProcessor).toHaveBeenCalledWith({
-      backgroundImage: expect.any(Object),
+      maskImage: expect.any(Object),
       loadModel: mockLoadModel,
-      name: 'VirtualBackgroundProcessor',
+      name: 'MaskProcessor',
     });
   });
 
@@ -152,37 +113,16 @@ describe('The useMaskSettings hook ', () => {
       expect(window.localStorage.getItem(SELECTED_MASK_SETTINGS_KEY)).toEqual(JSON.stringify(defaultSettings));
     });
 
-    it('should not call videoTrack.removeProcessor if videoTrack.processor does not exist', async () => {
-      await act(async () => {
-        setMaskSettings(blurSettings);
-      });
-      expect(mockVideoTrack.removeProcessor).not.toHaveBeenCalled();
-      expect(window.localStorage.getItem(SELECTED_MASK_SETTINGS_KEY)).toEqual(JSON.stringify(blurSettings));
-    });
-
-    it("should not call videoTrack.addProcessor with a param of blurProcessor if MaskSettings.type is not equal to 'blur'", async () => {
+    it("should not call videoTrack.addProcessor with a param of blurProcessor if maskSettings.type is not equal to 'image'", async () => {
       mockVideoTrack.addProcessor.mockReset();
       await act(async () => {
         setMaskSettings(imgSettings);
       });
       expect(mockVideoTrack.addProcessor).not.toHaveBeenCalledWith({
         loadModel: mockLoadModel,
-        name: 'GaussianBlurBackgroundProcessor',
+        name: 'MaskProcessor',
       });
       expect(window.localStorage.getItem(SELECTED_MASK_SETTINGS_KEY)).toEqual(JSON.stringify(imgSettings));
-    });
-
-    it("should not call videoTrack.addProcessor with a param of virtualBackgroundProcessor if MaskSettings.type is not equal to 'image'", async () => {
-      mockVideoTrack.addProcessor.mockReset();
-      await act(async () => {
-        setMaskSettings(blurSettings);
-      });
-      expect(mockVideoTrack.addProcessor).not.toHaveBeenCalledWith({
-        loadModel: mockLoadModel,
-        backgroundImage: expect.any(Object),
-        name: 'VirtualBackgroundProcessor',
-      });
-      expect(window.localStorage.getItem(SELECTED_MASK_SETTINGS_KEY)).toEqual(JSON.stringify(blurSettings));
     });
 
     it('should not error when videoTrack does not exist and sets the local storage item', async () => {

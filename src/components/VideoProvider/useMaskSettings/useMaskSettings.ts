@@ -1,19 +1,15 @@
 import { LocalVideoTrack, Room } from 'twilio-video';
 import { useEffect, useCallback } from 'react';
 import { SELECTED_MASK_SETTINGS_KEY } from '../../../constants';
-import {
-  GaussianBlurBackgroundProcessor,
-  VirtualBackgroundProcessor,
-  ImageFit,
-  isSupported,
-} from '@twilio/video-processors';
+import { isSupported } from '@twilio/video-processors';
 // TODO: replace these mock photos with actual face masks
 import Abstract from '../../../images/Abstract.jpg';
 import AbstractThumb from '../../../images/thumb/Abstract.jpg';
 import BohoHome from '../../../images/BohoHome.jpg';
 import BohoHomeThumb from '../../../images/thumb/BohoHome.jpg';
-import { Thumbnail } from '../../BackgroundSelectionDialog/BackgroundThumbnail/BackgroundThumbnail'; // TODO: import from mask thumbnail component
+import { Thumbnail } from '../../MaskSelectionDialog/MaskThumbnail/MaskThumbnail';
 import { useLocalStorageState } from '../../../hooks/useLocalStorageState/useLocalStorageState';
+import { MaskProcessor } from '../../../processors/face-mask/MaskProcessor';
 
 export interface MaskSettings {
   type: Thumbnail;
@@ -48,9 +44,7 @@ export const maskConfig = {
   images,
 };
 
-const virtualBackgroundAssets = '/faceMask';
-let blurProcessor: GaussianBlurBackgroundProcessor;
-let virtualBackgroundProcessor: VirtualBackgroundProcessor;
+let maskProcessor: MaskProcessor;
 
 export default function useMaskSettings(videoTrack: LocalVideoTrack | undefined, room?: Room | null) {
   const [maskSettings, setMaskSettings] = useLocalStorageState<MaskSettings>(SELECTED_MASK_SETTINGS_KEY, {
@@ -65,7 +59,7 @@ export default function useMaskSettings(videoTrack: LocalVideoTrack | undefined,
   }, [videoTrack]);
 
   const addProcessor = useCallback(
-    (processor: GaussianBlurBackgroundProcessor | VirtualBackgroundProcessor) => {
+    (processor: MaskProcessor) => {
       if (!videoTrack || videoTrack.processor === processor) {
         return;
       }
@@ -82,29 +76,16 @@ export default function useMaskSettings(videoTrack: LocalVideoTrack | undefined,
     // make sure localParticipant has joined room before applying video processors
     // this ensures that the video processors are not applied on the LocalVideoPreview
     const handleProcessorChange = async () => {
-      if (!blurProcessor) {
-        blurProcessor = new GaussianBlurBackgroundProcessor({
-          assetsPath: virtualBackgroundAssets,
-        });
-        await blurProcessor.loadModel();
-      }
-      if (!virtualBackgroundProcessor) {
-        virtualBackgroundProcessor = new VirtualBackgroundProcessor({
-          assetsPath: virtualBackgroundAssets,
-          backgroundImage: await getImage(0),
-          fitType: ImageFit.Cover,
-        });
-        await virtualBackgroundProcessor.loadModel();
-      }
+      maskProcessor = new MaskProcessor({
+        maskImage: await getImage(0),
+      });
       if (!room?.localParticipant) {
         return;
       }
 
-      if (maskSettings.type === 'blur') {
-        addProcessor(blurProcessor);
-      } else if (maskSettings.type === 'image' && typeof maskSettings.index === 'number') {
-        virtualBackgroundProcessor.backgroundImage = await getImage(maskSettings.index);
-        addProcessor(virtualBackgroundProcessor);
+      if (maskSettings.type === 'image' && typeof maskSettings.index === 'number') {
+        maskProcessor.maskImage = await getImage(maskSettings.index);
+        addProcessor(maskProcessor);
       } else {
         removeProcessor();
       }
