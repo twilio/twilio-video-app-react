@@ -1,4 +1,4 @@
-export const create_texture = function(gl: WebGL2RenderingContext) {
+const createTexture = function(gl: WebGL2RenderingContext) {
   let texid = gl.createTexture();
 
   gl.bindTexture(gl.TEXTURE_2D, texid);
@@ -10,44 +10,39 @@ export const create_texture = function(gl: WebGL2RenderingContext) {
   return texid;
 };
 
-export const create_image_texture2 = function(gl: WebGL2RenderingContext, teximage: HTMLImageElement) {
-  let image_tex: any = {};
-  image_tex.ready = false;
-  let texid = create_texture(gl);
+export const createTextureFromImage = function(gl: WebGL2RenderingContext, image: HTMLImageElement) {
+  const texture = createTexture(gl);
 
-  teximage.onload = function() {
-    gl.bindTexture(gl.TEXTURE_2D, texid);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, teximage);
-    gl.generateMipmap(gl.TEXTURE_2D);
-    image_tex.ready = true;
-  };
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
 
-  image_tex.texid = texid;
-  image_tex.image = teximage;
-  return image_tex;
+  return texture;
 };
 
-export const create_image_texture_from_file = function(gl: WebGL2RenderingContext, blob: Blob) {
-  let image_tex: any = {};
-  image_tex.ready = false;
-  let texid = create_texture(gl);
-  let teximage = new Image();
-  let reader = new FileReader();
+export const createTextureFromBlob = async function(gl: WebGL2RenderingContext, blob: Blob) {
+  const texture = createTexture(gl);
+  const image = new Image();
+  const reader = new FileReader();
 
-  teximage.onload = function() {
-    gl.bindTexture(gl.TEXTURE_2D, texid);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, teximage);
-    gl.generateMipmap(gl.TEXTURE_2D);
-    image_tex.ready = true;
-  };
-
-  reader.onload = function(event) {
-    let src = event.target?.result;
-    teximage.src = src as string;
-  };
   reader.readAsDataURL(blob);
 
-  image_tex.texid = texid;
-  image_tex.image = teximage;
-  return image_tex;
+  await new Promise((resolve: any) => {
+    reader.onload = function(event) {
+      let src = event.target?.result;
+      image.src = src as string;
+
+      resolve();
+    };
+  });
+
+  await new Promise((resolve: any) => {
+    image.onload = function() {
+      gl.bindTexture(gl.TEXTURE_2D, texture);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+
+      resolve();
+    };
+  });
+
+  return texture;
 };

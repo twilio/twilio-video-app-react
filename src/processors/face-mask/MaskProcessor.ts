@@ -1,15 +1,19 @@
-import { Processor } from '@twilio/video-processors/es5/processors/Processor';
-import '@tensorflow/tfjs-backend-webgl';
 import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm';
+import '@tensorflow/tfjs-backend-webgl';
+
 import {
-  FaceLandmarksDetector,
-  createDetector as loadModel,
+  createDetector,
   SupportedModels,
+  Face,
+  FaceLandmarksDetector,
 } from '@tensorflow-models/face-landmarks-detection';
-import { create_image_texture2, create_image_texture_from_file } from './utils/textures';
-import { r2d } from './utils/render-2d';
-import { init_facemesh_render } from './utils/facemesh';
-import { calc_size_to_fit, render_2d_scene } from './utils/webgl';
+
+import { createTextureFromImage, createTextureFromBlob } from './utils/textures';
+import { Facemesh } from './utils/facemesh';
+import { calcSizeToFit, render2dScene } from './utils/webgl';
+import { Render2D } from './utils/render-2d';
+
+// Initialize Tf.js
 tfjsWasm.setWasmPaths(`https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm@${tfjsWasm.version_wasm}/dist/`);
 
 /**
@@ -45,10 +49,10 @@ export interface MaskProcessorOptions {
  *     maskImage: img,
  *   });
  *
- *   faceMask.loadModel().then(() => {
+ *   faceMask.createDetector().then(() => {
  *     createLocalVideoTrack({
- *       width: 640,
- *       height: 480,
+ *       camWidth: 640,
+ *       camHeight: 480,
  *       frameRate: 24
  *     }).then(track => {
  *       track.addProcessor(faceMask);
@@ -58,37 +62,25 @@ export interface MaskProcessorOptions {
  * img.src = '/face-mask.jpg';
  * ```
  */
-export class MaskProcessor extends Processor {
+export class MaskProcessor {
   private _maskImage!: HTMLImageElement;
   // tslint:disable-next-line no-unused-variable
   private readonly _name: string = 'MaskProcessor';
 
   private static _model: FaceLandmarksDetector | null = null;
-  private static async _loadModel(): Promise<void> {
-    MaskProcessor._model =
-      (await loadModel(SupportedModels.MediaPipeFaceMesh).catch((error: any) =>
-        console.error('Unable to load model.', error)
-      )) || null;
-  }
-  protected _outputCanvas: HTMLCanvasElement;
-  protected _outputContext: WebGL2RenderingContext;
 
-  private _inputCanvas: HTMLCanvasElement;
-  private _inputContext: CanvasRenderingContext2D;
+  private _maskTex: WebGLTexture | null;
+  private _isMaskUpdated: boolean;
+  private _maskPredictions: Face[];
+  private _facePredictions: Face[];
 
-  private _prev_time_ms: number;
-  private _cur_time_ms: number;
-  private _interval_ms: number;
-  private _time_invoked: number;
+  private _camRegion: any;
 
-  private _masktex: any; // TODO: make an explicit type for this
-  private _mask_updated: boolean;
-  private _mask_init_done: boolean;
-  private _mask_predictions: any; // TODO: make an explicit type for this
-  private _face_predictions: any; // TODO: make an explicit type for this
+  private _outputCanvas: HTMLCanvasElement;
+  private _outputContext: WebGL2RenderingContext;
 
-  private _s_masktex_region: any;
-  private _s_srctex_region: any;
+  private _facemesh: Facemesh;
+  private _r2d: Render2D;
 
   /**
    * Construct a MaskProcessor. Default values will be used for
@@ -96,29 +88,18 @@ export class MaskProcessor extends Processor {
    * and invalid properties will be ignored.
    */
   constructor(options: MaskProcessorOptions) {
-    super();
+    this.maskImage = options.maskImage;
 
-    this._inputCanvas = document.createElement('canvas');
-    this._inputContext = this._inputCanvas.getContext('2d') as CanvasRenderingContext2D;
+    this._maskTex = null;
+    this._isMaskUpdated = false;
+    this._maskPredictions = [];
+    this._facePredictions = [];
+
     this._outputCanvas = document.createElement('canvas');
     this._outputContext = this._outputCanvas.getContext('webgl') as WebGL2RenderingContext;
 
-    this.maskImage = options.maskImage;
-
-    this._prev_time_ms = performance.now();
-
-    this._masktex = null;
-    this._mask_updated = false;
-    this._mask_init_done = false;
-    this._mask_predictions = { length: 0 };
-
-    this._face_predictions = { length: 0 };
-    this._time_invoked = 0;
-    this._cur_time_ms = performance.now();
-    this._interval_ms = this._cur_time_ms - this._prev_time_ms;
-
-    this._s_masktex_region = null;
-    this._s_srctex_region = null;
+    this._facemesh = new Facemesh(this._outputContext);
+    this._r2d = new Render2D(this._outputContext);
   }
 
   /**
@@ -141,8 +122,7 @@ export class MaskProcessor extends Processor {
       );
     }
     this._maskImage = image;
-
-    this._masktex = create_image_texture2(this._outputContext, this._maskImage);
+    this._isMaskUpdated = false;
   }
 
   /**
@@ -151,79 +131,77 @@ export class MaskProcessor extends Processor {
    * video frames are processed correctly.
    */
   async loadModel() {
-    await MaskProcessor._loadModel();
+    try {
+      MaskProcessor._model = await createDetector(SupportedModels.MediaPipeFaceMesh, {
+        runtime: 'tfjs',
+        refineLandmarks: false,
+      });
+
+      console.log('Loaded face landmarks model successfully.');
+    } catch (error) {
+      console.error('Unable to load face landmarks model.', error);
+    }
   }
 
   async processFrame(inputFrameBuffer: OffscreenCanvas, outputFrameBuffer: HTMLCanvasElement): Promise<void> {
-    const win_w = inputFrameBuffer.width;
-    const win_h = inputFrameBuffer.height;
+    // The WebGL Canvas Context
+    const gl = this._outputContext;
 
-    if (!this._mask_init_done) {
-      r2d.init_2d_render(this._outputContext, win_w, win_h);
-      init_facemesh_render(this._outputContext, win_w, win_h);
+    // Configure viewport dimensions
+    const camWidth = inputFrameBuffer.width;
+    const camHeight = inputFrameBuffer.height;
 
-      this._outputContext.clearColor(0.7, 0.7, 0.7, 1.0);
-      this._outputContext.clear(this._outputContext.COLOR_BUFFER_BIT);
+    this._outputCanvas.width = camWidth;
+    this._outputCanvas.height = camHeight;
 
-      this._outputContext.bindFramebuffer(this._outputContext.FRAMEBUFFER, null);
-      this._outputContext.viewport(0, 0, win_w, win_h);
-      this._outputContext.scissor(0, 0, win_w, win_h);
+    // Handle viewport resizing
+    this._facemesh.resize_facemesh_render(camWidth, camHeight);
+    this._r2d.resize_viewport(camWidth, camHeight);
+    gl.viewport(0, 0, camWidth, camHeight);
+
+    // Update mask if needed
+    if (!this._isMaskUpdated && MaskProcessor._model) {
+      this._maskTex = createTextureFromImage(gl, this._maskImage);
+      this._maskPredictions = await MaskProcessor._model?.estimateFaces(this._maskImage);
+
+      this._isMaskUpdated = true;
     }
 
-    const camtex = create_image_texture_from_file(this._outputContext, await inputFrameBuffer.convertToBlob());
-
-    this._prev_time_ms = this._cur_time_ms;
-
-    /* --------------------------------------- *
-     *  Update Mask (if need)
-     * --------------------------------------- */
-    if (!this._mask_init_done) {
-      for (let i = 0; i < 5; i++)
-        this._mask_predictions = await MaskProcessor._model?.estimateFaces(this._masktex.image as HTMLImageElement);
-
-      this._mask_init_done = true;
-      this._s_masktex_region = calc_size_to_fit(
-        this._outputContext,
-        this._masktex.image.width,
-        this._masktex.image.height,
-        150,
-        150
-      );
-      this._mask_updated = true;
-    }
-
-    const src_w = inputFrameBuffer.width;
-    const src_h = inputFrameBuffer.height;
-    const texid = camtex.texid;
+    const camTex = await createTextureFromBlob(gl, await inputFrameBuffer.convertToBlob());
 
     /* --------------------------------------- *
      *  invoke TF.js (Facemesh)
      * --------------------------------------- */
-    this._s_srctex_region = calc_size_to_fit(this._outputContext, src_w, src_h, win_w, win_h);
+    this._camRegion = calcSizeToFit(camWidth, camHeight, camWidth, camHeight);
 
     if (MaskProcessor._model) {
-      let time_invoke1_start = performance.now();
-
-      const num_repeat = this._mask_updated ? 2 : 1;
-      for (let i = 0; i < num_repeat; i++ /* repeat 5 times to flush pipeline ? */) {
-        this._face_predictions = await MaskProcessor._model.estimateFaces(inputFrameBuffer.transferToImageBitmap());
-      }
-      this._time_invoked = performance.now() - time_invoke1_start;
+      this._facePredictions = await MaskProcessor._model.estimateFaces(inputFrameBuffer.transferToImageBitmap());
     }
 
     /* --------------------------------------- *
      *  render scene
      * --------------------------------------- */
-    this._outputContext.clear(this._outputContext.COLOR_BUFFER_BIT | this._outputContext.DEPTH_BUFFER_BIT);
+    gl.clearColor(0, 0, 0, 1);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    render_2d_scene(
-      this._outputContext,
-      texid,
-      this._face_predictions,
-      src_w,
-      src_h,
-      this._masktex,
-      this._mask_predictions
+    if (!camTex || !this._maskTex) return;
+
+    render2dScene(
+      gl,
+      camTex,
+      this._facePredictions,
+      camWidth,
+      camHeight,
+      this._maskImage,
+      this._maskTex,
+      this._maskPredictions,
+      this._camRegion,
+      this._facemesh,
+      this._r2d
     );
+
+    // Copy content to output frame
+    const ctx2D = outputFrameBuffer.getContext('2d');
+    ctx2D?.drawImage(this._outputCanvas, 0, 0);
   }
 }
