@@ -1,3 +1,7 @@
+/* ------------------------------------------------ *
+ * Inspired by: https://github.com/terryky/tfjs_webgl_app/tree/master/face_landmark
+ * ------------------------------------------------ */
+
 import { matrix_identity, matrix_mult } from './matrix';
 import { generate_shader } from './shaders';
 import s_face_tris from '../data/s-face-tris.json';

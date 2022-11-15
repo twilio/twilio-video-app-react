@@ -2,11 +2,8 @@ import { LocalVideoTrack, Room } from 'twilio-video';
 import { useEffect, useCallback } from 'react';
 import { SELECTED_MASK_SETTINGS_KEY } from '../../../constants';
 import { isSupported } from '@twilio/video-processors';
-// TODO: replace these mock photos with actual face masks
-import Abstract from '../../../images/Abstract.jpg';
-import AbstractThumb from '../../../images/thumb/Abstract.jpg';
-import BohoHome from '../../../images/BohoHome.jpg';
-import BohoHomeThumb from '../../../images/thumb/BohoHome.jpg';
+import FaceMaskImage from '../../../images/FaceMask.png';
+import FaceMaskImageThumb from '../../../images/thumb/FaceMask.png';
 import { Thumbnail } from '../../MaskSelectionDialog/MaskThumbnail/MaskThumbnail';
 import { useLocalStorageState } from '../../../hooks/useLocalStorageState/useLocalStorageState';
 import { MaskProcessor } from '../../../processors/face-mask/MaskProcessor';
@@ -16,11 +13,11 @@ export interface MaskSettings {
   index?: number;
 }
 
-const imageNames: string[] = ['Abstract', 'Boho Home'];
+const imageNames: string[] = ['Face Mask'];
 
-const images = [AbstractThumb, BohoHomeThumb];
+const images = [FaceMaskImageThumb];
 
-const rawImagePaths = [Abstract, BohoHome];
+const rawImagePaths = [FaceMaskImage];
 
 let imageElements = new Map();
 
@@ -76,9 +73,13 @@ export default function useMaskSettings(videoTrack: LocalVideoTrack | undefined,
     // make sure localParticipant has joined room before applying video processors
     // this ensures that the video processors are not applied on the LocalVideoPreview
     const handleProcessorChange = async () => {
-      maskProcessor = new MaskProcessor({
-        maskImage: await getImage(0),
-      });
+      if (!maskProcessor) {
+        maskProcessor = new MaskProcessor({
+          maskImage: await getImage(0),
+        });
+        await maskProcessor.loadModel();
+      }
+
       if (!room?.localParticipant) {
         return;
       }

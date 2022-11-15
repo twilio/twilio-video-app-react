@@ -9,6 +9,7 @@
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@tensorflow-models/face-landmarks-detection": "^1.0.2",
     "@tensorflow/tfjs-backend-wasm": "^4.0.0",
+    "@tensorflow/tfjs-core": "^4.0.0",
     "@twilio-labs/plugin-rtc": "^0.8.4",
     "@twilio/conversations": "^2.1.0",
     "@twilio/video-processors": "^1.0.1",

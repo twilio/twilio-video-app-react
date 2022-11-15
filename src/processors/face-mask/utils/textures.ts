@@ -1,3 +1,7 @@
+/* ------------------------------------------------ *
+ * Inspired by: https://github.com/terryky/tfjs_webgl_app/tree/master/face_landmark
+ * ------------------------------------------------ */
+
 const createTexture = function(gl: WebGL2RenderingContext) {
   let texid = gl.createTexture();
 

@@ -1,3 +1,7 @@
+/* ------------------------------------------------ *
+ * Inspired by: https://github.com/terryky/tfjs_webgl_app/tree/master/face_landmark
+ * ------------------------------------------------ */
+
 import { SHADER_NUM, varray, tarray0, tarray1, tarray2, tarray3 } from '../constants';
 import { fs_fill, fs_tex, vs_fill, vs_tex } from '../shaders';
 import { matrix_identity, matrix_mult, matrix_rotate, matrix_scale, matrix_translate } from './matrix';

@@ -9,9 +9,9 @@ import {
 } from '@tensorflow-models/face-landmarks-detection';
 
 import { createTextureFromImage, createTextureFromBlob } from './utils/textures';
-import { Facemesh } from './utils/facemesh';
+import { Facemesh } from './utils/Facemesh';
 import { calcSizeToFit, render2dScene } from './utils/webgl';
-import { Render2D } from './utils/render-2d';
+import { Render2D } from './utils/Render2D';
 
 // Initialize Tf.js
 tfjsWasm.setWasmPaths(`https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm@${tfjsWasm.version_wasm}/dist/`);
@@ -45,7 +45,6 @@ export interface MaskProcessorOptions {
  *
  * img.onload = () => {
  *   faceMask = new MaskProcessor({
- *     assetsPath: 'https://my-server-path/assets',
  *     maskImage: img,
  *   });
  *

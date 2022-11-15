@@ -1,6 +1,10 @@
+/* ------------------------------------------------ *
+ * Inspired by: https://github.com/terryky/tfjs_webgl_app/tree/master/face_landmark
+ * ------------------------------------------------ */
+
 import { Face, Keypoint } from '@tensorflow-models/face-landmarks-detection';
-import { Facemesh } from './facemesh';
-import { Render2D } from './render-2d';
+import { Facemesh } from './Facemesh';
+import { Render2D } from './Render2D';
 
 /* Adjust the texture size to fit the window size
  *

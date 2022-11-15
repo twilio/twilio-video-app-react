@@ -1,3 +1,7 @@
+/* ------------------------------------------------ *
+ * Inspired by: https://github.com/terryky/tfjs_webgl_app/tree/master/face_landmark
+ * ------------------------------------------------ */
+
 const compile_shader_text = function(gl: WebGL2RenderingContext, shader_type: number, text: string) {
   const shader = gl.createShader(shader_type) as WebGLShader;
   gl.shaderSource(shader, text);

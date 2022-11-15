@@ -1,3 +1,7 @@
+/* ------------------------------------------------ *
+ * Inspired by: https://github.com/terryky/tfjs_webgl_app/tree/master/face_landmark
+ * ------------------------------------------------ */
+
 import { M_PId180f } from '../constants';
 
 export function RAD_TO_DEG(rad: number) {
