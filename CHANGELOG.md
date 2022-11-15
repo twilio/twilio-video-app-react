@@ -1,3 +1,9 @@
+## 0.8.0 (November 14, 2022)
+
+### New Feature
+
+- This release adds the ability to maintain audio continuity when the default audio input device changes. If the user chooses a specific audio device from the audio settings, then this feature does not apply.
+
 ## 0.7.1 (August 5, 2022)
 
 ### Dependency Upgrades
