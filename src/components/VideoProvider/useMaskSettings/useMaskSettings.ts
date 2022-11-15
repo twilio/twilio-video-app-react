@@ -2,22 +2,25 @@ import { LocalVideoTrack, Room } from 'twilio-video';
 import { useEffect, useCallback } from 'react';
 import { SELECTED_MASK_SETTINGS_KEY } from '../../../constants';
 import { isSupported } from '@twilio/video-processors';
-import FaceMaskImage from '../../../images/FaceMask.png';
-import FaceMaskImageThumb from '../../../images/thumb/FaceMask.png';
 import { Thumbnail } from '../../MaskSelectionDialog/MaskThumbnail/MaskThumbnail';
 import { useLocalStorageState } from '../../../hooks/useLocalStorageState/useLocalStorageState';
 import { MaskProcessor } from '../../../processors/face-mask/MaskProcessor';
+
+import SantaImage from '../../../images/Santa.jpg';
+import Santa2Image from '../../../images/Santa2.jpg';
+import Santa3Image from '../../../images/Santa3.jpg';
+import Santa4Image from '../../../images/Santa4.jpg';
+import Scary1Image from '../../../images/Scary1.jpg';
+import Scary2Image from '../../../images/Scary2.jpg';
 
 export interface MaskSettings {
   type: Thumbnail;
   index?: number;
 }
 
-const imageNames: string[] = ['Face Mask'];
+const imageNames: string[] = ['Santa', 'Santa 2', 'Santa 3', 'Santa 4', 'Scary 1', 'Scary 2'];
 
-const images = [FaceMaskImageThumb];
-
-const rawImagePaths = [FaceMaskImage];
+const rawImagePaths = [SantaImage, Santa2Image, Santa3Image, Santa4Image, Scary1Image, Scary2Image];
 
 let imageElements = new Map();
 
@@ -38,7 +41,7 @@ const getImage = (index: number): Promise<HTMLImageElement> => {
 
 export const maskConfig = {
   imageNames,
-  images,
+  images: rawImagePaths,
 };
 
 let maskProcessor: MaskProcessor;

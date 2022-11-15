@@ -34,7 +34,7 @@ export default function MaskSelectionHeader({ onClose }: MaskSelectionHeaderProp
   const classes = useStyles();
   return (
     <div className={classes.container}>
-      <div className={classes.text}>Text Effects</div>
+      <div className={classes.text}>Mask Effects</div>
       <button className={classes.closeMaskSelection} onClick={onClose}>
         <CloseIcon />
       </button>
