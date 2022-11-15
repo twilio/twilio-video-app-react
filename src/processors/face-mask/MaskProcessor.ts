@@ -8,7 +8,7 @@ import {
   FaceLandmarksDetector,
 } from '@tensorflow-models/face-landmarks-detection';
 
-import { createTextureFromImage, createTextureFromBlob } from './utils/textures';
+import { createTextureFromImage, createTextureFromImageBitmap } from './utils/textures';
 import { Facemesh } from './utils/Facemesh';
 import { calcSizeToFit, render2dScene } from './utils/webgl';
 import { Render2D } from './utils/Render2D';
@@ -133,7 +133,7 @@ export class MaskProcessor {
     try {
       MaskProcessor._model = await createDetector(SupportedModels.MediaPipeFaceMesh, {
         runtime: 'tfjs',
-        refineLandmarks: false,
+        refineLandmarks: true,
       });
 
       console.log('Loaded face landmarks model successfully.');
@@ -158,15 +158,18 @@ export class MaskProcessor {
     this._r2d.resize_viewport(camWidth, camHeight);
     gl.viewport(0, 0, camWidth, camHeight);
 
+    // Get image bitmap from input frame
+    const inputImageBitmap = inputFrameBuffer.transferToImageBitmap();
+
     // Update mask if needed
     if (!this._isMaskUpdated && MaskProcessor._model) {
       this._maskTex = createTextureFromImage(gl, this._maskImage);
-      this._maskPredictions = await MaskProcessor._model?.estimateFaces(this._maskImage);
+      for (let i = 0; i < 2; i++) this._maskPredictions = await MaskProcessor._model?.estimateFaces(this._maskImage);
 
       this._isMaskUpdated = true;
     }
 
-    const camTex = await createTextureFromBlob(gl, await inputFrameBuffer.convertToBlob());
+    const camTex = createTextureFromImageBitmap(gl, inputImageBitmap);
 
     /* --------------------------------------- *
      *  invoke TF.js (Facemesh)
@@ -174,7 +177,7 @@ export class MaskProcessor {
     this._camRegion = calcSizeToFit(camWidth, camHeight, camWidth, camHeight);
 
     if (MaskProcessor._model) {
-      this._facePredictions = await MaskProcessor._model.estimateFaces(inputFrameBuffer.transferToImageBitmap());
+      this._facePredictions = await MaskProcessor._model.estimateFaces(inputImageBitmap);
     }
 
     /* --------------------------------------- *

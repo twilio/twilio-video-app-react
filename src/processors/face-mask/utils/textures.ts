@@ -23,30 +23,11 @@ export const createTextureFromImage = function(gl: WebGL2RenderingContext, image
   return texture;
 };
 
-export const createTextureFromBlob = async function(gl: WebGL2RenderingContext, blob: Blob) {
+export const createTextureFromImageBitmap = function(gl: WebGL2RenderingContext, image: ImageBitmap) {
   const texture = createTexture(gl);
-  const image = new Image();
-  const reader = new FileReader();
 
-  reader.readAsDataURL(blob);
-
-  await new Promise((resolve: any) => {
-    reader.onload = function(event) {
-      let src = event.target?.result;
-      image.src = src as string;
-
-      resolve();
-    };
-  });
-
-  await new Promise((resolve: any) => {
-    image.onload = function() {
-      gl.bindTexture(gl.TEXTURE_2D, texture);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-
-      resolve();
-    };
-  });
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
 
   return texture;
 };
