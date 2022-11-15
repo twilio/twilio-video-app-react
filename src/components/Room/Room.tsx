@@ -74,7 +74,7 @@ export function useSetSpeakerViewOnScreenShare(
 export default function Room() {
   const classes = useStyles();
   const { isChatWindowOpen } = useChatContext();
-  const { isBackgroundSelectionOpen, room } = useVideoContext();
+  const { isBackgroundSelectionOpen, isMaskSelectionOpen, room } = useVideoContext();
   const { isGalleryViewActive, setIsGalleryViewActive } = useAppState();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -87,7 +87,7 @@ export default function Room() {
   return (
     <div
       className={clsx(classes.container, {
-        [classes.rightDrawerOpen]: isChatWindowOpen || isBackgroundSelectionOpen,
+        [classes.rightDrawerOpen]: isChatWindowOpen || isBackgroundSelectionOpen || isMaskSelectionOpen,
       })}
     >
       {/* 
