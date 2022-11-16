@@ -26,7 +26,7 @@ export default function MainParticipant() {
       <ParticipantTracks
         participant={mainParticipant}
         videoOnly
-        enableScreenShare={mainParticipant !== localParticipant}
+        enableScreenShare={!!screenShareParticipant}
         videoPriority={videoPriority}
         isLocalParticipant={mainParticipant === localParticipant}
       />

@@ -54,7 +54,7 @@ export function useSetSpeakerViewOnScreenShare(
   }, [isGalleryViewActive]);
 
   useEffect(() => {
-    if (screenShareParticipant && screenShareParticipant !== room!.localParticipant) {
+    if (screenShareParticipant) {
       // When screensharing starts, save the user's previous view setting (speaker or gallery):
       const prevIsGalleryViewActive = isGalleryViewActiveRef.current;
       // Turn off gallery view so that the user can see the screen that is being shared:

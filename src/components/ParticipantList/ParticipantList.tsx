@@ -49,14 +49,14 @@ export default function ParticipantList() {
   const [selectedParticipant, setSelectedParticipant] = useSelectedParticipant();
   const screenShareParticipant = useScreenShareParticipant();
   const mainParticipant = useMainParticipant();
-  const isRemoteParticipantScreenSharing = screenShareParticipant && screenShareParticipant !== localParticipant;
+  const isLocalParticipantScreenSharing = screenShareParticipant && screenShareParticipant === localParticipant;
 
-  if (speakerViewParticipants.length === 0) return null; // Don't render this component if there are no remote participants.
+  if (speakerViewParticipants.length === 0 && !isLocalParticipantScreenSharing) return null; // Don't render this component if there are no remote participants and local participant is not sharing the screen.
 
   return (
     <aside
       className={clsx(classes.container, {
-        [classes.transparentBackground]: !isRemoteParticipantScreenSharing,
+        [classes.transparentBackground]: !screenShareParticipant,
       })}
     >
       <div className={classes.scrollContainer}>
