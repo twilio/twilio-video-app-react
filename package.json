@@ -1,6 +1,6 @@
 {
   "name": "twilio-video-app-react",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "private": true,
   "license": "Apache-2.0",
   "dependencies": {
@@ -31,7 +31,7 @@
     "d3-timer": "^1.0.10",
     "express": "^4.17.1",
     "firebase": "^9.9.0",
-    "firebase-admin": "^9.5.0",
+    "firebase-admin": "^11.2.1",
     "fscreen": "^1.0.2",
     "husky": "^3.1.0",
     "linkify-it": "^3.0.2",
@@ -48,7 +48,7 @@
     "swiper": "^8.1.5",
     "ts-node": "^9.1.1",
     "twilio": "^3.63.1",
-    "twilio-video": "^2.23.0",
+    "twilio-video": "^2.25.0",
     "typescript": "^4.6.2"
   },
   "devDependencies": {
