@@ -10,7 +10,7 @@ import {
 
 import { createTextureFromImage, createTextureFromImageBitmap } from './utils/textures';
 import { Facemesh } from './utils/Facemesh';
-import { calcSizeToFit, render2dScene } from './utils/webgl';
+import { calcSizeToFit, Region, render2dScene } from './utils/webgl';
 import { Render2D } from './utils/Render2D';
 
 // Initialize Tf.js
@@ -73,7 +73,7 @@ export class MaskProcessor {
   private _maskPredictions: Face[];
   private _facePredictions: Face[];
 
-  private _camRegion: any;
+  private _camRegion: Region | null;
 
   private _outputCanvas: HTMLCanvasElement;
   private _outputContext: WebGL2RenderingContext;
@@ -93,6 +93,8 @@ export class MaskProcessor {
     this._isMaskUpdated = false;
     this._maskPredictions = [];
     this._facePredictions = [];
+
+    this._camRegion = null;
 
     this._outputCanvas = document.createElement('canvas');
     this._outputContext = this._outputCanvas.getContext('webgl') as WebGL2RenderingContext;

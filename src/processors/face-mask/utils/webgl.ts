@@ -17,7 +17,7 @@ import { Render2D } from './Render2D';
  *                      +------+
  */
 
-type Region = {
+export type Region = {
   width: number;
   height: number;
   offsetX: number;
