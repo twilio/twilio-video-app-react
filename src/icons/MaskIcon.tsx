@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function BackgroundIcon() {
+export default function MaskIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 191 115" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
