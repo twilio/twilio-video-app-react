@@ -1,13 +1,18 @@
-## 0.8.0 (September 27, 2022)
+## 0.9.0 (TODO)
 
 ### New Features
 
 - Krisp audio noise suppression has been added. [#750](https://github.com/twilio/twilio-video-app-react/pull/750)
 
+## 0.8.0 (November 14, 2022)
+
+### New Feature
+
+- This release adds the ability to maintain audio continuity when the default audio input device changes. If the user chooses a specific audio device from the audio settings, then this feature does not apply.
+
 ### Dependency Changes
 
-- `twilio-video` has been upgraded from 2.23.0 to 2.24.2.
-- `krisp-audio-plugin` version 1.0.0 has been added.
+- `twilio-video` has been upgraded from 2.23.0 to 2.25.0.
 
 ## 0.7.1 (August 5, 2022)
 
