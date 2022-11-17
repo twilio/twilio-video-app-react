@@ -39,7 +39,12 @@ describe('the useLocalTracks hook', () => {
       });
 
       expect(Video.createLocalTracks).toHaveBeenCalledWith({
-        audio: true,
+        audio: {
+          noiseCancellationOptions: {
+            sdkAssetsPath: '/noisecancellation',
+            vendor: 'krisp',
+          },
+        },
         video: {
           frameRate: 24,
           width: 1280,
@@ -58,7 +63,12 @@ describe('the useLocalTracks hook', () => {
       });
 
       expect(Video.createLocalTracks).toHaveBeenCalledWith({
-        audio: true,
+        audio: {
+          noiseCancellationOptions: {
+            sdkAssetsPath: '/noisecancellation',
+            vendor: 'krisp',
+          },
+        },
         video: false,
       });
     });
@@ -113,6 +123,10 @@ describe('the useLocalTracks hook', () => {
           deviceId: {
             exact: 'mockAudioDeviceId',
           },
+          noiseCancellationOptions: {
+            sdkAssetsPath: '/noisecancellation',
+            vendor: 'krisp',
+          },
         },
         video: {
           frameRate: 24,
@@ -136,7 +150,12 @@ describe('the useLocalTracks hook', () => {
       });
 
       expect(Video.createLocalTracks).toHaveBeenCalledWith({
-        audio: true,
+        audio: {
+          noiseCancellationOptions: {
+            sdkAssetsPath: '/noisecancellation',
+            vendor: 'krisp',
+          },
+        },
         video: {
           frameRate: 24,
           width: 1280,
@@ -163,7 +182,12 @@ describe('the useLocalTracks hook', () => {
       });
 
       expect(Video.createLocalTracks).toHaveBeenCalledWith({
-        audio: true,
+        audio: {
+          noiseCancellationOptions: {
+            sdkAssetsPath: '/noisecancellation',
+            vendor: 'krisp',
+          },
+        },
         video: false,
       });
     });

@@ -1,4 +1,4 @@
-## 0.9.0 (TODO)
+## 0.9.0 (November 18, 2022)
 
 ### New Features
 

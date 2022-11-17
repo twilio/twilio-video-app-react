@@ -25,7 +25,6 @@ import InfoIconOutlined from '../../icons/InfoIconOutlined';
 import KrispLogo from '../../icons/KrispLogo';
 import { useAppState } from '../../state';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
-import useLocalTracks from '../VideoProvider/useLocalTracks/useLocalTracks';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
