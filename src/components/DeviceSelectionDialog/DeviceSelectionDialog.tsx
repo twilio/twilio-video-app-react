@@ -76,9 +76,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default function DeviceSelectionDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { isAcquiringLocalTracks } = useVideoContext();
-  const { isKrispEnabled } = useAppState();
+  const { isKrispEnabled, isKrispInstalled } = useAppState();
   const { toggleKrisp } = useKrispToggle();
-  const { isKrispInstalled } = useLocalTracks();
   const classes = useStyles();
 
   return (
@@ -98,39 +97,43 @@ export default function DeviceSelectionDialog({ open, onClose }: { open: boolean
             Audio
           </Typography>
 
-          <div className={classes.noiseCancellationContainer}>
-            <div className={classes.krispContainer}>
-              <Typography variant="subtitle2">Noise Suppression powered by </Typography>
-              <KrispLogo />
-              <Tooltip
-                title="Suppress background noise from your microphone"
-                interactive
-                leaveDelay={250}
-                leaveTouchDelay={15000}
-                enterTouchDelay={0}
-              >
-                <div>
-                  <InfoIconOutlined />
-                </div>
-              </Tooltip>
+          {isKrispInstalled && (
+            <div className={classes.noiseCancellationContainer}>
+              <div className={classes.krispContainer}>
+                <Typography variant="subtitle2">Noise Cancellation powered by </Typography>
+                <KrispLogo />
+                <Tooltip
+                  title="Suppress background noise from your microphone"
+                  interactive
+                  leaveDelay={250}
+                  leaveTouchDelay={15000}
+                  enterTouchDelay={0}
+                >
+                  <div>
+                    <InfoIconOutlined />
+                  </div>
+                </Tooltip>
+              </div>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={!!isKrispEnabled}
+                    checkedIcon={<SmallCheckIcon />}
+                    disableRipple={true}
+                    onClick={toggleKrisp}
+                  />
+                }
+                label={isKrispEnabled ? 'Enabled' : 'Disabled'}
+                style={{ marginRight: 0 }}
+                disabled={isAcquiringLocalTracks}
+              />
             </div>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={!!isKrispEnabled}
-                  checkedIcon={<SmallCheckIcon />}
-                  disableRipple={true}
-                  onClick={toggleKrisp}
-                />
-              }
-              label={isKrispEnabled ? 'Enabled' : 'Disabled'}
-              style={{ marginRight: 0 }}
-              disabled={!isKrispInstalled || isAcquiringLocalTracks}
-            />
-          </div>
-          <Typography variant="body1" color="textSecondary" className={classes.krispInfoText}>
-            Suppress background noise from your microphone.
-          </Typography>
+          )}
+          {isKrispInstalled && (
+            <Typography variant="body1" color="textSecondary" className={classes.krispInfoText}>
+              Suppress background noise from your microphone.
+            </Typography>
+          )}
 
           <AudioInputList />
         </div>

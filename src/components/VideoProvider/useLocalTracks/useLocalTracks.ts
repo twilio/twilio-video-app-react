@@ -15,21 +15,10 @@ const noiseCancellationOptions: NoiseCancellationOptions = {
 };
 
 export default function useLocalTracks() {
-  const { setIsKrispEnabled } = useAppState();
+  const { setIsKrispEnabled, setIsKrispInstalled } = useAppState();
   const [audioTrack, setAudioTrack] = useState<LocalAudioTrack>();
   const [videoTrack, setVideoTrack] = useState<LocalVideoTrack>();
   const [isAcquiringLocalTracks, setIsAcquiringLocalTracks] = useState(false);
-
-  let isKrispInstalled: boolean;
-  try {
-    require('@twilio/krisp-audio-plugin');
-    isKrispInstalled = true;
-  } catch (e) {
-    isKrispInstalled = false;
-    console.warn(
-      'Learn more about adding Krisp to your application in order to enable noise cancellation: https://www.twilio.com/blog/introducing-noise-cancellation-for-twilio-video'
-    );
-  }
 
   const getLocalVideoTrack = useCallback(async () => {
     const selectedVideoDeviceId = window.localStorage.getItem(SELECTED_VIDEO_INPUT_KEY);
@@ -98,16 +87,10 @@ export default function useLocalTracks() {
         name: `camera-${Date.now()}`,
         ...(hasSelectedVideoDevice && { deviceId: { exact: selectedVideoDeviceId! } }),
       },
-      audio:
-        shouldAcquireAudio &&
-        (hasSelectedAudioDevice
-          ? {
-              deviceId: { exact: selectedAudioDeviceId! },
-              ...(isKrispInstalled ? { noiseCancellationOptions } : {}),
-            }
-          : isKrispInstalled
-          ? { noiseCancellationOptions }
-          : true),
+      audio: shouldAcquireAudio && {
+        noiseCancellationOptions,
+        ...(hasSelectedAudioDevice && { deviceId: { exact: selectedAudioDeviceId! } }),
+      },
     };
 
     return Video.createLocalTracks(localTrackConstraints)
@@ -125,7 +108,10 @@ export default function useLocalTracks() {
         }
         if (newAudioTrack) {
           setAudioTrack(newAudioTrack);
-          if (newAudioTrack.noiseCancellation) setIsKrispEnabled(true);
+          if (newAudioTrack.noiseCancellation) {
+            setIsKrispEnabled(true);
+            setIsKrispInstalled(true);
+          }
         }
 
         // These custom errors will be picked up by the MediaErrorSnackbar component.
@@ -144,7 +130,7 @@ export default function useLocalTracks() {
         }
       })
       .finally(() => setIsAcquiringLocalTracks(false));
-  }, [audioTrack, videoTrack, isAcquiringLocalTracks, isKrispInstalled, setIsKrispEnabled]);
+  }, [audioTrack, videoTrack, isAcquiringLocalTracks, setIsKrispEnabled, setIsKrispInstalled]);
 
   const localTracks = [audioTrack, videoTrack].filter(track => track !== undefined) as (
     | LocalAudioTrack
@@ -158,6 +144,5 @@ export default function useLocalTracks() {
     removeLocalAudioTrack,
     removeLocalVideoTrack,
     getAudioAndVideoTracks,
-    isKrispInstalled,
   };
 }

@@ -14,7 +14,11 @@ jobs:
             - v1-deps-{{ .Branch }}
             - v1-deps
 
-      - run: npm ci
+      - run:
+          name: 'Install Dependencies'
+          command: |
+            npm ci
+            npm run noisecancellation:krisp
 
       - save_cache:
           key: v1-deps-{{ .Branch }}-{{ checksum "package-lock.json" }}

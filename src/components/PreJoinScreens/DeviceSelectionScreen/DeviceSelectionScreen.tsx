@@ -77,7 +77,7 @@ interface DeviceSelectionScreenProps {
 
 export default function DeviceSelectionScreen({ name, roomName, setStep }: DeviceSelectionScreenProps) {
   const classes = useStyles();
-  const { getToken, isFetching, isKrispEnabled } = useAppState();
+  const { getToken, isFetching, isKrispEnabled, isKrispInstalled } = useAppState();
   const { connect: chatConnect } = useChatContext();
   const { connect: videoConnect, isAcquiringLocalTracks, isConnecting } = useVideoContext();
   const { toggleKrisp } = useKrispToggle();
@@ -136,44 +136,46 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
         </Grid>
 
         <Grid item md={12} sm={12} xs={12}>
-          <Grid
-            container
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            style={{ marginBottom: '1em' }}
-          >
-            <div className={classes.toolTipContainer}>
-              <Typography variant="subtitle2">Noise Suppression</Typography>
-              <Tooltip
-                title="Suppress background noise from your microphone"
-                interactive
-                leaveDelay={250}
-                leaveTouchDelay={15000}
-                enterTouchDelay={0}
-              >
-                <div>
-                  <InfoIconOutlined />
-                </div>
-              </Tooltip>
-            </div>
+          {isKrispInstalled && (
+            <Grid
+              container
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              style={{ marginBottom: '1em' }}
+            >
+              <div className={classes.toolTipContainer}>
+                <Typography variant="subtitle2">Noise Cancellation</Typography>
+                <Tooltip
+                  title="Suppress background noise from your microphone"
+                  interactive
+                  leaveDelay={250}
+                  leaveTouchDelay={15000}
+                  enterTouchDelay={0}
+                >
+                  <div>
+                    <InfoIconOutlined />
+                  </div>
+                </Tooltip>
+              </div>
 
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={!!isKrispEnabled}
-                  checkedIcon={<SmallCheckIcon />}
-                  disableRipple={true}
-                  onClick={toggleKrisp}
-                />
-              }
-              label={isKrispEnabled ? 'Enabled' : 'Disabled'}
-              style={{ marginRight: 0 }}
-              // Prevents <Switch /> from being temporarily enabled (and then quickly disabled) in unsupported browsers after
-              // isAcquiringLocalTracks becomes false:
-              disabled={isKrispEnabled && isAcquiringLocalTracks}
-            />
-          </Grid>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={!!isKrispEnabled}
+                    checkedIcon={<SmallCheckIcon />}
+                    disableRipple={true}
+                    onClick={toggleKrisp}
+                  />
+                }
+                label={isKrispEnabled ? 'Enabled' : 'Disabled'}
+                style={{ marginRight: 0 }}
+                // Prevents <Switch /> from being temporarily enabled (and then quickly disabled) in unsupported browsers after
+                // isAcquiringLocalTracks becomes false:
+                disabled={isKrispEnabled && isAcquiringLocalTracks}
+              />
+            </Grid>
+          )}
           <Divider />
         </Grid>
 
