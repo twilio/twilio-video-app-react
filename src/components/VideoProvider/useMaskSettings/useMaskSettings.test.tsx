@@ -4,7 +4,7 @@ import useMaskSettings, { MaskSettings } from './useMaskSettings';
 
 const mockLoadModel = jest.fn();
 let mockIsSupported = true;
-jest.mock('mask processor', () => {
+jest.mock('../../../processors/face-mask/MaskProcessor', () => {
   return {
     MaskProcessor: jest.fn().mockImplementation(() => {
       return {
@@ -81,6 +81,18 @@ describe('The useMaskSettings hook ', () => {
     expect(renderResult.current).toEqual([defaultSettings, expect.any(Function)]);
   });
 
+  it('should set the mask settings correctly and remove the video processor when "none" is selected', async () => {
+    await act(async () => {
+      setMaskSettings(imgSettings as MaskSettings);
+    });
+    // set video processor to none
+    await act(async () => {
+      setMaskSettings(defaultSettings as MaskSettings);
+    });
+    maskSettings = renderResult.current[0];
+    expect(maskSettings.type).toEqual('none');
+  });
+
   it('should set the mask settings correctly and set the video processor when "image" is selected', async () => {
     await act(async () => {
       setMaskSettings(imgSettings as MaskSettings);
@@ -113,7 +125,7 @@ describe('The useMaskSettings hook ', () => {
       expect(window.localStorage.getItem(SELECTED_MASK_SETTINGS_KEY)).toEqual(JSON.stringify(defaultSettings));
     });
 
-    it("should not call videoTrack.addProcessor with a param of blurProcessor if maskSettings.type is not equal to 'image'", async () => {
+    it("should not call videoTrack.addProcessor with a param of maskProcessor if maskSettings.type is not equal to 'image'", async () => {
       mockVideoTrack.addProcessor.mockReset();
       await act(async () => {
         setMaskSettings(imgSettings);
