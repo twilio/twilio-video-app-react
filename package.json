@@ -86,6 +86,7 @@
   },
   "scripts": {
     "postinstall": "rimraf public/virtualbackground && copyfiles -f node_modules/@twilio/video-processors/dist/build/* public/virtualbackground",
+    "noisecancellation:krisp": "npm install @twilio/krisp-audio-plugin && rimraf public/noisecancellation && copyfiles -f \"node_modules/@twilio/krisp-audio-plugin/dist/*\" public/noisecancellation && copyfiles -f \"node_modules/@twilio/krisp-audio-plugin/dist/weights/*\" public/noisecancellation/weights",
     "start": "concurrently npm:server npm:dev",
     "dev": "react-scripts start",
     "build": "node ./scripts/build.js",
