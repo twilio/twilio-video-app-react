@@ -27,7 +27,6 @@ export interface IVideoContext {
   connect: (token: string) => Promise<void>;
   onError: ErrorCallback;
   getLocalVideoTrack: (newOptions?: CreateLocalTrackOptions) => Promise<LocalVideoTrack>;
-  getLocalAudioTrack: (deviceId?: string) => Promise<LocalAudioTrack>;
   isAcquiringLocalTracks: boolean;
   removeLocalVideoTrack: () => void;
   isSharingScreen: boolean;
@@ -63,7 +62,6 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
   const {
     localTracks,
     getLocalVideoTrack,
-    getLocalAudioTrack,
     isAcquiringLocalTracks,
     removeLocalAudioTrack,
     removeLocalVideoTrack,
@@ -101,7 +99,6 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
         isConnecting,
         onError: onErrorCallback,
         getLocalVideoTrack,
-        getLocalAudioTrack,
         connect,
         isAcquiringLocalTracks,
         removeLocalVideoTrack,

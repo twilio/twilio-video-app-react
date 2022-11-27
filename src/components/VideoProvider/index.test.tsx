@@ -61,7 +61,6 @@ describe('the VideoProvider component', () => {
       onError: expect.any(Function),
       connect: expect.any(Function),
       getLocalVideoTrack: expect.any(Function),
-      getLocalAudioTrack: expect.any(Function),
       removeLocalVideoTrack: expect.any(Function),
       isAcquiringLocalTracks: true,
       toggleScreenShare: expect.any(Function),

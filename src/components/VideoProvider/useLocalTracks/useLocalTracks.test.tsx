@@ -1,12 +1,18 @@
 import { act, renderHook } from '@testing-library/react-hooks';
 import { getDeviceInfo, isPermissionDenied } from '../../../utils';
 import { SELECTED_AUDIO_INPUT_KEY, SELECTED_VIDEO_INPUT_KEY, DEFAULT_VIDEO_CONSTRAINTS } from '../../../constants';
+import { useAppState } from '../../../state';
 import useLocalTracks from './useLocalTracks';
 import Video from 'twilio-video';
 
+jest.mock('../../../state');
 jest.mock('../../../utils');
+
 const mockGetDeviceInfo = getDeviceInfo as jest.Mock<any>;
 const mockIsPermissionDenied = isPermissionDenied as jest.Mock<Promise<boolean>>;
+const mockUseAppState = useAppState as jest.Mock<any>;
+
+mockUseAppState.mockImplementation(() => ({ setIsKrispEnabled: false }));
 
 describe('the useLocalTracks hook', () => {
   beforeEach(() => {
@@ -33,7 +39,12 @@ describe('the useLocalTracks hook', () => {
       });
 
       expect(Video.createLocalTracks).toHaveBeenCalledWith({
-        audio: true,
+        audio: {
+          noiseCancellationOptions: {
+            sdkAssetsPath: '/noisecancellation',
+            vendor: 'krisp',
+          },
+        },
         video: {
           frameRate: 24,
           width: 1280,
@@ -52,7 +63,12 @@ describe('the useLocalTracks hook', () => {
       });
 
       expect(Video.createLocalTracks).toHaveBeenCalledWith({
-        audio: true,
+        audio: {
+          noiseCancellationOptions: {
+            sdkAssetsPath: '/noisecancellation',
+            vendor: 'krisp',
+          },
+        },
         video: false,
       });
     });
@@ -107,6 +123,10 @@ describe('the useLocalTracks hook', () => {
           deviceId: {
             exact: 'mockAudioDeviceId',
           },
+          noiseCancellationOptions: {
+            sdkAssetsPath: '/noisecancellation',
+            vendor: 'krisp',
+          },
         },
         video: {
           frameRate: 24,
@@ -130,7 +150,12 @@ describe('the useLocalTracks hook', () => {
       });
 
       expect(Video.createLocalTracks).toHaveBeenCalledWith({
-        audio: true,
+        audio: {
+          noiseCancellationOptions: {
+            sdkAssetsPath: '/noisecancellation',
+            vendor: 'krisp',
+          },
+        },
         video: {
           frameRate: 24,
           width: 1280,
@@ -157,7 +182,12 @@ describe('the useLocalTracks hook', () => {
       });
 
       expect(Video.createLocalTracks).toHaveBeenCalledWith({
-        audio: true,
+        audio: {
+          noiseCancellationOptions: {
+            sdkAssetsPath: '/noisecancellation',
+            vendor: 'krisp',
+          },
+        },
         video: false,
       });
     });
