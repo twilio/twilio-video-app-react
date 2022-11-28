@@ -41,7 +41,7 @@ If you want to use `yarn` to install dependencies, first run the [yarn import](h
 
 ### Add Noise Cancellation
 
-Twilio Video has partnered with [Krisp Technologies Inc.](https://krisp.ai/) to add [noise cancellation](https://www.twilio.com/docs/video/noise-cancellation) to the local audio track. This feature is licensed under the [Krisp Plugin for Twilio](https://twilio.github.io/krisp-audio-plugin/LICENSE.html). In order to add this feature to your application, please run `npm install noisecancellation:krisp` immediately after the [previous step](#install-dependencies).
+Twilio Video has partnered with [Krisp Technologies Inc.](https://krisp.ai/) to add [noise cancellation](https://www.twilio.com/docs/video/noise-cancellation) to the local audio track. This feature is licensed under the [Krisp Plugin for Twilio](https://twilio.github.io/krisp-audio-plugin/LICENSE.html). In order to add this feature to your application, please run `npm run noisecancellation:krisp` immediately after the [previous step](#install-dependencies).
 
 ## Install Twilio CLI and RTC Plugin
 
