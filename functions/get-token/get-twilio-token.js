@@ -7,6 +7,7 @@ const twilioApiKeySID = process.env.TWILIO_API_KEY_SID;
 const twilioApiKeySecret = process.env.TWILIO_API_KEY_SECRET;
 
 exports.getTwilioToken = async parameters => {
+  console.log("twilioApiKeySID", twilioApiKeySID);
   const { identity, roomName } = parameters;
   const token = new AccessToken(twilioAccountSid, twilioApiKeySID, twilioApiKeySecret, {
     ttl: MAX_ALLOWED_SESSION_DURATION,
