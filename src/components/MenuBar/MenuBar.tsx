@@ -5,10 +5,12 @@ import Button from '@material-ui/core/Button';
 import EndCallButton from '../Buttons/EndCallButton/EndCallButton';
 import { isMobile } from '../../utils';
 import Menu from './Menu/Menu';
+import useLocalMediaMuted from '../../hooks/useLocalMediaMuted/useLocalMediaMuted';
 import useParticipants from '../../hooks/useParticipants/useParticipants';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { Typography, Grid, Hidden } from '@material-ui/core';
+import RefreshInactiveMedia from '../Buttons/RefreshInactiveMedia/RefreshInactiveMedia';
 import ToggleAudioButton from '../Buttons/ToggleAudioButton/ToggleAudioButton';
 import ToggleChatButton from '../Buttons/ToggleChatButton/ToggleChatButton';
 import ToggleVideoButton from '../Buttons/ToggleVideoButton/ToggleVideoButton';
@@ -68,7 +70,10 @@ export default function MenuBar() {
   const { isSharingScreen, toggleScreenShare } = useVideoContext();
   const roomState = useRoomState();
   const isReconnecting = roomState === 'reconnecting';
-  const { room } = useVideoContext();
+  const { localTracks, room } = useVideoContext();
+  const isLocalAudioMuted = useLocalMediaMuted(localTracks.find(({ kind }) => kind === 'audio'));
+  const isLocalVideoMuted = useLocalMediaMuted(localTracks.find(({ kind }) => kind === 'video'));
+  const isLocalMediaMuted = isLocalAudioMuted || isLocalVideoMuted;
   const participants = useParticipants();
 
   return (
@@ -90,10 +95,11 @@ export default function MenuBar() {
           </Hidden>
           <Grid item>
             <Grid container justifyContent="center">
-              <ToggleAudioButton disabled={isReconnecting} />
-              <ToggleVideoButton disabled={isReconnecting} />
+              <ToggleAudioButton disabled={isReconnecting} isAudioMuted={isLocalAudioMuted} />
+              <ToggleVideoButton disabled={isReconnecting} isVideoMuted={isLocalVideoMuted} />
               {!isSharingScreen && !isMobile && <ToggleScreenShareButton disabled={isReconnecting} />}
               {process.env.REACT_APP_DISABLE_TWILIO_CONVERSATIONS !== 'true' && <ToggleChatButton />}
+              {isLocalMediaMuted && <RefreshInactiveMedia />}
               <Hidden smDown>
                 <Menu />
               </Hidden>
