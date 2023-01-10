@@ -69,7 +69,7 @@
     "enzyme-to-json": "^3.4.4",
     "isomorphic-fetch": "^2.2.1",
     "jest-junit": "^9.0.0",
-    "mocha": "^6.2.2",
+    "mocha": "^10.2.0",
     "mocha-junit-reporter": "^1.23.3",
     "pixelmatch": "^5.1.0",
     "puppeteer": "^5.3.1",
