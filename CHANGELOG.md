@@ -1,3 +1,9 @@
+## 0.9.1 (January 10, 2023)
+
+## Changes
+
+- Modified CircleCI deploy script to store gcloud service account credentials in proper JSON format.
+
 ## 0.9.0 (November 23, 2022)
 
 ### New Features
