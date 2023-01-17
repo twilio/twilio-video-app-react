@@ -116,7 +116,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
         message = decodeURI(ratingMessageFromQuery);
       }
       watchRTC.setUserRating(rating, message);
-    }, 5000);
+    }, 29000);
   };
 
   const getCustomKeys = () => {
