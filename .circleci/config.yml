@@ -14,7 +14,11 @@ jobs:
             - v1-deps-{{ .Branch }}
             - v1-deps
 
-      - run: npm ci
+      - run:
+          name: 'Install Dependencies'
+          command: |
+            npm ci
+            npm run noisecancellation:krisp
 
       - save_cache:
           key: v1-deps-{{ .Branch }}-{{ checksum "package-lock.json" }}
@@ -97,7 +101,7 @@ jobs:
 
       - run: echo $CIRCLE_TAG > build/version.txt
 
-      - run: gcloud secrets versions access latest --secret=firebase-admin-credentials > server/serviceAccountKey.json
+      - run: gcloud secrets versions access latest --secret=firebase-admin-credentials | sed 's/^[0-9a-f]*$//' > server/serviceAccountKey.json
 
       - run: gcloud app deploy -q
 

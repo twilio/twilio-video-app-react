@@ -20,7 +20,10 @@ import useLocalVideoToggle from '../../../hooks/useLocalVideoToggle/useLocalVide
 jest.mock('../../../hooks/useFlipCameraToggle/useFlipCameraToggle');
 jest.mock('@material-ui/core/useMediaQuery');
 jest.mock('../../../state');
-jest.mock('../../../hooks/useVideoContext/useVideoContext', () => () => ({ room: { sid: 'mockRoomSid' } }));
+jest.mock('../../../hooks/useVideoContext/useVideoContext', () => () => ({
+  localTracks: [],
+  room: { sid: 'mockRoomSid' },
+}));
 jest.mock('../../../hooks/useIsRecording/useIsRecording');
 jest.mock('../../../hooks/useChatContext/useChatContext');
 jest.mock('../../../hooks/useLocalVideoToggle/useLocalVideoToggle');

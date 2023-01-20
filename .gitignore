@@ -26,10 +26,12 @@ yarn-debug.log*
 yarn-error.log*
 
 .env
+.env.*
 .vscode
 
 test-reports
 junit.xml
 serviceAccountKey.json
 
+public/noisecancellation/
 public/virtualbackground/

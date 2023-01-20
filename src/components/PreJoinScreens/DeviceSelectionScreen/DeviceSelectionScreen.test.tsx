@@ -25,6 +25,7 @@ mockUseVideoContext.mockImplementation(() => ({
   connect: mockConnect,
   isAcquiringLocalTracks: false,
   isConnecting: false,
+  localTracks: [],
 }));
 
 describe('the DeviceSelectionScreen component', () => {
@@ -38,6 +39,7 @@ describe('the DeviceSelectionScreen component', () => {
       connect: mockConnect,
       isAcquiringLocalTracks: false,
       isConnecting: true,
+      localTracks: [],
     }));
 
     const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
@@ -60,6 +62,7 @@ describe('the DeviceSelectionScreen component', () => {
       connect: mockConnect,
       isAcquiringLocalTracks: true,
       isConnecting: false,
+      localTracks: [],
     }));
 
     const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
@@ -82,6 +85,7 @@ describe('the DeviceSelectionScreen component', () => {
       connect: mockConnect,
       isAcquiringLocalTracks: false,
       isConnecting: false,
+      localTracks: [],
     }));
     mockUseAppState.mockImplementationOnce(() => ({ getToken: mockGetToken, isFetching: true }));
     const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
