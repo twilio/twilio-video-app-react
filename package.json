@@ -1,6 +1,6 @@
 {
   "name": "twilio-video-app-react",
-  "version": "0.8.0",
+  "version": "0.9.1",
   "private": true,
   "license": "Apache-2.0",
   "dependencies": {
@@ -28,7 +28,7 @@
     "d3-timer": "^1.0.10",
     "express": "^4.17.1",
     "firebase": "^9.9.0",
-    "firebase-admin": "^9.5.0",
+    "firebase-admin": "^11.2.1",
     "fscreen": "^1.0.2",
     "husky": "^3.1.0",
     "linkify-it": "^3.0.2",
@@ -69,7 +69,7 @@
     "enzyme-to-json": "^3.4.4",
     "isomorphic-fetch": "^2.2.1",
     "jest-junit": "^9.0.0",
-    "mocha": "^6.2.2",
+    "mocha": "^10.2.0",
     "mocha-junit-reporter": "^1.23.3",
     "pixelmatch": "^5.1.0",
     "puppeteer": "^5.3.1",
@@ -86,6 +86,7 @@
   },
   "scripts": {
     "postinstall": "rimraf public/virtualbackground && copyfiles -f node_modules/@twilio/video-processors/dist/build/* public/virtualbackground",
+    "noisecancellation:krisp": "npm install @twilio/krisp-audio-plugin && rimraf public/noisecancellation && copyfiles -f \"node_modules/@twilio/krisp-audio-plugin/dist/*\" public/noisecancellation && copyfiles -f \"node_modules/@twilio/krisp-audio-plugin/dist/weights/*\" public/noisecancellation/weights",
     "start": "concurrently npm:server npm:dev",
     "dev": "react-scripts start",
     "build": "node ./scripts/build.js",
