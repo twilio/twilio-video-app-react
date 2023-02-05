@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import AboutDialog from '../../AboutDialog/AboutDialog';
 import BackgroundIcon from '../../../icons/BackgroundIcon';
+import MaskIcon from '../../../icons/MaskIcon';
 import CollaborationViewIcon from '@material-ui/icons/AccountBox';
 import DeviceSelectionDialog from '../../DeviceSelectionDialog/DeviceSelectionDialog';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -39,7 +40,7 @@ export default function Menu(props: { buttonClassName?: string }) {
   const { isFetching, updateRecordingRules, roomType, setIsGalleryViewActive, isGalleryViewActive } = useAppState();
   const { setIsChatWindowOpen } = useChatContext();
   const isRecording = useIsRecording();
-  const { room, setIsBackgroundSelectionOpen } = useVideoContext();
+  const { room, setIsBackgroundSelectionOpen, setIsMaskSelectionOpen } = useVideoContext();
 
   const anchorRef = useRef<HTMLButtonElement>(null);
   const { flipCameraDisabled, toggleFacingMode, flipCameraSupported } = useFlipCameraToggle();
@@ -85,6 +86,7 @@ export default function Menu(props: { buttonClassName?: string }) {
           <MenuItem
             onClick={() => {
               setIsBackgroundSelectionOpen(true);
+              setIsMaskSelectionOpen(false);
               setIsChatWindowOpen(false);
               setMenuOpen(false);
             }}
@@ -93,6 +95,22 @@ export default function Menu(props: { buttonClassName?: string }) {
               <BackgroundIcon />
             </IconContainer>
             <Typography variant="body1">Backgrounds</Typography>
+          </MenuItem>
+        )}
+
+        {isSupported && (
+          <MenuItem
+            onClick={() => {
+              setIsBackgroundSelectionOpen(false);
+              setIsMaskSelectionOpen(true);
+              setIsChatWindowOpen(false);
+              setMenuOpen(false);
+            }}
+          >
+            <IconContainer>
+              <MaskIcon />
+            </IconContainer>
+            <Typography variant="body1">Face Effects</Typography>
           </MenuItem>
         )}
 
