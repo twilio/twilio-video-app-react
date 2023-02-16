@@ -74,7 +74,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
     keys: {
       searchPeer: name,
     },
-    debug: true,
+    debug: false,
     console: {
       level: 'log',
       override: true,

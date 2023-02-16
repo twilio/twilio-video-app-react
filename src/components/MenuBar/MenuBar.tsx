@@ -3,6 +3,8 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
 import EndCallButton from '../Buttons/EndCallButton/EndCallButton';
+import NailUpEndCallButton from '../Buttons/NailUpEndCallButton/NailUpEndCallButton';
+import NailUpJoinCallButton from '../Buttons/NailUpJoinCallButton/NailUpJoinCallButton';
 import FlipCameraButton from './FlipCameraButton/FlipCameraButton';
 import Menu from './Menu/Menu';
 
@@ -97,6 +99,8 @@ export default function MenuBar() {
               <Grid container justify="flex-end">
                 <Menu />
                 <EndCallButton />
+                <NailUpEndCallButton />
+                <NailUpJoinCallButton />
               </Grid>
             </Grid>
           </Hidden>
