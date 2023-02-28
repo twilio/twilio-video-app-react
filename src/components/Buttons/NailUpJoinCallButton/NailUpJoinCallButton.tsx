@@ -18,21 +18,35 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+const getIterator = () => {
+  const iterator = (window as any).nailupIterator;
+  if (!iterator) {
+    (window as any).nailupIterator = 1;
+    return 1;
+  } else {
+    const newIterator = (window as any).nailupIterator + 1;
+    (window as any).nailupIterator = newIterator;
+    return newIterator;
+  }
+};
+
 export default function NailUpJoinCallButton(props: { className?: string }) {
   const classes = useStyles();
   const { room } = useVideoContext();
 
+  const onJoinClick = () => {
+    const url = new URL((window as any).location);
+
+    const newRoomId = `${room.name.split(',')[0]}-${getIterator()}`;
+    const newpathName = `/room/${newRoomId}`;
+    url.pathname = newpathName;
+    window.history.pushState({}, '', url.toString());
+
+    watchRTC.persistentStart(newRoomId, room.localParticipant.identity);
+  };
+
   return (
-    <Button
-      onClick={() => {
-        watchRTC.persistentStart(
-          `${room.name.split(',')[0]}:${Math.floor(Math.random() * 10000)}`,
-          room.localParticipant.identity
-        );
-      }}
-      className={clsx(classes.button, props.className)}
-      data-cy-disconnect
-    >
+    <Button onClick={onJoinClick} className={clsx(classes.button, props.className)} data-cy-disconnect>
       Nail Up Join
     </Button>
   );
