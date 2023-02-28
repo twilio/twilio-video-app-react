@@ -21,8 +21,8 @@ const useStyles = makeStyles((theme: Theme) =>
 const getIterator = () => {
   const iterator = (window as any).nailupIterator;
   if (!iterator) {
-    (window as any).nailupIterator = 1;
-    return 1;
+    (window as any).nailupIterator = 2;
+    return 2;
   } else {
     const newIterator = (window as any).nailupIterator + 1;
     (window as any).nailupIterator = newIterator;
