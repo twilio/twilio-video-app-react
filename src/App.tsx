@@ -1,4 +1,6 @@
 import React from 'react';
+import * as queryString from 'query-string';
+
 import { styled, Theme } from '@material-ui/core/styles';
 
 import MenuBar from './components/MenuBar/MenuBar';
@@ -26,6 +28,20 @@ const Main = styled('main')(({ theme }: { theme: Theme }) => ({
   },
 }));
 
+const getCollectionInterval = () => {
+  const ci = queryString.parse(window.location.search)?.collectionInterval as string;
+  try {
+    const ciNum = parseInt(ci);
+    if (ciNum % 1000 === 0) {
+      return ciNum;
+    }
+    return undefined;
+  } catch {
+    //
+    return undefined;
+  }
+};
+
 export default function App() {
   const roomState = useRoomState();
 
@@ -37,7 +53,7 @@ export default function App() {
   const height = useHeight();
 
   React.useEffect(() => {
-    watchRTC.init({} as any);
+    watchRTC.init({ collectionInterval: getCollectionInterval() } as any);
 
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('metric') && Boolean(urlParams.get('metric'))) {
