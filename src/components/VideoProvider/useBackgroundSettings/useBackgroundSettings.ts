@@ -6,7 +6,6 @@ import {
   VirtualBackgroundProcessor,
   ImageFit,
   isSupported,
-  Pipeline,
 } from '@twilio/video-processors';
 import Abstract from '../../../images/Abstract.jpg';
 import AbstractThumb from '../../../images/thumb/Abstract.jpg';
@@ -131,7 +130,6 @@ let blurProcessor: GaussianBlurBackgroundProcessor;
 let virtualBackgroundProcessor: VirtualBackgroundProcessor;
 
 const virtualBackgroundAssets = '/virtualbackground';
-const pipeline = Pipeline.WebGL2;
 
 let intervalId: any = null;
 
@@ -154,9 +152,10 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
       }
       removeProcessor();
       videoTrack.addProcessor(processor, {
-        outputFrameBufferContextType: 'webgl2',
-        inputFrameBufferType: 'video',
+        // outputFrameBufferContextType: 'webgl2',
+        // inputFrameBufferType: 'video',
       });
+      // videoTrack.addProcessor(processor);
     },
     [videoTrack, removeProcessor]
   );
@@ -197,14 +196,12 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
       if (!blurProcessor) {
         blurProcessor = new GaussianBlurBackgroundProcessor({
           assetsPath: virtualBackgroundAssets,
-          pipeline,
         });
         await blurProcessor.loadModel();
       }
       if (!virtualBackgroundProcessor) {
         virtualBackgroundProcessor = new VirtualBackgroundProcessor({
           assetsPath: virtualBackgroundAssets,
-          pipeline,
           backgroundImage: await getImage(0),
           fitType: ImageFit.Cover,
         });

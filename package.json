@@ -7,6 +7,7 @@
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.60",
+    "@react-spring/web": "^9.5.2",
     "@twilio-labs/plugin-rtc": "^0.8.2",
     "@twilio/conversations": "^2.1.0",
     "@twilio/video-processors": "file:../twilio-video-processors.js",
