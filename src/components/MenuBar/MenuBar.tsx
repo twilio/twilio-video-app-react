@@ -1,6 +1,8 @@
 import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
+import watchRTC from '@testrtc/watchrtc-sdk';
+
 import Button from '@material-ui/core/Button';
 import EndCallButton from '../Buttons/EndCallButton/EndCallButton';
 import NailUpEndCallButton from '../Buttons/NailUpEndCallButton/NailUpEndCallButton';
@@ -71,12 +73,17 @@ export default function MenuBar() {
   const isReconnecting = roomState === 'reconnecting';
   const { room } = useVideoContext();
 
+  const handleStopSharing = () => {
+    toggleScreenShare();
+    watchRTC.addEvent({ type: 'local', name: 'Stop Sharing' });
+  };
+
   return (
     <>
       {isSharingScreen && (
         <Grid container justify="center" alignItems="center" className={classes.screenShareBanner}>
           <Typography variant="h6">You are sharing your screen</Typography>
-          <Button onClick={() => toggleScreenShare()}>Stop Sharing</Button>
+          <Button onClick={() => handleStopSharing()}>Stop Sharing</Button>
         </Grid>
       )}
       <footer className={classes.container}>
