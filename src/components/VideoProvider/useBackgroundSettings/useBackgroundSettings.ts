@@ -1,11 +1,12 @@
 import { LocalVideoTrack, Room } from 'twilio-video';
-import { useEffect, useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { SELECTED_BACKGROUND_SETTINGS_KEY } from '../../../constants';
 import {
   GaussianBlurBackgroundProcessor,
-  VirtualBackgroundProcessor,
   ImageFit,
   isSupported,
+  Pipeline,
+  VirtualBackgroundProcessor,
 } from '@twilio/video-processors';
 import Abstract from '../../../images/Abstract.jpg';
 import AbstractThumb from '../../../images/thumb/Abstract.jpg';
@@ -104,6 +105,7 @@ const rawImagePaths = [
   SanFrancisco,
 ];
 
+const isSafari = /Safari|iPhone|iPad|iPod/.test(navigator.userAgent);
 let imageElements = new Map();
 
 const getImage = (index: number): Promise<HTMLImageElement> => {
@@ -148,7 +150,10 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
         return;
       }
       removeProcessor();
-      videoTrack.addProcessor(processor);
+      videoTrack.addProcessor(processor, {
+        inputFrameBufferType: 'video',
+        outputFrameBufferContextType: 'webgl2',
+      });
     },
     [videoTrack, removeProcessor]
   );
@@ -163,6 +168,10 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
       if (!blurProcessor) {
         blurProcessor = new GaussianBlurBackgroundProcessor({
           assetsPath: virtualBackgroundAssets,
+          // Desktop Safari and iOS browsers do not support SIMD.
+          // Set debounce to true to achieve an acceptable performance.
+          debounce: true,
+          pipeline: Pipeline.WebGL2,
         });
         await blurProcessor.loadModel();
       }
@@ -170,7 +179,11 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
         virtualBackgroundProcessor = new VirtualBackgroundProcessor({
           assetsPath: virtualBackgroundAssets,
           backgroundImage: await getImage(0),
+          // Desktop Safari and iOS browsers do not support SIMD.
+          // Set debounce to true to achieve an acceptable performance.
+          debounce: true,
           fitType: ImageFit.Cover,
+          pipeline: Pipeline.WebGL2,
         });
         await virtualBackgroundProcessor.loadModel();
       }
