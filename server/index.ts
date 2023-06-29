@@ -1,5 +1,6 @@
 import './bootstrap-globals';
 import WebSocket from 'ws';
+import speech from '@google-cloud/speech';
 
 import { createExpressHandler } from './createExpressHandler';
 import express, { RequestHandler } from 'express';
@@ -14,6 +15,25 @@ const app = express();
 
 const server = require('http').createServer(app);
 const wss = new WebSocket.Server({ server });
+
+//Include Google Speech to Text
+const client = new speech.SpeechClient();
+
+//Configure Transcription Request
+const request = {
+  config: {
+    encoding: 'MULAW',
+    sampleRateHertz: 8000,
+    languageCode: 'en-us',
+    enableAutomaticPunctuation: true,
+    diarizationConfig: {
+      enableSpeakerDiarization: true,
+    },
+    model: 'video', //https://cloud.google.com/speech-to-text/docs/transcription-model
+    useEnhanced: true,
+  },
+  interimResults: true,
+};
 
 app.use(express.json());
 
@@ -34,21 +54,52 @@ const authMiddleware =
 wss.on('connection', function connection(ws) {
   console.log('New Connection Initiated');
 
-  ws.on('message', function incoming(msg: any) {
-    console.log(msg);
-    // const msg = JSON.parse(message);
+  let recognizeStream: any = null;
+
+  ws.on('message', function incoming(message) {
+    const msg = JSON.parse(message);
     switch (msg.event) {
       case 'connected':
         console.log(`A new call has connected.`);
         break;
       case 'start':
-        console.log(`Starting Media Stream ${msg.streamSid}`);
+        // console.log(`Starting Media Stream ${msg.streamSid}`);
+        // Create Stream to the Google Speech to Text API
+        recognizeStream = client
+          .streamingRecognize(request)
+          .on('error', console.error)
+          .on('data', data => {
+            wss.clients.forEach(client => {
+              if (client.readyState === WebSocket.OPEN) {
+                if (data.results[0].isFinal) {
+                  client.send(
+                    JSON.stringify({
+                      event: 'final-transcription',
+                      text: data.results[0].alternatives[0].transcript,
+                      channel: data.results[0].channelTag,
+                      words: data.results[0].alternatives[0].words,
+                    })
+                  );
+                } else {
+                  client.send(
+                    JSON.stringify({
+                      event: 'interim-transcription',
+                      text: data.results[0].alternatives[0].transcript,
+                      channel: data.results[0].channelTag,
+                    })
+                  );
+                }
+              }
+            });
+          });
         break;
       case 'media':
-        console.log(`Receiving Audio...`);
+        // Write Media Packets to the recognize stream
+        recognizeStream.write(msg.media.payload);
         break;
       case 'stop':
         console.log(`Call Has Ended`);
+        recognizeStream.destroy();
         break;
     }
   });
@@ -59,34 +110,13 @@ app.all('/recordingrules', authMiddleware, recordingRulesEndpoint);
 
 // add endpoint to initiate adding a voice call to the video room
 app.all('/voice', authMiddleware, (req, res) => {
-  // const twiml = new VoiceResponse();
-  // // twiml.say('Hello Nat!');
-  // // twiml.play({}, 'https://demo.twilio.com/docs/classic.mp3');
-  // const connect = twiml.connect();
-  // connect.room(
-  //   {
-  //     participantIdentity: 'alice',
-  //   },
-  //   'DailyStandup'
-  // );
-  // const start = twiml.start();
-
-  // start.stream({
-  //   name: 'Example Audio Stream',
-  //   url: 'wss://ceb6d833d771.ngrok.app',
-  // });
-
-  // // Render the response as XML in reply to the webhook request
-  // res.type('text/xml');
-  // res.send(twiml.toString());
-
   res.set('Content-Type', 'text/xml');
 
   res.send(`
     <Response>
       <Say>Transcribing</Say>
       <Start>
-        <Stream url="wss://ceb6d833d771.ngrok.app"/>
+        <Stream url="wss://ceb6d833d771.ngrok.app" track="both_tracks"/>
       </Start>
       <Connect>
         <Room participantIdentity='transcriber'>DailyStandup</Room>
@@ -116,5 +146,4 @@ app.get('*', (_, res) => {
   res.sendFile(path.join(__dirname, '../build/index.html'), { etag: false, lastModified: false });
 });
 
-app.listen(PORT, () => console.log(`twilio-video-app-react server running on ${PORT}`));
-// server.listen(PORT);
+server.listen(PORT);

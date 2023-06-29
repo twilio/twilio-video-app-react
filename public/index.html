@@ -21,6 +21,15 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <div
+      id="transcription"
+      style="position: absolute; width: 250px; height: 100vh; right: 0; top: 0;color: white;padding: 30px; overflow-y: auto;background-color: rgba(0,0,0,.7)"
+    >
+      <div id="final-transcription">Final transcription will go here.</div>
+      <br /><br />
+      <hr />
+      <div id="interim-transcription">Interim transcription will go here</div>
+    </div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -31,5 +40,44 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script>
+      document.addEventListener('DOMContentLoaded', event => {
+        webSocket = new WebSocket('wss://ceb6d833d771.ngrok.app');
+        webSocket.onmessage = function(msg) {
+          const data = JSON.parse(msg.data);
+          console.log(data.text);
+          console.log(data.event);
+          console.log(data.channel);
+          if (data.event === 'interim-transcription') {
+            document.getElementById('interim-transcription').innerHTML = data.text;
+          }
+          if (data.event === 'final-transcription') {
+            document.getElementById('final-transcription').innerHTML = '';
+            console.log(data.words);
+            let previousSpeakerTag = null;
+            let diarizedWords = '';
+            document.getElementById('final-transcription').innerHTML = '';
+
+            data.words.forEach(word => {
+              if (word.speakerTag !== previousSpeakerTag) {
+                diarizedWords += `<br/><br/>`; // add a break
+                diarizedWords +=
+                  word.speakerTag === 1
+                    ? `<span style="color: #03ef03; font-weight: bold;">Speaker 1:</span> `
+                    : `<span style="color: white; font-weight: bold;">Speaker 2:</span> `;
+                previousSpeakerTag = word.speakerTag;
+              }
+
+              if (word.speakerTag === 1) {
+                diarizedWords += `<span style="color: #03ef03">${word.word}</span> `;
+              } else {
+                diarizedWords += `<span style="color: white">${word.word}</span> `;
+              }
+            });
+            document.getElementById('final-transcription').innerHTML = diarizedWords;
+          }
+        };
+      });
+    </script>
   </body>
 </html>
