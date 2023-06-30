@@ -1,6 +1,10 @@
 import { LocalVideoTrack, Room } from 'twilio-video';
 import { useCallback, useEffect } from 'react';
-import { SELECTED_BACKGROUND_SETTINGS_KEY } from '../../../constants';
+import {
+  BACKGROUND_FILTER_VIDEO_CONSTRAINTS,
+  DEFAULT_VIDEO_CONSTRAINTS,
+  SELECTED_BACKGROUND_SETTINGS_KEY,
+} from '../../../constants';
 import {
   GaussianBlurBackgroundProcessor,
   ImageFit,
@@ -105,7 +109,7 @@ const rawImagePaths = [
   SanFrancisco,
 ];
 
-const isSafari = /Safari|iPhone|iPad|iPod/.test(navigator.userAgent);
+const isDesktopChrome = /Chrome/.test(navigator.userAgent);
 let imageElements = new Map();
 
 const getImage = (index: number): Promise<HTMLImageElement> => {
@@ -138,6 +142,16 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
     { type: 'none', index: 0 }
   );
 
+  const setCaptureConstraints = useCallback(async () => {
+    const { mediaStreamTrack, processor } = videoTrack ?? {};
+    const { type } = backgroundSettings;
+    if (type === 'none' && processor) {
+      return mediaStreamTrack?.applyConstraints(DEFAULT_VIDEO_CONSTRAINTS as MediaTrackConstraints);
+    } else if (type !== 'none' && !processor) {
+      return mediaStreamTrack?.applyConstraints(BACKGROUND_FILTER_VIDEO_CONSTRAINTS as MediaTrackConstraints);
+    }
+  }, [backgroundSettings, videoTrack]);
+
   const removeProcessor = useCallback(() => {
     if (videoTrack && videoTrack.processor) {
       videoTrack.removeProcessor(videoTrack.processor);
@@ -168,9 +182,9 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
       if (!blurProcessor) {
         blurProcessor = new GaussianBlurBackgroundProcessor({
           assetsPath: virtualBackgroundAssets,
-          // Desktop Safari and iOS browsers do not support SIMD.
-          // Set debounce to true to achieve an acceptable performance.
-          debounce: true,
+          // Disable debounce only on desktop Chrome as other browsers either
+          // do not support WebAssembly SIMD or they degrade performance.
+          debounce: !isDesktopChrome,
           pipeline: Pipeline.WebGL2,
         });
         await blurProcessor.loadModel();
@@ -179,9 +193,9 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
         virtualBackgroundProcessor = new VirtualBackgroundProcessor({
           assetsPath: virtualBackgroundAssets,
           backgroundImage: await getImage(0),
-          // Desktop Safari and iOS browsers do not support SIMD.
-          // Set debounce to true to achieve an acceptable performance.
-          debounce: true,
+          // Disable debounce only on desktop Chrome as other browsers either
+          // do not support WebAssembly SIMD or they degrade performance.
+          debounce: !isDesktopChrome,
           fitType: ImageFit.Cover,
           pipeline: Pipeline.WebGL2,
         });
@@ -189,6 +203,14 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
       }
       if (!room?.localParticipant) {
         return;
+      }
+
+      // Switch to 640x480 dimensions on desktop Chrome or browsers that
+      // do not support WebAssembly SIMD to achieve optimum performance.
+      const processor = blurProcessor || virtualBackgroundProcessor;
+      // @ts-ignore
+      if (!processor._isSimdEnabled || isDesktopChrome) {
+        await setCaptureConstraints();
       }
 
       if (backgroundSettings.type === 'blur') {
@@ -201,7 +223,7 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
       }
     };
     handleProcessorChange();
-  }, [backgroundSettings, videoTrack, room, addProcessor, removeProcessor]);
+  }, [backgroundSettings, videoTrack, room, addProcessor, removeProcessor, setCaptureConstraints]);
 
   return [backgroundSettings, setBackgroundSettings] as const;
 }
