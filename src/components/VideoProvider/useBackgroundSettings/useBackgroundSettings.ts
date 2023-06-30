@@ -9,7 +9,6 @@ import {
   GaussianBlurBackgroundProcessor,
   ImageFit,
   isSupported,
-  Pipeline,
   VirtualBackgroundProcessor,
 } from '@twilio/video-processors';
 import Abstract from '../../../images/Abstract.jpg';
@@ -185,7 +184,6 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
           // Disable debounce only on desktop Chrome as other browsers either
           // do not support WebAssembly SIMD or they degrade performance.
           debounce: !isDesktopChrome,
-          pipeline: Pipeline.WebGL2,
         });
         await blurProcessor.loadModel();
       }
@@ -197,7 +195,6 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
           // do not support WebAssembly SIMD or they degrade performance.
           debounce: !isDesktopChrome,
           fitType: ImageFit.Cover,
-          pipeline: Pipeline.WebGL2,
         });
         await virtualBackgroundProcessor.loadModel();
       }

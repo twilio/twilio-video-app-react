@@ -6,9 +6,6 @@ const mockLoadModel = jest.fn();
 let mockIsSupported = true;
 jest.mock('@twilio/video-processors', () => {
   return {
-    Pipeline: {
-      WebGL2: 'webgl2',
-    },
     GaussianBlurBackgroundProcessor: jest.fn().mockImplementation(() => {
       return {
         loadModel: mockLoadModel,
