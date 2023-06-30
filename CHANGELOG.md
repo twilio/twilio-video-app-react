@@ -1,6 +1,13 @@
+## 0.10.0
+
+### Changes
+
+- `twilio-video` has been upgraded to 2.27.0.
+- `@twilio/video-processors` has been upgraded to 2.0.0, which uses GPU where possible to improve the user experience of virtual backgrounds.
+
 ## 0.9.1 (January 10, 2023)
 
-## Changes
+### Changes
 
 - Modified CircleCI deploy script to store gcloud service account credentials in proper JSON format.
 

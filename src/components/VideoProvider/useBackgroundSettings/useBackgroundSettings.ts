@@ -1,11 +1,15 @@
 import { LocalVideoTrack, Room } from 'twilio-video';
-import { useEffect, useCallback } from 'react';
-import { SELECTED_BACKGROUND_SETTINGS_KEY } from '../../../constants';
+import { useCallback, useEffect } from 'react';
+import {
+  BACKGROUND_FILTER_VIDEO_CONSTRAINTS,
+  DEFAULT_VIDEO_CONSTRAINTS,
+  SELECTED_BACKGROUND_SETTINGS_KEY,
+} from '../../../constants';
 import {
   GaussianBlurBackgroundProcessor,
-  VirtualBackgroundProcessor,
   ImageFit,
   isSupported,
+  VirtualBackgroundProcessor,
 } from '@twilio/video-processors';
 import Abstract from '../../../images/Abstract.jpg';
 import AbstractThumb from '../../../images/thumb/Abstract.jpg';
@@ -104,6 +108,7 @@ const rawImagePaths = [
   SanFrancisco,
 ];
 
+const isDesktopChrome = /Chrome/.test(navigator.userAgent);
 let imageElements = new Map();
 
 const getImage = (index: number): Promise<HTMLImageElement> => {
@@ -136,6 +141,16 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
     { type: 'none', index: 0 }
   );
 
+  const setCaptureConstraints = useCallback(async () => {
+    const { mediaStreamTrack, processor } = videoTrack ?? {};
+    const { type } = backgroundSettings;
+    if (type === 'none' && processor) {
+      return mediaStreamTrack?.applyConstraints(DEFAULT_VIDEO_CONSTRAINTS as MediaTrackConstraints);
+    } else if (type !== 'none' && !processor) {
+      return mediaStreamTrack?.applyConstraints(BACKGROUND_FILTER_VIDEO_CONSTRAINTS as MediaTrackConstraints);
+    }
+  }, [backgroundSettings, videoTrack]);
+
   const removeProcessor = useCallback(() => {
     if (videoTrack && videoTrack.processor) {
       videoTrack.removeProcessor(videoTrack.processor);
@@ -148,7 +163,10 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
         return;
       }
       removeProcessor();
-      videoTrack.addProcessor(processor);
+      videoTrack.addProcessor(processor, {
+        inputFrameBufferType: 'video',
+        outputFrameBufferContextType: 'webgl2',
+      });
     },
     [videoTrack, removeProcessor]
   );
@@ -163,6 +181,9 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
       if (!blurProcessor) {
         blurProcessor = new GaussianBlurBackgroundProcessor({
           assetsPath: virtualBackgroundAssets,
+          // Disable debounce only on desktop Chrome as other browsers either
+          // do not support WebAssembly SIMD or they degrade performance.
+          debounce: !isDesktopChrome,
         });
         await blurProcessor.loadModel();
       }
@@ -170,12 +191,23 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
         virtualBackgroundProcessor = new VirtualBackgroundProcessor({
           assetsPath: virtualBackgroundAssets,
           backgroundImage: await getImage(0),
+          // Disable debounce only on desktop Chrome as other browsers either
+          // do not support WebAssembly SIMD or they degrade performance.
+          debounce: !isDesktopChrome,
           fitType: ImageFit.Cover,
         });
         await virtualBackgroundProcessor.loadModel();
       }
       if (!room?.localParticipant) {
         return;
+      }
+
+      // Switch to 640x480 dimensions on desktop Chrome or browsers that
+      // do not support WebAssembly SIMD to achieve optimum performance.
+      const processor = blurProcessor || virtualBackgroundProcessor;
+      // @ts-ignore
+      if (!processor._isSimdEnabled || isDesktopChrome) {
+        await setCaptureConstraints();
       }
 
       if (backgroundSettings.type === 'blur') {
@@ -188,7 +220,7 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
       }
     };
     handleProcessorChange();
-  }, [backgroundSettings, videoTrack, room, addProcessor, removeProcessor]);
+  }, [backgroundSettings, videoTrack, room, addProcessor, removeProcessor, setCaptureConstraints]);
 
   return [backgroundSettings, setBackgroundSettings] as const;
 }

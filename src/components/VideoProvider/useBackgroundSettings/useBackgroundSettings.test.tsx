@@ -102,10 +102,16 @@ describe('The useBackgroundSettings hook ', () => {
     });
     backgroundSettings = renderResult.current[0];
     expect(backgroundSettings.type).toEqual('blur');
-    expect(mockVideoTrack.addProcessor).toHaveBeenCalledWith({
-      loadModel: mockLoadModel,
-      name: 'GaussianBlurBackgroundProcessor',
-    });
+    expect(mockVideoTrack.addProcessor).toHaveBeenCalledWith(
+      {
+        loadModel: mockLoadModel,
+        name: 'GaussianBlurBackgroundProcessor',
+      },
+      {
+        inputFrameBufferType: 'video',
+        outputFrameBufferContextType: 'webgl2',
+      }
+    );
   });
 
   it('should set the background settings correctly and remove the video processor when "none" is selected', async () => {
@@ -127,11 +133,17 @@ describe('The useBackgroundSettings hook ', () => {
     backgroundSettings = renderResult.current[0];
     expect(backgroundSettings.type).toEqual('image');
     expect(backgroundSettings.index).toEqual(2);
-    expect(mockVideoTrack.addProcessor).toHaveBeenCalledWith({
-      backgroundImage: expect.any(Object),
-      loadModel: mockLoadModel,
-      name: 'VirtualBackgroundProcessor',
-    });
+    expect(mockVideoTrack.addProcessor).toHaveBeenCalledWith(
+      {
+        backgroundImage: expect.any(Object),
+        loadModel: mockLoadModel,
+        name: 'VirtualBackgroundProcessor',
+      },
+      {
+        inputFrameBufferType: 'video',
+        outputFrameBufferContextType: 'webgl2',
+      }
+    );
   });
 
   describe('The setBackgroundSettings function ', () => {
@@ -165,10 +177,16 @@ describe('The useBackgroundSettings hook ', () => {
       await act(async () => {
         setBackgroundSettings(imgSettings);
       });
-      expect(mockVideoTrack.addProcessor).not.toHaveBeenCalledWith({
-        loadModel: mockLoadModel,
-        name: 'GaussianBlurBackgroundProcessor',
-      });
+      expect(mockVideoTrack.addProcessor).not.toHaveBeenCalledWith(
+        {
+          loadModel: mockLoadModel,
+          name: 'GaussianBlurBackgroundProcessor',
+        },
+        {
+          inputFrameBufferType: 'video',
+          outputFrameBufferContextType: 'webgl2',
+        }
+      );
       expect(window.localStorage.getItem(SELECTED_BACKGROUND_SETTINGS_KEY)).toEqual(JSON.stringify(imgSettings));
     });
 
@@ -177,11 +195,17 @@ describe('The useBackgroundSettings hook ', () => {
       await act(async () => {
         setBackgroundSettings(blurSettings);
       });
-      expect(mockVideoTrack.addProcessor).not.toHaveBeenCalledWith({
-        loadModel: mockLoadModel,
-        backgroundImage: expect.any(Object),
-        name: 'VirtualBackgroundProcessor',
-      });
+      expect(mockVideoTrack.addProcessor).not.toHaveBeenCalledWith(
+        {
+          loadModel: mockLoadModel,
+          backgroundImage: expect.any(Object),
+          name: 'VirtualBackgroundProcessor',
+        },
+        {
+          inputFrameBufferType: 'video',
+          outputFrameBufferContextType: 'webgl2',
+        }
+      );
       expect(window.localStorage.getItem(SELECTED_BACKGROUND_SETTINGS_KEY)).toEqual(JSON.stringify(blurSettings));
     });
 
