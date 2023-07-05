@@ -1,3 +1,9 @@
+## 0.10.1
+
+### Changes
+
+- Google App Engine recently introduced a [breaking change](https://cloud.google.com/appengine/docs/standard/nodejs/release-notes#April_11_2023) to the default behavior of Node buildpack deployments, which broke our internal app deployment script. This version introduces a fix for it.
+
 ## 0.10.0
 
 ### Changes
