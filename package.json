@@ -1,6 +1,6 @@
 {
   "name": "twilio-video-app-react",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "private": true,
   "license": "Apache-2.0",
   "dependencies": {
@@ -90,6 +90,7 @@
     "start": "concurrently npm:server npm:dev",
     "dev": "react-scripts start",
     "build": "node ./scripts/build.js",
+    "gcp-build": "",
     "test": "cross-env TZ=utc jest --config jest.config.js",
     "eject": "react-scripts eject",
     "lint": "eslint src server",
