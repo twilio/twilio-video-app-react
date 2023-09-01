@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 // @ts-ignore
 window.TwilioVideo = Video;
+Video.Logger.getLogger('twilio-video').setLevel('debug');
 
 export default function useRoom(localTracks: LocalTrack[], onError: Callback, options?: ConnectOptions) {
   const [room, setRoom] = useState<Room | null>(null);
