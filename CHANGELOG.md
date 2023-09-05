@@ -1,3 +1,22 @@
+## 0.10.1
+
+### Changes
+
+- Google App Engine recently introduced a [breaking change](https://cloud.google.com/appengine/docs/standard/nodejs/release-notes#April_11_2023) to the default behavior of Node buildpack deployments, which broke our internal app deployment script. This version introduces a fix for it.
+
+## 0.10.0
+
+### Changes
+
+- `twilio-video` has been upgraded to 2.27.0.
+- `@twilio/video-processors` has been upgraded to 2.0.0, which uses GPU where possible to improve the user experience of virtual backgrounds.
+
+## 0.9.1 (January 10, 2023)
+
+### Changes
+
+- Modified CircleCI deploy script to store gcloud service account credentials in proper JSON format.
+
 ## 0.9.0 (November 23, 2022)
 
 ### New Features
