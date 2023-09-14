@@ -1,3 +1,9 @@
+## 0.10.2
+
+### Changes
+
+- `twilio-video` has been upgraded to 2.28.0.
+
 ## 0.10.1
 
 ### Changes
