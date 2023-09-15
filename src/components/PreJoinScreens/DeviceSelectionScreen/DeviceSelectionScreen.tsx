@@ -109,7 +109,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
       const ratingFromQuery = queryString.parse(window.location.search)?.rating;
       const ratingMessageFromQuery = queryString.parse(window.location.search)?.ratingMessage;
 
-      if (typeof ratingFromQuery === 'string') {
+      if (typeof ratingFromQuery === 'string' && Number(ratingFromQuery)) {
         rating = Number(ratingFromQuery);
       }
       if (typeof ratingMessageFromQuery === 'string') {
