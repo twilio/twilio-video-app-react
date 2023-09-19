@@ -115,6 +115,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
       if (typeof ratingMessageFromQuery === 'string') {
         message = decodeURI(ratingMessageFromQuery);
       }
+      console.log('rating', { rating, ratingFromQuery });
       watchRTC.setUserRating(rating, message);
     }, 29000);
   };
