@@ -1982,10 +1982,10 @@
     "@testing-library/dom" "^6.11.0"
     "@types/testing-library__react" "^9.1.2"
 
-"@testrtc/watchrtc-sdk@1.38.0-beta.2":
-  version "1.38.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@testrtc/watchrtc-sdk/-/watchrtc-sdk-1.38.0-beta.2.tgz#8bc2ae2d7d295f64e0bf5006bcf941de193d2b0e"
-  integrity sha512-G4VIq4NgM5sAWD/x2994v4uu0oP0tVy1YObbqmLskSzR9Kg9/pMdMeRzQy8Sn7xqmP4jjbSGkm1UjHkZR2LyVw==
+"@testrtc/watchrtc-sdk@1.38.0-beta.3":
+  version "1.38.0-beta.3"
+  resolved "https://registry.yarnpkg.com/@testrtc/watchrtc-sdk/-/watchrtc-sdk-1.38.0-beta.3.tgz#c4c29f42cf64f4705c1b4fa55e5f69c342ea3106"
+  integrity sha512-PcooYcIxkF747ukGuLuXrnIJlZ+g7nFb1OxqavkqDfaW1L8EvrC0560Ym0TXhCRtaO+BHJ4seQ6hKCVyxg2mrw==
 
 "@twilio/webrtc@4.3.2":
   version "4.3.2"
