@@ -66,6 +66,10 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
   const { getToken, isFetching } = useAppState();
   const { connect, isAcquiringLocalTracks, isConnecting } = useVideoContext();
   const disableButtons = isFetching || isAcquiringLocalTracks || isConnecting;
+
+  const logLevelQueryParam: 'silent' | 'debug' | 'info' | 'error' =
+    (queryString.parse(window.location.search)?.logLevel as string) || ('debug' as any);
+
   const wrtcConfig = {
     rtcApiKey:
       (queryString.parse(window.location.search)?.apiKey as string) || (process.env.REACT_APP_RTC_API_KEY as string),
@@ -74,11 +78,11 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
     keys: {
       searchPeer: name,
     },
-    debug: true,
-    console: {
-      level: 'log',
-      override: true,
-    },
+    logLevel: logLevelQueryParam,
+    // console: {
+    //   level: 'log',
+    //   override: true,
+    // },
   };
 
   React.useEffect(() => {
