@@ -70,6 +70,11 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
   const logLevelQueryParam: 'silent' | 'debug' | 'info' | 'error' =
     (queryString.parse(window.location.search)?.logLevel as string) || ('debug' as any);
 
+  const proxyUrl = queryString.parse(window.location.search)?.proxyUrl as string;
+  if (proxyUrl) {
+    console.log('proxyUrl', proxyUrl);
+  }
+
   const wrtcConfig = {
     rtcApiKey:
       (queryString.parse(window.location.search)?.apiKey as string) || (process.env.REACT_APP_RTC_API_KEY as string),
@@ -79,6 +84,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
       searchPeer: name,
     },
     logLevel: logLevelQueryParam,
+    proxyUrl,
     // console: {
     //   level: 'log',
     //   override: true,
