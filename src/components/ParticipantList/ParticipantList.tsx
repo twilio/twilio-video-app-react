@@ -1,12 +1,11 @@
-import React from 'react';
+import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import Participant from '../Participant/Participant';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import useMainParticipant from '../../hooks/useMainParticipant/useMainParticipant';
 import useParticipantsContext from '../../hooks/useParticipantsContext/useParticipantsContext';
-import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
-import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
 import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
+import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import Participant from '../Participant/Participant';
+import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -44,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function ParticipantList() {
   const classes = useStyles();
   const { room } = useVideoContext();
-  const localParticipant = room!.localParticipant;
+  const localParticipant = room && room.localParticipant;
   const { speakerViewParticipants } = useParticipantsContext();
   const [selectedParticipant, setSelectedParticipant] = useSelectedParticipant();
   const screenShareParticipant = useScreenShareParticipant();
@@ -52,6 +51,10 @@ export default function ParticipantList() {
   const isRemoteParticipantScreenSharing = screenShareParticipant && screenShareParticipant !== localParticipant;
 
   if (speakerViewParticipants.length === 0) return null; // Don't render this component if there are no remote participants.
+
+  if (!localParticipant) {
+    return <></>;
+  }
 
   return (
     <aside

@@ -1,18 +1,17 @@
-import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
+import { Grid, Hidden, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import EndCallButton from '../Buttons/EndCallButton/EndCallButton';
-import { isMobile } from '../../utils';
-import Menu from './Menu/Menu';
 import useParticipants from '../../hooks/useParticipants/useParticipants';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
-import { Typography, Grid, Hidden } from '@material-ui/core';
+import { isMobile } from '../../utils';
+import EndCallButton from '../Buttons/EndCallButton/EndCallButton';
 import ToggleAudioButton from '../Buttons/ToggleAudioButton/ToggleAudioButton';
 import ToggleChatButton from '../Buttons/ToggleChatButton/ToggleChatButton';
 import ToggleVideoButton from '../Buttons/ToggleVideoButton/ToggleVideoButton';
 import ToggleScreenShareButton from '../Buttons/ToogleScreenShareButton/ToggleScreenShareButton';
+import Menu from './Menu/Menu';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -71,6 +70,10 @@ export default function MenuBar() {
   const { room } = useVideoContext();
   const participants = useParticipants();
 
+  if (!room) {
+    return <></>;
+  }
+
   return (
     <>
       {isSharingScreen && (
@@ -84,7 +87,7 @@ export default function MenuBar() {
           <Hidden smDown>
             <Grid style={{ flex: 1 }}>
               <Typography variant="body1">
-                {room!.name} | {participants.length + 1} participant{participants.length ? 's' : ''}
+                {room.name} | {participants.length + 1} participant{participants.length ? 's' : ''}
               </Typography>
             </Grid>
           </Hidden>

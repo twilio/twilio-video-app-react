@@ -1,17 +1,16 @@
-import React from 'react';
+import { IconButton, Theme, createStyles, makeStyles } from '@material-ui/core';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ArrowForward from '@material-ui/icons/ArrowForward';
+import { Pagination } from '@material-ui/lab';
 import clsx from 'clsx';
 import { GALLERY_VIEW_ASPECT_RATIO, GALLERY_VIEW_MARGIN } from '../../constants';
-import { IconButton, makeStyles, createStyles, Theme } from '@material-ui/core';
-import { Pagination } from '@material-ui/lab';
-import Participant from '../Participant/Participant';
-import useGalleryViewLayout from '../../hooks/useGalleryViewLayout/useGalleryViewLayout';
-import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
-import useParticipantsContext from '../../hooks/useParticipantsContext/useParticipantsContext';
-import { usePagination } from './usePagination/usePagination';
 import useDominantSpeaker from '../../hooks/useDominantSpeaker/useDominantSpeaker';
+import useGalleryViewLayout from '../../hooks/useGalleryViewLayout/useGalleryViewLayout';
+import useParticipantsContext from '../../hooks/useParticipantsContext/useParticipantsContext';
+import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { useAppState } from '../../state';
+import Participant from '../Participant/Participant';
+import { usePagination } from './usePagination/usePagination';
 
 const CONTAINER_GUTTER = '50px';
 
@@ -85,10 +84,10 @@ export function GalleryView() {
   const { galleryViewParticipants } = useParticipantsContext();
   const dominantSpeaker = useDominantSpeaker(true);
 
-  const { paginatedParticipants, setCurrentPage, currentPage, totalPages } = usePagination([
-    room!.localParticipant,
-    ...galleryViewParticipants,
-  ]);
+  const participants =
+    room && room.localParticipant ? [room.localParticipant, ...galleryViewParticipants] : [...galleryViewParticipants];
+
+  const { paginatedParticipants, setCurrentPage, currentPage, totalPages } = usePagination(participants);
 
   const galleryViewLayoutParticipantCount =
     currentPage === 1 ? paginatedParticipants.length : maxGalleryViewParticipants;
@@ -96,6 +95,10 @@ export function GalleryView() {
 
   const participantWidth = `${participantVideoWidth}px`;
   const participantHeight = `${Math.floor(participantVideoWidth * GALLERY_VIEW_ASPECT_RATIO)}px`;
+
+  if (!room) {
+    return <></>;
+  }
 
   return (
     <div className={classes.container}>
@@ -136,7 +139,7 @@ export function GalleryView() {
           >
             <Participant
               participant={participant}
-              isLocalParticipant={participant === room!.localParticipant}
+              isLocalParticipant={participant === room.localParticipant}
               isDominantSpeaker={participant === dominantSpeaker}
             />
           </div>

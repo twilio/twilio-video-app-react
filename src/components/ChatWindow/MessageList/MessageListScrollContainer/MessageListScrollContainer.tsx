@@ -1,11 +1,11 @@
 /* istanbul ignore file */
-import React from 'react';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import Button from '@material-ui/core/Button';
-import clsx from 'clsx';
+import { WithStyles, createStyles, withStyles } from '@material-ui/core/styles';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { Message } from '@twilio/conversations';
+import clsx from 'clsx';
 import throttle from 'lodash.throttle';
-import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
+import React from 'react';
 
 const styles = createStyles({
   outerContainer: {
@@ -70,13 +70,14 @@ export class MessageListScrollContainer extends React.Component<
   state = { isScrolledToBottom: true, showButton: false, messageNotificationCount: 0 };
 
   scrollToBottom() {
-    const innerScrollContainerEl = this.chatThreadRef.current!;
-    innerScrollContainerEl.scrollTop = innerScrollContainerEl!.scrollHeight;
+    const innerScrollContainerEl = this.chatThreadRef.current;
+    if (!innerScrollContainerEl) return;
+    innerScrollContainerEl.scrollTop = innerScrollContainerEl.scrollHeight;
   }
 
   componentDidMount() {
     this.scrollToBottom();
-    this.chatThreadRef.current!.addEventListener('scroll', this.handleScroll);
+    this.chatThreadRef.current && this.chatThreadRef.current.addEventListener('scroll', this.handleScroll);
   }
 
   // This component updates as users send new messages:
@@ -102,7 +103,8 @@ export class MessageListScrollContainer extends React.Component<
   }
 
   handleScroll = throttle(() => {
-    const innerScrollContainerEl = this.chatThreadRef.current!;
+    const innerScrollContainerEl = this.chatThreadRef.current;
+
     // Because this.handleScroll() is a throttled method,
     // it's possible that it can be called after this component unmounts, and this element will be null.
     // Therefore, if it doesn't exist, don't do anything:
@@ -112,7 +114,7 @@ export class MessageListScrollContainer extends React.Component<
     // "isScrolledToBottom" calculation.
     const isScrolledToBottom =
       Math.abs(
-        innerScrollContainerEl.clientHeight + innerScrollContainerEl.scrollTop - innerScrollContainerEl!.scrollHeight
+        innerScrollContainerEl.clientHeight + innerScrollContainerEl.scrollTop - innerScrollContainerEl.scrollHeight
       ) < 1;
 
     this.setState(prevState => ({
@@ -122,7 +124,8 @@ export class MessageListScrollContainer extends React.Component<
   }, 300);
 
   handleClick = () => {
-    const innerScrollContainerEl = this.chatThreadRef.current!;
+    const innerScrollContainerEl = this.chatThreadRef.current;
+    if (!innerScrollContainerEl) return;
 
     innerScrollContainerEl.scrollTo({ top: innerScrollContainerEl.scrollHeight, behavior: 'smooth' });
 
@@ -130,7 +133,8 @@ export class MessageListScrollContainer extends React.Component<
   };
 
   componentWillUnmount() {
-    const innerScrollContainerEl = this.chatThreadRef.current!;
+    const innerScrollContainerEl = this.chatThreadRef.current;
+    if (!innerScrollContainerEl) return;
 
     innerScrollContainerEl.removeEventListener('scroll', this.handleScroll);
   }

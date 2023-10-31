@@ -1,5 +1,5 @@
-import React, { createContext, ReactNode, useCallback, useState } from 'react';
-import { CreateLocalTrackOptions, ConnectOptions, LocalAudioTrack, LocalVideoTrack, Room } from 'twilio-video';
+import { createContext, ReactNode, useCallback, useState } from 'react';
+import { ConnectOptions, CreateLocalTrackOptions, LocalAudioTrack, LocalVideoTrack, Room } from 'twilio-video';
 import { ErrorCallback } from '../../types';
 import { SelectedParticipantProvider } from './useSelectedParticipant/useSelectedParticipant';
 

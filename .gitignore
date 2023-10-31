@@ -35,3 +35,6 @@ serviceAccountKey.json
 
 public/noisecancellation/
 public/virtualbackground/
+files_smells.csv
+components_smells.csv
+*.components_smells.csv
