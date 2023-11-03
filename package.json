@@ -34,7 +34,7 @@
     "react-scripts": "^3.4.4",
     "strip-color": "^0.1.0",
     "twilio": "4.19.0",
-    "twilio-video": "^2.9.0",
+    "twilio-video": "2.28.1",
     "typescript": "^3.8.3"
   },
   "devDependencies": {
