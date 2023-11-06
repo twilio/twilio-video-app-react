@@ -163,7 +163,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
         Join {roomName}
       </Typography>
 
-      <Grid container justify="center">
+      <Grid container justifyContent="center">
         <Grid item md={7} sm={12} xs={12}>
           <div className={classes.localPreviewContainer}>
             <LocalVideoPreview identity={name} />
@@ -177,7 +177,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
           </div>
         </Grid>
         <Grid item md={5} sm={12} xs={12}>
-          <Grid container direction="column" justify="space-between" style={{ height: '100%' }}>
+          <Grid container direction="column" justifyContent="space-between" style={{ height: '100%' }}>
             <div>
               <Hidden smDown>
                 <ToggleAudioButton className={classes.deviceButton} disabled={disableButtons} />
