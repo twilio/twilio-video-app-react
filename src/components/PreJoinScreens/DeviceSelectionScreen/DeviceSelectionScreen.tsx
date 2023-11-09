@@ -157,6 +157,31 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
     }
   };
 
+  const progressCallback = (progress: number) => {
+    console.log(`SAMPLE:runNetworkTest progressCallback ${progress}%`, {});
+  };
+
+  const runNetworkTest = async () => {
+    console.log(`SAMPLE:runNetworkTest Starting`, { watchRTC });
+    const answer = await watchRTC.qualityrtc.run({
+      options: {
+        // run: "Location",
+
+        // if not provided, will use default unpkg.com values, used for local development
+        // codeUrl: `http://localhost:8081/lib/main.bundle.js`,
+
+        // should not be passed, and will read from watchRTC server, passing this for development testing
+        configUrl: `https://niceincontact.testrtc.com`,
+      },
+      progressCallback,
+    });
+
+    // any time can call stop to stop the test
+    // watchRTC.qualityrtc.stop();
+
+    console.log(`SAMPLE:runNetworkTest Completed`, { answer });
+  };
+
   return (
     <>
       <Typography variant="h5" className={classes.gutterBottom}>
@@ -174,6 +199,15 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
               <ToggleVideoButton className={classes.mobileButton} disabled={disableButtons} />
             </Hidden>
             <SettingsMenu mobileButtonClass={classes.mobileButton} />
+            <Button
+              onClick={() => runNetworkTest()}
+              style={{ marginTop: '2em' }}
+              variant="contained"
+              color="primary"
+              data-cy-join-now
+            >
+              QRTC Test
+            </Button>
           </div>
         </Grid>
         <Grid item md={5} sm={12} xs={12}>
