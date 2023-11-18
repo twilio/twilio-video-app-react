@@ -2,6 +2,8 @@ import React, { ChangeEvent, FormEvent } from 'react';
 import { Typography, makeStyles, TextField, Grid, Button, InputLabel, Theme } from '@material-ui/core';
 import { useAppState } from '../../../state';
 
+import watchRTC from '@testrtc/watchrtc-sdk';
+
 const useStyles = makeStyles((theme: Theme) => ({
   gutterBottom: {
     marginBottom: '1em',
@@ -91,7 +93,23 @@ export default function RoomNameScreen({ name, roomName, setName, setRoomName, h
             />
           </div>
         </div>
-        <Grid container justify="flex-end">
+        <Grid container justify="space-between">
+          <Button
+            variant="contained"
+            type="button"
+            color="primary"
+            className={classes.continueButton}
+            style={{ marginRight: 5 }}
+            onClick={e => {
+              e.preventDefault();
+              watchRTC.addEvent({
+                type: 'local',
+                name: 'watchRTC event sample',
+              });
+            }}
+          >
+            watchRTC event sample
+          </Button>
           <Button
             variant="contained"
             type="submit"
