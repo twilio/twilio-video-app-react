@@ -93,7 +93,7 @@ export default function RoomNameScreen({ name, roomName, setName, setRoomName, h
             />
           </div>
         </div>
-        <Grid container justify="space-between">
+        <Grid container justifyContent="flex-end">
           <Button
             variant="contained"
             type="button"
