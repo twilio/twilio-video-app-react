@@ -166,12 +166,10 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
     const answer = await watchRTC.qualityrtc.run({
       options: {
         // run: "Location",
-
         // if not provided, will use default unpkg.com values, used for local development
         // codeUrl: `http://localhost:8081/lib/main.bundle.js`,
-
         // should not be passed, and will read from watchRTC server, passing this for development testing
-        configUrl: `https://niceincontact.testrtc.com`,
+        // configUrl: `https://niceincontact.testrtc.com`,
       },
       progressCallback,
     });
