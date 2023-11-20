@@ -16,6 +16,7 @@ import { Typography, Grid, Hidden } from '@material-ui/core';
 import ToggleAudioButton from '../Buttons/ToggleAudioButton/ToggleAudioButton';
 import ToggleVideoButton from '../Buttons/ToggleVideoButton/ToggleVideoButton';
 import ToggleScreenShareButton from '../Buttons/ToogleScreenShareButton/ToggleScreenShareButton';
+import ToggleStatsButton from '../Buttons/ToggleStatsButton/ToggleStatsButton';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -108,6 +109,7 @@ export default function MenuBar() {
                 <EndCallButton />
                 <NailUpEndCallButton />
                 <NailUpJoinCallButton />
+                <ToggleStatsButton />
               </Grid>
             </Grid>
           </Hidden>
