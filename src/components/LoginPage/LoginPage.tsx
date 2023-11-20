@@ -105,7 +105,7 @@ export default function LoginPage() {
             Enter passcode to join a room
           </Typography>
           <form onSubmit={handleSubmit}>
-            <Grid container justify="space-between">
+            <Grid container justifyContent="space-between">
               <div className={classes.passcodeContainer}>
                 <InputLabel shrink htmlFor="input-passcode">
                   Passcode
@@ -127,7 +127,7 @@ export default function LoginPage() {
                 </div>
               </div>
             </Grid>
-            <Grid container justify="flex-end">
+            <Grid container justifyContent="flex-end">
               <Button
                 variant="contained"
                 color="primary"

@@ -16,6 +16,7 @@ import { Typography, Grid, Hidden } from '@material-ui/core';
 import ToggleAudioButton from '../Buttons/ToggleAudioButton/ToggleAudioButton';
 import ToggleVideoButton from '../Buttons/ToggleVideoButton/ToggleVideoButton';
 import ToggleScreenShareButton from '../Buttons/ToogleScreenShareButton/ToggleScreenShareButton';
+import ToggleStatsButton from '../Buttons/ToggleStatsButton/ToggleStatsButton';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -81,20 +82,20 @@ export default function MenuBar() {
   return (
     <>
       {isSharingScreen && (
-        <Grid container justify="center" alignItems="center" className={classes.screenShareBanner}>
+        <Grid container justifyContent="center" alignItems="center" className={classes.screenShareBanner}>
           <Typography variant="h6">You are sharing your screen</Typography>
           <Button onClick={() => handleStopSharing()}>Stop Sharing</Button>
         </Grid>
       )}
       <footer className={classes.container}>
-        <Grid container justify="space-around" alignItems="center">
+        <Grid container justifyContent="space-around" alignItems="center">
           <Hidden smDown>
             <Grid style={{ flex: 1 }}>
               <Typography variant="body1">{room.name}</Typography>
             </Grid>
           </Hidden>
           <Grid item>
-            <Grid container justify="center">
+            <Grid container justifyContent="center">
               <ToggleAudioButton disabled={isReconnecting} />
               <ToggleVideoButton disabled={isReconnecting} />
               <Hidden smDown>{!isSharingScreen && <ToggleScreenShareButton disabled={isReconnecting} />}</Hidden>
@@ -103,11 +104,12 @@ export default function MenuBar() {
           </Grid>
           <Hidden smDown>
             <Grid style={{ flex: 1 }}>
-              <Grid container justify="flex-end">
+              <Grid container justifyContent="flex-end">
                 <Menu />
                 <EndCallButton />
                 <NailUpEndCallButton />
                 <NailUpJoinCallButton />
+                <ToggleStatsButton />
               </Grid>
             </Grid>
           </Hidden>
