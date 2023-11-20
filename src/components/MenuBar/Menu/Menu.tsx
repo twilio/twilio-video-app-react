@@ -1,26 +1,26 @@
-import React, { useState, useRef } from 'react';
-import AboutDialog from '../../AboutDialog/AboutDialog';
-import BackgroundIcon from '../../../icons/BackgroundIcon';
+import { Button, Menu as MenuContainer, MenuItem, Theme, Typography, styled, useMediaQuery } from '@material-ui/core';
 import CollaborationViewIcon from '@material-ui/icons/AccountBox';
-import DeviceSelectionDialog from '../../DeviceSelectionDialog/DeviceSelectionDialog';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import GridViewIcon from '@material-ui/icons/Apps';
-import InfoIconOutlined from '../../../icons/InfoIconOutlined';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import SearchIcon from '@material-ui/icons/Search';
+import { isSupported } from '@twilio/video-processors';
+import { useRef, useState } from 'react';
+import BackgroundIcon from '../../../icons/BackgroundIcon';
+import InfoIconOutlined from '../../../icons/InfoIconOutlined';
+import SettingsIcon from '../../../icons/SettingsIcon';
 import StartRecordingIcon from '../../../icons/StartRecordingIcon';
 import StopRecordingIcon from '../../../icons/StopRecordingIcon';
-import SearchIcon from '@material-ui/icons/Search';
-import SettingsIcon from '../../../icons/SettingsIcon';
-import { Button, styled, Theme, useMediaQuery, Menu as MenuContainer, MenuItem, Typography } from '@material-ui/core';
-import { isSupported } from '@twilio/video-processors';
+import AboutDialog from '../../AboutDialog/AboutDialog';
+import DeviceSelectionDialog from '../../DeviceSelectionDialog/DeviceSelectionDialog';
 
-import { useAppState } from '../../../state';
+import { VideoRoomMonitor } from '@twilio/video-room-monitor';
 import useChatContext from '../../../hooks/useChatContext/useChatContext';
+import useFlipCameraToggle from '../../../hooks/useFlipCameraToggle/useFlipCameraToggle';
 import useIsRecording from '../../../hooks/useIsRecording/useIsRecording';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 import FlipCameraIcon from '../../../icons/FlipCameraIcon';
-import useFlipCameraToggle from '../../../hooks/useFlipCameraToggle/useFlipCameraToggle';
-import { VideoRoomMonitor } from '@twilio/video-room-monitor';
+import { useAppState } from '../../../state';
 
 export const IconContainer = styled('div')({
   display: 'flex',
@@ -110,10 +110,12 @@ export default function Menu(props: { buttonClassName?: string }) {
             disabled={isFetching}
             onClick={() => {
               setMenuOpen(false);
-              if (isRecording) {
-                updateRecordingRules(room!.sid, [{ type: 'exclude', all: true }]);
-              } else {
-                updateRecordingRules(room!.sid, [{ type: 'include', all: true }]);
+              if (room) {
+                if (isRecording) {
+                  updateRecordingRules(room.sid, [{ type: 'exclude', all: true }]);
+                } else {
+                  updateRecordingRules(room.sid, [{ type: 'include', all: true }]);
+                }
               }
             }}
             data-cy-recording-button
