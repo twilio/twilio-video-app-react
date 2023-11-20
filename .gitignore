@@ -28,6 +28,7 @@ yarn-error.log*
 .env
 .env.*
 .vscode
+*.csv
 
 test-reports
 junit.xml
