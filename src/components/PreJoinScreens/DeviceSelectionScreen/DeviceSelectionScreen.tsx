@@ -1,19 +1,18 @@
-import React from 'react';
-import { makeStyles, Typography, Grid, Button, Theme, Hidden, Switch, Tooltip } from '@material-ui/core';
+import { Button, Grid, Hidden, Switch, Theme, Tooltip, Typography, makeStyles } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Divider from '@material-ui/core/Divider';
-import LocalVideoPreview from './LocalVideoPreview/LocalVideoPreview';
-import SettingsMenu from './SettingsMenu/SettingsMenu';
-import { Steps } from '../PreJoinScreens';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import useChatContext from '../../../hooks/useChatContext/useChatContext';
+import { useKrispToggle } from '../../../hooks/useKrispToggle/useKrispToggle';
+import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import InfoIconOutlined from '../../../icons/InfoIconOutlined';
+import SmallCheckIcon from '../../../icons/SmallCheckIcon';
+import { useAppState } from '../../../state';
 import ToggleAudioButton from '../../Buttons/ToggleAudioButton/ToggleAudioButton';
 import ToggleVideoButton from '../../Buttons/ToggleVideoButton/ToggleVideoButton';
-import { useAppState } from '../../../state';
-import useChatContext from '../../../hooks/useChatContext/useChatContext';
-import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { useKrispToggle } from '../../../hooks/useKrispToggle/useKrispToggle';
-import SmallCheckIcon from '../../../icons/SmallCheckIcon';
-import InfoIconOutlined from '../../../icons/InfoIconOutlined';
+import { Steps } from '../PreJoinScreens';
+import LocalVideoPreview from './LocalVideoPreview/LocalVideoPreview';
+import SettingsMenu from './SettingsMenu/SettingsMenu';
 
 const useStyles = makeStyles((theme: Theme) => ({
   gutterBottom: {
@@ -91,18 +90,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
   };
 
   if (isFetching || isConnecting) {
-    return (
-      <Grid container justifyContent="center" alignItems="center" direction="column" style={{ height: '100%' }}>
-        <div>
-          <CircularProgress variant="indeterminate" />
-        </div>
-        <div>
-          <Typography variant="body2" style={{ fontWeight: 'bold', fontSize: '16px' }}>
-            Joining Meeting
-          </Typography>
-        </div>
-      </Grid>
-    );
+    return <JoiningMeetingAlert />;
   }
 
   return (
@@ -209,3 +197,18 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
     </>
   );
 }
+
+export const JoiningMeetingAlert = () => {
+  return (
+    <Grid container justifyContent="center" alignItems="center" direction="column" style={{ height: '100%' }}>
+      <div>
+        <CircularProgress variant="indeterminate" />
+      </div>
+      <div>
+        <Typography variant="body2" style={{ fontWeight: 'bold', fontSize: '16px' }}>
+          Joining Meeting
+        </Typography>
+      </div>
+    </Grid>
+  );
+};
