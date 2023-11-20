@@ -65,7 +65,7 @@
     ]
   },
   "scripts": {
-    "start-dev": "netlify dev",
+    "start-dev": "cross-env NODE_OPTIONS=--openssl-legacy-provider netlify dev",
     "start": "react-scripts start",
     "build": "node ./scripts/build.js",
     "test": "jest",
