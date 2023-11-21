@@ -1,6 +1,6 @@
+import { interval } from 'd3-timer';
 import React, { useEffect, useRef, useState } from 'react';
 import { AudioTrack, LocalAudioTrack, RemoteAudioTrack } from 'twilio-video';
-import { interval } from 'd3-timer';
 import useIsTrackEnabled from '../../hooks/useIsTrackEnabled/useIsTrackEnabled';
 import useMediaStreamTrack from '../../hooks/useMediaStreamTrack/useMediaStreamTrack';
 
@@ -20,8 +20,7 @@ export function initializeAnalyser(stream: MediaStream) {
 
   audioSource.connect(analyser);
 
-  // Here we provide a way for the audioContext to be closed.
-  // Closing the audioContext allows the unused audioSource to be garbage collected.
+  // Here we provide a way for the audioContext to be closed. Closing the audioContext allows the unused audioSource to be garbage collected.
   stream.addEventListener('cleanup', () => {
     if (audioContext.state !== 'closed') {
       audioContext.close();
@@ -41,19 +40,14 @@ function AudioLevelIndicator({ audioTrack, color = 'white' }: { audioTrack?: Aud
 
   useEffect(() => {
     if (audioTrack && mediaStreamTrack && isTrackEnabled) {
-      // Here we create a new MediaStream from a clone of the mediaStreamTrack.
-      // A clone is created to allow multiple instances of this component for a single
-      // AudioTrack on iOS Safari. We only clone the mediaStreamTrack on iOS.
+      // Cloning the mediaStreamTrack allows for multiple instances of the AudioLevelIndicator component for a single AudioTrack on iOS Safari.
       let newMediaStream = new MediaStream([isIOS ? mediaStreamTrack.clone() : mediaStreamTrack]);
 
-      // Here we listen for the 'stopped' event on the audioTrack. When the audioTrack is stopped,
-      // we stop the cloned track that is stored in 'newMediaStream'. It is important that we stop
-      // all tracks when they are not in use. Browsers like Firefox don't let you create a new stream
-      // from a new audio device while the active audio device still has active tracks.
+      // It is important that we stop all tracks when they are not in use. Browsers like Firefox
+      // don't let you create a new stream from a new audio device while the active audio device still has active tracks.
       const stopAllMediaStreamTracks = () => {
         if (isIOS) {
           // If we are on iOS, then we want to stop the MediaStreamTrack that we have previously cloned.
-          // If we are not on iOS, then we do not stop the MediaStreamTrack since it is the original and still in use.
           newMediaStream.getTracks().forEach(track => track.stop());
         }
         newMediaStream.dispatchEvent(new Event('cleanup')); // Stop the audioContext
@@ -62,7 +56,7 @@ function AudioLevelIndicator({ audioTrack, color = 'white' }: { audioTrack?: Aud
 
       const reinitializeAnalyser = () => {
         stopAllMediaStreamTracks();
-        // We only clone the mediaStreamTrack on iOS.
+
         newMediaStream = new MediaStream([isIOS ? mediaStreamTrack.clone() : mediaStreamTrack]);
         setAnalyser(initializeAnalyser(newMediaStream));
       };
@@ -70,8 +64,6 @@ function AudioLevelIndicator({ audioTrack, color = 'white' }: { audioTrack?: Aud
       setAnalyser(initializeAnalyser(newMediaStream));
 
       // Here we reinitialize the AnalyserNode on focus to avoid an issue in Safari
-      // where the analysers stop functioning when the user switches to a new tab
-      // and switches back to the app.
       window.addEventListener('focus', reinitializeAnalyser);
 
       return () => {
@@ -109,7 +101,6 @@ function AudioLevelIndicator({ audioTrack, color = 'white' }: { audioTrack?: Aud
     }
   }, [isTrackEnabled, analyser]);
 
-  // Each instance of this component will need a unique HTML ID
   const clipPathId = `audio-level-clip-${getUniqueClipId()}`;
 
   return isTrackEnabled ? (

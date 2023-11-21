@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
 import { Link } from '@material-ui/core';
-import Snackbar from '../Snackbar/Snackbar';
+import { useEffect, useRef, useState } from 'react';
 import useIsRecording from '../../hooks/useIsRecording/useIsRecording';
+import Snackbar from '../Snackbar/Snackbar';
 
 enum Snackbars {
-  none,
-  recordingStarted,
-  recordingInProgress,
-  recordingFinished,
+  none = 0,
+  recordingStarted = 1,
+  recordingInProgress = 2,
+  recordingFinished = 3,
 }
 
 export default function RecordingNotifications() {
