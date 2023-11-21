@@ -161,10 +161,46 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
     console.log(`SAMPLE:runNetworkTest progressCallback ${progress}%`, {});
   };
 
+  function getJsonFromUrl(query: string) {
+    if (query.indexOf('?') === 0) {
+      query = query.substr(1);
+    }
+
+    const result: Record<string, string | string[]> = {};
+    query.split('&').forEach(function(part) {
+      if (!part) return;
+      part = part.split('+').join(' ');
+      const eq = part.indexOf('=');
+      let key = eq > -1 ? part.substr(0, eq) : part;
+      const val = eq > -1 ? decodeURIComponent(part.substr(eq + 1)) : '';
+      const from = key.indexOf('[');
+      if (from == -1) {
+        result[decodeURIComponent(key)] = val;
+      } else {
+        const to = key.indexOf(']', from);
+        const index = decodeURIComponent(key.substring(from + 1, to));
+        key = decodeURIComponent(key.substring(0, from));
+        if (!result[key]) {
+          result[key] = [];
+        }
+        if (!index) {
+          (result[key] as string[]).push(val);
+        } else {
+          // @ts-ignore
+          result[key][index] = val;
+        }
+      }
+    });
+    return result;
+  }
+
   const runNetworkTest = async () => {
     console.log(`SAMPLE:runNetworkTest Starting`, { watchRTC });
+    const params = getJsonFromUrl(window.location.search);
+    console.log(`muly:DeviceSelectionScreen:runNetworkTest`, { params });
     const answer = await watchRTC.qualityrtc.run({
       options: {
+        ...params,
         // run: "Location",
         // if not provided, will use default unpkg.com values, used for local development
         // codeUrl: `http://localhost:8081/lib/main.bundle.js`,
