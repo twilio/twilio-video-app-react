@@ -15,6 +15,8 @@ interface SnackbarProps {
   handleClose?: () => void;
 }
 
+type ExpectedEvent = React.SyntheticEvent | React.MouseEvent;
+
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
     display: 'flex',
@@ -55,7 +57,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export default function Snackbar({ headline, message, variant, open, handleClose }: SnackbarProps) {
   const classes = useStyles();
 
-  const handleOnClose = (_: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
+  const handleOnClose = (_: ExpectedEvent, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }
