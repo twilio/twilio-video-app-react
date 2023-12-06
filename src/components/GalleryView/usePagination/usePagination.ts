@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Participant } from 'twilio-video';
 import { useAppState } from '../../../state';
 

@@ -1,11 +1,11 @@
-import React from 'react';
-import clsx from 'clsx';
-import CloseIcon from '@material-ui/icons/Close';
-import ErrorIcon from '../../icons/ErrorIcon';
 import { IconButton, makeStyles, Theme, Typography } from '@material-ui/core';
 import MUISnackbar from '@material-ui/core/Snackbar';
-import WarningIcon from '../../icons/WarningIcon';
+import CloseIcon from '@material-ui/icons/Close';
+import clsx from 'clsx';
+import React from 'react';
+import ErrorIcon from '../../icons/ErrorIcon';
 import InfoIcon from '../../icons/InfoIcon';
+import WarningIcon from '../../icons/WarningIcon';
 
 interface SnackbarProps {
   headline: string;
@@ -14,6 +14,8 @@ interface SnackbarProps {
   open: boolean;
   handleClose?: () => void;
 }
+
+type ExpectedEvent = React.SyntheticEvent | React.MouseEvent;
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -55,7 +57,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export default function Snackbar({ headline, message, variant, open, handleClose }: SnackbarProps) {
   const classes = useStyles();
 
-  const handleOnClose = (_: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
+  const handleOnClose = (_: ExpectedEvent, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }

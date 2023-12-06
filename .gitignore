@@ -28,6 +28,7 @@ yarn-error.log*
 .env
 .env.*
 .vscode
+*.csv
 
 test-reports
 junit.xml
@@ -35,3 +36,6 @@ serviceAccountKey.json
 
 public/noisecancellation/
 public/virtualbackground/
+files_smells.csv
+components_smells.csv
+*.components_smells.csv

@@ -1,10 +1,10 @@
-import React, { useState, useRef, useCallback } from 'react';
-import { makeStyles, Typography, Button, MenuItem, Link } from '@material-ui/core';
+import { Button, Link, MenuItem, Typography, makeStyles } from '@material-ui/core';
+import Menu from '@material-ui/core/Menu';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import React, { useCallback, useRef, useState } from 'react';
+import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 import { useAppState } from '../../../state';
 import UserAvatar from './UserAvatar/UserAvatar';
-import Menu from '@material-ui/core/Menu';
-import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
 const useStyles = makeStyles({
   userContainer: {
@@ -38,6 +38,10 @@ const UserMenu: React.FC = () => {
     signOut?.();
   }, [localTracks, signOut]);
 
+  if (!user) {
+    return <></>;
+  }
+
   if (process.env.REACT_APP_SET_AUTH === 'passcode') {
     return (
       <div className={classes.userContainer}>
@@ -53,7 +57,7 @@ const UserMenu: React.FC = () => {
       <div className={classes.userContainer}>
         <UserAvatar user={user} />
         <Button onClick={() => setMenuOpen(isOpen => !isOpen)} ref={anchorRef} className={classes.userButton}>
-          {user!.displayName}
+          {user.displayName}
           <ExpandMoreIcon />
         </Button>
         <Menu

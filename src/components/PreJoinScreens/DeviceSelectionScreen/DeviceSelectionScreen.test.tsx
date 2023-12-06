@@ -1,13 +1,11 @@
-import React from 'react';
-import DeviceSelectionScreen from './DeviceSelectionScreen';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { shallow } from 'enzyme';
-import { Steps } from '../PreJoinScreens';
-import { useAppState } from '../../../state';
-import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
-import ToggleVideoButton from '../../Buttons/ToggleVideoButton/ToggleVideoButton';
-import ToggleAudioButton from '../../Buttons/ToggleAudioButton/ToggleAudioButton';
 import { setImmediate } from 'timers';
+import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import { useAppState } from '../../../state';
+import ToggleAudioButton from '../../Buttons/ToggleAudioButton/ToggleAudioButton';
+import ToggleVideoButton from '../../Buttons/ToggleVideoButton/ToggleVideoButton';
+import { Steps } from '../PreJoinScreens';
+import DeviceSelectionScreen, { JoiningMeetingAlert } from './DeviceSelectionScreen';
 
 const mockUseAppState = useAppState as jest.Mock<any>;
 const mockUseVideoContext = useVideoContext as jest.Mock<any>;
@@ -45,7 +43,7 @@ describe('the DeviceSelectionScreen component', () => {
     const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
 
     it('should show the loading screen', () => {
-      expect(wrapper.find(CircularProgress).exists()).toBe(true);
+      expect(wrapper.find(JoiningMeetingAlert).exists()).toBe(true);
     });
 
     it('should disable the desktop and mobile toggle video buttons', () => {
@@ -91,7 +89,7 @@ describe('the DeviceSelectionScreen component', () => {
     const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
 
     it('should show the loading screen', () => {
-      expect(wrapper.find(CircularProgress).exists()).toBe(true);
+      expect(wrapper.find(JoiningMeetingAlert).exists()).toBe(true);
     });
 
     it('should disable the desktop and mobile toggle video buttons', () => {
