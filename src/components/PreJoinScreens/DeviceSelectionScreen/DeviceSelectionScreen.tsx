@@ -174,7 +174,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
       let key = eq > -1 ? part.substr(0, eq) : part;
       const val = eq > -1 ? decodeURIComponent(part.substr(eq + 1)) : '';
       const from = key.indexOf('[');
-      if (from == -1) {
+      if (from === -1) {
         result[decodeURIComponent(key)] = val;
       } else {
         const to = key.indexOf(']', from);
