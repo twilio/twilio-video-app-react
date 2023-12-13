@@ -1988,10 +1988,10 @@
     "@testing-library/dom" "^6.11.0"
     "@types/testing-library__react" "^9.1.2"
 
-"@testrtc/watchrtc-sdk@1.38.1-beta.4":
-  version "1.38.1-beta.4"
-  resolved "https://registry.yarnpkg.com/@testrtc/watchrtc-sdk/-/watchrtc-sdk-1.38.1-beta.4.tgz#b5b0e3afe918dc6487e4ecf2c25a078b0a320fa1"
-  integrity sha512-TdCQduTRRm3Aidk2EKUNWrO60FDbY90shtcafF1QXiDM1vfIKDL5ijCX/4UxkIeoX24OgaE4c/Cs8ypST/qjHA==
+"@testrtc/watchrtc-sdk@1.38.1":
+  version "1.38.1"
+  resolved "https://registry.yarnpkg.com/@testrtc/watchrtc-sdk/-/watchrtc-sdk-1.38.1.tgz#42aa1ed9f6d8460afc2c0c553f7e922cf42a1d72"
+  integrity sha512-vl8i1093rcu5y7jUal5L5BFBbgC3gOVLBU6NiPonGuzA6inYsvRh6nwuCUKfnH9B55tAqUDVJ/YqONKOnSB0oA==
 
 "@types/babel__core@^7.1.0":
   version "7.1.10"
