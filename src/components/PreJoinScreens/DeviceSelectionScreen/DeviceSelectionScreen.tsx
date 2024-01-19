@@ -68,7 +68,7 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
   const disableButtons = isFetching || isAcquiringLocalTracks || isConnecting;
 
   const logLevelQueryParam: 'silent' | 'debug' | 'info' | 'error' =
-    (queryString.parse(window.location.search)?.logLevel as string) || ('debug' as any);
+    (queryString.parse(window.location.search)?.logLevel as string) || ('info' as any);
 
   const proxyUrl = queryString.parse(window.location.search)?.proxyUrl as string;
   if (proxyUrl) {
