@@ -42,6 +42,11 @@ const getCollectionInterval = () => {
   }
 };
 
+const getSplitChannels = () => {
+  const sc = queryString.parse(window.location.search)?.splitChannels as string;
+  return sc === 'true';
+};
+
 export default function App() {
   const roomState = useRoomState();
 
@@ -53,7 +58,7 @@ export default function App() {
   const height = useHeight();
 
   React.useEffect(() => {
-    watchRTC.init({ collectionInterval: getCollectionInterval() } as any);
+    watchRTC.init({ collectionInterval: getCollectionInterval(), splitChannels: getSplitChannels() } as any);
 
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('metric') && Boolean(urlParams.get('metric'))) {
