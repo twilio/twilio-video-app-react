@@ -17,6 +17,8 @@ import ToggleAudioButton from '../Buttons/ToggleAudioButton/ToggleAudioButton';
 import ToggleVideoButton from '../Buttons/ToggleVideoButton/ToggleVideoButton';
 import ToggleScreenShareButton from '../Buttons/ToogleScreenShareButton/ToggleScreenShareButton';
 import ToggleStatsButton from '../Buttons/ToggleStatsButton/ToggleStatsButton';
+import ConnectWSButton from '../Buttons/ConnectWSButton/ConnectWSButton';
+import DisconnectWSButton from '../Buttons/DisconnectWSButton/DisconnectWSButton';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -110,6 +112,8 @@ export default function MenuBar() {
                 <NailUpEndCallButton />
                 <NailUpJoinCallButton />
                 <ToggleStatsButton />
+                <ConnectWSButton />
+                <DisconnectWSButton />
               </Grid>
             </Grid>
           </Hidden>
