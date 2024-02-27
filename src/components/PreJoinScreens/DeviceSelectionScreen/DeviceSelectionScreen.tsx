@@ -195,25 +195,29 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
   }
 
   const runNetworkTest = async () => {
-    console.log(`SAMPLE:runNetworkTest Starting`, { watchRTC });
-    const params = getJsonFromUrl(window.location.search);
-    console.log(`muly:DeviceSelectionScreen:runNetworkTest`, { params });
-    const answer = await watchRTC.qualityrtc.run({
-      options: {
-        ...params,
-        // run: "Location",
-        // if not provided, will use default unpkg.com values, used for local development
-        // codeUrl: `http://localhost:8081/lib/main.bundle.js`,
-        // should not be passed, and will read from watchRTC server, passing this for development testing
-        // configUrl: `https://niceincontact.testrtc.com`,
-      },
-      progressCallback,
-    });
+    try {
+      console.log(`SAMPLE:runNetworkTest Starting`, { watchRTC });
+      const params = getJsonFromUrl(window.location.search);
+      console.log(`muly:DeviceSelectionScreen:runNetworkTest`, { params });
+      const answer = await watchRTC.qualityrtc.run({
+        options: {
+          ...params,
+          // run: "Location",
+          // if not provided, will use default unpkg.com values, used for local development
+          // codeUrl: `http://localhost:8081/lib/main.bundle.js`,
+          // should not be passed, and will read from watchRTC server, passing this for development testing
+          // configUrl: `https://niceincontact.testrtc.com`,
+        },
+        progressCallback,
+      });
 
-    // any time can call stop to stop the test
-    // watchRTC.qualityrtc.stop();
+      // any time can call stop to stop the test
+      // watchRTC.qualityrtc.stop();
 
-    console.log(`SAMPLE:runNetworkTest Completed`, { answer });
+      console.log(`SAMPLE:runNetworkTest Completed`, { answer });
+    } catch (error) {
+      console.log(`SAMPLE:runNetworkTest Failure`, { error });
+    }
   };
 
   return (
