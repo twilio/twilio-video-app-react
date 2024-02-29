@@ -1,5 +1,7 @@
 import React, { useCallback, useRef } from 'react';
 
+import watchRTC from '@testrtc/watchrtc-sdk';
+
 import Button from '@material-ui/core/Button';
 import VideoOffIcon from '../../../icons/VideoOffIcon';
 import VideoOnIcon from '../../../icons/VideoOnIcon';
@@ -16,7 +18,13 @@ export default function ToggleVideoButton(props: { disabled?: boolean; className
     if (Date.now() - lastClickTimeRef.current > 500) {
       lastClickTimeRef.current = Date.now();
       toggleVideoEnabled();
+
+      watchRTC.addEvent({
+        type: 'local',
+        name: isVideoEnabled ? 'Stop Video' : 'Start Video',
+      });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toggleVideoEnabled]);
 
   return (

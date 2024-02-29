@@ -10,8 +10,8 @@ exports.getTwilioToken = async parameters => {
   const { identity, roomName } = parameters;
   const token = new AccessToken(twilioAccountSid, twilioApiKeySID, twilioApiKeySecret, {
     ttl: MAX_ALLOWED_SESSION_DURATION,
+    identity: identity
   });
-  token.identity = identity;
   const videoGrant = new VideoGrant({ room: roomName });
   token.addGrant(videoGrant);
   console.log(`issued token for ${identity} in room ${roomName}`);

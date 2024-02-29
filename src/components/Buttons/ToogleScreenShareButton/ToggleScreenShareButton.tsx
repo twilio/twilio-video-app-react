@@ -1,6 +1,8 @@
 import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
+import watchRTC from '@testrtc/watchrtc-sdk';
+
 import Button from '@material-ui/core/Button';
 import ScreenShareIcon from '../../../icons/ScreenShareIcon';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -45,6 +47,11 @@ export default function ToggleScreenShareButton(props: { disabled?: boolean }) {
     tooltipMessage = SHARE_NOT_SUPPORTED_TEXT;
   }
 
+  const handleOnClick = () => {
+    toggleScreenShare();
+    watchRTC.addEvent({ type: 'local', name: 'Share Screen' });
+  };
+
   return (
     <Tooltip
       title={tooltipMessage}
@@ -57,7 +64,7 @@ export default function ToggleScreenShareButton(props: { disabled?: boolean }) {
           a tooltip when screen sharing is disabled */}
         <Button
           className={classes.button}
-          onClick={toggleScreenShare}
+          onClick={handleOnClick}
           disabled={isDisabled}
           startIcon={<ScreenShareIcon />}
           data-cy-share-screen

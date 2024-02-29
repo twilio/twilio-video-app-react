@@ -66,6 +66,15 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
   const { getToken, isFetching } = useAppState();
   const { connect, isAcquiringLocalTracks, isConnecting } = useVideoContext();
   const disableButtons = isFetching || isAcquiringLocalTracks || isConnecting;
+
+  const logLevelQueryParam: 'silent' | 'debug' | 'info' | 'error' =
+    (queryString.parse(window.location.search)?.logLevel as string) || ('info' as any);
+
+  const proxyUrl = queryString.parse(window.location.search)?.proxyUrl as string;
+  if (proxyUrl) {
+    console.log('proxyUrl', proxyUrl);
+  }
+
   const wrtcConfig = {
     rtcApiKey:
       (queryString.parse(window.location.search)?.apiKey as string) || (process.env.REACT_APP_RTC_API_KEY as string),
@@ -74,11 +83,12 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
     keys: {
       searchPeer: name,
     },
-    debug: true,
-    console: {
-      level: 'log',
-      override: true,
-    },
+    logLevel: logLevelQueryParam,
+    proxyUrl,
+    // console: {
+    //   level: 'log',
+    //   override: true,
+    // },
   };
 
   React.useEffect(() => {
@@ -103,20 +113,23 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
     getToken(name, roomName).then(token => connect(token));
 
     setTimeout(() => {
-      let rating = Math.floor(Math.random() * 5) as any;
+      let rating = (Math.floor(Math.random() * 5) + 1) as any;
       let message = `User rating is ${rating}`;
+      console.log('random rating', { rating, message });
 
       const ratingFromQuery = queryString.parse(window.location.search)?.rating;
       const ratingMessageFromQuery = queryString.parse(window.location.search)?.ratingMessage;
+      console.log('ratingFromQuery', { ratingFromQuery, ratingMessageFromQuery });
 
-      if (typeof ratingFromQuery === 'string') {
+      if (typeof ratingFromQuery === 'string' && Number(ratingFromQuery)) {
         rating = Number(ratingFromQuery);
       }
       if (typeof ratingMessageFromQuery === 'string') {
         message = decodeURI(ratingMessageFromQuery);
       }
+      console.log('rating', { rating, message });
       watchRTC.setUserRating(rating, message);
-    }, 5000);
+    }, 29000);
   };
 
   const getCustomKeys = () => {
@@ -144,13 +157,76 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
     }
   };
 
+  const progressCallback = (progress: number) => {
+    console.log(`SAMPLE:runNetworkTest progressCallback ${progress}%`, {});
+  };
+
+  function getJsonFromUrl(query: string) {
+    if (query.indexOf('?') === 0) {
+      query = query.substr(1);
+    }
+
+    const result: Record<string, string | string[]> = {};
+    query.split('&').forEach(function(part) {
+      if (!part) return;
+      part = part.split('+').join(' ');
+      const eq = part.indexOf('=');
+      let key = eq > -1 ? part.substr(0, eq) : part;
+      const val = eq > -1 ? decodeURIComponent(part.substr(eq + 1)) : '';
+      const from = key.indexOf('[');
+      if (from === -1) {
+        result[decodeURIComponent(key)] = val;
+      } else {
+        const to = key.indexOf(']', from);
+        const index = decodeURIComponent(key.substring(from + 1, to));
+        key = decodeURIComponent(key.substring(0, from));
+        if (!result[key]) {
+          result[key] = [];
+        }
+        if (!index) {
+          (result[key] as string[]).push(val);
+        } else {
+          // @ts-ignore
+          result[key][index] = val;
+        }
+      }
+    });
+    return result;
+  }
+
+  const runNetworkTest = async () => {
+    try {
+      console.log(`SAMPLE:runNetworkTest Starting`, { watchRTC });
+      const params = getJsonFromUrl(window.location.search);
+      console.log(`muly:DeviceSelectionScreen:runNetworkTest`, { params });
+      const answer = await watchRTC.qualityrtc.run({
+        options: {
+          ...params,
+          // run: "Location",
+          // if not provided, will use default unpkg.com values, used for local development
+          // codeUrl: `http://localhost:8081/lib/main.bundle.js`,
+          // should not be passed, and will read from watchRTC server, passing this for development testing
+          // configUrl: `https://niceincontact.testrtc.com`,
+        },
+        progressCallback,
+      });
+
+      // any time can call stop to stop the test
+      // watchRTC.qualityrtc.stop();
+
+      console.log(`SAMPLE:runNetworkTest Completed`, { answer });
+    } catch (error) {
+      console.log(`SAMPLE:runNetworkTest Failure`, { error });
+    }
+  };
+
   return (
     <>
       <Typography variant="h5" className={classes.gutterBottom}>
         Join {roomName}
       </Typography>
 
-      <Grid container justify="center">
+      <Grid container justifyContent="center">
         <Grid item md={7} sm={12} xs={12}>
           <div className={classes.localPreviewContainer}>
             <LocalVideoPreview identity={name} />
@@ -161,10 +237,19 @@ export default function DeviceSelectionScreen({ name, roomName, setStep }: Devic
               <ToggleVideoButton className={classes.mobileButton} disabled={disableButtons} />
             </Hidden>
             <SettingsMenu mobileButtonClass={classes.mobileButton} />
+            <Button
+              onClick={() => runNetworkTest()}
+              style={{ marginTop: '2em' }}
+              variant="contained"
+              color="primary"
+              data-cy-join-now
+            >
+              QRTC Test
+            </Button>
           </div>
         </Grid>
         <Grid item md={5} sm={12} xs={12}>
-          <Grid container direction="column" justify="space-between" style={{ height: '100%' }}>
+          <Grid container direction="column" justifyContent="space-between" style={{ height: '100%' }}>
             <div>
               <Hidden smDown>
                 <ToggleAudioButton className={classes.deviceButton} disabled={disableButtons} />
