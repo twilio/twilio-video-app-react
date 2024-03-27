@@ -1,3 +1,10 @@
+## 0.10.3
+
+### Changes
+
+-`@twilio/video-processors` has been upgraded to 2.1.0. This release fixes a bug where enabling virtual or blur background sometimes degraded local video, especially on low-powered Intel graphics cards.
+- `twilio-video` has been upgraded to 2.28.1.
+
 ## 0.10.2
 
 ### Changes
