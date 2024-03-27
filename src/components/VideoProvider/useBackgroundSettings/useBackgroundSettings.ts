@@ -202,11 +202,11 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
         return;
       }
 
-      // Switch to 640x480 dimensions on desktop Chrome or browsers that
-      // do not support WebAssembly SIMD to achieve optimum performance.
+      // Switch to 640x480 dimensions on browsers that do not support
+      // WebAssembly SIMD to achieve optimum performance.
       const processor = blurProcessor || virtualBackgroundProcessor;
       // @ts-ignore
-      if (!processor._isSimdEnabled || isDesktopChrome) {
+      if (!processor._isSimdEnabled) {
         await setCaptureConstraints();
       }
 
