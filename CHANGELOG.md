@@ -1,3 +1,7 @@
+## 0.10.4
+
+- The gcloud node runtime has been upgraded to v20.
+
 ## 0.10.3
 
 ### Changes
