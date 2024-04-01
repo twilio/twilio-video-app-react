@@ -1,6 +1,7 @@
 import { DEFAULT_VIDEO_CONSTRAINTS, SELECTED_AUDIO_INPUT_KEY, SELECTED_VIDEO_INPUT_KEY } from '../../../constants';
 import { getDeviceInfo, isPermissionDenied } from '../../../utils';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import Video, {
   LocalVideoTrack,
   LocalAudioTrack,
@@ -14,11 +15,25 @@ const noiseCancellationOptions: NoiseCancellationOptions = {
   vendor: 'krisp',
 };
 
+function useSearchParams() {
+  const { search } = useLocation();
+  return { searchParams: useMemo(() => new URLSearchParams(search), [search]) };
+}
+
 export default function useLocalTracks() {
   const { setIsKrispEnabled, setIsKrispInstalled } = useAppState();
+  const { searchParams } = useSearchParams();
   const [audioTrack, setAudioTrack] = useState<LocalAudioTrack>();
   const [videoTrack, setVideoTrack] = useState<LocalVideoTrack>();
   const [isAcquiringLocalTracks, setIsAcquiringLocalTracks] = useState(false);
+
+  const videoConstraints = {
+    frameRate: Number(
+      searchParams.get('videoFrameRate') || `${(DEFAULT_VIDEO_CONSTRAINTS as MediaTrackConstraints).frameRate}`
+    ),
+    height: Number(searchParams.get('videoHeight') || `${(DEFAULT_VIDEO_CONSTRAINTS as MediaTrackConstraints).height}`),
+    width: Number(searchParams.get('videoWidth') || `${(DEFAULT_VIDEO_CONSTRAINTS as MediaTrackConstraints).width}`),
+  };
 
   const getLocalVideoTrack = useCallback(async () => {
     const selectedVideoDeviceId = window.localStorage.getItem(SELECTED_VIDEO_INPUT_KEY);
@@ -30,7 +45,7 @@ export default function useLocalTracks() {
     );
 
     const options: CreateLocalTrackOptions = {
-      ...(DEFAULT_VIDEO_CONSTRAINTS as {}),
+      ...(videoConstraints as {}),
       name: `camera-${Date.now()}`,
       ...(hasSelectedVideoDevice && { deviceId: { exact: selectedVideoDeviceId! } }),
     };
@@ -83,7 +98,7 @@ export default function useLocalTracks() {
 
     const localTrackConstraints = {
       video: shouldAcquireVideo && {
-        ...(DEFAULT_VIDEO_CONSTRAINTS as {}),
+        ...(videoConstraints as {}),
         name: `camera-${Date.now()}`,
         ...(hasSelectedVideoDevice && { deviceId: { exact: selectedVideoDeviceId! } }),
       },
