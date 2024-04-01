@@ -45,6 +45,7 @@ import SanFrancisco from '../../../images/SanFrancisco.jpg';
 import SanFranciscoThumb from '../../../images/thumb/SanFrancisco.jpg';
 import { Thumbnail } from '../../BackgroundSelectionDialog/BackgroundThumbnail/BackgroundThumbnail';
 import { useLocalStorageState } from '../../../hooks/useLocalStorageState/useLocalStorageState';
+import useSearchParams from '../../../hooks/useSearchParams/useSearchParams';
 
 export interface BackgroundSettings {
   type: Thumbnail;
@@ -141,6 +142,8 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
     { type: 'none', index: 0 }
   );
 
+  const { searchParams } = useSearchParams();
+
   const setCaptureConstraints = useCallback(async () => {
     const { mediaStreamTrack, processor } = videoTrack ?? {};
     const { type } = backgroundSettings;
@@ -183,7 +186,7 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
           assetsPath: virtualBackgroundAssets,
           // Disable debounce only on desktop Chrome as other browsers either
           // do not support WebAssembly SIMD or they degrade performance.
-          debounce: !isDesktopChrome,
+          debounce: JSON.parse(searchParams.get('videoProcessorDebounce') || `${!isDesktopChrome}`),
         });
         await blurProcessor.loadModel();
       }
@@ -193,7 +196,7 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
           backgroundImage: await getImage(0),
           // Disable debounce only on desktop Chrome as other browsers either
           // do not support WebAssembly SIMD or they degrade performance.
-          debounce: !isDesktopChrome,
+          debounce: JSON.parse(searchParams.get('videoProcessorDebounce') || `${!isDesktopChrome}`),
           fitType: ImageFit.Cover,
         });
         await virtualBackgroundProcessor.loadModel();

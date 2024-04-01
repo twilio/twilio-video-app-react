@@ -1,7 +1,6 @@
 import { DEFAULT_VIDEO_CONSTRAINTS, SELECTED_AUDIO_INPUT_KEY, SELECTED_VIDEO_INPUT_KEY } from '../../../constants';
 import { getDeviceInfo, isPermissionDenied } from '../../../utils';
-import { useCallback, useMemo, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useCallback, useState } from 'react';
 import Video, {
   LocalVideoTrack,
   LocalAudioTrack,
@@ -9,16 +8,12 @@ import Video, {
   NoiseCancellationOptions,
 } from 'twilio-video';
 import { useAppState } from '../../../state';
+import useSearchParams from '../../../hooks/useSearchParams/useSearchParams';
 
 const noiseCancellationOptions: NoiseCancellationOptions = {
   sdkAssetsPath: '/noisecancellation',
   vendor: 'krisp',
 };
-
-function useSearchParams() {
-  const { search } = useLocation();
-  return { searchParams: useMemo(() => new URLSearchParams(search), [search]) };
-}
 
 export default function useLocalTracks() {
   const { setIsKrispEnabled, setIsKrispInstalled } = useAppState();
