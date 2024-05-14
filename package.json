@@ -32,7 +32,7 @@
     "fscreen": "^1.0.2",
     "husky": "^3.1.0",
     "linkify-it": "^3.0.2",
-    "lint-staged": "^9.5.0",
+    "lint-staged": "^10.0.0",
     "lodash.throttle": "^4.1.1",
     "nanoid": "^3.1.31",
     "prettier": "^1.19.1",
