@@ -20,11 +20,11 @@ export default {
     unpublishAllAudio: {
       control: { type: 'boolean' },
     },
-    unpublishAllVideo: {
-      control: { type: 'boolean' },
+    unpublishVideo: {
+      control: { type: 'text' },
     },
-    switchOffAllVideo: {
-      control: { type: 'boolean' },
+    switchOffVideo: {
+      control: { type: 'text' },
     },
   },
 };
@@ -38,6 +38,6 @@ Prod.args = {
   presentationParticipant: null,
   disableAllAudio: false,
   unpublishAllAudio: false,
-  unpublishAllVideo: false,
-  switchOffAllVideo: false,
+  unpublishVideo: null,
+  switchOffVideo: null,
 };
