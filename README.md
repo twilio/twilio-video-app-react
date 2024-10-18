@@ -129,6 +129,7 @@ The Video app has the following features:
 - [x] [Network quality](https://www.twilio.com/docs/video/using-network-quality-api) indicator
 - [x] Defines participant bandwidth usage with the [Bandwidth Profile API](https://www.twilio.com/docs/video/tutorials/using-bandwidth-profile-api)
 - [x] Start and stop recording with the [Recording Rules API](https://www.twilio.com/docs/video/api/recording-rules)
+- [x] Virtual backgrounds with [Video Processor library](https://www.twilio.com/docs/video/video-processors)
 
 ## Browser Support
 
