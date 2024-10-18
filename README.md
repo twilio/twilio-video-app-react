@@ -2,10 +2,6 @@
 
 [![CircleCI](https://circleci.com/gh/twilio/twilio-video-app-react.svg?style=svg)](https://circleci.com/gh/twilio/twilio-video-app-react)
 
-> [!WARNING]  
-> We are no longer allowing new customers to onboard to Twilio Video. Effective **December 5th, 2026**, Twilio Video will End of Life (EOL) and will cease to function for all customers. Additional information on this EOL is available in our Help Center [here](https://help.twilio.com/articles/24158233644443-Programmable-Video-End-of-Life-Extension).
-
-
 ## What is it
 
 This application demonstrates a multi-party video application built with [Twilio's Programmable Video JS SDK](https://github.com/twilio/twilio-video.js), [Twilio's Conversations JS SDK](https://www.npmjs.com/package/@twilio/conversations), and [Create React App](https://github.com/facebook/create-react-app).
