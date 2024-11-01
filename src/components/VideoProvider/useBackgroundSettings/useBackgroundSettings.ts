@@ -108,7 +108,6 @@ const rawImagePaths = [
   SanFrancisco,
 ];
 
-const isDesktopChrome = /Chrome/.test(navigator.userAgent);
 let imageElements = new Map();
 
 const getImage = (index: number): Promise<HTMLImageElement> => {
@@ -164,8 +163,8 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
       }
       removeProcessor();
       videoTrack.addProcessor(processor, {
-        inputFrameBufferType: 'video',
-        outputFrameBufferContextType: 'webgl2',
+        inputFrameBufferType: 'videoframe',
+        outputFrameBufferContextType: 'bitmaprenderer',
       });
     },
     [videoTrack, removeProcessor]
@@ -181,9 +180,6 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
       if (!blurProcessor) {
         blurProcessor = new GaussianBlurBackgroundProcessor({
           assetsPath: virtualBackgroundAssets,
-          // Disable debounce only on desktop Chrome as other browsers either
-          // do not support WebAssembly SIMD or they degrade performance.
-          debounce: !isDesktopChrome,
         });
         await blurProcessor.loadModel();
       }
@@ -191,9 +187,6 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
         virtualBackgroundProcessor = new VirtualBackgroundProcessor({
           assetsPath: virtualBackgroundAssets,
           backgroundImage: await getImage(0),
-          // Disable debounce only on desktop Chrome as other browsers either
-          // do not support WebAssembly SIMD or they degrade performance.
-          debounce: !isDesktopChrome,
           fitType: ImageFit.Cover,
         });
         await virtualBackgroundProcessor.loadModel();
@@ -203,10 +196,9 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
       }
 
       // Switch to 640x480 dimensions on browsers that do not support
-      // WebAssembly SIMD to achieve optimum performance.
-      const processor = blurProcessor || virtualBackgroundProcessor;
+      // the Insertable Streams API.
       // @ts-ignore
-      if (!processor._isSimdEnabled) {
+      if (typeof MediaStreamTrackGenerator !== 'function' && typeof MediaStreamTrackProcessor !== 'function') {
         await setCaptureConstraints();
       }
 
