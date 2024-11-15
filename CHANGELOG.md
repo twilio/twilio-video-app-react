@@ -2,7 +2,8 @@
 
 ### Dependency Upgrade
 
-- `puppeteer` has been upgraded from ^5.31.1 to ^9.1.1.
+- `puppeteer` has been upgraded from ^5.31.1 to ^22.8.2.
+- `cypress` has been upgraded from ^6.8.0 to ^9.7.0.
 
 ## 0.10.4
 
