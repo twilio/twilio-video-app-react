@@ -1,3 +1,9 @@
+## 0.10.5
+
+### Dependency Upgrade
+
+- `puppeteer` has been upgraded from ^5.31.1 to ^9.1.1.
+
 ## 0.10.4
 
 - The gcloud node runtime has been upgraded to v20.
