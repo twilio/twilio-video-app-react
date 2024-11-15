@@ -62,7 +62,7 @@
     "@testing-library/react-hooks": "^3.2.1",
     "@types/enzyme": "^3.10.4",
     "@types/enzyme-adapter-react-16": "^1.0.5",
-    "cypress": "^7.7.0",
+    "cypress": "^8.7.0",
     "cypress-multi-reporters": "^1.4.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
