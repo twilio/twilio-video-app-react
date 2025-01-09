@@ -108,8 +108,8 @@ describe('The useBackgroundSettings hook ', () => {
         name: 'GaussianBlurBackgroundProcessor',
       },
       {
-        inputFrameBufferType: 'video',
-        outputFrameBufferContextType: 'webgl2',
+        inputFrameBufferType: 'videoframe',
+        outputFrameBufferContextType: 'bitmaprenderer',
       }
     );
   });
@@ -140,8 +140,8 @@ describe('The useBackgroundSettings hook ', () => {
         name: 'VirtualBackgroundProcessor',
       },
       {
-        inputFrameBufferType: 'video',
-        outputFrameBufferContextType: 'webgl2',
+        inputFrameBufferType: 'videoframe',
+        outputFrameBufferContextType: 'bitmaprenderer',
       }
     );
   });
@@ -183,8 +183,8 @@ describe('The useBackgroundSettings hook ', () => {
           name: 'GaussianBlurBackgroundProcessor',
         },
         {
-          inputFrameBufferType: 'video',
-          outputFrameBufferContextType: 'webgl2',
+          inputFrameBufferType: 'videoframe',
+          outputFrameBufferContextType: 'bitmaprenderer',
         }
       );
       expect(window.localStorage.getItem(SELECTED_BACKGROUND_SETTINGS_KEY)).toEqual(JSON.stringify(imgSettings));
@@ -202,8 +202,8 @@ describe('The useBackgroundSettings hook ', () => {
           name: 'VirtualBackgroundProcessor',
         },
         {
-          inputFrameBufferType: 'video',
-          outputFrameBufferContextType: 'webgl2',
+          inputFrameBufferType: 'videoframe',
+          outputFrameBufferContextType: 'bitmaprenderer',
         }
       );
       expect(window.localStorage.getItem(SELECTED_BACKGROUND_SETTINGS_KEY)).toEqual(JSON.stringify(blurSettings));
