@@ -10,6 +10,9 @@
 - `firebase` has been upgraded from ^9.9.0 to ^11.6.0.
 - `twilio` has been upgraded from ^3.63.1 to ^5.5.2.
 - `@twilio/video-processors` has been upgraded from ^3.0.0-beta.1 to ^3.0.0.
+- `ts-jest` has been upgraded from ^27.0.1 to ^29.3.2.
+- Added `jest` to the devDependencies section.
+- Moved dependencies to the devDependencies section.
 
 ## 0.10.6
 
