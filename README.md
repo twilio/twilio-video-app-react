@@ -18,8 +18,8 @@ This application demonstrates a multi-party video application built with [Twilio
 
 You must have the following installed:
 
-- [Node.js v16+](https://nodejs.org/en/download/)
-- NPM v8+ (comes installed with newer Node versions)
+- [Node.js v20+](https://nodejs.org/en/download/)
+- NPM v10+ (comes installed with newer Node versions)
 
 You can check which versions of Node.js and NPM you currently have installed with the following commands:
 
@@ -224,7 +224,7 @@ Since the Twilio Video SDK manages the `room` object state, it can be used as th
 
 [React hooks](https://reactjs.org/docs/hooks-intro.html) can be used to subscribe to events and trigger component re-renders. This application frequently uses the `useState` and `useEffect` hooks to subscribe to changes in room state. Here is a simple example:
 
-```
+```javascript
 import { useEffect, useState } from 'react';
 
 export default function useDominantSpeaker(room) {

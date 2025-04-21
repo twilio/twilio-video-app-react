@@ -1,3 +1,16 @@
+## 0.11.0
+
+### Changes
+
+- Set minimum Node.js version to 20.x
+
+### Dependency Upgrade
+
+- `firebase-admin` has been upgraded from ^11.2.1 to ^13.2.0.
+- `firebase` has been upgraded from ^9.9.0 to ^11.6.0.
+- `twilio` has been upgraded from ^3.63.1 to ^5.5.2.
+- `@twilio/video-processors` has been upgraded from ^3.0.0-beta.1 to ^3.0.0.
+
 ## 0.10.6
 
 ### Changes

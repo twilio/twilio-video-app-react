@@ -1,6 +1,6 @@
 {
   "name": "twilio-video-app-react",
-  "version": "0.10.6",
+  "version": "0.11.0",
   "private": true,
   "license": "Apache-2.0",
   "dependencies": {
@@ -9,7 +9,7 @@
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@twilio-labs/plugin-rtc": "^0.8.4",
     "@twilio/conversations": "^2.1.0",
-    "@twilio/video-processors": "^3.0.0-beta.1",
+    "@twilio/video-processors": "^3.0.0",
     "@twilio/video-room-monitor": "^1.0.1",
     "@types/d3-timer": "^1.0.9",
     "@types/dotenv": "^8.2.0",
@@ -27,7 +27,7 @@
     "cross-env": "^7.0.2",
     "d3-timer": "^1.0.10",
     "express": "^4.17.1",
-    "firebase": "^9.9.0",
+    "firebase": "^11.6.0",
     "firebase-admin": "^13.2.0",
     "fscreen": "^1.0.2",
     "husky": "^3.1.0",
@@ -44,7 +44,7 @@
     "strip-color": "^0.1.0",
     "swiper": "^8.1.5",
     "ts-node": "^9.1.1",
-    "twilio": "^3.63.1",
+    "twilio": "^5.5.2",
     "twilio-video": "^2.29.0",
     "typescript": "^4.6.2"
   },
@@ -103,6 +103,9 @@
     "deploy:twilio-cli": "cross-env REACT_APP_SET_AUTH=passcode npm run build && twilio rtc:apps:video:deploy --authentication=passcode --app-directory ./build",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   },
   "eslintConfig": {
     "extends": "react-app",
