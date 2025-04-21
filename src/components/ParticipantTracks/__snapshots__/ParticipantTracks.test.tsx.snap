@@ -6,7 +6,7 @@ exports[`the ParticipantTracks component should render an array of publications 
     key="video"
     participant="mockParticipant"
     publication={
-      Object {
+      {
         "kind": "video",
         "trackName": "",
         "trackSid": 0,
@@ -17,7 +17,7 @@ exports[`the ParticipantTracks component should render an array of publications 
     key="audio"
     participant="mockParticipant"
     publication={
-      Object {
+      {
         "kind": "audio",
         "trackName": "",
         "trackSid": 1,

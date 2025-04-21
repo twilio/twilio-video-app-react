@@ -20,7 +20,7 @@ exports[`the ParticipantList component should correctly render Participant compo
         key="0"
         onClick={[Function]}
         participant={
-          Object {
+          {
             "sid": 0,
           }
         }
@@ -31,7 +31,7 @@ exports[`the ParticipantList component should correctly render Participant compo
         key="1"
         onClick={[Function]}
         participant={
-          Object {
+          {
             "sid": 1,
           }
         }
@@ -42,7 +42,7 @@ exports[`the ParticipantList component should correctly render Participant compo
         key="2"
         onClick={[Function]}
         participant={
-          Object {
+          {
             "sid": 2,
           }
         }

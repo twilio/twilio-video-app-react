@@ -45,16 +45,16 @@ describe('the getDeviceInfo function', () => {
     navigator.mediaDevices.enumerateDevices = () => Promise.resolve(mockDevices);
     const result = await getDeviceInfo();
     expect(result).toMatchInlineSnapshot(`
-      Object {
-        "audioInputDevices": Array [
-          Object {
+      {
+        "audioInputDevices": [
+          {
             "deviceId": 1,
             "kind": "audioinput",
             "label": "1",
           },
         ],
-        "audioOutputDevices": Array [
-          Object {
+        "audioOutputDevices": [
+          {
             "deviceId": 3,
             "kind": "audiooutput",
             "label": "3",
@@ -62,8 +62,8 @@ describe('the getDeviceInfo function', () => {
         ],
         "hasAudioInputDevices": true,
         "hasVideoInputDevices": true,
-        "videoInputDevices": Array [
-          Object {
+        "videoInputDevices": [
+          {
             "deviceId": 2,
             "kind": "videoinput",
             "label": "2",

@@ -45,7 +45,7 @@ exports[`the GalleryView component should render correctly 1`] = `
     <div
       key="0"
       style={
-        Object {
+        {
           "height": "405px",
           "margin": 3,
           "width": "720px",
@@ -56,7 +56,7 @@ exports[`the GalleryView component should render correctly 1`] = `
         isDominantSpeaker={false}
         isLocalParticipant={true}
         participant={
-          Object {
+          {
             "identity": "test-local-participant",
             "sid": 0,
           }
@@ -66,7 +66,7 @@ exports[`the GalleryView component should render correctly 1`] = `
     <div
       key="1"
       style={
-        Object {
+        {
           "height": "405px",
           "margin": 3,
           "width": "720px",
@@ -77,7 +77,7 @@ exports[`the GalleryView component should render correctly 1`] = `
         isDominantSpeaker={false}
         isLocalParticipant={false}
         participant={
-          Object {
+          {
             "identity": "test-participant-1",
             "sid": 1,
           }
@@ -87,7 +87,7 @@ exports[`the GalleryView component should render correctly 1`] = `
     <div
       key="2"
       style={
-        Object {
+        {
           "height": "405px",
           "margin": 3,
           "width": "720px",
@@ -98,7 +98,7 @@ exports[`the GalleryView component should render correctly 1`] = `
         isDominantSpeaker={false}
         isLocalParticipant={false}
         participant={
-          Object {
+          {
             "identity": "test-participant-2",
             "sid": 2,
           }
@@ -108,7 +108,7 @@ exports[`the GalleryView component should render correctly 1`] = `
     <div
       key="3"
       style={
-        Object {
+        {
           "height": "405px",
           "margin": 3,
           "width": "720px",
@@ -119,7 +119,7 @@ exports[`the GalleryView component should render correctly 1`] = `
         isDominantSpeaker={false}
         isLocalParticipant={false}
         participant={
-          Object {
+          {
             "identity": "test-participant-3",
             "sid": 3,
           }
@@ -129,7 +129,7 @@ exports[`the GalleryView component should render correctly 1`] = `
     <div
       key="4"
       style={
-        Object {
+        {
           "height": "405px",
           "margin": 3,
           "width": "720px",
@@ -140,7 +140,7 @@ exports[`the GalleryView component should render correctly 1`] = `
         isDominantSpeaker={false}
         isLocalParticipant={false}
         participant={
-          Object {
+          {
             "identity": "test-participant-4",
             "sid": 4,
           }
