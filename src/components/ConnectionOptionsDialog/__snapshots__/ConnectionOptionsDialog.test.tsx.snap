@@ -3,7 +3,7 @@
 exports[`the ConnectionOptionsDialog component when connected to a room should render correctly 1`] = `
 <WithStyles(ForwardRef(Dialog))
   classes={
-    Object {
+    {
       "paper": "makeStyles-paper-3",
     }
   }
@@ -257,7 +257,7 @@ exports[`the ConnectionOptionsDialog component when connected to a room should r
 exports[`the ConnectionOptionsDialog component when not connected to a room should render correctly 1`] = `
 <WithStyles(ForwardRef(Dialog))
   classes={
-    Object {
+    {
       "paper": "makeStyles-paper-3",
     }
   }
