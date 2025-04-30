@@ -1,3 +1,9 @@
+## 0.11.1
+
+### Bugfixes
+
+- Adjusts the implicit `dotenv` dependency and moves it from `devDependencies` to `dependencies`.
+
 ## 0.11.0
 
 ### Changes
