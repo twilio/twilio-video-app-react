@@ -1,3 +1,9 @@
+## 0.11.2
+
+### Changes
+
+- Change default room type to p2p.
+
 ## 0.11.1
 
 ### Bugfixes

@@ -20,7 +20,7 @@ const context: ServerlessContext = {
   ACCOUNT_SID: TWILIO_ACCOUNT_SID,
   TWILIO_API_KEY_SID,
   TWILIO_API_KEY_SECRET,
-  ROOM_TYPE: 'group',
+  ROOM_TYPE: 'peer-to-peer',
   CONVERSATIONS_SERVICE_SID: TWILIO_CONVERSATIONS_SERVICE_SID,
   getTwilioClient: () => twilioClient,
 };
