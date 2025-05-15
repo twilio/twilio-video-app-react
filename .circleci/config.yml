@@ -27,17 +27,17 @@ jobs:
             - ~/.npm
             - ~/.cache
 
-      # - run:
-      #     name: 'Jest Unit Tests'
-      #     command: npm run test:ci
-      #     environment:
-      #       JEST_JUNIT_OUTPUT_DIR: 'test-reports/jest'
-      #       JEST_JUNIT_OUTPUT_NAME: 'results.xml'
-      #       JEST_JUNIT_CLASSNAME: '{classname}'
-      #       JEST_JUNIT_TITLE: '{title}'
+      - run:
+          name: 'Jest Unit Tests'
+          command: npm run test:ci
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: 'test-reports/jest'
+            JEST_JUNIT_OUTPUT_NAME: 'results.xml'
+            JEST_JUNIT_CLASSNAME: '{classname}'
+            JEST_JUNIT_TITLE: '{title}'
 
-      # - store_artifacts:
-      #     path: coverage
+      - store_artifacts:
+          path: coverage
 
       - run:
           name: 'Eslint'
@@ -59,13 +59,13 @@ jobs:
             echo TWILIO_API_KEY_SECRET=$TWILIO_API_SECRET >> .env
             echo TWILIO_CONVERSATIONS_SERVICE_SID=$TWILIO_CONVERSATIONS_SERVICE_SID >> .env
 
-      # - run: npm run cypress:ci
+      - run: npm run cypress:ci
 
-      # - store_artifacts:
-      #     path: cypress/screenshots
+      - store_artifacts:
+          path: cypress/screenshots
 
-      # - store_test_results:
-      #     path: test-reports
+      - store_test_results:
+          path: test-reports
 
       # Rebuild app with firebase auth enabled
       - run:

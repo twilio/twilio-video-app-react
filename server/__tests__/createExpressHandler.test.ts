@@ -35,7 +35,7 @@ describe('the createExpressHandler function', () => {
       expect(context).toEqual({
         ACCOUNT_SID: 'mockAccountSid',
         CONVERSATIONS_SERVICE_SID: 'mockConversationsServiceSid',
-        ROOM_TYPE: 'peer-to-peer',
+        ROOM_TYPE: 'group',
         TWILIO_API_KEY_SECRET: 'mockApiKeySecret',
         TWILIO_API_KEY_SID: 'mockApiKeySid',
         getTwilioClient: expect.any(Function),
