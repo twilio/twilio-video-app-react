@@ -1,3 +1,9 @@
+## 0.11.3
+
+### Changes
+
+- Change default room type to group rooms.
+
 ## 0.11.2
 
 ### Changes
