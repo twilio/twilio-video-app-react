@@ -31,6 +31,10 @@ export default function useConnectionOptions() {
 
     //@ts-ignore - Internal use only. This property is not exposed in type definitions.
     environment: process.env.REACT_APP_TWILIO_ENVIRONMENT,
+
+    // Enable Twilio Real-Time Transcriptions
+    //@ts-ignore - Internal use only. This property is not exposed in type definitions.
+    receiveTranscriptions: true,
   };
 
   // For mobile browsers, limit the maximum incoming video bitrate to 2.5 Mbps.
