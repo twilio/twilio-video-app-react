@@ -15,10 +15,16 @@ import { Room } from 'twilio-video';
  *   Pass receiveTranscriptions: true in ConnectOptions.
  */
 
+const STABILITY_THRESHOLD = 0.9;
+
 export type TranscriptionEvent = {
   participant: string; // display name or SID
   transcription: string; // text content
   partial_results?: boolean; // true if partial
+  stability?: number; // present on partials; not present on finals
+  sequence_number?: number;
+  track?: string;
+  timestamp?: string;
   absolute_time?: string; // ISO 8601
   language_code?: string;
 };
@@ -67,6 +73,13 @@ export function useTranscriptions(room: Room | null): UseTranscriptionsResult {
     const time = event.absolute_time ? Date.parse(event.absolute_time) : Date.now();
 
     if (event.partial_results) {
+      // Drop low-stability partials: only show partials with stability >= threshold.
+      // Finals are always committed regardless of stability.
+      const stab = typeof event.stability === 'number' ? event.stability : 0;
+      if (stab < STABILITY_THRESHOLD) {
+        // Ignore low-stability partials; keep showing the last acceptable partial
+        return;
+      }
       // Store/update live partial for participant
       const liveLine: TranscriptionLine = { text, participant, time };
       liveRef.current[participant] = liveLine;
