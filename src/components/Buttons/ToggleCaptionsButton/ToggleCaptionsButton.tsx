@@ -4,11 +4,17 @@ import Tooltip from '@material-ui/core/Tooltip';
 import ClosedCaptionIcon from '@material-ui/icons/ClosedCaption';
 import ClosedCaptionOutlinedIcon from '@material-ui/icons/ClosedCaptionOutlined';
 
-type Props = { disabled?: boolean; className?: string };
+type Props = {
+  disabled?: boolean;
+  className?: string;
+  showCaptions: boolean;
+  onToggleCaptions: () => void;
+  tooltip?: string;
+};
 
-export default function ToggleCaptionsButton({ disabled, className }: Props) {
-  const [enabled, setEnabled] = React.useState(false);
-  const title = enabled ? 'Hide captions' : 'Show captions';
+export default function ToggleCaptionsButton({ disabled, className, showCaptions, onToggleCaptions, tooltip }: Props) {
+  const enabled = showCaptions;
+  const title = tooltip ?? (enabled ? '' : 'Requires Real-Time Transcriptions to be enabled in the Twilio Console');
   const Icon = enabled ? ClosedCaptionIcon : ClosedCaptionOutlinedIcon;
 
   return (
@@ -17,7 +23,7 @@ export default function ToggleCaptionsButton({ disabled, className }: Props) {
       <span>
         <Button
           className={className}
-          onClick={() => setEnabled(v => !v)}
+          onClick={onToggleCaptions}
           disabled={disabled}
           startIcon={<Icon />}
           data-cy="toggle-captions"

@@ -15,8 +15,6 @@ import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/use
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import { useTranscriptions } from '../../hooks/useTranscriptions';
 import TranscriptionsOverlay from '../TranscriptionsOverlay';
-import { Tooltip, IconButton } from '@material-ui/core';
-import ClosedCaptionIcon from '@material-ui/icons/ClosedCaption';
 
 const useStyles = makeStyles((theme: Theme) => {
   const totalMobileSidebarHeight = `${theme.sidebarMobileHeight +
@@ -74,7 +72,11 @@ export function useSetSpeakerViewOnScreenShare(
   }, [screenShareParticipant, setIsGalleryViewActive, room]);
 }
 
-export default function Room() {
+type RoomProps = {
+  showCaptions?: boolean;
+};
+
+export default function Room({ showCaptions = false }: RoomProps) {
   const classes = useStyles();
   const { isChatWindowOpen } = useChatContext();
   const { isBackgroundSelectionOpen, room } = useVideoContext();
@@ -82,30 +84,23 @@ export default function Room() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const screenShareParticipant = useScreenShareParticipant();
-  const { lines, live, clear } = useTranscriptions(room);
 
-  const [showCaptions, setShowCaptions] = React.useState(true);
-
-  // Hide overlay when not connected
+  // Connection/captions visibility
   const isConnected = !!room && room.state === 'connected';
-  const captionsVisible = showCaptions && isConnected;
+  const captionsVisible = !!showCaptions && isConnected;
 
-  React.useEffect(() => {
+  const { lines, live, clear } = useTranscriptions(room, { enabled: captionsVisible });
+
+  useEffect(() => {
     if (!room) {
       clear();
       return;
     }
-    const handleDisconnect = () => {
-      clear();
-      setShowCaptions(false); // Hide overlay when disconnected
-    };
+    const handleDisconnect = () => clear();
     room.on('disconnected', handleDisconnect);
-
-    // Remove transcription listener and cleanup on unmount/disconnect
     return () => {
       room.off('disconnected', handleDisconnect);
       clear();
-      setShowCaptions(false);
     };
   }, [room, clear]);
 
@@ -119,37 +114,6 @@ export default function Room() {
         [classes.rightDrawerOpen]: isChatWindowOpen || isBackgroundSelectionOpen,
       })}
     >
-      {/* Captions toggle control in header */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 12,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 1100,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 8,
-        }}
-      >
-        <Tooltip title="Captions require Real-Time Transcriptions to be enabled on the Room" arrow>
-          <IconButton
-            aria-label="Toggle captions"
-            onClick={() => setShowCaptions(v => !v)}
-            color={showCaptions ? 'primary' : 'default'}
-            style={{
-              background: showCaptions ? '#222' : '#eee',
-              color: showCaptions ? '#fff' : '#444',
-              borderRadius: 8,
-              transition: 'background 0.2s',
-            }}
-          >
-            <ClosedCaptionIcon />
-          </IconButton>
-        </Tooltip>
-        <span style={{ color: '#fff', fontWeight: 500, fontSize: '1rem' }}>Captions</span>
-      </div>
-
       {/* 
         This ParticipantAudioTracks component will render the audio track for all participants in the room.
         It is in a separate component so that the audio tracks will always be rendered, and that they will never be 

@@ -28,6 +28,11 @@ mockUseVideoContext.mockImplementation(() => ({
 mockUseRoomState.mockImplementation(() => 'connected');
 mockUseParticipants.mockImplementation(() => ['mockRemoteParticpant', 'mockRemoteParticpant2']);
 
+const defaultProps = {
+  showCaptions: false,
+  onToggleCaptions: jest.fn(),
+};
+
 describe('the MenuBar component', () => {
   beforeEach(() => {
     //@ts-ignore
@@ -37,14 +42,14 @@ describe('the MenuBar component', () => {
 
   it('should disable toggle buttons while reconnecting to the room', () => {
     mockUseRoomState.mockImplementationOnce(() => 'reconnecting');
-    const wrapper = shallow(<MenuBar />);
+    const wrapper = shallow(<MenuBar {...defaultProps} />);
     expect(wrapper.find(ToggleAudioButton).prop('disabled')).toBe(true);
     expect(wrapper.find(ToggleVideoButton).prop('disabled')).toBe(true);
     expect(wrapper.find(ToggleScreenShareButton).prop('disabled')).toBe(true);
   });
 
   it('should enable toggle buttons while connected to the room', () => {
-    const wrapper = shallow(<MenuBar />);
+    const wrapper = shallow(<MenuBar {...defaultProps} />);
     expect(wrapper.find(ToggleAudioButton).prop('disabled')).toBe(false);
     expect(wrapper.find(ToggleVideoButton).prop('disabled')).toBe(false);
     expect(wrapper.find(ToggleScreenShareButton).prop('disabled')).toBe(false);
@@ -56,7 +61,7 @@ describe('the MenuBar component', () => {
       toggleScreenShare: () => {},
       room: { name: 'Test Room' },
     }));
-    const wrapper = shallow(<MenuBar />);
+    const wrapper = shallow(<MenuBar {...defaultProps} />);
     expect(wrapper.find(ToggleScreenShareButton).exists()).toBe(false);
     expect(
       wrapper
@@ -73,7 +78,7 @@ describe('the MenuBar component', () => {
       toggleScreenShare: () => {},
       room: { name: 'Test Room' },
     }));
-    const wrapper = shallow(<MenuBar />);
+    const wrapper = shallow(<MenuBar {...defaultProps} />);
     expect(wrapper.find(ToggleScreenShareButton).exists()).toBe(true);
   });
 
@@ -85,18 +90,18 @@ describe('the MenuBar component', () => {
     }));
     // @ts-ignore
     utils.isMobile = true;
-    const wrapper = shallow(<MenuBar />);
+    const wrapper = shallow(<MenuBar {...defaultProps} />);
     expect(wrapper.find(ToggleScreenShareButton).exists()).toBe(false);
   });
 
   it('should render the ToggleChatButton when REACT_APP_DISABLE_TWILIO_CONVERSATIONS is not true', () => {
-    const wrapper = shallow(<MenuBar />);
+    const wrapper = shallow(<MenuBar {...defaultProps} />);
     expect(wrapper.find(ToggleChatButton).exists()).toBe(true);
   });
 
   it('should hide the ToggleChatButton when REACT_APP_DISABLE_TWILIO_CONVERSATIONS is true', () => {
     process.env.REACT_APP_DISABLE_TWILIO_CONVERSATIONS = 'true';
-    const wrapper = shallow(<MenuBar />);
+    const wrapper = shallow(<MenuBar {...defaultProps} />);
     expect(wrapper.find(ToggleChatButton).exists()).toBe(false);
   });
 
@@ -107,7 +112,7 @@ describe('the MenuBar component', () => {
       toggleScreenShare: mockToggleScreenShare,
       room: { name: 'Test Room' },
     }));
-    const wrapper = shallow(<MenuBar />);
+    const wrapper = shallow(<MenuBar {...defaultProps} />);
 
     wrapper
       .find(Grid)
@@ -119,7 +124,7 @@ describe('the MenuBar component', () => {
   });
 
   it('should correctly display the number of participants in a room when there is more than 1 participant', () => {
-    const wrapper = shallow(<MenuBar />);
+    const wrapper = shallow(<MenuBar {...defaultProps} />);
     expect(
       wrapper
         .find('WithStyles(ForwardRef(Typography))')
@@ -130,7 +135,7 @@ describe('the MenuBar component', () => {
 
   it('should correctly display the number of participants in a room when there is exactly 1 participant', () => {
     mockUseParticipants.mockImplementationOnce(() => []);
-    const wrapper = shallow(<MenuBar />);
+    const wrapper = shallow(<MenuBar {...defaultProps} />);
     expect(
       wrapper
         .find('WithStyles(ForwardRef(Typography))')

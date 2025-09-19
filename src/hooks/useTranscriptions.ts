@@ -56,7 +56,8 @@ function formatParticipant(participant: string): string {
   return participant;
 }
 
-export function useTranscriptions(room: Room | null): UseTranscriptionsResult {
+export function useTranscriptions(room: Room | null, opts: { enabled?: boolean } = {}): UseTranscriptionsResult {
+  const enabled = opts.enabled !== undefined ? opts.enabled : true;
   const [lines, setLines] = useState<TranscriptionLine[]>([]);
   const [live, setLive] = useState<TranscriptionLine | null>(null);
   const liveRef = useRef<{ [sid: string]: TranscriptionLine }>({});
@@ -67,75 +68,80 @@ export function useTranscriptions(room: Room | null): UseTranscriptionsResult {
     liveRef.current = {};
   }, []);
 
-  const push = useCallback((event: TranscriptionEvent) => {
-    const participant = formatParticipant(event.participant);
-    const text = event.transcription;
-    const time = event.absolute_time ? Date.parse(event.absolute_time) : Date.now();
+  const push = useCallback(
+    (event: TranscriptionEvent) => {
+      if (!enabled) return;
+      const participant = formatParticipant(event.participant);
+      const text = event.transcription;
+      const time = event.absolute_time ? Date.parse(event.absolute_time) : Date.now();
 
-    if (event.partial_results) {
-      // Drop low-stability partials: only show partials with stability >= threshold.
-      // Finals are always committed regardless of stability.
-      const stab = typeof event.stability === 'number' ? event.stability : 0;
-      if (stab < STABILITY_THRESHOLD) {
-        // Ignore low-stability partials; keep showing the last acceptable partial
-        return;
-      }
-      // Store/update live partial for participant
-      const liveLine: TranscriptionLine = { text, participant, time };
-      liveRef.current[participant] = liveLine;
-      setLive(liveLine);
-    } else {
-      // Final result: move from live to committed
-      const finalLine: TranscriptionLine = { text, participant, time };
-      setLines(prev => {
-        // Add new line
-        const updated = [...prev, finalLine];
-
-        // Enforce max per participant
-        const perParticipant: { [sid: string]: TranscriptionLine[] } = {};
-        updated.forEach(line => {
-          if (!perParticipant[line.participant]) perParticipant[line.participant] = [];
-          perParticipant[line.participant].push(line);
-        });
-
-        // Remove oldest lines if any participant exceeds MAX_LINES_PER_PARTICIPANT
-        let filtered = updated;
-        Object.keys(perParticipant).forEach(sid => {
-          const arr = perParticipant[sid];
-          if (arr.length > MAX_LINES_PER_PARTICIPANT) {
-            // Remove oldest for this participant
-            const toRemove = arr.length - MAX_LINES_PER_PARTICIPANT;
-            let count = 0;
-            filtered = filtered.filter(line => {
-              if (line.participant === sid && count < toRemove) {
-                count++;
-                return false;
-              }
-              return true;
-            });
-          }
-        });
-
-        // Enforce max total lines
-        if (filtered.length > MAX_TOTAL_LINES) {
-          filtered = filtered.slice(filtered.length - MAX_TOTAL_LINES);
+      if (event.partial_results) {
+        // Drop low-stability partials: only show partials with stability >= threshold.
+        // Finals are always committed regardless of stability.
+        const stab = typeof event.stability === 'number' ? event.stability : 0;
+        if (stab < STABILITY_THRESHOLD) {
+          // Ignore low-stability partials; keep showing the last acceptable partial
+          return;
         }
+        // Store/update live partial for participant
+        const liveLine: TranscriptionLine = { text, participant, time };
+        liveRef.current[participant] = liveLine;
+        setLive(liveLine);
+      } else {
+        // Final result: move from live to committed
+        const finalLine: TranscriptionLine = { text, participant, time };
+        setLines(prev => {
+          // Add new line
+          const updated = [...prev, finalLine];
 
-        return filtered;
-      });
-      // Remove live partial for participant
-      delete liveRef.current[participant];
-      setLive(null);
-    }
-  }, []);
+          // Enforce max per participant
+          const perParticipant: { [sid: string]: TranscriptionLine[] } = {};
+          updated.forEach(line => {
+            if (!perParticipant[line.participant]) perParticipant[line.participant] = [];
+            perParticipant[line.participant].push(line);
+          });
+
+          // Remove oldest lines if any participant exceeds MAX_LINES_PER_PARTICIPANT
+          let filtered = updated;
+          Object.keys(perParticipant).forEach(sid => {
+            const arr = perParticipant[sid];
+            if (arr.length > MAX_LINES_PER_PARTICIPANT) {
+              // Remove oldest for this participant
+              const toRemove = arr.length - MAX_LINES_PER_PARTICIPANT;
+              let count = 0;
+              filtered = filtered.filter(line => {
+                if (line.participant === sid && count < toRemove) {
+                  count++;
+                  return false;
+                }
+                return true;
+              });
+            }
+          });
+
+          // Enforce max total lines
+          if (filtered.length > MAX_TOTAL_LINES) {
+            filtered = filtered.slice(filtered.length - MAX_TOTAL_LINES);
+          }
+
+          return filtered;
+        });
+        // Remove live partial for participant
+        delete liveRef.current[participant];
+        setLive(null);
+      }
+    },
+    [enabled]
+  );
 
   useEffect(() => {
-    if (!room) {
+    if (!room || !enabled) {
       clear();
       return;
     }
 
     const handler = (event: TranscriptionEvent) => {
+      if (!enabled) return;
       push(event);
     };
 
@@ -152,7 +158,7 @@ export function useTranscriptions(room: Room | null): UseTranscriptionsResult {
       room.off('disconnected', disconnectHandler);
       clear();
     };
-  }, [room, push, clear]);
+  }, [room, push, clear, enabled]);
 
   if (!room) {
     return { lines: [], push: () => {}, clear: () => {} };
