@@ -5,7 +5,7 @@ import { useAppState } from '../../state';
 export default function useConnectionOptions() {
   const { settings } = useAppState();
 
-  // See: https://sdk.twilio.com/js/video/releases/2.0.0/docs/global.html#ConnectOptions
+  // See: https://sdk.twilio.com/js/video/releases/2.32.1/docs/global.html#ConnectOptions
   // for available connection options.
   const connectionOptions: ConnectOptions = {
     // Bandwidth Profile, Dominant Speaker, and Network Quality
@@ -28,6 +28,8 @@ export default function useConnectionOptions() {
     maxAudioBitrate: Number(settings.maxAudioBitrate),
 
     preferredVideoCodecs: 'auto',
+
+    receiveTranscriptions: true,
 
     //@ts-ignore - Internal use only. This property is not exposed in type definitions.
     environment: process.env.REACT_APP_TWILIO_ENVIRONMENT,

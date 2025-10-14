@@ -3,6 +3,7 @@ import { Button, Grid, Typography } from '@material-ui/core';
 import MenuBar from './MenuBar';
 import { shallow } from 'enzyme';
 import ToggleAudioButton from '../Buttons/ToggleAudioButton/ToggleAudioButton';
+import ToggleCaptionsButton from '../Buttons/ToggleCaptionsButton/ToggleCaptionsButton';
 import ToggleChatButton from '../Buttons/ToggleChatButton/ToggleChatButton';
 import ToggleScreenShareButton from '../Buttons/ToogleScreenShareButton/ToggleScreenShareButton';
 import ToggleVideoButton from '../Buttons/ToggleVideoButton/ToggleVideoButton';
@@ -137,5 +138,10 @@ describe('the MenuBar component', () => {
         .at(0)
         .text()
     ).toBe('Test Room | 1 participant');
+  });
+
+  it('should render the ToggleCaptionsButton', () => {
+    const wrapper = shallow(<MenuBar />);
+    expect(wrapper.find(ToggleCaptionsButton).exists()).toBe(true);
   });
 });

@@ -1,3 +1,9 @@
+## 0.11.4
+
+### Changes
+
+- Added a new Captions button to the menu bar, which uses the Real-Time Transcriptions feature
+
 ## 0.11.3
 
 ### Changes

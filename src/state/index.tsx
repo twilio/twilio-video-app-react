@@ -31,6 +31,8 @@ export interface StateContextType {
   setIsKrispEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   isKrispInstalled: boolean;
   setIsKrispInstalled: React.Dispatch<React.SetStateAction<boolean>>;
+  isCaptionsEnabled: boolean;
+  setIsCaptionsEnabled: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const StateContext = createContext<StateContextType>(null!);
@@ -58,6 +60,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
 
   const [isKrispEnabled, setIsKrispEnabled] = useState(false);
   const [isKrispInstalled, setIsKrispInstalled] = useState(false);
+  const [isCaptionsEnabled, setIsCaptionsEnabled] = useLocalStorageState('captions-enabled-key', false);
 
   let contextValue = {
     error,
@@ -76,6 +79,8 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     setIsKrispEnabled,
     isKrispInstalled,
     setIsKrispInstalled,
+    isCaptionsEnabled,
+    setIsCaptionsEnabled,
   } as StateContextType;
 
   if (process.env.REACT_APP_SET_AUTH === 'firebase') {

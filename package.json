@@ -35,7 +35,7 @@
     "swiper": "^8.1.5",
     "ts-node": "^9.1.1",
     "twilio": "^5.5.2",
-    "twilio-video": "^2.29.0"
+    "twilio-video": "^2.32.1"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^6.5.10",
