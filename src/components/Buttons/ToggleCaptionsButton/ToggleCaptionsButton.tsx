@@ -1,35 +1,31 @@
-import React from 'react';
+import { useCallback } from 'react';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
-import ClosedCaptionIcon from '@material-ui/icons/ClosedCaption';
-import ClosedCaptionOutlinedIcon from '@material-ui/icons/ClosedCaptionOutlined';
+import CaptionsIcon from '../../../icons/CaptionsIcon';
+import CaptionsOffIcon from '../../../icons/CaptionsOffIcon';
+import { useAppState } from '../../../state';
 
-type Props = {
-  disabled?: boolean;
-  className?: string;
-  showCaptions: boolean;
-  onToggleCaptions: () => void;
-  tooltip?: string;
-};
+export default function ToggleCaptionsButton(props: { disabled?: boolean; className?: string }) {
+  const { isCaptionsEnabled, setIsCaptionsEnabled } = useAppState();
 
-export default function ToggleCaptionsButton({ disabled, className, showCaptions, onToggleCaptions, tooltip }: Props) {
-  const enabled = showCaptions;
-  const title = tooltip ?? (enabled ? '' : 'Requires Real-Time Transcriptions to be enabled in the Twilio Console');
-  const Icon = enabled ? ClosedCaptionIcon : ClosedCaptionOutlinedIcon;
+  const toggleCaptions = useCallback(() => {
+    setIsCaptionsEnabled(enabled => !enabled);
+  }, [setIsCaptionsEnabled]);
+
+  const tooltipTitle = isCaptionsEnabled ? '' : 'Requires Real-Time Transcriptions to be enabled in the Twilio Console';
 
   return (
-    <Tooltip title={title} placement="top">
-      {/* span wrapper ensures Tooltip works when Button is disabled */}
+    <Tooltip title={tooltipTitle} placement="top">
       <span>
         <Button
-          className={className}
-          onClick={onToggleCaptions}
-          disabled={disabled}
-          startIcon={<Icon />}
+          className={props.className}
+          onClick={toggleCaptions}
+          disabled={props.disabled}
+          startIcon={isCaptionsEnabled ? <CaptionsIcon /> : <CaptionsOffIcon />}
           data-cy="toggle-captions"
-          aria-label={title}
+          aria-label={tooltipTitle}
         >
-          {enabled ? 'Hide Captions' : 'Show Captions'}
+          {isCaptionsEnabled ? 'Hide Captions' : 'Show Captions'}
         </Button>
       </span>
     </Tooltip>

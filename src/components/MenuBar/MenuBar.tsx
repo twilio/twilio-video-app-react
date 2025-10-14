@@ -64,12 +64,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-type MenuBarProps = {
-  showCaptions: boolean;
-  onToggleCaptions: () => void;
-};
-
-export default function MenuBar({ showCaptions, onToggleCaptions }: MenuBarProps) {
+export default function MenuBar() {
   const classes = useStyles();
   const { isSharingScreen, toggleScreenShare } = useVideoContext();
   const roomState = useRoomState();
@@ -98,11 +93,7 @@ export default function MenuBar({ showCaptions, onToggleCaptions }: MenuBarProps
             <Grid container justifyContent="center">
               <ToggleAudioButton disabled={isReconnecting} />
               <ToggleVideoButton disabled={isReconnecting} />
-              <ToggleCaptionsButton
-                disabled={isReconnecting}
-                showCaptions={showCaptions}
-                onToggleCaptions={onToggleCaptions}
-              />
+              <ToggleCaptionsButton disabled={isReconnecting} />
               {!isSharingScreen && !isMobile && <ToggleScreenShareButton disabled={isReconnecting} />}
               {process.env.REACT_APP_DISABLE_TWILIO_CONVERSATIONS !== 'true' && <ToggleChatButton />}
               <Hidden smDown>

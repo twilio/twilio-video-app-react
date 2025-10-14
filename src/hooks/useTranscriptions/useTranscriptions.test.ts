@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import { useTranscriptions, TranscriptionEvent } from '../useTranscriptions';
+import { useTranscriptions, TranscriptionEvent } from './useTranscriptions';
 
 function createMockRoom() {
   let listeners: { [event: string]: Function[] } = {};
@@ -46,6 +46,7 @@ describe('useTranscriptions', () => {
         participant: 'p2',
         transcription: 'This is',
         partial_results: true,
+        stability: 0.95,
       } as TranscriptionEvent);
     });
 
@@ -72,15 +73,15 @@ describe('useTranscriptions', () => {
     act(() => {
       for (let i = 0; i < 7; i++) {
         room.emit('transcription', {
-          participant: 'p3',
+          participant: `p${i % 3}`,
           transcription: `Line ${i}`,
           partial_results: false,
         } as TranscriptionEvent);
       }
     });
 
-    expect(result.current.lines).toHaveLength(5);
-    expect(result.current.lines[0].text).toBe('Line 2');
-    expect(result.current.lines[4].text).toBe('Line 6');
+    expect(result.current.lines).toHaveLength(3);
+    expect(result.current.lines[0].text).toBe('Line 4');
+    expect(result.current.lines[2].text).toBe('Line 6');
   });
 });

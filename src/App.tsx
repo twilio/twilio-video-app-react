@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import { styled, Theme } from '@material-ui/core/styles';
 
 import MenuBar from './components/MenuBar/MenuBar';
@@ -29,9 +29,6 @@ export default function App() {
   const roomState = useRoomState();
   const height = useHeight();
 
-  const [showCaptions, setShowCaptions] = useState(false);
-  const onToggleCaptions = useCallback(() => setShowCaptions(v => !v), []);
-
   return (
     <Container style={{ height }}>
       {roomState === 'disconnected' ? (
@@ -41,8 +38,8 @@ export default function App() {
           <ReconnectingNotification />
           <RecordingNotifications />
           <MobileTopMenuBar />
-          <Room showCaptions={showCaptions} />
-          <MenuBar showCaptions={showCaptions} onToggleCaptions={onToggleCaptions} />
+          <Room />
+          <MenuBar />
         </Main>
       )}
     </Container>

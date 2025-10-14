@@ -13,7 +13,6 @@ import { useAppState } from '../../state';
 import useChatContext from '../../hooks/useChatContext/useChatContext';
 import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
-import { useTranscriptions } from '../../hooks/useTranscriptions';
 import TranscriptionsOverlay from '../TranscriptionsOverlay';
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -72,11 +71,7 @@ export function useSetSpeakerViewOnScreenShare(
   }, [screenShareParticipant, setIsGalleryViewActive, room]);
 }
 
-type RoomProps = {
-  showCaptions?: boolean;
-};
-
-export default function Room({ showCaptions = false }: RoomProps) {
+export default function Room() {
   const classes = useStyles();
   const { isChatWindowOpen } = useChatContext();
   const { isBackgroundSelectionOpen, room } = useVideoContext();
@@ -85,27 +80,6 @@ export default function Room({ showCaptions = false }: RoomProps) {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const screenShareParticipant = useScreenShareParticipant();
 
-  // Connection/captions visibility
-  const isConnected = !!room && room.state === 'connected';
-  const captionsVisible = !!showCaptions && isConnected;
-
-  const { lines, live, clear } = useTranscriptions(room, { enabled: captionsVisible });
-
-  useEffect(() => {
-    if (!room) {
-      clear();
-      return;
-    }
-    const handleDisconnect = () => clear();
-    room.on('disconnected', handleDisconnect);
-    return () => {
-      room.off('disconnected', handleDisconnect);
-      clear();
-    };
-  }, [room, clear]);
-
-  // Here we switch to speaker view when a participant starts sharing their screen, but
-  // the user is still free to switch back to gallery view.
   useSetSpeakerViewOnScreenShare(screenShareParticipant, room, setIsGalleryViewActive, isGalleryViewActive);
 
   return (
@@ -136,7 +110,7 @@ export default function Room({ showCaptions = false }: RoomProps) {
 
       <ChatWindow />
       <BackgroundSelectionDialog />
-      <TranscriptionsOverlay lines={lines} live={live} visible={captionsVisible} />
+      <TranscriptionsOverlay />
     </div>
   );
 }
