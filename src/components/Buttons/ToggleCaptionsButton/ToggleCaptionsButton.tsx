@@ -15,7 +15,7 @@ export default function ToggleCaptionsButton(props: { disabled?: boolean; classN
   const tooltipTitle = isCaptionsEnabled ? '' : 'Requires Real-Time Transcriptions to be enabled in the Twilio Console';
 
   return (
-    <Tooltip title={tooltipTitle} placement="top">
+    <Tooltip title={tooltipTitle} placement="top" data-testid="captions-tooltip">
       <span>
         <Button
           className={props.className}
@@ -23,7 +23,7 @@ export default function ToggleCaptionsButton(props: { disabled?: boolean; classN
           disabled={props.disabled}
           startIcon={isCaptionsEnabled ? <CaptionsIcon /> : <CaptionsOffIcon />}
           data-cy="toggle-captions"
-          aria-label={tooltipTitle}
+          aria-label="Toggle Captions"
         >
           {isCaptionsEnabled ? 'Hide Captions' : 'Show Captions'}
         </Button>
