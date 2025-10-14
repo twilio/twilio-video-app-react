@@ -13,7 +13,7 @@ import { useAppState } from '../../state';
 import useChatContext from '../../hooks/useChatContext/useChatContext';
 import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
-import TranscriptionsOverlay from '../TranscriptionsOverlay';
+import TranscriptionsOverlay from '../TranscriptionsOverlay/TranscriptionsOverlay';
 
 const useStyles = makeStyles((theme: Theme) => {
   const totalMobileSidebarHeight = `${theme.sidebarMobileHeight +
@@ -80,6 +80,8 @@ export default function Room() {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const screenShareParticipant = useScreenShareParticipant();
 
+  // Here we switch to speaker view when a participant starts sharing their screen, but
+  // the user is still free to switch back to gallery view.
   useSetSpeakerViewOnScreenShare(screenShareParticipant, room, setIsGalleryViewActive, isGalleryViewActive);
 
   return (
