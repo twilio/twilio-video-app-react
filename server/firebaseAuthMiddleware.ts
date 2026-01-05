@@ -6,6 +6,15 @@ firebaseAdmin.initializeApp({
   databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
 });
 
+const db = firebaseAdmin.firestore();
+let allowedEmails: string[] = [];
+
+const docRef = db.collection('config').doc('allowedEmails');
+docRef.onSnapshot((snapshot) => {
+  const data = snapshot.data();
+  allowedEmails = data?.emails || [];
+});
+
 const firebaseAuthMiddleware: RequestHandler = async (req, res, next) => {
   const authHeader = req.get('authorization');
 
@@ -14,13 +23,14 @@ const firebaseAuthMiddleware: RequestHandler = async (req, res, next) => {
   }
 
   try {
-    // Here we authenticate users be verifying the ID token that was sent
+    // Here we authenticate users by verifying the ID token that was sent
     const token = await firebaseAdmin.auth().verifyIdToken(authHeader);
 
     // Here we authorize users to use this application only if they have a
-    // Twilio email address. The logic in this if statement can be changed if
-    // you would like to authorize your users in a different manner.
-    if (token.email && /@twilio.com$/.test(token.email)) {
+    // Twilio email address or the Firestore allowlist contains their email.
+    // The logic in this if statement can be changed if you would like to
+    // authorize your users in a different manner.
+    if (token.email && (/@twilio.com$/.test(token.email) || allowedEmails.includes(token.email))) {
       next();
     } else {
       res.status(401).send();

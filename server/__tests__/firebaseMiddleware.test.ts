@@ -13,6 +13,16 @@ jest.mock('firebase-admin', () => {
     auth: () => ({
       verifyIdToken: mockVerifyIdToken,
     }),
+    firestore: () => ({
+      collection: () => ({
+        doc: () => ({
+          onSnapshot: jest.fn((callback) => {
+            callback({ data: () => ({ emails: ['allowed@example.com'] }) });
+            return jest.fn();
+          }),
+        }),
+      }),
+    }),
     credential: {
       cert: jest.fn((cert: any) => cert),
     },
@@ -81,5 +91,20 @@ describe('the firebaseAuthMiddleware function', () => {
     await firebaseAuthMiddleware(mockRequest, mockResponse, mockNext);
     expect(mockRequest.get).toHaveBeenLastCalledWith('authorization');
     expect(mockVerifyIdToken).toHaveBeenCalledWith('mockToken');
+  });
+
+  it('should allow users in the Firestore allowlist even with non-@twilio.com email', async () => {
+    mockVerifyIdToken.mockImplementationOnce(() => Promise.resolve({ email: 'allowed@example.com' }));
+    await firebaseAuthMiddleware(mockRequest, mockResponse, mockNext);
+    expect(mockNext).toHaveBeenCalled();
+    expect(mockResponse.send).not.toHaveBeenCalled();
+  });
+
+  it('should reject non-@twilio.com users not in the allowlist', async () => {
+    mockVerifyIdToken.mockImplementationOnce(() => Promise.resolve({ email: 'test@example.com' }));
+    await firebaseAuthMiddleware(mockRequest, mockResponse, mockNext);
+    expect(mockResponse.status).toHaveBeenCalledWith(401);
+    expect(mockResponse.send).toHaveBeenCalled();
+    expect(mockNext).not.toHaveBeenCalled();
   });
 });
