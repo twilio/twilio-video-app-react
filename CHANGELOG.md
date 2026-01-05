@@ -1,3 +1,9 @@
+## 0.11.5
+
+### Changes
+
+- Added Firestore-based email allowlist for Firebase authentication.
+
 ## 0.11.4
 
 ### Changes
