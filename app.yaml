@@ -1,4 +1,4 @@
-runtime: nodejs20
+runtime: nodejs24
 
 entrypoint: npm run server
 

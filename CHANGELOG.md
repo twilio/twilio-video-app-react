@@ -3,6 +3,7 @@
 ### Changes
 
 - Added Firestore-based email allowlist for Firebase authentication.
+- The gcloud node runtime has been upgraded to v24.
 
 ## 0.11.4
 
