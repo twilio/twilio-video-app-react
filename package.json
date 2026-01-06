@@ -150,5 +150,8 @@
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
     ]
+  },
+  "overrides": {
+    "cheerio": "0.22.0"
   }
 }
