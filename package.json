@@ -152,6 +152,7 @@
     ]
   },
   "overrides": {
-    "cheerio": "0.22.0"
+    "cheerio": "0.22.0",
+    "type-fest": "^0.20.2"
   }
 }
