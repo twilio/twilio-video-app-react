@@ -27,7 +27,7 @@ describe('the TranscriptionsOverlay component', () => {
 
   it('should not render when captions are disabled', () => {
     mockUseAppState.mockImplementation(() => ({ isCaptionsEnabled: false }));
-    mockUseTranscriptions.mockImplementation(() => ({ lines: mockLines, live: null }));
+    mockUseTranscriptions.mockImplementation(() => ({ lines: mockLines, live: [] }));
     const wrapper = shallow(<TranscriptionsOverlay />);
     expect(wrapper.isEmptyRender()).toBe(true);
   });
@@ -35,21 +35,21 @@ describe('the TranscriptionsOverlay component', () => {
   it('should not render when not connected to room', () => {
     mockUseAppState.mockImplementation(() => ({ isCaptionsEnabled: true }));
     mockUseVideoContext.mockImplementationOnce(() => ({ room: null }));
-    mockUseTranscriptions.mockImplementation(() => ({ lines: mockLines, live: null }));
+    mockUseTranscriptions.mockImplementation(() => ({ lines: mockLines, live: [] }));
     const wrapper = shallow(<TranscriptionsOverlay />);
     expect(wrapper.isEmptyRender()).toBe(true);
   });
 
   it('should not render when no content available', () => {
     mockUseAppState.mockImplementation(() => ({ isCaptionsEnabled: true }));
-    mockUseTranscriptions.mockImplementation(() => ({ lines: [], live: null }));
+    mockUseTranscriptions.mockImplementation(() => ({ lines: [], live: [] }));
     const wrapper = shallow(<TranscriptionsOverlay />);
     expect(wrapper.isEmptyRender()).toBe(true);
   });
 
   it('should render when captions enabled and content available', () => {
     mockUseAppState.mockImplementation(() => ({ isCaptionsEnabled: true }));
-    mockUseTranscriptions.mockImplementation(() => ({ lines: mockLines, live: null }));
+    mockUseTranscriptions.mockImplementation(() => ({ lines: mockLines, live: [] }));
     const wrapper = shallow(<TranscriptionsOverlay />);
     expect(wrapper.exists()).toBe(true);
     expect(wrapper.find('[role="region"]')).toHaveLength(1);
@@ -57,7 +57,7 @@ describe('the TranscriptionsOverlay component', () => {
 
   it('should render all provided lines', () => {
     mockUseAppState.mockImplementation(() => ({ isCaptionsEnabled: true }));
-    mockUseTranscriptions.mockImplementation(() => ({ lines: mockLines, live: null }));
+    mockUseTranscriptions.mockImplementation(() => ({ lines: mockLines, live: [] }));
     const wrapper = shallow(<TranscriptionsOverlay />);
     expect(wrapper.text()).toContain('PA..1234:');
     expect(wrapper.text()).toContain('Hello world');
@@ -66,7 +66,7 @@ describe('the TranscriptionsOverlay component', () => {
   });
 
   it('should render live partial line when provided', () => {
-    const mockLive = { text: 'In progress...', participant: 'PA..9999' };
+    const mockLive = [{ text: 'In progress...', participant: 'PA..9999', time: 3000 }];
     mockUseAppState.mockImplementation(() => ({ isCaptionsEnabled: true }));
     mockUseTranscriptions.mockImplementation(() => ({ lines: mockLines, live: mockLive }));
     const wrapper = shallow(<TranscriptionsOverlay />);
@@ -76,7 +76,7 @@ describe('the TranscriptionsOverlay component', () => {
 
   it('should not render live line when not provided', () => {
     mockUseAppState.mockImplementation(() => ({ isCaptionsEnabled: true }));
-    mockUseTranscriptions.mockImplementation(() => ({ lines: mockLines, live: null }));
+    mockUseTranscriptions.mockImplementation(() => ({ lines: mockLines, live: [] }));
     const wrapper = shallow(<TranscriptionsOverlay />);
     expect(wrapper.text()).not.toContain('PA..9999:');
   });
@@ -92,11 +92,25 @@ describe('the TranscriptionsOverlay component', () => {
       { text: 'Line 7', participant: 'PA..7777', time: 7000 },
     ];
     mockUseAppState.mockImplementation(() => ({ isCaptionsEnabled: true }));
-    mockUseTranscriptions.mockImplementation(() => ({ lines: manyLines, live: null }));
+    mockUseTranscriptions.mockImplementation(() => ({ lines: manyLines, live: [] }));
     const wrapper = shallow(<TranscriptionsOverlay />);
     expect(wrapper.text()).not.toContain('Line 1');
     expect(wrapper.text()).not.toContain('Line 2');
     expect(wrapper.text()).toContain('Line 3');
     expect(wrapper.text()).toContain('Line 7');
+  });
+
+  it('should render multiple live partials from different participants', () => {
+    const mockLive = [
+      { text: 'Speaking from p1...', participant: 'PA..1111', time: 3000 },
+      { text: 'Also speaking from p2...', participant: 'PA..2222', time: 3100 },
+    ];
+    mockUseAppState.mockImplementation(() => ({ isCaptionsEnabled: true }));
+    mockUseTranscriptions.mockImplementation(() => ({ lines: mockLines, live: mockLive }));
+    const wrapper = shallow(<TranscriptionsOverlay />);
+    expect(wrapper.text()).toContain('PA..1111:');
+    expect(wrapper.text()).toContain('Speaking from p1...');
+    expect(wrapper.text()).toContain('PA..2222:');
+    expect(wrapper.text()).toContain('Also speaking from p2...');
   });
 });
