@@ -43,7 +43,7 @@ If you want to use `yarn` to install dependencies, first run the [yarn import](h
 
 Twilio Video has partnered with [Krisp Technologies Inc.](https://krisp.ai/) to add [noise cancellation](https://www.twilio.com/docs/video/noise-cancellation) to the local audio track. This feature is licensed under the [Krisp Plugin for Twilio](https://twilio.github.io/krisp-audio-plugin/LICENSE.html). In order to add this feature to your application, please run `npm run noisecancellation:krisp` immediately after the [previous step](#install-dependencies).
 
-### Add Captions (beta)
+### Add Captions
 
 The on-screen Captions functionality is provided by the [Real-Time Transcriptions for Video(beta)](https://www.twilio.com/docs/video/api/transcriptions) feature. To use captions in this reference application Real-Time Transcriptions must be enabled by default in the [Room settings page](https://console.twilio.com/us1/develop/video/manage/room-settings) on the Twilio Console. Note that usage charges will apply.
 
@@ -90,6 +90,8 @@ This performs the following steps:
 **NOTE:** The Twilio Function that provides access tokens via a passcode should _NOT_ be used in a production environment. This token server supports seamlessly getting started with the collaboration app, and while convenient, the passcode is not secure enough for production environments. You should use an authentication provider to securely provide access tokens to your client applications. You can find more information about Programmable Video access tokens [in this tutorial](https://www.twilio.com/docs/video/tutorials/user-identity-access-tokens). **As a precaution, the passcode will expire after one week**. To generate a new passcode, redeploy the app:
 
     npm run deploy:twilio-cli -- --override
+
+**NOTE:** As of November 10th, 2025, Twilio Functions requires Node.js v20 or v22, see the [migration guide](https://www.twilio.com/docs/serverless/functions-assets/node-upgrade). If you previously deployed this Twilio Video React App using Node.js v18 then you either need to edit the Function entry in the Twilio Console and select node v22 or else delete the entry in the Twilio Console and redeploy from the command line. The node setting can be found in the Twilio Console in the Functions & Assets section -> Services and select the video-app-xxxx entry.
 
 ## View app details
 
