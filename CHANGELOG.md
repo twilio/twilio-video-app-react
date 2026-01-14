@@ -4,7 +4,9 @@
 
 - Fixed a display issue with multi-participant captions. The partial results for each participant are now stored and rendered separately.
 - `twilio-video` has been upgraded to 2.34.0.
+- Node.js prerequisite updated to node v22+
 - Added notice on Twilio Functions Node.js v18 deprecation.
+
 
 ## 0.11.5
 

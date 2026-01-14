@@ -107,7 +107,7 @@
     "build-storybook": "build-storybook -s public"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22.0.0"
   },
   "eslintConfig": {
     "extends": "react-app",
