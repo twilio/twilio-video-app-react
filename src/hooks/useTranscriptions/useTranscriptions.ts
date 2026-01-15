@@ -37,7 +37,7 @@ export type TranscriptionLine = {
 
 type UseTranscriptionsResult = {
   lines: TranscriptionLine[];
-  live?: TranscriptionLine | null;
+  live: TranscriptionLine[];
   push: (event: TranscriptionEvent) => void;
   clear: () => void;
 };
@@ -59,12 +59,12 @@ function formatParticipant(participant: string): string {
 export function useTranscriptions(room: Room | null, opts: { enabled?: boolean } = {}): UseTranscriptionsResult {
   const enabled = opts.enabled !== undefined ? opts.enabled : true;
   const [lines, setLines] = useState<TranscriptionLine[]>([]);
-  const [live, setLive] = useState<TranscriptionLine | null>(null);
+  const [live, setLive] = useState<TranscriptionLine[]>([]);
   const liveRef = useRef<{ [sid: string]: TranscriptionLine }>({});
 
   const clear = useCallback(() => {
     setLines([]);
-    setLive(null);
+    setLive([]);
     liveRef.current = {};
   }, []);
 
@@ -86,7 +86,8 @@ export function useTranscriptions(room: Room | null, opts: { enabled?: boolean }
         // Store/update live partial for participant
         const liveLine: TranscriptionLine = { text, participant, time };
         liveRef.current[participant] = liveLine;
-        setLive(liveLine);
+        // Update live array with all active partials
+        setLive(Object.values(liveRef.current));
       } else {
         // Final result: move from live to committed
         const finalLine: TranscriptionLine = { text, participant, time };
@@ -126,9 +127,10 @@ export function useTranscriptions(room: Room | null, opts: { enabled?: boolean }
 
           return filtered;
         });
-        // Remove live partial for participant
+        // Remove live partial for this specific participant
         delete liveRef.current[participant];
-        setLive(null);
+        // Update live array with remaining active partials
+        setLive(Object.values(liveRef.current));
       }
     },
     [enabled]
@@ -161,7 +163,7 @@ export function useTranscriptions(room: Room | null, opts: { enabled?: boolean }
   }, [room, push, clear, enabled]);
 
   if (!room) {
-    return { lines: [], push: () => {}, clear: () => {} };
+    return { lines: [], live: [], push: () => {}, clear: () => {} };
   }
 
   return { lines, live, push, clear };

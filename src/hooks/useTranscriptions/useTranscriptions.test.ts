@@ -34,7 +34,7 @@ describe('useTranscriptions', () => {
 
     expect(result.current.lines).toHaveLength(1);
     expect(result.current.lines[0].text).toBe('Hello world');
-    expect(result.current.live).toBeNull();
+    expect(result.current.live).toEqual([]);
   });
 
   it('updates live line for partials, commits on final', () => {
@@ -50,7 +50,8 @@ describe('useTranscriptions', () => {
       } as TranscriptionEvent);
     });
 
-    expect(result.current.live?.text).toBe('This is');
+    expect(result.current.live).toHaveLength(1);
+    expect(result.current.live[0].text).toBe('This is');
     expect(result.current.lines).toHaveLength(0);
 
     act(() => {
@@ -61,7 +62,7 @@ describe('useTranscriptions', () => {
       } as TranscriptionEvent);
     });
 
-    expect(result.current.live).toBeNull();
+    expect(result.current.live).toEqual([]);
     expect(result.current.lines).toHaveLength(1);
     expect(result.current.lines[0].text).toBe('This is final');
   });
@@ -83,5 +84,65 @@ describe('useTranscriptions', () => {
     expect(result.current.lines).toHaveLength(3);
     expect(result.current.lines[0].text).toBe('Line 4');
     expect(result.current.lines[2].text).toBe('Line 6');
+  });
+
+  it('maintains separate live partials for multiple participants', () => {
+    const room = createMockRoom();
+    const { result } = renderHook(() => useTranscriptions(room as any));
+
+    // Participant 1 starts speaking
+    act(() => {
+      room.emit('transcription', {
+        participant: 'p1',
+        transcription: 'Hello from p1',
+        partial_results: true,
+        stability: 0.95,
+      } as TranscriptionEvent);
+    });
+
+    expect(result.current.live).toHaveLength(1);
+    expect(result.current.live[0].text).toBe('Hello from p1');
+
+    // Participant 2 starts speaking - should not overwrite p1's partial
+    act(() => {
+      room.emit('transcription', {
+        participant: 'p2',
+        transcription: 'Hi from p2',
+        partial_results: true,
+        stability: 0.95,
+      } as TranscriptionEvent);
+    });
+
+    expect(result.current.live).toHaveLength(2);
+    const participants = result.current.live.map(l => l.participant);
+    expect(participants).toContain('p1');
+    expect(participants).toContain('p2');
+
+    // Participant 1 finishes - should remove only p1's partial
+    act(() => {
+      room.emit('transcription', {
+        participant: 'p1',
+        transcription: 'Hello from p1 final',
+        partial_results: false,
+      } as TranscriptionEvent);
+    });
+
+    expect(result.current.lines).toHaveLength(1);
+    expect(result.current.lines[0].text).toBe('Hello from p1 final');
+    expect(result.current.live).toHaveLength(1);
+    expect(result.current.live[0].participant).toBe('p2');
+    expect(result.current.live[0].text).toBe('Hi from p2');
+
+    // Participant 2 finishes
+    act(() => {
+      room.emit('transcription', {
+        participant: 'p2',
+        transcription: 'Hi from p2 final',
+        partial_results: false,
+      } as TranscriptionEvent);
+    });
+
+    expect(result.current.lines).toHaveLength(2);
+    expect(result.current.live).toEqual([]);
   });
 });

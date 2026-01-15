@@ -1,12 +1,15 @@
-version: 2
+version: '2.1'
+orbs:
+  browser-tools: circleci/browser-tools@2.3.2
 jobs:
   build:
     docker:
-      - image: circleci/node:16-browsers
+      - image: cimg/node:22.12-browsers
     working_directory: ~/twilio-video-react-app
 
     steps:
       - checkout
+      - browser-tools/install_browser_tools
 
       - restore_cache:
           keys:

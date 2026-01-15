@@ -73,7 +73,7 @@ export const TranscriptionsOverlay: React.FC = () => {
   if (!captionsVisible) return null;
 
   const recentLines = lines.slice(-5);
-  const hasContent = recentLines.length > 0 || (live && live.text);
+  const hasContent = recentLines.length > 0 || live.length > 0;
 
   if (!hasContent) return null;
 
@@ -90,12 +90,12 @@ export const TranscriptionsOverlay: React.FC = () => {
             <span>{line.text}</span>
           </div>
         ))}
-        {live && live.text && (
-          <div className={classes.liveLine} aria-live="polite">
-            <span className={classes.participant}>{live.participant}:</span>
-            <span>{live.text}</span>
+        {live.map((liveLine, idx) => (
+          <div key={liveLine.time + liveLine.participant} className={classes.liveLine} aria-live="polite">
+            <span className={classes.participant}>{liveLine.participant}:</span>
+            <span>{liveLine.text}</span>
           </div>
-        )}
+        ))}
       </div>
     </div>
   );
