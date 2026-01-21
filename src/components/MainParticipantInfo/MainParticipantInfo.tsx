@@ -8,6 +8,7 @@ import AvatarIcon from '../../icons/AvatarIcon';
 import NetworkQualityLevel from '../NetworkQualityLevel/NetworkQualityLevel';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import Fade from '@material-ui/core/Fade';
 
 import useIsRecording from '../../hooks/useIsRecording/useIsRecording';
 import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
@@ -58,7 +59,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       gridArea: '1 / 1 / 3 / 3',
     },
   },
-  avatarContainer: {
+  videoOffContainer: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -107,6 +108,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     '100%': {
       background: '#A90000',
     },
+  },
+  switchOffMessage: {
+    background: '#1F304C',
+    borderRadius: '100px',
+    padding: '0.3em 1.5em',
+    color: '#FFFFFF',
   },
 }));
 
@@ -173,8 +180,18 @@ export default function MainParticipantInfo({ participant, children }: MainParti
           </Tooltip>
         )}
       </div>
-      {(!isVideoEnabled || isVideoSwitchedOff) && (
-        <div className={classes.avatarContainer}>
+      {isVideoSwitchedOff && (
+        <div className={classes.videoOffContainer}>
+          <Fade in={isVideoSwitchedOff} timeout={{ enter: 250 }}>
+            <Typography variant="body1" className={classes.switchOffMessage}>
+              Low bandwidth
+            </Typography>
+          </Fade>
+        </div>
+      )}
+
+      {!isVideoEnabled && (
+        <div className={classes.videoOffContainer}>
           <AvatarIcon />
         </div>
       )}

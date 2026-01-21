@@ -43,7 +43,7 @@ describe('the ParticipantInfo component', () => {
     expect(wrapper.find(AvatarIcon).exists()).toBe(false);
   });
 
-  it('should render the AvatarIcon component when the video track is switchedOff', () => {
+  it('should display the Low bandwidth message when the video track is switchedOff', () => {
     mockUseIsTrackSwitchedOff.mockImplementation(() => true);
     mockUsePublications.mockImplementation(() => [{ trackName: '', kind: 'video' }]);
     const wrapper = shallow(
@@ -51,7 +51,7 @@ describe('the ParticipantInfo component', () => {
         mock children
       </ParticipantInfo>
     );
-    expect(wrapper.find(AvatarIcon).exists()).toBe(true);
+    expect(wrapper.text()).toContain('Low bandwidth');
   });
 
   it('should not render the reconnecting UI when the user is connected', () => {

@@ -15,6 +15,7 @@ import usePublications from '../../hooks/usePublications/usePublications';
 import useTrack from '../../hooks/useTrack/useTrack';
 import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
 import { useAppState } from '../../state';
+import { Fade } from '@material-ui/core';
 
 const borderWidth = 2;
 
@@ -62,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) =>
       background: 'transparent',
       top: 0,
     },
-    avatarContainer: {
+    videoOffContainer: {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -145,6 +146,12 @@ const useStyles = makeStyles((theme: Theme) =>
     dominantSpeaker: {
       border: `solid ${borderWidth}px #7BEAA5`,
     },
+    switchOffMessage: {
+      background: '#1F304C',
+      borderRadius: '100px',
+      padding: '0.3em 1.5em',
+      color: '#FFFFFF',
+    },
   })
 );
 
@@ -214,9 +221,20 @@ export default function ParticipantInfo({
         </div>
         <div>{isSelected && <PinIcon />}</div>
       </div>
+
       <div className={classes.innerContainer}>
-        {(!isVideoEnabled || isVideoSwitchedOff) && (
-          <div className={classes.avatarContainer}>
+        {isVideoSwitchedOff && (
+          <div className={classes.videoOffContainer}>
+            <Fade in={isVideoSwitchedOff} timeout={{ enter: 250 }}>
+              <Typography variant="body1" className={classes.switchOffMessage}>
+                Low bandwidth
+              </Typography>
+            </Fade>
+          </div>
+        )}
+
+        {!isVideoEnabled && (
+          <div className={classes.videoOffContainer}>
             <AvatarIcon />
           </div>
         )}
