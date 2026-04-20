@@ -1,3 +1,9 @@
+## 0.11.7
+
+### Changes
+
+- Removed the 16 kbps `maxAudioBitrate` default. Audio bitrate is now uncapped, allowing Opus FEC to function effectively under packet loss.
+
 ## 0.11.6
 
 ### Changes
