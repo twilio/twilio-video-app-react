@@ -6,7 +6,7 @@ describe('the settingsReducer', () => {
     expect(result).toEqual({
       bandwidthProfileMode: 'collaboration',
       dominantSpeakerPriority: 'standard',
-      maxAudioBitrate: '16000',
+      maxAudioBitrate: '',
       trackSwitchOffMode: undefined,
       clientTrackSwitchOffControl: 'auto',
       contentPreferencesMode: 'auto',
@@ -18,7 +18,7 @@ describe('the settingsReducer', () => {
     expect(result).toEqual({
       bandwidthProfileMode: undefined,
       dominantSpeakerPriority: 'standard',
-      maxAudioBitrate: '16000',
+      maxAudioBitrate: '',
       clientTrackSwitchOffControl: 'auto',
       contentPreferencesMode: 'auto',
       trackSwitchOffMode: undefined,

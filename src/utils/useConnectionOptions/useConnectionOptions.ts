@@ -24,8 +24,9 @@ export default function useConnectionOptions() {
     dominantSpeaker: true,
     networkQuality: { local: 1, remote: 1 },
 
-    // Comment this line if you are playing music.
-    maxAudioBitrate: Number(settings.maxAudioBitrate),
+    ...(Number(settings.maxAudioBitrate) > 0 && {
+      maxAudioBitrate: Number(settings.maxAudioBitrate),
+    }),
 
     preferredVideoCodecs: 'auto',
 
