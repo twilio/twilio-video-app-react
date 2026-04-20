@@ -20,7 +20,7 @@ export const initialSettings: Settings = {
   trackSwitchOffMode: undefined,
   dominantSpeakerPriority: 'standard',
   bandwidthProfileMode: 'collaboration',
-  maxAudioBitrate: '16000',
+  maxAudioBitrate: '',
   contentPreferencesMode: 'auto',
   clientTrackSwitchOffControl: 'auto',
 };
