@@ -227,6 +227,18 @@ describe('the getPasscode function', () => {
     expect(getPasscode()).toBe('234234');
   });
 
+  it('should return only the passcode when the URL has other query parameters after it', () => {
+    window.location.search = '?passcode=012345&room=MyRoom';
+
+    expect(getPasscode()).toBe('012345');
+  });
+
+  it('should return the passcode when the URL has other query parameters before it', () => {
+    window.location.search = '?room=MyRoom&passcode=012345';
+
+    expect(getPasscode()).toBe('012345');
+  });
+
   it('should return null when there is no passcode', () => {
     window.location.search = '';
     expect(getPasscode()).toBe(null);
