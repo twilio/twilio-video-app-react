@@ -1,4 +1,5 @@
 import React from 'react';
+import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { Media } from '@twilio/conversations';
 import MediaMessage, { formatFileSize } from './MediaMessage';
 import { shallow } from 'enzyme';
@@ -24,30 +25,135 @@ describe('the formatFileSize function', () => {
   });
 });
 
+async function flushPromises() {
+  await Promise.resolve();
+  await Promise.resolve();
+  await Promise.resolve();
+}
+
+function createMockMedia(overrides: Partial<{ filename: string; size: number; url: string | null }> = {}) {
+  const { filename = 'foo.txt', size = 123, url = 'http://twilio.com/foo.txt' } = overrides;
+
+  return ({
+    filename,
+    size,
+    getContentTemporaryUrl: jest.fn(() => Promise.resolve(url)),
+  } as unknown) as Media;
+}
+
+function stubDownloadApis(options: { fetchOk?: boolean } = {}) {
+  const { fetchOk = true } = options;
+  const mockAnchorElement = document.createElement('a');
+  mockAnchorElement.click = jest.fn();
+  mockAnchorElement.target = '';
+  mockAnchorElement.rel = '';
+
+  const originalCreateElement = document.createElement.bind(document);
+
+  jest.spyOn(document, 'createElement').mockImplementation((tagName: string) => {
+    if (tagName === 'a') {
+      return mockAnchorElement;
+    }
+
+    return originalCreateElement(tagName);
+  });
+
+  jest.spyOn(global, 'fetch').mockResolvedValue(({
+    ok: fetchOk,
+    status: fetchOk ? 200 : 403,
+    statusText: fetchOk ? 'OK' : 'Forbidden',
+    blob: jest.fn(() => Promise.resolve(new Blob(['test file']))),
+  } as unknown) as Response);
+
+  // jsdom does not implement these URL methods, so they must be stubbed
+  // before Jest can spy on them.
+  Object.defineProperty(URL, 'createObjectURL', {
+    configurable: true,
+    writable: true,
+    value: jest.fn(() => 'blob:http://localhost/test'),
+  });
+  Object.defineProperty(URL, 'revokeObjectURL', {
+    configurable: true,
+    writable: true,
+    value: jest.fn(),
+  });
+
+  return mockAnchorElement;
+}
+
 describe('the MediaMessage component', () => {
-  it('should get the file URL and load it in a new tab when clicked', done => {
-    const mockMedia = {
-      filename: 'foo.txt',
-      size: 123,
-      getContentTemporaryUrl: () => Promise.resolve('http://twilio.com/foo.txt'),
-    } as Media;
+  beforeEach(() => {
+    jest.useFakeTimers();
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+  });
 
-    const mockAnchorElement = document.createElement('a');
-    mockAnchorElement.click = jest.fn();
-    document.createElement = jest.fn(() => mockAnchorElement);
+  afterEach(() => {
+    jest.useRealTimers();
+    jest.restoreAllMocks();
+  });
 
+  it('should download the file when clicked instead of opening a new tab', async () => {
+    const mockMedia = createMockMedia();
+    const mockAnchorElement = stubDownloadApis();
     const wrapper = shallow(<MediaMessage media={mockMedia} />);
-    wrapper.simulate('click');
 
-    setTimeout(() => {
-      expect(mockAnchorElement.href).toBe('http://twilio.com/foo.txt');
-      expect(mockAnchorElement.target).toBe('_blank');
-      expect(mockAnchorElement.rel).toBe('noopener');
-      // This extra setTimeout is needed for the iOS workaround
-      setTimeout(() => {
-        expect(mockAnchorElement.click).toHaveBeenCalled();
-      });
-      done();
-    });
+    expect(wrapper.text()).toContain('Click to Download');
+
+    wrapper.simulate('click');
+    await flushPromises();
+
+    expect(mockMedia.getContentTemporaryUrl).toHaveBeenCalledTimes(1);
+    expect(global.fetch).toHaveBeenCalledWith('http://twilio.com/foo.txt');
+    expect(URL.createObjectURL).toHaveBeenCalledTimes(1);
+    expect(mockAnchorElement.href).toBe('blob:http://localhost/test');
+    expect(mockAnchorElement.download).toBe('foo.txt');
+    expect(mockAnchorElement.target).not.toBe('_blank');
+
+    expect(mockAnchorElement.click).not.toHaveBeenCalled();
+
+    jest.runOnlyPendingTimers();
+    expect(mockAnchorElement.click).toHaveBeenCalledTimes(1);
+
+    jest.runOnlyPendingTimers();
+    expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:http://localhost/test');
+  });
+
+  it('should use a fallback filename when the media has no name', async () => {
+    const mockMedia = createMockMedia({ filename: '' });
+    const mockAnchorElement = stubDownloadApis();
+    const wrapper = shallow(<MediaMessage media={mockMedia} />);
+
+    wrapper.simulate('click');
+    await flushPromises();
+
+    expect(mockAnchorElement.download).toBe('download');
+  });
+
+  it('should not start a download when the media URL is missing', async () => {
+    const mockMedia = createMockMedia({ url: null });
+    const mockAnchorElement = stubDownloadApis();
+    const wrapper = shallow(<MediaMessage media={mockMedia} />);
+
+    wrapper.simulate('click');
+    await flushPromises();
+    jest.runOnlyPendingTimers();
+
+    expect(global.fetch).not.toHaveBeenCalled();
+    expect(mockAnchorElement.click).not.toHaveBeenCalled();
+    expect(console.error).toHaveBeenCalled();
+  });
+
+  it('should not start a download when fetching the file fails', async () => {
+    const mockMedia = createMockMedia();
+    const mockAnchorElement = stubDownloadApis({ fetchOk: false });
+    const wrapper = shallow(<MediaMessage media={mockMedia} />);
+
+    wrapper.simulate('click');
+    await flushPromises();
+    jest.runOnlyPendingTimers();
+
+    expect(URL.createObjectURL).not.toHaveBeenCalled();
+    expect(mockAnchorElement.click).not.toHaveBeenCalled();
+    expect(console.error).toHaveBeenCalled();
   });
 });
