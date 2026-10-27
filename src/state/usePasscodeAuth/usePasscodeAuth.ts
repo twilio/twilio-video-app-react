@@ -4,9 +4,8 @@ import { useHistory } from 'react-router-dom';
 const endpoint = process.env.REACT_APP_TOKEN_ENDPOINT || '/token';
 
 export function getPasscode() {
-  const match = window.location.search.match(/passcode=(.*)&?/);
-  const passcode = match ? match[1] : window.sessionStorage.getItem('passcode');
-  return passcode;
+  const passcode = new URLSearchParams(window.location.search).get('passcode');
+  return passcode || window.sessionStorage.getItem('passcode');
 }
 
 export function fetchToken(
