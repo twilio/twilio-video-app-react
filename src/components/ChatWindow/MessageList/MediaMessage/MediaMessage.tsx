@@ -49,19 +49,37 @@ export function formatFileSize(bytes: number, suffixIndex = 0): string {
 export default function FileMessage({ media }: MediaMessageProps) {
   const classes = useStyles();
 
-  const handleClick = () => {
-    media.getContentTemporaryUrl().then(url => {
+  const handleClick = async () => {
+    try {
+      const url = await media.getContentTemporaryUrl();
+
+      if (!url) {
+        throw new Error('Unable to get media download URL');
+      }
+
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error(`Failed to download file: ${response.status} ${response.statusText}`);
+      }
+
+      const blob = await response.blob();
+      const downloadUrl = URL.createObjectURL(blob);
       const anchorEl = document.createElement('a');
 
-      anchorEl.href = url!;
-      anchorEl.target = '_blank';
-      anchorEl.rel = 'noopener';
+      anchorEl.href = downloadUrl;
+      anchorEl.download = media.filename || 'download';
 
-      // setTimeout is needed in order to open files in iOS Safari.
       setTimeout(() => {
         anchorEl.click();
+
+        setTimeout(() => {
+          URL.revokeObjectURL(downloadUrl);
+        }, 100);
       });
-    });
+    } catch (error) {
+      console.error('Failed to download media:', error);
+    }
   };
 
   return (
@@ -71,7 +89,7 @@ export default function FileMessage({ media }: MediaMessageProps) {
       </div>
       <div className={classes.mediaInfo}>
         <p className={classes.filename}>{media.filename}</p>
-        <p className={classes.size}>{formatFileSize(media.size)} - Click to open</p>
+        <p className={classes.size}>{formatFileSize(media.size)} - Click to Download</p>
       </div>
     </div>
   );
